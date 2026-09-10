@@ -12,9 +12,9 @@ import { isRetiredExtension, registerOrganizedExtensions } from "../../apps/core
 const root = path.resolve("apps/core/extension");
 const exists = (file: string) => fs.access(file).then(() => true, () => false);
 
-test("restructure leaves exactly 49 active extensions after EpicFX removal", async () => {
+test("restructure retains 43 extensions after the requested removals", async () => {
 	const directories = (await fs.readdir(root, { withFileTypes: true })).filter(entry => entry.isDirectory() && !isRetiredExtension(entry.name)).map(entry => entry.name);
-	assert.equal(directories.length, 49);
+	assert.equal(directories.length, 43);
 	for (const name of policy.removed) {
 		if (name !== "EpicFX") assert.equal(await exists(path.join(root, name)), false, name);
 		assert.ok(isRetiredExtension(name), name);
@@ -60,21 +60,17 @@ test("mixed modern and legacy members are supported by the shared composer", asy
 });
 
 test("registry and PXLNGU group match the physical inventory", async () => {
-	assert.equal(groups[0].members.length, 35);
+	assert.equal(groups[0].members.length, 30);
 	for (const name of policy.pxlnguAdded) assert.ok(groups[0].members.includes(name), name);
 	const directories = (await fs.readdir(root, { withFileTypes: true })).filter(entry => entry.isDirectory() && !isRetiredExtension(entry.name)).map(entry => entry.name);
 	assert.deepEqual(new Set(installed.map(row => row.name)), new Set(directories.filter(name => !bundled.includes(name))));
 	assert.deepEqual(installed.find(row => row.name === "蔡阳")?.characters, ["CYZi"]);
-	assert.deepEqual(installed.find(row => row.name === "超神赵云")?.characters, ["超神赵云"]);
 });
 
 test("retained single-character packs and WeChat translations are exact", async () => {
 	const caiyang = await fs.readFile(path.join(root, "蔡阳", "extension.js"), "utf8");
 	assert.match(caiyang, /CYZi:\s*\[/);
 	assert.doesNotMatch(caiyang, /RWtg|lgg|ccx/);
-	const zhaoyun = await fs.readFile(path.join(root, "超神赵云", "extension.js"), "utf8");
-	assert.equal((zhaoyun.match(/^"超神赵云":\s*\[/gm) || []).length, 1);
-	assert.doesNotMatch(zhaoyun, /selectedId|removedCharacters|Eason\.jpg/);
 	const wechat = await fs.readFile(path.join(root, "活动武将", "js/precontent/WeChatkill.js"), "utf8");
 	for (const [id, name] of [["wechat_luxun", "小程序陆逊"], ["wechat_zuoci", "小程序左慈"], ["wechat_liubei", "小程序刘备"], ["wechat_huanggai", "小程序黄盖"]]) {
 		assert.match(wechat, new RegExp(`${id}: [\"']${name}[\"']`));

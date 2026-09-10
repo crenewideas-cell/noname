@@ -5,7 +5,6 @@ export default function(lib,game,ui,get,ai,_status){return {name:"新诸葛果",
 },config:{},help:{},package:{
     character:{
         character:{
-            mb_zhugeguo: ['female', 'shu', 3, ['mbqirang','mbyuhua']],
         },
         translate: {
 			mb_zhugeguo: "诸葛果",

@@ -1,0 +1,181 @@
+
+shouji.png
+size: 2033,2033
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+VFX/shouji/shouji_tx1
+  rotate: false
+  xy: 1067, 48
+  size: 307, 307
+  orig: 307, 307
+  offset: 0, 0
+  index: -1
+VFX/shouji/shouji_tx3_01
+  rotate: false
+  xy: 1655, 421
+  size: 233, 241
+  orig: 300, 300
+  offset: 34, 31
+  index: -1
+VFX/shouji/shouji_tx3_02
+  rotate: false
+  xy: 1376, 115
+  size: 295, 295
+  orig: 300, 300
+  offset: 3, 4
+  index: -1
+VFX/shouji/shouji_tx4
+  rotate: false
+  xy: 1285, 412
+  size: 368, 366
+  orig: 450, 450
+  offset: 42, 38
+  index: -1
+VFX/shouji/shouji_tx5
+  rotate: false
+  xy: 1667, 664
+  size: 307, 126
+  orig: 307, 307
+  offset: 0, 91
+  index: -1
+VFX/shouji/shouji_tx6_00
+  rotate: false
+  xy: 1673, 241
+  size: 169, 178
+  orig: 540, 503
+  offset: 196, 194
+  index: -1
+VFX/shouji/shouji_tx6_01
+  rotate: false
+  xy: 456, 5
+  size: 327, 289
+  orig: 540, 503
+  offset: 96, 129
+  index: -1
+VFX/shouji/shouji_tx6_02
+  rotate: true
+  xy: 1667, 792
+  size: 393, 347
+  orig: 540, 503
+  offset: 63, 97
+  index: -1
+VFX/shouji/shouji_tx6_03
+  rotate: true
+  xy: 1663, 1187
+  size: 406, 368
+  orig: 540, 503
+  offset: 53, 79
+  index: -1
+VFX/shouji/shouji_tx6_04
+  rotate: true
+  xy: 1285, 780
+  size: 401, 380
+  orig: 540, 503
+  offset: 56, 70
+  index: -1
+VFX/shouji/shouji_tx6_05
+  rotate: true
+  xy: 1272, 1183
+  size: 407, 389
+  orig: 540, 503
+  offset: 53, 64
+  index: -1
+VFX/shouji/shouji_tx6_06
+  rotate: true
+  xy: 883, 740
+  size: 417, 400
+  orig: 540, 503
+  offset: 46, 56
+  index: -1
+VFX/shouji/shouji_tx6_07
+  rotate: true
+  xy: 463, 676
+  size: 428, 418
+  orig: 540, 503
+  offset: 42, 42
+  index: -1
+VFX/shouji/shouji_tx6_08
+  rotate: false
+  xy: 1484, 1595
+  size: 436, 436
+  orig: 540, 503
+  offset: 39, 35
+  index: -1
+VFX/shouji/shouji_tx6_09
+  rotate: false
+  xy: 1035, 1592
+  size: 447, 439
+  orig: 540, 503
+  offset: 32, 35
+  index: -1
+VFX/shouji/shouji_tx6_10
+  rotate: true
+  xy: 2, 79
+  size: 469, 452
+  orig: 540, 503
+  offset: 21, 28
+  index: -1
+VFX/shouji/shouji_tx6_11
+  rotate: true
+  xy: 2, 550
+  size: 492, 459
+  orig: 540, 503
+  offset: 9, 21
+  index: -1
+VFX/shouji/shouji_tx6_12
+  rotate: false
+  xy: 2, 1564
+  size: 513, 467
+  orig: 540, 503
+  offset: 1, 13
+  index: -1
+VFX/shouji/shouji_tx6_13
+  rotate: false
+  xy: 517, 1582
+  size: 516, 449
+  orig: 540, 503
+  offset: 0, 31
+  index: -1
+VFX/shouji/shouji_tx6_14
+  rotate: true
+  xy: 2, 1044
+  size: 518, 451
+  orig: 540, 503
+  offset: 2, 29
+  index: -1
+VFX/shouji/shouji_tx6_15
+  rotate: false
+  xy: 455, 1106
+  size: 414, 456
+  orig: 540, 503
+  offset: 45, 24
+  index: -1
+VFX/shouji/shouji_tx6_16
+  rotate: false
+  xy: 871, 1159
+  size: 399, 421
+  orig: 540, 503
+  offset: 50, 23
+  index: -1
+VFX/shouji/shouji_tx6_17
+  rotate: false
+  xy: 883, 357
+  size: 396, 381
+  orig: 540, 503
+  offset: 60, 64
+  index: -1
+VFX/shouji/shouji_tx6_18
+  rotate: false
+  xy: 463, 296
+  size: 398, 378
+  orig: 540, 503
+  offset: 59, 75
+  index: -1
+VFX/shouji/shouji_tx8
+  rotate: true
+  xy: 785, 12
+  size: 282, 280
+  orig: 307, 307
+  offset: 13, 13
+  index: -1

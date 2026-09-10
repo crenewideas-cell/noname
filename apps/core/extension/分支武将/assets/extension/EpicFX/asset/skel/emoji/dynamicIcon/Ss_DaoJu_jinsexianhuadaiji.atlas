@@ -1,0 +1,13 @@
+
+Ss_DaoJu_jinsexianhuadaiji.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+jinsemeigui
+  rotate: false
+  xy: 2, 2
+  size: 101, 104
+  orig: 103, 106
+  offset: 1, 1
+  index: -1

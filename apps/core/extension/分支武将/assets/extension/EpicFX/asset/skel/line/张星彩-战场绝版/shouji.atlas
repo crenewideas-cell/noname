@@ -1,0 +1,167 @@
+
+shouji.png
+size: 1987,1987
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cs/tx_cs_yh/tx_cs_yha_00000
+  rotate: true
+  xy: 1754, 1690
+  size: 85, 87
+  orig: 348, 305
+  offset: 126, 125
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00002
+  rotate: false
+  xy: 1754, 1777
+  size: 208, 208
+  orig: 348, 305
+  offset: 63, 61
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00004
+  rotate: true
+  xy: 280, 9
+  size: 243, 242
+  orig: 348, 305
+  offset: 50, 41
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00006
+  rotate: true
+  xy: 1733, 1161
+  size: 259, 252
+  orig: 348, 305
+  offset: 44, 30
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00008
+  rotate: true
+  xy: 1685, 11
+  size: 273, 257
+  orig: 348, 305
+  offset: 39, 24
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00010
+  rotate: true
+  xy: 1419, 4
+  size: 280, 264
+  orig: 348, 305
+  offset: 34, 16
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00012
+  rotate: true
+  xy: 1147, 123
+  size: 287, 270
+  orig: 348, 305
+  offset: 30, 12
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00014
+  rotate: true
+  xy: 567, 293
+  size: 292, 270
+  orig: 348, 305
+  offset: 29, 13
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00016
+  rotate: false
+  xy: 567, 587
+  size: 294, 270
+  orig: 348, 305
+  offset: 29, 12
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00018
+  rotate: true
+  xy: 874, 261
+  size: 296, 271
+  orig: 348, 305
+  offset: 28, 11
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00020
+  rotate: true
+  xy: 874, 559
+  size: 298, 270
+  orig: 348, 305
+  offset: 27, 10
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00022
+  rotate: false
+  xy: 1603, 286
+  size: 302, 274
+  orig: 348, 305
+  offset: 25, 8
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00024
+  rotate: false
+  xy: 567, 17
+  size: 305, 267
+  orig: 348, 305
+  offset: 24, 13
+  index: -1
+cs/tx_cs_yh/tx_cs_yha_00026
+  rotate: false
+  xy: 2, 9
+  size: 276, 243
+  orig: 348, 305
+  offset: 53, 36
+  index: -1
+cs/tx_shouji/tx_shouji_00000
+  rotate: false
+  xy: 1603, 562
+  size: 371, 300
+  orig: 626, 594
+  offset: 122, 159
+  index: -1
+cs/tx_shouji/tx_shouji_00002
+  rotate: false
+  xy: 1151, 412
+  size: 450, 450
+  orig: 626, 594
+  offset: 82, 84
+  index: -1
+cs/tx_shouji/tx_shouji_00004
+  rotate: false
+  xy: 2, 1422
+  size: 582, 563
+  orig: 626, 594
+  offset: 20, 20
+  index: -1
+cs/tx_shouji/tx_shouji_00006
+  rotate: false
+  xy: 586, 1422
+  size: 582, 563
+  orig: 626, 594
+  offset: 20, 20
+  index: -1
+cs/tx_shouji/tx_shouji_00008
+  rotate: false
+  xy: 1170, 1422
+  size: 582, 563
+  orig: 626, 594
+  offset: 20, 20
+  index: -1
+cs/tx_shouji/tx_shouji_00010
+  rotate: true
+  xy: 2, 838
+  size: 582, 563
+  orig: 626, 594
+  offset: 20, 20
+  index: -1
+cs/tx_shouji/tx_shouji_00012
+  rotate: true
+  xy: 2, 254
+  size: 582, 563
+  orig: 626, 594
+  offset: 20, 20
+  index: -1
+cs/tx_shouji/tx_shouji_00014
+  rotate: false
+  xy: 567, 859
+  size: 582, 561
+  orig: 626, 594
+  offset: 20, 20
+  index: -1
+cs/tx_shouji/tx_shouji_00016
+  rotate: false
+  xy: 1151, 864
+  size: 580, 556
+  orig: 626, 594
+  offset: 22, 24
+  index: -1

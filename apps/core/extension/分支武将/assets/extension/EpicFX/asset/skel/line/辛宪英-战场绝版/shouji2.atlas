@@ -1,0 +1,244 @@
+
+shouji2.png
+size: 2000,2000
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tx_chushahudie_00000
+  rotate: true
+  xy: 1645, 892
+  size: 202, 201
+  orig: 263, 273
+  offset: 33, 14
+  index: -1
+tx_chushahudie_00001
+  rotate: false
+  xy: 790, 755
+  size: 216, 213
+  orig: 263, 273
+  offset: 25, 9
+  index: -1
+tx_chushahudie_00002
+  rotate: false
+  xy: 957, 33
+  size: 240, 235
+  orig: 263, 273
+  offset: 13, 0
+  index: -1
+tx_chushahudie_00003
+  rotate: false
+  xy: 1735, 1747
+  size: 263, 251
+  orig: 263, 273
+  offset: 0, 0
+  index: -1
+tx_chushahudie_00004
+  rotate: true
+  xy: 790, 1235
+  size: 263, 237
+  orig: 263, 273
+  offset: 0, 26
+  index: -1
+tx_chushahudie_00005
+  rotate: true
+  xy: 790, 970
+  size: 263, 220
+  orig: 263, 273
+  offset: 0, 50
+  index: -1
+tx_chushaqiulan_00000
+  rotate: false
+  xy: 1412, 1705
+  size: 321, 293
+  orig: 358, 350
+  offset: 23, 18
+  index: -1
+tx_chushaqiulan_00002
+  rotate: false
+  xy: 706, 1500
+  size: 321, 309
+  orig: 358, 350
+  offset: 23, 17
+  index: -1
+tx_chushaqiulan_00004
+  rotate: false
+  xy: 1029, 1498
+  size: 318, 311
+  orig: 358, 350
+  offset: 24, 17
+  index: -1
+tx_chushaqiulan_00006
+  rotate: false
+  xy: 1012, 884
+  size: 315, 310
+  orig: 358, 350
+  offset: 25, 17
+  index: -1
+tx_chushaqiulan_00008
+  rotate: false
+  xy: 1008, 575
+  size: 312, 307
+  orig: 358, 350
+  offset: 26, 18
+  index: -1
+tx_chushaqiulan_00010
+  rotate: false
+  xy: 957, 270
+  size: 308, 303
+  orig: 358, 350
+  offset: 28, 19
+  index: -1
+tx_chushaqiulan_00012
+  rotate: false
+  xy: 1267, 191
+  size: 306, 301
+  orig: 358, 350
+  offset: 29, 19
+  index: -1
+tx_chushaqiulan_00014
+  rotate: true
+  xy: 1672, 1400
+  size: 303, 300
+  orig: 358, 350
+  offset: 31, 19
+  index: -1
+tx_chushaqiulan_00016
+  rotate: false
+  xy: 1668, 1099
+  size: 303, 299
+  orig: 358, 350
+  offset: 32, 19
+  index: -1
+tx_chushaqiulan_00018
+  rotate: true
+  xy: 1575, 186
+  size: 306, 298
+  orig: 358, 350
+  offset: 30, 19
+  index: -1
+tx_chushaqiulan_00020
+  rotate: false
+  xy: 1322, 494
+  size: 309, 299
+  orig: 358, 350
+  offset: 28, 19
+  index: -1
+tx_chushaqiulan_00022
+  rotate: false
+  xy: 1329, 795
+  size: 314, 299
+  orig: 358, 350
+  offset: 25, 19
+  index: -1
+tx_chushaqiulan_00024
+  rotate: false
+  xy: 1029, 1196
+  size: 316, 300
+  orig: 358, 350
+  offset: 24, 19
+  index: -1
+tx_chushaqiulan_00026
+  rotate: false
+  xy: 1347, 1096
+  size: 319, 302
+  orig: 358, 350
+  offset: 23, 18
+  index: -1
+tx_chushaqiulan_00028
+  rotate: false
+  xy: 1349, 1400
+  size: 321, 303
+  orig: 358, 350
+  offset: 23, 18
+  index: -1
+tx_chushatuowei_00000
+  rotate: true
+  xy: 2, 7
+  size: 705, 181
+  orig: 813, 247
+  offset: 27, 29
+  index: -1
+tx_chushatuowei_00002
+  rotate: false
+  xy: 706, 1811
+  size: 704, 187
+  orig: 813, 247
+  offset: 26, 27
+  index: -1
+tx_chushatuowei_00004
+  rotate: false
+  xy: 2, 1806
+  size: 702, 192
+  orig: 813, 247
+  offset: 27, 24
+  index: -1
+tx_chushatuowei_00006
+  rotate: false
+  xy: 2, 1612
+  size: 701, 192
+  orig: 813, 247
+  offset: 27, 24
+  index: -1
+tx_chushatuowei_00008
+  rotate: true
+  xy: 2, 714
+  size: 698, 192
+  orig: 813, 247
+  offset: 26, 25
+  index: -1
+tx_chushatuowei_00010
+  rotate: true
+  xy: 395, 719
+  size: 693, 195
+  orig: 813, 247
+  offset: 26, 22
+  index: -1
+tx_chushatuowei_00012
+  rotate: true
+  xy: 592, 722
+  size: 690, 196
+  orig: 813, 247
+  offset: 26, 22
+  index: -1
+tx_chushatuowei_00014
+  rotate: true
+  xy: 185, 25
+  size: 687, 193
+  orig: 813, 247
+  offset: 25, 24
+  index: -1
+tx_chushatuowei_00016
+  rotate: true
+  xy: 574, 30
+  size: 687, 187
+  orig: 813, 247
+  offset: 23, 30
+  index: -1
+tx_chushatuowei_00018
+  rotate: true
+  xy: 763, 35
+  size: 685, 192
+  orig: 813, 247
+  offset: 21, 25
+  index: -1
+tx_chushatuowei_00020
+  rotate: true
+  xy: 380, 31
+  size: 686, 192
+  orig: 813, 247
+  offset: 19, 25
+  index: -1
+tx_chushatuowei_00022
+  rotate: true
+  xy: 196, 719
+  size: 693, 197
+  orig: 813, 247
+  offset: 17, 20
+  index: -1
+tx_chushatuowei_00024
+  rotate: false
+  xy: 2, 1414
+  size: 696, 196
+  orig: 813, 247
+  offset: 16, 23
+  index: -1

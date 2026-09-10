@@ -1,0 +1,440 @@
+
+SS_bq_srklUI.png
+size: 1861,1048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/srkl/UI_srkldi
+  rotate: false
+  xy: 442, 957
+  size: 197, 89
+  orig: 197, 89
+  offset: 0, 0
+  index: -1
+images/srkl/srklglow_000
+  rotate: false
+  xy: 1471, 938
+  size: 225, 108
+  orig: 256, 120
+  offset: 15, 7
+  index: -1
+images/srkl/srkllz/srkllz_001
+  rotate: false
+  xy: 1120, 662
+  size: 240, 155
+  orig: 300, 160
+  offset: 55, 0
+  index: -1
+images/srkl/srkllz/srkllz_002
+  rotate: false
+  xy: 516, 525
+  size: 283, 160
+  orig: 300, 160
+  offset: 13, 0
+  index: -1
+images/srkl/srkllz/srkllz_003
+  rotate: false
+  xy: 801, 524
+  size: 280, 160
+  orig: 300, 160
+  offset: 15, 0
+  index: -1
+images/srkl/srkllz/srkllz_004
+  rotate: false
+  xy: 1318, 493
+  size: 285, 160
+  orig: 300, 160
+  offset: 13, 0
+  index: -1
+images/srkl/srkllz/srkllz_005
+  rotate: false
+  xy: 2, 389
+  size: 291, 160
+  orig: 300, 160
+  offset: 9, 0
+  index: -1
+images/srkl/srkllz/srkllz_006
+  rotate: false
+  xy: 295, 363
+  size: 290, 160
+  orig: 300, 160
+  offset: 8, 0
+  index: -1
+images/srkl/srkllz/srkllz_007
+  rotate: false
+  xy: 587, 362
+  size: 291, 160
+  orig: 300, 160
+  offset: 9, 0
+  index: -1
+images/srkl/srkllz/srkllz_008
+  rotate: false
+  xy: 880, 338
+  size: 289, 160
+  orig: 300, 160
+  offset: 11, 0
+  index: -1
+images/srkl/srkllz/srkllz_009
+  rotate: false
+  xy: 1171, 331
+  size: 288, 160
+  orig: 300, 160
+  offset: 11, 0
+  index: -1
+images/srkl/srkllz/srkllz_010
+  rotate: false
+  xy: 1461, 326
+  size: 292, 160
+  orig: 300, 160
+  offset: 8, 0
+  index: -1
+images/srkl/srkllz/srkllz_011
+  rotate: false
+  xy: 2, 201
+  size: 293, 160
+  orig: 300, 160
+  offset: 7, 0
+  index: -1
+images/srkl/srkllz/srkllz_012
+  rotate: false
+  xy: 297, 200
+  size: 297, 160
+  orig: 300, 160
+  offset: 3, 0
+  index: -1
+images/srkl/srkllz/srkllz_013
+  rotate: false
+  xy: 596, 176
+  size: 298, 160
+  orig: 300, 160
+  offset: 2, 0
+  index: -1
+images/srkl/srkllz/srkllz_014
+  rotate: false
+  xy: 896, 169
+  size: 299, 160
+  orig: 300, 160
+  offset: 1, 0
+  index: -1
+images/srkl/srkllz/srkllz_015
+  rotate: false
+  xy: 1197, 164
+  size: 299, 160
+  orig: 300, 160
+  offset: 1, 0
+  index: -1
+images/srkl/srkllz/srkllz_016
+  rotate: false
+  xy: 1498, 164
+  size: 300, 160
+  orig: 300, 160
+  offset: 0, 0
+  index: -1
+images/srkl/srkllz/srkllz_017
+  rotate: false
+  xy: 2, 38
+  size: 300, 160
+  orig: 300, 160
+  offset: 0, 0
+  index: -1
+images/srkl/srkllz/srkllz_018
+  rotate: false
+  xy: 304, 14
+  size: 300, 160
+  orig: 300, 160
+  offset: 0, 0
+  index: -1
+images/srkl/srkllz/srkllz_019
+  rotate: false
+  xy: 606, 7
+  size: 299, 160
+  orig: 300, 160
+  offset: 1, 0
+  index: -1
+images/srkl/srkllz/srkllz_020
+  rotate: false
+  xy: 1362, 655
+  size: 300, 159
+  orig: 300, 160
+  offset: 0, 0
+  index: -1
+images/srkl/srkllz/srkllz_021
+  rotate: false
+  xy: 907, 2
+  size: 300, 160
+  orig: 300, 160
+  offset: 0, 0
+  index: -1
+images/srkl/srkllz/srkllz_022
+  rotate: false
+  xy: 1209, 2
+  size: 299, 160
+  orig: 300, 160
+  offset: 1, 0
+  index: -1
+images/srkl/srkllz/srkllz_023
+  rotate: false
+  xy: 1510, 2
+  size: 295, 160
+  orig: 300, 160
+  offset: 4, 0
+  index: -1
+images/srkl/srkllz/srkllz_024
+  rotate: false
+  xy: 256, 551
+  size: 258, 160
+  orig: 300, 160
+  offset: 42, 0
+  index: -1
+images/srkl/srkllz/srkllz_025
+  rotate: false
+  xy: 2, 560
+  size: 252, 160
+  orig: 300, 160
+  offset: 46, 0
+  index: -1
+images/srkl/srkllz/srkllz_026
+  rotate: false
+  xy: 1083, 500
+  size: 233, 160
+  orig: 300, 160
+  offset: 65, 0
+  index: -1
+images/srkl/srkllz/srkllz_027
+  rotate: false
+  xy: 1605, 488
+  size: 230, 160
+  orig: 300, 160
+  offset: 65, 0
+  index: -1
+images/srkl/srkllz/srkllz_028
+  rotate: false
+  xy: 1664, 650
+  size: 195, 159
+  orig: 300, 160
+  offset: 65, 1
+  index: -1
+images/srkl/srkllz/srkllz_029
+  rotate: false
+  xy: 532, 689
+  size: 194, 144
+  orig: 300, 160
+  offset: 66, 16
+  index: -1
+images/srkl/srkllz/srkllz_030
+  rotate: false
+  xy: 728, 687
+  size: 194, 145
+  orig: 300, 160
+  offset: 66, 15
+  index: -1
+images/srkl/srkllz/srkllz_031
+  rotate: false
+  xy: 924, 686
+  size: 194, 146
+  orig: 300, 160
+  offset: 65, 14
+  index: -1
+images/srkl/srkllz/srkllz_032
+  rotate: false
+  xy: 1175, 954
+  size: 175, 92
+  orig: 300, 160
+  offset: 71, 17
+  index: -1
+images/srkl/srkllz/srkllz_033
+  rotate: false
+  xy: 997, 956
+  size: 176, 90
+  orig: 300, 160
+  offset: 71, 18
+  index: -1
+images/srkl/srkllz/srkllz_034
+  rotate: false
+  xy: 641, 957
+  size: 178, 89
+  orig: 300, 160
+  offset: 70, 19
+  index: -1
+images/srkl/srkllz/srkllz_035
+  rotate: false
+  xy: 821, 957
+  size: 174, 89
+  orig: 300, 160
+  offset: 74, 18
+  index: -1
+images/srkl/srkllz/srkllz_036
+  rotate: true
+  xy: 61, 990
+  size: 56, 59
+  orig: 300, 160
+  offset: 192, 47
+  index: -1
+images/srkl/srkllz/srkllz_037
+  rotate: false
+  xy: 180, 989
+  size: 58, 57
+  orig: 300, 160
+  offset: 191, 49
+  index: -1
+images/srkl/srkllz/srkllz_038
+  rotate: false
+  xy: 2, 991
+  size: 57, 55
+  orig: 300, 160
+  offset: 192, 49
+  index: -1
+images/srkl/srkllz/srkllz_039
+  rotate: false
+  xy: 122, 990
+  size: 56, 56
+  orig: 300, 160
+  offset: 192, 47
+  index: -1
+images/srkl/srklsg/srklsg_000
+  rotate: true
+  xy: 1698, 933
+  size: 113, 120
+  orig: 300, 160
+  offset: 22, 20
+  index: -1
+images/srkl/srklsg/srklsg_001
+  rotate: false
+  xy: 124, 844
+  size: 120, 120
+  orig: 300, 160
+  offset: 22, 20
+  index: -1
+images/srkl/srklsg/srklsg_002
+  rotate: false
+  xy: 246, 844
+  size: 126, 120
+  orig: 300, 160
+  offset: 25, 20
+  index: -1
+images/srkl/srklsg/srklsg_003
+  rotate: false
+  xy: 374, 835
+  size: 130, 120
+  orig: 300, 160
+  offset: 32, 20
+  index: -1
+images/srkl/srklsg/srklsg_004
+  rotate: false
+  xy: 506, 835
+  size: 135, 120
+  orig: 300, 160
+  offset: 37, 20
+  index: -1
+images/srkl/srklsg/srklsg_005
+  rotate: false
+  xy: 643, 835
+  size: 134, 120
+  orig: 300, 160
+  offset: 47, 20
+  index: -1
+images/srkl/srklsg/srklsg_006
+  rotate: false
+  xy: 779, 835
+  size: 135, 120
+  orig: 300, 160
+  offset: 56, 20
+  index: -1
+images/srkl/srklsg/srklsg_007
+  rotate: false
+  xy: 916, 834
+  size: 131, 120
+  orig: 300, 160
+  offset: 66, 20
+  index: -1
+images/srkl/srklsg/srklsg_008
+  rotate: false
+  xy: 1175, 832
+  size: 127, 120
+  orig: 300, 160
+  offset: 78, 20
+  index: -1
+images/srkl/srklsg/srklsg_009
+  rotate: false
+  xy: 1304, 819
+  size: 132, 120
+  orig: 300, 160
+  offset: 83, 20
+  index: -1
+images/srkl/srklsg/srklsg_010
+  rotate: false
+  xy: 1438, 816
+  size: 131, 120
+  orig: 300, 160
+  offset: 92, 20
+  index: -1
+images/srkl/srklsg/srklsg_011
+  rotate: false
+  xy: 1696, 811
+  size: 127, 120
+  orig: 300, 160
+  offset: 104, 20
+  index: -1
+images/srkl/srklsg/srklsg_012
+  rotate: false
+  xy: 124, 722
+  size: 135, 120
+  orig: 300, 160
+  offset: 111, 20
+  index: -1
+images/srkl/srklsg/srklsg_013
+  rotate: false
+  xy: 261, 713
+  size: 138, 120
+  orig: 300, 160
+  offset: 114, 20
+  index: -1
+images/srkl/srklsg/srklsg_014
+  rotate: false
+  xy: 401, 713
+  size: 129, 120
+  orig: 300, 160
+  offset: 131, 20
+  index: -1
+images/srkl/srklsg/srklsg_015
+  rotate: false
+  xy: 1049, 834
+  size: 124, 120
+  orig: 300, 160
+  offset: 139, 20
+  index: -1
+images/srkl/srklsg/srklsg_016
+  rotate: false
+  xy: 1571, 816
+  size: 123, 120
+  orig: 300, 160
+  offset: 147, 20
+  index: -1
+images/srkl/srklsg/srklsg_017
+  rotate: true
+  xy: 2, 750
+  size: 121, 120
+  orig: 300, 160
+  offset: 153, 20
+  index: -1
+images/srkl/srklsg/srklsg_018
+  rotate: true
+  xy: 2, 873
+  size: 115, 120
+  orig: 300, 160
+  offset: 162, 20
+  index: -1
+images/srkl/srklsg/srklsg_019
+  rotate: true
+  xy: 1352, 941
+  size: 105, 117
+  orig: 300, 160
+  offset: 173, 20
+  index: -1
+images/srkl/zi_srkl
+  rotate: false
+  xy: 240, 966
+  size: 200, 80
+  orig: 200, 80
+  offset: 0, 0
+  index: -1

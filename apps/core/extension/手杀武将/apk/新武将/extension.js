@@ -22,32 +22,22 @@ export default function (lib, game, ui, get, ai, _status) {
                     wei_machao: "兼容提示：源扩展的 weijizhan 实现已被注释。保留原武将与技能资料，技能补齐前不可进入对局。",
                 },
                 character: {
-                    // 玩琉璃版全家直接死就完事了，尤其是赫拉西斯和孝子K÷
-                    dc_zhongyu: ['male', 'wei', 3, ['dczhidui', 'dcjiesi'], ['die:ext:手杀武将/apk/新武将/audio']],
-                    dc_renwan: ['female', 'wei', 3, ['dcjuanji', 'dcrenshuang'], []],
                     mdtx_jiangwei: ['male', 'shu', '3/4', ['dcjuemou', 'dcfuzhan'], ['transform:[mdtx_jiangwei,yin_mdtx_jiangwei]', 'die:ext:手杀武将/apk/新武将/audio']],
-                    yin_mdtx_jiangwei: ['male', 'shu', '3/4', ['dcjuemou', 'dcfuzhan'], ['transform:[mdtx_jiangwei,yin_mdtx_jiangwei]', 'unseen', 'die:ext:手杀武将/apk/新武将/audio']],
-                    dc_dongxu: ['female', 'qun', 3, ['dcqingleng', 'dczhendu'], ['die:ext:手杀武将/apk/新武将/audio']],
-                    //"you_chengxiang": ["male", "shu", 3, ["dizhu_yingyou"], ["des:南征北伐，誓还旧都"]],
-                    sxrm_guanyu: ['male', 'shu', 5, ['sxrmhanguo', 'sxrmweiwo'], []],
                     wei_machao: ['male', 'qun', 4, ['weizhongtao', 'weijizhan']],
                     mdtx_luxun: ['male', 'wu', 3, ['mdtxjuanmou', 'mdtxzhanyan'], ['transform:[mdtx_luxun,yin_mdtx_luxun]', 'die:ext:手杀武将/apk/新武将/audio']],
-                    yin_mdtx_luxun: ['male', 'wu', 3, ['mdtxjuanmou', 'mdtxzhanyan'], ['transform:[mdtx_luxun,yin_mdtx_luxun]', 'die:ext:手杀武将/apk/新武将/audio', 'unseen']],
                     sbfm_xizhicai: ['male', 'wei', 3, ['sbfmqianfu', 'sbfmjinjin'], ['die:ext:手杀武将/apk/新武将/audio']],
                     liuyi_zhangzhi: ['male', 'qun', 3, ['liuyishiju'], []],
                     dc_shen_sunquan: ['male', 'shen', 4, ['dcsqcangming', 'dcsqchouxi', 'dcsqjichao'], ['wu', 'die:ext:手杀武将/apk/新武将/audio']],
                     boss_hanbingjian: ['female', 'qun', 3, ['bossbingling'], ['sbliuli:true']],
                     wei_sunshangxiang: ["female", "wu", 3, ["weishuren", "weisaran"], ['sbliuli:true', 'transform:[wei_sunshangxiang,wei_wu_sunshangxiang]', 'die:ext:手杀武将/apk/新武将/audio']],
-                    wei_wu_sunshangxiang: ["female", "wu", 3, ["weishuren", "weisaran"], ['sbliuli:true', 'transform:[wei_sunshangxiang,wei_wu_sunshangxiang]', 'unseen', 'die:ext:手杀武将/apk/新武将/audio']],
                     ol_sunyuan:['female','wu',4,['olsaying','oldongxin'], ['die:ext:手杀武将/apk/新武将/audio']],
-                    sb_zhuran:['male','wu',4,['sbzhenwei','sbheyuan']],
                 },
                 characterSort: {
                     "mode_extension_新武将": {
                         xwj_ol:['sbfm_xizhicai','ol_sunyuan'],
-                        xwj_standard: ['dc_zhongyu', 'dc_renwan', 'mdtx_jiangwei', 'dc_dongxu', 'you_chengxiang', 'wei_machao', 'mdtx_luxun','dc_shen_sunquan','wei_sunshangxiang','boss_hanbingjian'],
-                        xwj_mobile:['liuyi_zhangzhi','sb_zhuran'],
-                        xwj_sxrm_man: ['sxrm_guanyu'],
+                        xwj_standard: [ 'mdtx_jiangwei', 'you_chengxiang', 'wei_machao', 'mdtx_luxun','dc_shen_sunquan','wei_sunshangxiang','boss_hanbingjian'],
+                        xwj_mobile:['liuyi_zhangzhi'],
+                        xwj_sxrm_man: [],
                     }
                 },
                 characterTitle: {

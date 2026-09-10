@@ -50,6 +50,8 @@ https://www.gnu.org/licenses/gpl-3.0.html
 
 		await boot();
 	} catch (e) {
+		clearTimeout(window.resetGameTimeout);
+		delete window.resetGameTimeout;
 		console.error(e);
 		alert(`《无名杀》加载内容失败
 浏览器UA信息: 

@@ -13,12 +13,6 @@ const characters = {
 		hp: 4,
 		skills: ["jsrgzhaobing", "jsrgzhuhuan", "jsrgyanhuo"],
 	},
-	jsrg_sunjian: {
-		sex: "male",
-		group: "qun",
-		hp: 4,
-		skills: ["jsrgpingtao", "jsrgjuelie"],
-	},
 	jsrg_huangfusong: {
 		sex: "male",
 		group: "qun",

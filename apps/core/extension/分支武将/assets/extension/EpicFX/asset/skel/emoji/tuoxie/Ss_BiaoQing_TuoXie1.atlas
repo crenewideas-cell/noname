@@ -1,0 +1,62 @@
+
+Ss_BiaoQing_TuoXie1.png
+size: 508,204
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+aar_jidan-play_1
+  rotate: false
+  xy: 2, 87
+  size: 107, 115
+  orig: 159, 159
+  offset: 28, 4
+  index: -1
+aar_jidan-play_11
+  rotate: false
+  xy: 355, 115
+  size: 125, 87
+  orig: 159, 159
+  offset: 16, 4
+  index: -1
+aar_jidan-play_13
+  rotate: false
+  xy: 381, 26
+  size: 125, 87
+  orig: 159, 159
+  offset: 15, 4
+  index: -1
+aar_jidan-play_15
+  rotate: false
+  xy: 2, 2
+  size: 126, 83
+  orig: 159, 159
+  offset: 13, 8
+  index: -1
+aar_jidan-play_3
+  rotate: false
+  xy: 111, 103
+  size: 119, 99
+  orig: 159, 159
+  offset: 25, 4
+  index: -1
+aar_jidan-play_5
+  rotate: false
+  xy: 232, 109
+  size: 121, 93
+  orig: 159, 159
+  offset: 22, 4
+  index: -1
+aar_jidan-play_7
+  rotate: false
+  xy: 130, 14
+  size: 123, 87
+  orig: 159, 159
+  offset: 20, 4
+  index: -1
+aar_jidan-play_9
+  rotate: false
+  xy: 255, 20
+  size: 124, 87
+  orig: 159, 159
+  offset: 18, 4
+  index: -1

@@ -1,0 +1,27 @@
+
+SS_LiaoTian_Lipaodaiji.png
+size: 129,79
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eff
+  rotate: false
+  xy: 2, 2
+  size: 76, 75
+  orig: 76, 77
+  offset: 0, 1
+  index: -1
+lipao
+  rotate: false
+  xy: 80, 7
+  size: 29, 70
+  orig: 39, 80
+  offset: 6, 7
+  index: -1
+yy
+  rotate: true
+  xy: 111, 40
+  size: 37, 16
+  orig: 37, 16
+  offset: 0, 0
+  index: -1

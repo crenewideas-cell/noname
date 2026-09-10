@@ -12,7 +12,6 @@ export default {name:"西游杀",content:function (config,pack){
             碧水龟:["male","wei",3,["流云","qianci"],[]],
             孙悟空:["male","wei",4,["美猴王","救命毫毛"],[]],
             猪八戒:["male","wei",4,["散伙饭","娶媳妇"],[]],
-            阎罗王:["male","shu",3,["kurou"],[]],
             龙幽:["male","shu",3,["瞬移","极光","避法"],[]],
         },
         translate:{

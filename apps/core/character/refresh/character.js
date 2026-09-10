@@ -397,12 +397,6 @@ const characters = {
 		skills: ["reduodao", "reanjian"],
 		names: "潘|璋-马|忠",
 	},
-	re_wangyi: {
-		sex: "female",
-		group: "wei",
-		hp: 4,
-		skills: ["zhenlie", "miji"],
-	},
 	re_madai: {
 		sex: "male",
 		group: "shu",

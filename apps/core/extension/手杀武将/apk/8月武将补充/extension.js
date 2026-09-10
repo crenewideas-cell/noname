@@ -49,12 +49,8 @@ export default function(lib,game,ui,get,ai,_status){return {name:"8月武将补�
         character:{
             "ol_re_zhonghui":["male","wei",4,["olquanji","olzili","olpaiyi"],["isExtension"]],
             "ol_wangai":["male","wei",4,["olqinli"],["isExtension"]],
-            "xiangxue_liushan":["male","shu",4,["xiangxue","zhiyong"],["No_Outcrop","isExtension"]],
-            "haoxue_lvmeng":["male","wu",4,["haoxue","qiongshe"],["No_Outcrop","isExtension"]],
             "boxue_caozhi":["male","wei",3,["cboxue","czhichong"],["No_Outcrop","isExtension"]],
             "clan_zhugedan":["male","wei",4,["clanjiaojie","clanfuyu","clanfenshi"],["character:zhugedan","isExtension"]],
-            "clan_zhugeguo":["female","shu",3,["clanfuyao","clanfenshi"],["character:zhugeguo","isExtension"]],
-            "shen_huangzhong":["male","shen",4,["shenyu","huaren"],["No_Outcrop","isExtension"]],
         },
         translate:{
             "ol_re_zhonghui":"ol界钟会",

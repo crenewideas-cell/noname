@@ -5,7 +5,7 @@ const characterSort = {
 	mjsgongxingtianfa: ["mjs_zhaogao", "mjs_shichangshi", "mjs_jiangchong", "mjs_naochi"],
 	mjsnianshoulaixi: ["mjs_nianshou"],
 	mjsqianlidanqi: [],
-	mjsmingjiangguanfang: ["mjs_tap_laobing", "mjs_tap_guangzhichen", "mjs_tap_xiaolongbao"],
+	mjsmingjiangguanfang: [],
 };
 
 for (const name in characters) {

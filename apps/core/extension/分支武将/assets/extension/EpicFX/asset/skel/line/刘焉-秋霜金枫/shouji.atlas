@@ -1,0 +1,139 @@
+
+shouji.png
+size: 1816,1816
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+chusha_baodian01_00000
+  rotate: true
+  xy: 388, 2
+  size: 246, 251
+  orig: 500, 500
+  offset: 127, 126
+  index: -1
+chusha_baodian01_00002
+  rotate: true
+  xy: 1181, 7
+  size: 344, 357
+  orig: 500, 500
+  offset: 78, 71
+  index: -1
+chusha_baodian01_00004
+  rotate: false
+  xy: 411, 1402
+  size: 395, 412
+  orig: 500, 500
+  offset: 52, 42
+  index: -1
+chusha_baodian01_00006
+  rotate: false
+  xy: 1201, 716
+  size: 363, 321
+  orig: 500, 500
+  offset: 52, 90
+  index: -1
+chusha_baodian01_00008
+  rotate: false
+  xy: 805, 295
+  size: 374, 360
+  orig: 500, 500
+  offset: 57, 84
+  index: -1
+chusha_baodian01_00010
+  rotate: true
+  xy: 411, 638
+  size: 362, 392
+  orig: 500, 500
+  offset: 70, 79
+  index: -1
+chusha_baodian01_00012
+  rotate: false
+  xy: 1201, 1039
+  size: 360, 374
+  orig: 500, 500
+  offset: 68, 72
+  index: -1
+chusha_baodian01_00014
+  rotate: true
+  xy: 1191, 353
+  size: 361, 374
+  orig: 500, 500
+  offset: 68, 66
+  index: -1
+chusha_baodian01_00016
+  rotate: true
+  xy: 805, 657
+  size: 363, 384
+  orig: 500, 500
+  offset: 72, 61
+  index: -1
+chusha_baodian01_00018
+  rotate: true
+  xy: 398, 250
+  size: 386, 392
+  orig: 500, 500
+  offset: 53, 55
+  index: -1
+chusha_baodian01_00020
+  rotate: false
+  xy: 411, 1002
+  size: 390, 398
+  orig: 500, 500
+  offset: 52, 51
+  index: -1
+chusha_baodian01_00022
+  rotate: false
+  xy: 808, 1022
+  size: 391, 391
+  orig: 500, 500
+  offset: 54, 47
+  index: -1
+chusha_baodian01_00024
+  rotate: false
+  xy: 2, 565
+  size: 394, 413
+  orig: 500, 500
+  offset: 54, 43
+  index: -1
+chusha_baodian01_00026
+  rotate: false
+  xy: 808, 1415
+  size: 401, 399
+  orig: 500, 500
+  offset: 52, 50
+  index: -1
+chusha_baodian01_00028
+  rotate: false
+  xy: 2, 980
+  size: 407, 411
+  orig: 500, 500
+  offset: 52, 44
+  index: -1
+chusha_baodian01_00030
+  rotate: false
+  xy: 2, 1393
+  size: 407, 421
+  orig: 500, 500
+  offset: 55, 39
+  index: -1
+chusha_baodian01_00032
+  rotate: true
+  xy: 1211, 1417
+  size: 397, 401
+  orig: 500, 500
+  offset: 52, 50
+  index: -1
+chusha_baodian01_00034
+  rotate: true
+  xy: 2, 163
+  size: 400, 384
+  orig: 500, 500
+  offset: 50, 68
+  index: -1
+chusha_baodian_g01
+  rotate: true
+  xy: 1614, 1575
+  size: 239, 185
+  orig: 281, 273
+  offset: 30, 51
+  index: -1

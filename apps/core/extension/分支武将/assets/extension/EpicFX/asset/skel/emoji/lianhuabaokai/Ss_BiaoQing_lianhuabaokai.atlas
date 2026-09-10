@@ -1,0 +1,139 @@
+
+Ss_BiaoQing_lianhuabaokai.png
+size: 1081,1081
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+hb_00
+  rotate: true
+  xy: 666, 599
+  size: 237, 228
+  orig: 350, 350
+  offset: 64, 54
+  index: -1
+hb_01
+  rotate: true
+  xy: 478, 334
+  size: 238, 233
+  orig: 350, 350
+  offset: 64, 50
+  index: -1
+hb_02
+  rotate: false
+  xy: 253, 73
+  size: 237, 238
+  orig: 350, 350
+  offset: 63, 47
+  index: -1
+hb_03
+  rotate: false
+  xy: 257, 835
+  size: 239, 244
+  orig: 350, 350
+  offset: 62, 43
+  index: -1
+hb_04
+  rotate: false
+  xy: 255, 574
+  size: 242, 247
+  orig: 350, 350
+  offset: 61, 40
+  index: -1
+hb_05
+  rotate: false
+  xy: 230, 313
+  size: 246, 250
+  orig: 350, 350
+  offset: 59, 36
+  index: -1
+hb_06
+  rotate: false
+  xy: 2, 51
+  size: 249, 254
+  orig: 350, 350
+  offset: 58, 33
+  index: -1
+hb_07
+  rotate: false
+  xy: 2, 565
+  size: 251, 256
+  orig: 350, 350
+  offset: 57, 29
+  index: -1
+hb_08
+  rotate: false
+  xy: 2, 823
+  size: 253, 256
+  orig: 350, 350
+  offset: 57, 27
+  index: -1
+hb_09
+  rotate: false
+  xy: 2, 307
+  size: 226, 256
+  orig: 350, 350
+  offset: 57, 24
+  index: -1
+hb_10
+  rotate: true
+  xy: 498, 838
+  size: 241, 190
+  orig: 350, 350
+  offset: 45, 88
+  index: -1
+hb_11
+  rotate: true
+  xy: 690, 847
+  size: 232, 186
+  orig: 350, 350
+  offset: 57, 86
+  index: -1
+hb_12
+  rotate: true
+  xy: 891, 142
+  size: 234, 187
+  orig: 350, 350
+  offset: 57, 84
+  index: -1
+hb_13
+  rotate: true
+  xy: 896, 850
+  size: 229, 183
+  orig: 350, 350
+  offset: 56, 87
+  index: -1
+hb_14
+  rotate: true
+  xy: 492, 102
+  size: 230, 184
+  orig: 350, 350
+  offset: 54, 82
+  index: -1
+hb_15
+  rotate: true
+  xy: 713, 365
+  size: 232, 176
+  orig: 350, 350
+  offset: 52, 77
+  index: -1
+hb_16
+  rotate: true
+  xy: 896, 378
+  size: 233, 178
+  orig: 350, 350
+  offset: 49, 73
+  index: -1
+hb_17
+  rotate: true
+  xy: 896, 613
+  size: 235, 180
+  orig: 350, 350
+  offset: 47, 69
+  index: -1
+hb_18
+  rotate: true
+  xy: 499, 598
+  size: 238, 165
+  orig: 350, 350
+  offset: 44, 65
+  index: -1

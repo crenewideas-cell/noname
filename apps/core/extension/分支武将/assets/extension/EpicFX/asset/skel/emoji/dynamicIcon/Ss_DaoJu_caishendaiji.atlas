@@ -1,0 +1,174 @@
+
+Ss_DaoJu_caishendaiji.png
+size: 1024,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1
+  rotate: true
+  xy: 275, 2
+  size: 36, 41
+  orig: 36, 41
+  offset: 0, 0
+  index: -1
+2
+  rotate: true
+  xy: 609, 48
+  size: 29, 44
+  orig: 29, 44
+  offset: 0, 0
+  index: -1
+3
+  rotate: true
+  xy: 318, 2
+  size: 36, 41
+  orig: 36, 41
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 361, 3
+  size: 41, 35
+  orig: 41, 35
+  offset: 0, 0
+  index: -1
+bizi
+  rotate: false
+  xy: 991, 109
+  size: 20, 17
+  orig: 20, 17
+  offset: 0, 0
+  index: -1
+fu01
+  rotate: false
+  xy: 2, 5
+  size: 92, 20
+  orig: 92, 20
+  offset: 0, 0
+  index: -1
+fu02
+  rotate: false
+  xy: 515, 49
+  size: 92, 28
+  orig: 92, 28
+  offset: 0, 0
+  index: -1
+fu03
+  rotate: true
+  xy: 655, 58
+  size: 68, 101
+  orig: 68, 101
+  offset: 0, 0
+  index: -1
+huzi
+  rotate: false
+  xy: 515, 79
+  size: 138, 47
+  orig: 138, 47
+  offset: 0, 0
+  index: -1
+lian
+  rotate: false
+  xy: 2, 27
+  size: 144, 99
+  orig: 144, 99
+  offset: 0, 0
+  index: -1
+maozi
+  rotate: false
+  xy: 275, 40
+  size: 117, 86
+  orig: 117, 86
+  offset: 0, 0
+  index: -1
+maozi01
+  rotate: false
+  xy: 849, 79
+  size: 71, 47
+  orig: 71, 47
+  offset: 0, 0
+  index: -1
+maozi02
+  rotate: false
+  xy: 922, 78
+  size: 67, 48
+  orig: 67, 48
+  offset: 0, 0
+  index: -1
+meimaoyou
+  rotate: true
+  xy: 96, 2
+  size: 23, 13
+  orig: 23, 13
+  offset: 0, 0
+  index: -1
+meimaozuo
+  rotate: false
+  xy: 707, 43
+  size: 22, 13
+  orig: 22, 13
+  offset: 0, 0
+  index: -1
+shenti01
+  rotate: false
+  xy: 148, 35
+  size: 125, 91
+  orig: 125, 91
+  offset: 0, 0
+  index: -1
+shenti02
+  rotate: false
+  xy: 394, 46
+  size: 119, 80
+  orig: 119, 80
+  offset: 0, 0
+  index: -1
+xingxing
+  rotate: false
+  xy: 916, 27
+  size: 60, 49
+  orig: 60, 49
+  offset: 0, 0
+  index: -1
+yanjingyou
+  rotate: true
+  xy: 978, 54
+  size: 22, 10
+  orig: 22, 10
+  offset: 0, 0
+  index: -1
+yanjingzuo
+  rotate: false
+  xy: 455, 34
+  size: 19, 10
+  orig: 19, 10
+  offset: 0, 0
+  index: -1
+youxiuzi
+  rotate: true
+  xy: 849, 26
+  size: 51, 65
+  orig: 51, 65
+  offset: 0, 0
+  index: -1
+youxiuzi01
+  rotate: true
+  xy: 404, 3
+  size: 41, 49
+  orig: 41, 49
+  offset: 0, 0
+  index: -1
+yuanbaoshou
+  rotate: false
+  xy: 758, 62
+  size: 89, 64
+  orig: 89, 64
+  offset: 0, 0
+  index: -1
+zuoshouxiuzi'
+  rotate: true
+  xy: 655, 7
+  size: 49, 50
+  orig: 49, 50
+  offset: 0, 0
+  index: -1

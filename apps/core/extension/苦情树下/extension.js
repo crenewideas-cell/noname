@@ -274,10 +274,10 @@ export default function(lib,game,ui,get,ai,_status){return {name:"苦情树下",
                 skillAnimation:true,
                 animationColor:"fire",
                 init:function(player){
-        player.storage=false;
+        player.storage.沙暴袭=false;
     },
                 filter:function(event,player){
-        if(player.storage) return false;
+        if(player.storage.沙暴袭) return false;
         if(player.countCards('he',{color:'red'})<2) return false;
         return true;
     },
@@ -300,7 +300,7 @@ export default function(lib,game,ui,get,ai,_status){return {name:"苦情树下",
         'step 0'
         targets.sort(lib.sort.seat);
         player.awakenSkill('沙暴袭');
-        player.storage.huoyu=true;
+        player.storage.沙暴袭=true;
         player.useCard({name:'guohe'},targets).animate=false;
         'step 1'
         player.useCard({name:'guohe'},targets).animate=false;

@@ -418,7 +418,7 @@ export const characterPackMenu = function (connectMenu) {
 		if (!owner) return createModeConfig(mode, start.firstChild, before);
 		const group = ensureGroup(owner, before);
 		const member = createModeConfig(mode, document.createElement("div"));
-		const title = mode === owner ? "本包武将" : (lib.translate[`${mode}_character_config`] || mode);
+		const title = mode.replace(/^mode_extension_/, "") === owner ? "本包武将" : get.plainText(lib.translate[`${mode}_character_config`] || mode);
 		const details = createPackSubmenu(group.link, title, `characters:${owner}:${mode}`);
 		const load = () => {
 			if (!member.link) member._initLink();

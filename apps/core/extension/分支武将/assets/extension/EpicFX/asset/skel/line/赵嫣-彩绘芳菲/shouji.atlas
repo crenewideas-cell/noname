@@ -1,0 +1,118 @@
+
+shouji.png
+size: 1659,1659
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+w_shouji01/w_shouji01_00000
+  rotate: false
+  xy: 1395, 1237
+  size: 184, 181
+  orig: 559, 550
+  offset: 188, 192
+  index: -1
+w_shouji01/w_shouji01_00002
+  rotate: false
+  xy: 1395, 1420
+  size: 244, 237
+  orig: 559, 550
+  offset: 158, 163
+  index: -1
+w_shouji01/w_shouji01_00004
+  rotate: true
+  xy: 1153, 62
+  size: 316, 308
+  orig: 559, 550
+  offset: 122, 125
+  index: -1
+w_shouji01/w_shouji01_00006
+  rotate: false
+  xy: 786, 13
+  size: 365, 365
+  orig: 559, 550
+  offset: 97, 96
+  index: -1
+w_shouji01/w_shouji01_00008
+  rotate: true
+  xy: 406, 2
+  size: 382, 378
+  orig: 559, 550
+  offset: 88, 87
+  index: -1
+w_shouji01/w_shouji01_00010
+  rotate: false
+  xy: 2, 3
+  size: 402, 389
+  orig: 559, 550
+  offset: 78, 79
+  index: -1
+w_shouji01/w_shouji01_00012
+  rotate: false
+  xy: 2, 394
+  size: 417, 397
+  orig: 559, 550
+  offset: 71, 75
+  index: -1
+w_shouji01/w_shouji01_00014
+  rotate: false
+  xy: 453, 386
+  size: 431, 410
+  orig: 559, 550
+  offset: 64, 70
+  index: -1
+w_shouji01/w_shouji01_00016
+  rotate: false
+  xy: 927, 380
+  size: 437, 418
+  orig: 559, 550
+  offset: 61, 69
+  index: -1
+w_shouji01/w_shouji01_00018
+  rotate: false
+  xy: 927, 800
+  size: 446, 425
+  orig: 559, 550
+  offset: 57, 69
+  index: -1
+w_shouji01/w_shouji01_00020
+  rotate: false
+  xy: 2, 793
+  size: 449, 428
+  orig: 559, 550
+  offset: 55, 71
+  index: -1
+w_shouji01/w_shouji01_00022
+  rotate: false
+  xy: 469, 798
+  size: 456, 427
+  orig: 559, 550
+  offset: 53, 76
+  index: -1
+w_shouji01/w_shouji01_00024
+  rotate: false
+  xy: 933, 1227
+  size: 460, 430
+  orig: 559, 550
+  offset: 51, 75
+  index: -1
+w_shouji01/w_shouji01_00026
+  rotate: false
+  xy: 2, 1223
+  size: 465, 434
+  orig: 559, 550
+  offset: 49, 72
+  index: -1
+w_shouji01/w_shouji01_00028
+  rotate: false
+  xy: 469, 1227
+  size: 462, 430
+  orig: 559, 550
+  offset: 53, 70
+  index: -1
+w_shouji02
+  rotate: false
+  xy: 1395, 1076
+  size: 159, 159
+  orig: 175, 175
+  offset: 8, 8
+  index: -1

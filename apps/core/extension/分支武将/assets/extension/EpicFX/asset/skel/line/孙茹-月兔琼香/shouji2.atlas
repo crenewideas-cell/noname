@@ -1,0 +1,139 @@
+
+shouji2.png
+size: 1841,1841
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+effect/ludandao01_00000
+  rotate: true
+  xy: 924, 16
+  size: 568, 208
+  orig: 1438, 472
+  offset: 825, 128
+  index: -1
+effect/ludandao01_00002
+  rotate: true
+  xy: 697, 157
+  size: 693, 225
+  orig: 1438, 472
+  offset: 724, 105
+  index: -1
+effect/ludandao01_00004
+  rotate: true
+  xy: 235, 133
+  size: 717, 232
+  orig: 1438, 472
+  offset: 623, 104
+  index: -1
+effect/ludandao01_00006
+  rotate: true
+  xy: 2, 115
+  size: 735, 231
+  orig: 1438, 472
+  offset: 523, 115
+  index: -1
+effect/ludandao01_00008
+  rotate: false
+  xy: 2, 852
+  size: 757, 217
+  orig: 1438, 472
+  offset: 421, 123
+  index: -1
+effect/ludandao01_00010
+  rotate: false
+  xy: 861, 852
+  size: 798, 236
+  orig: 1438, 472
+  offset: 320, 105
+  index: -1
+effect/ludandao01_00012
+  rotate: false
+  xy: 861, 1090
+  size: 853, 237
+  orig: 1438, 472
+  offset: 219, 104
+  index: -1
+effect/ludandao01_00014
+  rotate: false
+  xy: 932, 1608
+  size: 878, 231
+  orig: 1438, 472
+  offset: 119, 115
+  index: -1
+effect/ludandao01_00016
+  rotate: false
+  xy: 2, 1628
+  size: 928, 211
+  orig: 1438, 472
+  offset: 20, 126
+  index: -1
+effect/ludandao01_00018
+  rotate: true
+  xy: 1661, 110
+  size: 777, 175
+  orig: 1438, 472
+  offset: 127, 131
+  index: -1
+effect/ludandao02_00001
+  rotate: true
+  xy: 1749, 1457
+  size: 149, 58
+  orig: 1438, 472
+  offset: 985, 124
+  index: -1
+effect/ludandao02_00003
+  rotate: true
+  xy: 1716, 889
+  size: 438, 110
+  orig: 1438, 472
+  offset: 694, 70
+  index: -1
+effect/ludandao02_00005
+  rotate: false
+  xy: 2, 2
+  size: 493, 106
+  orig: 1438, 472
+  offset: 640, 75
+  index: -1
+effect/ludandao02_00007
+  rotate: true
+  xy: 1134, 55
+  size: 529, 279
+  orig: 1438, 472
+  offset: 604, 71
+  index: -1
+effect/ludandao02_00009
+  rotate: false
+  xy: 2, 1071
+  size: 857, 277
+  orig: 1438, 472
+  offset: 275, 71
+  index: -1
+effect/ludandao02_00011
+  rotate: false
+  xy: 877, 1329
+  size: 870, 277
+  orig: 1438, 472
+  offset: 256, 72
+  index: -1
+effect/ludandao02_00013
+  rotate: false
+  xy: 2, 1350
+  size: 873, 276
+  orig: 1438, 472
+  offset: 256, 73
+  index: -1
+effect/ludandao02_00015
+  rotate: true
+  xy: 469, 139
+  size: 711, 226
+  orig: 1438, 472
+  offset: 282, 122
+  index: -1
+effect/ludandao02_00017
+  rotate: false
+  xy: 924, 586
+  size: 662, 264
+  orig: 1438, 472
+  offset: 323, 81
+  index: -1

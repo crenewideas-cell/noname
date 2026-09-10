@@ -1,0 +1,258 @@
+
+Ss_DaoJu_XiaoXueqiu.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+xiaoxueqiu/tuowei_000
+  rotate: true
+  xy: 1113, 446
+  size: 64, 259
+  orig: 256, 512
+  offset: 96, 9
+  index: -1
+xiaoxueqiu/xiaoxueqiu
+  rotate: false
+  xy: 1374, 348
+  size: 65, 66
+  orig: 128, 128
+  offset: 30, 32
+  index: -1
+xiaoxueqiu/zhakai/posui_000
+  rotate: false
+  xy: 2, 318
+  size: 192, 192
+  orig: 256, 256
+  offset: 32, 32
+  index: -1
+xiaoxueqiu/zhakai/posui_001
+  rotate: false
+  xy: 2, 124
+  size: 192, 192
+  orig: 256, 256
+  offset: 32, 32
+  index: -1
+xiaoxueqiu/zhakai/posui_002
+  rotate: false
+  xy: 196, 318
+  size: 192, 192
+  orig: 256, 256
+  offset: 32, 32
+  index: -1
+xiaoxueqiu/zhakai/posui_003
+  rotate: false
+  xy: 196, 124
+  size: 192, 192
+  orig: 256, 256
+  offset: 32, 32
+  index: -1
+xiaoxueqiu/zhakai/posui_004
+  rotate: false
+  xy: 390, 320
+  size: 184, 190
+  orig: 256, 256
+  offset: 36, 33
+  index: -1
+xiaoxueqiu/zhakai/posui_005
+  rotate: false
+  xy: 390, 128
+  size: 184, 190
+  orig: 256, 256
+  offset: 36, 33
+  index: -1
+xiaoxueqiu/zhakai/posui_006
+  rotate: false
+  xy: 576, 320
+  size: 184, 190
+  orig: 256, 256
+  offset: 36, 33
+  index: -1
+xiaoxueqiu/zhakai/posui_007
+  rotate: false
+  xy: 576, 128
+  size: 184, 190
+  orig: 256, 256
+  offset: 36, 33
+  index: -1
+xiaoxueqiu/zhakai/posui_008
+  rotate: false
+  xy: 762, 328
+  size: 176, 182
+  orig: 256, 256
+  offset: 39, 37
+  index: -1
+xiaoxueqiu/zhakai/posui_009
+  rotate: false
+  xy: 762, 144
+  size: 176, 182
+  orig: 256, 256
+  offset: 39, 37
+  index: -1
+xiaoxueqiu/zhakai/posui_010
+  rotate: false
+  xy: 940, 334
+  size: 171, 176
+  orig: 256, 256
+  offset: 42, 40
+  index: -1
+xiaoxueqiu/zhakai/posui_011
+  rotate: false
+  xy: 940, 161
+  size: 165, 171
+  orig: 256, 256
+  offset: 45, 43
+  index: -1
+xiaoxueqiu/zhakai/posui_012
+  rotate: true
+  xy: 940, 2
+  size: 157, 162
+  orig: 256, 256
+  offset: 49, 47
+  index: -1
+xiaoxueqiu/zhakai/posui_013
+  rotate: true
+  xy: 1113, 301
+  size: 143, 148
+  orig: 256, 256
+  offset: 56, 54
+  index: -1
+xiaoxueqiu/zhakai/posui_014
+  rotate: false
+  xy: 1107, 174
+  size: 126, 125
+  orig: 256, 256
+  offset: 65, 65
+  index: -1
+xiaoxueqiu/zhakai/posui_015
+  rotate: true
+  xy: 2, 2
+  size: 120, 119
+  orig: 256, 256
+  offset: 68, 68
+  index: -1
+xiaoxueqiu/zhakai/posui_016
+  rotate: false
+  xy: 123, 7
+  size: 117, 115
+  orig: 256, 256
+  offset: 69, 70
+  index: -1
+xiaoxueqiu/zhakai/posui_017
+  rotate: false
+  xy: 242, 9
+  size: 115, 113
+  orig: 256, 256
+  offset: 70, 71
+  index: -1
+xiaoxueqiu/zhakai/posui_018
+  rotate: true
+  xy: 1263, 332
+  size: 112, 109
+  orig: 256, 256
+  offset: 71, 73
+  index: -1
+xiaoxueqiu/zhakai/posui_019
+  rotate: false
+  xy: 1374, 416
+  size: 98, 94
+  orig: 256, 256
+  offset: 75, 81
+  index: -1
+xiaoxueqiu/zhakai/posui_020
+  rotate: false
+  xy: 1474, 449
+  size: 67, 61
+  orig: 256, 256
+  offset: 99, 91
+  index: -1
+xiaoxueqiu/zhakai/posui_021
+  rotate: false
+  xy: 1543, 449
+  size: 67, 61
+  orig: 256, 256
+  offset: 99, 90
+  index: -1
+xiaoxueqiu/zhakai/posui_022
+  rotate: false
+  xy: 1612, 450
+  size: 67, 60
+  orig: 256, 256
+  offset: 99, 89
+  index: -1
+xiaoxueqiu/zhakai/posui_023
+  rotate: false
+  xy: 1681, 451
+  size: 66, 59
+  orig: 256, 256
+  offset: 100, 89
+  index: -1
+xiaoxueqiu/zhakai/posui_024
+  rotate: false
+  xy: 1749, 451
+  size: 65, 59
+  orig: 256, 256
+  offset: 100, 88
+  index: -1
+xiaoxueqiu/zhakai/posui_025
+  rotate: false
+  xy: 1816, 457
+  size: 65, 53
+  orig: 256, 256
+  offset: 100, 92
+  index: -1
+xiaoxueqiu/zhakai/posui_026
+  rotate: false
+  xy: 1883, 457
+  size: 64, 53
+  orig: 256, 256
+  offset: 101, 91
+  index: -1
+xiaoxueqiu/zhakai/posui_027
+  rotate: false
+  xy: 1949, 456
+  size: 64, 54
+  orig: 256, 256
+  offset: 101, 89
+  index: -1
+xiaoxueqiu/zhakai/posui_028
+  rotate: false
+  xy: 412, 73
+  size: 52, 53
+  orig: 256, 256
+  offset: 113, 88
+  index: -1
+xiaoxueqiu/zhakai/posui_029
+  rotate: false
+  xy: 1441, 360
+  size: 52, 54
+  orig: 256, 256
+  offset: 113, 86
+  index: -1
+xiaoxueqiu/zhakai/posui_030
+  rotate: false
+  xy: 412, 18
+  size: 52, 53
+  orig: 256, 256
+  offset: 113, 85
+  index: -1
+xiaoxueqiu/zhakai/posui_031
+  rotate: false
+  xy: 359, 68
+  size: 51, 54
+  orig: 256, 256
+  offset: 113, 83
+  index: -1
+xiaoxueqiu/zhakai/posui_032
+  rotate: false
+  xy: 466, 73
+  size: 51, 53
+  orig: 256, 256
+  offset: 113, 82
+  index: -1
+xiaoxueqiu/zhakai/posui_033
+  rotate: false
+  xy: 359, 13
+  size: 51, 53
+  orig: 256, 256
+  offset: 113, 80
+  index: -1

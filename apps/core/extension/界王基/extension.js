@@ -7,7 +7,6 @@ export default function(lib,game,ui,get,ai,_status){return {name:"界王基",con
 },help:{},config:{},package:{
     character:{
         character:{
-            "re_wangji":["male","wei",3,["reqizhi","rejinqu"],["isExtension"]],
         },
         translate:{
             "re_wangji":"界王基",

@@ -617,13 +617,6 @@ const character = {
 		hp: 4,
 		skills: ["ylyuchu"],
 	},
-	hs_yelinchulong: {
-		sex: "male",
-		group: "qun",
-		hp: 1,
-		skills: [],
-		isUnseen: false,
-	},
 	hs_ashamoer: {
 		sex: "female",
 		group: "wei",

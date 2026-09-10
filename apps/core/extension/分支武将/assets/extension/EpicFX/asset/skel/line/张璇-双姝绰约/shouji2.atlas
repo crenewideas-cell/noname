@@ -1,0 +1,223 @@
+
+shouji2.png
+size: 1828,1828
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+chusha_dd_00000
+  rotate: false
+  xy: 319, 593
+  size: 211, 176
+  orig: 1062, 320
+  offset: 766, 59
+  index: -1
+chusha_dd_00002
+  rotate: true
+  xy: 1645, 556
+  size: 332, 181
+  orig: 1062, 320
+  offset: 646, 54
+  index: -1
+chusha_dd_00004
+  rotate: true
+  xy: 510, 71
+  size: 483, 184
+  orig: 1062, 320
+  offset: 494, 51
+  index: -1
+chusha_dd_00006
+  rotate: true
+  xy: 319, 25
+  size: 565, 189
+  orig: 1062, 320
+  offset: 410, 48
+  index: -1
+chusha_dd_00008
+  rotate: false
+  xy: 797, 139
+  size: 617, 191
+  orig: 1062, 320
+  offset: 353, 47
+  index: -1
+chusha_dd_00010
+  rotate: true
+  xy: 122, 68
+  size: 701, 195
+  orig: 1062, 320
+  offset: 255, 45
+  index: -1
+chusha_dd_00012
+  rotate: false
+  xy: 834, 592
+  size: 806, 197
+  orig: 1062, 320
+  offset: 149, 46
+  index: -1
+chusha_dd_00014
+  rotate: false
+  xy: 842, 919
+  size: 834, 194
+  orig: 1062, 320
+  offset: 118, 50
+  index: -1
+chusha_dd_00016
+  rotate: false
+  xy: 2, 967
+  size: 838, 195
+  orig: 1062, 320
+  offset: 107, 53
+  index: -1
+chusha_dd_00018
+  rotate: false
+  xy: 2, 771
+  size: 830, 194
+  orig: 1062, 320
+  offset: 101, 56
+  index: -1
+chusha_dd_00020
+  rotate: false
+  xy: 854, 1301
+  size: 841, 199
+  orig: 1062, 320
+  offset: 97, 53
+  index: -1
+chusha_dd_00022
+  rotate: false
+  xy: 2, 1164
+  size: 841, 192
+  orig: 1062, 320
+  offset: 93, 54
+  index: -1
+chusha_dd_00024
+  rotate: false
+  xy: 845, 1115
+  size: 840, 184
+  orig: 1062, 320
+  offset: 91, 56
+  index: -1
+chusha_dd_00026
+  rotate: false
+  xy: 2, 1358
+  size: 850, 174
+  orig: 1062, 320
+  offset: 83, 57
+  index: -1
+chusha_dd_00028
+  rotate: false
+  xy: 863, 1502
+  size: 853, 165
+  orig: 1062, 320
+  offset: 79, 61
+  index: -1
+chusha_dd_00030
+  rotate: false
+  xy: 868, 1669
+  size: 861, 157
+  orig: 1062, 320
+  offset: 70, 65
+  index: -1
+chusha_dd_00032
+  rotate: false
+  xy: 2, 1677
+  size: 864, 149
+  orig: 1062, 320
+  offset: 67, 69
+  index: -1
+chusha_dd_00034
+  rotate: false
+  xy: 2, 1534
+  size: 859, 141
+  orig: 1062, 320
+  offset: 67, 74
+  index: -1
+chusha_dd_00036
+  rotate: false
+  xy: 797, 458
+  size: 803, 132
+  orig: 1062, 320
+  offset: 118, 80
+  index: -1
+chusha_dd_00038
+  rotate: false
+  xy: 834, 791
+  size: 809, 126
+  orig: 1062, 320
+  offset: 122, 83
+  index: -1
+chusha_dd_00040
+  rotate: false
+  xy: 797, 332
+  size: 789, 124
+  orig: 1062, 320
+  offset: 122, 82
+  index: -1
+chusha_dd_00042
+  rotate: true
+  xy: 2, 25
+  size: 744, 118
+  orig: 1062, 320
+  offset: 123, 85
+  index: -1
+chusha_dd_00044
+  rotate: false
+  xy: 797, 27
+  size: 777, 110
+  orig: 1062, 320
+  offset: 130, 89
+  index: -1
+chusha_dd_00046
+  rotate: true
+  xy: 1718, 890
+  size: 755, 108
+  orig: 1062, 320
+  offset: 140, 87
+  index: -1
+chusha_dd_00048
+  rotate: true
+  xy: 696, 87
+  size: 682, 99
+  orig: 1062, 320
+  offset: 159, 91
+  index: -1
+zx_1
+  rotate: false
+  xy: 1731, 1766
+  size: 75, 60
+  orig: 76, 61
+  offset: 0, 1
+  index: -1
+zx_2
+  rotate: true
+  xy: 1687, 1238
+  size: 61, 24
+  orig: 61, 24
+  offset: 0, 0
+  index: -1
+zx_3
+  rotate: true
+  xy: 1731, 1707
+  size: 57, 75
+  orig: 58, 75
+  offset: 1, 0
+  index: -1
+zx_4
+  rotate: true
+  xy: 1678, 962
+  size: 151, 33
+  orig: 156, 34
+  offset: 0, 1
+  index: -1
+zx_5
+  rotate: true
+  xy: 1731, 1647
+  size: 58, 72
+  orig: 59, 73
+  offset: 1, 1
+  index: -1
+zx_6
+  rotate: false
+  xy: 122, 3
+  size: 45, 63
+  orig: 45, 63
+  offset: 0, 0
+  index: -1

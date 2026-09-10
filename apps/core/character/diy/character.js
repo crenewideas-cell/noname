@@ -152,22 +152,6 @@ const characters = {
 		skills: ["nshuanxian", "nstaiping_nh", "nsshoudao"],
 		names: "庄|周",
 	},
-	ns_nanhua_left: {
-		sex: "male",
-		group: "qun",
-		hp: 2,
-		skills: [],
-		isUnseen: true,
-		names: "null|null",
-	},
-	ns_nanhua_right: {
-		sex: "female",
-		group: "qun",
-		hp: 2,
-		skills: [],
-		isUnseen: true,
-		names: "null|null",
-	},
 	ns_huamulan: {
 		sex: "female",
 		group: "qun",

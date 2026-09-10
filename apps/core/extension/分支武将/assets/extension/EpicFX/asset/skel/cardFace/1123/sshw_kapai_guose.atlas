@@ -1,0 +1,286 @@
+
+sshw_kapai_guose.png
+size: 1381,1381
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+guose/ka1_000
+  rotate: true
+  xy: 241, 1210
+  size: 169, 235
+  orig: 220, 280
+  offset: 27, 10
+  index: -1
+guose/ka1_001
+  rotate: false
+  xy: 1196, 913
+  size: 179, 233
+  orig: 220, 280
+  offset: 27, 10
+  index: -1
+guose/ka1_002
+  rotate: false
+  xy: 1195, 677
+  size: 184, 234
+  orig: 220, 280
+  offset: 27, 10
+  index: -1
+guose/ka1_003
+  rotate: false
+  xy: 912, 90
+  size: 183, 238
+  orig: 220, 280
+  offset: 26, 7
+  index: -1
+guose/ka1_004
+  rotate: true
+  xy: 2, 343
+  size: 180, 238
+  orig: 220, 280
+  offset: 26, 6
+  index: -1
+guose/ka1_005
+  rotate: false
+  xy: 959, 330
+  size: 184, 237
+  orig: 220, 280
+  offset: 26, 8
+  index: -1
+guose/ka1_006
+  rotate: true
+  xy: 670, 270
+  size: 182, 240
+  orig: 220, 280
+  offset: 26, 5
+  index: -1
+guose/ka1_007
+  rotate: true
+  xy: 479, 518
+  size: 176, 236
+  orig: 220, 280
+  offset: 27, 9
+  index: -1
+guose/ka1_008
+  rotate: true
+  xy: 959, 805
+  size: 170, 234
+  orig: 220, 280
+  offset: 27, 9
+  index: -1
+guose/ka1_009
+  rotate: true
+  xy: 478, 1210
+  size: 169, 231
+  orig: 220, 280
+  offset: 27, 9
+  index: -1
+guose/ka1_010
+  rotate: true
+  xy: 711, 1210
+  size: 169, 236
+  orig: 220, 280
+  offset: 27, 8
+  index: -1
+guose/ka1_011
+  rotate: true
+  xy: 2, 1211
+  size: 168, 237
+  orig: 220, 280
+  offset: 27, 8
+  index: -1
+guose/ka1_012
+  rotate: false
+  xy: 722, 30
+  size: 188, 238
+  orig: 220, 280
+  offset: 27, 6
+  index: -1
+guose/ka1_013
+  rotate: false
+  xy: 480, 280
+  size: 188, 236
+  orig: 220, 280
+  offset: 27, 9
+  index: -1
+guose/ka1_014
+  rotate: false
+  xy: 1145, 202
+  size: 186, 236
+  orig: 220, 280
+  offset: 27, 9
+  index: -1
+guose/ka1_015
+  rotate: true
+  xy: 241, 145
+  size: 188, 237
+  orig: 220, 280
+  offset: 27, 8
+  index: -1
+guose/ka1_016
+  rotate: true
+  xy: 1097, 12
+  size: 188, 238
+  orig: 220, 280
+  offset: 27, 6
+  index: -1
+guose/ka1_017
+  rotate: true
+  xy: 480, 85
+  size: 183, 240
+  orig: 220, 280
+  offset: 27, 4
+  index: -1
+guose/ka1_018
+  rotate: false
+  xy: 967, 569
+  size: 177, 234
+  orig: 220, 280
+  offset: 27, 9
+  index: -1
+guose/ka1_019
+  rotate: false
+  xy: 1184, 1148
+  size: 171, 231
+  orig: 220, 280
+  offset: 26, 9
+  index: -1
+guose/ka1_020
+  rotate: true
+  xy: 949, 1210
+  size: 169, 233
+  orig: 220, 280
+  offset: 27, 3
+  index: -1
+guose/ka1_021
+  rotate: true
+  xy: 2, 1040
+  size: 169, 237
+  orig: 220, 280
+  offset: 27, 7
+  index: -1
+guose/ka1_022
+  rotate: true
+  xy: 241, 1039
+  size: 169, 239
+  orig: 220, 280
+  offset: 27, 6
+  index: -1
+guose/ka1_023
+  rotate: true
+  xy: 246, 696
+  size: 170, 238
+  orig: 220, 280
+  offset: 26, 7
+  index: -1
+guose/ka1_024
+  rotate: true
+  xy: 486, 696
+  size: 170, 239
+  orig: 220, 280
+  offset: 26, 6
+  index: -1
+guose/ka1_025
+  rotate: true
+  xy: 727, 633
+  size: 170, 238
+  orig: 220, 280
+  offset: 26, 6
+  index: -1
+guose/ka1_026
+  rotate: true
+  xy: 2, 525
+  size: 170, 238
+  orig: 220, 280
+  offset: 26, 8
+  index: -1
+guose/ka1_027
+  rotate: true
+  xy: 482, 1039
+  size: 169, 237
+  orig: 220, 280
+  offset: 27, 7
+  index: -1
+guose/ka1_028
+  rotate: true
+  xy: 721, 1039
+  size: 169, 237
+  orig: 220, 280
+  offset: 27, 4
+  index: -1
+guose/ka1_029
+  rotate: true
+  xy: 960, 977
+  size: 169, 234
+  orig: 220, 280
+  offset: 27, 3
+  index: -1
+guose/ka1_030
+  rotate: true
+  xy: 717, 454
+  size: 177, 240
+  orig: 220, 280
+  offset: 27, 5
+  index: -1
+guose/ka1_031
+  rotate: true
+  xy: 2, 159
+  size: 182, 237
+  orig: 220, 280
+  offset: 27, 8
+  index: -1
+guose/ka1_032
+  rotate: true
+  xy: 242, 335
+  size: 181, 236
+  orig: 220, 280
+  offset: 26, 9
+  index: -1
+guose/ka1_033
+  rotate: false
+  xy: 1146, 440
+  size: 179, 235
+  orig: 220, 280
+  offset: 26, 9
+  index: -1
+guose/ka1_034
+  rotate: true
+  xy: 242, 520
+  size: 174, 235
+  orig: 220, 280
+  offset: 27, 9
+  index: -1
+guose/ka1_035
+  rotate: true
+  xy: 2, 869
+  size: 169, 235
+  orig: 220, 280
+  offset: 27, 10
+  index: -1
+guose/ka1_036
+  rotate: true
+  xy: 239, 868
+  size: 169, 238
+  orig: 220, 280
+  offset: 27, 7
+  index: -1
+guose/ka1_037
+  rotate: true
+  xy: 479, 868
+  size: 169, 237
+  orig: 220, 280
+  offset: 27, 8
+  index: -1
+guose/ka1_038
+  rotate: true
+  xy: 718, 868
+  size: 169, 239
+  orig: 220, 280
+  offset: 27, 6
+  index: -1
+guose/ka1_039
+  rotate: true
+  xy: 2, 697
+  size: 169, 242
+  orig: 220, 280
+  offset: 27, 3
+  index: -1

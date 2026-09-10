@@ -137,15 +137,6 @@ const characters = {
         maxHandcardBase: 3,
         dieAudios: [],
     },
-    mjs_old_junwanghou: {
-        sex: "female",
-        hp: 4,
-        group: "qi",
-        skills: ["mjshuiyanshilang", "mjsoldshiqinjinshen", "mjsoldqiaojieyuhuan"],
-        trashBin: ["rare"],
-        maxHandcardBase: 4,
-        dieAudios: [],
-    },
     mjs_old_zhaoji: {
         sex: "female",
         hp: 4,
@@ -673,32 +664,6 @@ for (let i in characters4) {
 Object.assign(characters, characters4);
 
 const characters44 = {
-    mjs_tap_laobing: {
-        sex: "male",
-        hp: 4,
-        group: "qun",
-        skills: [],
-        trashBin: ["rare"],
-        maxHandcardBase: 5,
-        dieAudios: [],
-    },
-    mjs_tap_guangzhichen: {
-        sex: "male",
-        hp: 4,
-        group: "qun",
-        skills: ["mjscaigaobadou", "mjsqibuqiai"],
-        trashBin: ["rare"],
-        maxHandcardBase: 5,
-    },
-    mjs_tap_xiaolongbao: {
-        sex: "female",
-        hp: 4,
-        group: "qun",
-        skills: [],
-        trashBin: ["rare"],
-        maxHandcardBase: 4,
-        dieAudios: [],
-    },
 };
 
 for (let i in characters44) {

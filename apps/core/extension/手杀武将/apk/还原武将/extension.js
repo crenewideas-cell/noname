@@ -6,25 +6,15 @@ export default function(lib,game,ui,get,ai,_status){return {name:"还原武将",
     character:{
         character:{
             "hy_caopi":["male","wei","3/3",["hycuanzun","hyliufang"],[]],
-            "pot_dengai":["male","wei",4,["pottuntian","potzaoxian","potjixi"],[]],
             hymachao:["male","qun",4,["hyzhongtao","hyjizhan"],[]],
-            "huan_caopi":["male","wei",3,["twqianxiong","twzhengshi"],["des:宛城之戰後，曹丕以為自己和那個夢想中的位置僅差一步之遙。 但當“死而復生”的大哥重新站在他面前 他想……他不能坐以待斃……"]],
-            "huan_dianwei":["male","wei",4,["twmiewei","twmiyong"],[]],
             "twhuan_liufeng":["male","shu","4/4/1",["huanchenxun"],[]],
-            "mo_diaochan":["female","qun",3,["olhuanhuo","olqingshi"],[]],
-            "eu_kaisa":["male","western",4,["eu_ducai","eu_zhitong","eu_jiquan"],[]],
             dcquyuan:["male","qun",3,["lisao","qiusuo"],[]],
             "mou_xusheng":["male","wu",4,["dcqinqiang","dcyizhen"],[]],
             "hywei_dongzhuo":["male","qun",6,["hyweiguangyong","hyweijuchui"],[]],
-            "dc_noname":["male","qun",3,["dcchushan"],["des:新杀限时地主"]],
             "twqi_huangpusong":["male","qun","4/4",["twguanhuo","twjuxia"],[]],
             "oldwu_huangpusong":["male","qun","1/4",["dcchaozhen","oldlianjie","oldjiangxian"],[]],
-            "sxrm_huatuo":["male","qun",4,["sxrmmiehai"],[]],
             "xia_caopi":["male","wei",3,["hyqinyi","hyjixin","pejiwei"],[]],
             "tw_potdengai":["male","wei",4,["pottuntian","twzaoxian","potjixi"],[]],
-            dcchendi:["male","shu",3,["dcquanshi","dcczchouxi"],[]],
-            "huan_caochong":["male","wei",3,["twfushu","twxiumu"],[]],
-            "huan_caozhi":["male","wei",3,["twhanhong","twhuazhang"],[]],
             "hyhuan_zhouyu":["male","wu",4,["hytwdumou","hytwhantian"],[]],
             "newsb_liubei":["male","shu",4,["newsbrende","newsbzhangwu","newsbjijiang"],[]],
         },
@@ -2923,7 +2913,7 @@ trigger.getParent().directHit.push(player);
                         filter:function(event,player){
                return event.card.name == "huogong";
            },
-                        content:function(player){
+                        content:function(event,trigger,player){
                player.draw();
            },
                         sub:true,
@@ -2967,7 +2957,7 @@ trigger.getParent().directHit.push(player);
                 ai:{
                     effect:{
                         target:function (card, player, target) {
-                if (lib.skill.twjuxia.countSkill(target) >= lib.skill.jsrgjuxia.countSkill(player)) return;
+                if (lib.skill.twjuxia.countSkill(target) >= lib.skill.twjuxia.countSkill(player)) return;
                 if (card && (card.cards || card.isCard) && get.attitude(target, player) > 0 && (!target.storage.counttrigger || !target.storage.counttrigger.twjuxia)) return [0, 0.5, 0, 0.5];
             },
                     },
@@ -2978,16 +2968,10 @@ trigger.getParent().directHit.push(player);
                         forced:true,
                         trigger:{
                             player:"phaseBegin",
-                            sub:true,
                         },
-                        content:function(event,player){
-            'step 0'
-            if(!player.hasSkill("twguanhuo")){
-                    player.chooseBool('是否发动【居下】？', '你获得【观火】').set('ai', () => {
-            return _status.event.goon;
-        }).set('goon', goon);
-            }
-            'step 1'
+                        async content(event,trigger,player){
+            if(player.hasSkill("twguanhuo")) return;
+            const result = await player.chooseBool('是否发动【居下】？', '你获得【观火】').set('ai', () => true).forResult();
             if(result.bool){
                 player.addSkill("twguanhuo");
             }

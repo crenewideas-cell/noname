@@ -362,7 +362,6 @@ export default function(lib,game,ui,get,ai,_status){return {name:"群雄并起",
                     damage:{
                         trigger:{
                             player:"damageBefore",
-                            sub:true,
                         },
                         forced:true,
                         content:function (){

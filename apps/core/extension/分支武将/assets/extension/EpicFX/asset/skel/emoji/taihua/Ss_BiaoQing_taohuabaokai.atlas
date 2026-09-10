@@ -1,0 +1,139 @@
+
+Ss_BiaoQing_taohuabaokai.png
+size: 853,853
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+hb_00
+  rotate: true
+  xy: 207, 232
+  size: 205, 201
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_01
+  rotate: true
+  xy: 591, 464
+  size: 193, 185
+  orig: 205, 205
+  offset: 8, 9
+  index: -1
+hb_02
+  rotate: true
+  xy: 598, 659
+  size: 192, 198
+  orig: 205, 205
+  offset: 4, 7
+  index: -1
+hb_03
+  rotate: false
+  xy: 2, 439
+  size: 204, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_04
+  rotate: false
+  xy: 2, 646
+  size: 205, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_05
+  rotate: false
+  xy: 2, 232
+  size: 203, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_06
+  rotate: false
+  xy: 2, 25
+  size: 203, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_07
+  rotate: false
+  xy: 208, 439
+  size: 201, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_08
+  rotate: false
+  xy: 209, 646
+  size: 200, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_09
+  rotate: false
+  xy: 207, 25
+  size: 197, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_10
+  rotate: false
+  xy: 406, 25
+  size: 195, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_11
+  rotate: false
+  xy: 410, 232
+  size: 186, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_12
+  rotate: false
+  xy: 411, 646
+  size: 178, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_13
+  rotate: false
+  xy: 411, 448
+  size: 167, 196
+  orig: 205, 205
+  offset: 0, 2
+  index: -1
+hb_14
+  rotate: false
+  xy: 598, 271
+  size: 166, 191
+  orig: 205, 205
+  offset: 0, 2
+  index: -1
+hb_15
+  rotate: true
+  xy: 603, 111
+  size: 158, 170
+  orig: 205, 205
+  offset: 0, 5
+  index: -1
+hb_16
+  rotate: true
+  xy: 603, 18
+  size: 91, 158
+  orig: 205, 205
+  offset: 0, 5
+  index: -1
+hb_17
+  rotate: false
+  xy: 766, 308
+  size: 85, 154
+  orig: 205, 205
+  offset: 4, 7
+  index: -1
+hb_18
+  rotate: false
+  xy: 778, 515
+  size: 68, 142
+  orig: 205, 205
+  offset: 14, 14
+  index: -1

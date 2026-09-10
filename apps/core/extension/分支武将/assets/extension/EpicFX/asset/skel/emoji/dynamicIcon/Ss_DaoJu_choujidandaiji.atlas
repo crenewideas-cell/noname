@@ -1,0 +1,13 @@
+
+Ss_DaoJu_choujidandaiji.png
+size: 128,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dan
+  rotate: false
+  xy: 2, 2
+  size: 112, 132
+  orig: 121, 141
+  offset: 6, 0
+  index: -1

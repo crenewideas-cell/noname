@@ -5,7 +5,6 @@ export default function(lib,game,ui,get,ai,_status){return {name:"彻里吉",con
 },config:{},help:{},package:{
     character:{
         character:{
-            mb_cheliji: ['male', 'qun', 4, ['mbqucheng','mbqiangyong']],
         },
         translate: {
 			mb_cheliji: "彻里吉",

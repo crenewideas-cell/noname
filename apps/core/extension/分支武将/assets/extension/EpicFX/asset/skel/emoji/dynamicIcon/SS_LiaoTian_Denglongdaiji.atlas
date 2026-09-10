@@ -1,0 +1,244 @@
+
+SS_LiaoTian_Denglongdaiji.png
+size: 521,142
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+denglong02
+  rotate: false
+  xy: 213, 23
+  size: 7, 25
+  orig: 7, 25
+  offset: 0, 0
+  index: -1
+denglong04
+  rotate: true
+  xy: 2, 50
+  size: 41, 52
+  orig: 41, 52
+  offset: 0, 0
+  index: -1
+denglong05
+  rotate: false
+  xy: 418, 79
+  size: 5, 14
+  orig: 5, 14
+  offset: 0, 0
+  index: -1
+hudie
+  rotate: false
+  xy: 504, 14
+  size: 14, 24
+  orig: 14, 24
+  offset: 0, 0
+  index: -1
+lizi/lizi_000
+  rotate: true
+  xy: 2, 93
+  size: 47, 51
+  orig: 51, 51
+  offset: 2, 0
+  index: -1
+lizi/lizi_001
+  rotate: true
+  xy: 55, 93
+  size: 47, 51
+  orig: 51, 51
+  offset: 2, 0
+  index: -1
+lizi/lizi_002
+  rotate: true
+  xy: 108, 93
+  size: 47, 51
+  orig: 51, 51
+  offset: 2, 0
+  index: -1
+lizi/lizi_003
+  rotate: true
+  xy: 161, 93
+  size: 47, 51
+  orig: 51, 51
+  offset: 2, 0
+  index: -1
+lizi/lizi_004
+  rotate: true
+  xy: 373, 95
+  size: 45, 51
+  orig: 51, 51
+  offset: 3, 0
+  index: -1
+lizi/lizi_005
+  rotate: false
+  xy: 373, 44
+  size: 43, 49
+  orig: 51, 51
+  offset: 4, 1
+  index: -1
+lizi/lizi_006
+  rotate: true
+  xy: 425, 44
+  size: 43, 49
+  orig: 51, 51
+  offset: 4, 1
+  index: -1
+lizi/lizi_007
+  rotate: true
+  xy: 56, 50
+  size: 41, 47
+  orig: 51, 51
+  offset: 5, 2
+  index: -1
+lizi/lizi_008
+  rotate: true
+  xy: 154, 50
+  size: 41, 45
+  orig: 51, 51
+  offset: 5, 3
+  index: -1
+lizi/lizi_009
+  rotate: true
+  xy: 248, 52
+  size: 39, 45
+  orig: 51, 51
+  offset: 6, 3
+  index: -1
+lizi/lizi_010
+  rotate: false
+  xy: 248, 7
+  size: 39, 43
+  orig: 51, 51
+  offset: 6, 4
+  index: -1
+lizi/lizi_011
+  rotate: true
+  xy: 373, 4
+  size: 38, 43
+  orig: 51, 51
+  offset: 6, 4
+  index: -1
+lizi/lizi_012
+  rotate: false
+  xy: 334, 3
+  size: 37, 41
+  orig: 51, 51
+  offset: 7, 5
+  index: -1
+lizi/lizi_013
+  rotate: true
+  xy: 2, 11
+  size: 37, 41
+  orig: 51, 51
+  offset: 7, 5
+  index: -1
+lizi/lizi_014
+  rotate: true
+  xy: 131, 11
+  size: 37, 39
+  orig: 51, 51
+  offset: 7, 6
+  index: -1
+lizi/lizi_015
+  rotate: true
+  xy: 172, 11
+  size: 37, 39
+  orig: 51, 51
+  offset: 7, 6
+  index: -1
+lizi/lizi_016
+  rotate: true
+  xy: 463, 2
+  size: 36, 39
+  orig: 51, 51
+  offset: 8, 6
+  index: -1
+lizi/lizi_017
+  rotate: true
+  xy: 45, 11
+  size: 37, 41
+  orig: 51, 51
+  offset: 7, 5
+  index: -1
+lizi/lizi_018
+  rotate: true
+  xy: 88, 11
+  size: 37, 41
+  orig: 51, 51
+  offset: 7, 5
+  index: -1
+lizi/lizi_019
+  rotate: true
+  xy: 418, 5
+  size: 37, 43
+  orig: 51, 51
+  offset: 7, 4
+  index: -1
+lizi/lizi_020
+  rotate: true
+  xy: 289, 5
+  size: 39, 43
+  orig: 51, 51
+  offset: 6, 4
+  index: -1
+lizi/lizi_021
+  rotate: false
+  xy: 295, 46
+  size: 39, 45
+  orig: 51, 51
+  offset: 6, 3
+  index: -1
+lizi/lizi_022
+  rotate: true
+  xy: 201, 50
+  size: 41, 45
+  orig: 51, 51
+  offset: 5, 3
+  index: -1
+lizi/lizi_023
+  rotate: true
+  xy: 105, 50
+  size: 41, 47
+  orig: 51, 51
+  offset: 5, 2
+  index: -1
+lizi/lizi_024
+  rotate: false
+  xy: 473, 91
+  size: 43, 49
+  orig: 51, 51
+  offset: 4, 1
+  index: -1
+lizi/lizi_025
+  rotate: false
+  xy: 476, 40
+  size: 43, 49
+  orig: 51, 51
+  offset: 4, 1
+  index: -1
+lizi/lizi_026
+  rotate: false
+  xy: 426, 89
+  size: 45, 51
+  orig: 51, 51
+  offset: 3, 0
+  index: -1
+lizi/lizi_027
+  rotate: true
+  xy: 214, 93
+  size: 47, 51
+  orig: 51, 51
+  offset: 2, 0
+  index: -1
+lizi/lizi_028
+  rotate: true
+  xy: 267, 93
+  size: 47, 51
+  orig: 51, 51
+  offset: 2, 0
+  index: -1
+lizi/lizi_029
+  rotate: true
+  xy: 320, 93
+  size: 47, 51
+  orig: 51, 51
+  offset: 2, 0
+  index: -1

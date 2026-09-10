@@ -13,11 +13,11 @@ export function groupExtensionMenus(modes: readonly string[]): (string | Extensi
 	modes = modes.filter(mode => !mode.startsWith("extension_") || !restructure.removed.includes(mode.slice(10)));
 	const available = new Set(modes);
 	const owners = new Map<string, ExtensionMenuGroup>();
-	// Core character packs have no extension-settings entry. Include only physical
-	// extension members here, so 手杀武将 is managed under 普通 on both menu pages.
+	// Only installed extensions have settings entries. Activity subpacks still use
+	// their source extension's settings, while standalone extensions follow the menu group.
 	const settingsGroups = [...groups, ...characterGroups.groups.map(group => ({
 		name: group.name,
-		members: group.members.filter(name => name in restructure.merged),
+		members: group.members.filter(name => available.has(`extension_${name}`)),
 	}))];
 	for (const group of settingsGroups) {
 		// An independently installed extension with the same name takes precedence.

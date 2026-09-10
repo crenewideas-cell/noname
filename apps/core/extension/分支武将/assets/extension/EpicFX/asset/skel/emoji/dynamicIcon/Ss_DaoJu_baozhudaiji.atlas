@@ -1,0 +1,223 @@
+
+Ss_DaoJu_baozhudaiji.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+baoxiang2
+  rotate: false
+  xy: 157, 2
+  size: 70, 62
+  orig: 70, 62
+  offset: 0, 0
+  index: -1
+eff/liziguang/liziguang2_000
+  rotate: false
+  xy: 81, 42
+  size: 74, 74
+  orig: 102, 102
+  offset: 10, 18
+  index: -1
+eff/liziguang/liziguang2_001
+  rotate: false
+  xy: 396, 281
+  size: 74, 74
+  orig: 102, 102
+  offset: 10, 18
+  index: -1
+eff/liziguang/liziguang2_002
+  rotate: false
+  xy: 318, 207
+  size: 73, 73
+  orig: 102, 102
+  offset: 11, 19
+  index: -1
+eff/liziguang/liziguang2_003
+  rotate: false
+  xy: 393, 206
+  size: 73, 73
+  orig: 102, 102
+  offset: 11, 20
+  index: -1
+eff/liziguang/liziguang2_004
+  rotate: false
+  xy: 83, 269
+  size: 75, 74
+  orig: 102, 102
+  offset: 10, 20
+  index: -1
+eff/liziguang/liziguang2_005
+  rotate: false
+  xy: 241, 282
+  size: 75, 74
+  orig: 102, 102
+  offset: 10, 21
+  index: -1
+eff/liziguang/liziguang2_006
+  rotate: false
+  xy: 83, 193
+  size: 75, 74
+  orig: 102, 102
+  offset: 10, 22
+  index: -1
+eff/liziguang/liziguang2_007
+  rotate: false
+  xy: 318, 282
+  size: 76, 73
+  orig: 102, 102
+  offset: 10, 23
+  index: -1
+eff/liziguang/liziguang2_008
+  rotate: false
+  xy: 81, 118
+  size: 76, 73
+  orig: 102, 102
+  offset: 10, 23
+  index: -1
+eff/liziguang/liziguang2_009
+  rotate: false
+  xy: 160, 137
+  size: 76, 72
+  orig: 102, 102
+  offset: 10, 23
+  index: -1
+eff/liziguang/liziguang2_010
+  rotate: false
+  xy: 322, 357
+  size: 77, 72
+  orig: 102, 102
+  offset: 10, 23
+  index: -1
+eff/liziguang/liziguang2_011
+  rotate: false
+  xy: 2, 189
+  size: 77, 76
+  orig: 102, 102
+  offset: 10, 18
+  index: -1
+eff/liziguang/liziguang2_012
+  rotate: false
+  xy: 83, 426
+  size: 77, 78
+  orig: 102, 102
+  offset: 10, 16
+  index: -1
+eff/liziguang/liziguang2_013
+  rotate: false
+  xy: 162, 427
+  size: 77, 77
+  orig: 102, 102
+  offset: 10, 17
+  index: -1
+eff/liziguang/liziguang2_014
+  rotate: false
+  xy: 2, 112
+  size: 77, 75
+  orig: 102, 102
+  offset: 10, 19
+  index: -1
+eff/liziguang/liziguang2_015
+  rotate: false
+  xy: 2, 36
+  size: 77, 74
+  orig: 102, 102
+  offset: 10, 20
+  index: -1
+eff/liziguang/liziguang2_016
+  rotate: false
+  xy: 323, 431
+  size: 77, 73
+  orig: 102, 102
+  offset: 9, 21
+  index: -1
+eff/liziguang/liziguang2_017
+  rotate: false
+  xy: 162, 353
+  size: 77, 72
+  orig: 102, 102
+  offset: 9, 22
+  index: -1
+eff/liziguang/liziguang2_018
+  rotate: false
+  xy: 402, 433
+  size: 79, 71
+  orig: 102, 102
+  offset: 7, 24
+  index: -1
+eff/liziguang/liziguang2_019
+  rotate: false
+  xy: 241, 358
+  size: 79, 71
+  orig: 102, 102
+  offset: 7, 25
+  index: -1
+eff/liziguang/liziguang2_020
+  rotate: false
+  xy: 241, 431
+  size: 80, 73
+  orig: 102, 102
+  offset: 6, 24
+  index: -1
+eff/liziguang/liziguang2_021
+  rotate: false
+  xy: 2, 267
+  size: 79, 76
+  orig: 102, 102
+  offset: 6, 23
+  index: -1
+eff/liziguang/liziguang2_022
+  rotate: true
+  xy: 83, 345
+  size: 79, 76
+  orig: 102, 102
+  offset: 6, 24
+  index: -1
+eff/liziguang/liziguang2_023
+  rotate: false
+  xy: 2, 345
+  size: 79, 77
+  orig: 102, 102
+  offset: 6, 24
+  index: -1
+eff/liziguang/liziguang2_024
+  rotate: false
+  xy: 2, 424
+  size: 79, 80
+  orig: 102, 102
+  offset: 6, 22
+  index: -1
+eff/liziguang/liziguang2_025
+  rotate: false
+  xy: 161, 281
+  size: 78, 70
+  orig: 102, 102
+  offset: 7, 24
+  index: -1
+eff/liziguang/liziguang2_026
+  rotate: false
+  xy: 160, 211
+  size: 77, 68
+  orig: 102, 102
+  offset: 7, 25
+  index: -1
+eff/liziguang/liziguang2_027
+  rotate: false
+  xy: 159, 66
+  size: 76, 69
+  orig: 102, 102
+  offset: 8, 24
+  index: -1
+eff/liziguang/liziguang2_028
+  rotate: false
+  xy: 402, 360
+  size: 75, 71
+  orig: 102, 102
+  offset: 9, 22
+  index: -1
+eff/liziguang/liziguang2_029
+  rotate: false
+  xy: 241, 207
+  size: 75, 73
+  orig: 102, 102
+  offset: 9, 19
+  index: -1

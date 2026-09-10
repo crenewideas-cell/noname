@@ -1,0 +1,90 @@
+
+shouji2.png
+size: 1827,1827
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dandao01_00000
+  rotate: false
+  xy: 2, 1672
+  size: 1107, 153
+  orig: 1156, 450
+  offset: 24, 113
+  index: -1
+dandao01_00002
+  rotate: false
+  xy: 1111, 1578
+  size: 660, 247
+  orig: 1156, 450
+  offset: 472, 71
+  index: -1
+dandao01_00004
+  rotate: false
+  xy: 2, 1435
+  size: 1101, 235
+  orig: 1156, 450
+  offset: 30, 98
+  index: -1
+dandao01_00006
+  rotate: true
+  xy: 278, 346
+  size: 1087, 229
+  orig: 1156, 450
+  offset: 44, 103
+  index: -1
+dandao01_00008
+  rotate: true
+  xy: 509, 357
+  size: 1076, 270
+  orig: 1156, 450
+  offset: 51, 94
+  index: -1
+dandao01_00010
+  rotate: false
+  xy: 2, 68
+  size: 1089, 272
+  orig: 1156, 450
+  offset: 42, 97
+  index: -1
+dandao01_00012
+  rotate: true
+  xy: 2, 342
+  size: 1091, 274
+  orig: 1156, 450
+  offset: 40, 100
+  index: -1
+dandao01_00014
+  rotate: true
+  xy: 1093, 118
+  size: 1075, 269
+  orig: 1156, 450
+  offset: 56, 98
+  index: -1
+dandao01_00016
+  rotate: false
+  xy: 781, 1195
+  size: 1044, 238
+  orig: 1156, 450
+  offset: 85, 111
+  index: -1
+dandao01_00018
+  rotate: true
+  xy: 1364, 187
+  size: 1006, 197
+  orig: 1156, 450
+  offset: 109, 118
+  index: -1
+dandao01_00020
+  rotate: true
+  xy: 1563, 238
+  size: 955, 205
+  orig: 1156, 450
+  offset: 94, 127
+  index: -1
+dandao01_00022
+  rotate: true
+  xy: 781, 384
+  size: 809, 190
+  orig: 1156, 450
+  offset: 123, 115
+  index: -1

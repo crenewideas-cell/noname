@@ -1,0 +1,62 @@
+
+SSXF_biaoqingdaiji_bianpao.png
+size: 422,422
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bianpao/cuantian_30
+  rotate: false
+  xy: 2, 172
+  size: 68, 248
+  orig: 68, 250
+  offset: 0, 0
+  index: -1
+bianpao/cuantian_31
+  rotate: false
+  xy: 72, 172
+  size: 68, 248
+  orig: 68, 250
+  offset: 0, 0
+  index: -1
+bianpao/cuantian_32
+  rotate: false
+  xy: 142, 172
+  size: 68, 248
+  orig: 68, 250
+  offset: 0, 0
+  index: -1
+bianpao/cuantian_33
+  rotate: false
+  xy: 212, 172
+  size: 68, 248
+  orig: 68, 250
+  offset: 0, 0
+  index: -1
+bianpao/cuantian_34
+  rotate: false
+  xy: 282, 180
+  size: 68, 240
+  orig: 68, 250
+  offset: 0, 8
+  index: -1
+bianpao/cuantian_35
+  rotate: true
+  xy: 2, 32
+  size: 68, 240
+  orig: 68, 250
+  offset: 0, 8
+  index: -1
+bianpao/cuantian_36
+  rotate: false
+  xy: 352, 180
+  size: 68, 240
+  orig: 68, 250
+  offset: 0, 8
+  index: -1
+bianpao/cuantian_37
+  rotate: true
+  xy: 2, 102
+  size: 68, 240
+  orig: 68, 250
+  offset: 0, 8
+  index: -1

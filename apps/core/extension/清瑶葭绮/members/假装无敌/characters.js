@@ -1,8 +1,9 @@
 import { createCharacterPack, createCardPack, copyCardAttributes } from "./CharacterCard.js";
+import { installCharacterUI } from "./compatibility.js";
 
 /** Character resources only; never execute the APK's UI/engine replacement entry. */
 export default function (...args) {
-    const [lib, game] = args;
+    const [lib, game, ui] = args;
     const character = createCharacterPack(...args);
     const card = createCardPack(...args);
     for (const [id, info] of Object.entries(character.character)) {
@@ -16,6 +17,7 @@ export default function (...args) {
         config: {},
         package: { character, card, skill: { skill: {}, translate: {} } },
         precontent() {
+            installCharacterUI(lib, ui);
             lib.characterLiuwei ??= {};
             lib.qyCopyCardAttributes ??= card => copyCardAttributes(card, args[3]);
             lib.group.add("qingyao_xian");

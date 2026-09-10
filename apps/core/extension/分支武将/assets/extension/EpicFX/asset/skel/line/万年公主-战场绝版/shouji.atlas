@@ -1,0 +1,132 @@
+
+shouji.png
+size: 1799,1799
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Hit/Hit_00000
+  rotate: true
+  xy: 777, 7
+  size: 182, 170
+  orig: 500, 500
+  offset: 161, 165
+  index: -1
+Hit/Hit_00002
+  rotate: true
+  xy: 1502, 253
+  size: 298, 295
+  orig: 500, 500
+  offset: 106, 102
+  index: -1
+Hit/Hit_00004
+  rotate: false
+  xy: 1305, 553
+  size: 407, 405
+  orig: 500, 500
+  offset: 53, 47
+  index: -1
+Hit/Hit_00006
+  rotate: false
+  xy: 1305, 960
+  size: 414, 413
+  orig: 500, 500
+  offset: 49, 42
+  index: -1
+Hit/Hit_00008
+  rotate: true
+  xy: 437, 949
+  size: 419, 421
+  orig: 500, 500
+  offset: 45, 37
+  index: -1
+Hit/Hit_00010
+  rotate: true
+  xy: 877, 951
+  size: 422, 426
+  orig: 500, 500
+  offset: 43, 33
+  index: -1
+Hit/Hit_00012
+  rotate: true
+  xy: 1311, 1375
+  size: 422, 428
+  orig: 500, 500
+  offset: 42, 32
+  index: -1
+Hit/Hit_00014
+  rotate: true
+  xy: 877, 1375
+  size: 422, 432
+  orig: 500, 500
+  offset: 42, 29
+  index: -1
+Hit/Hit_00016
+  rotate: false
+  xy: 446, 1370
+  size: 429, 427
+  orig: 500, 500
+  offset: 37, 28
+  index: -1
+Hit/Hit_00018
+  rotate: false
+  xy: 2, 948
+  size: 433, 423
+  orig: 500, 500
+  offset: 30, 32
+  index: -1
+Hit/Hit_00020
+  rotate: false
+  xy: 2, 1373
+  size: 442, 424
+  orig: 500, 500
+  offset: 23, 36
+  index: -1
+Hit/Hit_00022
+  rotate: false
+  xy: 860, 568
+  size: 396, 381
+  orig: 500, 500
+  offset: 45, 58
+  index: -1
+Hit/Hit_00024
+  rotate: true
+  xy: 392, 189
+  size: 380, 383
+  orig: 500, 500
+  offset: 55, 57
+  index: -1
+Hit/Hit_00026
+  rotate: true
+  xy: 2, 570
+  size: 376, 388
+  orig: 500, 500
+  offset: 62, 55
+  index: -1
+Hit/Hit_00028
+  rotate: true
+  xy: 437, 571
+  size: 376, 389
+  orig: 500, 500
+  offset: 62, 54
+  index: -1
+Hit/Hit_00030
+  rotate: true
+  xy: 777, 191
+  size: 375, 376
+  orig: 500, 500
+  offset: 62, 57
+  index: -1
+Hit/Hit_00032
+  rotate: true
+  xy: 2, 189
+  size: 379, 380
+  orig: 500, 500
+  offset: 60, 55
+  index: -1
+Hit/Hit_00034
+  rotate: true
+  xy: 1155, 199
+  size: 352, 345
+  orig: 500, 500
+  offset: 83, 91
+  index: -1

@@ -3,21 +3,37 @@
   "groups": [
     {
       "name": "进阶",
-      "members": ["offline", "jsrg", "sxrm", "sixiang", "tw", "xianding", "huicui", "clan", "yingbian", "collab", "diy"]
+      "members": ["offline", "jsrg", "sxrm", "sixiang", "tw", "xianding", "huicui", "clan", "yingbian", "collab", "diy", "HD_chaoshikong", "huodongcharacter"]
     },
     {
       "name": "普通",
-      "members": ["shenhua", "extra", "yijiang", "refresh", "sp", "sp2", "newjiang", "onlyOL", "手杀武将"]
+      "members": ["shenhua", "extra", "yijiang", "refresh", "sp", "sp2", "newjiang", "onlyOL", "手杀武将", "3D精选", "ddd", "decadeQiHuan", "征战虎牢"]
     },
     {
       "name": "基础",
-      "members": ["standard", "old"]
+      "members": ["standard", "old", "WeChatkill", "MiNiAppkill", "MiNikill", "FaDongCharacter"]
     },
     {
       "name": "新篇",
       "members": ["shiji", "sb", "bingshi"]
+    },
+    {
+      "name": "芙蕖绿波",
+      "members": ["芙蕖绿波", "MX_feihongyinxue"]
+    },
+    {
+      "name": "PXLNGU",
+      "members": ["hezongkangqincharacter", "key"]
+    },
+    {
+      "name": "名将杀合集",
+      "members": ["名将杀", "mjs", "mjsnew", "mjsold"]
+    },
+    {
+      "name": "森罗隔世",
+      "members": ["森罗隔世", "decadeZhuoGui", "decadeKuiBa"]
     }
   ],
   "labels": { "diy": "设计比赛20", "key": "二次元" },
-  "removed": ["gwent", "gujian", "swd", "hearth", "ow", "xianjian", "mtg"]
+  "removed": ["gwent", "gujian", "swd", "hearth", "ow", "xianjian", "mtg", "yxs"]
 }

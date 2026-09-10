@@ -1,0 +1,55 @@
+
+shouji2.png
+size: 1848,1848
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cs/tx_dd_qian/tx_dd_qian_00001
+  rotate: false
+  xy: 2, 332
+  size: 1363, 315
+  orig: 1519, 362
+  offset: 150, 24
+  index: -1
+cs/tx_dd_qian/tx_dd_qian_00003
+  rotate: true
+  xy: 1445, 500
+  size: 1346, 323
+  orig: 1519, 362
+  offset: 148, 7
+  index: -1
+cs/tx_dd_qian/tx_dd_qian_00005
+  rotate: false
+  xy: 2, 963
+  size: 1441, 306
+  orig: 1519, 362
+  offset: 55, 33
+  index: -1
+cs/tx_dd_qian/tx_dd_qian_00007
+  rotate: false
+  xy: 2, 2
+  size: 1446, 328
+  orig: 1519, 362
+  offset: 50, 5
+  index: -1
+cs/tx_dd_qian/tx_dd_qian_00009
+  rotate: false
+  xy: 2, 649
+  size: 1348, 312
+  orig: 1519, 362
+  offset: 76, 18
+  index: -1
+cs/tx_dd_qian/tx_dd_qian_00011
+  rotate: false
+  xy: 2, 1271
+  size: 1321, 300
+  orig: 1519, 362
+  offset: 103, 30
+  index: -1
+cs/tx_dd_qian/tx_dd_qian_00013
+  rotate: false
+  xy: 2, 1573
+  size: 1151, 273
+  orig: 1519, 362
+  offset: 182, 26
+  index: -1

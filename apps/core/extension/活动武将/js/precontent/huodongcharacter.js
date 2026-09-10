@@ -9,7 +9,7 @@ const packs = function () {
             huodongcharacter: {
                 Chuodong: ['bilibili_shengxunyu', 'bilibili_Firewin', 'bilibili_jinglingqiu', 'bilibili_suixingsifeng', 'bilibili_Emptycity', 'bilibili_thunderlei', 'bilibili_lonelypatients', 'bilibili_ningjingzhiyuan', 'bilibili_xizhicaikobe'],
                 CDormitory: ['bilibili_yirenyixiaojian', 'bilibili_longjiuzhen', 'bilibili_diandian', 'bilibili_murufengchen', 'bilibili_wuzhuwanshui', 'bilibili_kuangshen', 'bilibili_yanjing', ...Array.from({ length: 3 }).map((_, index) => `bilibili_yanjing_friend${index + 1}`), 'bilibili_xiaoyaoruyun', 'bilibili_shuijiaobuboli'],
-                Cothers: ['bilibili_majun', 'lz_sufei', 'lz_tangzi', 'lz_liuqi', 'lz_huangquan', 'bilibili_zhugeliang', 'bilibili_caocao', 'bilibili_xiahoudun', 'bilibili_liuguanzhang', 'bilibili_gaowang', 'bilibili_simayi', 'old_dongxie', 'bilibili_sunhanhua', 'bilibili_zhoutaigong', 'bilibili_zhouxiaomei', 'bilibili_caifuren', 'bilibili_zhengxuan', 'bilibili_sp_xuyou', 'old_zuoci', 'bilibili_kuailiangkuaiyue', 'bilibili_wuqiao', 'bilibili_daxiao', 'bilibili_xushao', 'bilibili_shen_guojia', 'bilibili_re_xusheng', 'bilibili_zhangrang', 'bilibili_litiansuo', 'decade_huangwudie', 'bilibili_huanggai', 'bilibili_ekeshaoge', 'bilibili_guanning', 'bilibili_wangwang', 'diy_lvmeng', 'bilibili_wangtao', 'bilibili_wangyue', 'bilibili_x_wangtao', 'bilibili_x_wangyue', 'bilibili_daqiao', 'bilibili_xiaoqiao', 'bilibili_x_daqiao', 'bilibili_x_xiaoqiao', 'bilibili_ahuinan', 'bilibili_dongtuna', 'bilibili_x_ahuinan', 'bilibili_x_dongtuna'],
+                Cothers: ['bilibili_majun', 'lz_sufei', 'lz_tangzi', 'lz_liuqi', 'lz_huangquan', 'bilibili_zhugeliang', 'bilibili_caocao', 'bilibili_xiahoudun', 'bilibili_liuguanzhang', 'bilibili_gaowang', 'bilibili_simayi', 'old_dongxie', 'bilibili_sunhanhua', 'bilibili_zhoutaigong', 'bilibili_zhouxiaomei', 'bilibili_caifuren', 'bilibili_zhengxuan', 'bilibili_sp_xuyou', 'old_zuoci', 'bilibili_kuailiangkuaiyue', 'bilibili_wuqiao', 'bilibili_daxiao', 'bilibili_xushao', 'bilibili_shen_guojia', 'bilibili_re_xusheng', 'bilibili_zhangrang', 'bilibili_litiansuo', 'decade_huangwudie', 'bilibili_huanggai', 'bilibili_ekeshaoge', 'bilibili_guanning', 'bilibili_wangwang', 'diy_lvmeng', 'bilibili_wangtao', 'bilibili_wangyue', 'bilibili_daqiao', 'bilibili_xiaoqiao', 'bilibili_ahuinan', 'bilibili_dongtuna'],
                 CXuanDie: ['bfake_zhanghua', 'bfake_hanshao', 'bfake_hanrong', 'bilibili_adong', 'bfake_jiananfeng', 'bfake_shen_zhangjiao', 'bfake_shen_zhangfei', 'bfake_shen_jiaxu', 'bfake_huanwen', 'bfake_miheng'],
             },
         },
@@ -70,22 +70,12 @@ const packs = function () {
             bilibili_shibing: ['male', 'shu', Infinity, ['bilibili_tongshuai'], ['name:null|null', 'character:haopu', 'unseen']],
             bilibili_majun: ['male', 'wei', 3, ['xinfu_jingxie', 'bilibili_qiaosi'], ['character:majun', 'die:majun', 'name:马|钧']],
             //双面武将--正面
-            bilibili_wangtao: ['female', 'shu', 3, ['huguan', 'yaopei', 'dualside'], ['dualside:bilibili_x_wangyue', 'character:wangtao', 'die:wangtao']],
-            bilibili_wangyue: ['female', 'shu', 3, ['huguan', 'mingluan', 'dualside'], ['dualside:bilibili_x_wangtao', 'character:wangyue', 'tempname:wangyue', 'die:wangyue']],
-            bilibili_daqiao: ['female', 'wu', 3, ['dcqiqin', 'dczixi', 'dualside'], ['dualside:bilibili_x_xiaoqiao', 'character:yue_daqiao', 'tempname:yue_daqiao', 'die:yue_daqiao']],
-            bilibili_xiaoqiao: ['female', 'wu', 3, ['dcqiqin', 'dcweiwan', 'dualside'], ['dualside:bilibili_x_daqiao', 'character:yue_xiaoqiao', 'die:yue_xiaoqiao']],
-            bilibili_ahuinan: ['male', 'qun', 4, ['jueman', 'dualside'], ['dualside:bilibili_x_dongtuna', 'character:ahuinan', 'die:ahuinan']],
-            bilibili_dongtuna: ['male', 'qun', 4, ['oljianman', 'dualside'], ['dualside:bilibili_x_ahuinan', 'character:dongtuna', 'die:dongtuna']],
-            //双面武将--背面
-            bilibili_x_wangtao: ['female', 'shu', 3, ['huguan', 'yaopei', 'dualside'], ['unseen', 'character:wangtao', 'die:wangtao']],
-            bilibili_x_wangyue: ['female', 'shu', 3, ['huguan', 'mingluan', 'dualside'], ['unseen', 'character:wangyue', 'tempname:wangyue', 'die:wangyue']],
-            bilibili_x_daqiao: ['female', 'wu', 3, ['dcqiqin', 'dczixi', 'dualside'], ['unseen', 'character:yue_daqiao', 'tempname:yue_daqiao', 'die:yue_daqiao']],
-            bilibili_x_xiaoqiao: ['female', 'wu', 3, ['dcqiqin', 'dcweiwan', 'dualside'], ['unseen', 'character:yue_xiaoqiao', 'die:yue_xiaoqiao']],
-            bilibili_x_ahuinan: ['male', 'qun', 4, ['jueman', 'dualside'], ['unseen', 'character:ahuinan', 'die:ahuinan']],
-            bilibili_x_dongtuna: ['male', 'qun', 4, ['oljianman', 'dualside'], ['unseen', 'character:dongtuna', 'die:dongtuna']],
-            //千里走单骑
-            DJ_pujing: ['male', 'qun', 1, [], ['unseen', 'character:pujing']],
-            DJ_huban: ['male', 'qun', 2, [], ['unseen', 'character:huban']],
+            bilibili_wangtao: ['female', 'shu', 3, ['huguan', 'yaopei', 'dualside'], ['dualside:bilibili_wangyue', 'character:wangtao', 'die:wangtao']],
+            bilibili_wangyue: ['female', 'shu', 3, ['huguan', 'mingluan', 'dualside'], ['dualside:bilibili_wangtao', 'character:wangyue', 'tempname:wangyue', 'die:wangyue']],
+            bilibili_daqiao: ['female', 'wu', 3, ['dcqiqin', 'dczixi', 'dualside'], ['dualside:bilibili_xiaoqiao', 'character:yue_daqiao', 'tempname:yue_daqiao', 'die:yue_daqiao']],
+            bilibili_xiaoqiao: ['female', 'wu', 3, ['dcqiqin', 'dcweiwan', 'dualside'], ['dualside:bilibili_daqiao', 'character:yue_xiaoqiao', 'die:yue_xiaoqiao']],
+            bilibili_ahuinan: ['male', 'qun', 4, ['jueman', 'dualside'], ['dualside:bilibili_dongtuna', 'character:ahuinan', 'die:ahuinan']],
+            bilibili_dongtuna: ['male', 'qun', 4, ['oljianman', 'dualside'], ['dualside:bilibili_ahuinan', 'character:dongtuna', 'die:dongtuna']],
             //蝶设堂
             bfake_jiananfeng: ['female', 'jin', 8, ['bolduliao', 'bolhuidu', 'bolfushou']],
             bfake_shen_jiaxu: ['male', 'shen', 3, ['boljiandai', 'bolfangcan', 'boljuemei', 'bolluoshu'], ['qun', 'character:le_shen_jiaxu']],

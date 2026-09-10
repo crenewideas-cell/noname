@@ -46,15 +46,6 @@ const characters = {
         maxHandcardBase: 5,
         dieAudios: [],
     },
-    mjs_new_chengong: {
-        sex: "male",
-        hp: 4,
-        group: "donghan",
-        skills: ["mjsnewqiguantouyi", "mjscezhimingyi"],
-        trashBin: ["rare"],
-        maxHandcardBase: 5,
-        dieAudios: [],
-    },
     mjs_new_pangtong: {
         sex: "male",
         hp: 3,

@@ -12,16 +12,16 @@ test("PXLNGU collects reviewed standalone character packs without losing any men
 	const result = groupExtensionMenus(modes);
 	const pxlngu = result.find(entry => typeof entry !== "string" && entry.name === "PXLNGU");
 	assert.ok(pxlngu && typeof pxlngu !== "string");
-	assert.equal(pxlngu.members.length, 35);
+	assert.equal(pxlngu.members.length, 30);
 	const flattened = result.flatMap(entry => typeof entry === "string" ? [entry] : entry.members);
 	assert.deepEqual([...flattened].sort(), [...modes].sort());
 	assert.equal(new Set(flattened).size, modes.length);
 	assert.deepEqual(modes, original);
-	assert.equal(result.length, modes.length - 34);
+	assert.equal(result.length, modes.length - 29);
 });
 
 test("major packs and consolidated packages stay independent", () => {
-	const untouched = ["名将杀", "活动武将", "风云浮生明辉月", "觉醒突破", "清瑶葭绮", "群雄并起"].map(name => `extension_${name}`);
+	const untouched = ["活动武将", "风云浮生明辉月", "觉醒突破", "清瑶葭绮", "群雄并起"].map(name => `extension_${name}`);
 	assert.deepEqual(groupExtensionMenus(untouched), untouched);
 	const result = groupExtensionMenus([...untouched, "extension_笮融", "extension_朱绩"]);
 	assert.deepEqual(result.slice(0, untouched.length), untouched);
@@ -38,7 +38,7 @@ test("custom top-level and member sort order are preserved", () => {
 	assert.deepEqual(groupExtensionMenus(["coin", "extension_朱绩", "extension_名将杀", "extension_笮融", "extension_界周妃", "extension_指示线"]), [
 		"coin",
 		{ name: "PXLNGU", members: ["extension_朱绩", "extension_笮融", "extension_界周妃"] },
-		"extension_名将杀",
+		{ name: "名将杀合集", members: ["extension_名将杀"] },
 		"extension_指示线",
 	]);
 });
@@ -55,7 +55,7 @@ test("each PXLNGU member exists and removed EpicFX is absent from registration",
 	assert.equal(new Set(members).size, members.length);
 	assert.ok(!members.includes("EpicFX"));
 	assert.ok(!installed.some(pack => pack.name === "EpicFX"));
-	assert.deepEqual(groupExtensionMenus(["extension_EpicFX", "extension_名将杀"]), ["extension_名将杀"]);
+	assert.deepEqual(groupExtensionMenus(["extension_EpicFX", "extension_名将杀"]), [{ name: "名将杀合集", members: ["extension_名将杀"] }]);
 	for (const name of members) {
 		assert.ok(installed.some(pack => pack.name === name), name);
 		const source = await fs.readFile(new URL(`../../apps/core/extension/${name}/extension.js`, import.meta.url), "utf8");
@@ -85,18 +85,22 @@ test("every consolidated pack exposes stable member config sections without impo
 	assert.equal(mergedMenuSections("手杀武将").find(member => member.name === "新武将")?.keys[0], "apk_new");
 });
 
-test("advanced group keeps all eleven original IDs and labels without changing gameplay modules", async () => {
+test("advanced group retains eleven core packs and includes the two activity subpacks", async () => {
 	const group = characterGroups.groups[0];
 	assert.equal(group.name, "进阶");
-	assert.equal(new Set(group.members).size, 11);
+	assert.equal(new Set(group.members).size, 13);
 	for (const name of group.members) {
 		assert.equal(characterMenuOwner(name), "进阶");
-		await fs.access(`apps/core/character/${name}`);
+		if (["HD_chaoshikong", "huodongcharacter"].includes(name)) {
+			await fs.access(`apps/core/extension/活动武将/js/precontent/${name}.js`);
+		} else {
+			await fs.access(`apps/core/character/${name}`);
+		}
 	}
 	const labels = await fs.readFile("apps/core/game/package.js", "utf8");
 	assert.match(labels, /diy: "设计比赛20"/);
 	assert.match(labels, /key: "二次元"/);
-	assert.equal(characterMenuOwner("key"), undefined);
+	assert.equal(characterMenuOwner("key"), "PXLNGU");
 });
 
 test("retired crossover packs have no load entry or switches; independent packs remain", async () => {

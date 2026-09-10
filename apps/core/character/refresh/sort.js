@@ -5,7 +5,7 @@ const characterSort = {
 	refresh_lin: ["re_menghuo", "ol_sunjian", "re_caopi", "ol_xuhuang", "ol_dongzhuo", "ol_zhurong", "re_jiaxu", "ol_lusu"],
 	refresh_shan: ["ol_jiangwei", "ol_caiwenji", "ol_liushan", "ol_zhangzhang", "re_zuoci", "re_sunce", "ol_dengai", "re_zhanghe"],
 	refresh_yijiang1: ["xin_wuguotai", "xin_gaoshun", "dc_caozhi", "yujin_yujin", "re_masu", "xin_xusheng", "re_fazheng", "xin_lingtong", "re_zhangchunhua", "dc_xushu", "re_chengong"],
-	refresh_yijiang2: ["re_madai", "re_wangyi", "xin_handang", "xin_zhonghui", "re_liaohua", "re_chengpu", "re_caozhang", "dc_bulianshi", "xin_liubiao", "re_xunyou", "re_guanzhang"],
+	refresh_yijiang2: ["re_madai", "xin_handang", "xin_zhonghui", "re_liaohua", "re_chengpu", "re_caozhang", "dc_bulianshi", "xin_liubiao", "re_xunyou", "re_guanzhang"],
 	refresh_yijiang3: ["re_jianyong", "re_guohuai", "re_zhuran", "re_panzhangmazhong", "xin_yufan", "dc_liru", "re_manchong", "re_fuhuanghou", "re_guanping", "re_liufeng", "re_caochong"],
 	refresh_yijiang4: ["re_sunluban", "re_wuyi", "re_hanhaoshihuan", "re_caozhen", "re_zhoucang", "dc_chenqun", "re_caifuren", "re_guyong", "re_jushou", "re_zhuhuan", "re_zhangsong"],
 	refresh_yijiang5: ["re_zhangyi", "re_quancong", "re_caoxiu", "re_sunxiu", "re_gongsunyuan", "re_guotufengji", "re_xiahoushi", "re_liuchen", "re_zhuzhi", "re_caorui", "re_zhongyao"],

@@ -1,0 +1,181 @@
+
+shouji2.png
+size: 1764,1764
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tx_zhaoyun2_00
+  rotate: false
+  xy: 1465, 563
+  size: 261, 234
+  orig: 963, 350
+  offset: 52, 90
+  index: -1
+tx_zhaoyun2_01
+  rotate: true
+  xy: 1198, 490
+  size: 461, 265
+  orig: 963, 350
+  offset: 50, 56
+  index: -1
+tx_zhaoyun2_02
+  rotate: true
+  xy: 2, 63
+  size: 652, 281
+  orig: 963, 350
+  offset: 33, 29
+  index: -1
+tx_zhaoyun2_03
+  rotate: true
+  xy: 2, 717
+  size: 751, 274
+  orig: 963, 350
+  offset: 49, 24
+  index: -1
+tx_zhaoyun2_04
+  rotate: false
+  xy: 2, 1470
+  size: 743, 292
+  orig: 963, 350
+  offset: 90, 20
+  index: -1
+tx_zhaoyun2_05
+  rotate: true
+  xy: 278, 795
+  size: 673, 297
+  orig: 963, 350
+  offset: 161, 23
+  index: -1
+tx_zhaoyun2_06
+  rotate: true
+  xy: 1171, 953
+  size: 516, 300
+  orig: 963, 350
+  offset: 321, 24
+  index: -1
+tx_zhaoyun2_07
+  rotate: true
+  xy: 1473, 1097
+  size: 393, 269
+  orig: 963, 350
+  offset: 446, 57
+  index: -1
+tx_zhaoyun2_08
+  rotate: false
+  xy: 1529, 314
+  size: 233, 247
+  orig: 963, 350
+  offset: 607, 86
+  index: -1
+tx_zhaoyun2_09
+  rotate: true
+  xy: 1326, 127
+  size: 86, 183
+  orig: 963, 350
+  offset: 743, 153
+  index: -1
+yaoqian_tx2_00
+  rotate: false
+  xy: 1529, 106
+  size: 232, 206
+  orig: 735, 385
+  offset: 16, 63
+  index: -1
+yaoqian_tx2_01
+  rotate: false
+  xy: 1407, 1492
+  size: 345, 270
+  orig: 735, 385
+  offset: 35, 71
+  index: -1
+yaoqian_tx2_02
+  rotate: true
+  xy: 587, 376
+  size: 486, 291
+  orig: 735, 385
+  offset: 43, 78
+  index: -1
+yaoqian_tx2_03
+  rotate: true
+  xy: 577, 864
+  size: 604, 283
+  orig: 735, 385
+  offset: 53, 86
+  index: -1
+yaoqian_tx2_04
+  rotate: false
+  xy: 747, 1471
+  size: 658, 291
+  orig: 735, 385
+  offset: 59, 78
+  index: -1
+yaoqian_tx2_05
+  rotate: true
+  xy: 285, 195
+  size: 598, 300
+  orig: 735, 385
+  offset: 121, 69
+  index: -1
+yaoqian_tx2_06
+  rotate: true
+  xy: 862, 925
+  size: 544, 307
+  orig: 735, 385
+  offset: 176, 62
+  index: -1
+yaoqian_tx2_07
+  rotate: true
+  xy: 880, 439
+  size: 484, 316
+  orig: 735, 385
+  offset: 240, 53
+  index: -1
+yaoqian_tx2_08
+  rotate: false
+  xy: 587, 53
+  size: 421, 321
+  orig: 735, 385
+  offset: 311, 48
+  index: -1
+yaoqian_tx2_09
+  rotate: true
+  xy: 1010, 88
+  size: 349, 314
+  orig: 735, 385
+  offset: 383, 44
+  index: -1
+yaoqian_tx2_10
+  rotate: false
+  xy: 1473, 799
+  size: 278, 296
+  orig: 735, 385
+  offset: 454, 46
+  index: -1
+yaoqian_tx2_11
+  rotate: false
+  xy: 1326, 215
+  size: 201, 273
+  orig: 735, 385
+  offset: 531, 41
+  index: -1
+yaoqian_tx2_12
+  rotate: true
+  xy: 285, 60
+  size: 133, 227
+  orig: 735, 385
+  offset: 599, 34
+  index: -1
+yaoqian_tx2_13
+  rotate: true
+  xy: 1326, 39
+  size: 86, 164
+  orig: 735, 385
+  offset: 624, 45
+  index: -1
+yaoqian_tx2_14
+  rotate: true
+  xy: 1010, 3
+  size: 83, 161
+  orig: 735, 385
+  offset: 628, 45
+  index: -1

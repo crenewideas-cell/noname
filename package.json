@@ -2,11 +2,15 @@
     "private": true,
     "version": "1.0.0",
     "type": "module",
+    "packageManager": "pnpm@10.34.5",
+    "engines": {
+        "pnpm": ">=10 <11"
+    },
     "scripts": {
         "dev": "tsx scripts/dev.ts",
         "build": "tsx scripts/build.ts",
         "init:extension": "tsx scripts/initExtension.ts",
-        "serve": "pnpm -F @noname/fs dev --dirname=../../dist",
+        "serve": "pnpm -F @noname/fs run dev --dirname=../../dist",
         "start": "pnpm build && pnpm serve",
         "generateTestPack": "pnpm build && tsx scripts/generateTestPack.ts",
         "lint": "pnpm -r lint",

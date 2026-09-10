@@ -1,5 +1,6 @@
 //========================================= 武将 =========================================//
 'use strict';
+import { playOptionalAudio } from "./compatibility.js";
 let 假装无敌CharacterLoad = false;
 let 假装无敌Card = false;
 // Copy card data using the current engine; keep new card identity and DOM nodes intact.
@@ -459,28 +460,18 @@ export function createCharacterPack(lib, game, ui, get, ai, _status) {
                         }
                         if(!_status.qingyuan&&[get.translation(player.name), get.translation(player.name1), get.translation(player.name2)].contains("清瑶")){
                             _status.qingyuan=true;
-                            ui.backgroundMusic.src=false;
-                            ui.backgroundMusic.autoplay = false;
-                            ui.backgroundMusic.addEventListener('play', function(event){
-                                event.stopPropagation();
-                                this.src = '';
-                                this.pause();
-                            }, true)
-                            var qybackgroundMusic = new Audio();
-                            qybackgroundMusic.autoplay = true;
-                            qybackgroundMusic.src = lib.assetURL + "extension/清瑶葭绮/members/假装无敌/qingyuan.mp3";
-                            qybackgroundMusic.play();
-                            qybackgroundMusic.addEventListener('ended',function(event){
-                                this.src = lib.assetURL + "extension/清瑶葭绮/members/假装无敌/qingyuan.mp3"
-                                this.play();
-                            });
+                            if (lib.config.background_music !== 'music_off' && typeof Audio === 'function') {
+                                if (ui.backgroundMusic) {
+                                    ui.backgroundMusic.pause();
+                                    ui.backgroundMusic.autoplay = false;
+                                }
+                                var qybackgroundMusic = new Audio();
+                                qybackgroundMusic.loop = true;
+                                qybackgroundMusic.volume = ui.backgroundMusic?.volume ?? 1;
+                                qybackgroundMusic.src = lib.assetURL + "extension/清瑶葭绮/members/假装无敌/qingyuan.mp3";
+                                void playOptionalAudio(qybackgroundMusic);
+                            }
                             ui.setFlashBackground('extension/清瑶葭绮/members/假装无敌/ymhuajing.jpg');
-                            ui.create.div('.background', {
-                                backgroundPosition: '50% 50%',
-                                zIndex: -1,
-                                pointerEvents: 'none',
-                                backgroundSize: 'cover',
-                            },document.body).setBackgroundImage('extension/清瑶葭绮/members/假装无敌/ymhuajing.jpg')
                         }
                     }
                     if(!Array.isArray(game.setFile)) game.setFile=[];

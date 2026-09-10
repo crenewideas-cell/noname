@@ -1,0 +1,146 @@
+
+Ss_BiaoQing_JinLong1.png
+size: 809,809
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tuowei_00
+  rotate: false
+  xy: 2, 103
+  size: 297, 100
+  orig: 300, 100
+  offset: 3, 0
+  index: -1
+tuowei_01
+  rotate: true
+  xy: 102, 208
+  size: 297, 100
+  orig: 300, 100
+  offset: 2, 0
+  index: -1
+tuowei_02
+  rotate: true
+  xy: 204, 208
+  size: 297, 100
+  orig: 300, 100
+  offset: 0, 0
+  index: -1
+tuowei_03
+  rotate: false
+  xy: 510, 108
+  size: 286, 100
+  orig: 300, 100
+  offset: 11, 0
+  index: -1
+tuowei_04
+  rotate: true
+  xy: 306, 7
+  size: 290, 100
+  orig: 300, 100
+  offset: 10, 0
+  index: -1
+tuowei_05
+  rotate: false
+  xy: 306, 503
+  size: 297, 100
+  orig: 300, 100
+  offset: 3, 0
+  index: -1
+tuowei_06
+  rotate: true
+  xy: 606, 509
+  size: 298, 100
+  orig: 300, 100
+  offset: 2, 0
+  index: -1
+tuowei_07
+  rotate: true
+  xy: 605, 211
+  size: 296, 100
+  orig: 300, 100
+  offset: 4, 0
+  index: -1
+tuowei_08
+  rotate: false
+  xy: 2, 605
+  size: 298, 100
+  orig: 300, 100
+  offset: 2, 0
+  index: -1
+tuowei_09
+  rotate: true
+  xy: 707, 210
+  size: 295, 100
+  orig: 300, 100
+  offset: 1, 0
+  index: -1
+tuowei_10
+  rotate: false
+  xy: 2, 707
+  size: 300, 100
+  orig: 300, 100
+  offset: 0, 0
+  index: -1
+tuowei_11
+  rotate: true
+  xy: 408, 7
+  size: 290, 100
+  orig: 300, 100
+  offset: 10, 0
+  index: -1
+tuowei_12
+  rotate: false
+  xy: 510, 6
+  size: 286, 100
+  orig: 300, 100
+  offset: 14, 0
+  index: -1
+tuowei_13
+  rotate: false
+  xy: 302, 605
+  size: 298, 100
+  orig: 300, 100
+  offset: 2, 0
+  index: -1
+tuowei_14
+  rotate: false
+  xy: 304, 707
+  size: 300, 100
+  orig: 300, 100
+  offset: 0, 0
+  index: -1
+tuowei_15
+  rotate: false
+  xy: 306, 299
+  size: 294, 100
+  orig: 300, 100
+  offset: 6, 0
+  index: -1
+tuowei_16
+  rotate: true
+  xy: 708, 507
+  size: 300, 99
+  orig: 300, 100
+  offset: 0, 1
+  index: -1
+tuowei_17
+  rotate: true
+  xy: 2, 205
+  size: 300, 98
+  orig: 300, 100
+  offset: 0, 2
+  index: -1
+tuowei_18
+  rotate: false
+  xy: 2, 2
+  size: 296, 99
+  orig: 300, 100
+  offset: 4, 1
+  index: -1
+tuowei_19
+  rotate: false
+  xy: 306, 401
+  size: 295, 100
+  orig: 300, 100
+  offset: 5, 0
+  index: -1

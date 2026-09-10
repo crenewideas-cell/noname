@@ -1,0 +1,153 @@
+
+shouji.png
+size: 1910,1910
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tx_cs/tx_sj_00000
+  rotate: false
+  xy: 414, 709
+  size: 355, 354
+  orig: 660, 612
+  offset: 152, 124
+  index: -1
+tx_cs/tx_sj_00001
+  rotate: false
+  xy: 1383, 292
+  size: 409, 405
+  orig: 660, 612
+  offset: 133, 101
+  index: -1
+tx_cs/tx_sj_00002
+  rotate: false
+  xy: 2, 1028
+  size: 410, 405
+  orig: 660, 612
+  offset: 127, 103
+  index: -1
+tx_cs/tx_sj_00003
+  rotate: true
+  xy: 1491, 1483
+  size: 425, 410
+  orig: 660, 612
+  offset: 121, 100
+  index: -1
+tx_cs/tx_sj_00004
+  rotate: false
+  xy: 956, 677
+  size: 425, 410
+  orig: 660, 612
+  offset: 121, 100
+  index: -1
+tx_cs/tx_sj_00005
+  rotate: false
+  xy: 1469, 699
+  size: 426, 396
+  orig: 660, 612
+  offset: 124, 107
+  index: -1
+tx_cs/tx_sj_00006
+  rotate: false
+  xy: 528, 1065
+  size: 426, 396
+  orig: 660, 612
+  offset: 124, 107
+  index: -1
+tx_cs/tx_sj_00007
+  rotate: false
+  xy: 1025, 1490
+  size: 464, 418
+  orig: 660, 612
+  offset: 133, 98
+  index: -1
+tx_cs/tx_sj_00008
+  rotate: false
+  xy: 528, 1463
+  size: 495, 445
+  orig: 660, 612
+  offset: 121, 82
+  index: -1
+tx_cs/tx_sj_00009
+  rotate: false
+  xy: 2, 1435
+  size: 524, 473
+  orig: 660, 612
+  offset: 106, 72
+  index: -1
+tx_cs/tx_sj_00010
+  rotate: false
+  xy: 1469, 1097
+  size: 439, 384
+  orig: 660, 612
+  offset: 115, 92
+  index: -1
+tx_cs/tx_sj_00011
+  rotate: false
+  xy: 1025, 1089
+  size: 442, 399
+  orig: 660, 612
+  offset: 118, 77
+  index: -1
+tx_cs/tx_sj_00012
+  rotate: false
+  xy: 2, 677
+  size: 349, 349
+  orig: 660, 612
+  offset: 155, 127
+  index: -1
+tx_cs/tx_sj_00013
+  rotate: false
+  xy: 353, 358
+  size: 349, 349
+  orig: 660, 612
+  offset: 155, 127
+  index: -1
+tx_cs/tx_sj_00014
+  rotate: false
+  xy: 2, 330
+  size: 345, 345
+  orig: 660, 612
+  offset: 157, 129
+  index: -1
+tx_cs/tx_sj_00015
+  rotate: false
+  xy: 621, 14
+  size: 341, 342
+  orig: 660, 612
+  offset: 159, 130
+  index: -1
+tx_cs/tx_sj_00016
+  rotate: false
+  xy: 964, 33
+  size: 331, 331
+  orig: 660, 612
+  offset: 164, 136
+  index: -1
+tx_cs/tx_sj_00017
+  rotate: false
+  xy: 2, 8
+  size: 314, 320
+  orig: 660, 612
+  offset: 174, 139
+  index: -1
+tx_cs/tx_sj_00018
+  rotate: true
+  xy: 318, 13
+  size: 315, 301
+  orig: 660, 612
+  offset: 174, 137
+  index: -1
+tx_cs/tx_sj_00019
+  rotate: false
+  xy: 1001, 369
+  size: 291, 306
+  orig: 660, 612
+  offset: 193, 135
+  index: -1
+tx_cs/tx_sj_00020
+  rotate: false
+  xy: 704, 366
+  size: 295, 309
+  orig: 660, 612
+  offset: 190, 133
+  index: -1

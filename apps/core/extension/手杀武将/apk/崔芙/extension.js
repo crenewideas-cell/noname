@@ -91,10 +91,7 @@ lib.init.css(lib.assetURL + 'extension/手杀武将/apk/崔芙','extension');
     character:{
         character:{
         "hy_xinxianying":["female","wei",3,["hy_jiejie","hy_qingshi"],[]],//势辛宪英
-        "hy_cuifu":["female","wei",3,["hy_caiqiu","hy_xishang"],[]],//崔芙
-            "hy_cuifu1":["female","wei",3,[],["unseen"]],
-            "hy_cuifu2":["female","wei",3,[],["unseen"]],
-            "hy_cuifu3":["female","wei",3,[],["unseen"]],
+        "hy_cuifu":["female","wei",3,["hy_caiqiu","hy_xishang"],[]],
         },
         translate:{
         "hy_xinxianying":"势辛宪英",

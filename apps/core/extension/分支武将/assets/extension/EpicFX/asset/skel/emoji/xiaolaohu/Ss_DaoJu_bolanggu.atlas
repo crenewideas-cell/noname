@@ -1,0 +1,405 @@
+
+Ss_DaoJu_bolanggu.png
+size: 891,1035
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+2hu1
+  rotate: false
+  xy: 859, 305
+  size: 29, 40
+  orig: 29, 40
+  offset: 0, 0
+  index: -1
+2hu10
+  rotate: false
+  xy: 538, 113
+  size: 70, 50
+  orig: 70, 50
+  offset: 0, 0
+  index: -1
+2hu11
+  rotate: false
+  xy: 337, 10
+  size: 51, 50
+  orig: 51, 50
+  offset: 0, 0
+  index: -1
+2hu12
+  rotate: true
+  xy: 406, 6
+  size: 97, 106
+  orig: 97, 106
+  offset: 0, 0
+  index: -1
+2hu13
+  rotate: false
+  xy: 680, 3
+  size: 69, 70
+  orig: 69, 70
+  offset: 0, 0
+  index: -1
+2hu14
+  rotate: false
+  xy: 250, 828
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1
+2hu2
+  rotate: false
+  xy: 406, 131
+  size: 18, 38
+  orig: 18, 38
+  offset: 0, 0
+  index: -1
+2hu3
+  rotate: true
+  xy: 751, 49
+  size: 24, 22
+  orig: 24, 22
+  offset: 0, 0
+  index: -1
+2hu4
+  rotate: true
+  xy: 309, 171
+  size: 95, 116
+  orig: 95, 116
+  offset: 0, 0
+  index: -1
+2hu5
+  rotate: true
+  xy: 859, 347
+  size: 48, 30
+  orig: 48, 30
+  offset: 0, 0
+  index: -1
+2hu6
+  rotate: false
+  xy: 593, 288
+  size: 132, 114
+  orig: 132, 114
+  offset: 0, 0
+  index: -1
+2hu6yan
+  rotate: false
+  xy: 163, 9
+  size: 32, 21
+  orig: 32, 21
+  offset: 0, 0
+  index: -1
+2hu8
+  rotate: false
+  xy: 538, 172
+  size: 31, 38
+  orig: 31, 38
+  offset: 0, 0
+  index: -1
+2hu9
+  rotate: false
+  xy: 294, 2
+  size: 41, 58
+  orig: 41, 58
+  offset: 0, 0
+  index: -1
+eff/caidai/caidai_001
+  rotate: false
+  xy: 209, 828
+  size: 39, 38
+  orig: 205, 205
+  offset: 74, 117
+  index: -1
+eff/caidai/caidai_002
+  rotate: false
+  xy: 775, 85
+  size: 63, 66
+  orig: 205, 205
+  offset: 64, 101
+  index: -1
+eff/caidai/caidai_003
+  rotate: false
+  xy: 610, 78
+  size: 80, 85
+  orig: 205, 205
+  offset: 59, 90
+  index: -1
+eff/caidai/caidai_004
+  rotate: false
+  xy: 514, 4
+  size: 94, 99
+  orig: 205, 205
+  offset: 53, 81
+  index: -1
+eff/caidai/caidai_005
+  rotate: true
+  xy: 427, 105
+  size: 105, 109
+  orig: 205, 205
+  offset: 49, 73
+  index: -1
+eff/caidai/caidai_006
+  rotate: true
+  xy: 704, 153
+  size: 114, 119
+  orig: 205, 205
+  offset: 45, 66
+  index: -1
+eff/caidai/caidai_007
+  rotate: true
+  xy: 577, 165
+  size: 121, 125
+  orig: 205, 205
+  offset: 42, 61
+  index: -1
+eff/caidai/caidai_008
+  rotate: true
+  xy: 727, 269
+  size: 126, 130
+  orig: 205, 205
+  offset: 39, 57
+  index: -1
+eff/caidai/caidai_009
+  rotate: true
+  xy: 442, 212
+  size: 129, 133
+  orig: 205, 205
+  offset: 38, 54
+  index: -1
+eff/caidai/caidai_010
+  rotate: false
+  xy: 309, 268
+  size: 131, 137
+  orig: 205, 205
+  offset: 37, 50
+  index: -1
+eff/caidai/caidai_011
+  rotate: false
+  xy: 614, 563
+  size: 131, 140
+  orig: 205, 205
+  offset: 37, 48
+  index: -1
+eff/caidai/caidai_012
+  rotate: true
+  xy: 154, 531
+  size: 129, 145
+  orig: 205, 205
+  offset: 37, 44
+  index: -1
+eff/caidai/caidai_013
+  rotate: true
+  xy: 301, 569
+  size: 131, 147
+  orig: 205, 205
+  offset: 36, 42
+  index: -1
+eff/caidai/caidai_014
+  rotate: false
+  xy: 747, 553
+  size: 136, 151
+  orig: 205, 205
+  offset: 34, 38
+  index: -1
+eff/caidai/caidai_015
+  rotate: true
+  xy: 152, 391
+  size: 138, 153
+  orig: 205, 205
+  offset: 33, 36
+  index: -1
+eff/caidai/caidai_016
+  rotate: false
+  xy: 747, 397
+  size: 139, 154
+  orig: 205, 205
+  offset: 32, 34
+  index: -1
+eff/caidai/caidai_017
+  rotate: true
+  xy: 151, 253
+  size: 136, 156
+  orig: 205, 205
+  offset: 31, 32
+  index: -1
+eff/caidai/caidai_018
+  rotate: false
+  xy: 607, 404
+  size: 138, 157
+  orig: 205, 205
+  offset: 30, 30
+  index: -1
+eff/caidai/caidai_019
+  rotate: true
+  xy: 447, 424
+  size: 138, 158
+  orig: 205, 205
+  offset: 30, 28
+  index: -1
+eff/caidai/caidai_020
+  rotate: false
+  xy: 307, 407
+  size: 138, 160
+  orig: 205, 205
+  offset: 30, 25
+  index: -1
+eff/caidai/caidai_021
+  rotate: false
+  xy: 597, 705
+  size: 138, 162
+  orig: 205, 205
+  offset: 29, 22
+  index: -1
+eff/caidai/caidai_022
+  rotate: true
+  xy: 450, 564
+  size: 139, 162
+  orig: 205, 205
+  offset: 29, 21
+  index: -1
+eff/caidai/caidai_023
+  rotate: false
+  xy: 737, 706
+  size: 141, 163
+  orig: 205, 205
+  offset: 28, 18
+  index: -1
+eff/caidai/caidai_024
+  rotate: false
+  xy: 154, 662
+  size: 145, 164
+  orig: 205, 205
+  offset: 28, 16
+  index: -1
+eff/caidai/caidai_025
+  rotate: false
+  xy: 2, 159
+  size: 145, 165
+  orig: 205, 205
+  offset: 27, 14
+  index: -1
+eff/caidai/caidai_026
+  rotate: false
+  xy: 301, 702
+  size: 146, 164
+  orig: 205, 205
+  offset: 27, 13
+  index: -1
+eff/caidai/caidai_027
+  rotate: false
+  xy: 449, 705
+  size: 146, 162
+  orig: 205, 205
+  offset: 27, 13
+  index: -1
+eff/caidai/caidai_028
+  rotate: false
+  xy: 511, 869
+  size: 147, 164
+  orig: 205, 205
+  offset: 27, 10
+  index: -1
+eff/caidai/caidai_029
+  rotate: false
+  xy: 2, 326
+  size: 147, 165
+  orig: 205, 205
+  offset: 27, 7
+  index: -1
+eff/caidai/caidai_030
+  rotate: false
+  xy: 2, 493
+  size: 148, 165
+  orig: 205, 205
+  offset: 26, 6
+  index: -1
+eff/caidai/caidai_031
+  rotate: false
+  xy: 2, 660
+  size: 150, 166
+  orig: 205, 205
+  offset: 26, 3
+  index: -1
+eff/caidai/caidai_032
+  rotate: false
+  xy: 209, 868
+  size: 149, 165
+  orig: 205, 205
+  offset: 26, 2
+  index: -1
+eff/caidai/caidai_033
+  rotate: false
+  xy: 360, 869
+  size: 149, 164
+  orig: 205, 205
+  offset: 26, 1
+  index: -1
+eff/caidai/caidai_034
+  rotate: false
+  xy: 660, 871
+  size: 149, 162
+  orig: 205, 205
+  offset: 26, 0
+  index: -1
+eff/caidai/caidai_035
+  rotate: true
+  xy: 2, 8
+  size: 149, 159
+  orig: 205, 205
+  offset: 26, 0
+  index: -1
+eff/caidai/caidai_036
+  rotate: false
+  xy: 149, 171
+  size: 148, 80
+  orig: 205, 205
+  offset: 26, 42
+  index: -1
+eff/caidai/caidai_037
+  rotate: true
+  xy: 811, 887
+  size: 146, 78
+  orig: 205, 205
+  offset: 27, 41
+  index: -1
+eff/caidai/caidai_038
+  rotate: false
+  xy: 447, 343
+  size: 144, 79
+  orig: 205, 205
+  offset: 28, 39
+  index: -1
+eff/caidai/caidai_039
+  rotate: false
+  xy: 692, 75
+  size: 81, 76
+  orig: 205, 205
+  offset: 29, 39
+  index: -1
+eff/caidai/caidai_040
+  rotate: true
+  xy: 610, 2
+  size: 74, 68
+  orig: 205, 205
+  offset: 35, 45
+  index: -1
+eff/glow1
+  rotate: false
+  xy: 163, 32
+  size: 129, 137
+  orig: 205, 205
+  offset: 38, 34
+  index: -1
+eff/glow2_000
+  rotate: false
+  xy: 2, 828
+  size: 205, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+qiu
+  rotate: false
+  xy: 294, 62
+  size: 110, 107
+  orig: 110, 107
+  offset: 0, 0
+  index: -1

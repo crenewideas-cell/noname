@@ -1,0 +1,139 @@
+
+SSXF_BiaoQing_PengBei_meigui.png
+size: 810,810
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+hb_00
+  rotate: false
+  xy: 2, 603
+  size: 205, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_01
+  rotate: false
+  xy: 2, 396
+  size: 205, 205
+  orig: 205, 205
+  offset: 0, 0
+  index: -1
+hb_02
+  rotate: true
+  xy: 672, 181
+  size: 139, 136
+  orig: 205, 205
+  offset: 35, 41
+  index: -1
+hb_03
+  rotate: true
+  xy: 520, 8
+  size: 145, 153
+  orig: 205, 205
+  offset: 32, 33
+  index: -1
+hb_04
+  rotate: false
+  xy: 520, 155
+  size: 150, 165
+  orig: 205, 205
+  offset: 30, 27
+  index: -1
+hb_05
+  rotate: true
+  xy: 564, 466
+  size: 154, 175
+  orig: 205, 205
+  offset: 28, 23
+  index: -1
+hb_06
+  rotate: false
+  xy: 359, 45
+  size: 159, 183
+  orig: 205, 205
+  offset: 26, 18
+  index: -1
+hb_07
+  rotate: false
+  xy: 175, 206
+  size: 165, 188
+  orig: 205, 205
+  offset: 23, 15
+  index: -1
+hb_08
+  rotate: false
+  xy: 209, 416
+  size: 169, 193
+  orig: 205, 205
+  offset: 20, 12
+  index: -1
+hb_09
+  rotate: false
+  xy: 2, 199
+  size: 171, 195
+  orig: 205, 205
+  offset: 19, 10
+  index: -1
+hb_10
+  rotate: false
+  xy: 209, 611
+  size: 174, 197
+  orig: 205, 205
+  offset: 17, 8
+  index: -1
+hb_11
+  rotate: false
+  xy: 342, 230
+  size: 175, 184
+  orig: 205, 205
+  offset: 17, 21
+  index: -1
+hb_12
+  rotate: false
+  xy: 181, 19
+  size: 176, 185
+  orig: 205, 205
+  offset: 16, 19
+  index: -1
+hb_13
+  rotate: false
+  xy: 564, 622
+  size: 177, 186
+  orig: 205, 205
+  offset: 15, 17
+  index: -1
+hb_14
+  rotate: false
+  xy: 2, 11
+  size: 177, 186
+  orig: 205, 205
+  offset: 15, 15
+  index: -1
+hb_15
+  rotate: false
+  xy: 385, 620
+  size: 177, 188
+  orig: 205, 205
+  offset: 15, 12
+  index: -1
+hb_16
+  rotate: false
+  xy: 385, 446
+  size: 177, 172
+  orig: 205, 205
+  offset: 15, 11
+  index: -1
+hb_17
+  rotate: false
+  xy: 564, 322
+  size: 176, 142
+  orig: 205, 205
+  offset: 16, 38
+  index: -1
+hb_18
+  rotate: true
+  xy: 675, 4
+  size: 175, 99
+  orig: 205, 205
+  offset: 17, 36
+  index: -1

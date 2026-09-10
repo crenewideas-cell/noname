@@ -1,0 +1,230 @@
+
+SSZBB_biaoqing_poshuidaiji.png
+size: 666,177
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bowen/bowen_00060
+  rotate: true
+  xy: 230, 18
+  size: 112, 21
+  orig: 256, 256
+  offset: 67, 168
+  index: -1
+bowen/bowen_00061
+  rotate: true
+  xy: 421, 24
+  size: 105, 22
+  orig: 256, 256
+  offset: 67, 167
+  index: -1
+bowen/bowen_00062
+  rotate: false
+  xy: 406, 131
+  size: 108, 21
+  orig: 256, 256
+  offset: 66, 167
+  index: -1
+bowen/bowen_00063
+  rotate: false
+  xy: 349, 2
+  size: 108, 19
+  orig: 256, 256
+  offset: 67, 167
+  index: -1
+bowen/bowen_00064
+  rotate: true
+  xy: 623, 53
+  size: 98, 19
+  orig: 256, 256
+  offset: 75, 167
+  index: -1
+bowen/bowen_00065
+  rotate: true
+  xy: 644, 74
+  size: 101, 20
+  orig: 256, 256
+  offset: 73, 167
+  index: -1
+bowen/bowen_00066
+  rotate: false
+  xy: 516, 108
+  size: 105, 20
+  orig: 256, 256
+  offset: 71, 167
+  index: -1
+bowen/bowen_00067
+  rotate: false
+  xy: 296, 132
+  size: 108, 20
+  orig: 256, 256
+  offset: 70, 167
+  index: -1
+bowen/bowen_00068
+  rotate: true
+  xy: 398, 23
+  size: 106, 21
+  orig: 256, 256
+  offset: 68, 167
+  index: -1
+bowen/bowen_00069
+  rotate: false
+  xy: 420, 154
+  size: 110, 21
+  orig: 256, 256
+  offset: 66, 167
+  index: -1
+bowen/bowen_00070
+  rotate: true
+  xy: 276, 21
+  size: 109, 22
+  orig: 256, 256
+  offset: 69, 167
+  index: -1
+bowen/bowen_00071
+  rotate: false
+  xy: 182, 132
+  size: 112, 22
+  orig: 256, 256
+  offset: 67, 167
+  index: -1
+bowen/bowen_00072
+  rotate: true
+  xy: 182, 17
+  size: 113, 21
+  orig: 256, 256
+  offset: 66, 168
+  index: -1
+bowen/bowen_00073
+  rotate: false
+  xy: 564, 15
+  size: 96, 21
+  orig: 256, 256
+  offset: 81, 168
+  index: -1
+bowen/bowen_00074
+  rotate: false
+  xy: 516, 38
+  size: 100, 22
+  orig: 256, 256
+  offset: 79, 167
+  index: -1
+bowen/bowen_00075
+  rotate: false
+  xy: 459, 2
+  size: 103, 22
+  orig: 256, 256
+  offset: 77, 167
+  index: -1
+bowen/bowen_00076
+  rotate: true
+  xy: 470, 26
+  size: 103, 22
+  orig: 256, 256
+  offset: 75, 167
+  index: -1
+bowen/bowen_00077
+  rotate: true
+  xy: 445, 26
+  size: 103, 23
+  orig: 256, 256
+  offset: 73, 166
+  index: -1
+bowen/bowen_00078
+  rotate: true
+  xy: 349, 23
+  size: 107, 23
+  orig: 256, 256
+  offset: 71, 166
+  index: -1
+bowen/bowen_00079
+  rotate: true
+  xy: 300, 21
+  size: 109, 23
+  orig: 256, 256
+  offset: 70, 166
+  index: -1
+bowen/bowen_00080
+  rotate: false
+  xy: 532, 153
+  size: 110, 22
+  orig: 256, 256
+  offset: 71, 167
+  index: -1
+bowen/bowen_00081
+  rotate: true
+  xy: 253, 18
+  size: 112, 21
+  orig: 256, 256
+  offset: 70, 167
+  index: -1
+bowen/bowen_00082
+  rotate: true
+  xy: 494, 27
+  size: 102, 20
+  orig: 256, 256
+  offset: 81, 167
+  index: -1
+bowen/bowen_00083
+  rotate: false
+  xy: 516, 85
+  size: 104, 21
+  orig: 256, 256
+  offset: 79, 166
+  index: -1
+bowen/bowen_00084
+  rotate: false
+  xy: 516, 62
+  size: 104, 21
+  orig: 256, 256
+  offset: 78, 166
+  index: -1
+bowen/bowen_00085
+  rotate: false
+  xy: 516, 130
+  size: 105, 21
+  orig: 256, 256
+  offset: 76, 167
+  index: -1
+bowen/bowen_00086
+  rotate: true
+  xy: 374, 23
+  size: 106, 22
+  orig: 256, 256
+  offset: 74, 166
+  index: -1
+bowen/bowen_00087
+  rotate: true
+  xy: 325, 21
+  size: 109, 22
+  orig: 256, 256
+  offset: 72, 166
+  index: -1
+bowen/bowen_00088
+  rotate: true
+  xy: 205, 19
+  size: 111, 23
+  orig: 256, 256
+  offset: 70, 166
+  index: -1
+bowen/bowen_00089
+  rotate: false
+  xy: 307, 154
+  size: 111, 21
+  orig: 256, 256
+  offset: 69, 168
+  index: -1
+shuimian/shuimian_00052
+  rotate: false
+  xy: 182, 156
+  size: 123, 19
+  orig: 256, 256
+  offset: 65, 169
+  index: -1
+shuitong
+  rotate: false
+  xy: 2, 4
+  size: 178, 171
+  orig: 178, 171
+  offset: 0, 0
+  index: -1

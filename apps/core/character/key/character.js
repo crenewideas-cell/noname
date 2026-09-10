@@ -1,12 +1,4 @@
 const characters = {
-	sp_key_yuri: {
-		sex: "female",
-		group: "qun",
-		hp: 4,
-		skills: ["mubing", "ziqu", "diaoling"],
-		groupBorder: "key",
-		names: "仲村|由理",
-	},
 	key_lucia: {
 		sex: "female",
 		group: "key",
@@ -408,13 +400,6 @@ const characters = {
 		skills: ["youlong", "luanfeng", "sakuya_junbu"],
 		names: "凤|咲夜",
 	},
-	key_youta: {
-		sex: "male",
-		group: "key",
-		hp: 4,
-		skills: [],
-		names: "成神|阳太",
-	},
 	key_rumi: {
 		sex: "female",
 		group: "key",
@@ -436,14 +421,6 @@ const characters = {
 		hp: 4,
 		skills: ["yukito_kongwu", "yukito_yaxiang"],
 		names: "国崎|往人",
-	},
-	key_crow: {
-		sex: "male",
-		group: "key",
-		hp: 4,
-		skills: [],
-		isUnseen: true,
-		names: "null|空",
 	},
 	key_asara: {
 		sex: "female",

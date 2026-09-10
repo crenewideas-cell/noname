@@ -1,0 +1,132 @@
+
+shouji.png
+size: 1561,1561
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bd01
+  rotate: true
+  xy: 369, 317
+  size: 479, 181
+  orig: 479, 181
+  offset: 0, 0
+  index: -1
+bd02_00000
+  rotate: false
+  xy: 1260, 527
+  size: 106, 112
+  orig: 700, 700
+  offset: 301, 291
+  index: -1
+bd02_00002
+  rotate: false
+  xy: 1260, 641
+  size: 198, 191
+  orig: 700, 700
+  offset: 249, 256
+  index: -1
+bd02_00004
+  rotate: true
+  xy: 365, 10
+  size: 305, 290
+  orig: 700, 700
+  offset: 197, 208
+  index: -1
+bd02_00006
+  rotate: true
+  xy: 1154, 834
+  size: 352, 342
+  orig: 700, 700
+  offset: 170, 182
+  index: -1
+bd02_00008
+  rotate: true
+  xy: 1213, 1200
+  size: 359, 346
+  orig: 700, 700
+  offset: 167, 180
+  index: -1
+bd02_00010
+  rotate: true
+  xy: 657, 53
+  size: 357, 353
+  orig: 700, 700
+  offset: 168, 171
+  index: -1
+bd02_00012
+  rotate: true
+  xy: 1012, 78
+  size: 357, 345
+  orig: 700, 700
+  offset: 169, 188
+  index: -1
+bd02_00014
+  rotate: true
+  xy: 917, 437
+  size: 364, 341
+  orig: 700, 700
+  offset: 169, 188
+  index: -1
+bd02_00016
+  rotate: true
+  xy: 2, 11
+  size: 375, 361
+  orig: 700, 700
+  offset: 164, 182
+  index: -1
+bd02_00018
+  rotate: true
+  xy: 552, 412
+  size: 389, 363
+  orig: 700, 700
+  offset: 157, 177
+  index: -1
+bd02_00020
+  rotate: false
+  xy: 810, 1188
+  size: 401, 371
+  orig: 700, 700
+  offset: 152, 173
+  index: -1
+bd02_00022
+  rotate: false
+  xy: 409, 1182
+  size: 399, 377
+  orig: 700, 700
+  offset: 148, 170
+  index: -1
+bd02_00024
+  rotate: false
+  xy: 2, 1177
+  size: 405, 382
+  orig: 700, 700
+  offset: 145, 167
+  index: -1
+bd02_00026
+  rotate: true
+  xy: 2, 388
+  size: 408, 365
+  orig: 700, 700
+  offset: 144, 163
+  index: -1
+bd02_00028
+  rotate: false
+  xy: 2, 798
+  size: 405, 377
+  orig: 700, 700
+  offset: 143, 160
+  index: -1
+bd02_00030
+  rotate: false
+  xy: 409, 803
+  size: 390, 377
+  orig: 700, 700
+  offset: 153, 158
+  index: -1
+bd02_00032
+  rotate: true
+  xy: 801, 803
+  size: 377, 351
+  orig: 700, 700
+  offset: 155, 157
+  index: -1

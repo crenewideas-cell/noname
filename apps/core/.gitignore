@@ -101,6 +101,8 @@ extension/**
 !extension/PY武将/**
 !extension/Thunder/
 !extension/Thunder/**
+!extension/分支武将/
+!extension/分支武将/**
 # Extension allowlists must not re-include source-package backup files.
 extension/**/*.bak
 extension/**/*.orig

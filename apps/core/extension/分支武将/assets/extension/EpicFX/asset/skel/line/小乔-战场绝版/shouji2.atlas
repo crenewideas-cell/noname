@@ -1,0 +1,97 @@
+
+shouji2.png
+size: 1006,1006
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tx_yinbob_00000
+  rotate: false
+  xy: 383, 476
+  size: 114, 123
+  orig: 700, 210
+  offset: 8, 82
+  index: -1
+tx_yinbob_00002
+  rotate: false
+  xy: 332, 187
+  size: 200, 169
+  orig: 700, 210
+  offset: 6, 38
+  index: -1
+tx_yinbob_00004
+  rotate: false
+  xy: 2, 407
+  size: 379, 192
+  orig: 700, 210
+  offset: 8, 12
+  index: -1
+tx_yinbob_00006
+  rotate: false
+  xy: 2, 601
+  size: 567, 201
+  orig: 700, 210
+  offset: 8, 1
+  index: -1
+tx_yinbob_00008
+  rotate: false
+  xy: 2, 804
+  size: 662, 200
+  orig: 700, 210
+  offset: 8, 1
+  index: -1
+tx_yinbob_00010
+  rotate: true
+  xy: 666, 358
+  size: 646, 186
+  orig: 700, 210
+  offset: 27, 2
+  index: -1
+tx_yinbob_00012
+  rotate: true
+  xy: 854, 417
+  size: 587, 150
+  orig: 700, 210
+  offset: 86, 2
+  index: -1
+tx_yinbob_00014
+  rotate: false
+  xy: 2, 16
+  size: 513, 152
+  orig: 700, 210
+  offset: 160, 3
+  index: -1
+tx_yinbob_00016
+  rotate: false
+  xy: 517, 7
+  size: 426, 161
+  orig: 700, 210
+  offset: 255, 4
+  index: -1
+tx_yinbob_00018
+  rotate: false
+  xy: 2, 198
+  size: 328, 158
+  orig: 700, 210
+  offset: 356, 13
+  index: -1
+tx_yinbob_00020
+  rotate: true
+  xy: 854, 170
+  size: 245, 150
+  orig: 700, 210
+  offset: 448, 27
+  index: -1
+tx_yinbob_00022
+  rotate: true
+  xy: 534, 175
+  size: 181, 138
+  orig: 700, 210
+  offset: 512, 45
+  index: -1
+tx_yinbob_00024
+  rotate: false
+  xy: 674, 238
+  size: 139, 118
+  orig: 700, 210
+  offset: 554, 61
+  index: -1

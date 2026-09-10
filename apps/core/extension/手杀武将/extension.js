@@ -2049,8 +2049,6 @@ function originalHandkill(lib, game, ui, get, ai, _status){
                 character:{
                     // 势钟会
                     dz_sp_zhonghui: ["male", "qun", 4, ["dzmbsizi", "dzmbxiezhi", "dzmbyunan", "dzmbkechang"],["zhu", "ext:手杀武将/image/dz_sp_zhonghui.jpg", "die:手杀武将/audio/die"]],
-                    // 势陆郁生
-                    mb_luyusheng: ["female", "wu", 3, ["mbrunwei", "mbshuanghuai"], ["ext:手杀武将/image/mb_luyusheng.jpg"]],
                     // 鲍信
                     mb_baoxin: ["male", "qun", 4, ["mbmutao", "mbyimou"], ["ext:手杀武将/image/mb_baoxin.jpg"]],
                     // 乐就
@@ -2065,12 +2063,8 @@ function originalHandkill(lib, game, ui, get, ai, _status){
                     sp_yujin: ['male', 'qun', 4, ['spzhenjun'], ["ext:手杀武将/image/sp_yujin.jpg", "die:手杀武将/audio/die"]],
                      // 势邓艾
                      mb_dengai: ["male", "wei", 4,["mbtuntian", "mbzaoxian", "mbjixi", ], ["ext:手杀武将/image/mb_dengai.jpg", "die:手杀武将/audio/die"]],
-                     // 集蜜袁术
-                     jm_yuanshu: ['male', 'qun', 4, ['mbjimi', 'mbmaodie'], ["ext:手杀武将/image/jm_yuanshu.jpg", "die:手杀武将/audio/die"]],
                      // 蒋琬
                      mb_jiangwan: ['male', 'shu', 3, ['mbzhenting', 'mbjincui'], ["ext:手杀武将/image/mb_jiangwan.jpg", "die:手杀武将/audio/die"]],
-                     // 木牛流马
-                     mb_muniuliuma: ['male', 'shu', 4, ['mbshezi', 'mbyixing'], ["ext:手杀武将/image/mb_muniuliuma.jpg", "die:手杀武将/audio/die"]],
                 },
                 translate: translates,
             },

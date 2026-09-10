@@ -1,0 +1,146 @@
+
+shouji.png
+size: 1983,1983
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shouji_00000
+  rotate: false
+  xy: 2, 1177
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00002
+  rotate: false
+  xy: 2, 1580
+  size: 405, 401
+  orig: 500, 525
+  offset: 55, 62
+  index: -1
+shouji_00004
+  rotate: false
+  xy: 409, 1580
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00006
+  rotate: false
+  xy: 2, 774
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00008
+  rotate: false
+  xy: 404, 1177
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00010
+  rotate: false
+  xy: 811, 1580
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00012
+  rotate: false
+  xy: 2, 371
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00014
+  rotate: false
+  xy: 404, 774
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00016
+  rotate: false
+  xy: 806, 1177
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00018
+  rotate: false
+  xy: 1213, 1580
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00020
+  rotate: false
+  xy: 404, 371
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00022
+  rotate: false
+  xy: 806, 774
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00024
+  rotate: false
+  xy: 1208, 1177
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00026
+  rotate: false
+  xy: 806, 371
+  size: 400, 401
+  orig: 500, 525
+  offset: 60, 62
+  index: -1
+shouji_00028
+  rotate: false
+  xy: 1208, 383
+  size: 388, 395
+  orig: 500, 525
+  offset: 66, 62
+  index: -1
+shouji_00030
+  rotate: false
+  xy: 1615, 1593
+  size: 363, 388
+  orig: 500, 525
+  offset: 62, 29
+  index: -1
+shouji_00032
+  rotate: true
+  xy: 2, 15
+  size: 354, 426
+  orig: 500, 525
+  offset: 89, 27
+  index: -1
+shouji_00034
+  rotate: true
+  xy: 1208, 5
+  size: 376, 399
+  orig: 500, 525
+  offset: 79, 27
+  index: -1
+shouji_00036
+  rotate: false
+  xy: 1208, 780
+  size: 393, 395
+  orig: 500, 525
+  offset: 71, 38
+  index: -1
+shouji_00038
+  rotate: true
+  xy: 1603, 786
+  size: 389, 378
+  orig: 500, 525
+  offset: 74, 53
+  index: -1

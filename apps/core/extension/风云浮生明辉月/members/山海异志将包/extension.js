@@ -10,7 +10,6 @@ export default function(lib,game,ui,get,ai,_status){return {name:"山海异志�
             "魂吕布":["male","qun",5,["moukui","qingxi","rezhiyi","boss_modao"],[]],
             "魂刘备":["male","shu",5,["refankui","xiaoguo","xinkuanggu","reluoying"],[]],
             " 魂孙权":["male","wu",5,["xinfu_langxi","xiansi","yuce","reyingzi"],[]],
-            "魂许诸":["male","wei",4,["mashu","mengjin"],[]],
             "魂甘宁":["male","wu",4,["qianxun","retiaoxin"],[]],
             "魂关羽":["male","shu",4,["feiying","boss_guihuo"],[]],
             "魂貂蝉":["male","qun",4,["oltianxiang","boss_guimei"],[]],

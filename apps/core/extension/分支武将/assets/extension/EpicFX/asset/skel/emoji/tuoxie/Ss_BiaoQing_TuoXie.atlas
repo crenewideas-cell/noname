@@ -1,0 +1,97 @@
+
+Ss_BiaoQing_TuoXie.png
+size: 1396,141
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+glow_00
+  rotate: false
+  xy: 1344, 40
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+tuoxie_00000
+  rotate: false
+  xy: 1287, 2
+  size: 55, 88
+  orig: 66, 100
+  offset: 0, 6
+  index: -1
+tuoxie_guang_00000
+  rotate: false
+  xy: 1170, 24
+  size: 115, 115
+  orig: 138, 138
+  offset: 13, 16
+  index: -1
+tuoxie_guang_00001
+  rotate: false
+  xy: 1052, 13
+  size: 116, 126
+  orig: 138, 138
+  offset: 16, 12
+  index: -1
+tuoxie_guang_00002
+  rotate: false
+  xy: 796, 9
+  size: 126, 130
+  orig: 138, 138
+  offset: 7, 8
+  index: -1
+tuoxie_guang_00003
+  rotate: true
+  xy: 924, 11
+  size: 128, 126
+  orig: 138, 138
+  offset: 6, 6
+  index: -1
+tuoxie_guang_00004
+  rotate: true
+  xy: 668, 8
+  size: 131, 126
+  orig: 138, 138
+  offset: 5, 7
+  index: -1
+tuoxie_guang_00005
+  rotate: true
+  xy: 537, 6
+  size: 133, 129
+  orig: 138, 138
+  offset: 3, 6
+  index: -1
+tuoxie_guang_00006
+  rotate: true
+  xy: 405, 5
+  size: 134, 130
+  orig: 138, 138
+  offset: 3, 5
+  index: -1
+tuoxie_guang_00007
+  rotate: true
+  xy: 137, 3
+  size: 136, 132
+  orig: 138, 138
+  offset: 2, 4
+  index: -1
+tuoxie_guang_00008
+  rotate: true
+  xy: 2, 2
+  size: 137, 133
+  orig: 138, 138
+  offset: 1, 4
+  index: -1
+tuoxie_guang_00009
+  rotate: true
+  xy: 271, 3
+  size: 136, 132
+  orig: 138, 138
+  offset: 2, 4
+  index: -1
+xieyin_00000
+  rotate: true
+  xy: 1287, 92
+  size: 47, 98
+  orig: 48, 98
+  offset: 0, 0
+  index: -1

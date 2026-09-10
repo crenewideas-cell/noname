@@ -624,10 +624,7 @@ lib.init.js(lib.assetURL + 'extension/手杀武将/apk/势魏延/meihua','hy_xia
         character:{
             "s_weiyan":["male","shu",4,["s_yinzhan","s_zhuangshi","s_zhongao"],["transform:[s_weiyan,s_weiyan2,s_weiyan3]"]],
             "s_weiyan2":["male","shu",4,["s_kuanggu","s_yinzhan","s_zhuangshi","s_zhongao"],["unseen"]],
-            "s_weiyan3":["male","shu",4,["s_kuanggu","s_yinzhan","s_zhuangshi","s_zhongao"],["unseen"]],
             "hy_zhouyu":["male","wu",4,["hy_chiyun","hy_yanhui","hy_fentao","hy_xiongzi"],["transform:[hy_zhouyu,hy_zhouyu2,hy_zhouyu3]"]],
-            "hy_zhouyu2":["male","wu",4,["hy_chiyun","hy_yanhui","hy_fentao","hy_xiongzi"],["unseen"]],
-            "hy_zhouyu3":["male","wu",4,["hy_chiyun","hy_yanhui","hy_fentao","hy_xiongzi"],["unseen"]],
             "hy_xiaoqiao":["female","wu",3,["hy_heyun","hy_yinhui"],[]],
         },
         translate:{

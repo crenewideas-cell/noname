@@ -10,7 +10,7 @@ const packs = function () {
                 cike_wei: ['cike_caocao', 'cike_caopi', 'cike_caorui', 'cike_caomao', 'cike_caosong'],
                 cike_shu: ['cike_liubei', 'cike_liushan', 'cike_liuchen', 'cike_liufeng', 'cike_liuyong'],
                 cike_wu: ['cike_sunquan', 'cike_sunce', 'cike_sunliang', 'cike_sunxiu', 'cike_sunhao'],
-                cike_extra: ['cike_lingju', 'cike_xugong'],
+                cike_extra: ['cike_lingju'],
             },
         },
         character: {
@@ -38,7 +38,6 @@ const packs = function () {
             cike_sunhao: ['male', 'wu', 18, ['cike_canshi', 'chouhai', 'cike_guiming']],
             //特殊
             cike_lingju: ['female', 'qun', 12, ['jieyuan', 'cike_yinci']],
-            cike_xugong: ['male', 'wu', 12, ['biaozhao', 'yechou']],
         },
         characterIntro: {
             wuliuqi: '伍六七，动画《刺客伍六七》及其衍生作品中的主人公，失忆前是玄武国第一刺客，失忆后成了大保发廊的高级发型师，虽然经常接些乱七八糟的廉价任务，但是伍六七却是一个假贱贱、真温柔、热血的短裤男。<br>没有记忆，身世是个谜，在大保发廊做理发师，身体伪装成任何形态，为了寻找自己的过去，走上了刺客之路。',

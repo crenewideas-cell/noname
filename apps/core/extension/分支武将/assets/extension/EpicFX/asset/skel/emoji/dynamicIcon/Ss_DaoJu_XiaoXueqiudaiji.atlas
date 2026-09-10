@@ -1,0 +1,76 @@
+
+Ss_DaoJu_XiaoXueqiudaiji.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+xiaoxueqiu/tuowei_000
+  rotate: false
+  xy: 2, 103
+  size: 32, 130
+  orig: 128, 256
+  offset: 48, 4
+  index: -1
+xiaoxueqiu/tuowei_001
+  rotate: false
+  xy: 36, 103
+  size: 32, 130
+  orig: 128, 256
+  offset: 48, 4
+  index: -1
+xiaoxueqiu/tuowei_002
+  rotate: false
+  xy: 70, 103
+  size: 32, 130
+  orig: 128, 256
+  offset: 48, 4
+  index: -1
+xiaoxueqiu/tuowei_003
+  rotate: false
+  xy: 104, 103
+  size: 32, 130
+  orig: 128, 256
+  offset: 48, 4
+  index: -1
+xiaoxueqiu/tuowei_004
+  rotate: true
+  xy: 2, 69
+  size: 32, 130
+  orig: 128, 256
+  offset: 48, 4
+  index: -1
+xiaoxueqiu/tuowei_005
+  rotate: false
+  xy: 138, 103
+  size: 32, 130
+  orig: 128, 256
+  offset: 48, 4
+  index: -1
+xiaoxueqiu/tuowei_006
+  rotate: true
+  xy: 2, 35
+  size: 32, 130
+  orig: 128, 256
+  offset: 48, 4
+  index: -1
+xiaoxueqiu/tuowei_007
+  rotate: false
+  xy: 172, 103
+  size: 31, 130
+  orig: 128, 256
+  offset: 49, 4
+  index: -1
+xiaoxueqiu/tuowei_008
+  rotate: true
+  xy: 2, 2
+  size: 31, 130
+  orig: 128, 256
+  offset: 49, 4
+  index: -1
+xiaoxueqiu/xiaoxueqiu
+  rotate: false
+  xy: 134, 68
+  size: 33, 33
+  orig: 64, 64
+  offset: 15, 16
+  index: -1

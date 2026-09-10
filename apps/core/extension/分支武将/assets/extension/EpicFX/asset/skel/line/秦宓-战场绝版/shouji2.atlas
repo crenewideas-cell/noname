@@ -1,0 +1,139 @@
+
+shouji2.png
+size: 1202,1202
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+niao_1
+  rotate: false
+  xy: 844, 812
+  size: 277, 388
+  orig: 279, 390
+  offset: 1, 1
+  index: -1
+niao_2
+  rotate: true
+  xy: 731, 625
+  size: 185, 378
+  orig: 187, 380
+  offset: 1, 1
+  index: -1
+niao_3
+  rotate: false
+  xy: 788, 924
+  size: 53, 81
+  orig: 55, 83
+  offset: 1, 1
+  index: -1
+niao_4
+  rotate: false
+  xy: 856, 181
+  size: 80, 83
+  orig: 82, 85
+  offset: 1, 1
+  index: -1
+niao_5
+  rotate: false
+  xy: 605, 411
+  size: 91, 107
+  orig: 93, 109
+  offset: 1, 1
+  index: -1
+niao_6
+  rotate: false
+  xy: 658, 28
+  size: 150, 115
+  orig: 152, 117
+  offset: 1, 1
+  index: -1
+niao_7
+  rotate: false
+  xy: 618, 145
+  size: 236, 119
+  orig: 238, 121
+  offset: 1, 1
+  index: -1
+niao_9
+  rotate: true
+  xy: 722, 404
+  size: 219, 362
+  orig: 221, 364
+  offset: 1, 1
+  index: -1
+tuowei_1_00000
+  rotate: false
+  xy: 960, 269
+  size: 240, 46
+  orig: 1165, 300
+  offset: 802, 121
+  index: -1
+tuowei_1_00002
+  rotate: false
+  xy: 618, 266
+  size: 340, 49
+  orig: 1165, 300
+  offset: 702, 126
+  index: -1
+tuowei_1_00004
+  rotate: true
+  xy: 1123, 772
+  size: 428, 69
+  orig: 1165, 300
+  offset: 613, 116
+  index: -1
+tuowei_1_00006
+  rotate: false
+  xy: 605, 317
+  size: 558, 85
+  orig: 1165, 300
+  offset: 483, 99
+  index: -1
+tuowei_1_00008
+  rotate: false
+  xy: 2, 13
+  size: 654, 107
+  orig: 1165, 300
+  offset: 359, 94
+  index: -1
+tuowei_1_00010
+  rotate: false
+  xy: 2, 520
+  size: 718, 128
+  orig: 1165, 300
+  offset: 262, 84
+  index: -1
+tuowei_1_00012
+  rotate: false
+  xy: 2, 844
+  size: 784, 161
+  orig: 1165, 300
+  offset: 137, 69
+  index: -1
+tuowei_1_00014
+  rotate: false
+  xy: 2, 1007
+  size: 840, 193
+  orig: 1165, 300
+  offset: 39, 52
+  index: -1
+tuowei_1_00016
+  rotate: false
+  xy: 2, 650
+  size: 727, 192
+  orig: 1165, 300
+  offset: 39, 30
+  index: -1
+tuowei_1_00018
+  rotate: false
+  xy: 2, 122
+  size: 614, 188
+  orig: 1165, 300
+  offset: 39, 35
+  index: -1
+tuowei_1_00020
+  rotate: false
+  xy: 2, 312
+  size: 601, 206
+  orig: 1165, 300
+  offset: 43, 44
+  index: -1

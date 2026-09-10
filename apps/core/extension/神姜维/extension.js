@@ -191,7 +191,6 @@ export default function(lib, game, ui, get, ai, _status) {
         package: {
             character: {
                 character: {
-                    mb_shen_jiangwei: ["male", "shen", 4, ["mbxinghun","mbtiantao","mbshenpei"]]
                 },
                 translate: {
                     mb_shen_jiangwei: "神姜维"

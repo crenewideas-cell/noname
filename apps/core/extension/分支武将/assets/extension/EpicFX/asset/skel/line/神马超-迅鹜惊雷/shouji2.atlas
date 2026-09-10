@@ -1,0 +1,76 @@
+
+shouji2.png
+size: 862,862
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+effects/chusha/dg2/dao2_38
+  rotate: false
+  xy: 2, 10
+  size: 343, 328
+  orig: 350, 350
+  offset: 7, 12
+  index: -1
+effects/chusha/lizi/lizi_27
+  rotate: false
+  xy: 711, 686
+  size: 143, 174
+  orig: 400, 200
+  offset: 257, 0
+  index: -1
+effects/chusha/lizi/lizi_29
+  rotate: true
+  xy: 544, 80
+  size: 225, 190
+  orig: 400, 200
+  offset: 174, 0
+  index: -1
+effects/chusha/lizi/lizi_31
+  rotate: true
+  xy: 347, 2
+  size: 303, 195
+  orig: 400, 200
+  offset: 92, 1
+  index: -1
+effects/chusha/lizi/lizi_33
+  rotate: false
+  xy: 347, 307
+  size: 340, 195
+  orig: 400, 200
+  offset: 50, 3
+  index: -1
+effects/chusha/lizi/lizi_35
+  rotate: false
+  xy: 2, 487
+  size: 342, 192
+  orig: 400, 200
+  offset: 36, 7
+  index: -1
+effects/chusha/lizi/lizi_37
+  rotate: false
+  xy: 357, 504
+  size: 347, 183
+  orig: 400, 200
+  offset: 26, 11
+  index: -1
+effects/chusha/lizi/lizi_39
+  rotate: false
+  xy: 2, 681
+  size: 353, 179
+  orig: 400, 200
+  offset: 23, 19
+  index: -1
+effects/chusha/lizi/lizi_41
+  rotate: false
+  xy: 357, 689
+  size: 352, 171
+  orig: 400, 200
+  offset: 22, 15
+  index: -1
+effects/chusha/lizi/lizi_43
+  rotate: true
+  xy: 706, 340
+  size: 344, 150
+  orig: 400, 200
+  offset: 22, 30
+  index: -1

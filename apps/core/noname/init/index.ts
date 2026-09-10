@@ -25,10 +25,14 @@ export async function boot() {
 	}
 
 	await import("./polyfill.js");
-	// 设定游戏加载时间，超过时间未加载就提醒
-	const configLoadTime = parseInt(localStorage.getItem(lib.configprefix + "loadtime") || "10000");
-	// 现在不暴露到全局变量里了，直接传给onload
-	const resetGameTimeout = setTimeout(lib.init.reset, configLoadTime);
+	// 只在持续没有加载进展时提醒，避免大量扩展累积超过总时限而误报。
+	let configLoadTime = parseInt(localStorage.getItem(lib.configprefix + "loadtime") || "20000");
+	const refreshLoadTimeout = () => {
+		clearTimeout(window.resetGameTimeout);
+		window.resetGameTimeout = setTimeout(lib.init.reset, configLoadTime > 0 ? configLoadTime : 20000);
+	};
+	const trackLoad = <T>(promise: Promise<T>) => promise.finally(refreshLoadTimeout);
+	refreshLoadTimeout();
 
 	setBackground();
 
@@ -42,22 +46,24 @@ export async function boot() {
 	setOnError({ lib, game, get, _status });
 
 	await loadConfig();
+	configLoadTime = parseInt(config.get("max_loadtime"));
+	refreshLoadTimeout();
 
 	for (const name in get.config("translate")) {
 		lib.translate[name] = get.config("translate")[name];
 	}
 
 	if (config.get("compatible") ?? true) {
-		await import("./compatible.js");
+		await trackLoad(import("./compatible.js"));
 	}
 
 	const sandboxEnabled = !config.get("debug") && !get.is.safari();
 
 	// 初始化沙盒的Realms
-	await initializeSandboxRealms(sandboxEnabled);
+	await trackLoad(initializeSandboxRealms(sandboxEnabled));
 
 	// 初始化security
-	await security.initSecurity({ lib, game, ui, get, ai, _status });
+	await trackLoad(security.initSecurity({ lib, game, ui, get, ai, _status }));
 
 	CacheContext.setProxy({ lib, game, get });
 
@@ -102,10 +108,10 @@ export async function boot() {
 	}
 	game.layout = layout;
 
-	await loadCss();
+	await trackLoad(loadCss());
 	initSheet();
 
-	await lib.init.promises.js("game", "package");
+	await trackLoad(lib.init.promises.js("game", "package"));
 	const pack = window.noname_package;
 	delete window.noname_package;
 	for (const name in pack.character) {
@@ -217,7 +223,7 @@ export async function boot() {
 	}
 
 	// 无名杀更新日志
-	await lib.init.promises.js("game", "update");
+	await trackLoad(lib.init.promises.js("game", "update"));
 	if (window.noname_update) {
 		lib.version = window.noname_update.version;
 		// 更全面的更新内容
@@ -294,15 +300,15 @@ export async function boot() {
 		}
 	});
 
-	const extensionlist = await getExtensionList();
+	const extensionlist = await trackLoad(getExtensionList());
 	if (extensionlist.length) {
 		_status.extensionLoading = [];
 		_status.extensionLoaded = [];
 		for (const i of extensionlist) {
-			await importExtension(i);
+			await trackLoad(importExtension(i));
 		}
 		if (_status.extensionLoading) {
-			await Promise.all(_status.extensionLoading);
+			await Promise.all(_status.extensionLoading.map(trackLoad));
 		}
 		delete _status.extensionLoading;
 	}
@@ -348,18 +354,18 @@ export async function boot() {
 	toLoad.push(lib.init.promises.js(`${lib.assetURL}character`, "replace"));
 	toLoad.push(lib.init.promises.js(`${lib.assetURL}character`, "perfectPairs"));
 
-	await Promise.allSettled(toLoad);
+	await Promise.allSettled(toLoad.map(trackLoad));
 
 	if (_status.importing) {
 		let promises = [];
 		for (const type in _status.importing) {
 			promises.addArray(_status.importing[type]);
 		}
-		await Promise.allSettled(promises);
+		await Promise.allSettled(promises.map(trackLoad));
 		delete _status.importing;
 	}
 
-	window.resetGameTimeout = resetGameTimeout;
+	refreshLoadTimeout();
 	const libOnload = lib.onload;
 	delete lib.onload;
 	libOnload.forEach(fn => fn());
@@ -370,7 +376,7 @@ export async function boot() {
 		ui.updatez();
 	}
 
-	await createBackground();
+	await trackLoad(createBackground());
 
 	if (lib.config.touchscreen) {
 		createTouchDraggedFilter();
@@ -499,18 +505,18 @@ export async function boot() {
 		if (!splashInRemoing) {
 			node.remove();
 		}
-		window.resetGameTimeout = setTimeout(lib.init.reset, 10000);
+		refreshLoadTimeout();
 		delete window.inSplash;
 		game.saveConfig("mode", result);
-		await importMode(result);
+		await trackLoad(importMode(result));
 	}
-	lib.storage = (await config.load(lib.config.mode, "data")) || {};
+	lib.storage = (await trackLoad(config.load(lib.config.mode, "data"))) || {};
 
 	const libOnload2 = lib.onload2;
 	delete lib.onload2;
 	libOnload2.forEach(fn => fn());
 
-	await Promise.allSettled(loadingCustomStyle);
+	await Promise.allSettled(loadingCustomStyle.map(trackLoad));
 	delete window.game;
 
 	lib.connectCharacterPack = [];
@@ -589,7 +595,7 @@ export async function boot() {
 
 	if (Array.isArray(lib.extensions)) {
 		registerOrganizedCompatibility();
-		await Promise.allSettled(lib.extensions.map(loadExtension));
+		await Promise.allSettled(lib.extensions.map(extension => trackLoad(loadExtension(extension))));
 	}
 
 	if (lib.init.startBefore) {
@@ -607,7 +613,7 @@ export async function boot() {
 	}
 	delete lib.init.start;
 	if (Array.isArray(_status.onprepare) && _status.onprepare.length) {
-		await Promise.allSettled(_status.onprepare);
+		await Promise.allSettled(_status.onprepare.map(promise => trackLoad(Promise.resolve(promise))));
 		delete _status.onprepare;
 	}
 

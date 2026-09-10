@@ -1,0 +1,76 @@
+
+Ss_Slusu_wujiang2.png
+size: 889,889
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+suduxian_00
+  rotate: false
+  xy: 488, 358
+  size: 216, 262
+  orig: 300, 300
+  offset: 57, 18
+  index: -1
+suduxian_01
+  rotate: false
+  xy: 601, 622
+  size: 270, 265
+  orig: 300, 300
+  offset: 19, 16
+  index: -1
+suduxian_02
+  rotate: false
+  xy: 2, 622
+  size: 299, 265
+  orig: 300, 300
+  offset: 0, 16
+  index: -1
+suduxian_03
+  rotate: false
+  xy: 303, 635
+  size: 296, 252
+  orig: 300, 300
+  offset: 3, 16
+  index: -1
+suduxian_04
+  rotate: true
+  xy: 255, 320
+  size: 300, 231
+  orig: 300, 300
+  offset: 0, 19
+  index: -1
+suduxian_05
+  rotate: true
+  xy: 2, 320
+  size: 300, 251
+  orig: 300, 300
+  offset: 0, 21
+  index: -1
+suduxian_06
+  rotate: true
+  xy: 2, 37
+  size: 281, 251
+  orig: 300, 300
+  offset: 5, 24
+  index: -1
+suduxian_07
+  rotate: true
+  xy: 255, 43
+  size: 275, 237
+  orig: 300, 300
+  offset: 19, 25
+  index: -1
+suduxian_08
+  rotate: true
+  xy: 494, 101
+  size: 255, 209
+  orig: 300, 300
+  offset: 38, 27
+  index: -1
+suduxian_09
+  rotate: false
+  xy: 706, 420
+  size: 181, 200
+  orig: 300, 300
+  offset: 60, 33
+  index: -1

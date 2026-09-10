@@ -1,0 +1,146 @@
+
+shouji.png
+size: 989,989
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+effect/chushatx_05_00016
+  rotate: false
+  xy: 2, 886
+  size: 111, 101
+  orig: 412, 399
+  offset: 148, 100
+  index: -1
+effect/chushatx_05_00017
+  rotate: true
+  xy: 115, 850
+  size: 137, 147
+  orig: 412, 399
+  offset: 142, 83
+  index: -1
+effect/chushatx_05_00018
+  rotate: true
+  xy: 264, 841
+  size: 146, 148
+  orig: 412, 399
+  offset: 134, 83
+  index: -1
+effect/chushatx_05_00019
+  rotate: false
+  xy: 414, 838
+  size: 156, 149
+  orig: 412, 399
+  offset: 126, 84
+  index: -1
+effect/chushatx_05_00020
+  rotate: false
+  xy: 572, 827
+  size: 161, 160
+  orig: 412, 399
+  offset: 123, 76
+  index: -1
+effect/chushatx_05_00021
+  rotate: true
+  xy: 2, 676
+  size: 172, 210
+  orig: 412, 399
+  offset: 120, 67
+  index: -1
+effect/chushatx_05_00022
+  rotate: true
+  xy: 214, 660
+  size: 176, 295
+  orig: 412, 399
+  offset: 120, 61
+  index: -1
+effect/chushatx_05_00023
+  rotate: true
+  xy: 511, 643
+  size: 181, 298
+  orig: 412, 399
+  offset: 117, 56
+  index: -1
+effect/chushatx_05_00024
+  rotate: true
+  xy: 2, 471
+  size: 187, 290
+  orig: 412, 399
+  offset: 115, 54
+  index: -1
+effect/chushatx_05_00025
+  rotate: true
+  xy: 589, 446
+  size: 195, 291
+  orig: 412, 399
+  offset: 112, 51
+  index: -1
+effect/chushatx_05_00026
+  rotate: true
+  xy: 294, 451
+  size: 190, 293
+  orig: 412, 399
+  offset: 110, 47
+  index: -1
+effect/chushatx_05_00027
+  rotate: true
+  xy: 460, 240
+  size: 204, 295
+  orig: 412, 399
+  offset: 102, 35
+  index: -1
+effect/chushatx_05_00028
+  rotate: true
+  xy: 237, 30
+  size: 208, 285
+  orig: 412, 399
+  offset: 96, 30
+  index: -1
+effect/chushatx_05_00029
+  rotate: true
+  xy: 757, 229
+  size: 215, 229
+  orig: 412, 399
+  offset: 90, 27
+  index: -1
+effect/chushatx_05_00030
+  rotate: true
+  xy: 756, 6
+  size: 221, 231
+  orig: 412, 399
+  offset: 90, 23
+  index: -1
+effect/chushatx_05_00031
+  rotate: true
+  xy: 524, 18
+  size: 220, 230
+  orig: 412, 399
+  offset: 92, 21
+  index: -1
+effect/chushatx_05_00032
+  rotate: true
+  xy: 2, 267
+  size: 202, 228
+  orig: 412, 399
+  offset: 98, 23
+  index: -1
+effect/chushatx_05_00033
+  rotate: true
+  xy: 232, 246
+  size: 203, 226
+  orig: 412, 399
+  offset: 98, 29
+  index: -1
+effect/chushatx_05_00034
+  rotate: true
+  xy: 2, 37
+  size: 207, 233
+  orig: 412, 399
+  offset: 95, 29
+  index: -1
+effect/chushatx_05_00035
+  rotate: true
+  xy: 735, 826
+  size: 161, 185
+  orig: 412, 399
+  offset: 106, 81
+  index: -1

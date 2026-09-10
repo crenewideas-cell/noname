@@ -1,0 +1,146 @@
+
+shouji.png
+size: 1610,1610
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+effect/chusha_sj_00000
+  rotate: false
+  xy: 2, 1494
+  size: 121, 114
+  orig: 420, 420
+  offset: 150, 150
+  index: -1
+effect/chusha_sj_00002
+  rotate: false
+  xy: 125, 1350
+  size: 346, 258
+  orig: 420, 420
+  offset: 37, 81
+  index: -1
+effect/chusha_sj_00004
+  rotate: true
+  xy: 1268, 596
+  size: 420, 340
+  orig: 420, 420
+  offset: 0, 40
+  index: -1
+effect/chusha_sj_00006
+  rotate: false
+  xy: 424, 365
+  size: 420, 340
+  orig: 420, 420
+  offset: 0, 40
+  index: -1
+effect/chusha_sj_00008
+  rotate: false
+  xy: 846, 352
+  size: 420, 340
+  orig: 420, 420
+  offset: 0, 40
+  index: -1
+effect/chusha_sj_00010
+  rotate: true
+  xy: 1268, 174
+  size: 420, 340
+  orig: 420, 420
+  offset: 0, 40
+  index: -1
+effect/chusha_sj_00012
+  rotate: false
+  xy: 2, 68
+  size: 420, 340
+  orig: 420, 420
+  offset: 0, 40
+  index: -1
+effect/chusha_sj_00014
+  rotate: false
+  xy: 424, 23
+  size: 420, 340
+  orig: 420, 420
+  offset: 0, 40
+  index: -1
+effect/chusha_sj_00016
+  rotate: false
+  xy: 846, 10
+  size: 420, 340
+  orig: 420, 420
+  offset: 0, 40
+  index: -1
+effect/chusha_sj_00018
+  rotate: false
+  xy: 424, 707
+  size: 420, 322
+  orig: 420, 420
+  offset: 0, 49
+  index: -1
+effect/chusha_sj_00020
+  rotate: false
+  xy: 846, 694
+  size: 420, 322
+  orig: 420, 420
+  offset: 0, 49
+  index: -1
+effect/chusha_sj_00022
+  rotate: false
+  xy: 2, 410
+  size: 420, 322
+  orig: 420, 420
+  offset: 0, 49
+  index: -1
+effect/chusha_sj_00024
+  rotate: false
+  xy: 2, 734
+  size: 420, 311
+  orig: 420, 420
+  offset: 0, 54
+  index: -1
+effect/chusha_sj_00026
+  rotate: false
+  xy: 1072, 1018
+  size: 420, 302
+  orig: 420, 420
+  offset: 0, 59
+  index: -1
+effect/chusha_sj_00028
+  rotate: false
+  xy: 671, 1031
+  size: 399, 291
+  orig: 420, 420
+  offset: 11, 59
+  index: -1
+effect/chusha_sj_00030
+  rotate: false
+  xy: 2, 1059
+  size: 333, 289
+  orig: 420, 420
+  offset: 30, 58
+  index: -1
+effect/chusha_sj_00032
+  rotate: false
+  xy: 337, 1047
+  size: 332, 289
+  orig: 420, 420
+  offset: 30, 57
+  index: -1
+effect/chusha_sj_00034
+  rotate: false
+  xy: 756, 1324
+  size: 331, 284
+  orig: 420, 420
+  offset: 31, 57
+  index: -1
+effect/chusha_sj_00036
+  rotate: false
+  xy: 1089, 1322
+  size: 288, 286
+  orig: 420, 420
+  offset: 64, 56
+  index: -1
+effect/chusha_sj_00038
+  rotate: false
+  xy: 473, 1338
+  size: 281, 270
+  orig: 420, 420
+  offset: 67, 59
+  index: -1

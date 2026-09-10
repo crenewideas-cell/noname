@@ -1,0 +1,181 @@
+
+shouji.png
+size: 1970,1970
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+baodian_kp01_00000
+  rotate: true
+  xy: 1792, 1722
+  size: 88, 89
+  orig: 597, 560
+  offset: 256, 230
+  index: -1
+baodian_kp01_00002
+  rotate: false
+  xy: 1792, 1812
+  size: 157, 156
+  orig: 597, 560
+  offset: 219, 198
+  index: -1
+baodian_kp01_00004
+  rotate: true
+  xy: 1314, 953
+  size: 215, 220
+  orig: 597, 560
+  offset: 180, 171
+  index: -1
+baodian_kp01_00006
+  rotate: true
+  xy: 1610, 513
+  size: 266, 281
+  orig: 597, 560
+  offset: 147, 140
+  index: -1
+baodian_kp01_00008
+  rotate: true
+  xy: 1221, 43
+  size: 328, 327
+  orig: 597, 560
+  offset: 113, 121
+  index: -1
+baodian_kp01_00010
+  rotate: false
+  xy: 418, 34
+  size: 389, 331
+  orig: 597, 560
+  offset: 67, 131
+  index: -1
+baodian_kp01_00012
+  rotate: false
+  xy: 2, 1187
+  size: 430, 367
+  orig: 597, 560
+  offset: 63, 123
+  index: -1
+baodian_kp01_00014
+  rotate: false
+  xy: 1344, 1170
+  size: 427, 418
+  orig: 597, 560
+  offset: 93, 109
+  index: -1
+baodian_kp01_00016
+  rotate: false
+  xy: 432, 755
+  size: 422, 393
+  orig: 597, 560
+  offset: 89, 101
+  index: -1
+baodian_kp01_00018
+  rotate: false
+  xy: 2, 3
+  size: 414, 362
+  orig: 597, 560
+  offset: 87, 90
+  index: -1
+baodian_kp01_00020
+  rotate: false
+  xy: 809, 3
+  size: 410, 366
+  orig: 597, 560
+  offset: 96, 85
+  index: -1
+baodian_kp01_00022
+  rotate: true
+  xy: 1235, 380
+  size: 398, 373
+  orig: 597, 560
+  offset: 92, 92
+  index: -1
+baodian_kp01_00024
+  rotate: false
+  xy: 901, 1595
+  size: 444, 373
+  orig: 597, 560
+  offset: 90, 88
+  index: -1
+baodian_kp01_00026
+  rotate: false
+  xy: 421, 371
+  size: 403, 382
+  orig: 597, 560
+  offset: 86, 83
+  index: -1
+baodian_kp01_00028
+  rotate: true
+  xy: 856, 373
+  size: 405, 377
+  orig: 597, 560
+  offset: 88, 82
+  index: -1
+baodian_kp01_00030
+  rotate: false
+  xy: 1550, 781
+  size: 413, 387
+  orig: 597, 560
+  offset: 83, 77
+  index: -1
+baodian_kp01_00032
+  rotate: false
+  xy: 889, 780
+  size: 423, 397
+  orig: 597, 560
+  offset: 79, 72
+  index: -1
+baodian_kp01_00034
+  rotate: false
+  xy: 2, 367
+  size: 417, 406
+  orig: 597, 560
+  offset: 91, 67
+  index: -1
+baodian_kp01_00036
+  rotate: false
+  xy: 2, 775
+  size: 428, 410
+  orig: 597, 560
+  offset: 85, 67
+  index: -1
+baodian_kp01_00038
+  rotate: false
+  xy: 452, 1150
+  size: 435, 410
+  orig: 597, 560
+  offset: 83, 73
+  index: -1
+baodian_kp01_00040
+  rotate: false
+  xy: 901, 1179
+  size: 441, 414
+  orig: 597, 560
+  offset: 79, 70
+  index: -1
+baodian_kp01_00042
+  rotate: false
+  xy: 452, 1562
+  size: 447, 406
+  orig: 597, 560
+  offset: 73, 67
+  index: -1
+baodian_kp01_00044
+  rotate: false
+  xy: 1347, 1590
+  size: 443, 378
+  orig: 597, 560
+  offset: 81, 91
+  index: -1
+baodian_kp01_00046
+  rotate: false
+  xy: 1550, 2
+  size: 410, 376
+  orig: 597, 560
+  offset: 86, 93
+  index: -1
+baodian_shanguang
+  rotate: false
+  xy: 2, 1556
+  size: 448, 412
+  orig: 448, 412
+  offset: 0, 0
+  index: -1
