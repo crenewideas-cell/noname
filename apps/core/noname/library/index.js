@@ -9,6 +9,8 @@
  * @typedef { InstanceType<typeof lib.element.Control> } Control
  */
 import { ai, get, game, _status, ui } from "noname";
+import { refreshCharacterSkins } from "../skin/index.js";
+import { openSkinGallery } from "../ui/skinGallery.js";
 import { LibInit } from "./init/index.js";
 import { Announce } from "./announce/index.js";
 import { experimental } from "./experimental/index.js";
@@ -2348,17 +2350,31 @@ export class Library {
 						}
 					},
 				},
+				presentation_style: {
+					name: "武将界面风格",
+					init: "shousha",
+					item: { shousha: "手杀", classic: "经典" },
+					intro: "调整选将、武将资料和衣橱的外观，即时生效。",
+					onclick(item) {
+						game.saveConfig("presentation_style", item);
+						document.documentElement.dataset.presentation = item === "classic" ? "classic" : "shousha";
+					},
+				},
+				skin_gallery: {
+					name: "打开武将衣橱",
+					clear: true,
+					onclick() { openSkinGallery(); },
+				},
 				change_skin: {
 					name: "开启换肤",
 					init: true,
 					intro: "在武将资料卡界面换肤，皮肤添加方法查看docs/skin-guide.md文件",
 					onclick(item) {
 						game.saveConfig("change_skin", item);
-						if (item == false) {
-							game.broadcastAll(() => {
-								lib.config.skin = {};
-								game.saveConfig("skin", lib.config.skin);
-							});
+						clearTimeout(_status.skintimeout);
+						refreshCharacterSkins();
+						if (item && lib.config.change_skin_auto && lib.config.change_skin_auto !== "off") {
+							_status.skintimeout = setTimeout(ui.click.autoskin, parseInt(lib.config.change_skin_auto));
 						}
 					},
 				},
@@ -2376,7 +2392,7 @@ export class Library {
 					onclick(item) {
 						game.saveConfig("change_skin_auto", item);
 						clearTimeout(_status.skintimeout);
-						if (item != "off") {
+						if (item != "off" && lib.config.change_skin !== false) {
 							_status.skintimeout = setTimeout(ui.click.autoskin, parseInt(item));
 						}
 					},
@@ -9033,6 +9049,11 @@ export class Library {
 		}
 	}
 	placePoppedDialog(dialog, e) {
+		const styledIntro = document.documentElement.dataset.presentation === "shousha" && dialog.id === "nodeintro";
+		if (styledIntro) {
+			// Measure wrapped text at the final width before calculating height and position.
+			dialog.style.width = Math.max(1, Math.min(360, ui.window.offsetWidth - 24)) + "px";
+		}
 		if (dialog._place_text) {
 			if (dialog._place_text.firstChild.offsetWidth >= 190 || dialog._place_text.firstChild.offsetHeight >= 30) {
 				dialog._place_text.style.marginLeft = "14px";
@@ -9048,6 +9069,9 @@ export class Library {
 		if (dialog._mod_height) {
 			height += dialog._mod_height;
 		}
+		if (styledIntro) {
+			height = Math.max(1, Math.min(height, ui.window.offsetHeight * 0.78, ui.window.offsetHeight - 24));
+		}
 		dialog.style.height = height + "px";
 		if (e.clientX / game.documentZoom < ui.window.offsetWidth / 2) {
 			dialog.style.left = e.clientX / game.documentZoom + 10 + "px";
@@ -9061,6 +9085,12 @@ export class Library {
 			idealtop = ui.window.offsetHeight - 10 - dialog.offsetHeight;
 		}
 		dialog.style.top = idealtop + "px";
+		if (styledIntro) {
+			// Keep the wider reading panel inside the engine's zoomed coordinate space.
+			const maxLeft = Math.max(12, ui.window.offsetWidth - dialog.offsetWidth - 12);
+			dialog.style.left = Math.max(12, Math.min(parseFloat(dialog.style.left) || 12, maxLeft)) + "px";
+			dialog.style.top = Math.max(12, Math.min(idealtop, ui.window.offsetHeight - dialog.offsetHeight - 12)) + "px";
+		}
 	}
 	setHover(node, func, hoveration, width) {
 		node._hoverfunc = func;

@@ -66,11 +66,10 @@ export function mergedMenuSections(name: string) {
 /** DOM state is separate from game configuration; opening menus cannot enable packs. */
 export function createPackSubmenu(parent: HTMLElement, title: string, key: string) {
 	const details = document.createElement("details");
+	details.className = "pack-submenu";
 	details.dataset.packSubmenu = key;
-	details.style.cssText = "position:relative;border-bottom:1px solid #8886;padding:7px 0;width:100%;box-sizing:border-box";
 	const summary = document.createElement("summary");
 	summary.textContent = title;
-	summary.style.cssText = "position:relative;cursor:pointer;font-size:16px;line-height:1.7";
 	details.append(summary);
 	try { details.open = sessionStorage.getItem(`noname.menu.${key}`) === "open"; } catch { /* Storage can be unavailable. */ }
 	details.addEventListener("toggle", () => {

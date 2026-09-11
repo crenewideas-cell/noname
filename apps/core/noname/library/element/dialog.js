@@ -294,6 +294,12 @@ export class Dialog extends HTMLDivElement {
 				item.innerHTML = strstr;
 			} else {
 				item = ui.create.caption(item, this.content);
+				// Mark existing name/description pairs without changing skill text or callbacks.
+				for (const label of item.querySelectorAll(".skill, .skilln")) {
+					if (label.nextElementSibling?.tagName === "DIV" && label.parentElement?.firstElementChild === label) {
+						label.parentElement.classList.add("skill-description-row");
+					}
+				}
 			}
 		}
 		// @ts-expect-error ignore

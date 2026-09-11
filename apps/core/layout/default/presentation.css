@@ -1,0 +1,575 @@
+/* Presentation only: preserve the engine's selection, layout and game state. */
+html[data-presentation="shousha"] #window .dialog.character-browser {
+	border: 1px solid #b6945b;
+	border-radius: 10px;
+	background: linear-gradient(135deg, #353029fa, #202321fa);
+	box-shadow: 0 12px 40px #0006;
+}
+html[data-presentation="shousha"] .dialog.character-browser > .content-container {
+	overscroll-behavior: contain;
+	scrollbar-width: thin;
+	scrollbar-color: #b6945b60 transparent;
+}
+html[data-presentation="shousha"] .dialog.character-browser .searcher.caption {
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: calc(100% - 32px);
+	max-width: 580px;
+	margin: 12px auto 8px;
+	padding: 0;
+}
+html[data-presentation="shousha"] .dialog.character-browser .searcher > input {
+	box-sizing: border-box;
+	flex: 1;
+	min-width: 0;
+	width: 100%;
+	height: 36px;
+	padding: 7px 12px;
+	border: 1px solid #b6945b70 !important;
+	border-radius: 6px !important;
+	background: #151c1de6;
+	color: #f4e6cb;
+	font: 14px/1.5 "Microsoft YaHei", "PingFang SC", sans-serif !important;
+	text-align: left !important;
+	text-shadow: none;
+	box-shadow: inset 0 2px 5px #0003;
+}
+html[data-presentation="shousha"] .dialog.character-browser .searcher > input::placeholder {
+	color: #b0a58f;
+	opacity: 1;
+}
+html[data-presentation="shousha"] .dialog.character-browser .searcher > .button {
+	box-sizing: border-box;
+	flex: none;
+	width: auto;
+	height: 36px;
+	margin: 0;
+	padding: 0 16px;
+	font-size: 14px;
+	line-height: 34px;
+	border: 1px solid #b6945b85;
+	border-radius: 6px;
+	background: linear-gradient(#776040, #4e412f);
+	color: #ffe9be;
+}
+html[data-presentation="shousha"] .dialog.character-browser .character-filters {
+	box-sizing: border-box;
+	width: calc(100% - 32px);
+	margin: 0 auto 12px;
+	padding: 5px 0 12px;
+	font: 14px/1.8 "Microsoft YaHei", "PingFang SC", sans-serif !important;
+	border-bottom: 1px solid #b6945b35;
+	text-align: center;
+}
+html[data-presentation="shousha"] .dialog.character-browser .character-filters > span {
+	display: inline-block;
+	min-width: 22px;
+	margin: 2px 0;
+	padding: 2px 0;
+	border-radius: 4px;
+	color: #bfa987;
+	cursor: pointer;
+}
+html[data-presentation="shousha"] .dialog.character-browser .character-filter-groups {
+	margin-top: 8px !important;
+	font-size: 14px !important;
+	line-height: 1.6;
+}
+html[data-presentation="shousha"] .dialog.character-browser .character-filter-groups > .tdnode {
+	box-sizing: border-box;
+	min-width: 34px;
+	height: auto;
+	min-height: 32px;
+	margin: 3px !important;
+	padding: 5px 10px;
+	font-size: 14px;
+	line-height: 22px;
+	border: 1px solid #b6945b30;
+	border-radius: 5px;
+	background: #161b1b80;
+	color: #ded3bc;
+	box-shadow: none;
+}
+html[data-presentation="shousha"] .dialog.character-browser .character-filter-groups > span:empty {
+	display: none;
+}
+html[data-presentation="shousha"] .dialog.character-browser .character-filter-packs {
+	box-sizing: border-box;
+	max-height: 140px;
+	padding: 8px;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	border: 1px solid #b6945b30;
+	border-radius: 6px;
+	background: #141a1b80;
+}
+html[data-presentation="shousha"] .dialog.character-browser .character-filter-packs > div {
+	padding: 4px 8px;
+	font: 13px/1.6 "Microsoft YaHei", "PingFang SC", sans-serif !important;
+	border-radius: 4px;
+	color: #d4c4a8;
+}
+html[data-presentation="shousha"] .dialog.character-browser .character-filters .thundertext {
+	background: linear-gradient(#816640, #58452f);
+	color: #ffe6b3 !important;
+	box-shadow: inset 0 0 0 1px #d0ad6b;
+	text-shadow: none;
+}
+html[data-presentation="shousha"] .dialog.character-browser .buttons {
+	box-sizing: border-box;
+	padding: 4px 8px 12px;
+	width: calc(100% - 16px);
+	margin-left: 8px;
+	margin-right: 8px;
+	text-align: center;
+}
+html[data-presentation="shousha"] .dialog.character-browser .buttons > .button.character {
+	margin: 7px;
+}
+html[data-presentation="shousha"] .dialog.character-browser input:focus-visible,
+html[data-presentation="shousha"] .dialog.character-browser .button:focus-visible {
+	outline: 2px solid #e0bb77;
+	outline-offset: 2px;
+}
+.character-pack-label {
+	color: white;
+}
+html[data-presentation="shousha"] .character-pack-label {
+	color: #786044;
+}
+.charactercard .skin-card-entry {
+	position: absolute;
+	bottom: 8px;
+	right: 8px;
+	z-index: 3;
+	padding: 7px 12px;
+	border: 1px solid #c5a16a;
+	border-radius: 4px;
+	background: #423329eb;
+	color: #f1dfba;
+	font:
+		14px/1.3 "Microsoft YaHei",
+		sans-serif;
+	cursor: pointer;
+}
+html[data-presentation="shousha"] .menubg.charactercard {
+	background: linear-gradient(120deg, #efe2c8, #d7c3a3);
+	color: #38271d;
+	border: 1px solid #b39154;
+	box-shadow:
+		0 0 0 4px #302820,
+		0 0 0 5px #9b7846,
+		0 16px 60px #0009;
+	text-shadow: none;
+}
+html[data-presentation="shousha"] .charactercard > .menubutton.large {
+	color: #f1dfba;
+	background-color: #423329;
+	border-color: #ad864d;
+	text-shadow: 0 1px 2px #000;
+}
+html[data-presentation="shousha"] .charactercard > .menubutton.active {
+	background: #833c32;
+	box-shadow: inset 0 0 0 1px #d0ad72;
+}
+html[data-presentation="shousha"] .dialog .button.character {
+	border-radius: 5px;
+	box-shadow:
+		0 0 0 1px #b28e56,
+		0 3px 8px #0009;
+}
+html[data-presentation="shousha"] .dialog .button.character.selected {
+	box-shadow:
+		0 0 0 2px #ffe0a0,
+		0 0 0 4px #8c3f30,
+		0 0 18px #efb951;
+}
+html[data-presentation="shousha"] .dialog .button.character > .name {
+	text-shadow:
+		0 1px 3px #000,
+		1px 0 3px #000;
+}
+.skin-gallery-entry {
+	position: relative;
+	display: block;
+	margin: 12px auto;
+	padding: 9px 18px;
+	border: 1px solid #b39154;
+	border-radius: 4px;
+	background: #423329;
+	color: #f1dfba;
+	cursor: pointer;
+	font: inherit;
+}
+.noname-skin-gallery {
+	--skin-gold: #c5a16a;
+	--skin-ink: #362b22;
+	box-sizing: border-box;
+	position: fixed;
+	inset: 0;
+	margin: auto;
+	padding: 0;
+	width: min(960px, calc(100vw - 32px));
+	height: min(670px, calc(100vh - 32px));
+	height: min(670px, calc(100dvh - 32px));
+	max-width: none;
+	max-height: none;
+	overflow: hidden;
+	border: 1px solid var(--skin-gold);
+	border-radius: 10px;
+	background: #e9dcc3;
+	color: var(--skin-ink);
+	box-shadow:
+		0 0 0 3px #32291f,
+		0 24px 90px #0009;
+	font:
+		15px/1.5 "Microsoft YaHei",
+		"PingFang SC",
+		sans-serif;
+	text-align: left;
+	text-shadow: none;
+	user-select: text;
+	color-scheme: light;
+}
+.noname-skin-gallery[open] {
+	display: flex;
+	flex-direction: column;
+}
+.noname-skin-gallery::backdrop {
+	background: #111318c9;
+}
+.noname-skin-gallery *,
+.noname-skin-gallery *::before,
+.noname-skin-gallery *::after {
+	box-sizing: border-box;
+}
+.noname-skin-gallery div {
+	position: relative;
+	display: block;
+}
+.noname-skin-gallery button,
+.noname-skin-gallery input {
+	position: relative;
+	font: inherit;
+	text-shadow: none;
+	margin: 0;
+	transform: none;
+	box-shadow: none;
+}
+.noname-skin-gallery button {
+	cursor: pointer;
+	transition: background-color 0.15s;
+}
+.noname-skin-gallery button:disabled {
+	cursor: default;
+	opacity: 0.55;
+}
+.noname-skin-gallery button:focus-visible,
+.noname-skin-gallery input:focus-visible,
+.skin-gallery-entry:focus-visible {
+	outline: 3px solid #a5452f;
+	outline-offset: 3px;
+}
+.noname-skin-gallery h2,
+.noname-skin-gallery h3,
+.noname-skin-gallery p {
+	margin: 0;
+}
+.noname-skin-gallery .skin-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 17px 26px;
+	flex: none;
+	border-bottom: 1px solid #a38353;
+	background: linear-gradient(100deg, #302823, #4e3b2a);
+	color: #f1dfba;
+}
+.noname-skin-gallery .skin-eyebrow {
+	display: block;
+	font-size: 11px;
+	letter-spacing: 0.25em;
+	color: #96703f;
+}
+.noname-skin-gallery .skin-header .skin-eyebrow {
+	color: #cfb488;
+}
+.noname-skin-gallery h2 {
+	font:
+		26px/1.4 "STKaiti",
+		"KaiTi",
+		serif;
+	letter-spacing: 0.15em;
+}
+.noname-skin-gallery .skin-close {
+	background: transparent;
+	border: 1px solid #ac8b57;
+	border-radius: 4px;
+	color: #f1dfba;
+	padding: 7px 16px;
+}
+.noname-skin-gallery .skin-body {
+	display: flex;
+	flex: 1;
+	min-height: 0;
+	overflow: hidden;
+}
+.noname-skin-gallery .skin-sidebar {
+	width: 185px;
+	flex: none;
+	display: flex;
+	flex-direction: column;
+	padding: 18px 12px 8px;
+	border-right: 1px solid #c4b190;
+	background: #dac9ab;
+}
+.noname-skin-gallery .skin-search {
+	width: 100%;
+	min-height: 36px;
+	padding: 8px;
+	border: 1px solid #b49b74;
+	background: #f5ebd8;
+	color: #382d25;
+	border-radius: 4px;
+	font-size: 12px;
+}
+.noname-skin-gallery .skin-characters {
+	overflow: auto;
+	overscroll-behavior: contain;
+	margin-top: 12px;
+	padding: 3px;
+}
+.noname-skin-gallery .skin-character {
+	display: block;
+	width: 100%;
+	text-align: left;
+	padding: 10px 12px;
+	margin-bottom: 4px;
+	border: 1px solid transparent;
+	background: transparent;
+	color: #534331;
+	border-radius: 4px;
+}
+.noname-skin-gallery .skin-character:hover {
+	background: #e9dcc3;
+}
+.noname-skin-gallery .skin-character[aria-current="true"] {
+	color: #fff0d3;
+	background: #793c30;
+	border-color: #a36947;
+}
+.noname-skin-gallery .skin-detail {
+	flex: 1;
+	min-width: 0;
+	overflow: auto;
+	overscroll-behavior: contain;
+	padding: 22px 28px;
+	background: radial-gradient(ellipse at 80% 15%, #faf2e2, transparent 65%);
+}
+.noname-skin-gallery .skin-hero {
+	display: flex;
+	gap: 30px;
+	align-items: center;
+}
+.noname-skin-gallery .skin-preview {
+	width: 205px;
+	height: 282px;
+	flex: none;
+	background-color: #44372b;
+	background-position: center;
+	background-size: cover;
+	border: 3px solid #6a4c31;
+	outline: 1px solid #c5a16a;
+	outline-offset: 3px;
+	border-radius: 5px;
+	box-shadow: 0 10px 20px #4b351d30;
+}
+.noname-skin-gallery .skin-info {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+.noname-skin-gallery .skin-character-name {
+	font:
+		36px/1.5 "STKaiti",
+		"KaiTi",
+		serif;
+	letter-spacing: 0.12em;
+	margin: 5px 0 14px;
+}
+.noname-skin-gallery .skin-name {
+	font-size: 18px;
+	color: #854030;
+	margin-bottom: 6px;
+}
+.noname-skin-gallery .skin-source {
+	color: #796650;
+	font-size: 12px;
+}
+.noname-skin-gallery .skin-hint {
+	border-top: 1px solid #caba9c;
+	margin-top: 24px;
+	padding-top: 16px;
+	color: #74624e;
+	font-size: 12px;
+	max-width: 220px;
+}
+.noname-skin-gallery .skin-choices {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 25px;
+	padding: 4px;
+}
+.noname-skin-gallery .skin-choice {
+	width: 100px;
+	padding: 5px;
+	border: 1px solid #c4ae88;
+	border-radius: 4px;
+	background: #f6ecda;
+	color: #685039;
+}
+.noname-skin-gallery .skin-choice[aria-pressed="true"] {
+	border-color: #813a2c;
+	outline: 2px solid #813a2c;
+	color: #813a2c;
+	background: #f9e3c6;
+}
+.noname-skin-gallery .skin-choice span {
+	display: block;
+	overflow-wrap: anywhere;
+	font-size: 12px;
+	margin-top: 6px;
+}
+.noname-skin-gallery .skin-thumbnail {
+	height: 93px;
+	border-radius: 2px;
+	background-color: #44372b;
+	background-position: top center;
+	background-size: cover;
+}
+.noname-skin-gallery .skin-footer {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex: none;
+	padding: 15px 24px;
+	border-top: 1px solid #c4b190;
+	background: #e0cfb1;
+}
+.noname-skin-gallery .skin-status {
+	flex: 1;
+	color: #736047;
+	font-size: 12px;
+}
+.noname-skin-gallery .skin-error {
+	color: #9a2c22;
+}
+.noname-skin-gallery .skin-retry {
+	border: 1px solid #aa8d61;
+	background: transparent;
+	color: #685039;
+	border-radius: 4px;
+	padding: 8px 15px;
+}
+.noname-skin-gallery .skin-apply {
+	min-width: 114px;
+	border: 1px solid #713124;
+	border-radius: 4px;
+	padding: 9px 18px;
+	color: #ffedc9;
+	background: #853e2e;
+}
+.noname-skin-gallery .skin-empty {
+	font-size: 12px;
+	padding: 12px;
+	color: #796650;
+}
+html[data-presentation="classic"] .noname-skin-gallery {
+	border-radius: 6px;
+	background: #e7e5df;
+}
+html[data-presentation="classic"] .noname-skin-gallery .skin-header {
+	background: #383b40;
+}
+html[data-presentation="classic"] .noname-skin-gallery .skin-sidebar,
+html[data-presentation="classic"] .noname-skin-gallery .skin-footer {
+	background: #d9d7d1;
+}
+@media (max-width: 650px) {
+	.noname-skin-gallery {
+		width: calc(100vw - 16px);
+		height: calc(100vh - 16px);
+		height: calc(100dvh - 16px);
+	}
+	.noname-skin-gallery .skin-header {
+		padding: 12px 16px;
+	}
+	.noname-skin-gallery .skin-body {
+		flex-direction: column;
+	}
+	.noname-skin-gallery .skin-sidebar {
+		width: 100%;
+		padding: 8px 12px;
+		border-right: 0;
+		border-bottom: 1px solid #c4b190;
+	}
+	.noname-skin-gallery .skin-characters {
+		display: flex;
+		gap: 6px;
+		max-height: 55px;
+		margin-top: 7px;
+	}
+	.noname-skin-gallery .skin-character {
+		width: auto;
+		flex: none;
+		padding: 6px 12px;
+		margin: 0;
+	}
+	.noname-skin-gallery .skin-detail {
+		padding: 18px;
+	}
+	.noname-skin-gallery .skin-hero {
+		gap: 20px;
+	}
+	.noname-skin-gallery .skin-preview {
+		width: 42%;
+		height: auto;
+		aspect-ratio: 205/282;
+	}
+	.noname-skin-gallery .skin-character-name {
+		font-size: 27px;
+		margin-bottom: 8px;
+	}
+	.noname-skin-gallery .skin-hint {
+		margin-top: 12px;
+		padding-top: 10px;
+	}
+	.noname-skin-gallery .skin-choices {
+		margin-top: 18px;
+		gap: 10px;
+	}
+	.noname-skin-gallery .skin-choice {
+		width: 86px;
+	}
+	.noname-skin-gallery .skin-thumbnail {
+		height: 80px;
+	}
+	.noname-skin-gallery .skin-footer {
+		flex-wrap: wrap;
+		padding: 10px 14px;
+		gap: 8px;
+	}
+	.noname-skin-gallery .skin-status {
+		flex-basis: 100%;
+	}
+	.noname-skin-gallery .skin-apply {
+		margin-left: auto;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.noname-skin-gallery button {
+		transition: none;
+	}
+}

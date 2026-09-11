@@ -1,0 +1,155 @@
+/* Reuse the engine's dialog and popup lifecycle; no skill hooks or timers are replaced. */
+html[data-presentation="shousha"] #window .dialog.popped,
+html[data-presentation="shousha"] #arena > .dialog:not(.fullwidth):not(.fullheight) {
+	border: 1px solid #b59359;
+	border-radius: 7px;
+	background: linear-gradient(135deg, #363027f5, #211e1bf5);
+	color: #eee0c6;
+	box-shadow:
+		0 0 0 2px #1d1b17aa,
+		0 10px 30px #0007;
+	text-shadow: 0 1px 1px #0008;
+}
+html[data-presentation="shousha"] .dialog .caption {
+	font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+	line-height: 1.65;
+	color: #f3d6a0;
+	white-space: normal;
+	overflow-wrap: anywhere;
+}
+html[data-presentation="shousha"] .dialog .text {
+	font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+	font-size: 15px;
+	line-height: 1.8;
+	color: #e7ddc9;
+	text-align: start;
+	overflow-wrap: anywhere;
+}
+html[data-presentation="shousha"] .dialog .text.center {
+	text-align: center;
+}
+html[data-presentation="shousha"] .dialog .skill,
+html[data-presentation="shousha"] .dialog .skilln {
+	color: #edc889;
+	font-weight: 600;
+	line-height: 1.7;
+	white-space: normal;
+	overflow-wrap: anywhere;
+}
+html[data-presentation="shousha"] .dialog .skill-description-row {
+	display: grid;
+	grid-template-columns: minmax(60px, 22%) minmax(0, 1fr);
+	column-gap: 12px;
+	margin: 9px 0;
+	padding: 10px 0;
+	border-top: 1px solid #b593593b;
+	text-align: left;
+}
+html[data-presentation="shousha"] .dialog .skill-description-row > div {
+	position: relative;
+	width: auto !important;
+	min-width: 0;
+	left: auto;
+	font-size: 15px;
+	line-height: 1.8;
+	overflow-wrap: anywhere;
+}
+html[data-presentation="shousha"] .dialog .skill-description-row > div:not(.skill):not(.skilln) {
+	color: #e7ddc9;
+}
+html[data-presentation="shousha"] .dialog .skillinfo {
+	margin-bottom: 10px;
+	line-height: 1.8;
+}
+/* A reading panel uses the full line for prose instead of a narrow second column. */
+html[data-presentation="shousha"] #window > #nodeintro.dialog.popped {
+	box-sizing: border-box;
+	background: linear-gradient(120deg, #34312cfc, #222624fc);
+	border-radius: 10px;
+	text-shadow: none;
+}
+html[data-presentation="shousha"] #nodeintro.dialog > .content-container {
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	scrollbar-width: thin;
+	scrollbar-color: #b6945b60 transparent;
+}
+html[data-presentation="shousha"] #nodeintro.dialog .content {
+	box-sizing: border-box;
+	padding: 8px 16px 16px;
+}
+html[data-presentation="shousha"] #nodeintro.dialog .content > .caption {
+	box-sizing: border-box;
+	width: 100%;
+	margin: 0;
+	padding: 8px 0;
+	font-size: 17px;
+	line-height: 1.5;
+}
+html[data-presentation="shousha"] #nodeintro.dialog .content > .caption:first-child {
+	padding: 10px 0 12px;
+	border-bottom: 1px solid #b6945b40;
+	color: #f6dca7;
+	letter-spacing: 0.06em;
+}
+html[data-presentation="shousha"] #nodeintro.dialog .skill-description-row {
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: 7px;
+	margin: 0;
+	padding: 12px 0;
+}
+html[data-presentation="shousha"] #nodeintro.dialog .skill-description-row > .skill,
+html[data-presentation="shousha"] #nodeintro.dialog .skill-description-row > .skilln {
+	justify-self: start;
+	padding: 2px 7px;
+	border-radius: 4px;
+	background: #b6945b20;
+	color: #edc889;
+	font-size: 14px;
+}
+html[data-presentation="shousha"] #nodeintro.dialog .skill-description-row > div:not(.skill):not(.skilln) {
+	font-size: 14px;
+	line-height: 1.85;
+	text-align: left;
+	color: #ded8ca;
+}
+html[data-presentation="shousha"] #nodeintro.dialog .text {
+	font-size: 14px;
+	line-height: 1.8;
+}
+html[data-presentation="shousha"] .player > .damage.normal-font {
+	box-sizing: border-box;
+	width: max-content;
+	max-width: calc(100% + 32px);
+	height: auto;
+	min-height: 28px;
+	padding: 5px 12px;
+	border: 1px solid #bea36a;
+	border-radius: 4px;
+	background: linear-gradient(90deg, #242a20e8, #4d5032f5, #242a20e8);
+	color: #f2dd9f;
+	font:
+		16px/1.5 "xinwei",
+		"Microsoft YaHei",
+		sans-serif;
+	text-shadow: 0 1px 2px #000;
+	white-space: normal;
+	overflow-wrap: anywhere;
+	pointer-events: none;
+}
+html[data-presentation="shousha"] #control > .control,
+html[data-presentation="shousha"] #control > .skillControl {
+	border: 1px solid #b79356;
+	border-radius: 5px;
+	background: linear-gradient(#695039, #3b2e25);
+	color: #f5dfb4;
+	text-shadow: 0 1px 2px #000;
+}
+html[data-presentation="shousha"] #control > .control > div {
+	line-height: 1.5;
+}
+html[data-presentation="shousha"] #control > .control > div:focus-visible {
+	outline: 2px solid #e7c079;
+	outline-offset: 2px;
+}

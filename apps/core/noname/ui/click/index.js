@@ -1,3 +1,5 @@
+import { getSkinService } from "../../skin/index.js";
+import { openSkinGallery } from "../skinGallery.js";
 import { lib, game, get, _status, ui } from "noname";
 export class Click {
 	/**
@@ -450,7 +452,7 @@ export class Click {
 			}
 		};
 		var finish = function () {
-			if (lib.config.change_skin_auto != "off") {
+			if (lib.config.change_skin !== false && lib.config.change_skin_auto && lib.config.change_skin_auto != "off") {
 				_status.skintimeout = setTimeout(ui.click.autoskin, parseInt(lib.config.change_skin_auto));
 			}
 		};
@@ -489,77 +491,23 @@ export class Click {
 		};
 		autoskin();
 	}
-	skin(avatar, name, callback) {
-		let nowSkin = "defaultSkin";
-		if (name.startsWith("gz_")) {
-			name = name.slice(3);
-		}
-		if (lib.config.skin[name]) {
-			nowSkin = lib.config.skin[name][1];
-		}
-		var fakeavatar = avatar.cloneNode(true);
-		var finish = function (bool) {
-			var player = avatar.parentNode;
-			if (bool) {
-				fakeavatar.style.boxShadow = "none";
-				player.insertBefore(fakeavatar, avatar.nextSibling);
-				setTimeout(function () {
-					fakeavatar.delete();
-				}, 100);
-			}
-			if (bool && lib.config.animation && !lib.config.low_performance) {
-				player.$rare();
-			}
-			if (callback) {
-				callback(bool);
-			}
-		};
-		const src = get.skinPath(name);
-		if (!src) {
-			finish(false);
-			return;
-		}
-		const defaultFolder = src;
-		// @ts-expect-error ignore
-		game.getFileList(
-			defaultFolder,
-			(folders, files) => {
-				if (files.length) {
-					const list = [...files, "defaultSkin"].filter(i => i != nowSkin);
-					if (list.length) {
-						const skin = list.randomGet();
-						if (skin === "defaultSkin") {
-							delete lib.config.skin[name];
-							if (lib.characterSubstitute[name]) {
-								for (const nameList of lib.characterSubstitute[name]) {
-									const subName = nameList[0];
-									delete lib.config.skin[subName];
-								}
-							}
-						} else {
-							lib.config.skin[name] = [skin, `${defaultFolder}${skin}`];
-							if (lib.characterSubstitute[name]) {
-								for (const nameList of lib.characterSubstitute[name]) {
-									const subName = nameList[0],
-										[fold, prefix] = skin.split(".");
-									lib.config.skin[subName] = [name, `${defaultFolder}/${fold}/${subName}.${prefix}`];
-								}
-							}
-						}
-						game.saveConfig("skin", lib.config.skin);
-						avatar.setBackground(name, "character");
-						finish(true);
-					} else {
-						finish(false);
-					}
-				} else {
-					finish(false);
+	async skin(avatar, name, callback) {
+		let changed = false;
+		try {
+			if (lib.config.change_skin !== false && name && avatar?.isConnected) {
+				const store = getSkinService();
+				const { skins } = await store.list(name);
+				const choices = [null, ...skins.map(skin => skin.id)].filter(id => id !== store.current(name));
+				// Do not apply delayed discovery to a replaced or transformed avatar.
+				if (choices.length && lib.config.change_skin !== false && avatar.isConnected && (!avatar.dataset.skinCharacter || avatar.dataset.skinCharacter === name)) {
+					changed = await store.apply(name, choices[Math.floor(Math.random() * choices.length)]);
 				}
-			},
-			() => {
-				finish(false);
 			}
-		);
+		} catch {
+			// Cosmetic failures must not break the scheduler or a game event.
+		} finally {
+			callback?.(changed);
+		}
 	}
 	touchpop(forced) {
 		if (lib.config.touchscreen || forced) {
@@ -3291,11 +3239,6 @@ export class Click {
 		};
 		var uiintro = ui.create.div(".menubg.charactercard", layer);
 		var playerbg = ui.create.div(".menubutton.large.ava", uiintro);
-		let iSTemp = false;
-		if (!lib.character[audioName] && lib.characterSubstitute[name]?.some(skin => skin[0] == audioName)) {
-			iSTemp = true;
-			lib.character[audioName] = ["", "", 0, [], (lib.characterSubstitute[name].find(i => i[0] == audioName) || [audioName, []])[1]];
-		}
 		var bg = ui.create
 			.div(".avatar", playerbg, function () {
 				if (changeskinfunc) {
@@ -3303,140 +3246,16 @@ export class Click {
 				}
 			})
 			.setBackground(audioName || name, "character");
-		if (iSTemp) {
-			delete lib.character[audioName];
-		}
 		var changeskinfunc = null;
-		var nameskin = name;
-		var nameskin2 = name;
-		var gzbool = false;
-		if (nameskin.startsWith("gz_shibing")) {
-			nameskin = nameskin.slice(3, 11);
-		} else if (nameskin.startsWith("gz_")) {
-			nameskin = nameskin.slice(3);
-			gzbool = true;
-		}
 		let refreshSkin = null;
-		if (lib.config.change_skin) {
-			let node, avatars;
-			const info = get.character(name),
-				src = get.skinPath(name);
-			if (src) {
-				const createButtons = list => {
-					if (!list.length) {
-						return;
-					}
-					if (list.length >= 6) {
-						avatars.classList.add("scroll");
-						if (lib.config.touchscreen) {
-							lib.setScroll(avatars);
-						}
-					}
-					for (const i of ["originSkin", ...list]) {
-						const button = ui.create.div(avatars, function () {
-							playerbg.classList.remove("scroll");
-							if (this._link) {
-								const skinname = this._skinName,
-									src = this._link;
-								lib.config.skin[nameskin] = [skinname, src];
-								if (lib.characterSubstitute[nameskin]) {
-									for (const nameList of lib.characterSubstitute[nameskin]) {
-										const subName = nameList[0],
-											[fold, prefix] = skinname.split(".");
-										lib.config.skin[subName] = [skinname, `${src.split("/").slice(0, -1).join("/")}/${fold}/${subName}.${prefix}`];
-									}
-								}
-								bg.style.backgroundImage = this.style.backgroundImage;
-								if (sourcenode) {
-									sourcenode.style.backgroundImage = this.style.backgroundImage;
-								}
-								if (avatar) {
-									avatar.style.backgroundImage = this.style.backgroundImage;
-								}
-								game.saveConfig("skin", lib.config.skin);
-							} else {
-								delete lib.config.skin[nameskin];
-								if (lib.characterSubstitute[nameskin]) {
-									for (const nameList of lib.characterSubstitute[nameskin]) {
-										const subName = nameList[0];
-										delete lib.config.skin[subName];
-									}
-								}
-								if (gzbool && lib.character[nameskin2].hasSkinInGuozhan && lib.config.mode_config.guozhan.guozhanSkin) {
-									bg.setBackground(audioName || nameskin2, "character");
-									if (sourcenode) {
-										sourcenode.setBackground(audioName || nameskin2, "character");
-									}
-									if (avatar) {
-										avatar.setBackground(audioName || nameskin2, "character");
-									}
-								} else {
-									bg.setBackground(audioName || nameskin, "character");
-									if (sourcenode) {
-										sourcenode.setBackground(audioName || nameskin, "character");
-									}
-									if (avatar) {
-										avatar.setBackground(audioName || nameskin, "character");
-									}
-								}
-								game.saveConfig("skin", lib.config.skin);
-							}
-							if (refreshSkin) {
-								refreshSkin();
-							}
-							if (applyViewMode) {
-								applyViewMode("intro");
-							}
-						});
-						if (i == "originSkin") {
-							if (gzbool && lib.character[nameskin2].hasSkinInGuozhan && lib.config.mode_config.guozhan.guozhanSkin) {
-								button.setBackground(audioName || nameskin2, "character", "noskin");
-							} else {
-								button.setBackground(audioName || nameskin, "character", "noskin");
-							}
-						} else {
-							const [skinname, src] = i;
-							button._link = src;
-							button._skinName = skinname;
-							if (name == audioName) {
-								button.setBackgroundImage(src);
-							} else {
-								const [fold, prefix] = skinname.split(".");
-								button.setBackgroundImage(`${src.split("/").slice(0, -1).join("/")}/${fold}/${audioName}.${prefix}`);
-							}
-						}
-					}
-				};
-				let defaultFolder = src;
-				game.getFileList(
-					defaultFolder,
-					(folders, files) => {
-						if (files.length && !node) {
-							node = ui.create.div(".changeskin", "可换肤", playerbg);
-							avatars = ui.create.div(".avatars", playerbg);
-							changeskinfunc = function () {
-								playerbg.classList.add("scroll");
-								if (node._created) {
-									return;
-								}
-								node._created = true;
-								game.getFileList(
-									defaultFolder,
-									(folders, files) => {
-										const list = files.map(file => {
-											let src = `${defaultFolder}${file}`;
-											return [file, src];
-										});
-										createButtons(list);
-									},
-									() => {}
-								);
-							};
-						}
-					},
-					() => {}
-				);
-			}
+		if (lib.config.change_skin !== false) {
+			changeskinfunc = () => openSkinGallery(name);
+			const wardrobe = document.createElement("button");
+			wardrobe.type = "button";
+			wardrobe.className = "skin-card-entry";
+			wardrobe.textContent = "武将衣橱";
+			wardrobe.addEventListener("click", event => { event.stopPropagation(); changeskinfunc(); });
+			playerbg.appendChild(wardrobe);
 		}
 		var ban = ui.create.div(".menubutton.large.ban.character", uiintro, "禁用", function (e) {
 			if (this.classList.contains("unselectable")) {
@@ -3763,9 +3582,9 @@ export class Click {
 						}
 						packName = `${pack}${sort ? `${sort}` : ""}`;
 						if (characterTitle.length) {
-							characterTitle = `${characterTitle}<span style="color: white"> | ${packName}</span>`;
+							characterTitle = `${characterTitle}<span class="character-pack-label"> | ${packName}</span>`;
 						} else {
-							characterTitle = `<span style="color: white">${packName}</span>`;
+							characterTitle = `<span class="character-pack-label">${packName}</span>`;
 						}
 						break;
 					}
@@ -4159,7 +3978,7 @@ export class Click {
 					let skinButtonList = [name, ...skinList.map(skin => skin[0])];
 					for (let skinName of skinButtonList) {
 						let skinButton = ui.create.div(".skin-button", skinsList, function () {
-							bg.style.backgroundImage = this.style.backgroundImage;
+							bg.setBackground(this.name, "character");
 							bg.tempSkin = this.name;
 							const skillButtons = document.getElementsByClassName("characterskill")?.[0]?.childNodes;
 							if (skillButtons) {
@@ -4207,16 +4026,7 @@ export class Click {
 						skinButton.style.backgroundPosition = "50% 0";
 						skinButton.style.boxShadow = "rgba(0, 0, 0, 0.2) 0 0 0 1px, rgba(0, 0, 0, 0.45) 0 0 5px";
 						skinButton.style.cursor = "pointer";
-						let iSTemp = false;
-						if (!lib.character[skinName] && skinList.some(skin => skin[0] == skinName)) {
-							iSTemp = true;
-							lib.character[skinName] = get.convertedCharacter(["", "", 0, [], (skinList.find(skin => skin[0] == skinName) || [skinName, []])[1]]);
-						}
-						const skinImg = !lib.config.skin[skinName] && lib.character[skinName]?.img;
-						skinImg ? skinButton.setBackgroundImage(skinImg) : skinButton.setBackground(skinName, "character");
-						if (iSTemp) {
-							delete lib.character[skinName];
-						}
+						skinButton.setBackground(skinName, "character");
 					}
 				}
 			};

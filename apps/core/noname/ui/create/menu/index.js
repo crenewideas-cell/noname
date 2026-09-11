@@ -1,4 +1,5 @@
 import { ui, game, get, lib, _status } from "noname";
+import { openGameNavigation } from "../../gameNavigation.js";
 
 export function openMenu(node, e, onclose) {
 	popupContainer.innerHTML = "";
@@ -157,6 +158,13 @@ export function createMenu(connectMenu, tabs, config) {
 		menuTabBar.style.height = "3px";
 	}
 	var menuContent = ui.create.div(".menu-content", menu);
+	menu.classList.add("has-session-actions");
+	const sessionActions = ui.create.div(".menu-session-actions", menu);
+	const navigation = document.createElement("button");
+	navigation.type = "button";
+	navigation.textContent = "退出 / 返回主界面";
+	navigation.addEventListener("click", openGameNavigation);
+	sessionActions.appendChild(navigation);
 	var clickTab = function () {
 		if (this.classList.contains("disabled")) {
 			return;
@@ -192,6 +200,16 @@ export function createMenu(connectMenu, tabs, config) {
 }
 export function createConfig(config, position) {
 	var node = ui.create.div(".config", config.name);
+	if (config._extensionLayout) {
+		node.classList.add("extension-config-control");
+		if (!config.clear) {
+			const label = document.createElement("span");
+			label.className = "extension-config-label";
+			// Preserve rich labels and custom elements; only give the label its own layout cell.
+			while (node.firstChild) label.appendChild(node.firstChild);
+			node.appendChild(label);
+		}
+	}
 	node._link = { config: config };
 	if (!config.clear) {
 		if (config.name != "开启") {

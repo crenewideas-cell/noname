@@ -10,19 +10,7 @@ import { FileSystem, FileSystemError, FileSystemErrorCode, installLegacyFileSyst
 
 export default async function browserReady({ lib, game }) {
 	lib.path = (await import("path-browserify-esm")).default;
-	const adpt = new BrowserAdapter();
-	const fs = new FileSystem(adpt);
-
-	try {
-		// 这里只探测 dev server 的连通性和响应格式；文件不存在会返回 null。
-		await fs.stat("noname.js");
-	} catch (e) {
-		console.error("文件读写函数初始化失败:", e);
-		return;
-	}
-	lib.fs = fs;
-	installLegacyFileSystemAPI(game, fs);
-
+	// 浏览器功能不依赖文件服务，必须在探测文件服务之前完成初始化。
 	game.export = function (data, name) {
 		if (typeof data === "string") {
 			data = new Blob([data], { type: "text/plain" });
@@ -45,6 +33,18 @@ export default async function browserReady({ lib, game }) {
 	game.open = function (url) {
 		window.open(url);
 	};
+
+	const adpt = new BrowserAdapter();
+	const fs = new FileSystem(adpt);
+	try {
+		// 这里只探测 dev server 的连通性和响应格式；文件不存在会返回 null。
+		await fs.stat("noname.js");
+	} catch (e) {
+		console.warn("文件服务不可用，继续使用浏览器存储:", e);
+		return;
+	}
+	lib.fs = fs;
+	installLegacyFileSystemAPI(game, fs);
 }
 
 /**

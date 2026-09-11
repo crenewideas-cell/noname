@@ -190,6 +190,11 @@ export class GamePromises {
 	 */
 	checkFile(fileName) {
 		return new Promise((resolve, reject) => {
+			// 纯浏览器环境或文件服务初始化失败时，路径不可访问。
+			if (typeof game.checkFile !== "function") {
+				resolve(-1);
+				return;
+			}
 			game.checkFile(fileName, resolve, reject);
 		});
 	}
@@ -205,6 +210,10 @@ export class GamePromises {
 	 */
 	checkDir(dir) {
 		return new Promise((resolve, reject) => {
+			if (typeof game.checkDir !== "function") {
+				resolve(-1);
+				return;
+			}
 			game.checkDir(dir, resolve, reject);
 		});
 	}

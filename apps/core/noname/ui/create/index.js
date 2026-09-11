@@ -7,6 +7,7 @@ import { optionsMenu } from "./menu/pages/optionsMenu.js";
 import { otherMenu } from "./menu/pages/otherMenu.js";
 import { startMenu } from "./menu/pages/startMenu.js";
 import { Pagination } from "@/util/pagination.js";
+import { openGameNavigation } from "../gameNavigation.js";
 
 export class Create {
 	/**
@@ -527,6 +528,7 @@ export class Create {
 	connectRooms(list) {
 		ui.rooms = [];
 		ui.roombase = ui.create.dialog();
+		ui.roombase.classList.add("lobby-room-list");
 		ui.roombase.classList.add("fullwidth");
 		ui.roombase.classList.add("fullheight");
 		ui.roombase.classList.add("fixed");
@@ -536,6 +538,7 @@ export class Create {
 		for (var i = 0; i < list.length; i++) {
 			var player = ui.roombase.add('<div class="popup text pointerdiv" style="width:calc(100% - 10px);display:inline-block;white-space:nowrap">空房间</div>');
 			player.roomindex = i;
+			player.classList.add("lobby-room");
 			player.initRoom = lib.element.Player.prototype.initRoom;
 			player.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.connectroom);
 			player.initRoom(list[i]);
@@ -1178,7 +1181,7 @@ export class Create {
 		/** @type { Dialog } */
 		var dialog;
 		/** 筛选武将的信息 */
-		var node = ui.create.div(".caption.pointerspan");
+		var node = ui.create.div(".caption.pointerspan.character-filters");
 		if (get.is.phoneLayout()) {
 			node.style.fontSize = "30px";
 		}
@@ -1406,6 +1409,7 @@ export class Create {
 		for (i = 0; i < namecapt.length; i++) {
 			if (namecapt[i] == "newline") {
 				newlined = document.createElement("div");
+				newlined.classList.add("character-filter-groups");
 				newlined.style.marginTop = "5px";
 				newlined.style.display = "block";
 				// newlined.style.fontFamily='xinwei';
@@ -1570,7 +1574,7 @@ export class Create {
 			newlined2.style.marginTop = "5px";
 			newlined2.style.display = "none";
 			newlined2.style.fontFamily = "xinwei";
-			newlined2.classList.add("pointernode");
+			newlined2.classList.add("pointernode", "character-filter-packs");
 			if (get.is.phoneLayout()) {
 				newlined2.style.fontSize = "32px";
 			} else {
@@ -1703,6 +1707,7 @@ export class Create {
 		}
 		// 自由选将
 		dialog = ui.create.dialog("hidden");
+		if (!thisiscard) dialog.classList.add("character-browser");
 		dialog.classList.add("noupdate");
 		dialog.classList.add("scroll1");
 		dialog.classList.add("scroll2");
@@ -1750,6 +1755,7 @@ export class Create {
 		});
 		const div = ui.create.div(".searcher.find");
 		input.placeholder = "支持正则搜索和技能搜索";
+		input.setAttribute("aria-label", "搜索武将名称或技能，支持正则表达式");
 		//使用click事件搜索，因为用input事件，难以解决按下a键会触发自动托管的bug
 		let find = ui.create.button(["find", "搜索"], "tdnodes");
 		find.style.display = "inline";
@@ -2624,6 +2630,19 @@ export class Create {
 
 		ui.system1 = ui.create.div("#system1", ui.system);
 		ui.system2 = ui.create.div("#system2", ui.system);
+		ui.system.classList.add("with-game-navigation");
+		const navigation = ui.create.system("退出", openGameNavigation);
+		navigation.id = "game-navigation-button";
+		navigation.title = "返回主界面、重新开始或继续游戏";
+		navigation.setAttribute("role", "button");
+		navigation.tabIndex = 0;
+		navigation.addEventListener("keydown", event => {
+			if (event.key === "Enter" || event.key === " ") {
+				event.preventDefault();
+				event.stopPropagation();
+				openGameNavigation();
+			}
+		});
 
 		ui.replay = ui.create.system("重来", game.reload, true);
 		ui.replay.id = "restartbutton";
@@ -3659,7 +3678,7 @@ export class Create {
 			game.connectPlayers.push(player);
 		}
 
-		var bar = ui.create.div(ui.window);
+		var bar = ui.create.div(".lobby-room-heading", ui.window);
 		bar.style.height = "20px";
 		bar.style.width = "80%";
 		bar.style.left = "10%";

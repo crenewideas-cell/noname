@@ -131,7 +131,7 @@ export const extensionMenu = function (connectMenu) {
 	};
 
 	var createModeConfig = function (mode, position) {
-		var page = ui.create.div("");
+		var page = ui.create.div(".extension-config-page");
 		page.style.paddingBottom = "10px";
 		let node = ui.create.div(".menubutton.large", mode.startsWith("extension_") ? (lib.translate[mode] || mode.slice(10)) : lib.translate[`${mode}_play_config`], position, clickMode);
 		if (node.innerHTML.length >= 5) {
@@ -146,6 +146,7 @@ export const extensionMenu = function (connectMenu) {
 				continue;
 			}
 			var cfg = get.copy(lib.extensionMenu[mode][i]);
+			cfg._extensionLayout = true;
 			var j;
 			if (mode.startsWith("extension_")) {
 				j = mode + "_" + i;
@@ -217,9 +218,7 @@ export const extensionMenu = function (connectMenu) {
 			const name = member.textContent;
 			const details = createPackSubmenu(page, name, `settings:${group.name}:${mode}`);
 			details.dataset.extension = mode.slice(10);
-			details.style.cssText = "position:relative;border-bottom:1px solid #8886;padding:7px 0";
 			const summary = details.querySelector("summary");
-			summary.style.cssText = "position:relative;cursor:pointer;line-height:1.7;font-size:16px";
 			details.append(summary, member.link);
 			page.appendChild(details);
 			members.push({ mode, name, details, summary });

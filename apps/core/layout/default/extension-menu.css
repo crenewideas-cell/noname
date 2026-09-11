@@ -1,0 +1,120 @@
+/* Structural correction, independent of the selected visual theme and nesting depth. */
+.menu.main .right.pane .pack-submenu {
+	position: relative;
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	margin: 7px 0;
+	padding: 5px 0;
+	border-bottom: 1px solid #8886;
+}
+.menu.main .right.pane .pack-submenu > summary {
+	position: relative;
+	cursor: pointer;
+	font-size: 16px;
+	line-height: 1.7;
+	padding: 6px 4px;
+	white-space: normal;
+	overflow-wrap: anywhere;
+}
+.menu.main .right.pane .pack-submenu .pack-submenu {
+	/* A border denotes hierarchy without taking more width at every level. */
+	border-left: 2px solid #b99b6466;
+	padding-left: 7px;
+}
+.menu.main .right.pane .pack-submenu .pack-submenu .pack-submenu {
+	padding-left: 0;
+}
+.menu.main .right.pane .pack-submenu > p {
+	position: relative;
+	margin: 8px 5px;
+	line-height: 1.6;
+	overflow-wrap: anywhere;
+}
+.menu.main .right.pane .pack-submenu[hidden] {
+	display: none;
+}
+.menu.main .right.pane .extension-config-page {
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	left: 0;
+	padding: 5px 8px 12px;
+}
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control {
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	left: 0 !important;
+	margin: 0;
+	padding: 9px 0;
+	height: auto;
+	min-height: 43px;
+	white-space: normal;
+	overflow: visible;
+	overflow-wrap: anywhere;
+	line-height: 1.6;
+	text-align: left;
+}
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control.toggle,
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control.switcher {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	column-gap: 14px;
+	white-space: normal;
+}
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control > .extension-config-label {
+	position: relative;
+	display: block;
+	min-width: 0;
+	white-space: normal;
+	overflow-wrap: anywhere;
+}
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control > .extension-config-label * {
+	white-space: normal;
+	overflow-wrap: anywhere;
+	max-width: 100%;
+}
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control.toggle > div,
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control.switcher > div {
+	position: relative;
+	left: auto;
+	right: auto;
+	top: auto;
+	margin: 0;
+	justify-self: end;
+}
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control.toggle > div {
+	width: 60px;
+	height: 25px;
+}
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control.switcher {
+	grid-template-columns: minmax(0, 1fr) minmax(0, 45%);
+}
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control.switcher > div {
+	max-width: 100% !important;
+	height: auto;
+	min-height: 25px;
+	white-space: normal;
+	overflow-wrap: anywhere;
+	text-align: right;
+}
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control.hidden,
+.menu.main .menu-content .right.pane .extension-config-page .config.extension-config-control.auto-hide {
+	display: none !important;
+}
+html[data-presentation="shousha"] .menu.main .right.pane .pack-submenu > summary {
+	color: #e4c38c;
+	border-radius: 4px;
+	background: linear-gradient(90deg, #75523238, transparent);
+}
+html[data-presentation="shousha"] .extension-config-control.toggle.on > div {
+	background-color: #917244;
+}
+html[data-presentation="shousha"] .extension-config-control.toggle > div > div {
+	background: linear-gradient(#f1dbb2, #b49360);
+}

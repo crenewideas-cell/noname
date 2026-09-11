@@ -148,7 +148,33 @@ player.changeSkin("olsbshenli", "ol_sb_yuanshao_shadow");
 
 # 二、本体换肤
 
-### 兼容性较低，处于半废弃状态，慎用 ###
+### 核心衣橱与静态换肤 ###
+
+从“设置 → 外观 → 打开武将衣橱”，或武将资料中的“武将衣橱”进入。支持按武将名/编号搜索、预览、应用和恢复经典形象。预览不会保存；应用成功后使用现有配置存储持久化。关闭换肤会显示原画，并保留已保存的选择，重新开启即可恢复。
+
+“武将界面风格”提供手杀和经典两种外观，即时生效。外观不改动选将规则、技能、玩家属性或 `player.skin` 的变身状态。
+
+支持 JPG、JPEG、PNG、WebP、AVIF、GIF。主图加载失败时不保存；缺少某个变身形态的图片时，该形态使用原画。已经保存的图片被移走时，头像也会回退到原画。文件名可以包含多个点。
+
+目录发现需要运行环境的文件服务。纯网页或文件服务不可用时，仍可以使用核心目录清单和扩展注册的皮肤，点击“刷新”可重试读取本地目录。
+
+扩展可以通过数据接口注册皮肤，避免覆盖 UI 或玩家方法：
+
+```javascript
+import { getSkinService } from "noname";
+
+const unregister = getSkinService().register("my-extension", character => {
+	if (character !== "my_hero") return [];
+	return [{
+		name: "春日",
+		path: "extension/my-extension/skin/my_hero/spring.webp",
+		variants: { my_hero_awaken: "extension/my-extension/skin/my_hero/spring/awaken.webp" },
+	}];
+});
+// 扩展卸载时调用 unregister()，目录清单变化后可调用 getSkinService().invalidate()。
+```
+
+注册路径相对于游戏资源根目录，也接受 `ext:` 前缀。接口仅接收静态立绘；Spine 图集与动画脚本不能作为皮肤图片清单导入。动态渲染应作为独立组件接入，保持静态立绘可回退，不覆盖核心选将和玩家初始化方法。
 
 打开[选项-选项-外观]处的[开启换肤]功能启用此效果
 启用后，无名杀会读取位于`与原画所在文件夹同级的skin文件夹下以该武将id命名的文件夹A下的图片`作为该武将的可用皮肤
@@ -186,7 +212,5 @@ lib.character["sunce"] = ["male", "wu", 4, ["jiang", "hunzi", "zhiba"], ["zhu", 
 ```javascript
 lib.character["noname_sunce"].skinPath = "ext:无名扩展/skin/";
 ```
-
-
 
 

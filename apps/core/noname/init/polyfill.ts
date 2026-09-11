@@ -1,4 +1,8 @@
 import { lib, game, get, _status, ui } from "noname";
+import { savedSkinPath } from "../skin/service.js";
+import { portraitCharacter, skinStorageKey } from "../skin/portrait.js";
+
+const backgroundRequests = new WeakMap<HTMLDivElement, object>();
 /**
  * 为元素添加右击或长按弹出的提示信息
  * @param {string} title 标题
@@ -141,6 +145,10 @@ Reflect.defineProperty(HTMLDivElement.prototype, "setBackground", {
 		if (!name) {
 			return this;
 		}
+		const requestedName = name;
+		const request = {};
+		backgroundRequests.set(this, request);
+		let selectedSkin;
 		let src,
 			noskin = false;
 		if (ext === "noskin") {
@@ -148,6 +156,8 @@ Reflect.defineProperty(HTMLDivElement.prototype, "setBackground", {
 			ext = ".jpg";
 		}
 		ext = ext || ".jpg";
+		if (type === "character" && !noskin) this.dataset.skinCharacter = requestedName;
+		else delete this.dataset.skinCharacter;
 		subfolder = subfolder || "default";
 		if (type) {
 			let dbimage: string | null = null,
@@ -157,7 +167,7 @@ Reflect.defineProperty(HTMLDivElement.prototype, "setBackground", {
 				gzbool = false;
 			const mode = get.mode();
 			if (type === "character") {
-				nameinfo = get.character(name);
+				nameinfo = portraitCharacter(name);
 				if (lib.characterPack[`mode_${mode}`] && lib.characterPack[`mode_${mode}`][name]) {
 					if (mode === "guozhan") {
 						if (name.startsWith("gz_shibing")) {
@@ -202,14 +212,22 @@ Reflect.defineProperty(HTMLDivElement.prototype, "setBackground", {
 					}
 				}
 			}
-			if (type === "character" && lib.config.skin[name] && !noskin) {
-				src = lib.config.skin[name][1];
-			} else if (imgPrefixUrl) {
+			if (type === "character" && !noskin && lib.config.change_skin !== false) {
+				selectedSkin = savedSkinPath(lib.config.skin?.[skinStorageKey(requestedName)]);
+			}
+			if (imgPrefixUrl) {
 				src = imgPrefixUrl;
 			} else if (extimage) {
 				src = extimage.replace(/^ext:/, "extension/");
 			} else if (dbimage) {
-				this.setBackgroundDB(dbimage.slice(3)).then(lib.filter.none);
+				this.setBackgroundImage([selectedSkin, `${lib.characterDefaultPicturePath}male.jpg`].filter(Boolean));
+				const initial = this.style.backgroundImage;
+				game.getDB("image", dbimage.slice(3)).then(image => {
+					if (!image || backgroundRequests.get(this) !== request) return;
+					// Keep the database original below the skin, including when the saved file disappears.
+					this.style.backgroundImage = selectedSkin ? `url("${lib.assetURL}${selectedSkin}"), url("${image}"), ${initial}` : `url("${image}"), ${initial}`;
+				}).catch(lib.filter.none);
+				this.style.backgroundSize = "cover";
 				return this;
 			} else if (modeimage) {
 				src = `image/mode/${modeimage}/character/${name}${ext}`;
@@ -224,9 +242,9 @@ Reflect.defineProperty(HTMLDivElement.prototype, "setBackground", {
 		this.style.backgroundPositionX = "center";
 		this.style.backgroundSize = "cover";
 		if (type === "character") {
-			const nameinfo = get.character(name);
+			const nameinfo = portraitCharacter(name);
 			const sex = nameinfo && ["male", "female", "double"].includes(nameinfo[0]) ? nameinfo[0] : "male";
-			this.setBackgroundImage([src, `${lib.characterDefaultPicturePath}${sex}${ext}`]);
+			this.setBackgroundImage([selectedSkin, src, `${lib.characterDefaultPicturePath}${sex}${ext}`].filter(Boolean));
 		} else {
 			this.setBackgroundImage(src);
 		}

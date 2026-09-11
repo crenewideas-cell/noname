@@ -1,0 +1,356 @@
+/* Navigation is available in both visual themes and in every mode. */
+#system.with-game-navigation {
+	display: flex;
+	align-items: flex-start;
+	gap: 6px;
+}
+#system.with-game-navigation > #system1,
+#system.with-game-navigation > #system2 {
+	min-width: 0;
+	height: auto;
+	float: none;
+	overflow-x: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+	scrollbar-width: thin;
+	pointer-events: auto;
+}
+#system.with-game-navigation > #system1 {
+	flex: 1 1 auto;
+}
+#system.with-game-navigation > #system2 {
+	flex: 0 1 auto;
+	max-width: 40%;
+	margin-left: auto;
+}
+#system.with-game-navigation #game-navigation-button {
+	position: sticky;
+	left: 0;
+	z-index: 2;
+	color: #ffebc0;
+	background: #733e30;
+	box-shadow: inset 0 0 0 1px #cfac6c;
+}
+.menu.main.has-session-actions > .menu-content {
+	height: calc(100% - 80px);
+}
+html[data-presentation="shousha"] .menu.main.has-session-actions > .menu-content {
+	height: calc(100% - 90px);
+}
+.menu.main.has-session-actions > .menu-session-actions {
+	position: absolute;
+	box-sizing: border-box;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 42px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding: 5px 12px;
+	border-top: 1px solid #b6945b40;
+	background: #242321;
+}
+.menu-session-actions > button {
+	position: relative;
+	box-sizing: border-box;
+	width: auto;
+	height: auto;
+	margin: 0;
+	padding: 5px 12px;
+	border: 1px solid #ad8859;
+	border-radius: 5px;
+	background: #653c2e;
+	color: #ffe9be;
+	font: 13px/1.5 "Microsoft YaHei", sans-serif;
+	cursor: pointer;
+}
+.game-navigation {
+	box-sizing: border-box;
+	position: fixed;
+	inset: 0;
+	width: min(440px, calc(100vw - 32px));
+	height: max-content;
+	max-height: calc(100vh - 32px);
+	max-height: calc(100dvh - 32px);
+	margin: auto;
+	padding: 24px;
+	overflow: auto;
+	border: 1px solid #c5a16a;
+	border-radius: 12px;
+	background: linear-gradient(130deg, #393128, #202623);
+	color: #eadfc9;
+	box-shadow: 0 20px 70px #0009;
+	font: 15px/1.7 "Microsoft YaHei", "PingFang SC", sans-serif;
+	text-align: left;
+	text-shadow: none;
+}
+.game-navigation::backdrop {
+	background: #101716bb;
+}
+.game-navigation h2 {
+	margin: 0 0 12px;
+	color: #f2d6a0;
+	font-size: 22px;
+	font-weight: 500;
+}
+.game-navigation p {
+	margin: 0 0 20px;
+	overflow-wrap: anywhere;
+}
+.game-navigation .game-navigation-actions {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+.game-navigation button {
+	box-sizing: border-box;
+	position: relative;
+	flex: 1 1 110px;
+	width: auto;
+	height: auto;
+	min-height: 40px;
+	margin: 0;
+	padding: 8px 12px;
+	border: 1px solid #a3896055;
+	border-radius: 6px;
+	background: #444339;
+	color: #f1e2c4;
+	font: inherit;
+	text-shadow: none;
+	white-space: normal;
+	cursor: pointer;
+}
+.game-navigation button.primary {
+	flex-basis: 100%;
+	border-color: #c5a16a;
+	background: #7e4433;
+}
+.game-navigation button:disabled {
+	opacity: 0.55;
+	cursor: wait;
+}
+.game-navigation button:focus-visible,
+.menu-session-actions > button:focus-visible,
+#game-navigation-button:focus-visible {
+	outline: 2px solid #f2cc82;
+	outline-offset: 2px;
+}
+.game-navigation .game-navigation-status {
+	margin: 12px 0 0;
+	color: #eac991;
+	font-size: 13px;
+}
+.game-navigation .game-navigation-status:empty {
+	display: none;
+}
+/* Scoped presentation: keep the engine's tabs, filtering, scrolling and callbacks. */
+html[data-presentation="shousha"] .menu-container > .menu.main {
+	--menu-sidebar: 28%;
+	box-sizing: border-box;
+	width: min(580px, calc(100% - 24px));
+	height: min(460px, calc(100% - 72px));
+	left: 12px;
+	top: 56px;
+	border: 1px solid #b6945b;
+	border-radius: 12px;
+	background: linear-gradient(120deg, #363029, #242321 75%);
+	color: #eadfc9;
+	box-shadow: 0 0 0 2px #191916b3, 0 16px 48px #0008;
+	text-shadow: 0 1px 2px #0006;
+	font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+html[data-presentation="shousha"] .menu-container > .menu.main.center {
+	left: max(12px, calc(50% - 290px));
+	top: max(12px, calc(50% - 230px));
+}
+html[data-presentation="shousha"] .menu.main > .menu-tab {
+	box-sizing: border-box;
+	display: flex;
+	align-items: stretch;
+	width: 100%;
+	height: 48px;
+	padding: 0 12px;
+	border-image: none;
+	border-bottom: 1px solid #b6945b40;
+	background: #171a1c40;
+}
+html[data-presentation="shousha"] .menu.main > .menu-tab > div {
+	flex: 1;
+	min-width: 0;
+	width: auto;
+	height: 46px;
+	margin: 0;
+	padding: 0;
+	line-height: 46px;
+	font-size: 16px;
+}
+html[data-presentation="shousha"] .menu.main > .menu-tab > div.active {
+	color: #f7dfab;
+	background: linear-gradient(transparent, #b6945b20);
+	box-shadow: inset 0 -2px #d9b676;
+}
+html[data-presentation="shousha"] .menu.main > .menu-tab-bar {
+	/* The active tab owns its underline, so it tracks flexible tab widths. */
+	display: none;
+}
+html[data-presentation="shousha"] .menu.main > .menu-content {
+	height: calc(100% - 48px);
+}
+html[data-presentation="shousha"] .menu.main > .menu-content > div > .pane {
+	box-sizing: border-box;
+	overscroll-behavior: contain;
+	overflow-x: hidden;
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: #9b80504f transparent;
+}
+html[data-presentation="shousha"] .menu.main > .menu-content > div > .left.pane {
+	width: var(--menu-sidebar);
+	padding: 8px;
+	border-right: 1px solid #b6945b30;
+	background: #16191940;
+}
+html[data-presentation="shousha"] .menu.main > .menu-content > div > .left.pane > div {
+	box-sizing: border-box;
+	width: 100%;
+	height: auto;
+	min-height: 38px;
+	margin: 4px 0;
+	padding: 8px 5px;
+	font-size: 19px;
+	line-height: 1.3;
+	white-space: normal;
+	overflow-wrap: anywhere;
+	border: 1px solid transparent;
+	border-radius: 6px;
+	background: transparent;
+	box-shadow: none;
+	transition: background-color 0.15s, color 0.15s;
+}
+html[data-presentation="shousha"] .menu.main > .menu-content > div > .left.pane > .active {
+	color: #ffe9be;
+	border-color: #b6945b75;
+	background: linear-gradient(100deg, #785c36, #423a2b);
+	box-shadow: inset 3px 0 #e6c484;
+}
+html[data-presentation="shousha"] .menu.main > .menu-content > div > .right.pane {
+	left: var(--menu-sidebar);
+	width: calc(100% - var(--menu-sidebar));
+}
+html[data-presentation="shousha"] .menu.main > .menu-content > div > .right.pane > div {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 12px 14px 18px;
+	font-size: 14px;
+	line-height: 1.7;
+	overflow-wrap: anywhere;
+}
+html[data-presentation="shousha"] .menu.main > .menu-content > div > .right.pane > div > .config:not(.extension-config-control) {
+	box-sizing: border-box;
+	width: 100%;
+	left: 0 !important;
+	margin: 0;
+	padding: 10px 0;
+	min-height: 44px;
+	font-size: 14px;
+	line-height: 24px;
+	white-space: normal;
+	border-bottom: 1px solid #b6945b1c;
+}
+html[data-presentation="shousha"] .menu.main .right.pane > div > .config.toggle:not(.extension-config-control) {
+	padding-right: 72px;
+}
+html[data-presentation="shousha"] .menu.main .right.pane > div > .config.switcher:not(.extension-config-control) {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 43%);
+	align-items: center;
+	column-gap: 12px;
+}
+html[data-presentation="shousha"] .menu.main .right.pane > div > .config.switcher:not(.extension-config-control) > div {
+	position: relative;
+	left: auto;
+	right: auto;
+	min-width: 0;
+	max-width: 100%;
+	margin: 0;
+	height: auto;
+	white-space: normal;
+	text-align: right;
+	color: #edca8a;
+}
+html[data-presentation="shousha"] .menu.main .right.pane > div > .config.toggle:not(.extension-config-control) > div {
+	top: 10px;
+}
+html[data-presentation="shousha"] .menu.main .config.toggle > div {
+	background: #151a1b;
+	box-shadow: inset 0 0 0 1px #b6945b40;
+}
+html[data-presentation="shousha"] .menu.main .config.toggle.on > div {
+	background: #856a3d;
+}
+html[data-presentation="shousha"] .menu.main .config.toggle > div > div {
+	background: linear-gradient(#ebdbb9, #aa936e);
+}
+html[data-presentation="shousha"] .menu.main > .menu-content > div:has(> .menubutton.round) > .right.pane {
+	height: calc(100% - 62px);
+}
+html[data-presentation="shousha"] .menu.main > .menu-content > div > .menubutton.round {
+	box-sizing: border-box;
+	left: auto;
+	top: auto;
+	right: 16px;
+	bottom: 10px;
+	width: 64px;
+	height: 44px;
+	padding: 0;
+	line-height: 42px;
+	font-size: 28px;
+	border: 1px solid #d4b073;
+	border-radius: 8px;
+	background: linear-gradient(#974f3d, #622e25);
+	color: #ffebbf;
+	box-shadow: 0 3px 10px #0005;
+}
+html[data-presentation="shousha"] .menu.main .right.pane .pack-submenu > summary {
+	padding: 9px 12px;
+	font-size: 14px;
+	text-align: left;
+	border: 1px solid #b6945b30;
+	border-radius: 6px;
+}
+html[data-presentation="shousha"] .menu.main .right.pane .pack-submenu[open] > summary {
+	background: #b6945b22;
+	color: #f3d5a0;
+}
+html[data-presentation="shousha"] .menu.main .pack-submenu > summary:focus-visible,
+html[data-presentation="shousha"] .menu.main .menubutton:focus-visible {
+	outline: 2px solid #e6c484;
+	outline-offset: -2px;
+}
+html[data-presentation="shousha"] .menu.main .config.hidden,
+html[data-presentation="shousha"] .menu.main .right.pane > div:not(.expanded) > .config.auto-hide {
+	display: none !important;
+}
+@media (hover: hover) {
+	html[data-presentation="shousha"] .menu.main > .menu-content > div > .left.pane > div:not(.active):hover {
+		background: #b6945b18;
+		color: #f7dfab;
+	}
+}
+@media (max-width: 520px) {
+	html[data-presentation="shousha"] .menu-container > .menu.main {
+		--menu-sidebar: 26%;
+	}
+	html[data-presentation="shousha"] .menu.main > .menu-content > div > .left.pane {
+		padding: 5px;
+	}
+	html[data-presentation="shousha"] .menu.main > .menu-content > div > .left.pane > div {
+		font-size: 16px;
+	}
+	html[data-presentation="shousha"] .menu.main > .menu-content > div > .right.pane > div {
+		padding-left: 9px;
+		padding-right: 9px;
+	}
+}

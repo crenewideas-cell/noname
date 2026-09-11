@@ -337,6 +337,14 @@ export async function boot() {
 			break;
 	}
 	localStorage.removeItem("show_splash_off");
+	// Explicit navigation takes precedence over automatic start and splash preferences once.
+	const returnToLobby = sessionStorage.getItem(lib.configprefix + "return_to_lobby") === "true";
+	if (returnToLobby) {
+		sessionStorage.removeItem(lib.configprefix + "return_to_lobby");
+		show_splash = true;
+		localStorage.removeItem(lib.configprefix + "directstart");
+		localStorage.removeItem(lib.configprefix + "playback");
+	}
 
 	if (localStorage.getItem(`${lib.configprefix}playback`)) {
 		toLoad.push(importMode(config.get("mode")));
@@ -482,7 +490,7 @@ export async function boot() {
 	});
 
 	localStorage.removeItem(lib.configprefix + "directstart");
-	if (!lib.imported.mode?.[lib.config.mode]) {
+	if (returnToLobby || !lib.imported.mode?.[lib.config.mode]) {
 		window.inSplash = true;
 		clearTimeout(window.resetGameTimeout);
 
@@ -838,7 +846,14 @@ async function loadConfig() {
 
 	let result;
 	// 懒人包配置
-	const hasConfigTxt = (await game.promises.checkFile("noname.config.txt")) === 1;
+	// 可选配置文件不可访问时，仍应加载浏览器中已有的配置。
+	const hasConfigTxt = await game.promises.checkFile("noname.config.txt").then(
+		result => result === 1,
+		error => {
+			console.warn("无法检查 noname.config.txt，使用已保存的配置:", error);
+			return false;
+		}
+	);
 
 	if (hasConfigTxt) {
 		try {
@@ -904,7 +919,13 @@ async function loadConfig() {
 
 async function loadCss() {
 	ui.css = {};
+	document.documentElement.dataset.presentation = lib.config.presentation_style === "classic" ? "classic" : "shousha";
 	const stylesLoading = {
+		lobby: lib.init.promises.css(lib.assetURL + "layout/default", "lobby"),
+		menuPresentation: lib.init.promises.css(lib.assetURL + "layout/default", "menu-presentation"),
+		skillPresentation: lib.init.promises.css(lib.assetURL + "layout/default", "skill-presentation"),
+		extensionMenu: lib.init.promises.css(lib.assetURL + "layout/default", "extension-menu"),
+		presentation: lib.init.promises.css(lib.assetURL + "layout/default", "presentation"),
 		menu: lib.init.promises.css(lib.assetURL + "layout/default", "menu"),
 		newmenu: lib.init.promises.css(lib.assetURL + "layout/default", "newmenu"),
 		default: lib.init.promises.css(lib.assetURL + "layout/default", "layout"),

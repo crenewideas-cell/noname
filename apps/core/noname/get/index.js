@@ -1,3 +1,5 @@
+import { openSkinGallery } from "../ui/skinGallery.js";
+import { normalizeSkinPath } from "../skin/service.js";
 import { Is } from "./is.js";
 import { Promises } from "./promises";
 import { rootURL, game, lib, _status, ui } from "noname";
@@ -5110,60 +5112,16 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 		if (node._nointro) {
 			return;
 		}
-		let created = false;
-		const createButtons = function (nameskin, avatarSetter) {
-			const srcBase = get.skinPath(nameskin);
-			if (!srcBase) {
-				return;
-			}
-			game.getFileList(
-				srcBase,
-				(folders, files) => {
-					if (!files.length) {
-						return;
-					}
-					if (!created) {
-						created = true;
-						uiintro.add('<div class="text center">更改皮肤</div>');
-					}
-					const avatars = ui.create.div(".buttons.smallzoom.scrollbuttons");
-					lib.setMousewheel(avatars);
-					uiintro.add(avatars);
-					const originButton = ui.create.div(".button.character.pointerdiv", avatars, function () {
-						delete lib.config.skin[nameskin];
-						if (lib.characterSubstitute[nameskin]) {
-							for (const list of lib.characterSubstitute[nameskin]) delete lib.config.skin[list[0]];
-						}
-						avatarSetter("origin");
-						game.saveConfig("skin", lib.config.skin);
-					});
-					originButton.setBackground(nameskin, "character", "noskin");
-					const originSkin = ui.create.caption(`<div class="text" data-nature=shenmm style="font-size: 12px">经典形象</div>`, originButton);
-					originSkin.style.left = "1px";
-					originSkin.style.bottom = "-1px";
-					files.forEach(file => {
-						const src = `${srcBase}${file}`,
-							skinname = file;
-						const button = ui.create.div(".button.character.pointerdiv", avatars, function () {
-							lib.config.skin[nameskin] = [skinname, src];
-							if (lib.characterSubstitute[nameskin]) {
-								for (const list of lib.characterSubstitute[nameskin]) {
-									const sub = list[0],
-										[fold, prefix] = skinname.split(".");
-									lib.config.skin[sub] = [skinname, `${srcBase}${fold}/${sub}.${prefix}`];
-								}
-							}
-							avatarSetter(src);
-							game.saveConfig("skin", lib.config.skin);
-						});
-						button.setBackgroundImage(src);
-						const skinCaption = ui.create.caption(`<div class="text" data-nature=shenmm style="font-size: 12px">${get.translation(skinname.slice(0, -4))}</div>`, button);
-						skinCaption.style.left = "1px";
-						skinCaption.style.bottom = "-1px";
-					});
-				},
-				() => {}
-			);
+		const createButtons = function (nameskin) {
+			const button = document.createElement("button");
+			button.type = "button";
+			button.className = "skin-gallery-entry";
+			button.textContent = get.translation(nameskin) + " · 衣橱";
+			button.addEventListener("click", event => {
+				event.stopPropagation();
+				openSkinGallery(nameskin);
+			});
+			uiintro.content.appendChild(button);
 		};
 		if (typeof node._customintro == "function") {
 			if (node._customintro(uiintro, evt) === false) {
@@ -5618,14 +5576,10 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 					uiintro.add(viewInfo);
 				}
 			}
-			if ((lib.config.change_skin || lib.skin) && (!simple || get.is.phoneLayout())) {
+			if ((lib.config.change_skin !== false) && (!simple || get.is.phoneLayout())) {
 				[node.name1, node.name2].forEach((nameskin, index) => {
 					if (nameskin) {
-						createButtons(nameskin, src => {
-							const avatar = node.node[index ? "avatar2" : "avatar"];
-							if (src === "origin") avatar.setBackground(nameskin, "character");
-							else avatar.style.backgroundImage = `url('${src}')`;
-						});
+						if (!node.isUnseen(index)) createButtons(nameskin);
 					}
 				});
 			}
@@ -6145,13 +6099,10 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 					});
 					uiintro.add(viewInfo);
 				}
-				if ((lib.config.change_skin || lib.skin) && (!simple || get.is.phoneLayout())) {
+				if ((lib.config.change_skin !== false) && (!simple || get.is.phoneLayout())) {
 					const nameskin = node.link;
 					if (nameskin) {
-						createButtons(nameskin, src => {
-							if (src === "origin") node.setBackground(nameskin, "character");
-							else node.style.backgroundImage = `url('${src}')`;
-						});
+						createButtons(nameskin);
 					}
 				}
 			}
@@ -7523,11 +7474,9 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 			modeimage = null,
 			nameinfo = get.character(name),
 			gzbool = false;
-		if (nameinfo.skinPath) {
-			if (nameinfo.skinPath.startsWith("ext:")) {
-				return nameinfo.skinPath.replace(/^ext:/, "extension/");
-			}
-			return nameinfo.skinPath;
+		if (nameinfo?.skinPath) {
+			const path = normalizeSkinPath(nameinfo.skinPath);
+			return path ? path.replace(/\/?$/, "/") : null;
 		}
 		const mode = get.mode();
 		if (lib.characterPack[`mode_${mode}`] && lib.characterPack[`mode_${mode}`][name]) {
@@ -7579,13 +7528,18 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 		} else if (extimage) {
 			src = extimage.replace(/^ext:/, "extension/");
 		} else if (dbimage) {
-			src = dbimage.slice(3);
+			return null;
 		} else if (modeimage) {
 			src = `image/mode/${modeimage}/character/${name}${ext}`;
 		} else {
 			src = `image/character/${gzbool ? "gz_" : ""}${name}${ext}`;
 		}
-		return `${src.split("/").slice(0, -2).join("/")}/skin/${name}/`;
+		const path = normalizeSkinPath(src);
+		if (!path) return null;
+		const parts = path.split("/");
+		// An extension-root portrait has no extra image directory to discard.
+		const root = parts.slice(0, parts[0] === "extension" && parts.length === 3 ? -1 : -2).join("/");
+		return root ? `${root}/skin/${name}/` : null;
 	}
 	/**
 	 * 将URL转换成相对于无名杀根目录的路径

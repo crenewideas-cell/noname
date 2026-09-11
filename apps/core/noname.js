@@ -10,3 +10,5 @@ export { Get, get, setGet } from "./noname/get/index.js";
 export { Library, lib, setLibrary } from "./noname/library/index.js";
 export { status, _status, setStatus } from "./noname/status/index.js";
 export { UI, ui, setUI } from "./noname/ui/index.js";
+export { getSkinService } from "./noname/skin/index.js";
+export { openSkinGallery } from "./noname/ui/skinGallery.js";
