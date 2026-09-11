@@ -1,0 +1,7 @@
+{
+  "name": "noname-online-runtime",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.34.5",
+  "dependencies": { "tsx": "4.21.0" }
+}

@@ -1,15 +1,35 @@
 /// <reference types="vite/client" />
-import { app, BrowserWindow, crashReporter, dialog, Menu, shell } from "electron";
+import { app, BrowserWindow, crashReporter, dialog, ipcMain, Menu, shell } from "electron";
 import fs from "fs";
 import path from "path";
 import remote from "@electron/remote/main/index.js";
 import createApp from "@noname/fs";
 remote.initialize();
 const dirname = path.join(import.meta.dirname, "../");
-createApp({
-	port: 8089,
-	dirname,
-	server: true,
+const onlineWindows = new Map<number, BrowserWindow>();
+ipcMain.handle("noname:open-online", async (event, address: unknown) => {
+  const caller = new URL(event.sender.getURL());
+  if (!["http://localhost:8080", "http://localhost:8089"].includes(caller.origin) || typeof address !== "string") throw new Error("Invalid online entry");
+  const url = new URL(address);
+  if (!["http:", "https:"].includes(url.protocol) || url.username || url.password) throw new Error("Invalid online server address");
+  const ownerId = event.sender.id;
+  const existing = onlineWindows.get(ownerId);
+  if (existing && !existing.isDestroyed()) { existing.show(); existing.focus(); return; }
+  const win = new BrowserWindow({
+    width: 1100, height: 800, title: "无名杀 · 联机", parent: BrowserWindow.fromWebContents(event.sender) || undefined,
+    webPreferences: { nodeIntegration: false, contextIsolation: true, sandbox: true, webSecurity: true, partition: "persist:noname-online" },
+  });
+  onlineWindows.set(ownerId, win);
+  win.removeMenu();
+  win.webContents.session.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
+  win.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
+  const restrictNavigation = (navigation: Electron.Event, target: string) => {
+    if (new URL(target).origin !== url.origin) navigation.preventDefault();
+  };
+  win.webContents.on("will-navigate", restrictNavigation);
+  win.webContents.on("will-redirect", restrictNavigation);
+  win.on("closed", () => onlineWindows.delete(ownerId));
+  try { await win.loadURL(url.href); } catch (error) { if (!win.isDestroyed()) win.close(); throw error; }
 });
 
 // 获取单实例锁
@@ -18,6 +38,21 @@ if (!gotTheLock) {
 	// 如果获取失败，说明已经有实例在运行了，直接退出
 	app.quit();
 }
+const fileService = gotTheLock ? createApp({ port: 8089, dirname, server: true }) : undefined;
+let servicesClosed = false;
+let closingServices = false;
+app.on("will-quit", event => {
+	if (servicesClosed || !fileService) return;
+	event.preventDefault();
+	if (closingServices) return;
+	closingServices = true;
+	const timeout = setTimeout(() => app.exit(0), 5000);
+	fileService.close().catch(error => console.error("文件服务关闭失败", error)).finally(() => {
+		clearTimeout(timeout);
+		servicesClosed = true;
+		app.quit();
+	});
+});
 
 app.setAppUserModelId("com.libnoname.noname");
 
@@ -103,6 +138,8 @@ function createMainWindow() {
 		{
 			label: "操作",
 			submenu: [
+				{ label: "退出程序", role: "quit", accelerator: "CmdOrCtrl+Q" },
+				{ type: "separator" },
 				{
 					label: "打开无名杀目录",
 					click: () => {
@@ -167,6 +204,7 @@ function createMainWindow() {
 }
 
 app.whenReady().then(() => {
+	if (!gotTheLock) return;
 	createWindow();
 	app.on("activate", () => {
 		if (BrowserWindow.getAllWindows().length === 0) {

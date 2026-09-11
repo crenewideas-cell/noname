@@ -25,9 +25,13 @@ export default async function browserReady({ lib, game }) {
 		downloadLink.click();
 	};
 
-	game.exit = function () {
+	game.exit = async function () {
+		const beforeUnload = window.onbeforeunload;
 		window.onbeforeunload = null;
 		window.close();
+		await new Promise(resolve => setTimeout(resolve, 300));
+		window.onbeforeunload = beforeUnload;
+		throw new Error("浏览器不允许网页关闭此标签页，请手动关闭标签页；桌面客户端可完全退出程序。");
 	};
 
 	game.open = function (url) {

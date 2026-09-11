@@ -24,6 +24,8 @@ export default defineConfig({
 			allow: ["../.."],
 		},
 		proxy: {
+			"/api/v1": "http://127.0.0.1:8082",
+			"/ws/v1": { target: "ws://127.0.0.1:8082", ws: true },
 			"/checkFile": "http://127.0.0.1:" + port.server,
 			"/checkDir": "http://127.0.0.1:" + port.server,
 			"/readFile": "http://127.0.0.1:" + port.server,

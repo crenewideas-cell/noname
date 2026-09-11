@@ -11,6 +11,7 @@
 import { ai, get, game, _status, ui } from "noname";
 import { refreshCharacterSkins } from "../skin/index.js";
 import { openSkinGallery } from "../ui/skinGallery.js";
+import { openConnectionRecovery } from "../ui/gameNavigation.js";
 import { LibInit } from "./init/index.js";
 import { Announce } from "./announce/index.js";
 import { experimental } from "./experimental/index.js";
@@ -10741,7 +10742,7 @@ export class Library {
 				var message;
 				try {
 					message = JSON.parse(messageevent.data);
-					if (!Array.isArray(message) || typeof lib.message.client[message[0]] !== "function") {
+					if (!Array.isArray(message) || typeof message[0] !== "string" || !Object.prototype.hasOwnProperty.call(lib.message.client, message[0]) || typeof lib.message.client[message[0]] !== "function") {
 						throw new Error("err");
 					}
 					if (game.sandbox) {
@@ -10758,7 +10759,7 @@ export class Library {
 					}
 				} catch (e) {
 					console.log(e);
-					console.log("invalid message: " + messageevent.data);
+					console.warn("收到无效联机消息");
 					return;
 				}
 				lib.message.client[message.shift()].apply(null, message);
@@ -10774,7 +10775,7 @@ export class Library {
 					alert("连接失败");
 				}
 			},
-			onclose: function () {
+			onclose: function (event) {
 				if (this._nocallback) {
 					return;
 				}
@@ -10786,8 +10787,7 @@ export class Library {
 					if ((game.servermode || game.onlinehall) && _status.over) {
 						void 0;
 					} else {
-						localStorage.setItem(lib.configprefix + "directstart", true);
-						game.reload();
+						openConnectionRecovery(event?.code === 1001 ? "服务器或房主已关闭连接" : "网络连接已中断");
 					}
 				} else {
 					// game.saveConfig('reconnect_info');
@@ -10795,6 +10795,7 @@ export class Library {
 				game.online = false;
 				game.ws = null;
 				game.sandbox = null;
+				for (const resolve of Object.values(game.dataRequestMap)) resolve(false, "网络连接已断开");
 			},
 		},
 		/**
@@ -12365,6 +12366,16 @@ export class Library {
 			 * @this {import("./element/client.js").Client}
 			 */
 			init(version, config, banned_info) {
+				if (!config || typeof config !== "object" || typeof config.onlineKey !== "string" || config.onlineKey.length > 128) {
+					this.send("denied", "无效的连接身份信息");
+					this.ws.close();
+					return;
+				}
+				if (version !== lib.versionOL || (get.config("check_versionLocal", "connect") && config.versionLocal !== lib.version)) {
+					this.send("denied", "version");
+					this.ws.close();
+					return;
+				}
 				/*var show_deckMonitor = false;
 				if (lib.config.show_deckMonitor) {
 					// && lib.config.show_deckMonitor_online
@@ -12382,11 +12393,23 @@ export class Library {
 				if (lib.node.banned.includes(banned_info) || banBlacklist.includes(config.onlineKey)) {
 					this.send("denied", "banned");
 				} else if (config.id && lib.playerOL && lib.playerOL[config.id]) {
+					const credentials = lib.node.reconnectTokens.get(config.id);
+					if (!credentials || credentials.key !== config.onlineKey || credentials.token !== config.reconnectToken) {
+						this.send("denied", "重连身份验证失败，请使用原设备重新连接。");
+						this.ws.close();
+						return;
+					}
 					var player = lib.playerOL[config.id];
+					if (player.ws && !player.ws.closed && player.ws !== this) {
+						this.send("denied", "该席位仍在线，请等待原连接断开后重试。");
+						this.ws.close();
+						return;
+					}
 					player.setNickname();
 					player.ws = this;
 					player.isAuto = false;
 					this.id = config.id;
+					this.accepted = true;
 					game.broadcast(function (player) {
 						player.setNickname();
 					}, player);
@@ -12417,6 +12440,7 @@ export class Library {
 						lib.node.clients.remove(this);
 						this.closed = true;
 					} else if (game.phaseNumber && lib.configOL.observe) {
+						this.accepted = true;
 						lib.node.observing.push(this);
 						this.send(
 							"reinit",
@@ -12477,6 +12501,10 @@ export class Library {
 							break;
 						}
 					}
+					if (typeof config.reconnectToken === "string" && config.reconnectToken.length >= 32 && config.reconnectToken.length <= 128) {
+						lib.node.reconnectTokens.set(this.id, { key: config.onlineKey, token: config.reconnectToken });
+					}
+					this.accepted = true;
 					this.send("init", this.id, lib.configOL, game.ip, false, game.roomId);
 				}
 			},
@@ -12815,12 +12843,19 @@ export class Library {
 				}
 			},
 			opened: function () {
+				const tokenKey = lib.configprefix + "reconnect_token_" + encodeURIComponent(_status.ip);
+				let reconnectToken = localStorage.getItem(tokenKey);
+				if (!reconnectToken) {
+					reconnectToken = Array.from(crypto.getRandomValues(new Uint8Array(32)), byte => byte.toString(16).padStart(2, "0")).join("");
+					localStorage.setItem(tokenKey, reconnectToken);
+				}
 				game.send(
 					"init",
 					lib.versionOL,
 					{
 						id: game.onlineID,
 						onlineKey: game.onlineKey,
+						reconnectToken,
 						avatar: lib.config.connect_avatar,
 						nickname: get.connectNickname(),
 						versionLocal: lib.version,
@@ -12841,6 +12876,7 @@ export class Library {
 			onclose: function (id) {
 				if (lib.wsOL[id]) {
 					lib.wsOL[id].onclose();
+					delete lib.wsOL[id];
 				}
 			},
 			selfclose: function () {
@@ -12866,8 +12902,9 @@ export class Library {
 				game.switchMode(lib.configOL.mode);
 				ui.create.connecting(true);
 			},
-			enterroomfailed: function () {
-				alert("请稍后再试");
+			enterroomfailed: function (reason) {
+				const messages = { missing: "房间已关闭，请刷新房间列表后重新选择。", full: "房间人数已满。", gaming: "房间尚未准备好，或对局已开始且不允许旁观。", duplicate: "已在房间中，或该房间已存在。" };
+				alert(messages[reason] || "进入房间失败，请稍后重试。");
 				_status.enteringroom = false;
 				ui.create.connecting(true);
 			},

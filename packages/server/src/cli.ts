@@ -15,7 +15,17 @@ function readPort(): number {
 }
 
 const port = readPort();
-const server = createServer({ port });
+const readLimit = (name: string) => process.env[name] === undefined ? undefined : Number(process.env[name]);
+const server = createServer({
+	port,
+	host: process.env.HOST,
+	allowedOrigins: process.env.ALLOWED_ORIGINS?.split(",").map(value => value.trim()).filter(Boolean),
+	maxConnections: readLimit("MAX_CONNECTIONS"),
+	maxConnectionsPerIp: readLimit("MAX_CONNECTIONS_PER_IP"),
+	maxPayload: readLimit("MAX_PAYLOAD"),
+	maxBufferedAmount: readLimit("MAX_BUFFERED_AMOUNT"),
+	messagesPerSecond: readLimit("MESSAGES_PER_SECOND"),
+});
 
 const stop = async () => {
 	await server.stop();

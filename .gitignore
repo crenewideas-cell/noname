@@ -8,6 +8,7 @@ yarn-error.log*
 
 # Build, test, and type-generation outputs
 dist/
+dist-online/
 dist-types/
 output/
 coverage/

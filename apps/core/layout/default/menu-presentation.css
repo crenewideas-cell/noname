@@ -23,9 +23,16 @@
 	max-width: 40%;
 	margin-left: auto;
 }
+#system.with-game-navigation > .game-navigation-slot {
+	position: relative;
+	flex: 0 0 auto;
+	order: 3;
+	height: auto;
+	margin-left: auto;
+	white-space: nowrap;
+}
 #system.with-game-navigation #game-navigation-button {
-	position: sticky;
-	left: 0;
+	pointer-events: auto;
 	z-index: 2;
 	color: #ffebc0;
 	background: #733e30;
@@ -127,6 +134,15 @@ html[data-presentation="shousha"] .menu.main.has-session-actions > .menu-content
 	border-color: #c5a16a;
 	background: #7e4433;
 }
+.game-navigation button.danger {
+	flex-basis: 100%;
+	border-color: #ba7467;
+	background: linear-gradient(120deg, #703b33, #432d2b);
+	color: #ffddd0;
+}
+.game-navigation button:hover:not(:disabled) {
+	filter: brightness(1.15);
+}
 .game-navigation button:disabled {
 	opacity: 0.55;
 	cursor: wait;
@@ -146,6 +162,47 @@ html[data-presentation="shousha"] .menu.main.has-session-actions > .menu-content
 	display: none;
 }
 /* Scoped presentation: keep the engine's tabs, filtering, scrolling and callbacks. */
+.connect-address {
+	box-sizing: border-box;
+	width: min(440px, calc(100% - 40px)) !important;
+	left: 50% !important;
+	transform: translateX(-50%);
+	height: 54px !important;
+	border: 1px solid #c5a16a;
+	border-radius: 9px;
+	background: linear-gradient(120deg, #393128ed, #202623ed);
+	color: #f2dfb7;
+	font: 18px/32px "Microsoft YaHei", sans-serif !important;
+	box-shadow: 0 10px 35px #0005, inset 0 0 0 3px #d4b57b12;
+}
+.connect-address:focus-visible, .connect-submit:focus-visible {
+	outline: 2px solid #f2cc82;
+	outline-offset: 3px;
+}
+.connect-status {
+	box-sizing: border-box;
+	width: min(460px, calc(100% - 32px)) !important;
+	left: 50% !important;
+	top: auto !important;
+	bottom: calc(50% + 32px);
+	transform: translateX(-50%);
+	height: auto !important;
+	font-size: 19px !important;
+	line-height: 1.5 !important;
+	max-height: calc(50% - 88px);
+	overflow: auto;
+	color: #f2d6a0;
+}
+.connect-status[data-state="error"] { color: #ffc4ae; font-size: 15px !important; }
+.connect-status[data-state="connected"] { color: #b9e6c9; }
+.connect-status[data-state="connecting"] { color: #f5dfa9; }
+.connect-submit {
+	border: 1px solid #c5a16a;
+	border-radius: 7px;
+	background: linear-gradient(135deg, #896044, #50392c);
+	color: #ffebc0;
+	box-shadow: 0 5px 18px #0005;
+}
 html[data-presentation="shousha"] .menu-container > .menu.main {
 	--menu-sidebar: 28%;
 	box-sizing: border-box;

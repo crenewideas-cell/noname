@@ -1,0 +1,90 @@
+name: noname-online
+services:
+  database:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_DB: noname_online
+      POSTGRES_USER: noname
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U noname -d noname_online"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    networks: [private]
+    logging: &logging
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+  assets:
+    image: caddy:2-alpine
+    volumes:
+      - ../../dist-online:/srv:ro
+      - ./Assets.Caddyfile:/etc/caddy/Caddyfile:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/index.html"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    networks: [private]
+    logging: *logging
+  platform:
+    build:
+      context: ../..
+      dockerfile: deploy/online/platform.Dockerfile
+    init: true
+    user: pwuser
+    security_opt:
+      - seccomp=./seccomp_profile.json
+    shm_size: 512mb
+    mem_limit: ${PLATFORM_MEMORY:-3g}
+    cpus: ${PLATFORM_CPUS:-2}
+    pids_limit: 512
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 8082
+      TRUST_PROXY: 1
+      DATABASE_URL: postgresql://noname:${POSTGRES_PASSWORD}@database:5432/noname_online
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:?Set PUBLIC_ORIGIN}
+      ONLINE_BUILD_ID: ${ONLINE_BUILD_ID:-online-phase3-v1}
+      MATCH_REGION: ${MATCH_REGION:-default}
+      RESUME_GRACE_MS: ${RESUME_GRACE_MS:-120000}
+      ONLINE_MAINTENANCE: ${ONLINE_MAINTENANCE:-0}
+      MAINTENANCE_FILE: /run/noname-online/maintenance
+      ADMIN_STATUS_TOKEN: ${ADMIN_STATUS_TOKEN:-}
+      HOST_CLIENT_URL: http://assets/index.html
+      MAX_GAME_INSTANCES: ${MAX_GAME_INSTANCES:-2}
+    depends_on:
+      database: { condition: service_healthy }
+      assets: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8082/readyz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 8s
+      retries: 5
+      start_period: 30s
+    stop_grace_period: 30s
+    restart: unless-stopped
+    networks: [private]
+    volumes:
+      - ./runtime:/run/noname-online:ro
+    logging: *logging
+  gateway:
+    image: caddy:2-alpine
+    ports: ["${PUBLIC_PORT:-80}:80"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    depends_on:
+      platform: { condition: service_healthy }
+    restart: unless-stopped
+    networks: [private, public]
+    logging: *logging
+networks:
+  private: { internal: true }
+  public: {}
+volumes:
+  postgres-data:

@@ -20,6 +20,7 @@ import { Check } from "./check.js";
 import { security } from "@/util/sandbox.js";
 import { save } from "@/util/config.js";
 import { debounce } from "@/util/utils.js";
+import { connect, disconnect } from "./connection.js";
 
 export class Game {
 	documentZoom;
@@ -2122,84 +2123,41 @@ export class Game {
 	 * @param { (result: boolean) => any } callback
 	 */
 	connect(ip, callback) {
-		// 如果已经联机了就不需要再连接了
-		if (game.online || typeof ip !== "string" || !ip?.length) {
-			return;
+		return connect(ip, callback);
+	}
+	async startManagedGame() {
+		const { startManagedGame } = await import("../online/game.js");
+		return startManagedGame();
+	}
+	disconnect() {
+		disconnect();
+		if (game.localServer) {
+			for (const client of game.localServer.clients) client.terminate();
+			game.localServer.close();
+			game.localServer = null;
 		}
-
-		let tempUrl;
-		// 如果能直接解析出URL，且协议为ws或wss，则直接赋值成URL，且不作其他处理
-		// （当然实际上，如果保证给定的地址以"ws://"或"wss://"开头，基本能判定为URL，无需重复判断）
-		if (URL.canParse(ip) && (ip.startsWith("ws://") || ip.startsWith("wss://"))) {
-			tempUrl = new URL(ip);
-		}
-		// 否则就尝试解析成URL，并套用约定的格式
-		else {
-			const protocol = get.config("wss_mode", "connect") ? "wss://" : "ws://";
-			let tempHref = `${protocol}${ip}`;
-
-			tempUrl = new URL(tempHref);
-
-			const ipv4Regex = /^(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-			const ipv6Regex = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
-
-			// 如果给定的地址是纯ip地址，则自动添加8080端口，兼容以前的地址
-			if (ipv4Regex.test(ip) || ipv6Regex.test(ip)) {
-				tempUrl.port = "8080";
-			}
-			// 否则...鉴于原先存在地址为域名/localhost的情况，鉴于原先的联机地址不兼容pathname，如果pathname为"/"，则多加判断
-			else if (tempUrl.pathname == "/") {
-				let withport = false;
-				let index = ip.lastIndexOf(":");
-				if (index != -1) {
-					index = parseFloat(ip.slice(index + 1));
-					if (index && Math.floor(index) == index) {
-						withport = true;
-					}
-				}
-
-				if (!withport) {
-					tempUrl.port = "8080";
-				}
-			}
-		}
-
-		const url = tempUrl.href;
-
-		_status.connectCallback = callback;
-		try {
-			if (game.ws) {
-				game.ws._nocallback = true;
-				game.ws.close();
-				delete game.ws;
-			}
-			game.ws = new WebSocket(url);
-		} catch {
-			alert("错误：无效联机地址");
-			if (callback) {
-				callback(false);
-			}
-			return;
-		}
-
-		game.sandbox = security.createSandbox(ip);
-		game.ws.onopen = lib.element.ws.onopen;
-		game.ws.onmessage = lib.element.ws.onmessage;
-		game.ws.onerror = lib.element.ws.onerror;
-		game.ws.onclose = lib.element.ws.onclose;
-		_status.ip = ip;
 	}
 	send() {
 		if (game.observe && arguments[0] != "reinited") {
 			return;
 		}
-		if (game.ws) {
+		if (game.ws?.readyState === WebSocket.OPEN) {
 			const args = Array.from(arguments);
 			if (typeof args[0] == "function") {
 				args.unshift("exec");
 			}
-			game.ws.send(JSON.stringify(get.stringifiedResult(args)));
+			if (game.ws.bufferedAmount > 8 * 1024 * 1024) {
+				game.ws.close(4008, "Send buffer exceeded");
+				return false;
+			}
+			try {
+				game.ws.send(JSON.stringify(get.stringifiedResult(args)));
+				return true;
+			} catch {
+				game.ws.close();
+			}
 		}
+		return false;
 	}
 	/**
 	 * 对于客户端syncSkillData使用防抖函数喵
@@ -2330,17 +2288,15 @@ export class Game {
 				})();
 				const { promise, resolve } = Promise.withResolvers();
 
-				game.dataRequestMap[id] = (ok, result) => resolve([ok, result]);
-				game.send("dataSync", { type: "skill", name: skill, key: sync, args, timeout }, id);
-
-				const timeoutPromise = new Promise(resolve => {
-					setTimeout(() => {
-						delete game.dataRequestMap[id];
-						resolve([false, game.SKILL_SYNC_RESULTS.REQUEST_TIMEOUT]);
-					}, timeout);
-				});
-
-				return Promise.any([promise, timeoutPromise]);
+				const timer = setTimeout(() => finish(false, game.SKILL_SYNC_RESULTS.REQUEST_TIMEOUT), timeout);
+				const finish = (ok, result) => {
+					clearTimeout(timer);
+					delete game.dataRequestMap[id];
+					resolve([ok, result]);
+				};
+				game.dataRequestMap[id] = finish;
+				if (!game.send("dataSync", { type: "skill", name: skill, key: sync, args, timeout }, id)) finish(false, "网络连接不可用");
+				return promise;
 			},
 			{
 				delay: 500,
@@ -2406,7 +2362,7 @@ export class Game {
 
 		const newTicksMap = ticksMap ?? {};
 		const newSkillTicks = newTicksMap[skill] ?? (newTicksMap[skill] = {});
-		newSkillTicks[sync] ??= Date.now();
+		newSkillTicks[sync] = Date.now();
 		game.#skillSyncTicks.set(player, newTicksMap);
 
 		// 执行并返回喵
@@ -2420,7 +2376,9 @@ export class Game {
 		return new lib.element.Client(new lib.element.NodeWS(id), true).send(message);
 	}
 	createServer() {
+		if (game.localServer) return;
 		lib.node.clients = [];
+		lib.node.reconnectTokens = new Map();
 		lib.node.banned = [];
 		lib.node.observing = [];
 		lib.node.torespond = {};
@@ -2436,9 +2394,31 @@ export class Game {
 			void 0;
 		} else {
 			const WebSocketServer = require("ws").Server;
-			const wss = new WebSocketServer({ port: 8080 });
+			const wss = new WebSocketServer({ port: 8080, maxPayload: 2 * 1024 * 1024, perMessageDeflate: false });
+			game.localServer = wss;
 			game.ip = get.ip();
-			wss.on("connection", lib.init.connection);
+			wss.on("error", error => {
+				console.error("本地联机服务器错误", error);
+				alert(error.code === "EADDRINUSE" ? "联机端口 8080 已被占用，请关闭其他房间服务后重试。" : "联机服务器启动失败，请检查网络设置。");
+				if (game.localServer === wss) game.localServer = null;
+			});
+			wss.on("connection", ws => {
+				ws.on("error", () => ws.terminate());
+				if (wss.clients.size > 64) { ws.close(1008, "Room connection limit"); return; }
+				let alive = true;
+				ws.on("pong", () => { alive = true; });
+				const heartbeat = setInterval(() => {
+					if (!alive) { ws.terminate(); return; }
+					alive = false;
+					if (ws.readyState === 1) ws.ping();
+				}, 30000);
+				ws.on("close", () => clearInterval(heartbeat));
+				lib.init.connection(ws);
+			});
+			window.addEventListener("pagehide", () => {
+				for (const ws of wss.clients) ws.terminate();
+				wss.close();
+			}, { once: true });
 		}
 	}
 	/**

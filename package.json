@@ -9,6 +9,8 @@
     "scripts": {
         "dev": "tsx scripts/dev.ts",
         "build": "tsx scripts/build.ts",
+        "build:online": "tsx scripts/build-online.ts",
+        "dev:online": "pnpm --filter @noname/server platform",
         "init:extension": "tsx scripts/initExtension.ts",
         "serve": "pnpm -F @noname/fs run dev --dirname=../../dist",
         "start": "pnpm build && pnpm serve",

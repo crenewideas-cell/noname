@@ -1,7 +1,7 @@
 <template>
   <div
     class="hidden"
-    v-for="(mode, index) in lib.config.all.mode"
+    v-for="(mode, index) in lib.config.all.mode.filter(mode => mode !== 'connect')"
     :key="mode"
     :link="mode"
     :index="index"

@@ -9,6 +9,7 @@ import type { BuildChannel, BuildInfo } from "../noname/util/meta";
 
 import { moderned_characters } from "../game/config.json";
 const root = join(import.meta.dirname, "..");
+const publicOnlineBuild = process.env.NONAME_PUBLIC_BUILD === "1";
 
 /**
  * 构建脚本入口。
@@ -60,10 +61,18 @@ async function main() {
 		character: [],
 		mode: [
 			{ name: "identity", index: "mode/identity.js", moderned: false },
+			{ name: "connect", index: "mode/connect.js", moderned: false },
 			{ name: "doudizhu", index: "mode/doudizhu.js", moderned: false },
 		],
 		card: [],
 	};
+	if (publicOnlineBuild) {
+		individuals.mode = readdirSync(join(root, "mode"), { withFileTypes: true }).flatMap(file => {
+			if (file.isFile() && /\.(js|ts)$/.test(file.name)) return [{ name: getEntryName(file.name), index: `mode/${file.name}`, moderned: false }];
+			const index = ["index.ts", "index.js"].find(entry => existsSync(join(root, "mode", file.name, entry)));
+			return file.isDirectory() && index ? [{ name: `${file.name}/index`, index: `mode/${file.name}/${index}`, moderned: true }] : [];
+		});
+	}
 
 	// #3446 - 通过moderned_characters配置更新character内容
 	for (const name of moderned_characters) {
@@ -110,7 +119,7 @@ async function main() {
 		// 获取需要单独复制的文件
 		const copies: Target[] = [];
 		for (const file of readdirSync(join(root, type))) {
-			if (getEntryName(file) in input) {
+			if (getEntryName(file) in input || content.some(item => item.name.split("/")[0] === getEntryName(file))) {
 				continue;
 			}
 
@@ -161,7 +170,7 @@ async function buildSelf(target: string | string[], importMap: Record<string, st
 				},
 			},
 		},
-		plugins: [viteStaticCopy({ targets: copies }), generateImportMap(importMap), jit()],
+		plugins: [viteStaticCopy({ targets: copies }), generateImportMap(importMap), ...(publicOnlineBuild ? [] : [jit()])],
 	});
 }
 

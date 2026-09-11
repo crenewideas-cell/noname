@@ -147,14 +147,14 @@ export default function nodeReady({ lib, game, get, _status, ui }) {
 		} else {
 			remote = require("electron").remote;
 		}
-		var thisWindow = remote.getCurrentWindow();
-		thisWindow.destroy();
-		window.process.exit();
+		window.onbeforeunload = null;
+		remote.app.quit();
 	};
 
 	game.open = function (url) {
 		window.open(url);
 	};
+	game.openOnlineLobby = url => require("electron").ipcRenderer.invoke("noname:open-online", url);
 	
 	/**
 	 * 检查指定的路径是否是一个文件

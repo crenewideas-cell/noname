@@ -1,0 +1,13 @@
+:80 {
+  root * /srv
+  @blocked path /extension /extension/* /src /src/* /checkFile /checkDir /readFile /readFileAsText /writeFile /removeFile /getFileList /createDir /removeDir /.env /.env/* /.git /.git/* /package.json /pnpm-lock.yaml /vite.config.*
+  respond @blocked 404
+  header {
+    Cache-Control "no-cache"
+    X-Content-Type-Options nosniff
+    Referrer-Policy same-origin
+    X-Frame-Options SAMEORIGIN
+    Permissions-Policy "camera=(), microphone=(), geolocation=(), usb=()"
+  }
+  file_server
+}

@@ -5,6 +5,7 @@ import * as config from "@/util/config.js";
 import { setOnError } from "@/util/error.ts";
 import { security, initializeSandboxRealms } from "@/util/sandbox.js";
 import { CacheContext } from "@/library/cache/cacheContext.js";
+import { configureHost, installHost, isHosted } from "@/online/host.js";
 import { importCardPack, importCharacterPack, importExtension, importMode } from "./import.js";
 import { loadCard, loadCardPile, loadCharacter, loadExtension, loadMode, loadPlay } from "./loading.js";
 import { registerOrganizedExtensions, isRetiredApkExtension } from "./organizedExtensions.js";
@@ -46,6 +47,7 @@ export async function boot() {
 	setOnError({ lib, game, get, _status });
 
 	await loadConfig();
+	configureHost();
 	configLoadTime = parseInt(config.get("max_loadtime"));
 	refreshLoadTimeout();
 
@@ -323,6 +325,11 @@ export async function boot() {
 	}
 
 	const toLoad: Promise<any>[] = [];
+	// Pack discovery above rebuilds these arrays. Pin the worker after discovery.
+	if (isHosted()) {
+		lib.config.all.characters = ["standard"];
+		lib.config.all.cards = ["standard"];
+	}
 
 	let show_splash;
 	switch (config.get("show_splash")) {
@@ -337,6 +344,24 @@ export async function boot() {
 			break;
 	}
 	localStorage.removeItem("show_splash_off");
+	// Native shells open the public client in an isolated same-origin view.
+	// Consume the gameplay intent once, before directstart can bypass the lobby.
+	const onlineEntry = /^#online=([a-z0-9_-]+)$/i.exec(location.hash);
+	if (!isHosted() && onlineEntry && onlineEntry[1] !== "connect" && lib.config.all.mode.includes(onlineEntry[1])) {
+		lib.config.sessionType = "online";
+		game.saveConfig("sessionType", "online");
+		sessionStorage.setItem("noname_online_return", onlineEntry[1]);
+		sessionStorage.removeItem("noname_online_game");
+		localStorage.removeItem(lib.configprefix + "directstart");
+		localStorage.removeItem(lib.configprefix + "playback");
+		show_splash = true;
+		history.replaceState(null, "", location.pathname + location.search);
+	}
+	if (!isHosted() && !sessionStorage.getItem("noname_online_game") && lib.config.mode === "connect"
+		&& !sessionStorage.getItem(lib.configprefix + "reconnect_requested")) {
+		show_splash = true;
+		localStorage.removeItem(lib.configprefix + "directstart");
+	}
 	// Explicit navigation takes precedence over automatic start and splash preferences once.
 	const returnToLobby = sessionStorage.getItem(lib.configprefix + "return_to_lobby") === "true";
 	if (returnToLobby) {
@@ -612,6 +637,7 @@ export async function boot() {
 	}
 
 	ui.create.arena();
+	installHost();
 	game.createEvent("game", false).setContent(lib.init.start);
 	if (lib.mode[lib.config.mode] && lib.mode[lib.config.mode].fromextension) {
 		const startstr = currentMode.start.toString();
@@ -633,6 +659,7 @@ export async function boot() {
 }
 
 async function getExtensionList() {
+	if (isHosted() || import.meta.env.VITE_PUBLIC_ONLINE === "1" || sessionStorage.getItem("noname_online_game")) return [];
 	const { showExtensionRecovery } = await import("./extensionRecovery.js");
 	showExtensionRecovery(lib, config, (key, value) => game.promises.saveConfig(key, value));
 	if (localStorage.getItem(lib.configprefix + "disable_extension")) return [];

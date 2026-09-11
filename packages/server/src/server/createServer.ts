@@ -1,4 +1,5 @@
 import type { IncomingMessage } from "node:http";
+import { randomUUID } from "node:crypto";
 import { WebSocket, WebSocketServer } from "ws";
 
 import type { ServerInstance, ServerOptions } from "../types";
@@ -16,6 +17,8 @@ interface Client extends WebSocket {
 	beat?: boolean;
 	keyCheck?: NodeJS.Timeout;
 	heartbeat?: NodeJS.Timeout;
+	tokens: number;
+	lastMessageAt: number;
 }
 
 interface Room {
@@ -39,6 +42,16 @@ interface EventItem {
 
 export function createServer(options: ServerOptions = {}): ServerInstance {
 	const port = options.port ?? 8082;
+	const maxPayload = options.maxPayload ?? 2 * 1024 * 1024;
+	const maxBufferedAmount = options.maxBufferedAmount ?? 8 * 1024 * 1024;
+	const messageRate = options.messagesPerSecond ?? 300;
+	for (const [name, value] of Object.entries({ maxPayload, maxBufferedAmount, messageRate, maxConnections: options.maxConnections ?? 1000, maxConnectionsPerIp: options.maxConnectionsPerIp ?? 32 })) {
+		if (!Number.isSafeInteger(value) || value <= 0) throw new Error(`Invalid ${name}: expected a positive integer`);
+	}
+	const isText = (value: unknown, max: number): value is string => typeof value === "string" && value.length > 0 && value.length <= max;
+	const isConfig = (value: any) => value && typeof value === "object" && !Array.isArray(value)
+		&& isText(value.mode, 64)
+		&& Number.isInteger(Number(value.number)) && Number(value.number) >= 1 && Number(value.number) <= 16;
 
 	const clients = new Map<string, Client>();
 	const rooms = new Map<string, Room>();
@@ -49,10 +62,38 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 	const bannedKeyWords: string[] = [];
 
 	let wss: WebSocketServer | undefined;
+	let stopping: Promise<void> | undefined;
+	let starting: Promise<void> | undefined;
+	let broadcastTimer: NodeJS.Timeout | undefined;
+	let roomsDirty = false;
+	const scheduleBroadcast = (includeRooms: boolean) => {
+		if (stopping) return;
+		roomsDirty ||= includeRooms;
+		if (broadcastTimer) return;
+		broadcastTimer = setTimeout(() => {
+			broadcastTimer = undefined;
+			const roomList = roomsDirty ? util.buildRoomList() : undefined;
+			roomsDirty = false;
+			const clientList = util.buildClientList();
+			clients.forEach(client => {
+				if (client.room) return;
+				if (roomList) util.sendl(client, "updaterooms", roomList, clientList);
+				else util.sendl(client, "updateclients", clientList);
+			});
+		}, 100);
+	};
 
 	const clearClientTimers = (client: Client) => {
 		clearTimeout(client.keyCheck);
 		clearInterval(client.heartbeat);
+	};
+	const sendRaw = (client: Client, message: string) => {
+		if (client.readyState !== WebSocket.OPEN) return;
+		if (client.bufferedAmount + Buffer.byteLength(message) > maxBufferedAmount) {
+			client.terminate();
+			return;
+		}
+		client.send(message, error => { if (error) client.terminate(); });
 	};
 
 	const util = {
@@ -66,14 +107,14 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 
 		sendl(client: Client, ...args: any[]) {
 			try {
-				client.send(JSON.stringify(args));
+				sendRaw(client, JSON.stringify(args));
 			} catch {
 				client.close();
 			}
 		},
 
 		newId(): string {
-			return Math.floor(1e9 + Math.random() * 9e9).toString();
+			return randomUUID();
 		},
 
 		buildRoomList(): any[] {
@@ -116,18 +157,11 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 		},
 
 		updateRooms() {
-			const roomList = util.buildRoomList();
-			const clientList = util.buildClientList();
-			clients.forEach(c => {
-				if (!c.room) util.sendl(c, "updaterooms", roomList, clientList);
-			});
+			scheduleBroadcast(true);
 		},
 
 		updateClients() {
-			const list = util.buildClientList();
-			clients.forEach(c => {
-				if (!c.room) util.sendl(c, "updateclients", list);
-			});
+			scheduleBroadcast(false);
 		},
 
 		checkEvents() {
@@ -150,7 +184,8 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 
 	const handlers: Record<string, (client: Client, ...args: any[]) => void> = {
 		create(client: Client, key: string, nickname: string, avatar: string, config: any, mode: string) {
-			if (client.onlineKey !== key) return;
+			if (client.onlineKey !== key || client.room || rooms.has(key)) return util.sendl(client, "enterroomfailed", "duplicate");
+			if (!isText(avatar, 256)) return;
 
 			client.nickname = util.nickname(nickname);
 			client.avatar = avatar;
@@ -167,18 +202,21 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 
 		enter(client: Client, key: string, nickname: string, avatar: string) {
 			const room = rooms.get(key);
-			if (!room) return util.sendl(client, "enterroomfailed");
+			if (!room || !room.owner || room.owner.readyState !== WebSocket.OPEN) return util.sendl(client, "enterroomfailed", "missing");
+			if (client.room || !isText(avatar, 256)) return util.sendl(client, "enterroomfailed", "duplicate");
 
+			// The host verifies reconnect credentials and spectator policy after init.
+			// Rejecting all started games here also locks out disconnected players.
+			if (!room.config) {
+				return util.sendl(client, "enterroomfailed", "gaming");
+			}
+			const count = [...clients.values()].filter(member => member.room === room && !member.servermode).length;
+			if (!room.config.gameStarted && count >= Number(room.config.number)) return util.sendl(client, "enterroomfailed", "full");
+			if (count >= 64) return util.sendl(client, "enterroomfailed", "full");
 			client.nickname = util.nickname(nickname);
 			client.avatar = avatar;
 			client.room = room;
 			delete client.status;
-
-			if (!room.owner) return util.sendl(client, "enterroomfailed");
-
-			if (!room.config || (room.config.gameStarted && (!room.config.observe || !room.config.observeReady))) {
-				return util.sendl(client, "enterroomfailed");
-			}
 
 			client.owner = room.owner;
 			util.sendl(room.owner, "onconnection", client.wsid);
@@ -186,13 +224,14 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 		},
 
 		changeAvatar(client: Client, nickname: string, avatar: string) {
+			if (!isText(avatar, 256)) return;
 			client.nickname = util.nickname(nickname);
 			client.avatar = avatar;
 			util.updateClients();
 		},
 
 		key(client: Client, id: any) {
-			if (!id || typeof id !== "object") {
+			if (!Array.isArray(id) || !isText(id[0], 128) || (client.onlineKey && client.onlineKey !== id[0])) {
 				util.sendl(client, "denied", "key");
 				return client.close();
 			}
@@ -202,6 +241,7 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 			}
 			client.onlineKey = id[0];
 			clearTimeout(client.keyCheck);
+			util.updateClients();
 		},
 
 		events(client: Client, cfg: any, id: string, type: string) {
@@ -235,15 +275,18 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 						}
 					}
 				}
-			} else if (cfg && typeof cfg === "object" && "utc" in cfg && "day" in cfg && "hour" in cfg && "content" in cfg) {
+			} else if (cfg && typeof cfg === "object" && Number.isFinite(cfg.utc) && Number.isInteger(cfg.day) && Number.isInteger(cfg.hour) && isText(cfg.content, 2000)) {
 				if (events.length >= 20) util.sendl(client, "eventsdenied", "total");
 				else if (cfg.utc <= now) util.sendl(client, "eventsdenied", "time");
 				else if (util.isBanned(cfg.content)) util.sendl(client, "eventsdenied", "ban");
 				else {
 					const item: EventItem = {
-						...cfg,
+						utc: cfg.utc,
+						day: cfg.day,
+						hour: cfg.hour,
+						content: cfg.content,
 						nickname: util.nickname(cfg.nickname),
-						avatar: cfg.avatar || "caocao",
+						avatar: isText(cfg.avatar, 256) ? cfg.avatar : "caocao",
 						creator: id,
 						id: util.newId(),
 						members: [id],
@@ -258,7 +301,7 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 
 		config(client: Client, config: any) {
 			const room = client.room;
-			if (!room || room.owner !== client) return;
+			if (!room || room.owner !== client || !isConfig(config)) return;
 
 			if (room.servermode) {
 				room.servermode = false;
@@ -268,16 +311,16 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 		},
 
 		status(client: Client, str: any) {
-			if (typeof str === "string") client.status = str;
+			if (typeof str === "string") client.status = str.slice(0, 120);
 			else delete client.status;
 			util.updateClients();
 		},
 
 		send(client: Client, id: string, message: string) {
 			const target = clients.get(id);
-			if (target && target.owner === client) {
+			if (target && target.owner === client && isText(message, maxPayload)) {
 				try {
-					target.send(message);
+					sendRaw(target, message);
 				} catch {
 					target.close();
 				}
@@ -293,6 +336,14 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 	const handleConnection = (ws: WebSocket, req: IncomingMessage) => {
 		const client = ws as Client;
 		const ip = req.socket.remoteAddress ?? "";
+		client.on("error", () => client.terminate());
+		const origin = req.headers.origin;
+		if (stopping || clients.size >= (options.maxConnections ?? 1000)
+			|| [...clients.values()].filter(c => c.clientIp === ip).length >= (options.maxConnectionsPerIp ?? 32)
+			|| (origin && options.allowedOrigins && !options.allowedOrigins.includes(origin))) {
+			client.close(1008, "Connection policy");
+			return;
+		}
 
 		// ban check
 		if (bannedIps.has(ip)) {
@@ -302,32 +353,41 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 
 		client.wsid = util.newId();
 		client.clientIp = ip;
+		client.tokens = messageRate;
+		client.lastMessageAt = Date.now();
 		clients.set(client.wsid, client);
 
 		client.keyCheck = setTimeout(() => {
 			util.sendl(client, "denied", "key");
 			setTimeout(() => client.close(), 500);
-		}, 2000);
+		}, 10000);
 
 		util.sendl(client, "roomlist", util.buildRoomList(), util.checkEvents(), util.buildClientList(), client.wsid);
 
 		// heartbeat
+		client.on("pong", () => { client.beat = false; });
 		client.heartbeat = setInterval(() => {
 			if (client.beat) {
-				client.close();
+				client.terminate();
 				clearInterval(client.heartbeat);
 				return;
 			}
 			client.beat = true;
 			try {
-				client.send("heartbeat");
+				client.ping();
 			} catch {
 				client.close();
 			}
-		}, 60000);
+		}, 30000);
 
 		// message handler
-		client.on("message", msg => {
+		client.on("message", (msg, isBinary) => {
+			if (isBinary) return client.close(1003, "Text messages required");
+			const now = Date.now();
+			client.tokens = Math.min(messageRate, client.tokens + (now - client.lastMessageAt) * messageRate / 1000);
+			client.lastMessageAt = now;
+			if (client.tokens < 1) return client.close(1008, "Rate limit");
+			client.tokens--;
 			const raw = msg.toString();
 			if (raw === "heartbeat") {
 				client.beat = false;
@@ -343,19 +403,18 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 			let arr: any[];
 			try {
 				arr = JSON.parse(raw);
-				if (!Array.isArray(arr)) throw new Error();
+				if (!Array.isArray(arr) || arr.length < 2 || arr.length > 16) throw new Error();
 			} catch {
-				util.sendl(client, "denied", "banned");
-				return;
+				return client.close(1007, "Invalid message");
 			}
 
 			if (arr.shift() !== "server") return;
 
 			const type = arr.shift();
-			const handler = handlers[type];
-			if (!handler) return;
-
-			handler(client, ...arr);
+			if (typeof type !== "string" || !Object.hasOwn(handlers, type)) return client.close(1008, "Unknown command");
+			if (type !== "key" && !client.onlineKey) return client.close(1008, "Identify first");
+			try { handlers[type](client, ...arr); }
+			catch { client.close(1007, "Invalid arguments"); }
 		});
 
 		// disconnect handler
@@ -369,6 +428,9 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 					clients.forEach(c => {
 						if (c.room === room && c !== client) {
 							util.sendl(c, "selfclose");
+							delete c.owner;
+							delete c.room;
+							c.close(1001, "Room closed");
 						}
 					});
 					rooms.delete(key);
@@ -387,10 +449,12 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 
 	return {
 		start() {
+			if (stopping) return stopping.then(() => this.start());
+			if (starting) return starting;
 			if (wss) return Promise.resolve();
 
-			return new Promise<void>((resolve, reject) => {
-				const server = new WebSocketServer({ port });
+			starting = new Promise<void>((resolve, reject) => {
+				const server = new WebSocketServer({ port, host: options.host, maxPayload, perMessageDeflate: false });
 
 				const handleError = (error: Error) => {
 					server.off("listening", handleListening);
@@ -400,6 +464,7 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 				};
 				const handleListening = () => {
 					server.off("error", handleError);
+					server.on("error", error => console.error("Lobby server error", error));
 					resolve();
 				};
 
@@ -407,27 +472,38 @@ export function createServer(options: ServerOptions = {}): ServerInstance {
 				server.once("listening", handleListening);
 				server.on("connection", handleConnection);
 				wss = server;
-			});
+			}).finally(() => { starting = undefined; });
+			return starting;
 		},
 
 		stop() {
+			if (stopping) return stopping;
+			if (starting) return starting.then(() => this.stop(), () => undefined);
 			if (!wss) return Promise.resolve();
 
 			const server = wss;
 			wss = undefined;
+			clearTimeout(broadcastTimer);
+			broadcastTimer = undefined;
+			roomsDirty = false;
 
 			const curClients = [...clients];
 			for (const [_, client] of curClients) {
 				clearClientTimers(client);
-				client.close();
+				client.close(1001, "Server shutdown");
 			}
 
-			return new Promise<void>((resolve, reject) => {
+			stopping = new Promise<void>((resolve, reject) => {
+				const deadline = setTimeout(() => {
+					for (const client of server.clients) client.terminate();
+				}, 3000);
 				server.close(error => {
+					clearTimeout(deadline);
 					if (error) reject(error);
 					else resolve();
 				});
-			});
+			}).finally(() => { stopping = undefined; });
+			return stopping;
 		},
 	};
 }

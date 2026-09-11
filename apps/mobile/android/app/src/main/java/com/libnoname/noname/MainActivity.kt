@@ -15,6 +15,7 @@ class MainActivity : BridgeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         registerPlugin(SafFsPlugin::class.java)
+        registerPlugin(OnlineLobbyPlugin::class.java)
         super.onCreate(savedInstanceState)
 
         val webView = bridge.webView

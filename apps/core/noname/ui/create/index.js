@@ -2632,8 +2632,9 @@ export class Create {
 		ui.system2 = ui.create.div("#system2", ui.system);
 		ui.system.classList.add("with-game-navigation");
 		const navigation = ui.create.system("退出", openGameNavigation);
+		ui.create.div(".game-navigation-slot", ui.system).appendChild(navigation);
 		navigation.id = "game-navigation-button";
-		navigation.title = "返回主界面、重新开始或继续游戏";
+		navigation.title = "返回主界面、重新开始或退出程序";
 		navigation.setAttribute("role", "button");
 		navigation.tabIndex = 0;
 		navigation.addEventListener("keydown", event => {

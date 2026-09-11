@@ -128,12 +128,28 @@ export class LibInit {
 	connection(ws) {
 		const client = new lib.element.Client(ws);
 		lib.node.clients.push(client);
+		let tokens = 300;
+		let lastMessage = Date.now();
+		let initialized = false;
+		const initTimeout = setTimeout(() => { if (!initialized) ws.close(); }, 10000);
 		ws.on("message", function (messagestr) {
+			const now = Date.now();
+			tokens = Math.min(300, tokens + (now - lastMessage) * 0.3);
+			lastMessage = now;
+			if (tokens < 1 || messagestr.length > 2 * 1024 * 1024) { ws.close(); return; }
+			tokens--;
 			var message;
 			try {
 				message = JSON.parse(messagestr);
-				if (!Array.isArray(message) || typeof lib.message.server[message[0]] !== "function") {
+				if (!Array.isArray(message) || typeof message[0] !== "string" || !Object.prototype.hasOwnProperty.call(lib.message.server, message[0]) || typeof lib.message.server[message[0]] !== "function") {
 					throw new Error("err");
+				}
+				if (!initialized && message[0] !== "init") { ws.close(); return; }
+				if (initialized && !client.accepted) { ws.close(); return; }
+				if (message[0] === "init") {
+					if (initialized) { ws.close(); return; }
+					initialized = true;
+					clearTimeout(initTimeout);
 				}
 				if (client.sandbox) {
 					security.enterSandbox(client.sandbox);
@@ -148,13 +164,25 @@ export class LibInit {
 					}
 				}
 			} catch (e) {
-				console.log(e);
-				console.log("invalid message: " + messagestr);
+				console.warn("拒绝无效联机消息");
+				ws.close();
 				return;
 			}
-			lib.message.server[message.shift()].apply(client, message);
+			try {
+				const type = message.shift();
+				const result = lib.message.server[type].apply(client, message);
+				if (type === "init" && !client.accepted) ws.close();
+				Promise.resolve(result).catch(error => {
+					console.error("联机消息处理失败", error);
+					ws.close();
+				});
+			} catch (error) {
+				console.error("联机消息处理失败", error);
+				ws.close();
+			}
 		});
 		ws.on("close", function () {
+			clearTimeout(initTimeout);
 			client.close();
 		});
 		client.send("opened");

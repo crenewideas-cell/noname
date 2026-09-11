@@ -62,6 +62,7 @@ export default function vitePluginJIT(importMap: Record<string, string> = {}): P
 	const jit = document.createElement("script");
 	jit.type = "module";
 	jit.textContent = \`(async function () {
+		if (${process.env.NONAME_PUBLIC_BUILD === "1"}) return;
 		const scope = new URL("./", location.href).toString();
 		// if (import.meta.env.DEV) {
 		// 	if ("serviceWorker" in navigator) {

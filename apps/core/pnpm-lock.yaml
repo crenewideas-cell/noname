@@ -62,6 +62,9 @@ importers:
       '@noname/jit':
         specifier: workspace:*
         version: link:../../packages/jit
+      '@noname/online-protocol':
+        specifier: workspace:*
+        version: link:../../packages/online-protocol
       codemirror:
         specifier: ^6.0.2
         version: 6.0.2

@@ -25,7 +25,7 @@ import { ref, onBeforeUnmount } from "vue";
 import { lib, get, game } from "noname";
 
 const props = defineProps<{ handle: (mode: string) => string; click: (mode: string, node: HTMLElement) => void }>();
-const modes = [...new Set<string>(lib.config.all.mode)];
+const modes = [...new Set<string>(lib.config.all.mode)].filter(mode => mode !== "connect");
 const artworkModes = new Set(["identity", "guozhan", "doudizhu", "versus", "single", "connect", "boss", "brawl", "chess", "stone", "tafang"]);
 const descriptions: Record<string, string> = {
 	identity: "明辨忠奸，运筹帷幄",

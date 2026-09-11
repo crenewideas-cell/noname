@@ -29,6 +29,7 @@ export class Client {
 		// @ts-expect-error ignore
 		this.id = ws.wsid || get.id();
 		this.closed = false;
+		this.accepted = false;
 
 		if (!temp) {
 			this.sandbox = security.createSandbox(this.id);
@@ -61,6 +62,10 @@ export class Client {
 			args[i] = get.stringifiedResult(args[i]);
 		}
 		try {
+			if (this.ws.bufferedAmount > 8 * 1024 * 1024) {
+				this.ws.close();
+				return this;
+			}
 			this.ws.send(JSON.stringify(args));
 		} catch (e) {
 			this.ws.close();
@@ -72,6 +77,7 @@ export class Client {
 	 */
 	inited;
 	close() {
+		if (this.closed) return this;
 		lib.node.clients.remove(this);
 		lib.node.observing.remove(this);
 		if (ui.removeObserve && !lib.node.observing.length) {
@@ -80,6 +86,7 @@ export class Client {
 		}
 		this.closed = true;
 		if (_status.waitingForPlayer) {
+			lib.node.reconnectTokens?.delete(this.id);
 			for (var i = 0; i < game.connectPlayers.length; i++) {
 				if (game.connectPlayers[i].playerid == this.id) {
 					game.connectPlayers[i].uninitOL();

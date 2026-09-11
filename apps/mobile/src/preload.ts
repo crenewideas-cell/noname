@@ -34,6 +34,7 @@ interface SafFsPlugin {
 }
 
 const SafFs = registerPlugin<SafFsPlugin>("SafFs");
+const OnlineLobby = registerPlugin<{ open(options: { url: string }): Promise<void> }>("OnlineLobby");
 
 function sanitizeExportName(name?: string) {
 	return (name || "noname").replace(/\\|\/|:|\?|"|\*|<|>|\|/g, "-");
@@ -119,12 +120,13 @@ export default async function preload({ lib, game }) {
 	};
 
 	game.exit = function () {
-		App.exitApp();
+		return App.exitApp();
 	};
 
 	game.open = function (url: string) {
 		window.open(url);
 	};
+	game.openOnlineLobby = (url: string) => OnlineLobby.open({ url });
 
 	game.checkFile = function checkFile(
 		fileName: string,

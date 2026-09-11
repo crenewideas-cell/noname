@@ -1,8 +1,7 @@
 import { lib, game, ui } from "noname";
 import { createApp } from "vue";
 
-import OnloadSplash from "./OnloadSplash.vue";
-import ShoushaSplash from "./ShoushaSplash.vue";
+import EntryShell from "@/online/ui/EntryShell.vue";
 import type { OnloadSplash as IOnloadSplash } from "./onload-splash";
 
 export class DefaultSplash implements IOnloadSplash {
@@ -31,7 +30,8 @@ export class DefaultSplash implements IOnloadSplash {
 		node.dataset.radius_size = lib.config.radius_size;
 		node.dataset.splash_style = lib.config.splash_style;
 
-		this.app = createApp(shousha ? ShoushaSplash : OnloadSplash, {
+		this.app = createApp(EntryShell, {
+			shousha,
 			handle: this.handle.bind(this),
 			click: this.click.bind(this),
 		});

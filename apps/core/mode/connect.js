@@ -6,7 +6,11 @@ export const type = "mode";
 export default () => {
 	return {
 		name: "connect",
-		start() {
+		// Resolve through the shared engine so the separately built mode does not
+		// bundle a second platform socket/store alongside the lobby's copy.
+		start: sessionStorage.getItem("noname_online_game") ? async () => {
+			await game.startManagedGame();
+		} : function () {
 			var directstartmode = lib.config.directstartmode;
 			ui.create.menu(true);
 			event.textnode = ui.create.div("", "输入联机地址");
@@ -51,21 +55,40 @@ export default () => {
 				node.style.whiteSpace = "nowrap";
 				node.textContent = lib.config.last_ip || lib.hallURL;
 				node.contentEditable = true;
+				node.classList.add("connect-address");
+				node.setAttribute("role", "textbox");
+				node.setAttribute("aria-label", "联机服务器地址");
+				node.setAttribute("aria-multiline", "false");
+				node.spellcheck = false;
+				node.addEventListener("paste", e => {
+					e.preventDefault();
+					node.textContent = e.clipboardData.getData("text/plain").trim();
+				});
 				node.style.webkitUserSelect = "text";
 				node.style.textAlign = "center";
 				node.style.overflow = "hidden";
 
+				let connecting = false;
+				let invitation;
 				var connect = function (e) {
+					e?.preventDefault();
+					if (connecting) { game.disconnect(); return; }
+					connecting = true;
+					node.contentEditable = false;
+					button.textContent = "取消";
+					text.dataset.state = "connecting";
 					event.textnode.textContent = "正在连接...";
 					clearTimeout(event.timeout);
-					if (e) {
-						e.preventDefault();
-					}
-					const ip = node.textContent;
-					game.requireSandboxOn(ip);
-					game.saveConfig("last_ip", ip);
-					game.connect(ip, function (success) {
+					const ip = node.textContent.trim();
+					game.connect(ip, function (success, reason) {
+						connecting = false;
+						node.contentEditable = true;
+						button.textContent = "连接";
+						text.dataset.state = success ? "connected" : "error";
 						if (success) {
+							game.saveConfig("last_ip", ip);
+							event.textnode.textContent = "连接成功，正在进入…";
+							if (invitation) _status.read_clipboard_text = invitation;
 							var info = lib.config.reconnect_info;
 							if (info && info[0] == _status.ip) {
 								game.onlineID = info[1];
@@ -76,13 +99,12 @@ export default () => {
 							return;
 						}
 						if (event.textnode) {
-							alert("连接失败");
-							event.textnode.textContent = "输入联机地址";
+							event.textnode.textContent = reason || "连接失败，请重试。";
 						}
 					});
 				};
 				node.addEventListener("keydown", function (e) {
-					if (e.key == "Enter") {
+					if (e.key == "Enter" && !e.isComposing) {
 						connect(e);
 					}
 				});
@@ -90,6 +112,9 @@ export default () => {
 				ui.ipnode = node;
 
 				var text = event.textnode;
+				text.classList.add("connect-status");
+				text.setAttribute("role", "status");
+				text.setAttribute("aria-live", "polite");
 				text.style.width = "400px";
 				text.style.height = "30px";
 				text.style.lineHeight = "30px";
@@ -103,6 +128,12 @@ export default () => {
 				ui.iptext = text;
 
 				var button = ui.create.div(".menubutton.highlight.large.pointerdiv", "连接", connect);
+				button.classList.add("connect-submit");
+				button.setAttribute("role", "button");
+				button.tabIndex = 0;
+				button.addEventListener("keydown", e => {
+					if (e.key === "Enter" || e.key === " ") connect(e);
+				});
 				button.style.width = "70px";
 				button.style.left = "calc(50% - 35px)";
 				button.style.top = "calc(50% + 60px)";
@@ -156,22 +187,13 @@ export default () => {
 					var ced = false;
 					var read = text => {
 						try {
-							var text2 = text.split("\n")[2];
-							var ip = text2.slice(5);
-							if (ip.length > 0 && text2.startsWith("联机地址:") && (ced || confirm("是否根据剪贴板的邀请链接以进入联机地址和房间？"))) {
-								node.innerHTML = ip;
-								event.textnode.innerHTML = "正在连接...";
-								clearTimeout(event.timeout);
-								game.saveConfig("last_ip", node.innerHTML);
-								game.connect(node.innerHTML, function (success) {
-									if (!success && event.textnode) {
-										alert("邀请链接解析失败");
-										event.textnode.innerHTML = "输入联机地址";
-									}
-									if (success) {
-										_status.read_clipboard_text = text;
-									}
-								});
+							const text2 = text.split(/\r?\n/).find(line => line.startsWith("联机地址:"));
+							const ip = text2?.slice(5).trim();
+							if (ip && (ced || confirm("是否根据剪贴板的邀请链接以进入联机地址和房间？"))) {
+								if (connecting) return;
+								node.textContent = ip;
+								invitation = text;
+								connect();
 							}
 						} catch (e) {
 							console.log(e);
@@ -202,6 +224,12 @@ export default () => {
 					}
 				}
 				lib.init.onfree();
+				const reconnectAddress = sessionStorage.getItem(lib.configprefix + "reconnect_requested");
+				if (reconnectAddress) {
+					sessionStorage.removeItem(lib.configprefix + "reconnect_requested");
+					node.textContent = reconnectAddress;
+					setTimeout(() => { if (node.isConnected && !connecting && !game.online) connect(); }, 0);
+				}
 			};
 			createNode();
 			if (!game.onlineKey) {
