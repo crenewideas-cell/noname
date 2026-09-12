@@ -171,6 +171,25 @@
 .match-countdown small { font: 13px sans-serif; color: #bfc4aa; }
 .online-connection[data-state="blocked"] { color: #e5ac92; }
 .online-turn-clock { position: fixed; bottom: max(16px,env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); z-index: 100; pointer-events: none; padding: 7px 16px; border: 1px solid #c8ad705c; border-radius: 22px; background: #142b2be8; color: #e9d4a5; font: 12px/1.5 sans-serif; box-shadow: 0 4px 20px #0005; white-space: nowrap; }
+.online-managed-game #control { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; }
+.online-managed-game #control > .control:not(.stayleft) { position: relative; left: auto; transform: none !important; max-width: 100%; white-space: normal; }
+.online-managed-game #control > .control.removing { display: none; }
+.online-managed-game #control > .online-skill-control { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 5px; border: 1px solid #bd9a5655; border-radius: 12px; background: #162b2ce8; box-shadow: 0 6px 18px #0005; }
+.online-managed-game #control .online-skill-action { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; min-width: 86px; min-height: 48px; margin: 0; padding: 7px 14px; border: 1px solid #d4b575; border-radius: 8px; background: linear-gradient(155deg,#465442,#263b34); color: #fff0cd; font: 19px/1.2 xinwei,serif; text-shadow: 0 1px 2px #0008; cursor: pointer; }
+.online-managed-game #control .online-skill-action::after { content: attr(data-state); margin-top: 4px; color: #d7c49d; font: 11px/1.2 sans-serif; letter-spacing: .5px; }
+.online-managed-game #control .online-skill-action:hover { background: linear-gradient(155deg,#626746,#344b3b); border-color: #f5d997; }
+.online-managed-game #control .online-skill-action:focus-visible { outline: 2px solid #ffe0a0; outline-offset: 3px; }
+.online-managed-game #control .online-skill-action:active { background: #21382e; }
+.online-managed-game .dialog .textbutton { box-sizing: border-box; min-height: 46px; padding: 12px 16px; border: 1px solid #ba9d6555; border-radius: 8px; background: #1f3434ec; color: #f2e6c9; font: 15px/1.6 sans-serif; text-align: left; white-space: normal; }
+.online-managed-game .dialog .textbutton.selectable { border-color: #d5b573; cursor: pointer; }
+.online-managed-game .dialog .textbutton.selected { background: #526143; border-color: #ffe0a0; box-shadow: inset 4px 0 #ffe0a0; }
+.online-managed-game .dialog .textbutton.unselectable { opacity: .45; cursor: not-allowed; }
+.online-managed-game .online-choice-dialog { top: 8% !important; bottom: auto !important; height: auto !important; min-height: 0 !important; max-height: 65%; border: 1px solid #bd9d6755; border-radius: 12px; background: #142827f5; color: #ecddba; box-shadow: 0 12px 36px #0006; }
+.online-managed-game .online-choice-dialog > .content-container { position: relative; top: 0; height: auto; max-height: 55vh; overflow-y: auto; overscroll-behavior: contain; padding: 10px 0; }
+.online-managed-game .online-choice-dialog .content { position: relative; }
+.online-managed-game .online-choice-dialog .caption { box-sizing: border-box; width: calc(100% - 8px); color: #f3d79d; font: 20px/1.5 xinwei,serif; padding: 4px 10px; }
+.online-managed-game .online-choice-dialog .caption > .textbutton { width: 100%; margin: 0; }
+@media (max-width:700px) { .online-managed-game #control .online-skill-action { min-width: 72px; padding: 6px 10px; font-size: 17px; } }
 .online-lobby button:focus-visible, .online-lobby summary:focus-visible, .online-dialog button:focus-visible { outline: 2px solid #ebd09a; outline-offset: 3px; }
 @media (min-width:1400px) { .online-room-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
 @media (max-width:1000px) { .online-body { grid-template-columns: minmax(0,1fr); } .online-sidebar { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); } .online-create-card { min-height: auto; } }

@@ -3710,20 +3710,20 @@ const skills = {
 				const dialog = ui.create.dialog("行殇：请选择一项", "hidden");
 				const list = get.info("sbxingshang").getList.slice();
 				dialog.add([
-					list.map(effect => {
-						return [effect, `移去${effect.cost}个“颂”标记，${effect.prompt()}`];
+					list.map((effect, index) => {
+						return [index, `移去${effect.cost}个“颂”标记，${effect.prompt()}`];
 					}),
 					"textbutton",
 				]);
 				return dialog;
 			},
 			filter(button, player) {
-				const effect = button.link;
+				const effect = get.info("sbxingshang").getList[button.link];
 				return player.countMark("sbxingshang") >= effect.cost && effect.filter(player);
 			},
 			check(button) {
 				const player = get.event().player;
-				const effect = button.link;
+				const effect = get.info("sbxingshang").getList[button.link];
 				return Math.max(
 					...game
 						.filterPlayer(target => {
@@ -3743,7 +3743,7 @@ const skills = {
 				);
 			},
 			backup(links, player) {
-				const effect = links[0];
+				const effect = get.info("sbxingshang").getList[links[0]];
 				return {
 					effect: effect,
 					audio: "sbxingshang",
@@ -3759,7 +3759,7 @@ const skills = {
 				};
 			},
 			prompt(links, player) {
-				const effect = links[0];
+				const effect = get.info("sbxingshang").getList[links[0]];
 				const str = "###行殇###";
 				return `${str}<div class="text center">` + `移去${effect.cost}个“颂”标记，${effect.prompt()}</div>`;
 			},
@@ -3960,20 +3960,20 @@ const skills = {
 				const dialog = ui.create.dialog("放逐：请选择一项", "hidden");
 				const list = get.info("sbfangzhu").getList.slice();
 				dialog.add([
-					list.map(effect => {
-						return [effect, `移去${effect.cost}个“颂”标记，${effect.prompt()}`];
+					list.map((effect, index) => {
+						return [index, `移去${effect.cost}个“颂”标记，${effect.prompt()}`];
 					}),
 					"textbutton",
 				]);
 				return dialog;
 			},
 			filter(button, player) {
-				const effect = button.link;
+				const effect = get.info("sbfangzhu").getList[button.link];
 				return player.countMark("sbxingshang") >= effect.cost && effect.filter(player);
 			},
 			check(button) {
 				const player = get.event().player;
-				const effect = button.link;
+				const effect = get.info("sbfangzhu").getList[button.link];
 				return Math.max(
 					...game
 						.filterPlayer(target => {
@@ -3993,7 +3993,7 @@ const skills = {
 				);
 			},
 			backup(links, player) {
-				const effect = links[0];
+				const effect = get.info("sbfangzhu").getList[links[0]];
 				return {
 					effect: effect,
 					audio: "sbfangzhu",
@@ -4010,7 +4010,7 @@ const skills = {
 				};
 			},
 			prompt(links, player) {
-				const effect = links[0];
+				const effect = get.info("sbfangzhu").getList[links[0]];
 				const str = "###放逐###";
 				return `${str}<div class="text center">` + `移去${effect.cost}个“颂”标记，${effect.prompt()}</div>`;
 			},

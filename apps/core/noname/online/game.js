@@ -2,6 +2,7 @@ import { lib, game, ui, get, _status } from "noname";
 import { command, onlineState, restoreAccount, onOnlineEvent, disconnectPlatform, onlineId, prepareRoomNavigation } from "./client";
 import { security } from "@/util/sandbox.js";
 import { assertOnlineCharacterResources } from "./characterPool.js";
+import { installSkillControls } from "./ui/skillControls.js";
 import "./ui/online.css";
 
 let statusPanel;
@@ -77,6 +78,7 @@ export async function startManagedGame() {
 		if (onlineState.room.members.find(member => member.id === onlineState.account.id)?.abandoned) throw new Error("席位保留时间已过，无法恢复本局控制权。");
 		assignment.modeId = onlineState.room.modeId;
 		assertOnlineCharacterResources();
+		installSkillControls();
 		game.onlineID = onlineState.account.id;
 		_status.ip = "online-platform";
 		// Force the existing engine sandbox without the legacy "trust this IP" prompt.

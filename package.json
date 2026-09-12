@@ -12,6 +12,7 @@
         "build:online": "tsx scripts/build-online.ts",
         "build:online:client": "tsx scripts/build-online.ts --client",
         "dev:online": "pnpm --filter @noname/server platform",
+        "test:online-skills": "tsx scripts/online-skill-regression.ts",
         "init:extension": "tsx scripts/initExtension.ts",
         "serve": "pnpm -F @noname/fs run dev --dirname=../../dist",
         "start": "pnpm build && pnpm serve",
