@@ -91,6 +91,7 @@ export async function startManagedGame() {
 		// Associate results with the prompt that created the event. A late UI
 		// callback must never borrow the token of a later server choice.
 		const eventTokens = new WeakMap(), resultTokens = new WeakMap();
+		const closedChoices = new Set();
 		let dispatchToken;
 		const createEvent = game.createEvent, startEvent = lib.element.GameEvent.prototype.start;
 		game.createEvent = function (...args) {
@@ -110,7 +111,7 @@ export async function startManagedGame() {
 			clearChoiceClock();
       try { await attaching; await command("game.result", { ...assignment, token, turnId: token, expectedRevision: token, actionId: onlineId(), generation: seatGeneration, result: get.stringifiedResult(result) }); }
 			catch (error) {
-				if (finished || leaving || choiceToken) return;
+				if (finished || leaving || choiceToken || closedChoices.has(token)) return;
 				rejectedChoiceToken = token;
 				// A rejected result is still pending on the host. Offer its snapshot
 				// and prompt again instead of claiming it will advance on its own.
@@ -121,7 +122,9 @@ export async function startManagedGame() {
 			if (type === "result") {
 				// startOnline submits the same result object produced by its child.
 				// Never relabel an old result with the current parent event's token.
-				void submit(args[0], resultTokens.get(args[0]));
+				const event = _status.event;
+				const directToken = event?.result === args[0] || event?._result === args[0] ? eventTokens.get(event) : undefined;
+				void submit(args[0], resultTokens.get(args[0]) || directToken);
 				return true;
 			}
 			if (type === "inited" || type === "reinited") { void (async () => { await attaching; await command("game." + type, { ...assignment, generation: seatGeneration }); })().catch(fail); return true; }
@@ -141,6 +144,8 @@ export async function startManagedGame() {
 				// earlier live event/result merely because a new request has arrived.
 				showChoiceClock(payload.deadline);
 			} else if (type === "game.choiceClosed") {
+				closedChoices.add(payload.token);
+				if (closedChoices.size > 256) closedChoices.delete(closedChoices.values().next().value);
 				if (payload.token === choiceToken) { choiceToken = undefined; clearChoiceClock(); }
 				if (payload.token === rejectedChoiceToken) { rejectedChoiceToken = undefined; statusPanel?.remove(); statusPanel = undefined; }
 			} else if (type === "game.engine") {

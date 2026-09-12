@@ -58,6 +58,14 @@ export function installHost() {
 	const prompts = new Map();
 	const consumed = new Map();
 	let sendingChoice;
+	let sendingEvent;
+	const originalEventSend = lib.element.GameEvent.prototype.send;
+	lib.element.GameEvent.prototype.send = function (...args) {
+		const previous = sendingEvent;
+		sendingEvent = this;
+		try { return originalEventSend.apply(this, args); }
+		finally { sendingEvent = previous; }
+	};
 	const seatStatus = player => {
 		if (!player) return;
 		const label = player.ws?.closed ? "离线托管" : player.isAuto ? "托管" : "";
@@ -67,9 +75,47 @@ export function installHost() {
 	};
 	const originalSend = lib.element.Player.prototype.send;
 	lib.element.Player.prototype.send = function (...args) {
-		const evt = choices.get(this.playerid)?.event || _status.event;
+		const evt = sendingEvent || choices.get(this.playerid)?.event || _status.event;
 		const functionName = typeof args[0] === "function" ? args[0].name : "";
-		if (typeof args[0] === "function" && (typeof args[1] === "string" && args[1].startsWith("choose") || functionName === "chooseRemote" || ["chooseButtonOL", "chooseCardOL"].includes(evt?.name) && (Array.isArray(args[1]) || args[1] && typeof args[1] === "object") || evt?.name === "chooseAnyOL" || evt?.name === "_wuxie" && args[0] === evt.send)) {
+		if (typeof args[0] === "function" && (sendingEvent?.player === this || typeof args[1] === "string" && args[1].startsWith("choose") || functionName === "chooseRemote" || ["chooseButtonOL", "chooseCardOL"].includes(evt?.name) && (Array.isArray(args[1]) || args[1] && typeof args[1] === "object") || evt?.name === "chooseAnyOL" || evt?.name === "_wuxie" && args[0] === evt.send)) {
+			// A server-generated backup is scoped to this prompt. Replay both its
+			// definition and selection state, including when reconnecting mid-skill.
+			if (sendingEvent && args[1] === sendingEvent.name) {
+				const skill = sendingEvent.skill || sendingEvent._backupevent;
+				const backup = sendingEvent._onlineBackup?.source + "_backup" === skill ? sendingEvent._onlineBackup : undefined;
+				const promptArgs = args.slice(1);
+				promptArgs[2] = [...(promptArgs[2] || [])];
+				if (skill) promptArgs[2].push(["_backupevent", skill]);
+				const dialog = ["chooseButton", "chooseControl"].includes(sendingEvent.name) && sendingEvent.dialog?.buttons ? sendingEvent.dialog : undefined;
+				const dialogData = dialog && {
+					title: dialog.content.querySelector(".text")?.textContent || sendingEvent.prompt || "请选择",
+					buttons: dialog.buttons.map(button => [button._args[0], button._args[1], button.classList.contains("unselectable")]),
+				};
+				if (dialog) {
+					// DOM dialogs serialize as {}. Send their trusted button data and
+					// rebuild them before applying the original engine prompt.
+					promptArgs[1] = promptArgs[1].map(arg => arg === dialog ? undefined :
+						arg?.dialog === dialog ? { ...arg, dialog: undefined } : arg);
+					promptArgs[2] = promptArgs[2].filter(([key]) => key !== "dialog" && key !== "createDialog");
+				}
+				args = [function (prompt, parameters, skill, info, dialogData, backup) {
+					if (backup) {
+						// Recreate closures from installed skill code and host-approved
+						// choices instead of serializing functions that capture links.
+						lib.skill[skill] = lib.skill[backup.source].chooseButton.backup(backup.choice, game.me);
+						lib.skill[skill].sourceSkill = backup.source;
+					} else if (skill) lib.skill[skill] = info;
+					if (dialogData) {
+						const dialog = ui.create.dialog(dialogData.title, "hidden");
+						for (const [item, type, disabled] of dialogData.buttons) {
+							dialog.add([[item], type]);
+							if (disabled) dialog.buttons[dialog.buttons.length - 1].classList.add("unselectable");
+						}
+						parameters[2].push(["dialog", dialog], ["closeDialog", true]);
+					}
+					prompt(...parameters);
+				}, args[0], promptArgs, skill, skill && !backup ? lib.skill[skill] : undefined, dialogData, backup];
+			}
 			prompts.set(this.playerid, args);
 			if (choices.has(this.playerid)) choices.get(this.playerid).prompt = args;
 			// Some engine choices send their prompt before calling wait(). Defer
@@ -109,6 +155,7 @@ export function installHost() {
 	const originalUnwait = lib.element.Player.prototype.unwait;
 	lib.element.Player.prototype.unwait = function (result) {
 		const token = choices.get(this.playerid)?.token;
+		choices.get(this.playerid)?.selection._onlineValidationDialog?.close();
 		choices.delete(this.playerid);
 		prompts.delete(this.playerid);
 		deliver(this.playerid, { type: "choiceClosed", accountId: this.playerid, token });
@@ -116,8 +163,9 @@ export function installHost() {
 	};
 	lib.element.Player.prototype.wait = function (...args) {
 		const token = `${spec.instanceId}:${++serial}`;
-		const event = _status.event;
-		choices.set(this.playerid, { token, event, selection: selectionEvent(event, this), prompt: prompts.get(this.playerid), deadline: Date.now() + 35000 });
+		const event = sendingEvent || _status.event;
+		const prompt = prompts.get(this.playerid);
+		choices.set(this.playerid, { token, event, selection: selectionEvent(event, this, prompt), prompt, deadline: Date.now() + 35000 });
 		deliver(this.playerid, { type: "choice", accountId: this.playerid, token, deadline: choices.get(this.playerid).deadline });
 		originalWait.apply(this, args);
 		clearTimeout(lib.node.torespondtimeout[this.playerid]);
@@ -254,6 +302,12 @@ export function installHost() {
 			} catch (error) {
 				throw new Error(`HOST_CHOICE_REJECTED (${choice.event.name}/${choice.selection.name}): ${error.message}`, { cause: error });
 			}
+			// The normal UI restores the base choice after confirmation/cancel.
+			// The host has no local click, so mirror that transition explicitly.
+			if (choice.selection === choice.event && choice.event.skill && choice.event._backup) {
+				choice.event.restore();
+				delete choice.event._onlineBackup;
+			}
 			// Correlation metadata comes from the host event, never from the client.
 			// In particular, _wuxie's sendback ignores otherwise valid results
 			// without the id of the outstanding counterspell request.
@@ -289,21 +343,23 @@ export function installHost() {
 // Parallel choices store their outer coordination event in wait(), while the
 // client answers a per-player selection. Recreate that selection from trusted
 // host arguments and detach it so validation never executes it in the game loop.
-function selectionEvent(event, player) {
+function selectionEvent(event, player, prompt) {
+	if (event.name === "chooseAnyOL") {
+		// The trusted factory constructs each seat's real selection. The outer
+		// coordination event has no card/target/button filters of its own.
+		const selection = event.func(player, ...(event.args || []), prompt?.at(-1));
+		if (!(selection instanceof lib.element.GameEvent)) throw new Error("并行选择缺少选择事件");
+		event.next.remove(selection);
+		selection.resolve();
+		return prepareSelection(selection);
+	}
 	if (event.name === "chooseButtonOL") {
 		const row = event.list?.find(row => row[0] === player);
 		if (!row) throw new Error("缺少玩家选项");
-		// Each remote seat answers a chooseButton prompt. Extract its validation
-		// fields from that seat's server-side arguments.
-		const selection = { name: "chooseButton", player, filterButton: lib.filter.filterButton, selectButton: [1, 1], forced: false };
-		for (const arg of row.slice(1)) {
-			if (Array.isArray(arg) && arg.length === 2 && arg.every(value => Number.isInteger(value))) selection.selectButton = arg.slice();
-			else if (Array.isArray(arg)) selection.createDialog = arg;
-			else if (typeof arg === "number") selection.selectButton = [arg, arg];
-			else if (typeof arg === "boolean") selection.forced = arg;
-			else if (typeof arg === "function") selection.filterButton = arg;
-		}
-		return selection;
+		const selection = player.chooseButton(...row.slice(1));
+		event.next.remove(selection);
+		selection.resolve();
+		return prepareSelection(selection);
 	} else if (event.name === "chooseCardOL") {
 		const selection = player.chooseCard(...event._args).set(event._set);
 		event.next.remove(selection);
@@ -320,6 +376,13 @@ function selectionEvent(event, player) {
 		selection.resolve();
 		return selection;
 	} else return event;
+}
+
+function prepareSelection(event) {
+	if (event.name === "chooseButton" && !event.dialog && Array.isArray(event.createDialog)) {
+		event.dialog = event._onlineValidationDialog = ui.create.dialog(...event.createDialog, "hidden");
+	}
+	return event;
 }
 
 function decodeResult(value, depth = 0) {
@@ -374,9 +437,28 @@ function validateResult(event, player, result) {
 	const selected = { cards: ui.selected.cards, targets: ui.selected.targets, buttons: ui.selected.buttons };
 	const manager = _status.eventManager, previousEvent = manager.tempEvent;
 	// Detached per-seat selections are validation contexts, not running events.
-	manager.tempEvent = event;
+	// backup() supplies the same skill, view-as and mod context used by the
+	// engine UI. Work on a detached copy so rejection cannot alter the live turn.
+	const context = Object.assign(new lib.element.GameEvent(event.name, false), event);
+	manager.tempEvent = context;
 	ui.selected.cards = []; ui.selected.targets = []; ui.selected.buttons = [];
-	try { validateSelection(event, player, result); }
+	try {
+		const assigned = typeof result.skill === "string" && (result.skill === event.skill && !!event._backup || result.skill === event._backupevent);
+		if (!assigned && context.skill && context._backup) context.restore();
+		if (result.skill !== undefined && result.bool !== false) {
+			const using = event.name.startsWith("choose");
+			if (typeof result.skill !== "string" || !using || !Object.hasOwn(lib.skill, result.skill) ||
+				!assigned && !lib.filter.filterEnable(context, player, result.skill)) throw new Error("当前不能发动该技能");
+			if (context.skill !== result.skill || !context._backup) context.backup(result.skill);
+		}
+		validateSelection(context, player, result);
+		// These are engine result fields, reconstructed from validated data;
+		// do not accept DOM buttons or timer-control metadata from the client.
+		if (typeof result.bool === "boolean") result.confirm = result.bool ? "ok" : "cancel";
+		if (result.bool !== false) result.buttons = ui.selected.buttons.slice();
+		const skill = result.skill && lib.skill[result.skill];
+		if (skill?.direct && !skill.clearTime) result._noHidingTimer = true;
+	}
 	finally { Object.assign(ui.selected, selected); manager.tempEvent = previousEvent; }
 }
 
@@ -393,65 +475,80 @@ function validateSelection(event, player, result) {
 	const cards = result.cards || [], targets = result.targets || [], links = result.links || [];
 	const using = ["chooseToUse", "chooseToRespond"].includes(event.name);
 	const otherCards = ["choosePlayerCard", "discardPlayerCard", "gainPlayerCard"].includes(event.name);
-	if (targets.some(target => !game.players.includes(target))) throw new Error("无效目标");
-	let skillInfo;
-	if (result.skill !== undefined) {
-		if (typeof result.skill !== "string" || !using || !Object.hasOwn(lib.skill, result.skill) || !lib.filter.filterEnable(event, player, result.skill)) throw new Error("当前不能发动该技能");
-		skillInfo = lib.skill[result.skill];
+	const skillInfo = result.skill ? lib.skill[result.skill] : undefined;
+	if (using && skillInfo?.chooseButton) {
+		if (cards.length || targets.length || links.length || result.card || result.moved || result.control !== undefined) throw new Error("技能选项必须由服务端发起");
+		return;
 	}
-	const filterCard = skillInfo ? skillInfo.filterCard : event.filterCard;
-	const position = skillInfo ? skillInfo.position || "h" : event.position || "hes";
+	const filterCard = event.filterCard;
+	const position = event.position || "h";
 	if (!otherCards) for (const card of cards) {
 		if (!player.getCards(position).includes(card)) throw new Error("卡牌不属于当前可选区域");
-		if (filterCard === false || typeof filterCard === "function" && !filterCard(card, player, event)) throw new Error("此牌不能用于当前选择");
-		if (skillInfo && !skillInfo.viewAs && skillInfo.discard !== false && !lib.filter.cardDiscardable(card, player, result.skill)) throw new Error("技能不能弃置此牌");
+		if (filterCard !== true && (typeof filterCard !== "function" || !filterCard.call(event, card, player, event))) throw new Error("此牌不能用于当前选择");
+		if (skillInfo && !skillInfo.viewAs && skillInfo.discard !== false && skillInfo.lose !== false && !lib.filter.cardDiscardable(card, player, result.skill)) throw new Error("技能不能弃置此牌");
 		ui.selected.cards.push(card);
 	}
 	if (using && (!skillInfo || skillInfo.viewAs)) {
 		const viewAs = skillInfo?.viewAs;
-		const expected = viewAs ? (typeof viewAs === "function" ? viewAs(cards, player) : viewAs) : cards[0];
+		let expected = viewAs ? (typeof viewAs === "function" ? viewAs(cards, player) : viewAs) : cards[0];
+		if (typeof expected === "string") expected = { name: expected };
 		if (!expected || result.card && result.card.name !== expected.name) throw new Error("不能伪造出牌");
 		result.card = get.autoViewAs(expected, cards);
-		if (typeof event.filterCard === "function" && !event.filterCard(result.card, player, event)) throw new Error("当前事件不接受此牌");
+		const acceptsCard = skillInfo ? event._backup?.filterCard : event.filterCard;
+		if (typeof acceptsCard === "function" && !acceptsCard.call(event, result.card, player, event)) throw new Error("当前事件不接受此牌");
 		if (event.name === "chooseToUse" && event.type === "phase" && (!lib.filter.cardEnabled(result.card, player, event) || !lib.filter.cardUsable(result.card, player, event))) throw new Error("当前不能使用此牌");
 	} else if (result.card !== undefined) throw new Error("当前选择不接受出牌字段");
-	const filterTarget = skillInfo && !skillInfo.viewAs ? skillInfo.filterTarget : event.filterTarget;
+	const filterTarget = event.filterTarget;
+	const targetPool = game.players.concat(event.deadTarget || result.card && get.info(result.card)?.deadTarget ? game.dead : []);
+	if (targets.some(target => !targetPool.includes(target))) throw new Error("无效目标");
 	for (const target of targets) {
-		if (filterTarget !== true && (typeof filterTarget !== "function" || !filterTarget(result.card || cards[0], player, target))) throw new Error("当前选择不允许该目标");
+		if (filterTarget !== true && (typeof filterTarget !== "function" || !filterTarget.call(event, result.card || cards[0], player, target))) throw new Error("当前选择不允许该目标");
 		ui.selected.targets.push(target);
 	}
-	const checkCount = (values, selector) => {
-		const select = typeof selector === "function" ? selector(result.card, player) : selector;
-		if (select === undefined) return;
-		const [min, max] = get.select(select);
-		if (min >= 0 && values.length < min || max >= 0 && values.length > max) throw new Error("选择数量不符合规则");
-		return min === -1;
+	const checkCount = (values, selector, hasRemaining) => {
+		const [min, max] = get.select(selector);
+		const exhausted = values.length < min && event.forced && !event.complexSelect && hasRemaining && !hasRemaining();
+		if (min >= 0 && values.length < min && !exhausted || max >= 0 && values.length > max) throw new Error("选择数量不符合规则");
+		return max === -1;
 	};
-	if (!otherCards && checkCount(cards, skillInfo ? skillInfo.selectCard ?? (skillInfo.filterCard ? 1 : 0) : event.selectCard)) {
+	const acceptsPhysicalCard = card => filterCard === true || typeof filterCard === "function" && filterCard.call(event, card, player, event);
+	if (!otherCards && checkCount(cards, event.filterCard ? event.selectCard : 0,
+		() => player.getCards(position).some(card => !cards.includes(card) && acceptsPhysicalCard(card)))) {
 		ui.selected.cards = [];
-		const required = player.getCards(position).filter(card => filterCard === true || typeof filterCard === "function" && filterCard(card, player, event));
+		const required = player.getCards(position).filter(acceptsPhysicalCard);
 		ui.selected.cards = cards.slice();
 		if (required.length !== cards.length || required.some(card => !cards.includes(card))) throw new Error("必须选择全部符合条件的牌");
 	}
-	if (checkCount(targets, skillInfo && !skillInfo.viewAs ? skillInfo.selectTarget ?? (skillInfo.filterTarget ? 1 : 0) : event.selectTarget)) {
+	const acceptsTarget = target => filterTarget === true || typeof filterTarget === "function" && filterTarget.call(event, result.card || cards[0], player, target);
+	if (checkCount(targets, filterTarget ? event.selectTarget : 0,
+		() => targetPool.some(target => !targets.includes(target) && acceptsTarget(target)))) {
 		ui.selected.targets = [];
-		const required = game.players.filter(target => filterTarget === true || typeof filterTarget === "function" && filterTarget(result.card || cards[0], player, target));
+		const required = targetPool.filter(acceptsTarget);
 		ui.selected.targets = targets.slice();
 		if (required.length !== targets.length || required.some(target => !targets.includes(target))) throw new Error("必须选择全部符合条件的目标");
 	}
-	checkCount(links, event.name === "chooseButtonOL" ? 1 : event.selectButton);
 	if (otherCards || ["chooseButton", "chooseButtonOL"].includes(event.name)) {
 		const offered = event.name === "chooseButtonOL" ? event.list?.find(row => row[0] === player)?.slice(1) : event.createDialog;
-		const buttons = event.dialog?.buttons;
-		const options = buttons?.map(button => button.link) || collectLinks(offered);
-		for (const link of links) {
-			if (!options.includes(link) && !options.some(source => typeof source === "string" && lib.characterReplace[source]?.includes(link))) throw new Error("无效选项");
-			const button = buttons?.find(button => button.link === link) || { link };
+		const dialog = typeof event.dialog === "number" ? get.idDialog(event.dialog) : event.dialog;
+		const buttons = dialog?.buttons;
+		const available = otherCards ? (event.name === "discardPlayerCard" ? event.target.getDiscardableCards(player, event.position) :
+			event.name === "gainPlayerCard" ? event.target.getGainableCards(player, event.position) : event.target.getCards(event.position)) : undefined;
+		const options = buttons?.map(button => button.link) || available || collectLinks(offered);
+		for (let i = 0; i < links.length; i++) {
+			const matched = options.findIndex(option => sameOption(option, links[i]));
+			if (matched >= 0) links[i] = options[matched];
+			const link = links[i];
+			if (matched < 0 && !options.some(source => typeof source === "string" && lib.characterReplace[source]?.includes(link))) throw new Error("无效选项");
+			const button = buttons?.find(button => button.link === link) || (otherCards ? ui.create.button(link, "card") : { link });
+			if (button.classList?.contains("unselectable")) throw new Error("当前不能选择此选项");
 			if (typeof event.filterButton === "function" && !event.filterButton(button, player)) throw new Error("当前不能选择此选项");
 			ui.selected.buttons.push(button);
 		}
+		if (new Set(links).size !== links.length) throw new Error("重复选项");
+		checkCount(links, event.selectButton, () => options.some(link => !links.includes(link) &&
+			(!event.filterButton || event.filterButton(buttons?.find(button => button.link === link) || { link }, player))));
 		if (otherCards) {
-			if (links.some(card => !event.target?.getCards(event.position || "he").includes(card))) throw new Error("所选卡牌不属于目标区域");
+			if (links.some(card => !available.includes(card))) throw new Error("所选卡牌不属于目标可选区域");
 			if (cards.some(card => !links.includes(card))) throw new Error("卡牌与选择结果不一致");
 			result.cards = links.slice();
 		}
@@ -461,15 +558,28 @@ function validateSelection(event, player, result) {
 		result.index = event.controls.indexOf(result.control);
 	} else { delete result.control; delete result.index; }
 	if (event.name === "chooseToMove" || event.name === "chooseToMove_new") {
-		const offered = (event.list || []).flatMap(row => row[1] || []);
-		if (!Array.isArray(result.moved) || result.moved.length !== event.list?.length || result.moved.some(row => !Array.isArray(row))) throw new Error("无效移动结果");
-		const moved = result.moved.flat();
-		if (moved.length !== offered.length || new Set(moved).size !== moved.length || moved.some(card => !offered.includes(card))) throw new Error("不能增减或替换待移动的牌");
+		const rows = event.name === "chooseToMove_new" ? (event.list || []).flatMap(row => Array.isArray(row[0]) ? row : [row]) : event.list || [];
+		const remaining = rows.flatMap(row => row[1] || []);
+		if (!Array.isArray(result.moved) || result.moved.length !== rows.length || result.moved.some(row => !Array.isArray(row))) throw new Error("无效移动结果");
+		result.moved = result.moved.map(row => row.map(value => {
+			const index = remaining.findIndex(option => sameOption(option, value));
+			if (index < 0) throw new Error("不能增减或替换待移动的牌");
+			return remaining.splice(index, 1)[0];
+		}));
+		if (remaining.length) throw new Error("不能增减或替换待移动的牌");
 		if (typeof event.filterOk === "function" && !event.filterOk(result.moved)) throw new Error("移动结果不符合规则");
 	} else {
 		delete result.moved;
 		if (typeof event.filterOk === "function" && !event.filterOk()) throw new Error("选择组合不符合规则");
 	}
+}
+
+// Virtual-card button links are tuples, not physical card references. Their
+// array identity changes during transport; retain the host's canonical option.
+function sameOption(left, right) {
+	if (left === right || left == null && right == null) return true;
+	return Array.isArray(left) && Array.isArray(right) && left.length === right.length &&
+		left.every((value, index) => sameOption(value, right[index]));
 }
 
 function collectLinks(value) {

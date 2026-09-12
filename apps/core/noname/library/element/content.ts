@@ -5247,6 +5247,9 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 
 			const info = get.info(event.result.skill);
 			if (info && info.chooseButton) {
+				// Managed rooms run the intermediate choice and create its backup
+				// on the host; public clients return only the skill activation here.
+				if (game.online && _status.ip === "online-platform") return;
 				if (event.dialog && typeof event.dialog == "object") {
 					event.dialog.close();
 				}
@@ -5321,6 +5324,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 				const info = get.info(event.buttoned).chooseButton;
 				lib.skill[`${event.buttoned}_backup`] = info.backup(info.chooseControl ? result : result.links, player);
 				lib.skill[`${event.buttoned}_backup`].sourceSkill = event.buttoned;
+				if (!game.online) event._onlineBackup = { source: event.buttoned, choice: info.chooseControl ? result : result.links };
 				if (game.online) {
 					event._sendskill = [`${event.buttoned}_backup`, lib.skill[`${event.buttoned}_backup`]];
 				} else {
@@ -5515,6 +5519,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 			if (event.result.skill) {
 				const info = get.info(event.result.skill);
 				if (info && info.chooseButton) {
+					if (game.online && _status.ip === "online-platform") return;
 					if (event.dialog && typeof event.dialog == "object") {
 						event.dialog.close();
 					}
@@ -5580,6 +5585,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 				const info = get.info(event.buttoned).chooseButton;
 				lib.skill[`${event.buttoned}_backup`] = info.backup(info.chooseControl ? result : result.links, player);
 				lib.skill[`${event.buttoned}_backup`].sourceSkill = event.buttoned;
+				if (!game.online) event._onlineBackup = { source: event.buttoned, choice: info.chooseControl ? result : result.links };
 				if (game.online) {
 					event._sendskill = [`${event.buttoned}_backup`, lib.skill[`${event.buttoned}_backup`]];
 				} else {
