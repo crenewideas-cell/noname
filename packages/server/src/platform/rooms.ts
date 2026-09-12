@@ -229,7 +229,7 @@ export class Rooms {
       }).catch(() => this.recoverHostFailure(room, instanceId));
     } else if (event.type === "started") {
       void this.serial(async () => {
-        if (room.view.instanceId !== instanceId) return;
+        if (room.view.instanceId !== instanceId || room.view.state !== "starting") return;
         room.view.state = "in_game";
         await this.save(room);
         clearTimeout(room.startupTimer); room.startupTimer = undefined;
@@ -239,7 +239,7 @@ export class Rooms {
     } else if (event.type === "resumeFailed") {
       if (event.accountId) this.publish(event.accountId, "game.resumeFailed", { instanceId });
     } else if (event.type === "choiceClosed") {
-      if (event.accountId && this.active.get(event.accountId) === room.view.id) this.publish(event.accountId, "game.choiceClosed", { instanceId });
+      if (event.accountId && this.active.get(event.accountId) === room.view.id) this.publish(event.accountId, "game.choiceClosed", { instanceId, token: event.token });
     } else if (event.type === "engine" || event.type === "choice") {
       if (event.accountId && room.view.members.some(member => member.id === event.accountId && this.active.get(member.id) === room.view.id)) this.publish(event.accountId, "game." + event.type, { instanceId, raw: event.raw, token: event.token, deadline: event.deadline });
     } else if (event.type === "finished") {
@@ -247,7 +247,7 @@ export class Rooms {
         if (room.view.instanceId !== instanceId || room.view.state === "finished") return;
         await this.db.saveResult(instanceId, room.view.id, event.results);
         room.view.state = "finished"; delete room.view.instanceId; delete room.view.instanceReady;
-        room.view.members.forEach(member => { delete member.resumeUntil; });
+        room.view.members.forEach(member => { member.ready = false; delete member.resumeUntil; });
         await this.save(room);
         clearTimeout(room.startupTimer); room.startupTimer = undefined;
         for (const member of room.view.members) if (this.active.get(member.id) === room.view.id) this.publish(member.id, "game.finished", { roomId: room.view.id, instanceId, results: event.results });

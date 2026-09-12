@@ -45,6 +45,7 @@ export function installHost() {
 	const choices = new Map();
 	const prompts = new Map();
 	const consumed = new Map();
+	let sendingChoice;
 	const seatStatus = player => {
 		if (!player) return;
 		const label = player.ws?.closed ? "离线托管" : player.isAuto ? "托管" : "";
@@ -56,12 +57,18 @@ export function installHost() {
 	lib.element.Player.prototype.send = function (...args) {
 		const evt = choices.get(this.playerid)?.event || _status.event;
 		const functionName = typeof args[0] === "function" ? args[0].name : "";
-		if (typeof args[0] === "function" && (typeof args[1] === "string" && args[1].startsWith("choose") || functionName === "chooseRemote" || ["chooseButtonOL", "chooseCardOL"].includes(evt?.name) && (Array.isArray(args[1]) || args[1] && typeof args[1] === "object") || evt?.name === "chooseAnyOL")) {
+		if (typeof args[0] === "function" && (typeof args[1] === "string" && args[1].startsWith("choose") || functionName === "chooseRemote" || ["chooseButtonOL", "chooseCardOL"].includes(evt?.name) && (Array.isArray(args[1]) || args[1] && typeof args[1] === "object") || evt?.name === "chooseAnyOL" || evt?.name === "_wuxie" && args[0] === evt.send)) {
 			prompts.set(this.playerid, args);
 			if (choices.has(this.playerid)) choices.get(this.playerid).prompt = args;
 			// Some engine choices send their prompt before calling wait(). Defer
 			// that prompt so its token always arrives before any client decision.
-			queueMicrotask(() => originalSend.apply(this, args));
+			queueMicrotask(() => {
+				const choice = choices.get(this.playerid);
+				if (!choice || choice.prompt !== args) return;
+				sendingChoice = { accountId: this.playerid, token: choice.token };
+				try { originalSend.apply(this, args); }
+				finally { sendingChoice = undefined; }
+			});
 			return this;
 		}
 		return originalSend.apply(this, args);
@@ -75,6 +82,7 @@ export function installHost() {
 		return state;
 	};
 	const deliver = (id, message) => {
+		if (message.type === "engine" && sendingChoice?.accountId === id) message.token = sendingChoice.token;
 		const client = clients.get(id);
 		if (client?.restoring) {
 			client.pendingBytes += JSON.stringify(message).length;
@@ -88,14 +96,16 @@ export function installHost() {
 	const originalWait = lib.element.Player.prototype.wait;
 	const originalUnwait = lib.element.Player.prototype.unwait;
 	lib.element.Player.prototype.unwait = function (result) {
+		const token = choices.get(this.playerid)?.token;
 		choices.delete(this.playerid);
 		prompts.delete(this.playerid);
-		deliver(this.playerid, { type: "choiceClosed", accountId: this.playerid });
+		deliver(this.playerid, { type: "choiceClosed", accountId: this.playerid, token });
 		return originalUnwait.call(this, result);
 	};
 	lib.element.Player.prototype.wait = function (...args) {
 		const token = `${spec.instanceId}:${++serial}`;
-		choices.set(this.playerid, { token, event: _status.event, prompt: prompts.get(this.playerid), deadline: Date.now() + 35000 });
+		const event = _status.event;
+		choices.set(this.playerid, { token, event, selection: selectionEvent(event, this), prompt: prompts.get(this.playerid), deadline: Date.now() + 35000 });
 		deliver(this.playerid, { type: "choice", accountId: this.playerid, token, deadline: choices.get(this.playerid).deadline });
 		originalWait.apply(this, args);
 		clearTimeout(lib.node.torespondtimeout[this.playerid]);
@@ -204,7 +214,9 @@ export function installHost() {
 			client.pending = []; client.pendingBytes = 0;
 			if (choice && choice.token === client.snapshotToken && choice.deadline > Date.now() && choice.prompt) {
 				emit({ type: "choice", accountId, token: choice.token, deadline: choice.deadline });
-				client.send(...choice.prompt);
+				sendingChoice = { accountId, token: choice.token };
+				try { client.send(...choice.prompt); }
+				finally { sendingChoice = undefined; }
 			}
 			emit({ type: "resumed", accountId });
 		} else if (type === "auto") {
@@ -224,9 +236,12 @@ export function installHost() {
 			const choice = choices.get(accountId), player = lib.playerOL[accountId];
 			if (!choice || choice.token !== payload.token || choice.deadline <= Date.now() || !player) throw new Error("选择已过期");
 			const result = decodeChoice(payload.result);
-			validateResult(choice.event, player, result);
+			validateResult(choice.selection, player, result);
+			// Correlation metadata comes from the host event, never from the client.
+			// In particular, _wuxie's sendback ignores otherwise valid results
+			// without the id of the outstanding counterspell request.
+			if (choice.event.id !== undefined) result.id = choice.event.id;
 			consumed.set(payload.actionId, fingerprint); if (consumed.size > 2048) consumed.delete(consumed.keys().next().value);
-			choices.delete(accountId);
 			player.unwait(result);
 		} else if (type === "disconnect") {
 			client.closed = true;
@@ -236,7 +251,46 @@ export function installHost() {
 			// the engine's offline AI path, and an in-window resume can reclaim it.
 		}
 	};
-	lib.onover.push(() => emit({ type: "finished", results: spec.members.map(member => ({ accountId: member.id, won: game.checkOnlineResult(lib.playerOL[member.id]) })) }));
+	// A headless host has no local winner dialog, replay or restart screen.
+	// Settle directly instead of depending on the end of the UI-heavy over()
+	// function reaching lib.onover without an early return or rendering error.
+	game.over = result => {
+		if (_status.over) return;
+		const results = spec.members.map(member => ({
+			accountId: member.id,
+			won: typeof result === "boolean" ? game.checkOnlineResult(lib.playerOL[member.id]) : null,
+		}));
+		_status.over = true;
+		game.pause();
+		for (const timer of Object.values(lib.node.torespondtimeout)) clearTimeout(timer);
+		for (const client of clients.values()) clearTimeout(client.restoreTimer);
+		choices.clear(); prompts.clear();
+		void emit({ type: "finished", results });
+	};
+}
+
+// Parallel choices store their outer coordination event in wait(), while the
+// client answers a per-player selection. Recreate that selection from trusted
+// host arguments and detach it so validation never executes it in the game loop.
+function selectionEvent(event, player) {
+	let selection;
+	if (event.name === "chooseButtonOL") {
+		const row = event.list?.find(row => row[0] === player);
+		if (!row) throw new Error("缺少玩家选项");
+		selection = player.chooseButton(...row.slice(1));
+	} else if (event.name === "chooseCardOL") {
+		selection = player.chooseCard(...event._args).set(event._set);
+	} else if (event.name === "_wuxie") {
+		selection = player.chooseToUse({
+			type: "wuxie", id: event.id, _global_waiting: true,
+			filterCard(card, current) {
+				return get.name(card) === "wuxie" && lib.filter.cardEnabled(card, current, "forceEnable");
+			},
+		});
+	} else return event;
+	event.next.remove(selection);
+	selection.resolve();
+	return selection;
 }
 
 function decodeResult(value, depth = 0) {
@@ -289,9 +343,12 @@ function validateResult(event, player, result) {
 	// Skill filters such as lijian inspect the preceding selection. Recreate
 	// that context synchronously and always restore the worker's own UI state.
 	const selected = { cards: ui.selected.cards, targets: ui.selected.targets, buttons: ui.selected.buttons };
+	const manager = _status.eventManager, previousEvent = manager.tempEvent;
+	// Detached per-seat selections are validation contexts, not running events.
+	manager.tempEvent = event;
 	ui.selected.cards = []; ui.selected.targets = []; ui.selected.buttons = [];
 	try { validateSelection(event, player, result); }
-	finally { Object.assign(ui.selected, selected); }
+	finally { Object.assign(ui.selected, selected); manager.tempEvent = previousEvent; }
 }
 
 function validateSelection(event, player, result) {

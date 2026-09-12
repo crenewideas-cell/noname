@@ -8,6 +8,7 @@ let assignment;
 let unsubscribe;
 let choiceToken;
 let finished = false;
+let leaving = false;
 let seatGeneration;
 let attaching;
 let choiceClock, choiceTimer;
@@ -38,6 +39,7 @@ function showStatus(title, description, actionLabel, action) {
 
 /** Return to the same room after settlement; explicit departure releases the seat. */
 export async function returnToOnlineLobby(leave = false) {
+	if (leaving) return;
 	if (leave) await leaveManagedRoom(true);
 	clearChoiceClock();
 	sessionStorage.removeItem("noname_online_game");
@@ -45,6 +47,8 @@ export async function returnToOnlineLobby(leave = false) {
 	sessionStorage.setItem(lib.configprefix + "return_to_lobby", "true");
 	localStorage.removeItem(lib.configprefix + "directstart");
 	for (const key of ["reconnect_info", "directstartmode", "tmp_user_roomId", "tmp_owner_roomId"]) await game.promises.saveConfig(key);
+	leaving = true;
+	choiceToken = undefined;
 	unsubscribe?.(); disconnectPlatform(); window.onbeforeunload = null; game.reload();
 }
 
@@ -77,13 +81,18 @@ export async function startManagedGame() {
 		lib.config.recentIP ||= [];
 		game.ws = { readyState: 1, bufferedAmount: 0, send() {}, close: disconnectPlatform };
 		game.disconnect = disconnectPlatform;
+		// Legacy exit controls must use the same full-reload navigation as the
+		// settlement panel, rather than re-entering the old connect event loop.
+		ui.click.exit = () => { void returnToOnlineLobby(!finished && !_status.over).catch(fail); };
 		// Associate results with the prompt that created the event. A late UI
 		// callback must never borrow the token of a later server choice.
 		const eventTokens = new WeakMap(), resultTokens = new WeakMap();
+		let dispatchToken;
 		const createEvent = game.createEvent, startEvent = lib.element.GameEvent.prototype.start;
 		game.createEvent = function (...args) {
 			const event = createEvent.apply(this, args);
-			if (choiceToken) eventTokens.set(event, choiceToken);
+			const token = dispatchToken || eventTokens.get(_status.event);
+			if (token) eventTokens.set(event, token);
 			return event;
 		};
 		lib.element.GameEvent.prototype.start = async function (...args) {
@@ -103,7 +112,7 @@ export async function startManagedGame() {
 			}
 		};
 		game.send = (type, ...args) => {
-			if (type === "result") { void submit(args[0], resultTokens.get(args[0]) || eventTokens.get(_status.event)); return true; }
+			if (type === "result") { void submit(args[0], resultTokens.get(args[0])); return true; }
 			if (type === "inited" || type === "reinited") { void (async () => { await attaching; await command("game." + type, { ...assignment, generation: seatGeneration }); })().catch(fail); return true; }
 			if (type === "auto" || type === "unauto") { void (async () => { await attaching; await command("game.auto", { ...assignment, generation: seatGeneration, enabled: type === "auto" }); })().catch(fail); return true; }
 			if (type === "chat") { void command("room.chat", { roomId: assignment.roomId, text: String(args[1] || "") }).catch(fail); return true; }
@@ -111,26 +120,25 @@ export async function startManagedGame() {
 			return false;
 		};
 		unsubscribe = onOnlineEvent((type, payload) => {
+			if (leaving) return;
 			if (payload?.instanceId && payload.instanceId !== assignment.instanceId) return;
 			if (type === "game.choice") {
+				if (finished) return;
 				choiceToken = payload.token;
-				// The host emits the choice after the engine event has started. Bind
-				// this token to the live event/result so a later prompt can never be
-				// selected by a stale UI callback.
-				const current = _status.event;
-				if (current && typeof current === "object") {
-					eventTokens.set(current, payload.token);
-					if (current.result && typeof current.result === "object") resultTokens.set(current.result, payload.token);
-				}
+				// The matching engine prompt carries the token. Do not relabel an
+				// earlier live event/result merely because a new request has arrived.
 				showChoiceClock(payload.deadline);
 			} else if (type === "game.choiceClosed") {
-				choiceToken = undefined; clearChoiceClock();
+				if (payload.token === choiceToken) { choiceToken = undefined; clearChoiceClock(); }
 			} else if (type === "game.engine") {
+				if (finished || payload.token && payload.token !== choiceToken) return;
 				try {
 					const message = JSON.parse(payload.raw);
+					dispatchToken = payload.token;
 					lib.element.ws.onmessage.call(game.ws, { data: payload.raw });
 					if (message[0] === "gameStart") { statusPanel?.remove(); statusPanel = undefined; }
 				} catch { fail(new Error("对局资源同步失败，请返回房间。")); }
+				finally { dispatchToken = undefined; }
 			} else if (type === "room.chat") {
 				// Render as text through the engine's chat helper (never as a command).
 				const player = lib.playerOL?.[payload.accountId];
@@ -140,10 +148,18 @@ export async function startManagedGame() {
 				}
 			} else if (type === "game.finished") {
 				finished = true;
+				choiceToken = undefined;
 				clearChoiceClock();
+				_status.over = true;
+				game.stopCountChoose();
+				game.pause();
+				for (const player of [...game.players, ...game.dead]) player.hideTimer();
+				ui.confirm?.close();
+				ui.tempnowuxie?.close();
+				ui.auto?.hide(); ui.wuxie?.hide();
 				const won = payload.results?.find(result => result.accountId === onlineState.account?.id)?.won;
-				showStatus(won === null ? "本局平局" : won ? "此战告捷" : "胜负乃兵家常事", "对局已结算。返回房间可查看席位，等待房主开始下一局。", "返回房间", () => returnToOnlineLobby());
-			} else if (type === "game.resumed") { statusPanel?.remove(); statusPanel = undefined; }
+				showStatus(won === true ? "战斗胜利" : won === false ? "战斗失败" : won === null ? "本局平局" : "本局已结束", "对局已结算。返回房间后，房主可选择“再来一局”。", "返回房间", () => returnToOnlineLobby());
+			} else if (type === "game.resumed" && !finished) { statusPanel?.remove(); statusPanel = undefined; }
 			else if (type === "game.failed") fail(new Error(payload.message));
 			else if (type === "game.resumeFailed") fail(new Error("快照同步超时，可返回房间重新恢复。"));
 			else if (type === "game.resumeExpired") fail(new Error("席位保留时间已过，本局由服务端继续托管。"));
@@ -165,4 +181,4 @@ export async function startManagedGame() {
 		await attaching;
 	} catch (error) { fail(error); }
 }
-function fail(error) { clearChoiceClock(); showStatus("暂时无法继续", error.message, "返回房间", () => returnToOnlineLobby()); }
+function fail(error) { if (finished || leaving) return; clearChoiceClock(); showStatus("暂时无法继续", error.message, "返回房间", () => returnToOnlineLobby()); }

@@ -44,6 +44,9 @@
 .online-lobby label, .online-dialog label { display: block; margin: 14px 0; color: #d1c8b7; }
 .online-lobby label input, .online-dialog label input, .online-dialog label select { margin-top: 6px; }
 .online-heading, .online-room > header { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 24px; }
+.online-room > header { flex-wrap: wrap; }
+.online-room-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.online-room-actions button { flex: none; white-space: nowrap; }
 .online-lobby .online-eyebrow { color: #b99e6d; font-size: 12px; letter-spacing: 3px; margin: 6px 0; }
 .online-heading .online-back { border: 0; background: none; padding-left: 0; font-size: 13px; }
 .online-profile { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }

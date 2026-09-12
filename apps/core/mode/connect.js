@@ -9,7 +9,9 @@ export default () => {
 		// Resolve through the shared engine so the separately built mode does not
 		// bundle a second platform socket/store alongside the lobby's copy.
 		start: sessionStorage.getItem("noname_online_game") ? async () => {
-			await game.startManagedGame();
+			// init/reinit installs the online event loop. Release this bootstrap
+			// event before the asynchronous connection can replace its root.
+			void game.startManagedGame();
 		} : function () {
 			var directstartmode = lib.config.directstartmode;
 			ui.create.menu(true);
