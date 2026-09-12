@@ -6,6 +6,7 @@ import { setOnError } from "@/util/error.ts";
 import { security, initializeSandboxRealms } from "@/util/sandbox.js";
 import { CacheContext } from "@/library/cache/cacheContext.js";
 import { configureHost, installHost, isHosted } from "@/online/host.js";
+import { onlineCharacterLoadList, onlineCardLoadList } from "@/online/characterPool.js";
 import { importCardPack, importCharacterPack, importExtension, importMode } from "./import.js";
 import { loadCard, loadCardPile, loadCharacter, loadExtension, loadMode, loadPlay } from "./loading.js";
 import { registerOrganizedExtensions, isRetiredApkExtension } from "./organizedExtensions.js";
@@ -325,10 +326,11 @@ export async function boot() {
 	}
 
 	const toLoad: Promise<any>[] = [];
-	// Pack discovery above rebuilds these arrays. Pin the worker after discovery.
-	if (isHosted()) {
-		lib.config.all.characters = ["standard"];
-		lib.config.all.cards = ["standard"];
+	// Local hidden/disabled packs must not remove another room's resources.
+	// Both sides use the same dependency registration order.
+	if (isHosted() || sessionStorage.getItem("noname_online_game")) {
+		lib.config.all.characters = onlineCharacterLoadList();
+		lib.config.all.cards = onlineCardLoadList();
 	}
 
 	let show_splash;
@@ -562,13 +564,23 @@ export async function boot() {
 	lib.init.startBefore = currentMode.startBefore;
 
 	if (lib.imported.character != null) {
-		Object.values(lib.imported.character).forEach(loadCharacter);
+		if (isHosted() || sessionStorage.getItem("noname_online_game")) {
+			for (const id of onlineCharacterLoadList()) {
+				const pack = lib.imported.character[id];
+				if (pack) loadCharacter(pack);
+			}
+		} else Object.values(lib.imported.character).forEach(loadCharacter);
 	}
 
 	loadCardPile();
 
 	if (lib.imported.card != null) {
-		Object.values(lib.imported.card).forEach(loadCard);
+		if (isHosted() || sessionStorage.getItem("noname_online_game")) {
+			for (const id of onlineCardLoadList()) {
+				const pack = lib.imported.card[id];
+				if (pack) loadCard(pack);
+			}
+		} else Object.values(lib.imported.card).forEach(loadCard);
 	}
 
 	if (lib.cardPack.mode_derivation) {
@@ -637,7 +649,7 @@ export async function boot() {
 	}
 
 	ui.create.arena();
-	installHost();
+	if (installHost() === false) return;
 	game.createEvent("game", false).setContent(lib.init.start);
 	if (lib.mode[lib.config.mode] && lib.mode[lib.config.mode].fromextension) {
 		const startstr = currentMode.start.toString();

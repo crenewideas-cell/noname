@@ -133,6 +133,20 @@
 .online-game-notice { position: fixed; z-index: 120; top: 76px; left: 50%; transform: translateX(-50%); max-width: 90vw; background: #233734; color: #f0d5a1; border: 1px solid #b99e6d; border-radius: 8px; padding: 12px 18px; font: 14px/1.6 sans-serif; }
 @keyframes ol-spin { to { transform: rotate(360deg); } }
 .online-social { margin-top: 24px; background: linear-gradient(120deg,#243b35ed,#18262cee); }
+.online-dialog.online-pool-dialog { width: min(820px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow-y: auto; }
+.online-pool-settings { margin-top: 20px; border-top: 1px solid var(--ol-line); padding-top: 14px; }
+.online-pool-settings > summary { cursor: pointer; color: var(--ol-gold); }
+.online-pool-editor { min-width: 0; margin: 16px 0; padding: 14px; border: 1px solid var(--ol-line); border-radius: 8px; }
+.online-pool-editor legend { color: var(--ol-gold); padding: 0 8px; }
+.online-pool-editor .online-pool-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.online-pool-editor .online-pool-pack-list, .online-pool-editor .online-pool-character-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 185px), 1fr)); gap: 8px; }
+.online-pool-editor .online-pool-character-list { max-height: 260px; overflow-y: auto; margin-top: 12px; }
+.online-pool-editor label { display: flex; align-items: center; gap: 8px; margin: 0; padding: 7px; overflow-wrap: anywhere; }
+.online-pool-editor input[type="checkbox"] { width: 18px; height: 18px; min-height: 0; flex: 0 0 18px; margin: 0; padding: 0; accent-color: #dfbd7f; }
+.online-pool-editor small { color: var(--ol-muted); font-size: 11px; }
+.online-pool-character-list small { display: block; }
+.online-pool-editor summary { cursor: pointer; padding: 8px 0; }
+.online-pool-summary { overflow-wrap: anywhere; }
 .online-social > .online-chat-form { max-width: 520px; margin-bottom: 18px; }
 .online-social > h3 { margin: 24px 0 12px; color: #dbc38f; }
 .social-friends { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 12px; }

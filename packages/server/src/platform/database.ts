@@ -127,6 +127,12 @@ export class Database {
     await this.pool.query(`INSERT INTO online_rooms(id,state,document,password_hash) VALUES($1,$2,$3,$4)
       ON CONFLICT(id) DO UPDATE SET state=$2,document=$3,password_hash=$4,updated_at=now()`, [room.id, room.state, room, passwordHash || null]);
   }
+  async deleteRoom(roomId: string) {
+    await this.pool.query("DELETE FROM online_rooms WHERE id=$1", [roomId]);
+  }
+  async clearRooms() {
+    await this.pool.query("DELETE FROM online_rooms");
+  }
   async saveResult(instanceId: string, roomId: string, results: unknown) {
     await this.pool.query("INSERT INTO online_results(instance_id,room_id,results) VALUES($1,$2,$3) ON CONFLICT DO NOTHING", [instanceId, roomId, JSON.stringify(results)]);
   }

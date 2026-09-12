@@ -1,5 +1,6 @@
 import { lib, game, ui, get, _status } from "noname";
-import { ONLINE_BUILD, modePreset } from "@noname/online-protocol";
+import { ONLINE_BUILD, modePreset, normalizeCharacterPool } from "@noname/online-protocol";
+import { onlineCharacterLoadList, onlineCardLoadList, validateHostedCharacterPool } from "./characterPool.js";
 
 // Only the internally launched browser has this binding. A public URL parameter
 // cannot opt a player's browser into the trusted host role.
@@ -8,15 +9,16 @@ export function configureHost() {
 	if (!isHosted()) return;
 	const spec = window.__nonameHost;
 	if (spec.build !== (import.meta.env.VITE_ONLINE_BUILD_ID || ONLINE_BUILD) || !modePreset(spec.modeId)) throw new Error("HOST_BUILD_MISMATCH");
+	normalizeCharacterPool(spec.characterPool);
 	Object.assign(lib.config, {
 		mode: spec.modeId, new_tutorial: true, show_splash: "off", extensions: [],
-		characters: ["standard"], cards: ["standard"], plays: [],
+		characters: onlineCharacterLoadList(), cards: ["standard"], plays: [],
 		background_audio: false, background_speak: false, volumn_audio: 0, volumn_background: 0,
         background_music: "music_off", image_background: "default", image_background_random: false,
 		confirm_exit: false, dev: false, debug: false, ignore_error: false,
 	});
-	lib.config.all.characters = ["standard"];
-	lib.config.all.cards = ["standard"];
+	lib.config.all.characters = onlineCharacterLoadList();
+	lib.config.all.cards = onlineCardLoadList();
 	lib.config.mode_config[spec.modeId] = { ...lib.config.mode_config.global, ...lib.config.mode_config[spec.modeId] };
 	lib.config.mode_config[spec.modeId].player_number = String(spec.members.length);
 	lib.config.mode_config[spec.modeId][spec.modeId + "_mode"] = "normal";
@@ -28,6 +30,7 @@ export function installHost() {
 	if (!isHosted()) return;
 	const spec = window.__nonameHost;
 	const emit = message => window.__nonameHostEmit(message);
+	const characterPool = normalizeCharacterPool(spec.characterPool);
 	game.notMe = true;
 	game.online = false;
 	game.onlineroom = true;
@@ -36,11 +39,19 @@ export function installHost() {
 	lib.configOL = {
 		mode: spec.modeId, identity_mode: "normal", doudizhu_mode: "normal", number: spec.members.length,
 		player_number: String(spec.members.length), choose_timeout: "30", observe: false,
-		characterPack: ["standard"], cardPack: ["standard"], banned: [], bannedcards: [],
+		characterPack: characterPool.packs, cardPack: ["standard"], banned: characterPool.banned, bannedcards: [],
 		choice_zhu: 3, choice_zhong: 3, choice_fan: 3, choice_nei: 3,
 		double_character: false, double_nei: false, special_identity: false,
 		enable_commoner: false, enable_year_limit: false, change_card: false, feiyang_version: "online", enhance_dizhu: "none",
 	};
+	try {
+		const code = validateHostedCharacterPool(characterPool, spec.members.length);
+		if (code) { emit({ type: "failed", code }); return false; }
+	} catch (error) {
+		console.error("Online character pool unavailable", error);
+		emit({ type: "failed", code: "CHARACTER_PACK_UNAVAILABLE" });
+		return false;
+	}
 	const clients = new Map();
 	const choices = new Map();
 	const prompts = new Map();
@@ -235,8 +246,13 @@ export function installHost() {
 			}
 			const choice = choices.get(accountId), player = lib.playerOL[accountId];
 			if (!choice || choice.token !== payload.token || choice.deadline <= Date.now() || !player) throw new Error("选择已过期");
-			const result = decodeChoice(payload.result);
-			validateResult(choice.selection, player, result);
+			let result;
+			try {
+				result = decodeChoice(payload.result);
+				validateResult(choice.selection, player, result);
+			} catch (error) {
+				throw new Error(`HOST_CHOICE_REJECTED (${choice.event.name}/${choice.selection.name}): ${error.message}`, { cause: error });
+			}
 			// Correlation metadata comes from the host event, never from the client.
 			// In particular, _wuxie's sendback ignores otherwise valid results
 			// without the id of the outstanding counterspell request.
@@ -276,12 +292,8 @@ function selectionEvent(event, player) {
 	if (event.name === "chooseButtonOL") {
 		const row = event.list?.find(row => row[0] === player);
 		if (!row) throw new Error("缺少玩家选项");
-		// chooseButtonOL waits on one outer event while each seat gets its own
-		// local chooseButton event. Creating that event on the headless host would
-		// attach a temporary child to the running event stack; when the outer
-		// event resumes, the manager can reject the detached child and leave the
-		// player waiting until auto-control. Keep only the immutable validation
-		// fields instead of constructing an engine event here.
+		// Each remote seat answers a chooseButton prompt. Extract its validation
+		// fields from that seat's server-side arguments.
 		const selection = { name: "chooseButton", player, filterButton: lib.filter.filterButton, selectButton: [1, 1], forced: false };
 		for (const arg of row.slice(1)) {
 			if (Array.isArray(arg) && arg.length === 2 && arg.every(value => Number.isInteger(value))) selection.selectButton = arg.slice();

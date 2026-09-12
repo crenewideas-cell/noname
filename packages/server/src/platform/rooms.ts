@@ -1,7 +1,7 @@
 import { randomUUID, randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
 import { GameHost, type HostEvent } from "@noname/game-host";
-import { OnlineError, ONLINE_BUILD, modePreset, type Account, type Room, type ChatMessage, text } from "@noname/online-protocol";
+import { OnlineError, ONLINE_BUILD, modePreset, normalizeCharacterPool, type Account, type Room, type ChatMessage, text } from "@noname/online-protocol";
 import { Database, hashPassword, verifyPassword } from "./database";
 type InternalRoom = { view: Room; passwordHash?: string; chat: ChatMessage[]; startupTimer?: NodeJS.Timeout; touchedAt?: number };
 const maxInstances = () => Math.max(1, Math.min(4, Number(process.env.MAX_GAME_INSTANCES) || 2));
@@ -13,37 +13,13 @@ export class Rooms {
   private active = new Map<string, string>();
   private queue: Promise<unknown> = Promise.resolve();
   private generations = new Map<string, number>();
-  constructor(private db: Database, readonly hosts: GameHost, private publish: (accountId: string | null, type: string, payload: unknown) => void) {}
+  constructor(private db: Database, readonly hosts: GameHost, private publish: (accountId: string | null, type: string, payload: unknown) => void,
+    private isConnected?: (accountId: string) => boolean) {}
   async restore() {
-    const rows = await this.db.loadRooms();
-    for (const row of rows) {
-      const view = row.document as Room;
-      if (!view?.id || view.state !== row.state || !Array.isArray(view.members)) continue;
-      delete view.instanceReady;
-      const passwordHash = row.password_hash || undefined;
-      // Phase 1/2 kept password hashes only in memory. Never restore such a
-      // locked room as an unlocked room after a platform restart.
-      if (view.locked && !passwordHash) {
-        view.state = "closed";
-        delete view.instanceId;
-        await this.db.saveRoom(view);
-        continue;
-      }
-      // Finished games retain abandoned seats for their result/history, but
-      // those seats must not reclaim an account's newer room after restart.
-      view.members = view.members.filter(member => !member.abandoned && !this.active.has(member.id))
-        .map(member => { const restored = { ...member, online: false, ready: false }; delete restored.resumeUntil; return restored; });
-      if (!view.members.length) {
-        view.state = "closed"; delete view.instanceId;
-        await this.db.saveRoom(view, passwordHash); continue;
-      }
-      if (!view.members.some(member => member.id === view.ownerId)) view.ownerId = view.members[0].id;
-      if (view.state === "finished") delete view.instanceId;
-      await this.db.saveRoom(view, passwordHash);
-      const room: InternalRoom = { view, passwordHash, chat: [], touchedAt: new Date(row.updated_at).getTime() };
-      this.rooms.set(view.id, room);
-      for (const member of view.members) if (!this.active.has(member.id)) this.active.set(member.id, view.id);
-    }
+    // Called before accepting connections, under the database's single-process
+    // lease. Every room from the previous process has lost all connections.
+    // Match results live separately and are not removed.
+    await this.db.clearRooms();
   }
   status() {
     const states: Record<string, number> = {};
@@ -95,7 +71,36 @@ export class Rooms {
   }
   private transferOwner(room: InternalRoom) {
     const members = room.view.members.filter(member => !member.abandoned && this.active.get(member.id) === room.view.id);
-    room.view.ownerId = members.find(member => member.online)?.id || members[0]?.id || "";
+    room.view.ownerId = members.find(member => this.memberConnected(room, member))?.id || members[0]?.id || "";
+  }
+  private memberConnected(room: InternalRoom, member: Room["members"][number]) {
+    return !member.abandoned && this.active.get(member.id) === room.view.id
+      && (this.isConnected ? this.isConnected(member.id) : member.online);
+  }
+  private async closeIfEmpty(room: InternalRoom) {
+    if (room.view.members.some(member => this.memberConnected(room, member))) return false;
+    const { id, instanceId } = room.view;
+    // Invalidate host callbacks before shutting the browser down, so a late
+    // started/finished callback cannot save this room again.
+    room.view.state = "closed";
+    delete room.view.instanceId; delete room.view.instanceReady;
+    await this.db.deleteRoom(id);
+    clearTimeout(room.startupTimer); room.startupTimer = undefined;
+    for (const member of room.view.members) {
+      delete member.resumeUntil;
+      if (this.active.get(member.id) !== id) continue;
+      this.active.delete(member.id);
+      this.generations.set(member.id, (this.generations.get(member.id) || 0) + 1);
+      this.publish(member.id, "room.left", { roomId: id });
+    }
+    this.rooms.delete(id);
+    this.publish(null, "rooms.changed", {});
+    if (instanceId) await this.hosts.stop(instanceId).catch(error => {
+      // The room has already been deleted from storage; do not roll it back
+      // into the lobby if releasing an already-dead host reports an error.
+      console.error("Empty room host cleanup failed", { roomId: id, instanceId, message: String(error?.message || error).slice(0, 300) });
+    });
+    return true;
   }
   private waiting(room: InternalRoom) {
     if (room.view.state !== "waiting") throw new OnlineError("ALREADY_IN_GAME", "当前房间不能修改");
@@ -121,7 +126,7 @@ export class Rooms {
       const result: Room = authorized ? { ...room, members: room.members.map(member => ({ ...member })) } : {
         id: room.id, code: room.code, name: room.name, ownerId: "", modeId: room.modeId, preset: room.preset,
         capacity: room.capacity, visibility: room.visibility, locked: room.locked, state: room.state,
-        revision: room.revision, createdAt: room.createdAt,
+        revision: room.revision, createdAt: room.createdAt, characterPool: room.characterPool,
         // Search results only need seat occupancy. Account identifiers,
         // player codes, presence and the worker instance stay private.
         members: room.members.map(member => ({ id: "", code: "", nickname: "", avatar: "", ready: false, online: false, seat: member.seat })),
@@ -146,6 +151,7 @@ export class Rooms {
         const room: InternalRoom = { view: {
           id: randomUUID(), code: randomBytes(6).toString("hex").toUpperCase(), name: text(payload.name, 1, 32), ownerId: account.id,
           modeId: mode.id, preset: mode.preset, capacity: payload.capacity, visibility: payload.visibility, locked: !!password,
+          characterPool: normalizeCharacterPool(payload.characterPool),
           state: "waiting", revision: 0, members: [{ ...account, ready: false, online: true, seat: 0 }], createdAt: Date.now(),
         }, passwordHash: password ? await hashPassword(password) : undefined, chat: [] };
         await this.save(room); this.rooms.set(room.view.id, room); this.active.set(account.id, room.view.id);
@@ -165,13 +171,20 @@ export class Rooms {
         this.active.set(account.id, room.view.id); await this.save(room); return room.view;
       }
       const room = this.require(String(payload.roomId), account.id), view = room.view;
-      if (payload.revision !== undefined && payload.revision !== view.revision) throw new OnlineError("STALE_REVISION", "房间状态已更新，请重试");
+      if (type !== "room.leave" && payload.revision !== undefined && payload.revision !== view.revision) throw new OnlineError("STALE_REVISION", "房间状态已更新，请重试");
       if (type === "room.leave" || type === "room.kick") {
         const target = type === "room.kick" ? text(payload.accountId, 1, 100) : account.id;
         if (type === "room.kick") { this.owner(room, account.id); this.waiting(room); if (target === account.id) throw new OnlineError("INVALID_ARGUMENT", "请使用离房操作"); }
         const member = view.members.find(item => item.id === target);
         if (!member) throw new OnlineError("FORBIDDEN", "席位不存在");
-        if (view.state === "starting") throw new OnlineError("ROOM_STARTING", "游戏正在分配，请稍后再离开");
+        const wasStarting = view.state === "starting", startingInstanceId = wasStarting ? view.instanceId : undefined;
+        if (wasStarting) {
+          // The allocated host expects the original seats to initialise. A
+          // departure cancels that allocation instead of stranding its peers.
+          view.state = "waiting";
+          delete view.instanceId; delete view.instanceReady;
+          view.members.forEach(item => { item.ready = false; delete item.resumeUntil; });
+        }
         if (view.state === "in_game") {
           member.online = false; member.abandoned = true; delete member.resumeUntil;
           // The worker may already have crashed. Leaving the room still needs
@@ -179,10 +192,21 @@ export class Rooms {
           await this.hosts.receive(view.instanceId!, { accountId: target, type: "disconnect" }).catch(() => {});
         } else view.members = view.members.filter(item => item.id !== target);
         if (this.active.get(target) === view.id) this.active.delete(target);
+        this.generations.set(target, (this.generations.get(target) || 0) + 1);
         if (view.ownerId === target) this.transferOwner(room);
-        if (!view.members.length) view.state = "closed";
-        await this.save(room); this.publish(target, "room.left", {});
-        if (view.state === "closed") this.rooms.delete(view.id);
+        if (!await this.closeIfEmpty(room)) await this.save(room);
+        this.publish(target, "room.left", {});
+        if (wasStarting) {
+          clearTimeout(room.startupTimer); room.startupTimer = undefined;
+          if (startingInstanceId) {
+            await this.hosts.stop(startingInstanceId).catch(error => {
+              console.error("Cancelled room host cleanup failed", { roomId: view.id, instanceId: startingInstanceId, message: String(error?.message || error).slice(0, 300) });
+            });
+            for (const item of view.members) if (this.active.get(item.id) === view.id) {
+              this.publish(item.id, "game.failed", { instanceId: startingInstanceId, message: "有玩家退出，已取消本次对局分配。可返回房间重新准备。" });
+            }
+          }
+        }
         return null;
       }
       if (type === "room.ready") {
@@ -191,7 +215,10 @@ export class Rooms {
         view.members.find(item => item.id === account.id)!.ready = payload.ready;
       } else if (type === "room.update") {
         this.waiting(room); this.owner(room, account.id);
-        view.name = text(payload.name, 1, 32); view.members.forEach(member => member.ready = false);
+        if (payload.name === undefined && payload.characterPool === undefined) throw new OnlineError("INVALID_ARGUMENT", "请提供要修改的房间规则");
+        if (payload.name !== undefined) view.name = text(payload.name, 1, 32);
+        if (payload.characterPool !== undefined) view.characterPool = normalizeCharacterPool(payload.characterPool);
+        view.members.forEach(member => member.ready = false);
       } else if (type === "room.rematch") {
         this.owner(room, account.id);
         if (view.state !== "finished") throw new OnlineError("INVALID_ARGUMENT", "对局尚未结束");
@@ -202,11 +229,12 @@ export class Rooms {
         this.waiting(room); this.owner(room, account.id);
         if (view.members.length !== view.capacity || !view.members.every(member => member.ready && member.online)) throw new OnlineError("NOT_READY", "需要所有席位到齐并准备");
         if (this.hosts.count >= maxInstances()) throw new OnlineError("SERVICE_BUSY", "服务器对局已满，请稍后再试");
+        view.characterPool = normalizeCharacterPool(view.characterPool);
         view.state = "starting"; view.instanceId = randomUUID(); view.instanceReady = false;
         await this.save(room);
         const instanceId = view.instanceId;
         room.startupTimer = setTimeout(() => { void this.recoverHostFailure(room, instanceId); }, 120000);
-        void this.hosts.start({ instanceId, roomId: view.id, modeId: view.modeId, build: process.env.ONLINE_BUILD_ID || ONLINE_BUILD, members: [...view.members].sort((a, b) => a.seat - b.seat) }, event => this.hostEvent(room, instanceId, event))
+        void this.hosts.start({ instanceId, roomId: view.id, modeId: view.modeId, characterPool: structuredClone(view.characterPool), build: process.env.ONLINE_BUILD_ID || ONLINE_BUILD, members: [...view.members].sort((a, b) => a.seat - b.seat) }, event => this.hostEvent(room, instanceId, event))
           .catch(() => this.recoverHostFailure(room, instanceId));
         return view;
       } else if (type === "room.chat") {
@@ -253,19 +281,19 @@ export class Rooms {
         for (const member of room.view.members) if (this.active.get(member.id) === room.view.id) this.publish(member.id, "game.finished", { roomId: room.view.id, instanceId, results: event.results });
         await this.hosts.stop(instanceId);
       }).catch(() => this.recoverHostFailure(room, instanceId));
-    } else if (event.type === "failed") void this.recoverHostFailure(room, instanceId);
+    } else if (event.type === "failed") void this.recoverHostFailure(room, instanceId, event.code);
   }
-  private async recoverHostFailure(room: InternalRoom, instanceId: string) {
-    try { await this.hostFailed(room, instanceId); }
+  private async recoverHostFailure(room: InternalRoom, instanceId: string, code?: string) {
+    try { await this.hostFailed(room, instanceId, code); }
     catch (error: any) {
       console.error("Online game host failure cleanup failed", { roomId: room.view.id, instanceId, message: String(error?.message || error).slice(0, 300) });
       if (room.view.instanceId === instanceId) {
         clearTimeout(room.startupTimer);
-        room.startupTimer = setTimeout(() => { void this.recoverHostFailure(room, instanceId); }, 5000);
+        room.startupTimer = setTimeout(() => { void this.recoverHostFailure(room, instanceId, code); }, 5000);
       }
     }
   }
-  private hostFailed(room: InternalRoom, instanceId: string) {
+  private hostFailed(room: InternalRoom, instanceId: string, code?: string) {
     return this.serial(async () => {
       if (room.view.instanceId !== instanceId || room.view.state === "finished") return;
       const startupTimer = room.startupTimer;
@@ -275,7 +303,11 @@ export class Rooms {
       room.view.members.forEach(member => { member.ready = false; delete member.resumeUntil; });
       await this.save(room);
       clearTimeout(startupTimer); room.startupTimer = undefined;
-      for (const member of room.view.members) if (this.active.get(member.id) === room.view.id) this.publish(member.id, "game.failed", { instanceId, message: "托管实例未能继续运行，已释放对局资源。请返回房间重试。" });
+      const message = code === "CHARACTER_POOL_TOO_SMALL" ? "可选武将不足：扣除禁将、模式限制并合并同名版本后，需至少每席 3 名候选。请增加武将包或减少禁将。"
+        : code === "CHARACTER_PACK_UNAVAILABLE" ? "武将包或依赖资源不完整，请更新服务端与客户端的联机资源。"
+        : code === "INVALID_CHARACTER_BAN" ? "禁将不属于当前武将池，请重新配置房间武将规则。"
+        : "托管实例未能继续运行，已释放对局资源。请返回房间重试。";
+      for (const member of room.view.members) if (this.active.get(member.id) === room.view.id) this.publish(member.id, "game.failed", { instanceId, message });
     });
   }
   async gameCommand(accountId: string, type: string, payload: Record<string, any>, isCurrent = () => true) {
@@ -309,6 +341,7 @@ export class Rooms {
       const view = this.current(accountId); if (!view) return;
       const room = this.rooms.get(view.id)!; const member = view.members.find(item => item.id === accountId)!;
       member.online = online;
+      if (!online && await this.closeIfEmpty(room)) return;
       if (!online) {
         member.ready = false;
         if (view.instanceId && ["starting", "in_game"].includes(view.state)) {
@@ -324,6 +357,8 @@ export class Rooms {
   async cleanup() {
     await this.serial(async () => {
       for (const [id, room] of this.rooms) {
+        // Also catches missed disconnect cleanup (for example a failed save).
+        if (await this.closeIfEmpty(room)) continue;
         for (const member of room.view.members) {
           if (member.resumeUntil && member.resumeUntil < Date.now() && !member.abandoned) {
             member.abandoned = true; member.online = false; delete member.resumeUntil;
@@ -336,10 +371,7 @@ export class Rooms {
             await this.save(room);
           }
         }
-        if (!["waiting", "finished"].includes(room.view.state) || room.view.members.some(member => member.online) || Date.now() - (room.touchedAt || room.view.createdAt) < 10 * 60000) continue;
-        room.view.state = "closed"; await this.save(room);
-        for (const member of room.view.members) if (this.active.get(member.id) === id) this.active.delete(member.id);
-        this.rooms.delete(id);
+        await this.closeIfEmpty(room);
       }
     });
   }
@@ -350,6 +382,7 @@ export class Rooms {
       if (accounts.some(account => this.active.has(account.id))) throw new OnlineError("ALREADY_IN_GAME", "匹配玩家已进入其他房间");
       const room: InternalRoom = { view: { id: randomUUID(), code: randomBytes(6).toString("hex").toUpperCase(), name: mode.name + " · 匹配对局", ownerId: accounts[0].id,
         modeId, preset: mode.preset, capacity, visibility: "invite", locked: false, state: "waiting", revision: 0, createdAt: Date.now(),
+        characterPool: normalizeCharacterPool(undefined),
         members: accounts.map((account, seat) => ({ ...account, seat, ready: true, online: true })) }, chat: [] };
       await this.save(room);
       this.rooms.set(room.view.id, room); for (const account of accounts) this.active.set(account.id, room.view.id);
@@ -358,9 +391,14 @@ export class Rooms {
     try { return await this.command(accounts[0], "room.start", { roomId: view.id }); }
     catch (error) {
       await this.serial(async () => {
-        const room = this.rooms.get(view.id)!; room.view.state = "closed"; await this.save(room);
-        for (const account of accounts) { this.active.delete(account.id); this.publish(account.id, "room.left", {}); }
+        // Everyone may have disconnected while the start command was queued.
+        const room = this.rooms.get(view.id); if (!room) return;
+        room.view.state = "closed"; await this.db.deleteRoom(view.id);
+        for (const account of accounts) if (this.active.get(account.id) === view.id) {
+          this.active.delete(account.id); this.publish(account.id, "room.left", {});
+        }
         this.rooms.delete(view.id);
+        this.publish(null, "rooms.changed", {});
       });
       throw error;
     }

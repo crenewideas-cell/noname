@@ -7580,6 +7580,19 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 	},
 	async chooseButtonOL(event, trigger, player) {
 		const list: [Player, ...any[]][] = event.list;
+		// A single remote seat needs a normal choice event, not an outer
+		// parallel wait. This includes the rebel in a two-player identity game.
+		// Keep the result keyed by player id for callers of chooseButtonOL.
+		if (list.length === 1) {
+			const [current, ...args] = list[0];
+			const next = current.chooseButton(...args)
+				.set("callback", event.callback)
+				.set("switchToAuto", event.switchToAuto)
+				.set("processAI", event.processAI);
+			const result = await next.forResult();
+			Reflect.set(event, "result", { [current.playerid]: result ?? {} });
+			return;
+		}
 
 		const chooseRemote = (args, callback, switchToAuto, processAI) => {
 			const next = game.me.chooseButton(...args);

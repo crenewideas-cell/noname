@@ -41,7 +41,7 @@ export async function createPlatform() {
     if (accountId) { const socket = sockets.get(accountId); if (socket) send(socket, event); }
     else for (const socket of sockets.values()) send(socket, event);
   }
-  const rooms = new Rooms(db, hosts, publish);
+  const rooms = new Rooms(db, hosts, publish, id => sockets.get(id)?.readyState === WebSocket.OPEN);
   await rooms.restore();
   const social = new Social(db, id => sockets.get(id)?.readyState === WebSocket.OPEN, publish);
   const activity = new Activity(rooms, social, id => sockets.get(id)?.readyState === WebSocket.OPEN, publish);
@@ -288,6 +288,10 @@ export async function createPlatform() {
         } catch (error: any) {
           metrics.failedCommands++;
           const code = error instanceof OnlineError ? error.code : "REQUEST_FAILED";
+          // Host validation exceptions arrive through page.evaluate. Preserve
+          // their stack here; the public response intentionally omits it.
+          app.log.warn({ err: error, code, requestId: command?.requestId, accountId: account?.id,
+            command: command?.type, roomId: command?.payload?.roomId, instanceId: command?.payload?.instanceId }, "Online command failed");
           send(socket, { requestId: command?.requestId, ok: false, code, message: error instanceof OnlineError ? error.message : "操作未完成，请刷新房间状态后重试" });
           if (code === "ACCOUNT_BLOCKED") socket.close(4003, "Account blocked");
           else if (code === "AUTH_EXPIRED") socket.close(4002, "Session expired");

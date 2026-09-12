@@ -63,7 +63,7 @@ services:
       TRUST_PROXY: 1
       DATABASE_URL: postgresql://noname:${POSTGRES_PASSWORD}@database:5432/noname_online
       PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:?Set PUBLIC_ORIGIN}
-      ONLINE_BUILD_ID: ${ONLINE_BUILD_ID:-online-phase3-v1}
+      ONLINE_BUILD_ID: ${ONLINE_BUILD_ID:-online-packs-v2}
       MATCH_REGION: ${MATCH_REGION:-default}
       RESUME_GRACE_MS: ${RESUME_GRACE_MS:-120000}
       ONLINE_MAINTENANCE: ${ONLINE_MAINTENANCE:-0}

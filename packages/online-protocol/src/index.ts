@@ -1,9 +1,11 @@
+import { ONLINE_CHARACTER_PACKS, DEFAULT_CHARACTER_PACKS, defaultCharacterPool, type CharacterPool } from "./character-pool";
+export * from "./character-pool";
 export const PROTOCOL_VERSION = 2;
-export const ONLINE_BUILD = "online-phase3-v1";
+export const ONLINE_BUILD = "online-packs-v2";
 export const RULESET = "identity-standard-v1";
 export const ONLINE_MODES = [
-  { id: "identity", name: "身份", preset: RULESET, players: [2, 4, 6, 8], characterPacks: ["standard"], cardPacks: ["standard"] },
-  { id: "doudizhu", name: "斗地主", preset: "doudizhu-standard-v1", players: [3], characterPacks: ["standard"], cardPacks: ["standard"] },
+  { id: "identity", name: "身份", preset: RULESET, players: [2, 4, 6, 8], characterPacks: DEFAULT_CHARACTER_PACKS, cardPacks: ["standard"] },
+  { id: "doudizhu", name: "斗地主", preset: "doudizhu-standard-v1", players: [3], characterPacks: DEFAULT_CHARACTER_PACKS, cardPacks: ["standard"] },
 ] as const;
 export function modePreset(id: unknown) { return ONLINE_MODES.find(mode => mode.id === id); }
 export type SessionType = "offline" | "online";
@@ -13,6 +15,7 @@ export interface Member extends Account { ready: boolean; online: boolean; seat:
 export interface Room {
   id: string; code: string; name: string; ownerId: string; modeId: string;
   preset: string; capacity: number; visibility: "public" | "invite";
+  characterPool?: CharacterPool;
   locked: boolean; state: RoomState; revision: number; members: Member[];
   instanceId?: string; instanceReady?: boolean; createdAt: number;
 }
@@ -20,6 +23,18 @@ export interface ChatMessage { id: string; accountId: string; nickname: string; 
 export interface Command { protocolVersion: number; requestId: string; type: string; payload: Record<string, unknown>; }
 export class OnlineError extends Error {
   constructor(public code: string, message: string) { super(message); }
+}
+/** Canonical order makes comparisons deterministic; unknown packages are rejected, never silently dropped. */
+export function normalizeCharacterPool(value: unknown): CharacterPool {
+  if (value === undefined) return defaultCharacterPool();
+  const pool = value as CharacterPool;
+  if (!pool || !Array.isArray(pool.packs) || !pool.packs.length || pool.packs.length > ONLINE_CHARACTER_PACKS.length
+    || pool.packs.some(id => !ONLINE_CHARACTER_PACKS.some(pack => pack.id === id))
+    || !Array.isArray(pool.banned) || pool.banned.length > 512
+    || pool.banned.some(id => typeof id !== "string" || !/^[a-zA-Z0-9_]{1,100}$/.test(id))) {
+    throw new OnlineError("INVALID_CHARACTER_POOL", "请选择已开放的武将包；至少启用一个包，禁将最多 512 名。");
+  }
+  return { packs: ONLINE_CHARACTER_PACKS.filter(pack => pool.packs.includes(pack.id)).map(pack => pack.id), banned: [...new Set(pool.banned)].sort() };
 }
 export function text(value: unknown, min: number, max: number): string {
   if (typeof value !== "string" || value.trim().length < min || value.trim().length > max) throw new OnlineError("INVALID_ARGUMENT", "输入长度不符合要求");

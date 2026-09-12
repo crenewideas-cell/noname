@@ -1,12 +1,14 @@
 import { lib, game, ui, get, _status } from "noname";
 import { command, onlineState, restoreAccount, onOnlineEvent, disconnectPlatform, onlineId } from "./client";
 import { security } from "@/util/sandbox.js";
+import { assertOnlineCharacterResources } from "./characterPool.js";
 import "./ui/online.css";
 
 let statusPanel;
 let assignment;
 let unsubscribe;
 let choiceToken;
+let rejectedChoiceToken;
 let finished = false;
 let leaving = false;
 let seatGeneration;
@@ -73,6 +75,7 @@ export async function startManagedGame() {
 		if (!["starting", "in_game"].includes(onlineState.room.state)) throw new Error("本场对局已结束，可返回房间继续。");
 		if (onlineState.room.members.find(member => member.id === onlineState.account.id)?.abandoned) throw new Error("席位保留时间已过，无法恢复本局控制权。");
 		assignment.modeId = onlineState.room.modeId;
+		assertOnlineCharacterResources();
 		game.onlineID = onlineState.account.id;
 		_status.ip = "online-platform";
 		// Force the existing engine sandbox without the legacy "trust this IP" prompt.
@@ -88,23 +91,6 @@ export async function startManagedGame() {
 		// callback must never borrow the token of a later server choice.
 		const eventTokens = new WeakMap(), resultTokens = new WeakMap();
 		let dispatchToken;
-		const rememberChoiceToken = token => {
-			if (!token) return;
-			// The server announces a choice before it sends the function that opens
-			// the local dialog. At that point the engine is still paused in the
-			// parent event, whose _result is what startOnline submits later.
-			// Associate the token with the whole active chain so both the child
-			// dialog result and the parent step can be correlated.
-			let current = _status.event;
-			const seen = new Set();
-			while (current && !seen.has(current)) {
-				seen.add(current);
-				eventTokens.set(current, token);
-				if (current.result && typeof current.result === "object") resultTokens.set(current.result, token);
-				if (current._result && typeof current._result === "object") resultTokens.set(current._result, token);
-				current = current.parent;
-			}
-		};
 		const createEvent = game.createEvent, startEvent = lib.element.GameEvent.prototype.start;
 		game.createEvent = function (...args) {
 			const event = createEvent.apply(this, args);
@@ -123,17 +109,22 @@ export async function startManagedGame() {
 			clearChoiceClock();
       try { await attaching; await command("game.result", { ...assignment, token, turnId: token, expectedRevision: token, actionId: onlineId(), generation: seatGeneration, result: get.stringifiedResult(result) }); }
 			catch (error) {
-				const notice = document.createElement("div"); notice.className = "online-game-notice";
-				notice.textContent = error.message + "。本次选择由服务端处理，请等待后续行动。";
-				document.body.append(notice); setTimeout(() => notice.remove(), 6000);
+				if (finished || leaving || choiceToken) return;
+				rejectedChoiceToken = token;
+				// A rejected result is still pending on the host. Offer its snapshot
+				// and prompt again instead of claiming it will advance on its own.
+				showStatus("选择提交未完成", error.message + "。可重新同步当前选择；超过行动时限后由服务端托管。", "重新同步", () => {
+					localStorage.setItem(lib.configprefix + "directstart", "true");
+					window.onbeforeunload = null;
+					game.reload();
+				});
 			}
 		};
 		game.send = (type, ...args) => {
 			if (type === "result") {
-				// Parallel OL choices submit the parent step's _result, which is
-				// replaced after the child event resolves. Keep the parent event
-				// fallback in addition to the object identity map.
-				void submit(args[0], resultTokens.get(args[0]) || eventTokens.get(_status.event));
+				// startOnline submits the same result object produced by its child.
+				// Never relabel an old result with the current parent event's token.
+				void submit(args[0], resultTokens.get(args[0]));
 				return true;
 			}
 			if (type === "inited" || type === "reinited") { void (async () => { await attaching; await command("game." + type, { ...assignment, generation: seatGeneration }); })().catch(fail); return true; }
@@ -147,13 +138,14 @@ export async function startManagedGame() {
 			if (payload?.instanceId && payload.instanceId !== assignment.instanceId) return;
 			if (type === "game.choice") {
 				if (finished) return;
+				if (rejectedChoiceToken) { rejectedChoiceToken = undefined; statusPanel?.remove(); statusPanel = undefined; }
 				choiceToken = payload.token;
-				rememberChoiceToken(payload.token);
 				// The matching engine prompt carries the token. Do not relabel an
 				// earlier live event/result merely because a new request has arrived.
 				showChoiceClock(payload.deadline);
 			} else if (type === "game.choiceClosed") {
 				if (payload.token === choiceToken) { choiceToken = undefined; clearChoiceClock(); }
+				if (payload.token === rejectedChoiceToken) { rejectedChoiceToken = undefined; statusPanel?.remove(); statusPanel = undefined; }
 			} else if (type === "game.engine") {
 				if (finished || payload.token && payload.token !== choiceToken) return;
 				try {

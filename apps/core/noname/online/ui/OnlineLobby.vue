@@ -41,7 +41,14 @@
         </header>
         <div class="online-seats"><article v-for="seat in s.room.capacity" :key="seat" :class="{ occupied: memberAt(seat - 1) }"><template v-if="memberAt(seat - 1)"><img :src="avatar" alt="" /><strong>{{ memberAt(seat - 1)?.nickname }}</strong><small>{{ memberAt(seat - 1)?.id === s.room.ownerId ? '房主 · ' : '' }}{{ !memberAt(seat - 1)?.online ? '已离线' : memberAt(seat - 1)?.ready ? '已准备' : '等待准备' }}</small></template><template v-else><span class="seat-plus">＋</span><strong>虚位以待</strong><small>等待玩家加入</small></template><b>{{ seat }}</b></article></div>
         <div v-if="isOwner && s.room.state === 'waiting'" class="online-room-management"><form @submit.prevent="renameRoom"><input v-model="newName" maxlength="32" placeholder="新的房间名称" aria-label="新的房间名称" /><button :disabled="busy || !newName.trim()">修改房名</button></form><button v-for="member in s.room.members.filter(m => m.id !== s.account?.id)" :key="member.id" :disabled="busy" @click="run(() => roomCommand('room.kick', { accountId: member.id }))">移出 {{ member.nickname }}</button></div>
-        <div class="online-room-bottom"><section><h3>房间消息</h3><div class="online-chat" aria-live="polite"><p v-if="!s.chat.length">分享房间码，邀请朋友加入。房间消息仅本次会话保留。</p><p v-for="message in s.chat" :key="message.id"><strong>{{ message.nickname }}</strong> {{ message.text }}</p></div><form class="online-chat-form" @submit.prevent="chat"><input v-model="chatText" maxlength="300" aria-label="房间消息" placeholder="说点什么…" /><button :disabled="busy || !chatText.trim()">发送</button></form></section><aside><h3>对局规则</h3><p>{{ ruleName }} · 标准武将/卡牌</p><p>单将 · 30 秒行动时限</p><p>全员到齐并准备后，由房主开始。</p><button @click="copyCode">{{ codeCopied ? '已复制' : '复制房间码' }}</button><p v-if="s.room.state === 'starting'" role="status">正在准备托管对局，请保持在线…</p><p v-if="s.room.state === 'in_game'">对局正在进行，可恢复原席位继续对战。</p></aside></div>
+        <details v-if="isOwner && s.room.state === 'waiting'" class="online-pool-settings" @toggle="togglePoolEditor">
+          <summary>修改武将池</summary>
+          <CharacterPoolEditor v-if="poolEditorOpen" v-model="editPool" :mode-id="s.room.modeId" :disabled="busy" />
+          <p>保存后所有玩家需要重新准备。</p>
+          <button class="online-primary" :disabled="busy || !poolChanged" @click="savePool">保存武将池</button>
+          <button :disabled="busy" @click="editPool = normalizeCharacterPool(s.room.characterPool)">还原当前规则</button>
+        </details>
+        <div class="online-room-bottom"><section><h3>房间消息</h3><div class="online-chat" aria-live="polite"><p v-if="!s.chat.length">分享房间码，邀请朋友加入。房间消息仅本次会话保留。</p><p v-for="message in s.chat" :key="message.id"><strong>{{ message.nickname }}</strong> {{ message.text }}</p></div><form class="online-chat-form" @submit.prevent="chat"><input v-model="chatText" maxlength="300" aria-label="房间消息" placeholder="说点什么…" /><button :disabled="busy || !chatText.trim()">发送</button></form></section><aside><h3>对局规则</h3><p>{{ ruleName }} · 标准卡牌</p><p>武将池：{{ characterPoolLabel(s.room.characterPool) }}</p><details v-if="s.room.characterPool?.banned.length"><summary>查看禁将</summary><p>{{ s.room.characterPool.banned.map(id => get.translation(id)).join("、") }}</p></details><p>单将 · 30 秒行动时限</p><p>全员到齐并准备后，由房主开始。</p><button @click="copyCode">{{ codeCopied ? '已复制' : '复制房间码' }}</button><p v-if="s.room.state === 'starting'" role="status">正在准备托管对局，请保持在线…</p><p v-if="s.room.state === 'in_game'">对局正在进行，可恢复原席位继续对战。</p></aside></div>
       </section>
       <div v-else class="online-body">
         <section class="online-room-browser">
@@ -50,23 +57,24 @@
           <section v-if="listLoading" class="online-loading">正在查找房间…</section>
           <section v-else-if="listError" class="online-empty"><h3>房间列表加载失败</h3><p>{{ listError }}</p><button @click="refresh">重新加载</button></section>
           <section v-else-if="!s.rooms.length" class="online-empty"><h3>还没有符合条件的房间</h3><p>创建一个房间，邀朋友来切磋。</p><button class="online-primary" :disabled="s.maintenance" @click="showCreate = true">创建房间</button></section>
-          <div v-else class="online-room-grid"><article v-for="room in s.rooms" :key="room.id" class="online-room-card"><div class="room-card-top"><span>{{ room.locked ? '密码房' : '公开房' }}</span><b>{{ roomState[room.state] }}</b></div><h3>{{ room.name }}</h3><p>{{ ruleName }} · {{ room.capacity }} 人场</p><div class="room-portraits"><span v-for="n in room.capacity" :key="n" :class="{ filled: n <= room.members.length }"></span></div><footer><span>{{ room.members.length }}/{{ room.capacity }} 席 · {{ room.code }}</span><button :disabled="s.maintenance || busy || room.state !== 'waiting' || room.members.length >= room.capacity" @click="openJoin(room)">加入</button></footer></article></div>
+          <div v-else class="online-room-grid"><article v-for="room in s.rooms" :key="room.id" class="online-room-card"><div class="room-card-top"><span>{{ room.locked ? '密码房' : '公开房' }}</span><b>{{ roomState[room.state] }}</b></div><h3>{{ room.name }}</h3><p>{{ ruleName }} · {{ room.capacity }} 人场</p><p class="online-pool-summary">{{ characterPoolLabel(room.characterPool) }}</p><div class="room-portraits"><span v-for="n in room.capacity" :key="n" :class="{ filled: n <= room.members.length }"></span></div><footer><span>{{ room.members.length }}/{{ room.capacity }} 席 · {{ room.code }}</span><button :disabled="s.maintenance || busy || room.state !== 'waiting' || room.members.length >= room.capacity" @click="openJoin(room)">加入</button></footer></article></div>
           <div class="online-pagination"><button :disabled="page <= 1" @click="page--; refresh()">上一页</button><span>第 {{ page }} 页</span><button :disabled="page * 12 >= s.total" @click="page++; refresh()">下一页</button></div>
         </section>
         <aside class="online-sidebar"><section class="online-panel online-create-card"><p class="online-eyebrow">召集同道</p><h2>开一局自己的房间</h2><p>选择人数与可见性，等待玩家入席。</p><button class="online-primary" :disabled="s.maintenance" @click="showCreate = true">创建房间</button><button :disabled="s.maintenance" @click="showJoin = true">输入房间码</button></section><MatchPanel :mode-id="modeId" /></aside>
       </div>
       <SocialPanel @joined="mode => emit('mode', mode)" />
     </template>
-    <dialog ref="createDialog" class="online-dialog" @close="showCreate = false"><form @submit.prevent="createRoom"><header><h2>创建{{ modeName }}房间</h2><button type="button" @click="showCreate = false" aria-label="关闭">×</button></header><label>房间名称<input v-model="roomName" required maxlength="32" /></label><label>对局人数<select v-model.number="roomCapacity"><option v-for="n in playerCounts" :key="n" :value="n">{{ n }} 人{{ ruleName }}</option></select></label><label>房间可见性<select v-model="visibility"><option value="public">公开 · 所有玩家可搜索</option><option value="invite">邀请 · 仅凭房间码加入</option></select></label><label>房间密码（可选）<input v-model="roomPassword" type="password" minlength="4" maxlength="64" autocomplete="new-password" /></label><p>标准武将与卡牌、单将、30 秒行动时限。</p><p v-if="modalError" class="online-modal-error" role="alert">{{ modalError }}</p><button class="online-primary" :disabled="busy">{{ busy ? '正在创建…' : '创建并入席' }}</button></form></dialog>
+    <dialog ref="createDialog" class="online-dialog online-pool-dialog" @close="showCreate = false"><form @submit.prevent="createRoom"><header><h2>创建{{ modeName }}房间</h2><button type="button" @click="showCreate = false" aria-label="关闭">×</button></header><label>房间名称<input v-model="roomName" required maxlength="32" /></label><label>对局人数<select v-model.number="roomCapacity"><option v-for="n in playerCounts" :key="n" :value="n">{{ n }} 人{{ ruleName }}</option></select></label><label>房间可见性<select v-model="visibility"><option value="public">公开 · 所有玩家可搜索</option><option value="invite">邀请 · 仅凭房间码加入</option></select></label><label>房间密码（可选）<input v-model="roomPassword" type="password" minlength="4" maxlength="64" autocomplete="new-password" /></label><CharacterPoolEditor v-if="showCreate" v-model="createPool" :mode-id="modeId" :disabled="busy" /><p>标准卡牌、单将、30 秒行动时限。</p><p v-if="modalError" class="online-modal-error" role="alert">{{ modalError }}</p><button class="online-primary" :disabled="busy">{{ busy ? '正在创建…' : '创建并入席' }}</button></form></dialog>
     <dialog ref="joinDialog" class="online-dialog" @close="showJoin = false"><form @submit.prevent="joinRoom"><header><h2>加入房间</h2><button type="button" @click="showJoin = false" aria-label="关闭">×</button></header><label>房间码<input v-model="joinCode" required maxlength="32" /></label><label>房间密码（如有）<input v-model="joinPassword" type="password" maxlength="64" /></label><p v-if="modalError" class="online-modal-error" role="alert">{{ modalError }}</p><button class="online-primary" :disabled="busy">加入房间</button></form></dialog>
   </main>
 </template>
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import { lib, get } from "noname";
-import { modePreset, type Room } from "@noname/online-protocol";
+import { modePreset, defaultCharacterPool, normalizeCharacterPool, characterPoolLabel, type Room } from "@noname/online-protocol";
 import SocialPanel from "./SocialPanel.vue";
 import MatchPanel from "./MatchPanel.vue";
+import CharacterPoolEditor from "./CharacterPoolEditor.vue";
 import { onlineState as s, restoreAccount, login, logout, searchRooms, command, onOnlineEvent, copyOnlineText } from "../client";
 const props = defineProps<{ modeId: string }>();
 const emit = defineEmits<{ back: []; play: []; mode: [id: string] }>();
@@ -85,6 +93,10 @@ const roomName = ref('群英小聚'), roomCapacity = ref<number>(props.modeId ==
 const myMember = computed(() => s.room?.members.find(member => member.id === s.account?.id));
 watch(() => props.modeId, () => { roomCapacity.value = props.modeId === 'doudizhu' ? 3 : 4; page.value = 1; capacity.value = ''; void refresh(); });
 const newName = ref(''), codeCopied = ref(false);
+const createPool = ref(defaultCharacterPool()), editPool = ref(defaultCharacterPool()), poolEditorOpen = ref(false);
+const poolChanged = computed(() => JSON.stringify(normalizeCharacterPool(editPool.value)) !== JSON.stringify(normalizeCharacterPool(s.room?.characterPool)));
+watch(() => `${s.room?.id}:${JSON.stringify(s.room?.characterPool)}`, () => { editPool.value = normalizeCharacterPool(s.room?.characterPool); }, { immediate: true });
+function togglePoolEditor(event: Event) { poolEditorOpen.value = (event.target as HTMLDetailsElement).open; }
 const isOwner = computed(() => s.room?.ownerId === s.account?.id), myReady = computed(() => s.room?.members.find(m => m.id === s.account?.id)?.ready);
 const canStart = computed(() => s.room && s.room.members.length === s.room.capacity && s.room.members.every(m => m.ready && m.online));
 const memberAt = (seat: number) => s.room?.members.find(m => m.seat === seat);
@@ -95,10 +107,11 @@ async function run(action: () => Promise<any>) { if (busy.value) return; busy.va
 async function refresh() { if (!s.account || disposed) return; listLoading.value = true; listError.value = ''; try { await searchRooms(props.modeId, query.value, page.value, filterState.value, capacity.value); } catch (e: any) { listError.value = e.message; } finally { listLoading.value = false; } }
 async function retry() { loading.value = true; error.value = ''; s.error = ''; try { await restoreAccount(); if (s.room?.modeId && s.room.modeId !== props.modeId) emit('mode', s.room.modeId); await refresh(); } catch (e: any) { error.value = e.message; } finally { loading.value = false; } }
 async function authenticate() { await run(async () => { await login(authKind.value, { username: username.value, password: password.value, nickname: nickname.value, recovery: recoveryCode.value }); password.value = ''; if (authKind.value === 'recover') authKind.value = 'login'; else { if (s.room) emit('mode', s.room.modeId); await refresh(); } }); }
-async function createRoom() { await run(async () => { s.room = await command('room.create', { modeId: props.modeId, preset: preset.value!.preset, name: roomName.value, capacity: roomCapacity.value, visibility: visibility.value, password: roomPassword.value }); s.chat = []; showCreate.value = false; roomPassword.value = ''; }); }
+async function createRoom() { await run(async () => { s.room = await command('room.create', { modeId: props.modeId, preset: preset.value!.preset, name: roomName.value, capacity: roomCapacity.value, visibility: visibility.value, password: roomPassword.value, characterPool: createPool.value }); s.chat = []; showCreate.value = false; roomPassword.value = ''; }); }
 function openJoin(room: Room) { joinCode.value = room.code; joinPassword.value = ''; if (room.locked) showJoin.value = true; else void joinRoom(); }
 async function joinRoom() { await run(async () => { s.room = await command('room.join', { code: joinCode.value, password: joinPassword.value }); s.chat = []; showJoin.value = false; joinPassword.value = ''; if (s.room) emit('mode', s.room.modeId); }); }
 const roomCommand = (type: string, payload = {}) => command(type, { roomId: s.room!.id, revision: s.room!.revision, ...payload });
+const savePool = () => run(() => roomCommand('room.update', { characterPool: editPool.value }));
 const ready = () => run(() => roomCommand('room.ready', { ready: !myReady.value }));
 const start = () => run(() => roomCommand('room.start'));
 const leaveRoom = () => run(async () => { await roomCommand('room.leave'); s.room = null; await refresh(); });

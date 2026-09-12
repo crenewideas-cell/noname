@@ -2071,6 +2071,9 @@ export default {
 					availableCharacters.push(name);
 				}
 				_status.characterlist = availableCharacters;
+				// Dealing candidates removes them from characterList. Keep the full
+				// unselected pool for timeout AI, including a pool dealt out exactly.
+				const unselectedCharacters = characterList.slice();
 				const choices = [];
 				const selectButton = lib.configOL.double_character ? 2 : 1;
 
@@ -2098,12 +2101,13 @@ export default {
 					if (result[id]?.links) {
 						for (const character of result[id].links) {
 							characterList.remove(get.sourceCharacter(character));
+							unselectedCharacters.remove(get.sourceCharacter(character));
 						}
 					}
 				}
 				for (const id in result) {
 					if (result[id] === "ai") {
-						result[id] = characterList.randomRemove(lib.configOL.double_character ? 2 : 1).map(character => {
+						result[id] = unselectedCharacters.randomRemove(lib.configOL.double_character ? 2 : 1).map(character => {
 							const replacements = lib.characterReplace[character];
 							return replacements?.length ? replacements.randomGet() : character;
 						});

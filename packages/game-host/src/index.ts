@@ -1,7 +1,7 @@
 import { chromium, type Browser, type BrowserContext, type Page } from "playwright-core";
 import { hasRoomMemory } from "./resources.js";
-export interface HostSpec { instanceId: string; roomId: string; modeId: string; build: string; members: { id: string; nickname: string }[]; }
-export interface HostEvent { type: string; accountId?: string; raw?: string; token?: string; deadline?: number; results?: { accountId: string; won: boolean | null }[]; }
+export interface HostSpec { instanceId: string; roomId: string; modeId: string; build: string; characterPool?: { packs: string[]; banned: string[] }; members: { id: string; nickname: string }[]; }
+export interface HostEvent { type: string; code?: string; accountId?: string; raw?: string; token?: string; deadline?: number; results?: { accountId: string; won: boolean | null }[]; }
 export class GameHost {
   private instances = new Map<string, { context?: BrowserContext; page?: Page; ended: boolean; timer?: NodeJS.Timeout; fail?: (error: Error) => void }>();
   private browser?: Browser;
@@ -69,6 +69,7 @@ export class GameHost {
       await page.exposeFunction("__nonameHostEmit", (event: HostEvent) => {
         if (instance.ended) return;
         if (event.type === "ready") ready();
+        if (event.type === "failed") failed(new Error(event.code || "HOST_FAILED"));
         emit(event);
       });
       await page.addInitScript(data => {
