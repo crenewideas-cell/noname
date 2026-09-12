@@ -16,6 +16,8 @@ let reconnectTimer: ReturnType<typeof setTimeout> | undefined;
 let socialTimer: ReturnType<typeof setTimeout> | undefined;
 let recoveryStarted = 0;
 let generation = 0;
+let allowMultiOpen = false;
+let sessionToken = sessionStorage.getItem("noname_online_session") || "";
 const pending = new Map<string, { resolve: (value: any) => void; reject: (error: Error) => void; timer: ReturnType<typeof setTimeout> }>();
 const listeners = new Set<(type: string, payload: any) => void>();
 export function onlineId() {
@@ -46,14 +48,17 @@ function invalidateAccount(code: string, message: string) {
   onlineState.status = "blocked"; onlineState.error = message;
   emitLocal("connection.closed", { code: code === "ACCOUNT_BLOCKED" ? 4003 : 4002 });
 }
-// Production uses a same-origin proxy; no IP field is exposed to players.
-const base = import.meta.env.VITE_ONLINE_ORIGIN || location.origin;
+// Development uses Vite's same-origin proxy; production uses the configured
+// server origin. No server address is exposed as a player input field.
+const base = import.meta.env.DEV ? location.origin : (import.meta.env.VITE_ONLINE_ORIGIN || location.origin);
 export async function api(path: string, body?: unknown) {
   const requestGeneration = generation;
   const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 12000);
+  const headers: Record<string, string> = body === undefined ? {} : { "Content-Type": "application/json", "X-CSRF-Token": onlineState.csrf };
+  if (allowMultiOpen && sessionToken) headers.Authorization = `Bearer ${sessionToken}`;
   try {
-    const response = await fetch(new URL("/api/v1" + path, base), { credentials: "include", signal: controller.signal,
-      method: body === undefined ? "GET" : "POST", headers: body === undefined ? {} : { "Content-Type": "application/json", "X-CSRF-Token": onlineState.csrf },
+    const response = await fetch(new URL("/api/v1" + path, base), { credentials: allowMultiOpen ? "omit" : "include", signal: controller.signal,
+      method: body === undefined ? "GET" : "POST", headers,
       body: body === undefined ? undefined : JSON.stringify(body) });
     const data = await response.json().catch(() => ({ ok: false, code: "SERVICE_UNAVAILABLE", message: "联机服务暂时不可用，请稍后重试" }));
     if (!response.ok || data.ok === false) {
@@ -70,16 +75,19 @@ export async function restoreAccount() {
   const restoreGeneration = generation;
   const caps = await api("/capabilities");
   if (restoreGeneration !== generation) return;
+  allowMultiOpen = caps.multiOpen === true;
   const rejectVersion = (message: string): never => {
     disconnectPlatform(); onlineState.status = "blocked"; onlineState.error = message;
     emitLocal("connection.closed", { code: 4004 });
     throw Object.assign(new Error(message), { code: "VERSION_MISMATCH" });
   };
   if (caps.protocolVersion !== PROTOCOL_VERSION) rejectVersion("联机版本不兼容，请更新客户端");
-  onlineState.build = import.meta.env.VITE_ONLINE_BUILD_ID || ONLINE_BUILD;
+  // A Vite development client has no release manifest of its own. Use the
+  // server build for development while keeping release clients strict.
+  onlineState.build = import.meta.env.DEV ? caps.build : (import.meta.env.VITE_ONLINE_BUILD_ID || ONLINE_BUILD);
   onlineState.region = caps.region; onlineState.resumeGraceMs = caps.resumeGraceMs;
   onlineState.maintenance = caps.maintenance === true;
-  if (onlineState.build !== caps.build) rejectVersion("客户端资源与服务器版本不一致，请更新客户端");
+  if (!import.meta.env.DEV && onlineState.build !== caps.build) rejectVersion("客户端资源与服务器版本不一致，请更新客户端");
   try {
     const result = await api("/me");
     if (restoreGeneration !== generation) return;
@@ -88,9 +96,24 @@ export async function restoreAccount() {
   } catch (error: any) { if (error.code !== "AUTH_EXPIRED") throw error; }
 }
 export async function login(kind: "register" | "login" | "recover", body: unknown) {
+  const caps = await api("/capabilities");
+  if (caps.protocolVersion !== PROTOCOL_VERSION) throw Object.assign(new Error("联机协议版本不兼容，请更新客户端"), { code: "VERSION_MISMATCH" });
+  allowMultiOpen = caps.multiOpen === true;
+  onlineState.region = caps.region; onlineState.resumeGraceMs = caps.resumeGraceMs;
+  onlineState.maintenance = caps.maintenance === true;
+  // Registration and login can be the first online request, before
+  // restoreAccount() runs. Sync the development build before opening the WS.
+  if (import.meta.env.DEV) onlineState.build = caps.build;
   const data = await api("/auth/" + kind, body);
   if (data.recovery) onlineState.recovery = data.recovery;
   if (kind === "recover") return;
+  if (allowMultiOpen && typeof data.sessionToken === "string") {
+    sessionToken = data.sessionToken;
+    sessionStorage.setItem("noname_online_session", sessionToken);
+  } else if (!allowMultiOpen) {
+    sessionToken = "";
+    sessionStorage.removeItem("noname_online_session");
+  }
   onlineState.account = data.account; onlineState.csrf = data.csrf;
   await connectPlatform();
 }
@@ -99,6 +122,8 @@ export async function logout() {
   await api("/auth/logout", {}); disconnectPlatform(); clearAccount();
 }
 function clearAccount() {
+  sessionToken = "";
+  sessionStorage.removeItem("noname_online_session");
   onlineState.account = null; onlineState.room = null; onlineState.csrf = ""; onlineState.status = "guest";
   onlineState.social = { friends: [], blocked: [], invites: [] }; onlineState.match = { state: "idle" };
   onlineState.chat = []; onlineState.rooms = []; onlineState.total = 0; onlineState.recovery = ""; onlineState.maintenance = false;
@@ -122,7 +147,8 @@ export async function connectPlatform() {
     const { ticket } = await api("/socket-ticket", {});
     const url = new URL("/ws/v1", base); url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
     if (attemptGeneration !== generation) return;
-    const next = socket = new WebSocket(url);
+    const protocols = allowMultiOpen && sessionToken ? ["noname-auth." + sessionToken] : undefined;
+    const next = socket = protocols ? new WebSocket(url, protocols) : new WebSocket(url);
     await new Promise<void>((resolve, reject) => {
       const timeout = setTimeout(() => { next.close(); reject(new Error("联机连接超时")); }, 12000);
       next.onmessage = event => {

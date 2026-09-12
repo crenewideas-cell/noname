@@ -9,6 +9,7 @@ yarn-error.log*
 # Build, test, and type-generation outputs
 dist/
 dist-online/
+dist-online-host/
 dist-types/
 output/
 coverage/

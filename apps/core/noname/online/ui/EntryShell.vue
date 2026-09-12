@@ -35,17 +35,13 @@ function selectType(type: string) {
 async function choose(mode: string, node: HTMLElement) {
   if (sessionType.value === "offline") { props.click(mode, node); return; }
   try {
-    const configuredOrigin = import.meta.env.VITE_ONLINE_ORIGIN;
+    const configuredOrigin = import.meta.env.DEV ? location.origin : import.meta.env.VITE_ONLINE_ORIGIN;
     const nativeEntry = (game as any).openOnlineLobby;
-    if (nativeEntry && !configuredOrigin) throw new Error("此客户端尚未配置联机服务器地址，请使用配置了服务器入口的客户端。");
+    // Native launchers use their bundled manifest and intercept static requests
+    // locally; only API/WebSocket traffic reaches the configured server.
+    if (nativeEntry) { await nativeEntry("#online=" + encodeURIComponent(mode)); return; }
     const target = new URL("/index.html", configuredOrigin || location.origin);
-    if (nativeEntry || target.origin !== location.origin) {
-      if (!["http:", "https:"].includes(target.protocol) || target.username || target.password) throw new Error("联机服务器地址格式无效。");
-      target.hash = "online=" + encodeURIComponent(mode);
-      if (nativeEntry) await nativeEntry(target.href);
-      else location.assign(target.href);
-      return;
-    }
+    if (target.origin !== location.origin) throw new Error("请使用下载的完整客户端进入联机。");
   } catch (error: any) { notice.value = error.message; return; }
   activeMode.value = mode;
 }

@@ -154,13 +154,16 @@ async function buildSelf(target: string | string[], importMap: Record<string, st
 				input: {
 					index: "index.html",
 					noname: "noname.js",
+					...(publicOnlineBuild ? { "noname/entry": join(root, "noname/entry.ts") } : {}),
 				},
 				output: {
-					preserveModules: true, // 保留文件结构
+					paths: publicOnlineBuild ? { vue: "/vendor/vue.js" } : undefined,
+					hoistTransitiveImports: !publicOnlineBuild,
+					preserveModules: !publicOnlineBuild, // Online runtime must order cyclic engine initializers together.
 					preserveModulesRoot: "./",
 
 					// 去掉 hash
-					entryFileNames: "[name].js", // 入口文件
+					entryFileNames: chunk => publicOnlineBuild && chunk.name === "index" ? "noname/entry.js" : "[name].js", // 入口文件
 					chunkFileNames: "[name].js", // 代码分块
 					assetFileNames: "[name][extname]", // 静态资源
 				},

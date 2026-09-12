@@ -12,6 +12,7 @@ import { ONLINE_MODES, ONLINE_BUILD, PROTOCOL_VERSION, OnlineError, parseCommand
 export async function createPlatform() {
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl) throw new Error("DATABASE_URL is required");
+  const allowMultiOpen = process.env.ALLOW_MULTI_OPEN === "1";
   const origin = new URL(process.env.PUBLIC_ORIGIN || "http://localhost:8081").origin;
   const secure = origin.startsWith("https:");
   const build = process.env.ONLINE_BUILD_ID || ONLINE_BUILD;
@@ -19,7 +20,7 @@ export async function createPlatform() {
   const app = Fastify({ trustProxy: process.env.TRUST_PROXY === "1", bodyLimit: 32 * 1024, logger: { redact: ["req.headers.cookie", "req.headers.authorization", "body.password", "body.recovery"] } });
   const db = new Database(databaseUrl);
   await db.migrate();
-  const maxGameInstances = Math.max(1, Math.min(32, Number(process.env.MAX_GAME_INSTANCES) || 2));
+  const maxGameInstances = Math.max(1, Math.min(4, Number(process.env.MAX_GAME_INSTANCES) || 2));
   const hosts = new GameHost({ clientUrl: process.env.HOST_CLIENT_URL || "http://127.0.0.1:8081/index.html", executablePath: process.env.CHROMIUM_PATH, maxInstances: maxGameInstances });
   const tickets = new Map<string, { account: Account; sessionHash: string; expires: number }>();
   const sockets = new Map<string, WebSocket>();
@@ -45,7 +46,16 @@ export async function createPlatform() {
   const social = new Social(db, id => sockets.get(id)?.readyState === WebSocket.OPEN, publish);
   const activity = new Activity(rooms, social, id => sockets.get(id)?.readyState === WebSocket.OPEN, publish);
   const cookieToken = (request: { headers: { cookie?: string } }) => request.headers.cookie?.split(";").map(value => value.trim()).find(value => value.startsWith("noname_session="))?.slice(15);
-  const authenticate = (request: any) => db.authenticate(cookieToken(request));
+  const bearerToken = (request: { headers: { authorization?: string } }) => request.headers.authorization?.match(/^Bearer\s+([A-Za-z0-9_-]{32,})$/i)?.[1];
+  // Multi-open test sessions use a per-window bearer token. The default path
+  // remains the original HttpOnly cookie session.
+  const sessionToken = (request: any) => allowMultiOpen ? (bearerToken(request) || cookieToken(request)) : cookieToken(request);
+  const websocketToken = (request: { headers: { "sec-websocket-protocol"?: string } }) => {
+    if (!allowMultiOpen) return undefined;
+    return String(request.headers["sec-websocket-protocol"] || "").split(",").map(value => value.trim())
+      .find(value => value.startsWith("noname-auth."))?.slice("noname-auth.".length);
+  };
+  const authenticate = (request: any) => db.authenticate(sessionToken(request));
   function rate(key: string, max: number, ms: number) {
     const old = limits.get(key), now = Date.now();
     const item = old && old.expires > now ? old : { count: 0, expires: now + ms };
@@ -68,14 +78,17 @@ export async function createPlatform() {
   app.get("/healthz", async () => ({ ok: true }));
   app.get("/readyz", async () => { await db.pool.query("SELECT 1"); return { ok: true }; });
   const maintenance = () => process.env.ONLINE_MAINTENANCE === "1" || !!process.env.MAINTENANCE_FILE && existsSync(process.env.MAINTENANCE_FILE);
-  app.get("/api/v1/capabilities", async (_request, reply) => { reply.header("Cache-Control", "no-store"); return { ok: true, protocolVersion: PROTOCOL_VERSION, build, modes: ONLINE_MODES, friends: true, matchmaking: true, automaticResume: true, maintenance: maintenance(), region: process.env.MATCH_REGION || "default", resumeGraceMs }; });
+  app.get("/api/v1/capabilities", async (_request, reply) => { reply.header("Cache-Control", "no-store"); return { ok: true, protocolVersion: PROTOCOL_VERSION, build, modes: ONLINE_MODES, friends: true, matchmaking: true, automaticResume: true, multiOpen: allowMultiOpen, maintenance: maintenance(), region: process.env.MATCH_REGION || "default", resumeGraceMs }; });
   app.get("/api/v1/admin/status", async (request, reply) => {
     const expected = process.env.ADMIN_STATUS_TOKEN;
     const supplied = String(request.headers.authorization || "").replace(/^Bearer\s+/i, "");
     if (!expected || supplied.length !== expected.length || !timingSafeEqual(Buffer.from(supplied), Buffer.from(expected))) throw new OnlineError("FORBIDDEN", "管理状态凭据无效");
     const accounts = await db.pool.query("SELECT count(*)::int AS count FROM online_accounts");
+    // Deployment enables maintenance before reading this endpoint. Wait for
+    // already accepted room mutations so a pending start cannot look idle.
+    const roomStatus = await rooms.read(() => rooms.status());
     reply.header("Cache-Control", "no-store");
-    return { ok: true, build, maintenance: maintenance(), accounts: accounts.rows[0].count, activeBans: await db.banCount(), sockets: sockets.size, rooms: rooms.status(), matchmaking: activity.status(), hosts: { active: hosts.count, limit: maxGameInstances }, metrics, memory: process.memoryUsage() };
+    return { ok: true, build, maintenance: maintenance(), accounts: accounts.rows[0].count, activeBans: await db.banCount(), sockets: sockets.size, rooms: roomStatus, matchmaking: activity.status(), hosts: { active: hosts.count, limit: maxGameInstances }, metrics, memory: process.memoryUsage() };
   });
   const requireAdmin = (request: any) => {
     const expected = process.env.ADMIN_STATUS_TOKEN;
@@ -119,7 +132,7 @@ export async function createPlatform() {
   const setSession = async (reply: any, account: Account) => {
     const session = await db.session(account.id);
     reply.header("Set-Cookie", `noname_session=${session.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=43200${secure ? "; Secure" : ""}`);
-    return { ok: true, account, csrf: session.csrf };
+    return { ok: true, account, csrf: session.csrf, ...(allowMultiOpen ? { sessionToken: session.token } : {}) };
   };
   app.post("/api/v1/auth/register", async (request, reply) => {
     rate("auth:" + request.ip, 12, 60000);
@@ -161,7 +174,9 @@ export async function createPlatform() {
     await activity.command(auth.account, "match.cancel", {});
     await db.revoke(auth.tokenHash);
     sockets.get(auth.account.id)?.close(1000, "Logged out");
-    reply.header("Set-Cookie", `noname_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0${secure ? "; Secure" : ""}`);
+    // A multi-open window authenticates with its own bearer token. Clearing
+    // the shared browser cookie would log out every other test window.
+    if (!allowMultiOpen) reply.header("Set-Cookie", `noname_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0${secure ? "; Secure" : ""}`);
     return { ok: true };
   });
   app.post("/api/v1/socket-ticket", async request => {
@@ -183,15 +198,19 @@ export async function createPlatform() {
     return { ok: true, account: await social.find(auth.account.id, (request.query as any).code) };
   });
 
-  const wss = new WebSocketServer({ noServer: true, maxPayload: 64 * 1024, perMessageDeflate: false });
+  const wss = new WebSocketServer({
+    noServer: true, maxPayload: 64 * 1024, perMessageDeflate: false,
+    handleProtocols: protocols => [...protocols].find(value => value.startsWith("noname-auth.")) || false,
+  });
   app.server.on("upgrade", (request, socket, head) => {
     void (async () => {
       if (request.url !== "/ws/v1" || request.headers.origin !== origin) throw new Error("Forbidden upgrade");
-      const auth = await db.authenticate(cookieToken(request));
+      const token = websocketToken(request) || sessionToken(request);
+      const auth = await db.authenticate(token);
       rate("ws:" + auth.account.id, 10, 60000);
       if (wss.clients.size >= 1000) throw new Error("Connection limit");
       wss.handleUpgrade(request, socket, head, ws => {
-        socketAuth.set(ws, { token: cookieToken(request)!, csrf: auth.csrf });
+        socketAuth.set(ws, { token: token!, csrf: auth.csrf });
         wss.emit("connection", ws);
       });
     })().catch(() => { socket.write("HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n"); socket.destroy(); });

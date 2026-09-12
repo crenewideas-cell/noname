@@ -4,7 +4,8 @@ import { GameHost, type HostEvent } from "@noname/game-host";
 import { OnlineError, ONLINE_BUILD, modePreset, type Account, type Room, type ChatMessage, text } from "@noname/online-protocol";
 import { Database, hashPassword, verifyPassword } from "./database";
 type InternalRoom = { view: Room; passwordHash?: string; chat: ChatMessage[]; startupTimer?: NodeJS.Timeout; touchedAt?: number };
-const maxInstances = () => Math.max(1, Math.min(32, Number(process.env.MAX_GAME_INSTANCES) || 2));
+const maxInstances = () => Math.max(1, Math.min(4, Number(process.env.MAX_GAME_INSTANCES) || 2));
+const maxRooms = () => Math.max(1, Math.min(10, Number(process.env.MAX_ROOMS) || 10));
 const resumeGrace = () => Math.max(30000, Math.min(900000, Number(process.env.RESUME_GRACE_MS) || 120000));
 const maintenance = () => process.env.ONLINE_MAINTENANCE === "1" || !!process.env.MAINTENANCE_FILE && existsSync(process.env.MAINTENANCE_FILE);
 export class Rooms {
@@ -137,7 +138,7 @@ export class Rooms {
       if (maintenance() && ["room.create", "room.join", "room.start", "room.rematch"].includes(type)) throw new OnlineError("MAINTENANCE", "服务器正在维护，暂不接受新的对局");
       if (type === "room.create") {
         if (this.active.has(account.id)) throw new OnlineError("ALREADY_IN_GAME", "请先离开当前房间");
-        if (this.rooms.size >= 500) throw new OnlineError("SERVICE_BUSY", "房间数量已达上限");
+        if (this.rooms.size >= maxRooms()) throw new OnlineError("SERVICE_BUSY", "服务器房间数量已达上限，请稍后再试");
         const mode = modePreset(payload.modeId);
         if (!mode || payload.preset !== mode.preset || !(mode.players as readonly number[]).includes(payload.capacity)) throw new OnlineError("INVALID_ARGUMENT", "不支持此玩法或人数规则");
         if (!["public", "invite"].includes(payload.visibility)) throw new OnlineError("INVALID_ARGUMENT", "无效房间类型");

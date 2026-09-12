@@ -7,10 +7,10 @@ COPY deploy/online/platform-workspace.yaml ./pnpm-workspace.yaml
 COPY packages/server/package.json packages/server/pnpm-lock.yaml ./packages/server/
 COPY packages/game-host/package.json packages/game-host/pnpm-lock.yaml ./packages/game-host/
 COPY packages/online-protocol/package.json ./packages/online-protocol/
-RUN pnpm install --prod --ignore-scripts --no-frozen-lockfile
+RUN NODE_OPTIONS=--max-old-space-size=256 pnpm install --prod --ignore-scripts --no-frozen-lockfile --child-concurrency=1 --network-concurrency=4
 COPY packages/server/src ./packages/server/src
 COPY packages/game-host/src ./packages/game-host/src
 COPY packages/online-protocol/src ./packages/online-protocol/src
 USER pwuser
 EXPOSE 8082
-CMD ["pnpm", "--filter", "@noname/server", "platform"]
+CMD ["node", "--import", "tsx", "packages/server/src/platform-cli.ts"]

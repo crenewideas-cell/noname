@@ -38,6 +38,7 @@ export default async function browserReady({ lib, game }) {
 		window.open(url);
 	};
 
+	if (import.meta.env.VITE_PUBLIC_ONLINE === "1") return;
 	const adpt = new BrowserAdapter();
 	const fs = new FileSystem(adpt);
 	try {

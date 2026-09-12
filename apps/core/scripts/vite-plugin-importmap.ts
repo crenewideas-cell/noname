@@ -19,6 +19,27 @@ export default function vitePluginJIT(importMap: Record<string, string> = {}): P
 
 		async buildStart() {
 			if (!isBuild) return;
+			// Public deployments have no workspace node_modules. Ship standalone
+			// browser ESM entries and keep both generated import maps on these URLs.
+			if (process.env.NONAME_PUBLIC_BUILD === "1") {
+				const browserEntries: Record<string, string> = {
+					vue: require.resolve("vue/dist/vue.esm-browser.prod.js"),
+					"pinyin-pro": require.resolve("pinyin-pro/dist/index.mjs"),
+					dedent: path.join(path.dirname(require.resolve("dedent")), "dedent.mjs"),
+				};
+				for (const key of Object.keys(importMap)) {
+					if (key === "noname") { resolvedImportMap[key] = "/noname.js"; continue; }
+					const entry = browserEntries[key];
+					if (!entry) throw new Error(`Missing public browser entry for ${key}`);
+					const fileName = `vendor/${key}.js`;
+					this.emitFile({ type: "asset", fileName, source: fs.readFileSync(entry) });
+					resolvedImportMap[key] = `/${fileName}`;
+					const packageRoot = path.dirname(path.dirname(entry));
+					const license = ["LICENSE", "LICENSE.md"].map(name => path.join(packageRoot, name)).find(file => fs.existsSync(file));
+					if (license) this.emitFile({ type: "asset", fileName: `vendor/${key}.LICENSE.txt`, source: fs.readFileSync(license) });
+				}
+				return;
+			}
 			for (const key in importMap) {
 				try {
 					const resolved = require.resolve(importMap[key]);

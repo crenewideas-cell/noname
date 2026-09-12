@@ -2,6 +2,11 @@ name: noname-online
 services:
   database:
     image: postgres:17-bookworm
+    mem_limit: 128m
+    memswap_limit: 128m
+    cpus: 0.25
+    pids_limit: 64
+    command: ["postgres", "-c", "shared_buffers=16MB", "-c", "work_mem=1MB", "-c", "maintenance_work_mem=16MB", "-c", "max_connections=20", "-c", "max_wal_size=256MB"]
     environment:
       POSTGRES_DB: noname_online
       POSTGRES_USER: noname
@@ -20,8 +25,14 @@ services:
       options: { max-size: "10m", max-file: "3" }
   assets:
     image: caddy:2-alpine
+    mem_limit: 48m
+    memswap_limit: 48m
+    cpus: 0.10
+    pids_limit: 32
+    environment:
+      GOMEMLIMIT: 32MiB
     volumes:
-      - ../../dist-online:/srv:ro
+      - ../../dist-online-host:/srv:ro
       - ./Assets.Caddyfile:/etc/caddy/Caddyfile:ro
     restart: unless-stopped
     healthcheck:
@@ -39,12 +50,14 @@ services:
     user: pwuser
     security_opt:
       - seccomp=./seccomp_profile.json
-    shm_size: 512mb
-    mem_limit: ${PLATFORM_MEMORY:-3g}
-    cpus: ${PLATFORM_CPUS:-2}
+    shm_size: 128mb
+    mem_limit: ${PLATFORM_MEMORY:-768m}
+    memswap_limit: ${PLATFORM_MEMORY:-768m}
+    cpus: ${PLATFORM_CPUS:-1.2}
     pids_limit: 512
     environment:
       NODE_ENV: production
+      NODE_OPTIONS: --max-old-space-size=192
       HOST: 0.0.0.0
       PORT: 8082
       TRUST_PROXY: 1
@@ -57,7 +70,13 @@ services:
       MAINTENANCE_FILE: /run/noname-online/maintenance
       ADMIN_STATUS_TOKEN: ${ADMIN_STATUS_TOKEN:-}
       HOST_CLIENT_URL: http://assets/index.html
+      ALLOW_MULTI_OPEN: ${ALLOW_MULTI_OPEN:-0}
+      # Alibaba ECS image uses a 3.10 kernel; Chromium's user namespace
+      # sandbox is unavailable there. The container still runs as pwuser with
+      # seccomp and no added capabilities.
+      CHROMIUM_SANDBOX: ${CHROMIUM_SANDBOX:-0}
       MAX_GAME_INSTANCES: ${MAX_GAME_INSTANCES:-2}
+      MAX_ROOMS: ${MAX_ROOMS:-10}
     depends_on:
       database: { condition: service_healthy }
       assets: { condition: service_healthy }
@@ -75,11 +94,22 @@ services:
     logging: *logging
   gateway:
     image: caddy:2-alpine
+    mem_limit: 48m
+    memswap_limit: 48m
+    cpus: 0.10
+    pids_limit: 32
+    environment:
+      GOMEMLIMIT: 32MiB
     ports: ["${PUBLIC_PORT:-80}:80"]
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
     depends_on:
       platform: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "-T", "3", "http://127.0.0.1/api/v1/capabilities"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
     restart: unless-stopped
     networks: [private, public]
     logging: *logging

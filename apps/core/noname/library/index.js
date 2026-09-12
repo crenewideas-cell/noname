@@ -199,6 +199,7 @@ export class Library {
 		//提前缓存表情包
 		function () {
 			_status.emotion_cache = {};
+			if (typeof game.getFileList !== "function") return;
 			const findFiles = function (name) {
 				const srcBase = `${lib.assetURL}image/emotion/${name}/`;
 				game.getFileList(

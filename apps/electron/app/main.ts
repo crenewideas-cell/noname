@@ -1,5 +1,8 @@
 /// <reference types="vite/client" />
-import { app, BrowserWindow, crashReporter, dialog, ipcMain, Menu, shell } from "electron";
+import { app, BrowserWindow, crashReporter, dialog, ipcMain, Menu, shell, session, net } from "electron";
+import { createHash } from "node:crypto";
+import { pathToFileURL } from "node:url";
+import { onlineEntry, onlineAssetPath } from "./online-assets";
 import fs from "fs";
 import path from "path";
 import remote from "@electron/remote/main/index.js";
@@ -7,17 +10,33 @@ import createApp from "@noname/fs";
 remote.initialize();
 const dirname = path.join(import.meta.dirname, "../");
 const onlineWindows = new Map<number, BrowserWindow>();
+const configuredOnlineSessions = new Set<string>();
 ipcMain.handle("noname:open-online", async (event, address: unknown) => {
   const caller = new URL(event.sender.getURL());
   if (!["http://localhost:8080", "http://localhost:8089"].includes(caller.origin) || typeof address !== "string") throw new Error("Invalid online entry");
-  const url = new URL(address);
-  if (!["http:", "https:"].includes(url.protocol) || url.username || url.password) throw new Error("Invalid online server address");
+  const assetRoot = path.join(dirname, "online-client");
+  const url = await onlineEntry(assetRoot, address);
+  const partition = "persist:noname-online-" + createHash("sha256").update(url.origin).digest("hex").slice(0, 16);
+  const onlineSession = session.fromPartition(partition);
+  if (!configuredOnlineSessions.has(partition)) {
+    for (const scheme of ["http", "https"]) {
+    onlineSession.protocol.handle(scheme, async request => {
+      const target = new URL(request.url);
+      if (target.origin !== url.origin) return new Response("Forbidden", { status: 403 });
+      if (target.pathname.startsWith("/api/v1/")) return onlineSession.fetch(request, { bypassCustomProtocolHandlers: true });
+      if (!["GET", "HEAD"].includes(request.method)) return new Response("Method not allowed", { status: 405 });
+      try { return await net.fetch(pathToFileURL(await onlineAssetPath(assetRoot, target.pathname)).href); }
+      catch { return new Response("Local client asset missing", { status: 404 }); }
+    });
+    }
+    configuredOnlineSessions.add(partition);
+  }
   const ownerId = event.sender.id;
   const existing = onlineWindows.get(ownerId);
   if (existing && !existing.isDestroyed()) { existing.show(); existing.focus(); return; }
   const win = new BrowserWindow({
     width: 1100, height: 800, title: "无名杀 · 联机", parent: BrowserWindow.fromWebContents(event.sender) || undefined,
-    webPreferences: { nodeIntegration: false, contextIsolation: true, sandbox: true, webSecurity: true, partition: "persist:noname-online" },
+    webPreferences: { nodeIntegration: false, contextIsolation: true, sandbox: true, webSecurity: true, partition },
   });
   onlineWindows.set(ownerId, win);
   win.removeMenu();

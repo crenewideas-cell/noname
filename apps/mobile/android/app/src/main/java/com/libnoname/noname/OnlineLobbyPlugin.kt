@@ -12,11 +12,12 @@ class OnlineLobbyPlugin : Plugin() {
     @PluginMethod
     fun open(call: PluginCall) {
         val url = call.getString("url")
-        val uri = url?.let { Uri.parse(it) }
-        if (uri == null || uri.scheme !in listOf("http", "https") || uri.host.isNullOrBlank() || uri.userInfo != null) {
-            call.reject("联机服务器地址格式无效")
+        if (url == null || !Regex("^#online=[a-z0-9_-]+$").matches(url)) {
+            call.reject("联机玩法格式无效")
             return
         }
+        try { context.assets.open("public/online-client/deployment.json").close() }
+        catch (error: Exception) { call.reject("缺少本地联机资源，请安装完整客户端", error); return }
         activity.runOnUiThread {
             try {
                 activity.startActivity(Intent(activity, OnlineLobbyActivity::class.java).putExtra("url", url))

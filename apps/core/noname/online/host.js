@@ -12,6 +12,7 @@ export function configureHost() {
 		mode: spec.modeId, new_tutorial: true, show_splash: "off", extensions: [],
 		characters: ["standard"], cards: ["standard"], plays: [],
 		background_audio: false, background_speak: false, volumn_audio: 0, volumn_background: 0,
+        background_music: "music_off", image_background: "default", image_background_random: false,
 		confirm_exit: false, dev: false, debug: false, ignore_error: false,
 	});
 	lib.config.all.characters = ["standard"];
@@ -126,6 +127,9 @@ export function installHost() {
 	lib.element.content.waitForPlayer = async event => {
 		game.createServer(); event.func?.();
 		_status.waitingForPlayer = true;
+		// Boot is complete. Waiting for remote seats is not a loading failure.
+		clearTimeout(window.resetGameTimeout);
+		delete window.resetGameTimeout;
 		emit({ type: "ready", build: lib.version });
 		await initialized;
 		_status.waitingForPlayer = false;

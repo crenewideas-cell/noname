@@ -14,6 +14,6 @@
     reverse_proxy platform:8082
   }
   handle {
-    reverse_proxy assets:80
+    respond "Use the downloaded Noname client to connect." 404
   }
 }
