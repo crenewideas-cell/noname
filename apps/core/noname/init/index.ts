@@ -999,8 +999,12 @@ function setBackground() {
 
 function setWindowListener() {
 	window.onkeydown = function (e) {
+		// Forwarded or synthetic events may lack KeyboardEvent.key. They must
+		// not enter keyboard shortcuts or interrupt the lobby's initialization.
+		if (typeof e?.key !== "string" || !e.key) return;
+		const key = e.key.toLowerCase();
 		if (typeof ui.menuContainer == "undefined" || !ui.menuContainer.classList.contains("hidden")) {
-			if (e.key === "F5" || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "r")) {
+			if (e.key === "F5" || ((e.ctrlKey || e.metaKey) && key === "r")) {
 				if (e.shiftKey) {
 					if (confirm("是否重置游戏？")) {
 						const noname_inited = localStorage.getItem("noname_inited");
@@ -1021,14 +1025,14 @@ function setWindowListener() {
 				} else {
 					game.reload();
 				}
-			} else if (e.key.toLowerCase() === "s" && (e.ctrlKey || e.metaKey)) {
+			} else if (key === "s" && (e.ctrlKey || e.metaKey)) {
 				if (typeof window.saveNonameInput == "function") {
 					window.saveNonameInput();
 				}
 				e.preventDefault();
 				e.stopPropagation();
 				return false;
-			} else if (e.key.toLowerCase() === "j" && (e.ctrlKey || e.metaKey) && typeof lib.node != "undefined") {
+			} else if (key === "j" && (e.ctrlKey || e.metaKey) && typeof lib.node != "undefined") {
 				lib.node.debug();
 			}
 		} else {
@@ -1045,17 +1049,17 @@ function setWindowListener() {
 				} else {
 					ui.click.pause();
 				}
-			} else if (e.key.toLowerCase() === "a") {
+			} else if (key === "a") {
 				if (typeof ui.auto != "undefined") {
 					ui.auto.click();
 				}
-			} else if (e.key.toLowerCase() === "w") {
+			} else if (key === "w") {
 				if (typeof ui.wuxie != "undefined" && ui.wuxie.style.display != "none") {
 					ui.wuxie.classList.toggle("glow");
 				} else if (typeof ui.tempnowuxie != "undefined") {
 					ui.tempnowuxie.classList.toggle("glow");
 				}
-			} else if (e.key === "F5" || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "r")) {
+			} else if (e.key === "F5" || ((e.ctrlKey || e.metaKey) && key === "r")) {
 				if (e.shiftKey) {
 					if (confirm("是否重置游戏？")) {
 						const noname_inited = localStorage.getItem("noname_inited");
@@ -1076,11 +1080,11 @@ function setWindowListener() {
 				} else {
 					game.reload();
 				}
-			} else if (e.key.toLowerCase() === "s" && (e.ctrlKey || e.metaKey)) {
+			} else if (key === "s" && (e.ctrlKey || e.metaKey)) {
 				e.preventDefault();
 				e.stopPropagation();
 				return false;
-			} else if (e.key.toLowerCase() === "j" && (e.ctrlKey || e.metaKey) && typeof lib.node != "undefined") {
+			} else if (key === "j" && (e.ctrlKey || e.metaKey) && typeof lib.node != "undefined") {
 				lib.node.debug();
 			}
 			// else if(e.key=="Escape"){
@@ -1107,6 +1111,11 @@ async function createBackground() {
 	document.documentElement.style.backgroundPosition = "";
 	document.body.insertBefore(ui.background, document.body.firstChild);
 	document.body.onresize = ui.updatexr;
+	// body resize events are not emitted reliably when a browser window is
+	// restored from maximized mode. Listen to the viewport so UI zoom and
+	// layout coordinates are recalculated immediately on every resize.
+	window.addEventListener("resize", ui.updatexr, { passive: true });
+	window.visualViewport?.addEventListener("resize", ui.updatexr, { passive: true });
 
 	if (!lib.config.image_background) {
 		return;

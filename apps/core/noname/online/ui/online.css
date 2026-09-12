@@ -1,5 +1,17 @@
 /* Scoped to the entry/lobby: retain the engine's arena and original mode artwork. */
 #splash:has(.session-entry) { overflow: auto; }
+#splash.shousha-lobby:has(.session-entry) {
+	overflow-x: hidden;
+	overflow-y: auto;
+	/* The base shousha splash is fixed and hides overflow. The online lobby
+	   grows with its room contents, so the viewport must be allowed to scroll
+	   when browser chrome reduces the available height. */
+	height: 100%;
+}
+#splash.shousha-lobby:has(.session-entry) .session-entry {
+	height: auto;
+	min-height: 100%;
+}
 #splash.shousha-lobby:has(.session-entry) { padding: 0; }
 #splash.shousha-lobby .session-entry > .lobby-heading, #splash.shousha-lobby .session-entry > .lobby-modes, #splash.shousha-lobby .session-entry > .lobby-footer { margin-left: clamp(18px,5vw,80px); margin-right: clamp(18px,5vw,80px); }
 #splash.shousha-lobby .session-entry > .lobby-heading { padding-top: 24px; }
@@ -148,5 +160,14 @@
 .online-lobby button:focus-visible, .online-lobby summary:focus-visible, .online-dialog button:focus-visible { outline: 2px solid #ebd09a; outline-offset: 3px; }
 @media (min-width:1400px) { .online-room-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
 @media (max-width:1000px) { .online-body { grid-template-columns: minmax(0,1fr); } .online-sidebar { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); } .online-create-card { min-height: auto; } }
+@media (max-height:760px) and (min-width:651px) {
+	#splash .online-lobby { padding-top: 18px; padding-bottom: 24px; }
+	.online-heading { margin-bottom: 16px; }
+	.online-lobby h1 { font-size: 32px; }
+	.online-panel { padding: 18px; }
+	.online-seats { margin: 16px 0; }
+	.online-seats article { min-height: 140px; }
+	.online-room-bottom { padding-top: 16px; gap: 18px; }
+}
 @media (max-width:650px) { #splash .session-bar { padding: 10px 14px; gap: 8px; } .session-entry .session-hint { display: none; } .session-switch button { padding: 8px 22px; } .online-heading { gap: 8px; } .online-profile { max-width: 42%; } .online-lobby h1 { font-size: 29px; } .online-panel { padding: 16px; } .online-auth { grid-template-columns: 1fr; padding: 0; } .online-auth-art { min-height: 150px; padding: 20px; } .online-auth-art span { font-size: 34px; } .online-auth form { padding: 24px; } .online-search { grid-template-columns: 1fr auto; } .online-room-grid, .online-room-bottom { grid-template-columns: 1fr; } .online-seats { grid-template-columns: repeat(2,minmax(0,1fr)); } .online-sidebar { grid-template-columns: 1fr; }  .online-room > header { align-items: flex-start; } }
 @media (prefers-reduced-motion:reduce) { .online-spinner { animation: none; } .session-entry *, .online-dialog * { transition: none !important; } }

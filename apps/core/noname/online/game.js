@@ -88,6 +88,23 @@ export async function startManagedGame() {
 		// callback must never borrow the token of a later server choice.
 		const eventTokens = new WeakMap(), resultTokens = new WeakMap();
 		let dispatchToken;
+		const rememberChoiceToken = token => {
+			if (!token) return;
+			// The server announces a choice before it sends the function that opens
+			// the local dialog. At that point the engine is still paused in the
+			// parent event, whose _result is what startOnline submits later.
+			// Associate the token with the whole active chain so both the child
+			// dialog result and the parent step can be correlated.
+			let current = _status.event;
+			const seen = new Set();
+			while (current && !seen.has(current)) {
+				seen.add(current);
+				eventTokens.set(current, token);
+				if (current.result && typeof current.result === "object") resultTokens.set(current.result, token);
+				if (current._result && typeof current._result === "object") resultTokens.set(current._result, token);
+				current = current.parent;
+			}
+		};
 		const createEvent = game.createEvent, startEvent = lib.element.GameEvent.prototype.start;
 		game.createEvent = function (...args) {
 			const event = createEvent.apply(this, args);
@@ -112,7 +129,13 @@ export async function startManagedGame() {
 			}
 		};
 		game.send = (type, ...args) => {
-			if (type === "result") { void submit(args[0], resultTokens.get(args[0])); return true; }
+			if (type === "result") {
+				// Parallel OL choices submit the parent step's _result, which is
+				// replaced after the child event resolves. Keep the parent event
+				// fallback in addition to the object identity map.
+				void submit(args[0], resultTokens.get(args[0]) || eventTokens.get(_status.event));
+				return true;
+			}
 			if (type === "inited" || type === "reinited") { void (async () => { await attaching; await command("game." + type, { ...assignment, generation: seatGeneration }); })().catch(fail); return true; }
 			if (type === "auto" || type === "unauto") { void (async () => { await attaching; await command("game.auto", { ...assignment, generation: seatGeneration, enabled: type === "auto" }); })().catch(fail); return true; }
 			if (type === "chat") { void command("room.chat", { roomId: assignment.roomId, text: String(args[1] || "") }).catch(fail); return true; }
@@ -125,6 +148,7 @@ export async function startManagedGame() {
 			if (type === "game.choice") {
 				if (finished) return;
 				choiceToken = payload.token;
+				rememberChoiceToken(payload.token);
 				// The matching engine prompt carries the token. Do not relabel an
 				// earlier live event/result merely because a new request has arrived.
 				showChoiceClock(payload.deadline);

@@ -273,24 +273,40 @@ export function installHost() {
 // client answers a per-player selection. Recreate that selection from trusted
 // host arguments and detach it so validation never executes it in the game loop.
 function selectionEvent(event, player) {
-	let selection;
 	if (event.name === "chooseButtonOL") {
 		const row = event.list?.find(row => row[0] === player);
 		if (!row) throw new Error("缺少玩家选项");
-		selection = player.chooseButton(...row.slice(1));
+		// chooseButtonOL waits on one outer event while each seat gets its own
+		// local chooseButton event. Creating that event on the headless host would
+		// attach a temporary child to the running event stack; when the outer
+		// event resumes, the manager can reject the detached child and leave the
+		// player waiting until auto-control. Keep only the immutable validation
+		// fields instead of constructing an engine event here.
+		const selection = { name: "chooseButton", player, filterButton: lib.filter.filterButton, selectButton: [1, 1], forced: false };
+		for (const arg of row.slice(1)) {
+			if (Array.isArray(arg) && arg.length === 2 && arg.every(value => Number.isInteger(value))) selection.selectButton = arg.slice();
+			else if (Array.isArray(arg)) selection.createDialog = arg;
+			else if (typeof arg === "number") selection.selectButton = [arg, arg];
+			else if (typeof arg === "boolean") selection.forced = arg;
+			else if (typeof arg === "function") selection.filterButton = arg;
+		}
+		return selection;
 	} else if (event.name === "chooseCardOL") {
-		selection = player.chooseCard(...event._args).set(event._set);
+		const selection = player.chooseCard(...event._args).set(event._set);
+		event.next.remove(selection);
+		selection.resolve();
+		return selection;
 	} else if (event.name === "_wuxie") {
-		selection = player.chooseToUse({
+		const selection = player.chooseToUse({
 			type: "wuxie", id: event.id, _global_waiting: true,
 			filterCard(card, current) {
 				return get.name(card) === "wuxie" && lib.filter.cardEnabled(card, current, "forceEnable");
 			},
 		});
+		event.next.remove(selection);
+		selection.resolve();
+		return selection;
 	} else return event;
-	event.next.remove(selection);
-	selection.resolve();
-	return selection;
 }
 
 function decodeResult(value, depth = 0) {
