@@ -8,15 +8,21 @@ export const onlineCharacterLoadList = () => ONLINE_CHARACTER_PACKS.map(pack => 
 export const onlineCardLoadList = () => ["standard", "extra", "guozhan", "yingbian", "yongjian", "sp", "zhulu", "huodong", "xianxia"];
 
 export function assertOnlineCharacterResources() {
+	const resources = [];
 	for (const id of onlineCharacterLoadList()) {
-		if (!lib.connectCharacterPack.includes(id) || !Object.keys(lib.characterPack[id] || {}).length) {
-			throw Object.assign(new Error("武将资源不完整，请更新联机客户端与服务端。"), { code: "CHARACTER_PACK_UNAVAILABLE" });
+		if (!lib.imported.character?.[id]?.connect || !lib.connectCharacterPack?.includes(id) || !Object.keys(lib.characterPack[id] || {}).length) {
+			resources.push(`character:${id}`);
 		}
 	}
 	for (const id of onlineCardLoadList()) {
-		if (!lib.connectCardPack.includes(id) || !lib.cardPack[id]?.length) {
-			throw Object.assign(new Error("武将所需的卡牌资源不完整，请更新联机客户端与服务端。"), { code: "CHARACTER_PACK_UNAVAILABLE" });
+		// cardPack is the filtered menu list, not a manifest of loaded code.
+		// A dependency with only hidden cards can legitimately have an empty list.
+		if (!lib.imported.card?.[id]?.connect || !lib.connectCardPack?.includes(id) || !Array.isArray(lib.cardPack[id])) {
+			resources.push(`card:${id}`);
 		}
+	}
+	if (resources.length) {
+		throw Object.assign(new Error(`联机资源未加载：${resources.join("、")}。请使用同一构建的完整联机资源。`), { code: "CHARACTER_PACK_UNAVAILABLE", resources });
 	}
 }
 

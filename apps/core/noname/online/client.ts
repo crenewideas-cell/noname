@@ -138,6 +138,19 @@ export function command(type: string, payload: Record<string, unknown>) {
     catch (error: any) { clearTimeout(timer); pending.delete(requestId); reject(error instanceof Error ? error : new Error("请求发送失败")); }
   });
 }
+/** Reserve the existing room across the intentional socket gap of a page reload. */
+export async function prepareRoomNavigation(target: "game" | "lobby", instanceId?: string) {
+  const roomId = onlineState.room?.id;
+  if (!roomId) {
+    if (target === "game") throw new Error("房间已关闭，请返回大厅。");
+    return;
+  }
+  try { await command("room.navigate", { roomId, target, instanceId }); }
+  catch (error: any) {
+    // A closed room must not trap a player on the game screen.
+    if (target !== "lobby" || !["ROOM_CLOSED", "FORBIDDEN"].includes(error.code)) throw error;
+  }
+}
 export async function connectPlatform() {
   if (socket?.readyState === WebSocket.OPEN && onlineState.status === "connected") return;
   if (handshake) return handshake;

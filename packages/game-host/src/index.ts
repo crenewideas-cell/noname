@@ -1,7 +1,7 @@
 import { chromium, type Browser, type BrowserContext, type Page } from "playwright-core";
 import { hasRoomMemory } from "./resources.js";
 export interface HostSpec { instanceId: string; roomId: string; modeId: string; build: string; characterPool?: { packs: string[]; banned: string[] }; members: { id: string; nickname: string }[]; }
-export interface HostEvent { type: string; code?: string; accountId?: string; raw?: string; token?: string; deadline?: number; results?: { accountId: string; won: boolean | null }[]; }
+export interface HostEvent { type: string; code?: string; resources?: string[]; diagnostic?: string; accountId?: string; raw?: string; token?: string; deadline?: number; results?: { accountId: string; won: boolean | null }[]; }
 export class GameHost {
   private instances = new Map<string, { context?: BrowserContext; page?: Page; ended: boolean; timer?: NodeJS.Timeout; fail?: (error: Error) => void }>();
   private browser?: Browser;
@@ -69,7 +69,11 @@ export class GameHost {
       await page.exposeFunction("__nonameHostEmit", (event: HostEvent) => {
         if (instance.ended) return;
         if (event.type === "ready") ready();
-        if (event.type === "failed") failed(new Error(event.code || "HOST_FAILED"));
+        if (event.type === "failed") {
+          console.error("Game host reported failure", { roomId: spec.roomId, instanceId: spec.instanceId, code: event.code,
+            resources: event.resources, diagnostic: event.diagnostic?.slice(0, 2000) });
+          failed(new Error(event.code || "HOST_FAILED"));
+        }
         emit(event);
       });
       await page.addInitScript(data => {

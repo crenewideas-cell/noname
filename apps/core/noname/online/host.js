@@ -49,7 +49,8 @@ export function installHost() {
 		if (code) { emit({ type: "failed", code }); return false; }
 	} catch (error) {
 		console.error("Online character pool unavailable", error);
-		emit({ type: "failed", code: "CHARACTER_PACK_UNAVAILABLE" });
+		emit({ type: "failed", code: error.code === "CHARACTER_PACK_UNAVAILABLE" ? error.code : "CHARACTER_POOL_VALIDATION_FAILED",
+			resources: error.resources, diagnostic: String(error.stack || error.message || error).slice(0, 2000) });
 		return false;
 	}
 	const clients = new Map();

@@ -13,6 +13,8 @@ export class Rooms {
   private active = new Map<string, string>();
   private queue: Promise<unknown> = Promise.resolve();
   private generations = new Map<string, number>();
+  // Explicit page navigation has a bounded lease; ordinary disconnects do not.
+  private navigation = new Map<string, { roomId: string; expiresAt: number }>();
   constructor(private db: Database, readonly hosts: GameHost, private publish: (accountId: string | null, type: string, payload: unknown) => void,
     private isConnected?: (accountId: string) => boolean) {}
   async restore() {
@@ -36,6 +38,7 @@ export class Rooms {
       await this.save(room);
       for (const member of room.view.members) {
         if (this.active.get(member.id) !== roomId) continue;
+        this.navigation.delete(member.id);
         this.active.delete(member.id);
         this.publish(member.id, instanceId ? "game.failed" : "room.left", { roomId, instanceId, message });
       }
@@ -50,11 +53,12 @@ export class Rooms {
       const before = new Map([...this.rooms].map(([id, room]) => [id, { room, view: structuredClone(room.view), chat: room.chat.slice(), touchedAt: room.touchedAt }]));
       const activeBefore = new Map(this.active);
       const generationsBefore = new Map(this.generations);
+      const navigationBefore = new Map(this.navigation);
       try { return await operation(); }
       catch (error) {
         this.rooms.clear();
         for (const [id, state] of before) { state.room.view = state.view; state.room.chat = state.chat; state.room.touchedAt = state.touchedAt; this.rooms.set(id, state.room); }
-        this.active = activeBefore; this.generations = generationsBefore;
+        this.active = activeBefore; this.generations = generationsBefore; this.navigation = navigationBefore;
         throw error;
       }
     });
@@ -79,6 +83,11 @@ export class Rooms {
   }
   private async closeIfEmpty(room: InternalRoom) {
     if (room.view.members.some(member => this.memberConnected(room, member))) return false;
+    if (room.view.members.some(member => {
+      const navigation = this.navigation.get(member.id);
+      return !member.abandoned && this.active.get(member.id) === room.view.id
+        && navigation?.roomId === room.view.id && navigation.expiresAt > Date.now();
+    })) return false;
     const { id, instanceId } = room.view;
     // Invalidate host callbacks before shutting the browser down, so a late
     // started/finished callback cannot save this room again.
@@ -89,6 +98,7 @@ export class Rooms {
     for (const member of room.view.members) {
       delete member.resumeUntil;
       if (this.active.get(member.id) !== id) continue;
+      this.navigation.delete(member.id);
       this.active.delete(member.id);
       this.generations.set(member.id, (this.generations.get(member.id) || 0) + 1);
       this.publish(member.id, "room.left", { roomId: id });
@@ -171,12 +181,22 @@ export class Rooms {
         this.active.set(account.id, room.view.id); await this.save(room); return room.view;
       }
       const room = this.require(String(payload.roomId), account.id), view = room.view;
-      if (type !== "room.leave" && payload.revision !== undefined && payload.revision !== view.revision) throw new OnlineError("STALE_REVISION", "房间状态已更新，请重试");
+      if (!["room.leave", "room.navigate"].includes(type) && payload.revision !== undefined && payload.revision !== view.revision) throw new OnlineError("STALE_REVISION", "房间状态已更新，请重试");
+      if (type === "room.navigate") {
+        if (payload.target !== "game" && payload.target !== "lobby") throw new OnlineError("INVALID_ARGUMENT", "无效页面切换");
+        if (payload.target === "game" && (!view.instanceReady || !["starting", "in_game"].includes(view.state) || payload.instanceId !== view.instanceId)) {
+          throw new OnlineError("RESUME_EXPIRED", "对局分配已失效，请返回房间重新准备");
+        }
+        const expiresAt = Date.now() + 120000;
+        this.navigation.set(account.id, { roomId: view.id, expiresAt });
+        return { expiresAt };
+      }
       if (type === "room.leave" || type === "room.kick") {
         const target = type === "room.kick" ? text(payload.accountId, 1, 100) : account.id;
         if (type === "room.kick") { this.owner(room, account.id); this.waiting(room); if (target === account.id) throw new OnlineError("INVALID_ARGUMENT", "请使用离房操作"); }
         const member = view.members.find(item => item.id === target);
         if (!member) throw new OnlineError("FORBIDDEN", "席位不存在");
+        this.navigation.delete(target);
         const wasStarting = view.state === "starting", startingInstanceId = wasStarting ? view.instanceId : undefined;
         if (wasStarting) {
           // The allocated host expects the original seats to initialise. A
@@ -281,19 +301,19 @@ export class Rooms {
         for (const member of room.view.members) if (this.active.get(member.id) === room.view.id) this.publish(member.id, "game.finished", { roomId: room.view.id, instanceId, results: event.results });
         await this.hosts.stop(instanceId);
       }).catch(() => this.recoverHostFailure(room, instanceId));
-    } else if (event.type === "failed") void this.recoverHostFailure(room, instanceId, event.code);
+    } else if (event.type === "failed") void this.recoverHostFailure(room, instanceId, event.code, event.resources);
   }
-  private async recoverHostFailure(room: InternalRoom, instanceId: string, code?: string) {
-    try { await this.hostFailed(room, instanceId, code); }
+  private async recoverHostFailure(room: InternalRoom, instanceId: string, code?: string, resources?: string[]) {
+    try { await this.hostFailed(room, instanceId, code, resources); }
     catch (error: any) {
       console.error("Online game host failure cleanup failed", { roomId: room.view.id, instanceId, message: String(error?.message || error).slice(0, 300) });
       if (room.view.instanceId === instanceId) {
         clearTimeout(room.startupTimer);
-        room.startupTimer = setTimeout(() => { void this.recoverHostFailure(room, instanceId, code); }, 5000);
+        room.startupTimer = setTimeout(() => { void this.recoverHostFailure(room, instanceId, code, resources); }, 5000);
       }
     }
   }
-  private hostFailed(room: InternalRoom, instanceId: string, code?: string) {
+  private hostFailed(room: InternalRoom, instanceId: string, code?: string, resources?: string[]) {
     return this.serial(async () => {
       if (room.view.instanceId !== instanceId || room.view.state === "finished") return;
       const startupTimer = room.startupTimer;
@@ -303,8 +323,10 @@ export class Rooms {
       room.view.members.forEach(member => { member.ready = false; delete member.resumeUntil; });
       await this.save(room);
       clearTimeout(startupTimer); room.startupTimer = undefined;
+      const missing = Array.isArray(resources) ? resources.filter(id => typeof id === "string" && /^(character|card):[a-zA-Z0-9_]{1,100}$/.test(id)).slice(0, 35).join("、") : "";
       const message = code === "CHARACTER_POOL_TOO_SMALL" ? "可选武将不足：扣除禁将、模式限制并合并同名版本后，需至少每席 3 名候选。请增加武将包或减少禁将。"
-        : code === "CHARACTER_PACK_UNAVAILABLE" ? "武将包或依赖资源不完整，请更新服务端与客户端的联机资源。"
+        : code === "CHARACTER_PACK_UNAVAILABLE" ? `联机资源未加载${missing ? "：" + missing : ""}。请重新构建并更新服务端与客户端的完整联机资源。`
+        : code === "CHARACTER_POOL_VALIDATION_FAILED" ? "武将池规则校验异常，已取消开局；具体异常已记录到服务端日志。"
         : code === "INVALID_CHARACTER_BAN" ? "禁将不属于当前武将池，请重新配置房间武将规则。"
         : "托管实例未能继续运行，已释放对局资源。请返回房间重试。";
       for (const member of room.view.members) if (this.active.get(member.id) === room.view.id) this.publish(member.id, "game.failed", { instanceId, message });
@@ -340,22 +362,27 @@ export class Rooms {
     return this.serial(async () => {
       const view = this.current(accountId); if (!view) return;
       const room = this.rooms.get(view.id)!; const member = view.members.find(item => item.id === accountId)!;
+      const navigating = (this.navigation.get(accountId)?.expiresAt || 0) > Date.now();
+      if (online) this.navigation.delete(accountId);
       member.online = online;
       if (!online && await this.closeIfEmpty(room)) return;
       if (!online) {
         member.ready = false;
         if (view.instanceId && ["starting", "in_game"].includes(view.state)) {
-          member.resumeUntil ||= Date.now() + resumeGrace();
+          member.resumeUntil = Math.max(member.resumeUntil || Date.now() + resumeGrace(), this.navigation.get(accountId)?.expiresAt || 0);
           this.generations.set(accountId, (this.generations.get(accountId) || 0) + 1);
           await this.hosts.receive(view.instanceId, { accountId, type: "disconnect" }).catch(() => {});
         }
       }
-      if ((!online && view.ownerId === accountId) || !view.members.some(item => item.id === view.ownerId && !item.abandoned && this.active.get(item.id) === view.id)) this.transferOwner(room);
+      if ((!online && !navigating && view.ownerId === accountId) || !view.members.some(item => item.id === view.ownerId && !item.abandoned && this.active.get(item.id) === view.id)) this.transferOwner(room);
       await this.save(room);
     });
   }
   async cleanup() {
     await this.serial(async () => {
+      for (const [accountId, navigation] of this.navigation) {
+        if (navigation.expiresAt <= Date.now() || this.active.get(accountId) !== navigation.roomId) this.navigation.delete(accountId);
+      }
       for (const [id, room] of this.rooms) {
         // Also catches missed disconnect cleanup (for example a failed save).
         if (await this.closeIfEmpty(room)) continue;

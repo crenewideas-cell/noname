@@ -19,7 +19,7 @@ import { lib, game } from "noname";
 import ShoushaSplash from "../../init/onload/ShoushaSplash.vue";
 import OnloadSplash from "../../init/onload/OnloadSplash.vue";
 import OnlineLobby from "./OnlineLobby.vue";
-import { disconnectPlatform, onlineState } from "../client";
+import { disconnectPlatform, onlineState, prepareRoomNavigation } from "../client";
 import { openGameNavigation } from "../../ui/gameNavigation.js";
 import "./online.css";
 const props = defineProps<{ shousha: boolean; handle: (mode: string) => string; click: (mode: string, node: HTMLElement) => void }>();
@@ -27,6 +27,7 @@ const sessionType = ref(lib.config.sessionType || (lib.config.mode === "connect"
 const activeMode = ref(sessionStorage.getItem("noname_online_return") || "");
 sessionStorage.removeItem("noname_online_return");
 const notice = ref("");
+let entering = false;
 function selectType(type: string) {
   if (onlineState.room || onlineState.match.state !== 'idle') { notice.value = "请先离开当前房间或取消匹配，再切换对局方式。"; return; }
   sessionType.value = type; game.saveConfig("sessionType", type);
@@ -46,14 +47,18 @@ async function choose(mode: string, node: HTMLElement) {
   activeMode.value = mode;
 }
 async function play() {
+  if (entering) return;
+  entering = true;
   // Start a clean client runtime, without any locally enabled extension hooks.
   try {
+    const assignment = JSON.parse(sessionStorage.getItem("noname_online_game") || "null");
     await game.promises.saveConfig("mode", "connect");
     await game.promises.saveConfig("sessionType", "online");
+    await prepareRoomNavigation("game", assignment?.instanceId);
     localStorage.setItem(lib.configprefix + "directstart", "true");
     window.onbeforeunload = null;
     game.reload();
-  } catch { notice.value = "无法保存对局入口，请检查浏览器存储是否可用。"; }
+  } catch (error: any) { entering = false; notice.value = error.message || "无法保存对局入口，请检查浏览器存储是否可用。"; }
 }
 function exit() { openGameNavigation(); }
 </script>

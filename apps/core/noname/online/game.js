@@ -1,5 +1,5 @@
 import { lib, game, ui, get, _status } from "noname";
-import { command, onlineState, restoreAccount, onOnlineEvent, disconnectPlatform, onlineId } from "./client";
+import { command, onlineState, restoreAccount, onOnlineEvent, disconnectPlatform, onlineId, prepareRoomNavigation } from "./client";
 import { security } from "@/util/sandbox.js";
 import { assertOnlineCharacterResources } from "./characterPool.js";
 import "./ui/online.css";
@@ -43,6 +43,7 @@ function showStatus(title, description, actionLabel, action) {
 export async function returnToOnlineLobby(leave = false) {
 	if (leaving) return;
 	if (leave) await leaveManagedRoom(true);
+	else if (onlineState.status === "connected") await prepareRoomNavigation("lobby");
 	clearChoiceClock();
 	sessionStorage.removeItem("noname_online_game");
 	sessionStorage.setItem("noname_online_return", assignment?.modeId || onlineState.room?.modeId || "identity");
@@ -113,11 +114,7 @@ export async function startManagedGame() {
 				rejectedChoiceToken = token;
 				// A rejected result is still pending on the host. Offer its snapshot
 				// and prompt again instead of claiming it will advance on its own.
-				showStatus("选择提交未完成", error.message + "。可重新同步当前选择；超过行动时限后由服务端托管。", "重新同步", () => {
-					localStorage.setItem(lib.configprefix + "directstart", "true");
-					window.onbeforeunload = null;
-					game.reload();
-				});
+				showStatus("选择提交未完成", error.message + "。可重新同步当前选择；超过行动时限后由服务端托管。", "重新同步", reloadManagedGame);
 			}
 		};
 		game.send = (type, ...args) => {
@@ -187,8 +184,7 @@ export async function startManagedGame() {
 			} else if (type === "connection.restored" && !finished) {
 				// Reload the presentation runtime to discard interrupted animations and
 				// obsolete local events; the server retains the game, not the page.
-				localStorage.setItem(lib.configprefix + "directstart", "true");
-				window.onbeforeunload = null; game.reload();
+				void reloadManagedGame().catch(fail);
 			}
 		});
 		ui.create.menu(true);
@@ -196,5 +192,10 @@ export async function startManagedGame() {
 		attaching = command(onlineState.room.state === "in_game" ? "game.resume" : "game.attach", assignment).then(result => { seatGeneration = result.generation; });
 		await attaching;
 	} catch (error) { fail(error); }
+}
+async function reloadManagedGame() {
+	await prepareRoomNavigation("game", assignment?.instanceId);
+	localStorage.setItem(lib.configprefix + "directstart", "true");
+	window.onbeforeunload = null; game.reload();
 }
 function fail(error) { if (finished || leaving) return; clearChoiceClock(); showStatus("暂时无法继续", error.message, "返回房间", () => returnToOnlineLobby()); }

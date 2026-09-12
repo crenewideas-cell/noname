@@ -8,6 +8,7 @@ import jit from "@noname/jit";
 import type { BuildChannel, BuildInfo } from "../noname/util/meta";
 
 import { moderned_characters } from "../game/config.json";
+import { ONLINE_CHARACTER_PACKS } from "@noname/online-protocol";
 const root = join(import.meta.dirname, "..");
 const publicOnlineBuild = process.env.NONAME_PUBLIC_BUILD === "1";
 
@@ -75,13 +76,18 @@ async function main() {
 	}
 
 	// #3446 - 通过moderned_characters配置更新character内容
-	for (const name of moderned_characters) {
+	// Every online package must be compiled, including legacy entries such as
+	// xianding that import another pack's source and engine internals. Those
+	// source paths do not exist in the assembled online runtime.
+	const characterEntries = publicOnlineBuild ? ONLINE_CHARACTER_PACKS.map(pack => pack.id) : moderned_characters;
+	for (const name of characterEntries) {
 		let index = `character/${name}/index.ts`
 		if (!existsSync(join(root, index))) {
 			index = `character/${name}/index.js`;
 		}
 		individuals.character.push({
-			name,
+			// Retain the import path used by importCharacterPack for legacy packs.
+			name: moderned_characters.includes(name) ? name : `${name}/index`,
 			index,
 			moderned: true,
 		});
