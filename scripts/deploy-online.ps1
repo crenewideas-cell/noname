@@ -6,7 +6,10 @@ param(
     [ValidatePattern('^[a-z_][a-z0-9_-]*$')][string]$User = 'root',
     [ValidateRange(1, 65535)][int]$SshPort = 22,
     [ValidateRange(1, 65535)][int]$HttpPort = 80,
-    [ValidatePattern('^/opt/[a-zA-Z0-9_-]+$')][string]$RemoteDirectory = '/opt/noname-online'
+    [ValidatePattern('^/opt/[a-zA-Z0-9_-]+$')][string]$RemoteDirectory = '/opt/noname-online',
+    # Explicit recovery for games left active by an older/broken runtime.
+    # Accounts and the persistent database are retained; current games end.
+    [switch]$StopActiveGames
 )
 
 Set-StrictMode -Version Latest
@@ -33,6 +36,14 @@ function Quote-Sh([string]$Value) {
 
 try {
     Set-Location -LiteralPath $root
+    $stopActiveGamesArgument = '0'
+    if ($StopActiveGames) {
+        $stopActiveGamesArgument = '1'
+        Write-Host 'Deployment mode: RECOVERY (StopActiveGames=1). Current games will be interrupted; accounts and the database are retained.' -ForegroundColor Yellow
+    } else {
+        Write-Host 'Deployment mode: NORMAL (StopActiveGames=0). Active games will block deployment.'
+        Write-Host 'To explicitly interrupt old games, use deploy-online-recover.cmd.'
+    }
     New-Item -ItemType Directory -Force -Path (Join-Path $root 'output') | Out-Null
     try {
         $deploymentLock = [IO.File]::Open((Join-Path $root 'output/online-deploy.lock'),
@@ -152,7 +163,7 @@ try {
 
     Write-Host '[5/6] Deploying services with the existing remote Docker engine...'
     $remoteArgs = @("$remoteUpload/remote-deploy.sh", "$remoteUpload/release.tar.gz", $sha256,
-        $RemoteDirectory, $releaseId, $origin, "$HttpPort", $buildId)
+        $RemoteDirectory, $releaseId, $origin, "$HttpPort", $buildId, $stopActiveGamesArgument)
     $remoteCommand = 'bash ' + (($remoteArgs | ForEach-Object { Quote-Sh $_ }) -join ' ')
     $remoteCommand = 'if [ $(id -u) -eq 0 ]; then ' + $remoteCommand + '; else sudo -n ' + $remoteCommand + '; fi'
     Invoke-External 'ssh.exe' ($sshOptions + @($target, $remoteCommand))

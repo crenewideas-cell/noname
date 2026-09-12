@@ -4,8 +4,11 @@ set -Eeuo pipefail
 umask 077
 
 die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
-[[ $# == 7 && $EUID == 0 ]] || die 'Expected seven deployment arguments and root privileges.'
+[[ ( $# == 7 || $# == 8 ) && $EUID == 0 ]] || die 'Expected seven deployment arguments, an optional recovery flag, and root privileges.'
 archive=$1 checksum=$2 base=$3 release_id=$4 origin=$5 port=$6 build=$7
+stop_active_games=${8:-0}
+[[ $stop_active_games == 0 || $stop_active_games == 1 ]] || die 'Invalid recovery flag.'
+printf 'Remote deployment option: StopActiveGames=%s\n' "$stop_active_games"
 [[ $base =~ ^/opt/[a-zA-Z0-9_-]+$ && $release_id =~ ^[0-9]{8}T[0-9]{6}Z-[a-f0-9]{8}$ ]] || die 'Invalid deployment path.'
 [[ $archive == "/tmp/noname-online-upload-$release_id/release.tar.gz" && $checksum =~ ^[a-f0-9]{64}$ ]] || die 'Invalid upload.'
 [[ $origin =~ ^http://[a-zA-Z0-9][a-zA-Z0-9.-]*(:[0-9]+)?$ && $port =~ ^[0-9]+$ && $build =~ ^online-[a-f0-9]{20}$ ]] || die 'Invalid HTTP configuration.'
@@ -162,6 +165,7 @@ maintenance_added=0
 maintenance_owned=0
 switched=0
 stage='initializing'
+failure_reason=''
 on_exit() {
   result=$?
   trap - EXIT
@@ -178,6 +182,9 @@ on_exit() {
     if (( maintenance_added && ! switched )); then rm -f "$maintenance"; fi
     if (( switched )); then
       printf 'Maintenance remains enabled. Database and backups are retained. Fix the error and rerun the local script.\n' >&2
+    fi
+    if [[ -n $failure_reason ]]; then
+      printf '\nDeployment blocker:\n%s\n' "$failure_reason" >&2
     fi
   fi
   exit "$result"
@@ -206,21 +213,45 @@ if [[ -n $platform_id ]]; then
   stage='checking existing platform state'
   # Only query through the container. Its admin token never leaves the server.
   # The endpoint waits for already accepted room mutations before reporting.
-  dc exec -T platform node --input-type=module - <<'JS'
-const response = await fetch('http://127.0.0.1:8082/api/v1/admin/status', {
-  headers: { authorization: `Bearer ${process.env.ADMIN_STATUS_TOKEN || ''}` },
-  signal: AbortSignal.timeout(15000),
-});
-if (!response.ok) throw new Error('Cannot read existing platform status; update stopped.');
-const status = await response.json();
-const states = status.rooms?.states;
-if (!status.ok || !status.maintenance || !states || !Number.isFinite(status.hosts?.active)) {
-  throw new Error('Cannot confirm maintenance/room state; update stopped.');
-}
-if (status.hosts.active > 0 || (states.starting || 0) > 0 || (states.in_game || 0) > 0) {
-  throw new Error('Games are still active. Existing services are kept running. Deploy again after games finish.');
+  if platform_check=$(dc exec -T platform node --input-type=module - "$stop_active_games" 2>&1 <<'JS'
+try {
+  const response = await fetch('http://127.0.0.1:8082/api/v1/admin/status', {
+    headers: { authorization: `Bearer ${process.env.ADMIN_STATUS_TOKEN || ''}` },
+    signal: AbortSignal.timeout(15000),
+  });
+  if (!response.ok) throw new Error(`Platform status endpoint returned HTTP ${response.status}. Check platform logs and its admin status configuration.`);
+  const status = await response.json();
+  const states = status.rooms?.states;
+  if (!status.ok || !states || !Number.isInteger(status.hosts?.active) || status.hosts.active < 0
+      || !Object.values(states).every(count => Number.isInteger(count) && count >= 0)) {
+    throw new Error('Platform status response is incomplete or invalid; cannot safely replace the existing service.');
+  }
+  if (status.maintenance !== true) {
+    throw new Error('The running platform has not entered maintenance. Check its MAINTENANCE_FILE and runtime volume mount.');
+  }
+  const summary = `hosts=${status.hosts.active}, starting=${states.starting || 0}, in_game=${states.in_game || 0}`;
+  if (status.hosts.active > 0 || (states.starting || 0) > 0 || (states.in_game || 0) > 0) {
+    if (process.argv[2] !== '1') {
+      throw new Error(`Active games block deployment (${summary}; StopActiveGames=0). Finish these games, or run deploy-online-recover.cmd to explicitly interrupt them and deploy. Double-clicking deploy-online.cmd uses normal mode. Accounts and the database are retained.`);
+    }
+    console.log(`Recovery explicitly requested: interrupting active games (${summary}) when replacing the platform. Current games will not resume; accounts and the database are retained.`);
+  } else {
+    console.log(`Existing platform is idle and in maintenance (${summary}).`);
+  }
+} catch (error) {
+  // Never print the request, headers, environment or response body (secrets).
+  console.error(error.name === 'TimeoutError'
+    ? 'Platform status request timed out after 15 seconds. The existing service has been kept running.'
+    : `Platform state check failed: ${error.message}`);
+  process.exitCode = 1;
 }
 JS
+  ); then
+    printf '%s\n' "$platform_check"
+  else
+    failure_reason=$platform_check
+    exit 1
+  fi
 fi
 
 # Persist the intended release before replacing containers. An interrupted
