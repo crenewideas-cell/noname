@@ -3,6 +3,8 @@ image/*.TXT
 
 extension/**
 !extension/_merge.js
+!extension/红楼幻境/
+!extension/红楼幻境/**
 !extension/3D精选/
 !extension/3D精选/**
 !extension/八废合体/

@@ -2056,6 +2056,8 @@ export class Create {
 		}
 		if (ui.confirm) {
 			ui.confirm.str = str;
+			ui.confirm.classList.add("confirm-control");
+			ui.updatec();
 			if (func) {
 				ui.confirm.custom = func;
 			} else {
@@ -2976,7 +2978,7 @@ export class Create {
 		if (!lib.config.show_replay) {
 			ui.replay.style.display = "none";
 		}
-		ui.control = ui.create.div("#control", ui.arena).addTempClass("nozoom");
+		ui.control = ui.create.div("#control.action-controls", ui.arena).addTempClass("nozoom");
 		ui.cardPile = ui.create.div("#cardPile");
 		ui.discardPile = ui.create.div("#discardPile");
 		ui.special = ui.create.div("#special");

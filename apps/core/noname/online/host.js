@@ -1,6 +1,7 @@
 import { lib, game, ui, get, _status } from "noname";
 import { ONLINE_BUILD, modePreset, normalizeCharacterPool } from "@noname/online-protocol";
 import { onlineCharacterLoadList, onlineCardLoadList, validateHostedCharacterPool } from "./characterPool.js";
+import { visibleSkillState } from "./publicSkillState.js";
 
 // Only the internally launched browser has this binding. A public URL parameter
 // cannot opt a player's browser into the trusted host role.
@@ -131,10 +132,7 @@ export function installHost() {
 	const originalSkillState = get.skillState;
 	get.skillState = player => {
 		const state = originalSkillState(player);
-		if (player) for (const id of Object.keys(lib.playerOL || {})) if (id !== player.playerid && state[id]) {
-			state[id] = { ...state[id], storage: {}, hiddenSkills: [], invisibleSkills: [] };
-		}
-		return state;
+		return player ? visibleSkillState(state, player.playerid, Object.keys(lib.playerOL || {})) : state;
 	};
 	const deliver = (id, message) => {
 		if (message.type === "engine" && sendingChoice?.accountId === id) message.token = sendingChoice.token;
@@ -263,6 +261,15 @@ export function installHost() {
 			player.isAuto = false;
 			client.send(function (skills, current, number, round, zhu, pileSize) {
 				game.me.applySkills(skills); _status.auto = false; _status.currentPhase = current;
+				// Reinit restores storage after player.init. Rebuild public badges
+				// locally without broadcasting or revealing hidden hand data.
+				for (const target of Object.values(lib.playerOL)) {
+					for (const name of ["hlhj_mushi", "hlhj_mushiyuan", "hlhj_lei"]) {
+						const value = target.storage[name];
+						if (Array.isArray(value) ? value.length > 0 : Number(value) > 0) target.markSkill(name, null, null, true);
+						else if (target.marks[name]) target.unmarkSkill(name, true);
+					}
+				}
 				game.phaseNumber = number; game.roundNumber = round; game.zhu = zhu;
 				if (ui.cardPileNumber) ui.cardPileNumber.textContent = round + "轮 剩余牌: " + pileSize;
 			}, get.skillState(player), _status.currentPhase, game.phaseNumber, game.roundNumber, game.zhu, ui.cardPile.childNodes.length);

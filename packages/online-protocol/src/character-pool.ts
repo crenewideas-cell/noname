@@ -9,6 +9,7 @@ export const ONLINE_CHARACTER_PACKS = [
   { id: "collab", name: "联动卡" }, { id: "old", name: "怀旧" }, { id: "offline", name: "线下武将" },
   { id: "jsrg", name: "江山如故" }, { id: "sxrm", name: "蚀心入魔" }, { id: "sixiang", name: "四象封印" },
   { id: "diy", name: "设计比赛20" }, { id: "key", name: "二次元" },
+  { id: "hlhj", name: "红楼幻境" },
 ] as const;
 export const DEFAULT_CHARACTER_PACKS = ["standard", "shenhua", "refresh"];
 export interface CharacterPool { packs: string[]; banned: string[]; }

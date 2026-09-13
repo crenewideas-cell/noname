@@ -238,6 +238,18 @@ export class UI {
 		if (_status.noupdatec) {
 			return;
 		}
+		if (ui.control?.classList.contains("action-controls")) {
+			// CSS owns wrapping and spacing. Old centering offsets and fixed widths
+			// would move flex items over adjacent buttons after replace/open.
+			for (const control of ui.control.children) {
+				if (!control.classList.contains("control")) continue;
+				control.style.width = "";
+				control.style.transform = "";
+				delete control._offset;
+				control.classList.toggle("auxiliary-control", !!control.stayleft && !!lib.config.wuxie_right);
+			}
+			return;
+		}
 		var length = 0,
 			minoffset = -Infinity;
 		var controls = [];
@@ -404,7 +416,8 @@ export class UI {
 			} else {
 				ui.refresh(node);
 				node.classList.remove("drawinghidden");
-				node._transform = str + (i - start) * 28 + "px)";
+				const spacing = nodes === player.node.marks ? 36 : 28;
+				node._transform = str + (i - start) * spacing + "px)";
 				node.style.transform = node._transform;
 			}
 		}

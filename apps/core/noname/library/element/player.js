@@ -10715,6 +10715,7 @@ export class Player extends HTMLDivElement {
 			}
 			node.name = name;
 			node.skill = skill || name;
+			node.dataset.skill = node.skill;
 			if (typeof info == "object") {
 				node.info = info;
 			} else if (typeof info == "string") {

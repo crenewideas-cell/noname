@@ -93,6 +93,8 @@ export class Control extends HTMLDivElement {
 		this.appendChild(node);
 		node.link = item;
 		node.innerHTML = get.translation(item);
+		if (item === "ok") node.dataset.action = "confirm";
+		else if (["cancel", "cancel2", "取消", "取消2"].includes(item)) node.dataset.action = "cancel";
 		node.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.control);
 	}
 	close() {
