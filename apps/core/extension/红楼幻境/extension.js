@@ -2,7 +2,7 @@ export const type = "extension";
 
 export default function (lib, game, ui, get, ai, _status) {
     const bond = player => player.getStorage("hlhj_mushi")[0];
-    const threshold = () => Math.max(8, game.countPlayer() * 2);
+    const threshold = () => Math.max(12, game.countPlayer() * 3);
     const ordinary = (card, player) => get.position(card) === "h" &&
         get.owner(card) === player && !card.hasGaintag("hlhj_hua") &&
         card.name !== "hlhj_qingsi" && (lib.card[card.name]?.type === "basic" ||
@@ -450,7 +450,7 @@ export default function (lib, game, ui, get, ai, _status) {
         hlhj_xiaoxiang_info: "木石缘与其他角色间发生牌的转移，或成为其他角色使用红色牌的目标时，你可获得泪，本回合实际发动依次获得1、2、3…枚（每次转移事件或每次使用红色牌计一次；取消不递增）。木石缘以你为用牌目标时，你须失去泪，本回合依次为1、2、3…枚，最低为0；实际失泪后才递增。得泪与失泪独立计数，每个角色回合开始时重置。",
         hlhj_xiaoxiang_loss: "潇湘·失泪",
         hlhj_guimeng: "绛珠归梦",
-        hlhj_guimeng_info: "泪达到场上存活角色数×2（至少8）时，你须弃置所有手牌并立即死亡，不进入濒死求桃。你死亡前，可令存活的木石缘永久获得【绛珠遗愿】，也可取消。人数减少导致阈值降低时也会检查。",
+        hlhj_guimeng_info: "泪达到场上存活角色数×3（至少12）时，你须弃置所有手牌并立即死亡，不进入濒死求桃。你死亡前，可令存活的木石缘永久获得【绛珠遗愿】，也可取消。人数减少导致阈值降低时也会检查。",
         hlhj_guimeng_gift: "绛珠归梦",
         hlhj_yiyuan: "绛珠遗愿",
         hlhj_yiyuan_info: "锁定技，受到伤害后，若你仍存活，回复1点体力。每个角色回合限一次，伤害结算前，你可以代替一名其他角色成为此次伤害的承受者；一次伤害只能被遗愿转移一次。致命伤害仍须先完成濒死结算。",
@@ -465,7 +465,7 @@ export default function (lib, game, ui, get, ai, _status) {
             game.addGroup("hlhj_ming", "命", "命", { color: "#b88caa" });
         },
         config: {},
-        help: { "红楼幻境": "命运体系 · 绛珠仙子·黛玉。规则细节及安装说明见扩展内 README.md。" },
+        help: { "红楼幻境": "命运体系 · 绛珠仙子。规则细节及安装说明见扩展内 README.md。" },
         package: {
             character: {
                 connect: true,
@@ -476,7 +476,7 @@ export default function (lib, game, ui, get, ai, _status) {
                         img: "extension/红楼幻境/hlhj_daiyu.svg", dieAudios: [],
                     },
                 },
-                translate: { hlhj_daiyu: "绛珠仙子·黛玉", hlhj_mingyun: "命运" },
+                translate: { hlhj_daiyu: "绛珠仙子", hlhj_mingyun: "命运" },
                 characterSort: { "红楼幻境": { hlhj_mingyun: ["hlhj_daiyu"] } },
                 characterIntro: { hlhj_daiyu: "命运体系 · 情感辅助。以情生泪，以泪渡情，最终以自身命运成全知己。" },
             },
@@ -494,7 +494,7 @@ export default function (lib, game, ui, get, ai, _status) {
                 list: [],
             },
             skill: { skill, translate },
-            intro: "命运体系 · 绛珠仙子·黛玉。以情生泪，以泪渡情。",
+            intro: "命运体系 · 绛珠仙子。以情生泪，以泪渡情。",
             author: "红楼幻境", version: "1.2.1", diskURL: "", forumURL: "",
         },
         files: { character: ["hlhj_daiyu.svg"], card: ["hlhj_qingsi.png"], skill: [], audio: [] },
