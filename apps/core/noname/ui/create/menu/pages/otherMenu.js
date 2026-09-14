@@ -808,21 +808,16 @@ export const otherMenu = function (/** @type { boolean | undefined } */ connectM
 		var page = ui.create.div("");
 		var node = ui.create.div(".menubutton.large", "录像", start.firstChild, clickMode);
 		node.type = "video";
-		lib.videos = [];
-		ui.create.videoNode = (video, before) => {
-			lib.videos.remove(video);
-			if (_status.over) {
-				return;
-			}
-			lib.videos[before === true ? "unshift" : "push"](video);
-		};
+		lib.videos ||= [];
+		// game.over updates the data array before notifying the optional view.
+		ui.create.videoNode = () => {};
 		node._initLink = function () {
 			node.link = page;
 			var store = lib.db.transaction(["video"], "readwrite").objectStore("video");
 			store.openCursor().onsuccess = function (e) {
 				var cursor = e.target.result;
 				if (cursor) {
-					lib.videos.push(cursor.value);
+					if (!lib.videos.some(video => video.time === cursor.value.time)) lib.videos.push(cursor.value);
 					cursor.continue();
 				} else {
 					lib.videos.sort(function (a, b) {

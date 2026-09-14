@@ -11,6 +11,7 @@ import { openGameNavigation } from "../gameNavigation.js";
 import { createCharacterBrowser } from "../characterBrowser.js";
 import { CharacterSearch } from "../../util/characterSearch.js";
 import { backgroundTasks } from "../../util/backgroundTasks.js";
+import { applyPresentation, usesModernPresentation } from "../presentation.js";
 
 const buttonPreparations = new Set();
 const preparingButtons = new WeakSet();
@@ -2278,6 +2279,7 @@ export class Create {
 		return buttonChooseAll;
 	}
 	arena() {
+		applyPresentation();
 		var i, j;
 		ui.window = ui.create.div("#window.hidden", document.body);
 		ui.create.div("#statusbg", document.body);
@@ -2651,9 +2653,7 @@ export class Create {
 		ui.commonCardPileButton.style.display = "none";
 		lib.setPopped(ui.commonCardPileButton, ui.click.commonCardPileButton, 220);
 		ui.wuxie = ui.create.system("不询问无懈", ui.click.wuxie, true);
-		if (!lib.config.touchscreen) {
-			lib.setPopped(ui.config2, ui.click.pauseconfig, 170);
-		}
+		if (!lib.config.touchscreen && !usesModernPresentation()) lib.setPopped(ui.config2, ui.click.pauseconfig, 170);
 		ui.auto = ui.create.system("托管", ui.click.auto);
 		if (!game.syncMenu) {
 			ui.config2.classList.add("hidden");
@@ -3288,12 +3288,14 @@ export class Create {
 			},
 		};
 		buttonPreparations.add(batch);
+		try {
 		cancel = backgroundTasks.schedule(() => {
 			try { pending[cursor++].activate?.(); }
 			catch (error) { batch.cancel(); throw error; }
 			if (cursor < pending.length) return true;
 			batch.cancel();
 		}, { label: "prebutton" });
+		} catch (error) { batch.cancel(); throw error; }
 	}
 	cancelButtonPreparation(root) {
 		for (const batch of buttonPreparations) {

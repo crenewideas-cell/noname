@@ -15,7 +15,7 @@
         "test:online-skills": "tsx scripts/online-skill-regression.ts",
         "perf:baseline": "tsx scripts/performance/run.ts",
         "perf:build": "tsx scripts/performance/build.ts",
-        "perf:test": "tsx --test scripts/performance/collector.test.ts scripts/performance/semantics.test.ts",
+        "perf:test": "tsx --test scripts/performance/collector.test.ts scripts/performance/semantics.test.ts scripts/performance/background-tasks.test.ts scripts/performance/presentation.test.ts",
         "perf:semantics": "tsx scripts/performance/check-semantics.ts",
         "perf:report": "tsx scripts/performance/summarize.ts",
         "init:extension": "tsx scripts/initExtension.ts",

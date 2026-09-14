@@ -63,3 +63,7 @@ pnpm perf:report "C:/完整路径/采样目录"
 `run.ts` 新增 `candidateImagesReadyMs`：模式点击到当时视口内候选背景完成载入/解码；只在全部成功时记值，否则保留失败计数。目录翻页读 `characterPager`，搜索通过可见节点等待实际结果，避免测试读取 `dialog.buttons` 导致完整物化。上述工具修改尚未在新产物上执行。
 
 最后验收还需运行 `static.test.ts`、`resources.ts --artifact=<dist>` 和 `transport.ts <dist>`；补阶段 2 跨页/兼容/搜索取消覆盖。资源生成方式与完整清单见开发记录。现有测试通过日志均保留原时点含义，不覆盖后续源码变更。
+
+## 阶段 3 工具变更（待统一执行）
+
+`pnpm perf:test` 已纳入 `background-tasks.test.ts` 和 `presentation.test.ts`，覆盖调度预算、优先级、输入避让、取消及联机展示规则；仅编写与接入，尚未运行。采集新增 `background:*`、`menu.prepare:*` 和 `rules.finishCards`，继续仅在 `?perf=1` 启用。菜单、录像、自由选将及联机双端的实际验收见 [阶段 3 开发记录](../../docs/performance-stage-3-development.md)。

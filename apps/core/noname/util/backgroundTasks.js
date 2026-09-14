@@ -25,14 +25,17 @@ export class BackgroundTasks {
 		signal?.addEventListener("abort", cancel, { once: true });
 		this.jobs.push(job);
 		perfCount("background.queued");
-		if (!this.listening) {
-			for (const type of ["pointerdown", "pointermove", "keydown", "wheel", "touchstart"]) document.addEventListener(type, this.input, { capture: true, passive: true });
-			this.listening = true;
-		}
+		this.listen();
 		// User-requested work must not wait for a pending idle callback.
 		if (priority === "user-visible") this.unschedule();
 		this.wake();
 		return cancel;
+	}
+	listen() {
+		if (!this.listening && this.jobs.length) {
+			for (const type of ["pointerdown", "pointermove", "keydown", "wheel", "touchstart"]) document.addEventListener(type, this.input, { capture: true, passive: true });
+			this.listening = true;
+		}
 	}
 	unschedule() {
 		if (!this.pending) return;
@@ -72,6 +75,12 @@ export class BackgroundTasks {
 			const begin = perfBegin();
 			try {
 				if (job.step() !== true) job.cancel();
+				else if (this.jobs.includes(job)) {
+					// Round-robin within each priority; a large button batch cannot
+					// monopolize every slice ahead of unrelated UI preparation.
+					this.jobs.splice(this.jobs.indexOf(job), 1);
+					this.jobs.push(job);
+				}
 			} catch (error) {
 				job.cancel();
 				console.error(`后台任务失败 (${job.label})`, error);
@@ -89,4 +98,13 @@ export class BackgroundTasks {
 
 export const backgroundTasks = new BackgroundTasks();
 // No pending work or listeners until a task is submitted.
-if (typeof window !== "undefined") window.addEventListener("pagehide", () => backgroundTasks.cancelAll());
+if (typeof window !== "undefined") {
+	window.addEventListener("pagehide", event => {
+		// A bfcache entry may resume the same game; retain its atomic callbacks.
+		if (event.persisted) backgroundTasks.stop();
+		else backgroundTasks.cancelAll();
+	});
+	window.addEventListener("pageshow", event => {
+		if (event.persisted) { backgroundTasks.listen(); backgroundTasks.wake(); }
+	});
+}

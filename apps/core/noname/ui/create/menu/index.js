@@ -505,7 +505,7 @@ export function menu(connectMenu) {
 			if (cacheMenuContainer.classList.contains("hidden")) {
 				activate();
 				cacheMenux.pages[0].ensure();
-			if (_status.waitingForPlayer) {
+				if (_status.waitingForPlayer) {
 					startButton.innerHTML = "设";
 					var start = cacheMenux.pages[0].firstChild;
 					for (var i = 0; i < start.childNodes.length; i++) {
@@ -562,6 +562,7 @@ export function menu(connectMenu) {
 			menuxpages = [page];
 			page.querySelector(":scope > .menu-preparing")?.remove();
 			const begin = perfBegin();
+			const updatesStart = menuUpdates.length;
 			try {
 				// Each page captures its own context, including menus created later
 				// for room settings. Do not consume a shared mutable pages queue.
@@ -570,6 +571,9 @@ export function menu(connectMenu) {
 				if (name === "characterPackMenu") ui.updateCharacterPackMenu.push(result);
 				if (name === "cardPackMenu") ui.updateCardPackMenu.push(result);
 				context.updateActive = updateActive; context.updateActiveCard = updateActiveCard;
+				// Newly lazy pages missed the menu-open update pass. Apply their
+				// room/replay restrictions before exposing the new controls.
+				for (const update of menuUpdates.slice(updatesStart)) update();
 				ready = true;
 			} catch (error) {
 				failed = true;
@@ -582,6 +586,7 @@ export function menu(connectMenu) {
 		};
 		page.prepare = () => {
 			activate();
+			ui.create.prepareButtons(Array.from(page.querySelectorAll(".prebutton-pending")));
 			if (ready || failed || cancel) return;
 			if (!page.querySelector(":scope > .menu-preparing")) ui.create.div(".menu-preparing", "正在准备…", page);
 			page.setAttribute("aria-busy", "true");
@@ -591,10 +596,16 @@ export function menu(connectMenu) {
 				page.ensure();
 			}, { priority: "user-visible", label: "menu-page" });
 		};
-		page.cancelPreparation = () => { cancel?.(); cancel = undefined; page.removeAttribute("aria-busy"); };
+		page.cancelPreparation = () => {
+			cancel?.(); cancel = undefined; page.removeAttribute("aria-busy");
+			ui.create.cancelButtonPreparation(page);
+		};
 	}
 	cacheMenuContainer.cancelPreparation = () => cacheMenux.pages.forEach(page => page.cancelPreparation());
 	if (!connectMenu) {
+		// Saving a match must not depend on ever opening the replay page.
+		lib.videos ||= [];
+		ui.create.videoNode ||= () => {};
 		// Preserve synchronous entry points used by engine shortcuts/extensions.
 		for (const [method, index] of [["extensionTab", 4], ["consoleMenu", 5]]) {
 			const forward = function (...args) {
@@ -603,6 +614,11 @@ export function menu(connectMenu) {
 			};
 			ui.click[method] = forward;
 		}
+		const editExtension = function (...args) {
+			cacheMenux.pages[4].ensure();
+			if (game.editExtension !== editExtension) return game.editExtension(...args);
+		};
+		game.editExtension = editExtension;
 	}
 	if (game.syncMenu) cacheMenux.pages.forEach(page => page.ensure());
 }

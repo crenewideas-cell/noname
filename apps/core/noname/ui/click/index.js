@@ -521,6 +521,10 @@ export class Click {
 		}
 	}
 	exit() {
+		if (usesModernPresentation() && (game.online || _status.connectMode)) {
+			openGameNavigation();
+			return;
+		}
 		if (game.servermode && lib.config.reconnect_info && _status.over) {
 			if (!_status.roomtimeout) {
 				lib.config.reconnect_info[2] = game.roomId;
@@ -884,6 +888,7 @@ export class Click {
 		return uiintro;
 	}
 	pauseconfig() {
+		if (usesModernPresentation()) return;
 		if (!lib.config.auto_popped_config) {
 			return;
 		}

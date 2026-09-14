@@ -23,6 +23,7 @@ import { debounce } from "@/util/utils.js";
 import { connect, disconnect } from "./connection.js";
 import { backgroundTasks } from "../util/backgroundTasks.js";
 import { perfBegin, perfEnd } from "../util/performance.js";
+import { applyPresentation } from "../ui/presentation.js";
 
 export class Game {
 	documentZoom;
@@ -7815,6 +7816,9 @@ ${e instanceof Error ? e.stack : String(e)}`);
 	 * @param {*} configx
 	 */
 	switchMode(name, configx) {
+		ui.create.cancelButtonPreparation();
+		ui.menuContainer?.cancelPreparation?.();
+		ui.connectMenuContainer?.cancelPreparation?.();
 		if (!lib.layoutfixed.includes(name)) {
 			if (lib.config.layout != game.layout) {
 				lib.init.layout(lib.config.layout);
@@ -7828,6 +7832,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 			let mode = exports;
 			_status.sourcemode = lib.config.mode;
 			lib.config.mode = name;
+			applyPresentation();
 
 			for (let i in exports.element) {
 				if (!lib.element[i]) {
@@ -8379,6 +8384,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 								event.prompt("请等待敌方选将");
 								return;
 							}
+							if (!event.freechoosedialog) createCharacterDialog();
 							delete event.replacing;
 							ui.window.classList.add("modepaused");
 							ui.window.appendChild(event.dialoglayer);
@@ -8389,12 +8395,6 @@ ${e instanceof Error ? e.stack : String(e)}`);
 						},
 						true
 					);
-					if (lib.onfree) {
-						event.freechoosenode.classList.add("hidden");
-						lib.onfree.push(createCharacterDialog);
-					} else {
-						createCharacterDialog();
-					}
 				}
 				event.checkredo = function () {
 					if (event.redoing) {
