@@ -8,6 +8,12 @@ import characterGroups from "../../game/character-menu-groups.json";
 const renamed = Object.entries(restructure.renamed);
 const merged = Object.entries(restructure.merged);
 const mergedSources = merged.flatMap(([target, sources]) => sources.filter(name => name !== target));
+// The pack historically returned a display name different from its directory.
+// Only the directory identity can be used as a load entry.
+const canonicalExtensionName = (name: string) => name === "红楼幻梦" ? "红楼幻境" : name;
+// These are private 名将杀 options, not directory identities. Older registration
+// inferred them from *_enable keys and persisted them in both extension lists.
+const privateOptionNames = new Set(["mjs", "mjsold", "mjsnew"].map(pack => `名将杀_characterPack_${pack}`));
 const retiredExtensions = new Set([
 	...apkCleanup.removed,
 	...apkCleanup.merged.map(item => item.name),
@@ -18,14 +24,24 @@ const retiredExtensions = new Set([
 export const isRetiredExtension = (name: string) => retiredExtensions.has(name);
 // Compatibility export for the first APK cleanup migration and its tests.
 export const isRetiredApkExtension = isRetiredExtension;
+export const isValidExtensionName = (name: unknown): name is string => typeof name === "string" && !!name.trim() &&
+	!/[\\/\0]/.test(name) && name !== "." && name !== ".." && !isRetiredExtension(name) && !privateOptionNames.has(name);
 
 /** Register this repository's installed packages once, preserving later user choices. */
-export async function registerOrganizedExtensions(config: { get: (key: string) => any; has: (key: string) => boolean }, save: (key: string, value: any) => Promise<unknown>) {
+export async function registerOrganizedExtensions(config: { get: (key: string) => any; has: (key: string) => boolean }, save: (key: string, value: any) => Promise<unknown>, savedKeys: string[] = []) {
+	// Preserve old options for rollback; explicit choices under the real name win.
+	// Repeat safely after a failed write, without overwriting later user choices.
+	for (const key of new Set(["extension_红楼幻梦_enable", ...savedKeys])) {
+		if (!key.startsWith("extension_红楼幻梦_") || !config.has(key)) continue;
+		const target = key.replace("extension_红楼幻梦_", "extension_红楼幻境_");
+		if (!config.has(target)) await save(target, config.get(key));
+	}
 	const previousExtensions: string[] = config.get("extensions") || [];
 	const previousRegistered: string[] = config.get("organized_extensions_registered") || [];
-	const extensions = previousExtensions.filter(name => !isRetiredExtension(name));
-	const registered = new Set<string>(previousRegistered.filter(name => !isRetiredExtension(name)));
-	let changed = extensions.length !== previousExtensions.length || registered.size !== previousRegistered.length;
+	const extensions = [...new Set(previousExtensions.filter(isValidExtensionName).map(canonicalExtensionName))];
+	const registered = new Set<string>(previousRegistered.filter(isValidExtensionName).map(canonicalExtensionName));
+	let changed = extensions.length !== previousExtensions.length || registered.size !== previousRegistered.length ||
+		previousExtensions.includes("红楼幻梦") || previousRegistered.includes("红楼幻梦");
 	// Clear only the two switches which used to import the seven removed crossover packs.
 	for (const key of ["extension_杀海拾遗_gwent", "extension_杀海拾遗_mtg", "extension_群雄并起_member_3_gwent", "extension_群雄并起_member_3_mtg"]) {
 		if (config.get(key) === true) await save(key, false);
@@ -68,13 +84,15 @@ export async function registerOrganizedExtensions(config: { get: (key: string) =
 	for (const key of ["characters", "cards", "plays"]) {
 		const previous = config.get(key);
 		if (!Array.isArray(previous)) continue;
-		const next = previous.filter(name => !characterGroups.removed.includes(name) && !isRetiredExtension(name) && !isRetiredExtension(name.replace(/^mode_extension_/, "")));
-		if (next.length !== previous.length) await save(key, next);
+		const next = [...new Set(previous.filter(name => !characterGroups.removed.includes(name) && !isRetiredExtension(name) && !isRetiredExtension(name.replace(/^mode_extension_/, "")))
+			.map(name => name === "mode_extension_红楼幻梦" ? "mode_extension_红楼幻境" : canonicalExtensionName(name)))];
+		if (next.length !== previous.length || next.some((name, index) => name !== previous[index])) await save(key, next);
 	}
 	const disabled = new Set(validation.disabled.map(p => p.name));
 	const defaultDisabled = new Set(installed.filter(item => "defaultEnabled" in item && item.defaultEnabled === false).map(item => item.name));
-	// These original, manually installed extensions predate the archive registry.
-	// Make them discoverable too; the requested first-party pack is restored below.
+	// An arbitrary *_enable key may belong to an extension's private options.
+	// Restore only manifest/registration identities; new directories are verified
+	// by getExtensionList's file discovery or registered through explicit import.
 	const names = new Set([...bundled, ...installed.map(item => item.name), ...registered]);
 	for (const name of names) {
 		if (registered.has(name)) {
@@ -87,9 +105,9 @@ export async function registerOrganizedExtensions(config: { get: (key: string) =
 			continue;
 		}
 		if (!extensions.includes(name)) extensions.push(name);
-		// Restore the requested first-party pack once when adopting it into the
-		// registry; earlier directory discovery/emergency recovery left it off.
-		if (name === "红楼幻境" || !config.has(`extension_${name}_enable`)) {
+		// Enable the first-party pack on first registration, but retain an
+		// explicit saved choice, including one migrated from its old name.
+		if (!config.has(`extension_${name}_enable`)) {
 			await save(`extension_${name}_enable`, name === "红楼幻境" || (!bundled.includes(name) && !disabled.has(name) && !defaultDisabled.has(name)));
 		}
 		registered.add(name);

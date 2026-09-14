@@ -6,8 +6,8 @@ import { daiyuVoice } from "./voice/daiyu.js";
 export const type = "extension";
 
 export default function (lib, game, ui, get, ai, _status, appearancePaths = {
-    theme: "extension/红楼幻梦/theme/",
-    original: "extension/红楼幻梦/hlhj_daiyu.svg",
+    theme: "extension/红楼幻境/theme/",
+    original: "extension/红楼幻境/hlhj_daiyu.svg",
 }) {
     const bond = player => player.getStorage("hlhj_mushi")[0];
     const threshold = () => Math.max(16, game.countPlayer() * 4);
@@ -627,7 +627,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
         hlhj_yiyuan_guard: "遗愿·代伤",
     };
     return {
-        name: "红楼幻梦",
+        name: "红楼幻境",
         editable: false,
         connect: true,
         content() {},
@@ -662,7 +662,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                     },
                 },
                 translate: { hlhj_daiyu: "绛珠仙子", hlhj_mingyun: "命运" },
-                characterSort: { "红楼幻梦": { hlhj_mingyun: ["hlhj_daiyu"] } },
+                characterSort: { "红楼幻境": { hlhj_mingyun: ["hlhj_daiyu"] } },
                 characterIntro: { hlhj_daiyu: "命运体系 · 情感辅助。以情生泪，以泪渡情，最终以自身命运成全知己。" },
             },
             card: {
@@ -670,7 +670,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 card: {
                     hlhj_qingsi: {
                         type: "basic", enable: false,
-                        fullskin: true, image: "ext:红楼幻梦/hlhj_qingsi.png",
+                        fullskin: true, image: "ext:红楼幻境/hlhj_qingsi.png",
                         destroy: qingsiReturn, destroyLog: false,
                         global: "hlhj_qingsi_redirect",
                         ai: { basic: { useful: 5, value: 5 } },

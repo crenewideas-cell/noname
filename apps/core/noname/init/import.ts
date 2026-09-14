@@ -27,7 +27,7 @@ export async function importExtension(name: string) {
 		await checkExtensionSojson(name);
 	}
 	try {
-		await importFunction("extension", `/extension/${name}/extension`);
+		await importFunction("extension", `/extension/${encodeURIComponent(name)}/extension`);
 	} catch (e) {
 		console.error(`扩展《${name}》加载失败`, e);
 		let close = confirm(`扩展《${name}》加载失败，是否关闭此扩展？错误信息: \n${e instanceof Error ? e.stack : String(e)}`);

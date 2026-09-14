@@ -13,6 +13,10 @@ export class Dialog extends HTMLDivElement {
 	bar2;
 	/** @type { Button[] } */
 	buttons;
+	/** Opt-in character directory; buttons remains a full-DOM compatibility view. */
+	characterPager;
+	/** Cancellable search for legacy full-DOM directories. */
+	characterSearch;
 	/** @type { boolean } */
 	static;
 	/** @type { boolean } */
@@ -388,6 +392,8 @@ export class Dialog extends HTMLDivElement {
 		if (this.noopen) {
 			return;
 		}
+		this.characterPager?.resume();
+		this.characterSearch?.clear();
 		for (let i = 0; i < ui.dialogs.length; i++) {
 			if (ui.dialogs[i] == this) {
 				this.show();
@@ -432,6 +438,8 @@ export class Dialog extends HTMLDivElement {
 		return this;
 	}
 	close() {
+		this.characterPager?.pause();
+		this.characterSearch?.cancel();
 		ui.dialogs.remove(this);
 		this.delete();
 		if (ui.dialogs.length > 0) {

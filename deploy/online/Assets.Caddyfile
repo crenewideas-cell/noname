@@ -1,5 +1,6 @@
 :80 {
   root * /srv
+  encode gzip
   @blocked path /extension /extension/* /src /src/* /checkFile /checkDir /readFile /readFileAsText /writeFile /removeFile /getFileList /createDir /removeDir /.env /.env/* /.git /.git/* /package.json /pnpm-lock.yaml /vite.config.*
   respond @blocked 404
   header {

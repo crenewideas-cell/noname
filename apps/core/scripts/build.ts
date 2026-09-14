@@ -46,6 +46,7 @@ async function main() {
 		// { src: "mode", dest: "" },
 		{ src: "layout", dest: "" },
 		{ src: "font", dest: "" },
+		{ src: "thumbnail", dest: "" },
 		{ src: "theme", dest: "" },
 		{ src: "game", dest: "" },
 		{ src: "noname", dest: "src" },
@@ -156,14 +157,17 @@ async function buildSelf(target: string | string[], importMap: Record<string, st
 			rollupOptions: {
 				preserveEntrySignatures: "strict",
 				treeshake: false,
-				external: ["vue"],
+				// In the module-preserving build, keep engine self-imports routed
+				// through the public entry. Rewriting its cyclic reexports to direct
+				// imports can instantiate Game before GamePromises is initialized.
+				external: publicOnlineBuild ? ["vue"] : ["vue", "noname"],
 				input: {
 					index: "index.html",
 					noname: "noname.js",
 					...(publicOnlineBuild ? { "noname/entry": join(root, "noname/entry.ts") } : {}),
 				},
 				output: {
-					paths: publicOnlineBuild ? { vue: "/vendor/vue.js" } : undefined,
+					paths: publicOnlineBuild ? { vue: "/vendor/vue.js" } : { noname: "/noname.js" },
 					hoistTransitiveImports: !publicOnlineBuild,
 					preserveModules: !publicOnlineBuild, // Online runtime must order cyclic engine initializers together.
 					preserveModulesRoot: "./",
@@ -201,7 +205,9 @@ async function buildIndividual(type: string, target: string | string[], input: R
 			outDir: `dist/${type}`,
 			rollupOptions: {
 				preserveEntrySignatures: "strict",
-				treeshake: true,
+				// Legacy events inspect function source for step labels and locals.
+				// Even without minification, tree-shaking deletes those labels.
+				treeshake: false,
 				external: Object.keys(importMap),
 				input,
 				output: {

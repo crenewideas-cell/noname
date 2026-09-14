@@ -2,11 +2,13 @@ import { lib, game, get, _status, ui, ai } from "noname";
 import { boot } from "@/init/index.js";
 import { userAgentLowerCase, device } from "@/util/index.js";
 import { loadBuildInfo } from "@/util/meta.js";
+import { perfAwait, perfMark } from "@/util/performance.js";
 import "core-js-bundle";
 // 保证打包时存在(importmap)
 import "vue/dist/vue.esm-browser.js";
 
 (async () => {
+	perfMark("boot.entry-body");
 	try {
 		lib.device = device;
 
@@ -28,7 +30,7 @@ import "vue/dist/vue.esm-browser.js";
 				}
 			}
 		});
-		await preload({ lib, game, get, _status, ui, ai });
+		await perfAwait("boot.platform", () => preload({ lib, game, get, _status, ui, ai }));
 		lib.buildInfo = await loadBuildInfo(url => lib.init.promises.json(url));
 
 		// GPL确认
@@ -48,7 +50,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
 			}
 		}
 
-		await boot();
+		await perfAwait("boot.function", () => boot());
 	} catch (e) {
 		clearTimeout(window.resetGameTimeout);
 		delete window.resetGameTimeout;

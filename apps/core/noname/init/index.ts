@@ -9,9 +9,11 @@ import { configureHost, installHost, isHosted } from "@/online/host.js";
 import { onlineCharacterLoadList, onlineCardLoadList } from "@/online/characterPool.js";
 import { importCardPack, importCharacterPack, importExtension, importMode } from "./import.js";
 import { loadCard, loadCardPile, loadCharacter, loadExtension, loadMode, loadPlay } from "./loading.js";
-import { registerOrganizedExtensions, isRetiredApkExtension } from "./organizedExtensions.js";
+import { registerOrganizedExtensions, isValidExtensionName } from "./organizedExtensions.js";
 import { registerOrganizedCompatibility } from "./organizedCompatibility.js";
 import { warmImages } from "../util/imageReady.js";
+import { fontFaces } from "../util/fontFaces.js";
+import { perfAwait, perfBegin, perfEnd, perfMark } from "../util/performance.js";
 
 // 无名杀，启动！
 export async function boot() {
@@ -48,7 +50,7 @@ export async function boot() {
 	setWindowListener();
 	setOnError({ lib, game, get, _status });
 
-	await loadConfig();
+	await perfAwait("boot.config", () => loadConfig());
 	configureHost();
 	configLoadTime = parseInt(config.get("max_loadtime"));
 	refreshLoadTimeout();
@@ -64,7 +66,7 @@ export async function boot() {
 	const sandboxEnabled = !config.get("debug") && !get.is.safari();
 
 	// 初始化沙盒的Realms
-	await trackLoad(initializeSandboxRealms(sandboxEnabled));
+	await perfAwait("boot.sandbox", () => trackLoad(initializeSandboxRealms(sandboxEnabled)));
 
 	// 初始化security
 	await trackLoad(security.initSecurity({ lib, game, ui, get, ai, _status }));
@@ -112,7 +114,7 @@ export async function boot() {
 	}
 	game.layout = layout;
 
-	await trackLoad(loadCss());
+	await perfAwait("boot.css", () => trackLoad(loadCss()));
 	initSheet();
 
 	await trackLoad(lib.init.promises.js("game", "package"));
@@ -196,7 +198,7 @@ export async function boot() {
 			appearenceConfig.identity_font.item[value] = font;
 			appearenceConfig.cardtext_font.item[value] = font;
 			appearenceConfig.global_font.item[value] = font;
-			fontSheet.insertRule(`@font-face {font-family: '${value}'; font-display: swap; src: local('${font}'), url('${lib.assetURL}font/${value}.woff2');}`, 0);
+			for (const rule of fontFaces(value, font, lib.assetURL)) fontSheet.insertRule(rule, 0);
 			if (suitsFont) {
 				fontSheet.insertRule(`@font-face {font-family: '${value}'; font-display: swap; unicode-range: U+2660-2667; src: url('${lib.assetURL}font/suits.woff2');}`, 0);
 			}
@@ -207,7 +209,7 @@ export async function boot() {
 		fontSheet.insertRule(`@font-face {font-family: 'NonameSuits'; font-display: swap; src: url('${lib.assetURL}font/suits.woff2');}`, 0);
 		fontSheet.insertRule(`@font-face {font-family: 'MotoyaLMaru'; font-display: swap; src: url('${lib.assetURL}font/motoyamaru.woff2');}`, 0);
 		// Warm active fonts before dealing; never block readable fallback text.
-		const activeFonts = new Set(["xinwei", "shousha", config.get("name_font"), config.get("identity_font"), config.get("cardtext_font"), config.get("global_font")]);
+		const activeFonts = new Set([config.get("name_font"), config.get("identity_font"), config.get("cardtext_font"), config.get("global_font")]);
 		for (const font of activeFonts) {
 			if (typeof font === "string" && Object.hasOwn(pack.font, font)) {
 				void document.fonts?.load(`16px "${font}"`, "情思杀闪桃123").catch(() => {});
@@ -310,12 +312,12 @@ export async function boot() {
 		await new Promise<void>(resolve => document.addEventListener("DOMContentLoaded", () => resolve(), { once: true }));
 	}
 
-	const extensionlist = await trackLoad(getExtensionList());
+	const extensionlist = await perfAwait("boot.extension-list", () => trackLoad(getExtensionList()));
 	if (extensionlist.length) {
 		_status.extensionLoading = [];
 		_status.extensionLoaded = [];
 		for (const i of extensionlist) {
-			await trackLoad(importExtension(i));
+			await perfAwait(`extension.import:${i}`, () => trackLoad(importExtension(i)));
 		}
 		if (_status.extensionLoading) {
 			await Promise.all(_status.extensionLoading.map(trackLoad));
@@ -387,16 +389,16 @@ export async function boot() {
 	}
 
 	for (const cardPack of config.get("all").cards) {
-		toLoad.push(importCardPack(cardPack));
+		toLoad.push(perfAwait(`pack.card:${cardPack}`, () => importCardPack(cardPack)));
 	}
 	for (const characterPack of config.get("all").characters) {
-		toLoad.push(importCharacterPack(characterPack));
+		toLoad.push(perfAwait(`pack.character:${characterPack}`, () => importCharacterPack(characterPack)));
 	}
 	toLoad.push(lib.init.promises.js(`${lib.assetURL}character`, "rank"));
 	toLoad.push(lib.init.promises.js(`${lib.assetURL}character`, "replace"));
 	toLoad.push(lib.init.promises.js(`${lib.assetURL}character`, "perfectPairs"));
 
-	await Promise.allSettled(toLoad.map(trackLoad));
+	await perfAwait("boot.packs-wait", () => Promise.allSettled(toLoad.map(trackLoad)));
 
 	if (_status.importing) {
 		let promises = [];
@@ -541,8 +543,10 @@ export async function boot() {
 		let { promise, resolve } = Promise.withResolvers();
 		await splash.init(node, resolve);
 		document.getElementById("noname-boot-status")?.remove();
+		perfMark("boot.lobby-mounted");
 
 		let result = await promise;
+		perfMark("mode.selected");
 
 		let splashInRemoing = await splash.dispose(node);
 		if (!splashInRemoing) {
@@ -551,7 +555,7 @@ export async function boot() {
 		refreshLoadTimeout();
 		delete window.inSplash;
 		game.saveConfig("mode", result);
-		await trackLoad(importMode(result));
+		await perfAwait("mode.import", () => trackLoad(importMode(result)));
 	}
 	lib.storage = (await trackLoad(config.load(lib.config.mode, "data"))) || {};
 
@@ -565,6 +569,7 @@ export async function boot() {
 	lib.connectCharacterPack = [];
 	lib.connectCardPack = [];
 
+	const registrationStart = perfBegin();
 	const currentMode = lib.imported.mode[lib.config.mode];
 	loadMode(currentMode);
 	// 为了模式扩展，两个东西删不了
@@ -646,9 +651,10 @@ export async function boot() {
 		}
 	}
 
+	perfEnd("boot.register", registrationStart);
 	if (Array.isArray(lib.extensions)) {
 		registerOrganizedCompatibility();
-		await Promise.allSettled(lib.extensions.map(extension => trackLoad(loadExtension(extension))));
+		await Promise.allSettled(lib.extensions.map(extension => perfAwait(`extension.content:${extension[0]}`, () => trackLoad(loadExtension(extension)))));
 	}
 
 	if (lib.init.startBefore) {
@@ -673,7 +679,9 @@ export async function boot() {
 		warmImages(images);
 	}
 
+	const arenaStart = perfBegin();
 	ui.create.arena();
+	perfEnd("boot.arena", arenaStart);
 	document.getElementById("noname-boot-status")?.remove();
 	if (installHost() === false) return;
 	game.createEvent("game", false).setContent(lib.init.start);
@@ -708,7 +716,7 @@ async function getExtensionList() {
 		return [];
 	}
 	if (localStorage.getItem(lib.configprefix + "disable_extension")) return [];
-	await registerOrganizedExtensions(config, (key, value) => game.promises.saveConfig(key, value));
+	await registerOrganizedExtensions(config, (key, value) => game.promises.saveConfig(key, value), Object.keys(lib.config));
 
 	const autoImport = (() => {
 		if (!config.get("extension_auto_import")) {
@@ -729,7 +737,7 @@ async function getExtensionList() {
 		sessionStorage.setItem(lib.configprefix + "disable_extension", "true");
 	};
 
-	const extensions: string[] = config.get("extensions");
+	const extensions: string[] = [...config.get("extensions")];
 	const toLoad: string[] = [];
 	toLoad.addArray(config.get("plays").filter(i => config.get("all").plays.includes(i)));
 	toLoad.addArray(extensions);
@@ -743,10 +751,10 @@ async function getExtensionList() {
 			return [[], []] as [string[], string[]];
 		});
 
-		const unimportedExtensions = extFolders.filter(folder => !isRetiredApkExtension(folder) && !extensions.includes(folder) && !config.get("all").plays.includes(folder));
+		const unimportedExtensions = [...new Set(extFolders)].filter(folder => isValidExtensionName(folder) && !extensions.includes(folder) && !config.get("all").plays.includes(folder));
 
 		const promises = unimportedExtensions.map(async ext => {
-			const path = new URL(`./${ext}/`, extensionPath);
+			const path = new URL(`./${encodeURIComponent(ext)}/`, extensionPath);
 			const file = new URL("./extension.js", path);
 			const tsFile = new URL("./extension.ts", path);
 
@@ -761,13 +769,17 @@ async function getExtensionList() {
 		await Promise.allSettled(promises);
 
 		await game.promises.saveConfig("extensions", extensions);
-	} else if (searchParamsImportExtension && !isRetiredApkExtension(searchParamsImportExtension)) {
-		extensions.push(searchParamsImportExtension);
-		toLoad.push(searchParamsImportExtension);
-		if (!config.has(`extension_${searchParamsImportExtension}_enable`)) {
-			await game.promises.saveConfig(`extension_${searchParamsImportExtension}_enable`, true);
-		}
+	}
+	// An explicit import is independent of directory discovery. Discovery may
+	// have just added this pack as disabled; honor the requested import once.
+	if (isValidExtensionName(searchParamsImportExtension)) {
+		if (!extensions.includes(searchParamsImportExtension)) extensions.push(searchParamsImportExtension);
+		if (!toLoad.includes(searchParamsImportExtension)) toLoad.push(searchParamsImportExtension);
 		await game.promises.saveConfig("extensions", extensions);
+		await game.promises.saveConfig(`extension_${searchParamsImportExtension}_enable`, true);
+		const address = new URL(location.href);
+		address.searchParams.delete("importExtensionName");
+		history.replaceState(history.state, "", address.href);
 	}
 
 	return toLoad;
@@ -934,18 +946,18 @@ async function loadConfig() {
 	if (hasConfigTxt) {
 		try {
 			const configStr = await game.promises.readFileAsText("noname.config.txt");
-
-			const { config: imported = {}, data = {} } = JSON.parse(lib.init.decode(configStr));
-			if (!imported || typeof imported !== "object" || Array.isArray(imported) ||
-				!data || typeof data !== "object" || Array.isArray(data)) throw new Error("配置文件格式无效");
-			for (let i in imported) {
-				await game.promises.saveConfig(i, imported[i]);
+			const { fingerprintStartupConfig, commitStartupConfig, startupConfigReceiptKey } = await import("./startupConfig.js");
+			const fingerprint = await fingerprintStartupConfig(configStr);
+			const receipt = await game.getDB("data", startupConfigReceiptKey);
+			if (receipt?.version !== 1 || receipt.fingerprint !== fingerprint) {
+				const { config: imported = {}, data = {} } = JSON.parse(lib.init.decode(configStr));
+				if (!imported || typeof imported !== "object" || Array.isArray(imported) ||
+					!data || typeof data !== "object" || Array.isArray(data)) throw new Error("配置文件格式无效");
+				await commitStartupConfig(lib.db, imported, data, fingerprint);
+				result = { ...result, ...imported };
 			}
-			for (let i in data) {
-				await game.putDB("data", i, data[i]);
-			}
-			result = { ...result, ...imported };
-			lib.init.background();
+			// A committed import is not repeated when removing a read-only/shared
+			// file fails. Later user choices continue to come from the saved DB.
 			await game.promises.removeFile("noname.config.txt");
 		} catch (e) {
 			console.error("配置导入未完成，继续使用已保存配置并保留原文件", e);

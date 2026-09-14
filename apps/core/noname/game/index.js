@@ -6403,7 +6403,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 	removeExtension(extensionName, keepFile) {
 		const prefix = `extension_${extensionName}`;
 		Object.keys(lib.config).forEach(key => {
-			if (key.startsWith(prefix)) {
+			if (key === prefix || key.startsWith(prefix + "_")) {
 				game.saveConfig(key);
 			}
 		});
@@ -7483,13 +7483,15 @@ ${e instanceof Error ? e.stack : String(e)}`);
 			event.player.node.equips.classList.remove("popequip");
 		}
 
-		if (args.includes("button") && event.dialog && event.dialog.buttons) {
-			event.dialog.buttons.forEach(button => {
+		const selectionButtons = args.includes("button") && event.dialog ? (event.dialog.characterPager?.buttons ?? event.dialog.buttons) : null;
+		if (selectionButtons) {
+			selectionButtons.forEach(button => {
 				button.classList.remove("selectable");
 				button.classList.remove("selected");
 				game.callHook("uncheckButton", [button, event]);
 			});
 			ui.selected.buttons.length = 0;
+			event.dialog.characterPager?.reset();
 		}
 		if (args.includes("card") && event.player) {
 			const cards = event.player.getCards("hejsx");

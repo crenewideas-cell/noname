@@ -100,7 +100,8 @@ export class LibInit {
 			delete window.resetGameTimeout;
 			if (!game.syncMenu) {
 				delete window.resetExtension;
-				localStorage.removeItem(lib.configprefix + "disable_extension");
+				// Only successful recovery clears a legacy emergency flag. Reaching
+				// the safe-mode lobby does not mean its saved switches were restored.
 			}
 
 			if (game.removeFile && lib.config.brokenFile.length) {

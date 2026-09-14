@@ -98,7 +98,11 @@ export class Check {
 	}
 	button(event, useCache) {
 		const player = event.player;
-		const buttons = event.dialog.buttons;
+		const pager = event.dialog.characterPager;
+		// Whole-pool operations/AI and custom selection retain the legacy contract.
+		const range = get.select(event.selectButton);
+		const complete = !event.isMine() || range[1] < 0 || event.forceDirect || event.complexSelect || event.custom?.replace?.button;
+		let buttons = pager && !complete ? pager.buttons : event.dialog.buttons;
 		const isSelectable = (button, event) => {
 			if (!lib.filter.buttonIncluded(button)) {
 				return false;
@@ -108,7 +112,19 @@ export class Check {
 			}
 			return event.filterButton(button, player);
 		};
-		return game.Check.processSelection({ type: "button", items: buttons, event, useCache, isSelectable });
+		// A page with no legal choices must not make a forced event auto-complete
+		// while legal choices still exist elsewhere in the directory.
+		if (pager && !complete && event.forced && ui.selected.buttons.length < range[0] && !buttons.some(button => isSelectable(button, event))) buttons = event.dialog.buttons;
+		const result = game.Check.processSelection({ type: "button", items: buttons, event, useCache: pager ? false : useCache, isSelectable });
+		if (pager) {
+			for (const button of buttons) {
+				if (button.classList.contains("unselectable")) pager.disabledReasons.set(button.link, "unselectable");
+				else if (!button.classList.contains("selectable")) pager.disabledReasons.set(button.link, "selection-rule");
+				else pager.disabledReasons.delete(button.link);
+			}
+			pager.syncSelection();
+		}
+		return result;
 	}
 	card(event, useCache) {
 		const player = event.player;

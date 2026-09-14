@@ -21,6 +21,8 @@ coverage/
 .vite/
 .turbo/
 .eslintcache
+__pycache__/
+*.py[cod]
 
 # Local runtime data
 apps/electron/Home/

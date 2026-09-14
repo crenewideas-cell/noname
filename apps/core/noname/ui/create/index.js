@@ -8,6 +8,8 @@ import { otherMenu } from "./menu/pages/otherMenu.js";
 import { startMenu } from "./menu/pages/startMenu.js";
 import { Pagination } from "@/util/pagination.js";
 import { openGameNavigation } from "../gameNavigation.js";
+import { createCharacterBrowser } from "../characterBrowser.js";
+import { CharacterSearch } from "../../util/characterSearch.js";
 
 export class Create {
 	/**
@@ -1137,11 +1139,6 @@ export class Create {
 		return dialog;
 	}
 
-	// 用于搜索技能寻找武将的一系列缓存
-	#skillCaching = false;
-	#skillCacheReady = false;
-	#skillMaps = new Map();
-	#skillRegsCache = new Map();
 
 	characterDialog() {
 		// if(lib.config.character_dialog_style=='newstyle'){
@@ -1154,9 +1151,11 @@ export class Create {
 		//      			return ui.create.characterDialog2.apply(this,arguments);
 		//     }
 		// }
-		var filter, str, noclick, thisiscard, seperate, expandall, onlypack, heightset, characterx;
+		var filter, str, noclick, thisiscard, seperate, expandall, onlypack, heightset, characterx, paged;
 		for (var i = 0; i < arguments.length; i++) {
-			if (arguments[i] === "thisiscard") {
+			if (arguments[i] === "paged") {
+				paged = true;
+			} else if (arguments[i] === "thisiscard") {
 				thisiscard = true;
 			} else if (arguments[i] === "expandall") {
 				expandall = true;
@@ -1258,6 +1257,12 @@ export class Create {
 			return a > b ? 1 : -1;
 		});
 		groups.sort(lib.sort.group);
+		// Explicitly adapted free-choice screens and read-only directories opt in.
+		// Arbitrary extension/skill dialogs keep their historical complete buttons.
+		if ((paged || noclick === true) && !thisiscard && !characterx && !seperate && parseInt(lib.config.showMax_character_number) > 0) {
+			list.sort(lib.sort.character);
+			return createCharacterBrowser({ ids: list, caption: str, noclick, onlypack, heightset, expandall });
+		}
 		if (!thisiscard) {
 			namecapt.remove("自定义");
 			namecapt.push("newline");
@@ -1779,60 +1784,34 @@ export class Create {
 			}
 		};
 
-		if (!this.#skillCacheReady && !this.#skillCaching) {
-			this.#skillCaching = true;
-			queueMicrotask(() => {
-				for (const skill in lib.skill) {
-					const translation = lib.translate[skill];
-					if (!translation) {
-						continue;
-					}
-					if (!this.#skillMaps.has(translation)) {
-						this.#skillMaps.set(translation, new Set());
-					}
-					this.#skillMaps.get(translation).add(skill);
+		const searchIndex = new CharacterSearch();
+		dialog.characterSearch = searchIndex;
+		const searchStatus = ui.create.div(".character-browser-status");
+		searchStatus.setAttribute("role", "status");
+		Searcher.append(searchStatus);
+		const updateFind = async () => {
+			searchStatus.textContent = "正在搜索…";
+			try {
+				const ids = dialog.buttons.map(button => thisiscard ? button.link[2] : button.link);
+				const result = await searchIndex.find(input.value, ids);
+				if (!result) return;
+				const hits = new Set(result);
+				for (const button of dialog.buttons) {
+					restoreState(button);
+					button.classList.toggle("nodisplay", !hits.has(thisiscard ? button.link[2] : button.link));
 				}
-				this.#skillCacheReady = true;
-			});
-		}
-		const updateFind = () => {
-			const { value } = input;
-			const reg = new RegExp(value);
-			let skills;
-			if (this.#skillCacheReady) {
-				if (this.#skillRegsCache.has(value)) {
-					skills = this.#skillRegsCache.get(value);
-				} else {
-					skills = new Set();
-					for (const [desc, skillSet] of this.#skillMaps.entries()) {
-						if (reg.test(desc)) {
-							for (const skill of skillSet) {
-								skills.add(skill);
-							}
-						}
-					}
-					this.#skillRegsCache.set(value, skills);
-				}
+				input.removeAttribute("aria-invalid");
+				searchStatus.textContent = `共 ${result.length} 项结果`;
+				updatePagination();
+			} catch (error) {
+				if (error instanceof SyntaxError) input.setAttribute("aria-invalid", "true");
+				searchStatus.textContent = error instanceof SyntaxError ? "正则表达式格式不正确，请修改后搜索" : error.message || "搜索未完成，请重试";
 			}
-			for (let btn of dialog.buttons) {
-				const name = btn.link;
-				const character = lib.character[name];
-
-				const nameHit = reg.test(get.translation(name)) || reg.test(get.translation(`${name}_ab`));
-				const skillHit = value in lib.skill && character.skills.includes(value);
-				const skillTransHit = skills?.size > 0 && character.skills.some(skill => skills.has(skill));
-				if (nameHit || skillHit || skillTransHit) {
-					btn.classList.remove("nodisplay");
-				} else {
-					btn.classList.add("nodisplay");
-				}
-			}
-			updatePagination();
 		};
 		find.addEventListener("click", updateFind);
 		input.onkeydown = function (e) {
 			e.stopPropagation();
-			if (e.key == "Enter") {
+			if (e.key == "Enter" && !e.isComposing) {
 				updateFind();
 			}
 		};
