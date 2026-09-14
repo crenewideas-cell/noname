@@ -32,7 +32,10 @@ async function buildFixtures(out: string) {
 	if (Object.keys(policies).length !== 2) throw new Error("Build policy extraction failed");
 	const { build } = await import(pathToFileURL(requireCore.resolve("vite")).href);
 	const cases: Record<string, string> = { source };
-	for (const [name, policy] of Object.entries(policies)) {
+	// Keep the formerly failing tree-shaken build as an explicit negative
+	// control, so a broken assertion cannot silently certify the new policy.
+	const variants = { ...policies, unsafeTreeShake: { minify: false, treeshake: true } };
+	for (const [name, policy] of Object.entries(variants)) {
 		const result: any = await build({ configFile: false, logLevel: "silent", root: core,
 			build: { write: false, minify: policy.minify, target: ["chrome91", "safari16.4"], lib: { entry: resolve(root, "scripts/performance/step-fixtures.js"), formats: ["es"] }, rollupOptions: { treeshake: policy.treeshake } } });
 		cases[name] = result[0].output.find((item: any) => item.type === "chunk").code;
@@ -67,9 +70,10 @@ export async function verifySemantics(page: any, prepared: Awaited<ReturnType<ty
 				}
 			} finally { URL.revokeObjectURL(url); }
 		}
-		const positive = results.filter(r => r.variant !== "unsafeTerser");
-		const negative = results.filter(r => r.variant === "unsafeTerser" && r.name.startsWith("legacy"));
-		return { policies, hashes, results, passed: positive.every(r => r.pass) && negative.some(r => !r.pass),
-			note: "Unsafe Terser is an intentional negative control and must expose a legacy semantic change. Build-policy fixtures are actual Vite outputs, not proof that the full game production build works." };
+		const controls = ["unsafeTerser", "unsafeTreeShake"];
+		const positive = results.filter(r => !controls.includes(r.variant));
+		const negativeControlsDetected = controls.every(variant => results.some(r => r.variant === variant && r.name.startsWith("legacy") && !r.pass));
+		return { policies, hashes, results, passed: positive.every(r => r.pass) && negativeControlsDetected,
+			note: "Unsafe Terser and the former tree-shaken build are intentional negative controls; each must expose a legacy semantic change. Build-policy fixtures are actual Vite outputs, not proof that the full game production build works." };
 	}, prepared);
 }

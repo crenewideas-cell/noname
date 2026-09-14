@@ -12,6 +12,7 @@ import { loadCard, loadCardPile, loadCharacter, loadExtension, loadMode, loadPla
 import { registerOrganizedExtensions, isValidExtensionName } from "./organizedExtensions.js";
 import { registerOrganizedCompatibility } from "./organizedCompatibility.js";
 import { warmImages } from "../util/imageReady.js";
+import { fontFaces } from "../util/fontFaces.js";
 import { perfAwait, perfBegin, perfEnd, perfMark } from "../util/performance.js";
 
 // 无名杀，启动！
@@ -197,7 +198,7 @@ export async function boot() {
 			appearenceConfig.identity_font.item[value] = font;
 			appearenceConfig.cardtext_font.item[value] = font;
 			appearenceConfig.global_font.item[value] = font;
-			fontSheet.insertRule(`@font-face {font-family: '${value}'; font-display: swap; src: local('${font}'), url('${lib.assetURL}font/${value}.woff2');}`, 0);
+			for (const rule of fontFaces(value, font, lib.assetURL)) fontSheet.insertRule(rule, 0);
 			if (suitsFont) {
 				fontSheet.insertRule(`@font-face {font-family: '${value}'; font-display: swap; unicode-range: U+2660-2667; src: url('${lib.assetURL}font/suits.woff2');}`, 0);
 			}
@@ -208,7 +209,7 @@ export async function boot() {
 		fontSheet.insertRule(`@font-face {font-family: 'NonameSuits'; font-display: swap; src: url('${lib.assetURL}font/suits.woff2');}`, 0);
 		fontSheet.insertRule(`@font-face {font-family: 'MotoyaLMaru'; font-display: swap; src: url('${lib.assetURL}font/motoyamaru.woff2');}`, 0);
 		// Warm active fonts before dealing; never block readable fallback text.
-		const activeFonts = new Set(["xinwei", "shousha", config.get("name_font"), config.get("identity_font"), config.get("cardtext_font"), config.get("global_font")]);
+		const activeFonts = new Set([config.get("name_font"), config.get("identity_font"), config.get("cardtext_font"), config.get("global_font")]);
 		for (const font of activeFonts) {
 			if (typeof font === "string" && Object.hasOwn(pack.font, font)) {
 				void document.fonts?.load(`16px "${font}"`, "情思杀闪桃123").catch(() => {});

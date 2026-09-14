@@ -5747,3 +5747,47 @@ progress.progress::-webkit-progress-value {
 	text-decoration: underline;
 	font-weight: bolder;
 }
+
+/* Opt-in character directory: page controls do not inherit absolute game buttons. */
+.dialog.character-browser-paged .character-filter-alphabet,
+.dialog.character-browser-paged .character-browser-pages,
+.dialog.character-browser-paged .character-browser-selection {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    position: relative;
+    margin: 8px 12px;
+}
+.dialog.character-browser-paged button.tdnode,
+.dialog.character-browser-paged .character-filter-groups select {
+    position: relative;
+    display: inline-block;
+    width: auto;
+    min-height: 32px;
+    margin: 3px;
+    padding: 4px 9px;
+    border: 1px solid #b6945b70;
+    border-radius: 5px;
+    background: #292c28;
+    color: #f4e6cb;
+    font: inherit;
+    cursor: pointer;
+}
+.dialog.character-browser-paged button:disabled { opacity: .45; cursor: default; }
+.dialog.character-browser-paged button:focus-visible,
+.dialog.character-browser-paged select:focus-visible,
+.dialog.character-browser-paged .button.character:focus-visible {
+    outline: 2px solid #e0bb77;
+    outline-offset: 2px;
+}
+.dialog.character-browser-paged .character-browser-status {
+    position: relative;
+    display: block;
+    font-size: 14px;
+    text-align: center;
+    min-height: 22px;
+}
+.dialog.character-browser-paged .character-browser-selection:empty { display: none; }
+.dialog.character-browser-paged input[aria-invalid="true"] { border-color: #d88b79 !important; }

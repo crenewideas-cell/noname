@@ -15,7 +15,7 @@ for(const pair of (await readdir(directory)).filter(name=>name.startsWith("pair-
 		const begin=run.navigationEpochMs??lobby?.timeOrigin??perf?.timeOrigin;
 		const end=run.navigationEpochMs!==undefined?begin+run.flowWallMs:begin+(perf?.now||0);
 		const requests=har?.log.entries.filter((e:any)=>{const time=Date.parse(e.startedDateTime);return time>=begin&&time<=end;})||[];
-		profiles.push({pair,cache,passed:run.passed,traced:run.traced,timeOrigin:begin,lobbyReadyMs:run.lobbyReadyMs,
+		profiles.push({pair,cache,passed:run.passed,traced:run.traced,timeOrigin:begin,lobbyReadyMs:run.lobbyReadyMs,lobbyReadyWallMs:run.lobbyReadyWallMs??null,
 			resourceEntries:perf?.resource?.total??null,resourceEntriesDropped:perf?.resource?.dropped??null,
 			completedResourceTransferBytes:perf?resources.reduce((n:number,r:any)=>n+r.transferSize,0):null,
 			lobbyCompletedTransferBytes:lobby?.resource?.entries.reduce((n:number,r:any)=>n+r.transferSize,0)??null,

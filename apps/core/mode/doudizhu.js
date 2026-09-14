@@ -1187,14 +1187,14 @@ export default {
 					};
 					if (lib.onfree) {
 						lib.onfree.push(() => {
-							event.dialogxx = ui.create.characterDialog("heightset");
+							event.dialogxx = ui.create.characterDialog("heightset", "paged");
 							if (ui.cheat2) {
 								ui.cheat2.addTempClass("controlpressdownx", 500);
 								ui.cheat2.classList.remove("disabled");
 							}
 						});
 					} else {
-						event.dialogxx = ui.create.characterDialog("heightset");
+						event.dialogxx = ui.create.characterDialog("heightset", "paged");
 					}
 
 					ui.create.cheat2 = () => {

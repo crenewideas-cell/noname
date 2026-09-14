@@ -1,9 +1,8 @@
 import { createRequire } from "node:module";
-import { createReadStream } from "node:fs";
 import { readFile, stat, readdir, realpath } from "node:fs/promises";
-import { createServer as httpServer } from "node:http";
-import { resolve, relative, extname, sep } from "node:path";
+import { resolve, relative, dirname, basename, sep } from "node:path";
 import { pathToFileURL } from "node:url";
+import { registerStaticCompression } from "../../packages/fs/src/static.ts";
 
 export const root = resolve(import.meta.dirname, "../..");
 export const core = resolve(root, "apps/core");
@@ -48,7 +47,7 @@ async function middleware(req: any, res: any, next: () => void) {
 	} catch { json(null, false); }
 }
 
-export async function startEnvironment(channel: string, port: number, artifact?: string) {
+export async function startEnvironment(channel: string, port: number, artifact?: string, compression = true) {
 	if (channel === "dev") {
 		const { createServer } = await import(pathToFileURL(requireCore.resolve("vite")).href);
 		const server = await createServer({ configFile: resolve(core, "vite.config.ts"), root: core,
@@ -58,8 +57,17 @@ export async function startEnvironment(channel: string, port: number, artifact?:
 		return { url: `http://localhost:${port}`, close: () => server.close(), cache: "existing Vite dependency cache; first navigation separately labeled" };
 	}
 	if (!artifact) throw new Error("Production requires --artifact=<fresh core dist path>");
-	const types: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json", ".css": "text/css", ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".png": "image/png", ".woff2": "font/woff2", ".mp3": "audio/mpeg", ".mp4": "video/mp4" };
-	const server = httpServer((req, res) => { void middleware(req, res, () => { void (async () => {
+	const requireFs = createRequire(resolve(root, "packages/fs/package.json"));
+	const server = requireFs("fastify")();
+	if (compression) await registerStaticCompression(server);
+	await server.register(requireFs("@fastify/static"), { root: resolve(artifact), serve: false, maxAge: 0 });
+	server.addHook("onRequest", async (req: any, reply: any) => {
+		const path = new URL(req.url, "http://localhost").pathname;
+		if (fileRoutes.has(path) || writes.has(path) || /^\/(api|ws|__perf)\//.test(path)) {
+			reply.hijack(); await middleware(req.raw, reply.raw, () => {});
+		}
+	});
+	server.get("/*", async (req: any, reply: any) => {
 		try {
 			const url = new URL(req.url!, "http://localhost");
 			const name = decodeURIComponent(url.pathname === "/" ? "index.html" : url.pathname.slice(1));
@@ -69,16 +77,10 @@ export async function startEnvironment(channel: string, port: number, artifact?:
 			let file: string;
 			try { file=await contained(base,name); }
 			catch(error) { if(!dependency)throw error; file=await contained(resolve(core,"node_modules"),name.slice("apps/core/node_modules/".length)); }
-			const info = await stat(file);
-			if (!info.isFile()) throw new Error("Not a file");
-			const tag = `W/"${info.size}-${Math.floor(info.mtimeMs)}"`;
-			res.setHeader("Cache-Control", "public, max-age=0"); res.setHeader("ETag", tag);
-			if (req.headers["if-none-match"] === tag) { res.statusCode = 304; return res.end(); }
-			res.setHeader("Content-Type", types[extname(file)] || "application/octet-stream");
-			res.setHeader("Content-Length", info.size);
-			createReadStream(file).on("error", () => res.destroy()).pipe(res);
-		} catch { res.statusCode = 404; res.end("Not found in performance artifact"); }
-	})(); }); });
-	await new Promise<void>((ok, fail) => { server.once("error", fail); server.listen(port, "localhost", ok); });
-	return { url: `http://localhost:${port}`, close: async () => { server.closeAllConnections(); await new Promise<void>(r => server.close(() => r())); }, cache: "test static server, max-age=0/ETag, uncompressed, not deployment server" };
+			if (!(await stat(file)).isFile()) throw new Error("Not a file");
+			return reply.sendFile(basename(file), dirname(file));
+		} catch { return reply.code(404).send("Not found in performance artifact"); }
+	});
+	await server.listen({ port, host: "localhost" });
+	return { url: `http://localhost:${port}`, close: () => server.close(), cache: `Fastify static, max-age=0/ETag, compression=${compression}; shared production compression plugin; test-only read API` };
 }

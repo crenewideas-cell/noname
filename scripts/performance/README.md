@@ -1,4 +1,6 @@
-# 阶段 0 性能基线工具
+# 性能基线与阶段验收工具
+
+**当前执行约束（2026-09-14）：按用户要求先开发，所有步骤完成后统一运行测试、构建和采样。下列命令仅供最终验收使用，当前不自动执行。** 阶段 1、2 状态见 [开发记录](../../docs/performance-stages-1-2-development.md)。
 
 在仓库根目录执行。依赖已有 pnpm 工作区和本机 Chrome；默认独占 `http://localhost:8081`，端口占用时直接报错，不终止已有服务。测试启动自己的只读文件接口，不要求另启文件服务器。依次运行，避免并行构建、测试影响性能采样。
 
@@ -26,7 +28,7 @@ pnpm perf:report "C:/完整路径/采样目录"
 - `minimal`：明确标注的精简对照，只启用 standard 人物/卡牌，不启用扩展；不代表优化成果。
 - `defaults`：本仓库首次登记时的默认扩展组合，实际启用列表写入每个样本；不代表用户真实存档。两种场景都使用合成双人身份局，已确认 GPL、跳过教程、10 人/页、显示全部人物、开启自由选将、关闭出牌自动确认。固定随机种子；配置初始化仍会改变候选和牌堆。
 - `cold`：新上下文、清空 HTTP 缓存后的首次启动；`warm`：同一上下文保留刚才游戏写入的配置后重新导航。**缓存、首次登记与恢复配置同时变化，二者差值不能解读为纯缓存收益。** Vite 磁盘依赖缓存、操作系统文件缓存不清空。
-- 大厅就绪：模式按钮可操作，经过两次 rAF 后的 `performance.now()`；不是全部图片/字体完成，也不是 LCP。发生自动刷新时它只覆盖当前文档；新脚本另存导航次数和整个流程 wall time，不能用最终文档时间代替跨刷新启动时间。
+- 大厅就绪：模式按钮可操作，经过两次 rAF 后记录。`lobbyReadyMs` 是当前文档的 `performance.now()`；`lobbyReadyWallMs` 是测试进程从发起导航到大厅就绪的单调时钟跨度，包含生产 JIT 自动刷新，适合核对完整启动等待。二者都不是全部图片/字体完成或 LCP。旧样本没有 `lobbyReadyWallMs`，不得补成 0。
 - 交互：真实 pointerdown/keydown 到断言状态成立并经过两次 rAF 的时间，包括业务动画和测试轮询成本；这是呈现机会近似值，不是精确绘制时间或 INP。搜索测量从 Enter 开始，不含输入文本耗时。选将到首操作从最后一次选将确认开始，不含人为停留。
 - 每组第 1 对保存 CDP CPU trace，其余只采集 HAR/PerformanceObserver；`traced`、首次服务器导航有独立标记。录制可能显著放大开销，比较时保持条件一致。每组 20 个样本按 nearest-rank 计算 p50/p95；不足 20 个时 p95 为 null。
 - `passed` 仅表示交互断言通过。错误仍保存在样本中；新脚本另标 `runtimeClean`，页面异常/弹窗导致命令失败，普通控制台错误需结合 HAR 分类审查。
@@ -49,6 +51,15 @@ pnpm perf:report "C:/完整路径/采样目录"
 
 `perf:build` 在独立源码副本执行当前正常 core 构建，不覆盖工作区 dist。大体积 image/audio/extension 由测试服务器只读挂载；pnpm 依赖链接仍指向当前安装，所以它不是可发布的独立产物。生产服务器使用未压缩 `max-age=0/ETag`，不能代表真实部署响应策略。正常生产产物的 import map、JIT Service Worker 和自动刷新都保留。
 
-语义测试从真实 `apps/core/scripts/build.ts` 提取 `buildSelf`/`buildIndividual` 的 minify、treeshake 设置，实际通过 Vite 构建最小 fixture，再交给真实 GameEvent/StepCompiler 执行。覆盖 step/goto/redo/跨步结果、async 和编译缓存。默认 Terser 是必须暴露错误的负向对照。
+语义测试从真实 `apps/core/scripts/build.ts` 提取 `buildSelf`/`buildIndividual` 的 minify、treeshake 设置，实际通过 Vite 构建最小 fixture，再交给真实 GameEvent/StepCompiler 执行。覆盖 step/goto/redo/跨步结果、async 和编译缓存。默认 Terser 和旧 `minify:false, treeshake:true` 策略分别保留为负向对照，两者都必须暴露旧式步骤变化。
 
-**当前 buildIndividual 的两个旧式 fixture 失败，命令退出码 1 是已发现的正确性门槛失败。** 不要为了让基线“通过”改成预期通过或忽略退出码。构建策略 fixture 不是完整技能、扩展或联机回归；完整生产流程失败也必须单独保留。阶段 0 负责记录证据，后续修复需重新运行这道门槛。
+当前独立包保留步骤标记，普通 core 保留经 `/noname.js` 公共入口的自引用以保护循环初始化。历史失败记录仍保留；不得为了让基线“通过”忽略退出码或放宽正向断言。构建策略 fixture 不是完整技能、扩展或联机回归；真实生产流程必须单独验证。修复与实测结果见 [阶段 0 生产正确性补充报告](../../docs/performance-stage-0-correctness-report.md)。
+
+
+## 阶段 1、2 工具变更（待统一执行）
+
+生产服务现复用 `packages/fs/src/static.ts` 的真实压缩模块，使用 `--compression=off` 可建立同服务旧产物对照。不要将旧版未压缩自建服务的数字直接当作新服务的严格对照。
+
+`run.ts` 新增 `candidateImagesReadyMs`：模式点击到当时视口内候选背景完成载入/解码；只在全部成功时记值，否则保留失败计数。目录翻页读 `characterPager`，搜索通过可见节点等待实际结果，避免测试读取 `dialog.buttons` 导致完整物化。上述工具修改尚未在新产物上执行。
+
+最后验收还需运行 `static.test.ts`、`resources.ts --artifact=<dist>` 和 `transport.ts <dist>`；补阶段 2 跨页/兼容/搜索取消覆盖。资源生成方式与完整清单见开发记录。现有测试通过日志均保留原时点含义，不覆盖后续源码变更。

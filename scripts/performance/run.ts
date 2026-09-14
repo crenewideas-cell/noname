@@ -48,14 +48,35 @@ async function traceStop(cdp: any,file: string) {
 	while(true){const chunk=await cdp.send("IO.read",{handle:stream,size:1048576});if(!output.write(chunk.base64Encoded?Buffer.from(chunk.data,"base64"):chunk.data))await new Promise(r=>output.once("drain",r));if(chunk.eof)break;}
 	await new Promise<void>(r=>output.end(r));await cdp.send("IO.close",{handle:stream});
 }
-async function flow(page: any, result: any) {
+async function flow(page: any, result: any, navigationWallStart: number) {
 	await page.waitForSelector(".lobby-mode:enabled",{timeout:120000}); await frame(page);
+	// Node's clock survives the production JIT worker's automatic reloads.
+	result.lobbyReadyWallMs = performance.now() - navigationWallStart;
 	result.lobbyReadyMs = await now(page);
 	result.lobbySnapshot = await page.evaluate(()=>(window as any).__nonamePerf?.snapshot());
 	await page.evaluate(async()=>{(window as any).__perfGame=await import("/noname.js");});
 	await arm(page,"mode"); await page.getByRole("button",{name:"身份",exact:true}).click();
 	await page.waitForFunction(()=>{const {ui,_status}=(window as any).__perfGame;return _status.event?.name==="chooseButton" && ui.dialog?.buttons?.some((b:any)=>b.classList.contains("selectable"));},undefined,{timeout:120000});
 	result.modeToChooseMs=await complete(page,"mode");
+	// Observe only currently visible candidate images. Do not hold up user actions.
+	await page.evaluate(() => {
+		const w = window as any;
+		const urls = new Set<string>();
+		for (const button of w.__perfGame.ui.dialog.buttons) {
+			const rect = button.getBoundingClientRect();
+			if (!rect.width || !rect.height || rect.bottom <= 0 || rect.top >= innerHeight || rect.right <= 0 || rect.left >= innerWidth) continue;
+			for (const match of getComputedStyle(button).backgroundImage.matchAll(/url\(("(?:\\.|[^"])*"|[^)]*)\)/g)) {
+				urls.add(match[1].startsWith('"') ? JSON.parse(match[1]) : match[1]);
+			}
+		}
+		w.__candidateImages = Promise.all([...urls].map(url => new Promise<boolean>(resolve => {
+			const image = new Image();
+			const timer = setTimeout(() => resolve(false), 15000);
+			image.onload = () => { void image.decode().then(() => { clearTimeout(timer); resolve(true); }, () => { clearTimeout(timer); resolve(false); }); };
+			image.onerror = () => { clearTimeout(timer); resolve(false); };
+			image.src = url;
+		}))).then(ok => ({ count: urls.size, failed: ok.filter(value => !value).length, readyMs: performance.now() - w.__perfActions.mode }));
+	});
 	result.choose = await page.evaluate(()=>{const {lib,game,ui}=(window as any).__perfGame;return {candidates:ui.dialog.buttons.length,identity:game.me.identity,characters:Object.keys(lib.character).length,loadedPacks:lib.config.all.characters,enabledPacks:lib.config.characters,enabledExtensions:(lib.config.extensions||[]).filter((id:string)=>lib.config[`extension_${id}_enable`]),domNodes:document.getElementsByTagName("*").length};});
 	// Force first seat through the application's real identity selector, separately from navigation timing.
 	if (result.choose.identity!=="zhu") {
@@ -68,13 +89,15 @@ async function flow(page: any, result: any) {
 	await page.waitForSelector(".character-browser input",{state:"visible",timeout:30000});
 	result.directoryOpenMs=await complete(page,"directory");
 	result.directoryButtons=await page.locator(".character-browser .button.character").count();
-	result.directoryPageState=await page.evaluate(()=>{const {ui}= (window as any).__perfGame;return [...ui.dialog.paginationMap.values()].map((p:any)=>({page:p.state.pageNumber,total:p.state.totalPageCount,max:ui.dialog.paginationMaxCount.get("character")}));});
+	result.directoryPageState=await page.evaluate(()=>{const {ui}= (window as any).__perfGame;const pager=ui.dialog.characterPager;return pager?[{page:pager.page,total:pager.totalPages,max:pager.pageSize}]:[...ui.dialog.paginationMap.values()].map((p:any)=>({page:p.state.pageNumber,total:p.state.totalPageCount,max:ui.dialog.paginationMaxCount.get("character")}));});
 	const next = page.locator(".character-browser .page-next:not(.no-next)");
-	if(await next.count()) {await arm(page,"nextPage");await next.click();result.nextPageMs=await complete(page,"nextPage");const changed=await page.evaluate(()=>[...(window as any).__perfGame.ui.dialog.paginationMap.values()].some((p:any)=>p.state.pageNumber===2));if(!changed)throw new Error("Pagination did not change to page 2");}
+	if(await next.count()) {await arm(page,"nextPage");await next.click();result.nextPageMs=await complete(page,"nextPage");const changed=await page.evaluate(()=>{const dialog=(window as any).__perfGame.ui.dialog;return dialog.characterPager?dialog.characterPager.page===2:[...dialog.paginationMap.values()].some((p:any)=>p.state.pageNumber===2);});if(!changed)throw new Error("Pagination did not change to page 2");}
 	else result.nextPageMs=null;
 	const search=page.locator(".character-browser input");
-	await search.fill("^曹操$");await arm(page,"search","keydown");await search.press("Enter");result.searchMs=await complete(page,"search");
-	await page.evaluate(()=>{const {ui}=(window as any).__perfGame;const button=ui.dialog.buttons.find((b:any)=>b.link==="caocao"&&!b.classList.contains("nodisplay"));if(!button)throw new Error("Search did not offer caocao");button.setAttribute("data-perf-character","true");});
+	await search.fill("^曹操$");await arm(page,"search","keydown");await search.press("Enter");
+	await page.waitForFunction(()=>[...document.querySelectorAll(".character-browser .button.character:not(.nodisplay)")].some((b:any)=>b.link==="caocao"));
+	result.searchMs=await complete(page,"search");
+	await page.evaluate(()=>{const button=[...document.querySelectorAll(".character-browser .button.character:not(.nodisplay)")].find((b:any)=>b.link==="caocao");if(!button)throw new Error("Search did not offer caocao");button.setAttribute("data-perf-character","true");});
 	await arm(page,"choose");await page.locator('[data-perf-character="true"]').click();
 	await frame(page);
 	// Auto-confirm may already have progressed. Otherwise click the real confirmation control.
@@ -100,7 +123,7 @@ try {
 		metadata.artifactBuild=JSON.parse(await readFile(resolve(metadata.artifact,"../../../build.json"),"utf8"));
 	}
 	const prepared = await prepareSemantics(out);
-	server = await startEnvironment(channel,port,args.get("artifact")); metadata.serverCache=server.cache;
+	server = await startEnvironment(channel,port,args.get("artifact"),args.get("compression") !== "off"); metadata.serverCache=server.cache;
 	browser = await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe"});
 	metadata.browser=browser.version();
 	await writeFile(resolve(out,"environment.json"),JSON.stringify(metadata,null,2));
@@ -122,7 +145,9 @@ try {
 			result.navigationEpochMs=Date.now();
 			try {
 				await page.goto(`${server.url}/${collector?"?perf=1":""}`,{waitUntil:"domcontentloaded",timeout:120000});
-				await flow(page,result);
+				await flow(page,result,wallStart);
+				result.candidateImages = await page.evaluate(() => (window as any).__candidateImages);
+				if (result.candidateImages?.failed === 0) result.candidateImagesReadyMs = result.candidateImages.readyMs;
 				const apiExists=await page.evaluate(()=>!!(window as any).__nonamePerf);
 				if(apiExists!==collector)throw new Error("Collector opt-in state mismatch");
 			} catch(error) { result.failure=String(error);try{result.state=await page.evaluate(()=>({body:document.body.innerText.slice(-1000),event:(window as any).__perfGame?._status.event?.name,perf:(window as any).__nonamePerf?.snapshot()}));}catch{} }
@@ -147,7 +172,7 @@ try {
 	try { await browser?.close(); } finally { await server?.close(); }
 	const percentiles=(values:number[])=>{const sorted=values.toSorted((a,b)=>a-b);return {n:sorted.length,p50:sorted.length?sorted[Math.ceil(sorted.length*.5)-1]:null,p95:sorted.length>=20?sorted[Math.ceil(sorted.length*.95)-1]:null,min:sorted[0]??null,max:sorted.at(-1)??null};};
 	const stats:Record<string,unknown>={};
-	for(const cache of ["cold","warm"])for(const metric of ["lobbyReadyMs","modeToChooseMs","directoryOpenMs","nextPageMs","searchMs","chooseToFirstActionMs","handSelectMs","handUnselectMs"]){stats[`${cache}.${metric}`]=percentiles(summaries.filter(r=>r.cache===cache&&r.passed&&Number.isFinite(r[metric])).map(r=>r[metric]));}
+	for(const cache of ["cold","warm"])for(const metric of ["lobbyReadyWallMs","lobbyReadyMs","modeToChooseMs","candidateImagesReadyMs","directoryOpenMs","nextPageMs","searchMs","chooseToFirstActionMs","handSelectMs","handUnselectMs"]){stats[`${cache}.${metric}`]=percentiles(summaries.filter(r=>r.cache===cache&&r.passed&&Number.isFinite(r[metric])).map(r=>r[metric]));}
 	await writeFile(resolve(out,"summary.json"),JSON.stringify({metadata,results:summaries,stats,semantics:semanticReport?.passed??null},null,2));
 	console.log(`PERF_REPORT=${out}`);
 }

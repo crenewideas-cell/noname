@@ -4307,6 +4307,11 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 		if (!_status.event.player) {
 			return [];
 		}
+		const pager = _status.event.dialog.characterPager;
+		if (pager && !pager.isMaterialized) {
+			pager.materialize();
+			game.check();
+		}
 		var buttons = _status.event.dialog.buttons;
 		var selectable = [];
 		for (var i = 0; i < buttons.length; i++) {

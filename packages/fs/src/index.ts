@@ -1,5 +1,5 @@
 import Fastify from "fastify";
-import fastifyStatic from "@fastify/static";
+import { staticAssets } from "./static.js";
 import cors from "@fastify/cors";
 import fs from "fs/promises";
 import path from "path";
@@ -29,6 +29,7 @@ export const defaultConfig = {
 	port: 8089,
 	debug: false,
 	dirname: cwd(),
+	listen: true,
 };
 
 function createFsHandler(dirname: string) {
@@ -68,7 +69,7 @@ export default function createApp(config: Partial<typeof defaultConfig> = {}) {
 		methods: ["GET", "POST", "OPTIONS"],
 	});
 
-	app.register(fastifyStatic, {
+	app.register(staticAssets, {
 		root: cfg.dirname,
 		prefix: "/",
 		dotfiles: "allow",
@@ -216,7 +217,7 @@ export default function createApp(config: Partial<typeof defaultConfig> = {}) {
 	// } else {
 	// 	app.listen(config.port, callback);
 	// }
-	app.listen({ port: cfg.port }, callback);
+	if (cfg.listen) app.listen({ port: cfg.port }, callback);
 
 	return app;
 }

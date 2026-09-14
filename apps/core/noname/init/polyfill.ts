@@ -1,6 +1,7 @@
 import { lib, game, get, _status, ui } from "noname";
 import { savedSkinPath } from "../skin/service.js";
 import { portraitCharacter, skinStorageKey } from "../skin/portrait.js";
+import { setPortraitBackground } from "../util/portraitThumbnails.js";
 
 const backgroundRequests = new WeakMap<HTMLDivElement, object>();
 /**
@@ -273,7 +274,7 @@ HTMLDivElement.prototype.setBackgroundImage = function (img) {
 	const sources = (Array.isArray(img) ? img : [img]).filter(Boolean).map(v => URL.canParse(v) ? v : `${lib.assetURL}${v}`);
 	// Character buttons and card copies read/clone this style immediately. Keep
 	// the legacy synchronous contract, including CSS fallback image layers.
-	this.style.backgroundImage = [...new Set(sources)].map(src => `url(${JSON.stringify(src)})`).join(",");
+	setPortraitBackground(this, sources, lib.assetURL);
 	return this;
 };
 /**
