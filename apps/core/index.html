@@ -10,6 +10,12 @@
 	<meta name="viewport" content="user-scalable=no, viewport-fit=cover" />
 	<title>无名杀</title>
 	<script>
+		if (new URLSearchParams(location.search).get("perf") === "1") {
+			performance.setResourceTimingBufferSize(4096);
+			performance.mark("noname:html");
+		}
+	</script>
+	<script>
 		"use strict";
 		(() => {
 			window.onerror = function (msg, src, line, column, err) {

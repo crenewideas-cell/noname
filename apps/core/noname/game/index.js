@@ -6403,7 +6403,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 	removeExtension(extensionName, keepFile) {
 		const prefix = `extension_${extensionName}`;
 		Object.keys(lib.config).forEach(key => {
-			if (key.startsWith(prefix)) {
+			if (key === prefix || key.startsWith(prefix + "_")) {
 				game.saveConfig(key);
 			}
 		});

@@ -18,13 +18,15 @@ const retiredExtensions = new Set([
 export const isRetiredExtension = (name: string) => retiredExtensions.has(name);
 // Compatibility export for the first APK cleanup migration and its tests.
 export const isRetiredApkExtension = isRetiredExtension;
+export const isValidExtensionName = (name: unknown): name is string => typeof name === "string" && !!name.trim() &&
+	!/[\\/\0]/.test(name) && name !== "." && name !== ".." && !isRetiredExtension(name);
 
 /** Register this repository's installed packages once, preserving later user choices. */
-export async function registerOrganizedExtensions(config: { get: (key: string) => any; has: (key: string) => boolean }, save: (key: string, value: any) => Promise<unknown>) {
+export async function registerOrganizedExtensions(config: { get: (key: string) => any; has: (key: string) => boolean }, save: (key: string, value: any) => Promise<unknown>, savedKeys: string[] = []) {
 	const previousExtensions: string[] = config.get("extensions") || [];
 	const previousRegistered: string[] = config.get("organized_extensions_registered") || [];
-	const extensions = previousExtensions.filter(name => !isRetiredExtension(name));
-	const registered = new Set<string>(previousRegistered.filter(name => !isRetiredExtension(name)));
+	const extensions = [...new Set(previousExtensions.filter(isValidExtensionName))];
+	const registered = new Set<string>(previousRegistered.filter(isValidExtensionName));
 	let changed = extensions.length !== previousExtensions.length || registered.size !== previousRegistered.length;
 	// Clear only the two switches which used to import the seven removed crossover packs.
 	for (const key of ["extension_杀海拾遗_gwent", "extension_杀海拾遗_mtg", "extension_群雄并起_member_3_gwent", "extension_群雄并起_member_3_mtg"]) {
@@ -75,7 +77,11 @@ export async function registerOrganizedExtensions(config: { get: (key: string) =
 	const defaultDisabled = new Set(installed.filter(item => "defaultEnabled" in item && item.defaultEnabled === false).map(item => item.name));
 	// These original, manually installed extensions predate the archive registry.
 	// Make them discoverable too; the requested first-party pack is restored below.
-	const names = new Set([...bundled, ...installed.map(item => item.name), ...registered]);
+	// Old manually imported packs may predate registration history. An explicit
+	// persisted enable switch is sufficient evidence to restore their load entry.
+	const enabledNames = savedKeys.filter(key => key.startsWith("extension_") && key.endsWith("_enable") && config.get(key) === true)
+		.map(key => key.slice("extension_".length, -"_enable".length)).filter(isValidExtensionName);
+	const names = new Set([...bundled, ...installed.map(item => item.name), ...registered, ...enabledNames]);
 	for (const name of names) {
 		if (registered.has(name)) {
 			// Registration history is not the load list. Repair a missing enabled

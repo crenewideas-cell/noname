@@ -1,4 +1,5 @@
 import { lib } from "noname";
+import { perfBegin, perfEnd, perfCount } from "../../../../util/performance.js";
 import { IContentCompiler, EventCompileable, EventCompiledContent, EventContent } from "./IContentCompiler.ts";
 
 import StepCompiler from "./StepCompiler.ts";
@@ -76,6 +77,7 @@ class ContentCompiler {
 		const cached = this.#compiledContent.get(target);
 
 		if (cached) {
+			perfCount("compile.cache-hit");
 			return cached;
 		}
 
@@ -83,7 +85,10 @@ class ContentCompiler {
 			if (!compiler.filter(target)) {
 				continue;
 			}
+			perfCount("compile.cache-miss");
+			const start = perfBegin();
 			const compiled = compiler.compile(target) as EventCompiledContent;
+			perfEnd(`event.compile:${compiler.type}`, start);
 			compiled.compiled = true;
 			compiled.type = compiler.type;
 			compiled.original = content;

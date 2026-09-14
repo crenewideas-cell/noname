@@ -1,22 +1,20 @@
 import installed from "../../game/organized-extensions.json";
 import bundled from "../../game/bundled-extensions.json";
 import validation from "../../game/organized-extension-status.json";
-import { isRetiredExtension } from "./organizedExtensions.js";
+import { isValidExtensionName } from "./organizedExtensions.js";
 
 const known = new Set([...bundled, ...installed.map(item => item.name)]);
 const blocked = new Set(validation.disabled.map(item => item.name));
-const validName = (name: unknown): name is string => typeof name === "string" && !!name.trim() &&
-	!/[\\/\0]/.test(name) && name !== "." && name !== ".." && !isRetiredExtension(name);
 
 /** An exact emergency snapshot wins; without one, use the reviewed default list. */
 export function recoveryNames(snapshot: unknown): string[] {
-	if (Array.isArray(snapshot)) return [...new Set(snapshot.filter(validName))];
+	if (Array.isArray(snapshot)) return [...new Set(snapshot.filter(isValidExtensionName))];
 	return [...known].filter(name => !blocked.has(name) && (bundled.includes(name) || installed.some(item => item.name === name && item.defaultEnabled !== false)));
 }
 
 export async function restoreExtensions(names: string[], config: { get(key: string): any }, save: (key: string, value: any) => Promise<unknown>) {
 	const extensions = new Set<string>(config.get("extensions") || []);
-	for (const name of names.filter(validName)) {
+	for (const name of names.filter(isValidExtensionName)) {
 		extensions.add(name);
 		await save(`extension_${name}_enable`, true);
 	}
@@ -36,7 +34,12 @@ export async function recoverLegacyEmergency(lib, config, save) {
 	const names = recoveryNames(snapshot);
 	if (!names.length) return;
 	const extensions: string[] = config.get("extensions") || [];
-	if (!localStorage.getItem(flag) && extensions.some(name => config.get(`extension_${name}_enable`) === true)) return;
+	if (!localStorage.getItem(flag) && extensions.some(name => config.get(`extension_${name}_enable`) === true)) {
+		// A recovered session has moved on. A stale snapshot must not later undo
+		// a deliberate "disable all" choice.
+		localStorage.removeItem(snapshotKey);
+		return;
+	}
 	localStorage.setItem(flag, "true");
 	await restoreExtensions(names, config, save);
 	// Retire the old snapshot only after all saves have succeeded.
