@@ -10,7 +10,7 @@ const appearance = (label, lines) => ({ label, lines, category: "appearance", pr
 // relationship lookup. The shared runtime knows no skill names or card rules.
 export function daiyuVoice(themeRoot) {
     return {
-        character: "hlhj_daiyu", label: "绛珠仙子", root: themeRoot + "voices/hlhj_daiyu/", clips,
+        character: "hlhj_daiyu", label: "绛珠仙子", shortLabel: "黛玉", root: themeRoot + "voices/hlhj_daiyu/", clips,
         isBond: (source, target) => source.getStorage("hlhj_mushi")[0] === target,
         events: {
             convert: { ...skill("绛珠仙子 · 化情思", range("JZ", 13), 20), cooldown: 15 },

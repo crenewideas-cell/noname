@@ -39,6 +39,7 @@ body > .hlhj-backdrop { position: fixed; inset: 0; z-index: -3; pointer-events: 
 }
 .hlhj-theme-dialog::backdrop { background: #070e17aa; backdrop-filter: blur(5px); }
 .hlhj-theme-dialog * { box-sizing: border-box; position: static; }
+.hlhj-theme-dialog [hidden] { display: none !important; }
 .hlhj-theme-dialog div { transition: none; }
 .hlhj-theme-dialog header { position: relative; padding-right: 70px; margin-bottom: 20px; }
 .hlhj-theme-dialog header small { color: #cfb78b; letter-spacing: .2em; }

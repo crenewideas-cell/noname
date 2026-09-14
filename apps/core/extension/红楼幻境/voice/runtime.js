@@ -1,4 +1,5 @@
 import { openVoicePanel } from "./panel.js";
+import { createCharacterResourceMenu } from "../character-resources.js";
 
 // Single-file catalogs remain supported for characters with only one take.
 export function voiceFiles(clip) {
@@ -12,10 +13,17 @@ export function installVoiceRuntime(lib, game, ui, get, status) {
     const last = new Map(), cooldowns = new Map(), failed = new Set(), musicAdapters = new Set();
     const active = new Set(), received = new Set(), captions = [];
     const defaults = { enabled: true, skills: true, life: true, appearance: true, subtitles: true, volume: 1, appearanceInterval: 60 };
-    const prefs = { ...defaults, ...lib.config.hlhj_voice };
-    prefs.volume = Math.max(0, Math.min(1, Number(prefs.volume) || 0));
+    const preferences = new Map();
+    function settings(character) {
+        if (!preferences.has(character)) {
+            const prefs = { ...defaults, ...lib.config.hlhj_voice, ...lib.config["hlhj_voice_" + character] };
+            prefs.volume = Math.max(0, Math.min(1, Number(prefs.volume) || 0));
+            preferences.set(character, prefs);
+        }
+        return preferences.get(character);
+    }
     const browser = typeof document !== "undefined" && !(typeof window !== "undefined" && window.__nonameHostEmit);
-    let caption, panel, stopped = false, sequence = 0;
+    let caption, panel, panelCharacter, menu, stopped = false, sequence = 0;
     function shown(player, character) {
         return [player?.name, player?.name1, player?.name2].includes(character) &&
             !player.isUnseen?.(player.name2 === character ? 1 : 0);
@@ -35,7 +43,7 @@ export function installVoiceRuntime(lib, game, ui, get, status) {
         // Completed later lines stay until earlier lines finish: strict FIFO
         // removal, independent of overlapping audio durations and load order.
         while (captions[0]?.done) captions.shift().row?.remove();
-        if (!prefs.subtitles || !captions.length) { caption?.remove(); caption = null; return; }
+        if (!captions.length) { caption?.remove(); caption = null; return; }
         if (!caption) {
             caption = document.createElement("div");
             caption.style.cssText = "position:fixed;left:10%;right:10%;bottom:19%;max-height:28vh;overflow-y:auto;z-index:100;pointer-events:none;display:flex;flex-direction:column;gap:4px;text-align:center;color:#fff3d0;font:20px/1.65 serif;text-shadow:0 1px 4px #000,0 0 8px #000;";
@@ -47,7 +55,10 @@ export function installVoiceRuntime(lib, game, ui, get, status) {
                 job.row.style.cssText = "position:relative;flex:none;overflow-wrap:anywhere;";
                 job.row.textContent = job.spec.label + "：" + job.spec.clips[job.packet.line].text;
             }
-            if (job.row) caption.append(job.row);
+            if (job.row) {
+                job.row.hidden = !settings(job.packet.character).subtitles;
+                caption.append(job.row);
+            }
         }
         caption.scrollTop = caption.scrollHeight;
     }
@@ -72,13 +83,14 @@ export function installVoiceRuntime(lib, game, ui, get, status) {
     function availableFiles(character, line) {
         return voiceFiles(registry.get(character)?.clips[line]).filter(file => !failed.has(character + ":" + file));
     }
-    function enabled(rule, preview) {
+    function enabled(character, rule, preview) {
+        const prefs = settings(character);
         return !stopped && (preview || (prefs.enabled && prefs[rule.category || "skills"] && lib.config.background_speak !== false));
     }
     function play(job) {
         const { packet, rule, spec } = job;
         if (!active.has(job)) return;
-        if (!enabled(rule, packet.preview) || document.hidden) { finish(job, "stopped"); return; }
+        if (!enabled(packet.character, rule, packet.preview) || document.hidden) { finish(job, "stopped"); return; }
         const files = availableFiles(packet.character, packet.line);
         if (!files.length) { finish(job, "error"); return; }
         // Usually use the authority's chosen take. If this client cannot load
@@ -105,7 +117,7 @@ export function installVoiceRuntime(lib, game, ui, get, status) {
         catch { retry(); return; }
         if (!audio?.addEventListener) { finish(job, "error"); return; }
         job.audio = audio;
-        audio.volume = Math.max(0, Math.min(1, prefs.volume * (Number(lib.config.volumn_audio ?? 8) / 8)));
+        audio.volume = Math.max(0, Math.min(1, settings(packet.character).volume * (Number(lib.config.volumn_audio ?? 8) / 8)));
         const ended = () => { if (job.audio === audio) finish(job); };
         audio.addEventListener("ended", ended, { once: true });
         audio.addEventListener("error", retry, { once: true });
@@ -133,7 +145,7 @@ export function installVoiceRuntime(lib, game, ui, get, status) {
         // Only catalog paths are accepted; do not play arbitrary broadcast URLs.
         if (packet.file != null && !voiceFiles(spec.clips[packet.line]).includes(packet.file)) return;
         if (packet.event === "enter" && player) entered.add(player);
-        if (!browser || status.video || !enabled(rule, packet.preview) || document.hidden) return;
+        if (!browser || status.video || !enabled(packet.character, rule, packet.preview) || document.hidden) return;
         // Private delivery can reach the owner both locally and via player.send.
         // Deduplicate delivery IDs, not separate activations of the same skill.
         if (packet.id) {
@@ -142,7 +154,7 @@ export function installVoiceRuntime(lib, game, ui, get, status) {
             if (received.size > 512) received.delete(received.values().next().value);
         }
         const key = `${packet.character}:${player?.playerid || player?.dataset?.position || "local"}:${rule.group || packet.event}`;
-        const wait = rule.category === "appearance" ? Number(prefs.appearanceInterval) * 1000 :
+        const wait = rule.category === "appearance" ? Number(settings(packet.character).appearanceInterval) * 1000 :
             rule.category === "skills" ? 0 : (rule.cooldown ?? 3) * 1000;
         if (!packet.preview && Date.now() - (cooldowns.get(key) || 0) < wait) return;
         cooldowns.set(key, Date.now());
@@ -207,14 +219,15 @@ export function installVoiceRuntime(lib, game, ui, get, status) {
         },
         async content(event, trigger, player) { lifecycle(event.triggername, player, trigger); },
     };
-    function configure(key, value) {
+    function configure(character, key, value) {
+        const prefs = settings(character);
         prefs[key] = value;
-        game.saveConfig("hlhj_voice", { ...prefs });
+        game.saveConfig("hlhj_voice_" + character, { ...prefs });
         if (key === "subtitles") renderCaptions();
         else if (key === "volume") {
-            for (const job of active) if (job.audio) job.audio.volume = prefs.volume * Math.max(0, Math.min(1, Number(lib.config.volumn_audio ?? 8) / 8));
+            for (const job of active) if (job.packet.character === character && job.audio) job.audio.volume = prefs.volume * Math.max(0, Math.min(1, Number(lib.config.volumn_audio ?? 8) / 8));
         } else for (const job of [...active]) {
-            if (!enabled(job.rule, job.packet.preview)) finish(job, "stopped");
+            if (job.packet.character === character && !enabled(character, job.rule, job.packet.preview)) finish(job, "stopped");
         }
     }
     function preview(character, event, line, file, onState) {
@@ -230,10 +243,20 @@ export function installVoiceRuntime(lib, game, ui, get, status) {
         active.add(job); captions.push(job); play(job);
         return { stop: () => finish(job, "stopped") };
     }
-    function open() {
-        if (!browser) return;
+    function open(character) {
+        if (!browser || stopped) return;
+        const ids = menu.characters();
+        character ||= ids[0];
+        if (!ids.includes(character)) return;
         panel?.close();
-        panel = openVoicePanel({ registry, prefs, files: voiceFiles, configure, preview, stopAll: stop });
+        const spec = registry.get(character);
+        panelCharacter = character;
+        panel = openVoicePanel({
+            registry: new Map([[character, spec]]), title: (spec.shortLabel || spec.label || character) + "配音",
+            prefs: settings(character), files: voiceFiles,
+            configure: (key, value) => configure(character, key, value), preview,
+            stopAll: () => { for (const job of [...active]) if (job.packet.character === character) finish(job, "stopped"); },
+        });
     }
     if (browser) {
         const resume = () => {
@@ -243,14 +266,23 @@ export function installVoiceRuntime(lib, game, ui, get, status) {
         document.addEventListener("pointerdown", resume, { passive: true });
         document.addEventListener("keydown", resume);
         document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); });
-        window.addEventListener("pagehide", () => { stopped = true; stop(); }, { once: true });
-        (lib.arenaReady ||= []).push(() => { if (!ui.hlhjVoiceButton) ui.hlhjVoiceButton = ui.create.system("红楼配音", open, true); });
+        window.addEventListener("pagehide", () => { stopped = true; stop(); panel?.close(); }, { once: true });
+        menu = createCharacterResourceMenu(lib, game, ui, {
+            registry, suffix: "配音", open,
+            available: spec => Object.values(spec.events || {}).some(rule => rule.lines?.some(id => voiceFiles(spec.clips?.[id]).length)),
+            update(ids) {
+                if (panelCharacter && !ids.includes(panelCharacter)) {
+                    panel?.close(); panel = null; panelCharacter = null;
+                }
+            },
+        });
         (lib.onover ||= []).push(result => {
             for (const character of registry.keys()) if (shown(game.me, character) && typeof result === "boolean") emit(game.me, character, result ? "win" : "lose", { local: true, event: false });
         });
     }
     return game.hlhjVoice = {
-        register(spec) { registry.set(spec.character, spec); }, emit, receive, scope, shown, entered, ruleSkill, open, stop,
+        register(spec) { registry.set(spec.character, spec); menu?.refresh(); }, emit, receive, scope, shown, entered, ruleSkill, open, stop,
+        refresh() { menu?.refresh(); },
         addMusicAdapter(adapter) {
             musicAdapters.add(adapter);
             // Let the registering controller finish initializing its media state.

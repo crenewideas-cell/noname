@@ -1,35 +1,96 @@
-import { themes } from "./theme/catalog.js";
+import { appearanceCatalog } from "./appearance-catalog.js";
+import { createCharacterResourceMenu, selectedCharacters } from "./character-resources.js";
 import { createMotionController } from "./motion.js";
 
 // Local cosmetics only: no game events, skill replacement or network messages.
-export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
+export function installCharacterAppearance(lib, game, ui, get, status, paths) {
     if (typeof document === "undefined" || typeof window.__nonameHostEmit === "function") return;
     if (game.hlhjAppearance) return game.hlhjAppearance;
-    const root = paths.theme.replace(/\/?$/, "/");
+    const registry = new Map();
+    let controller, current, disposed = false;
+    const menu = createCharacterResourceMenu(lib, game, ui, {
+        registry, suffix: "风华",
+        available: spec => !!spec.original || Object.values(spec.themes || {}).some(theme =>
+            theme.image || theme.poster || theme.portrait?.image || theme.portrait?.fallback || theme.tracks?.length),
+        open, update(ids) {
+            const next = ids.includes(current) ? current : ids[0];
+            activate(next);
+            controller?.refresh();
+        },
+    });
+    function activate(character) {
+        if (character === current && controller) return;
+        controller?.dispose(); controller = null; current = character;
+        if (character) controller = createAppearanceController(lib, game, ui, registry.get(character));
+    }
+    function open(character) {
+        if (disposed) return;
+        const ids = menu.characters();
+        character ||= ids.includes(current) ? current : ids[0];
+        if (!ids.includes(character)) return;
+        activate(character); controller?.open();
+    }
+    const api = game.hlhjAppearance = {
+        register(spec) {
+            if (disposed || !spec?.character) return;
+            registry.set(spec.character, {
+                ...spec, label: spec.label || spec.character, themes: spec.themes || {},
+                root: spec.root || paths.theme, stylesheet: spec.stylesheet || paths.theme + "appearance.css",
+            });
+            if (current === spec.character) { controller?.dispose(); controller = null; }
+            menu.refresh();
+        },
+        open, prepare() { controller?.prepare(); }, refresh: menu.refresh,
+        dispose() {
+            disposed = true; menu.dispose(); controller?.dispose(); controller = null;
+            window.removeEventListener("pagehide", api.dispose);
+        },
+    };
+    for (const spec of appearanceCatalog(paths)) api.register(spec);
+    window.addEventListener("pagehide", api.dispose, { once: true });
+    return api;
+}
+
+// Compatibility for existing consumers; all behavior is character-driven.
+export const installDaiyuAppearance = installCharacterAppearance;
+
+function createAppearanceController(lib, game, ui, spec) {
+    const { character, label, themes } = spec;
+    const themeKeys = Object.keys(themes);
+    const portraitKeys = themeKeys.filter(key => themes[key].portrait?.image || themes[key].portrait?.fallback);
+    const sceneKeys = themeKeys.filter(key => themes[key].image || themes[key].poster);
+    const musicKeys = themeKeys.filter(key => themes[key].tracks?.length);
+    const root = spec.root.replace(/\/?$/, "/");
     const url = path => lib.assetURL + path;
-    const defaults = { version: 3, motion: "on", portrait: "cycle", portraitInterval: "15", background: "cycle", startup: "random", music: "follow", order: "sequence", volume: 0.6 };
+    const defaults = { version: 3, motion: "on", portrait: portraitKeys.length ? "cycle" : "original", portraitInterval: "15", background: sceneKeys.length ? "cycle" : "system", startup: "random", music: musicKeys.length ? "follow" : "system", order: "sequence", volume: 0.6 };
     const options = {
         motion: { on: "动态原画与背景（默认）", off: "静态原画与背景" },
-        portrait: { cycle: "自动轮换（独立计时）", bamboo: "固定 · 潇湘竹影", dream: "固定 · 绛珠归梦", original: "固定 · 绛珠题笺", fate: "随泪数转换" },
+        portrait: {
+            ...(portraitKeys.length ? { cycle: "自动轮换（独立计时）" } : {}),
+            ...Object.fromEntries(portraitKeys.map(key => [key, "固定 · " + themes[key].name])),
+            ...(spec.original ? { original: "固定 · " + (spec.originalLabel || "原始立绘") } : {}),
+            ...Object.fromEntries(Object.entries(spec.portraitModes || {}).map(([key, mode]) => [key, mode.label])),
+        },
         portraitInterval: { "6": "6 秒", "12": "12 秒", "15": "15 秒（默认）", "20": "20 秒", "30": "30 秒", "60": "60 秒" },
-        background: { cycle: "每曲结束切换背景", hold: "保持当前背景", bamboo: "固定 · 潇湘竹影", dream: "固定 · 绛珠归梦", system: "使用原背景" },
-        startup: { random: "随机选择一套", bamboo: "潇湘竹影", dream: "绛珠归梦" },
-        music: { follow: "跟随背景播放对应歌单", system: "使用原音乐", off: "静音" },
+        background: { ...(sceneKeys.length ? { cycle: "每曲结束切换背景", hold: "保持当前背景" } : {}), ...Object.fromEntries(sceneKeys.map(key => [key, "固定 · " + themes[key].name])), system: "使用原背景" },
+        startup: { random: "随机选择一套", ...Object.fromEntries(sceneKeys.map(key => [key, themes[key].name])) },
+        music: { ...(musicKeys.length ? { follow: "跟随背景播放对应歌单" } : {}), ...Object.fromEntries(musicKeys.map(key => [key, "固定 · " + (themes[key].album || themes[key].name)])), system: "使用原音乐", off: "静音" },
         order: { sequence: "顺序循环", shuffle: "随机循环（整轮不重复）" },
     };
-    const saved = lib.config.hlhj_appearance || {};
+    const configKey = "hlhj_appearance_" + character;
+    const saved = lib.config[configKey] || (spec.legacyConfig && lib.config[spec.legacyConfig]) || {};
     const prefs = { ...defaults };
     for (const key of Object.keys(options)) if (Object.hasOwn(options[key], saved[key])) prefs[key] = saved[key];
     // Retain explicit fixed choices; migrate the old portrait-linked theme to
     // the independent scene controller. Existing portrait choices stay intact.
-    if (saved.version !== defaults.version && ["bamboo", "dream"].includes(saved.music)) {
+    if (saved.version !== defaults.version && sceneKeys.includes(saved.music)) {
         if (!saved.background || saved.background === "follow") prefs.background = saved.music;
     }
     // Old installs defaulted to a fixed portrait; migrate once so this release's
     // automatic rotation actually takes effect. Later explicit choices persist.
     if (saved.version !== defaults.version) {
-        prefs.portrait = "cycle"; prefs.portraitInterval = "15";
-        game.saveConfig("hlhj_appearance", { ...prefs, volume: Number.isFinite(saved.volume) ? Math.max(0, Math.min(1, saved.volume)) : prefs.volume });
+        prefs.portrait = defaults.portrait; prefs.portraitInterval = "15";
+        game.saveConfig(configKey, { ...prefs, volume: Number.isFinite(saved.volume) ? Math.max(0, Math.min(1, saved.volume)) : prefs.volume });
     }
     if (Number.isFinite(saved.volume)) prefs.volume = Math.max(0, Math.min(1, saved.volume));
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -39,18 +100,19 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
     const voicedPortraits = new WeakMap();
     let voiceDucking = 1;
     const removeVoiceAdapter = game.hlhjVoice?.addMusicAdapter(value => { voiceDucking = value; updateVolume(); });
-    let alive = [], button, dialog, observer, timer, frame, ended = false, cycleStart = Date.now();
+    let alive = [], dialog, frame, ended = false, cycleStart = Date.now();
     let backdrop, backgroundKey, music, musicKey, baseMusic, baseWasPlaying = false, stylesheet;
     let backgroundRevision = 0, backgroundCleanup;
     let audioBlocked = false, failedMusic, audioRevision = 0, playPending = false, panelRefresh;
     let sceneKey, sessionStarted = false;
-    const playlist = Object.fromEntries(Object.keys(themes).map(key => [key, { index: 0, queue: null, failed: new Set() }]));
+    const playlist = Object.fromEntries(musicKeys.map(key => [key, { index: 0, queue: null, failed: new Set() }]));
     const trackName = () => themes[musicKey]?.tracks[playlist[musicKey].index].split("/").pop().replace(/\.[^.]+$/, "");
     function ensureScene() {
-        if (!sceneKey) sceneKey = prefs.startup === "random" ? (Math.random() < 0.5 ? "bamboo" : "dream") : prefs.startup;
-        if (Object.hasOwn(themes, prefs.background)) sceneKey = prefs.background;
+        if (!sceneKey) sceneKey = prefs.startup === "random" ? sceneKeys[Math.floor(Math.random() * sceneKeys.length)] : prefs.startup;
+        if (sceneKeys.includes(prefs.background)) sceneKey = prefs.background;
         return sceneKey;
     }
+    function nextScene() { return sceneKeys.length ? sceneKeys[(sceneKeys.indexOf(ensureScene()) + 1) % sceneKeys.length] : undefined; }
     function nextIndex(key) {
         const state = playlist[key], tracks = themes[key].tracks;
         const available = tracks.map((_, index) => index).filter(index => !state.failed.has(index));
@@ -78,9 +140,9 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
         for (const state of Object.values(playlist)) state.failed.clear();
     }
     function finishTrack() {
-        if (ended || !sessionStarted || !Object.hasOwn(themes, musicKey)) return;
+        if (ended || !sessionStarted || !musicKeys.includes(musicKey)) return;
         nextIndex(musicKey);
-        if (prefs.background === "cycle") sceneKey = sceneKey === "bamboo" ? "dream" : "bamboo";
+        if (prefs.background === "cycle") sceneKey = nextScene();
         reconcile(true);
     }
     let audioMessage = "";
@@ -90,19 +152,17 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
         const node = musicStatus();
         if (node && node.textContent !== message) node.textContent = message;
     }
-    function save() { game.saveConfig("hlhj_appearance", { ...prefs }); }
-    function isDaiyu(player) { return [player.name, player.name1, player.name2].includes("hlhj_daiyu"); }
+    function save() { game.saveConfig(configKey, { ...prefs }); }
     function form(player) {
-        if (prefs.portrait === "cycle") return Math.floor((Date.now() - cycleStart) / (Number(prefs.portraitInterval) * 1000)) % 2 ? "dream" : "bamboo";
-        if (prefs.portrait === "fate") {
-            const limit = lib.skill.hlhj_guimeng?.appearanceThreshold?.() || Infinity;
-            return player.countMark("hlhj_lei") >= Math.ceil(limit / 2) ? "dream" : "bamboo";
-        }
+        if (prefs.portrait === "cycle") return portraitKeys[Math.floor((Date.now() - cycleStart) / (Number(prefs.portraitInterval) * 1000)) % portraitKeys.length];
+        const mode = spec.portraitModes?.[prefs.portrait];
+        if (mode) return mode.resolve(player, lib);
         return prefs.portrait;
     }
-    function originalPortraitPath(key) { return key === "original" ? paths.original : root + (key === "dream" ? "daiyu-dream.png" : "daiyu-bamboo.png"); }
+    function originalPortraitPath(key) { return themes[key]?.portrait?.fallback ? root + themes[key].portrait.fallback : spec.original; }
     function portraitPath(key) { return themes[key]?.portrait?.image ? root + themes[key].portrait.image : originalPortraitPath(key); }
     function loadImage(path) {
+        if (!path) return Promise.reject(new Error("No image configured"));
         if (!imageCache.has(path)) {
             const ready = new Promise((resolve, reject) => {
                 const image = new Image(); image.decoding = "async"; image.fetchPriority = "low";
@@ -151,7 +211,7 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
                     next.classList.add("visible");
                     const previous = voicedPortraits.get(player);
                     voicedPortraits.set(player, key);
-                    if (previous && previous !== key) game.hlhjVoice?.emit(player, "hlhj_daiyu", "portrait_" + key, { local: true, event: false });
+                    if (previous && previous !== key) game.hlhjVoice?.emit(player, character, "portrait_" + key, { local: true, event: false });
                 }
             }));
             // Keep the outgoing image during the fade; never retain a queue.
@@ -202,7 +262,7 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
             }, reducedMotion.matches ? 0 : 1650);
             if (previous && previous !== key) {
                 const player = alive.find(current => current === game.me && current.isIn()) || alive.find(current => current.isIn());
-                if (player) game.hlhjVoice?.emit(player, "hlhj_daiyu", "background_" + key, { local: true, event: false });
+                if (player) game.hlhjVoice?.emit(player, character, "background_" + key, { local: true, event: false });
             }
         }).catch(() => { /* Retain the last good scene/system background. */ });
     }
@@ -226,7 +286,7 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
         baseMusic = null; baseWasPlaying = false;
     }
     function playMusic() {
-        if (!music || !Object.hasOwn(themes, musicKey) || document.hidden || playPending || ended) return;
+        if (!music || !musicKeys.includes(musicKey) || document.hidden || playPending || ended) return;
         const playing = music, revision = audioRevision;
         playPending = true;
         playing.play()?.then(() => {
@@ -251,6 +311,7 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
         music.muted = ui.backgroundMusic?.muted ?? false;
     }
     function setMusic(key, restart = false) {
+        if (key !== "off" && !musicKeys.includes(key)) key = "system";
         if (key === "system" || lib.config.background_music === "music_off") {
             if (musicKey) releaseMusic();
             notifyMusic(lib.config.background_music === "music_off" ? "本体背景音乐已关闭；请在声音设置中开启" : "正在使用原音乐");
@@ -299,7 +360,7 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
             notifyMusic(`正在切换至《${trackName()}》…`);
             playMusic();
         } else {
-            notifyMusic("黛玉主题音乐已静音");
+            notifyMusic(`${label}主题音乐已静音`);
         }
         if (key === "off") pauseBase();
     }
@@ -307,55 +368,58 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
         if (frame) cancelAnimationFrame(frame);
         frame = null;
         if (!ui.window || ended) return;
-        alive = [...new Set([...(game.players || []), ...(game.dead || [])])].filter(player => isDaiyu(player) && player.isConnected &&
-            !player.isUnseen?.(player.name2 === "hlhj_daiyu" ? 1 : 0));
+        alive = selectedCharacters(game).includes(character) && game.me.isConnected ? [game.me] : [];
         if (alive.length && !sessionStarted) {
             sessionStarted = true; cycleStart = Date.now(); ensureScene();
             motion.start();
         }
         const keep = new Set();
         for (const player of alive) {
-            const node = player.node[player.name2 === "hlhj_daiyu" ? "avatar2" : "avatar"];
-            if (node) { keep.add(node); setPortrait(node, form(player), player); }
+            const node = player.node[player.name2 === character ? "avatar2" : "avatar"];
+            if (node && (portraitKeys.length || spec.original)) { keep.add(node); setPortrait(node, form(player), player); }
         }
         for (const [node, item] of portraits) {
             if (keep.has(node) && item.overlay.isConnected) continue;
             item.revision++; clearTimeout(item.cleanup); removeVisual(item.overlay); portraits.delete(node);
         }
         setBackground(sessionStarted && prefs.background !== "system" ? ensureScene() : "system");
-        const key = sessionStarted ? (prefs.music === "follow" ? (prefs.background === "system" ? "system" : ensureScene()) : prefs.music) : "system";
+        const key = sessionStarted ? (prefs.music === "follow" ? (sceneKeys.length ? (prefs.background === "system" ? "system" : ensureScene()) : musicKeys[0]) : prefs.music) : "system";
         setMusic(key, restartMusic === true);
         motion.tick();
-        if (button) button.style.display = sessionStarted ? "" : "none";
         panelRefresh?.();
     }
     function schedule() { if (!frame && !ended) frame = requestAnimationFrame(() => reconcile()); }
     function open() {
+        if (ended) return;
         if (dialog?.open) { dialog.focus(); return; }
         const focus = document.activeElement;
         dialog = document.createElement("dialog");
         const panel = dialog;
         dialog.className = "hlhj-theme-dialog";
-        dialog.setAttribute("aria-label", "黛玉 · 幻境风华");
+        dialog.setAttribute("aria-label", `${label} · 幻境风华`);
         function el(tag, text, parent = dialog) {
             const node = document.createElement(tag);
             if (text) node.textContent = text;
             parent.append(node); return node;
         }
         const header = el("header");
-        el("small", "红楼幻梦 · 命运", header);
-        el("h2", "黛玉 · 幻境风华", header);
-        el("p", "一窗竹影，一枕归梦。", header);
+        el("small", "红楼幻梦 · 人物风华", header);
+        el("h2", `${label} · 幻境风华`, header);
+        if (spec.subtitle) el("p", spec.subtitle, header);
         const close = el("button", "关闭", header);
         close.type = "button"; close.onclick = () => panel.close();
         const preview = el("img");
         preview.className = "hlhj-theme-preview";
-        preview.alt = "潇湘竹影 · 黛玉原画";
-        preview.src = url(portraitPath("bamboo"));
+        preview.alt = `${label}原画`;
+        preview.hidden = !portraitKeys.length && !spec.original;
+        if (!preview.hidden) preview.src = url(portraitPath(form(game.me)));
         const fields = el("section"); fields.className = "hlhj-theme-fields";
         const selects = new Map();
         for (const [key, label] of [["motion", "画面动态"], ["portrait", "角色原画"], ["portraitInterval", "原画轮换间隔"], ["background", "背景切换"], ["startup", "开局背景（下局生效）"], ["music", "背景音乐"], ["order", "歌单播放顺序"]]) {
             const row = el("label", label, fields);
+            row.hidden = (["portrait", "portraitInterval"].includes(key) && !portraitKeys.length && !spec.original) ||
+                (["background", "startup"].includes(key) && !sceneKeys.length) ||
+                (["music", "order"].includes(key) && !musicKeys.length);
             const select = el("select", null, row);
             select.name = key;
             selects.set(key, select);
@@ -373,12 +437,13 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
             };
         }
         const volumeRow = el("label", "主题音乐音量", fields);
+        volumeRow.hidden = !musicKeys.length;
         const range = el("input", null, volumeRow); range.type = "range";
         range.min = "0"; range.max = "100"; range.value = String(Math.round(prefs.volume * 100));
         const level = el("output", range.value + "%", volumeRow);
         range.oninput = () => { prefs.volume = Number(range.value) / 100; level.textContent = range.value + "%"; reconcile(); };
         range.onchange = save;
-        const hint = el("p", "默认使用动态原画与背景，进入对局后由静态画面平滑过渡。可切换为静态展示；系统开启减少动态效果时也使用静态画面。此处预览为静态图。原画默认每15秒轮换，随泪数模式达到归梦阈值的一半切为归梦，下降后恢复竹影。", fields);
+        const hint = el("p", "默认使用可用的动态原画与背景，可切换为静态展示；系统开启减少动态效果时也使用静态画面。此处预览为静态图，原画默认每15秒轮换。" + (spec.hint || ""), fields);
         hint.className = "hlhj-theme-hint";
         el("p", "原画与背景各自切换，互不影响。背景对应独立歌单；每曲结束可换景，也可保持背景并循环歌单。固定背景优先于开局设置。静音、使用原音乐或播放失败时不自动换景；“下一首”只换曲，“切换背景”立即换景换歌单。", fields).className = "hlhj-theme-hint";
         const scenePreview = el("img", null, fields); scenePreview.className = "hlhj-scene-preview";
@@ -388,7 +453,7 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
         panelRefresh = () => {
             const subject = alive.includes(game.me) ? game.me : alive[0];
             const key = form(subject || { countMark: () => 0 });
-            if (preview.dataset.form !== key) {
+            if (!preview.hidden && preview.dataset.form !== key) {
                 preview.dataset.form = key;
                 preview.src = url(portraitPath(key));
                 preview.alt = options.portrait[key];
@@ -399,44 +464,47 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
                 scenePreview.dataset.scene = backgroundKey;
                 scenePreview.src = url(root + (scene.poster || scene.image)); scenePreview.alt = scene.name + "背景";
             }
-            const description = !sessionStarted ? "黛玉入场后启用背景与音乐" : scene ? `当前背景：${scene.name} · ${scene.album}（${scene.tracks.length} 首）` : "当前使用原背景与所选音乐设置";
+            const description = !sessionStarted ? `${label}入场后启用背景与音乐` : scene ? `当前背景：${scene.name}${scene.tracks?.length ? ` · ${scene.album || "主题歌单"}（${scene.tracks.length} 首）` : ""}` : "当前使用原背景与所选音乐设置";
             if (sceneStatus.textContent !== description) sceneStatus.textContent = description;
             selects.get("portraitInterval").disabled = prefs.portrait !== "cycle";
             selects.get("startup").disabled = !["cycle", "hold"].includes(prefs.background);
-            selects.get("order").disabled = prefs.music !== "follow" || prefs.background === "system";
+            selects.get("order").disabled = !musicKeys.includes(musicKey);
         };
         panelRefresh(); notifyMusic(audioMessage || "选择主题后立即保存");
         const footer = el("footer");
-        for (const [key, label] of [["bamboo", "固定竹影背景"], ["dream", "固定归梦背景"]]) {
-            const preset = el("button", label, footer); preset.type = "button";
+        for (const key of sceneKeys) {
+            const preset = el("button", `固定${themes[key].name}背景`, footer); preset.type = "button";
             preset.onclick = () => {
-                Object.assign(prefs, { background: key, music: "follow" });
+                Object.assign(prefs, { background: key, music: musicKeys.includes(key) ? "follow" : "system" });
                 for (const [name, select] of selects) select.value = prefs[name];
                 retryMusic(); save(); reconcile(); playMusic();
             };
         }
         const play = el("button", "播放音乐", footer); play.type = "button";
+        play.hidden = !musicKeys.length;
         play.onclick = () => {
-            if (!sessionStarted) { notifyMusic("黛玉进入对局后可播放主题音乐"); return; }
+            if (!sessionStarted) { notifyMusic(`${label}进入对局后可播放主题音乐`); return; }
             if (lib.config.background_music === "music_off") { notifyMusic("本体已关闭背景音乐，请先在声音设置中开启"); return; }
             if (["off", "system"].includes(prefs.music)) {
                 prefs.music = "follow"; save();
                 selects.get("music").value = "follow";
             }
-            if (prefs.background === "system") {
+            if (sceneKeys.length && prefs.background === "system") {
                 prefs.background = "hold"; selects.get("background").value = "hold"; save();
             }
             retryMusic(); reconcile(); playMusic();
         };
         const next = el("button", "下一首", footer); next.type = "button";
+        next.hidden = !musicKeys.length;
         next.onclick = () => {
-            if (!sessionStarted || !Object.hasOwn(themes, musicKey)) { notifyMusic("请先启用背景歌单"); return; }
+            if (!sessionStarted || !musicKeys.includes(musicKey)) { notifyMusic("请先启用背景歌单"); return; }
             retryMusic(); nextIndex(musicKey); reconcile(true);
         };
         const switchScene = el("button", "切换背景", footer); switchScene.type = "button";
+        switchScene.hidden = sceneKeys.length < 2;
         switchScene.onclick = () => {
-            if (!sessionStarted) { notifyMusic("黛玉进入对局后可切换背景"); return; }
-            sceneKey = ensureScene() === "bamboo" ? "dream" : "bamboo";
+            if (!sessionStarted) { notifyMusic(`${label}进入对局后可切换背景`); return; }
+            sceneKey = nextScene();
             if (prefs.background !== "cycle") prefs.background = "hold";
             selects.get("background").value = prefs.background;
             retryMusic(); save(); reconcile(); playMusic();
@@ -455,7 +523,7 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
     }
     function onGesture() {
         motion.gesture();
-        if (audioBlocked || (music?.paused && Object.hasOwn(themes, musicKey))) playMusic();
+        if (audioBlocked || (music?.paused && musicKeys.includes(musicKey))) playMusic();
     }
     function onVisibility() {
         motion.refresh();
@@ -463,13 +531,15 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
         else { schedule(); if (music && !audioBlocked) playMusic(); }
     }
     function stop() {
-        ended = true; clearInterval(timer); observer?.disconnect();
+        ended = true;
         cancelAnimationFrame(frame); frame = null;
         for (const item of portraits.values()) { item.revision++; clearTimeout(item.cleanup); removeVisual(item.overlay); }
         portraits.clear(); imageCache.clear(); setBackground("system"); releaseMusic(); removeVoiceAdapter?.();
         motion.dispose(); reducedMotion.removeEventListener?.("change", onMotionPreference);
-        button?.remove(); button = null; dialog?.close();
+        dialog?.close();
         stylesheet?.remove();
+        const index = lib.arenaReady.indexOf(start);
+        if (index !== -1) lib.arenaReady.splice(index, 1);
         document.removeEventListener("pointerdown", onGesture);
         document.removeEventListener("pointerup", onGesture);
         document.removeEventListener("keydown", onGesture);
@@ -479,20 +549,14 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
     function onMotionPreference() { motion.refresh(); }
     function prepare() {
         if (ended) return;
-        const key = prefs.portrait === "dream" ? "dream" : prefs.portrait === "original" ? "original" : "bamboo";
+        const key = form(game.me);
         void loadPortrait(key).catch(() => {});
         if (themes[key]?.portrait?.video) motion.prepare(url(root + themes[key].portrait.video));
     }
     function start() {
-        if (observer || ended || !ui.window || !ui.system2) return;
+        if (stylesheet || ended || !ui.window || !ui.system2) return;
         stylesheet = document.createElement("link");
-        stylesheet.rel = "stylesheet"; stylesheet.href = url(root + "appearance.css"); document.head.append(stylesheet);
-        button = ui.create.system("黛玉风华", open, true);
-        observer = new MutationObserver(schedule);
-        // Card movement/animation used to trigger a full reconciliation for every
-        // subtree mutation. Watch only seat changes; the timer handles marks.
-        observer.observe(ui.arena || ui.window, { childList: true });
-        timer = setInterval(schedule, 1000);
+        stylesheet.rel = "stylesheet"; stylesheet.href = url(spec.stylesheet); document.head.append(stylesheet);
         document.addEventListener("pointerdown", onGesture);
         document.addEventListener("pointerup", onGesture);
         document.addEventListener("keydown", onGesture);
@@ -505,5 +569,5 @@ export function installDaiyuAppearance(lib, game, ui, get, status, paths) {
     }
     lib.arenaReady.push(start);
     if (ui.window) start();
-    return game.hlhjAppearance = { open, prepare, refresh: schedule, dispose: stop };
+    return { open, prepare, refresh: schedule, dispose: stop };
 }

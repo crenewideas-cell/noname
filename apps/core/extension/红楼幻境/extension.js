@@ -1,4 +1,4 @@
-import { installDaiyuAppearance } from "./appearance.js";
+import { installCharacterAppearance } from "./appearance.js";
 import { themes } from "./theme/catalog.js";
 import { installVoiceRuntime, voiceFiles } from "./voice/runtime.js";
 import { daiyuVoice } from "./voice/daiyu.js";
@@ -637,15 +637,15 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
             const voices = installVoiceRuntime(lib, game, ui, get, _status);
             voices.register(voiceSpec);
             skill._hlhj_voice_events = voices.ruleSkill;
-            installDaiyuAppearance(lib, game, ui, get, _status, appearancePaths);
+            installCharacterAppearance(lib, game, ui, get, _status, appearancePaths);
         },
         config: {
             voices: {
-                name: "红楼配音 · 开关 / 音量 / 字幕 / 试听", clear: true,
+                name: "当前角色配音 · 开关 / 音量 / 字幕 / 试听", clear: true,
                 onclick() { game.hlhjVoice?.open(); },
             },
             appearance: {
-                name: "黛玉风华 · 原画 / 背景 / 音乐",
+                name: "当前角色风华 · 原画 / 背景 / 音乐",
                 clear: true,
                 onclick() { game.hlhjAppearance?.open(); },
             },

@@ -53,13 +53,13 @@ const css = `
 @media(max-width:720px){#hlhj-voice-panel{width:calc(100vw - 16px);height:calc(100dvh - 16px);border-radius:12px}#hlhj-voice-panel header{padding:12px 16px}#hlhj-voice-panel .vp-body{grid-template-columns:1fr;overflow:auto;display:block}#hlhj-voice-panel aside{border-right:0;border-bottom:1px solid #bdab7926;padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:0 16px}#hlhj-voice-panel aside h3,#hlhj-voice-panel aside>.vp-muted{grid-column:1/-1}#hlhj-voice-panel .vp-switch{margin:7px 0}#hlhj-voice-panel .vp-setting{padding-top:10px;margin-top:8px}#hlhj-voice-panel main{padding:16px;min-height:480px}#hlhj-voice-panel .vp-list{overflow:visible}#hlhj-voice-panel .vp-filters{grid-template-columns:1fr}#hlhj-voice-panel footer{flex-wrap:wrap}}
 `;
 
-export function openVoicePanel({ registry, prefs, files, configure, preview, stopAll }) {
+export function openVoicePanel({ registry, title = "人物配音", prefs, files, configure, preview, stopAll }) {
     if (!document.getElementById("hlhj-voice-panel-style")) {
         const style = document.createElement("style"); style.id = "hlhj-voice-panel-style"; style.textContent = css; document.head.append(style);
     }
     const previousFocus = document.activeElement, jobs = new Set();
     const dialog = document.createElement("dialog"); dialog.id = "hlhj-voice-panel";
-    dialog.setAttribute("aria-label", "红楼配音设置与台词试听");
+    dialog.setAttribute("aria-label", title + "设置与台词试听");
     for (const type of ["click", "pointerdown", "pointerup", "touchstart", "touchend", "keydown"]) dialog.addEventListener(type, event => event.stopPropagation());
     function node(parent, tag, className, text) {
         const item = document.createElement(tag); if (className) item.className = className;
@@ -75,7 +75,7 @@ export function openVoicePanel({ registry, prefs, files, configure, preview, sto
     }
     dialog.addEventListener("cancel", event => { event.preventDefault(); close(); });
     const shell = node(dialog, "div", "vp-shell"), header = node(shell, "header");
-    const heading = node(header, "div"); node(heading, "h2", "", "红楼配音");
+    const heading = node(header, "div"); node(heading, "h2", "", title);
     node(heading, "p", "vp-muted", "一字一声 · 听取红楼心事");
     button(header, "×", close, "vp-close").setAttribute("aria-label", "关闭配音面板");
     const body = node(shell, "div", "vp-body"), aside = node(body, "aside"), main = node(body, "main");
@@ -99,6 +99,8 @@ export function openVoicePanel({ registry, prefs, files, configure, preview, sto
     const filters = node(main, "div", "vp-filters"), character = node(filters, "select"), eventSelect = node(filters, "select");
     character.setAttribute("aria-label", "选择人物"); eventSelect.setAttribute("aria-label", "选择技能或情境");
     for (const [id, spec] of registry) option(character, id, spec.label);
+    character.hidden = registry.size < 2;
+    if (character.hidden) eventSelect.style.gridColumn = "1 / -1";
     const search = node(filters, "input", "vp-search"); search.type = "search"; search.placeholder = "搜索台词、编号或情境…"; search.setAttribute("aria-label", "搜索台词");
     const toolbar = node(main, "div", "vp-toolbar"), count = node(toolbar, "span", "vp-muted"), actions = node(toolbar, "div", "vp-actions");
     const list = node(main, "div", "vp-list"), footer = node(main, "footer"), summary = node(footer, "span"), pager = node(footer, "div", "vp-actions");
@@ -119,7 +121,7 @@ export function openVoicePanel({ registry, prefs, files, configure, preview, sto
         start(entry, null, update => { summary.textContent = `${entry.id} · ${update.state === "error" ? "音频暂不可用" : update.state === "ended" ? "播放结束" : "随机试听"}`; });
     }, "vp-primary");
     button(actions, "停止试听", () => { for (const job of jobs) job.stop(); jobs.clear(); });
-    button(aside, "停止全部配音", stopAll, "vp-setting");
+    button(aside, "停止当前人物配音", stopAll, "vp-setting");
     function render() {
         const spec = registry.get(character.value); list.replaceChildren();
         if (!spec) { node(list, "p", "vp-empty", "暂无人物配音"); return; }

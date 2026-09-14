@@ -29,6 +29,7 @@ export async function onlineBuildId(root: string) {
     "apps/core/layout", "apps/core/theme", "apps/core/scripts", "apps/core/index.html", "apps/core/noname.js",
     "apps/core/extension/红楼幻境/extension.js", "apps/core/extension/红楼幻境/info.json",
     "apps/core/extension/红楼幻境/appearance.js", "apps/core/extension/红楼幻境/motion.js", "apps/core/extension/红楼幻境/theme/appearance.css",
+    "apps/core/extension/红楼幻境/appearance-catalog.js", "apps/core/extension/红楼幻境/character-resources.js",
     "apps/core/extension/红楼幻境/theme/catalog.js", "apps/core/extension/红楼幻境/voice/runtime.js",
     "apps/core/extension/红楼幻境/voice/daiyu.js", "apps/core/extension/红楼幻境/voice/panel.js", "apps/core/extension/红楼幻境/voice/catalogs",
     "apps/core/package.json", "apps/core/pnpm-lock.yaml", "apps/core/vite.config.ts", "packages/online-protocol/src",
