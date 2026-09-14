@@ -2357,76 +2357,92 @@ const skills = {
 			return 2;
 		},
 		async cost(event, trigger, player) {
+			const targets = trigger.targets.filter(target => target.isIn());
+			if (!targets.length) {
+				event.result = { bool: false };
+				return;
+			}
+			// A single target only needs an activation decision, not another
+			// selection on the arena behind the skill description.
+			if (targets.length === 1) {
+				const result = await player
+					.chooseBool({
+						prompt: get.prompt2(event.skill, targets[0]),
+						choice: lib.skill.tingwei.getTargetScore(targets[0], player, trigger) > 0,
+					})
+					.forResult();
+				event.result = { bool: result.bool, targets: result.bool ? targets : [] };
+				return;
+			}
 			event.result = await player
 				.chooseTarget({
 					prompt: get.prompt2(event.skill),
 					filterTarget(_card, _player, target) {
-						const event = get.event();
-						return event.targets.includes(target);
+						return get.event().tingweiTargets.includes(target);
 					},
 					ai(target) {
-						const player = get.player();
-						const trigger = get.event().getTrigger();
-
-						// 判断态度，友方则不选，虽然给牌或加伤或许有奇效，但让AI实现还是太难了
-						const att = get.attitude(player, target);
-						if (att >= 0) {
-							return -1;
-						}
-
-						let score = 0;
-
-						// 此【杀】本身对目标的收益，尤其用于判断伤害+1是否有价值
-						const nature = get.nature(trigger.card);
-						const damage = get.damageEffect(target, player, player, nature);
-						if (damage > 0) {
-							score += damage * 1.8;
-							if (target.hp <= 2) {
-								score += 2;
-							}
-						}
-
-						// 非锁定技失效：技能越多越值得
-						const skills = target.getSkills(null, false, false).filter(skill => {
-							const info = get.info(skill);
-							return info && !info.locked && !info.charlotte;
-						});
-						score += skills.length * 1.2;
-
-						// 交装备：有装备牌时才有压力
-						const equips1 = target.getGainableCards(player, "e");
-						const equips2 = target.getGainableCards(player, "h", card => card.isKnownBy(player) && get.type(card) === "equip");
-						const equips = equips1.concat(equips2);
-						if (equips.length) {
-							const values = equips.reduce((sum, card) => sum + get.value(card, target), 0) / equips.length;
-							score += Math.min(3, values);
-						}
-
-						// 随机弃牌：牌越少越疼，牌越关键越疼
-						const cards = target.countDiscardableCards(target, "he");
-						if (cards) {
-							score += Math.min(3, 1 + 4 / cards);
-						}
-
-						// 不选则连环：未横置、且可能吃属性伤害时更值钱
-						if (!target.isLinked()) {
-							score += 0.8;
-							if (game.hasPlayer(current => current !== target && current.isLinked())) {
-								score += 0.8;
-							}
-							if (nature) {
-								score += 0.6;
-							}
-						}
-
-						// 敌意修正：越是敌人越优先
-						score *= Math.max(1, -att / 3);
-
-						return score;
+						return lib.skill.tingwei.getTargetScore(target, get.player(), get.event().getTrigger());
 					},
 				})
-				.set("targets", trigger.targets)
+				.set("tingweiTargets", targets)
 				.forResult();
+		},
+		getTargetScore(target, player, trigger) {
+			// 判断态度，友方则不选，虽然给牌或加伤或许有奇效，但让AI实现还是太难了
+			const att = get.attitude(player, target);
+			if (att >= 0) {
+				return -1;
+			}
+
+			let score = 0;
+
+			// 此【杀】本身对目标的收益，尤其用于判断伤害+1是否有价值
+			const nature = get.nature(trigger.card);
+			const damage = get.damageEffect(target, player, player, nature);
+			if (damage > 0) {
+				score += damage * 1.8;
+				if (target.hp <= 2) {
+					score += 2;
+				}
+			}
+
+			// 非锁定技失效：技能越多越值得
+			const skills = target.getSkills(null, false, false).filter(skill => {
+				const info = get.info(skill);
+				return info && !info.locked && !info.charlotte;
+			});
+			score += skills.length * 1.2;
+
+			// 交装备：有装备牌时才有压力
+			const equips1 = target.getGainableCards(player, "e");
+			const equips2 = target.getGainableCards(player, "h", card => card.isKnownBy(player) && get.type(card) === "equip");
+			const equips = equips1.concat(equips2);
+			if (equips.length) {
+				const values = equips.reduce((sum, card) => sum + get.value(card, target), 0) / equips.length;
+				score += Math.min(3, values);
+			}
+
+			// 随机弃牌：牌越少越疼，牌越关键越疼
+			const cards = target.countDiscardableCards(target, "he");
+			if (cards) {
+				score += Math.min(3, 1 + 4 / cards);
+			}
+
+			// 不选则连环：未横置、且可能吃属性伤害时更值钱
+			if (!target.isLinked()) {
+				score += 0.8;
+				if (game.hasPlayer(current => current !== target && current.isLinked())) {
+					score += 0.8;
+				}
+				if (nature) {
+					score += 0.6;
+				}
+			}
+
+			// 敌意修正：越是敌人越优先
+			score *= Math.max(1, -att / 3);
+
+			return score;
 		},
 		logTarget: "targets",
 		async content(event, trigger, player) {

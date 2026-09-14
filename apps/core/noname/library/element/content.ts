@@ -8022,40 +8022,21 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 					return;
 				}
 				if (event.canHidden) {
-					//增加隐藏窗口的按钮
-					const func = () => {
-						const event = get.event();
-						const controls = [
-							link => {
-								ui.selected.buttons.length = 0;
-								game.check();
-								return;
-							},
-						];
-						event.controls = [
-							ui.create.control(
-								controls.concat([
-									"隐藏窗口",
-									"stayleft",
-									link => {
-										const control = event.controls[0];
-										if (event.dialog.style.display == "none") {
-											control.childNodes[0].innerHTML = "隐藏窗口";
-											event.dialog.style.display = "";
-										} else {
-											control.childNodes[0].innerHTML = "显示窗口";
-											event.dialog.style.display = "none";
-										}
-									},
-								])
-							),
-						];
-					};
-					if (event.isMine()) {
-						func(event);
-					} else if (event.isOnline()) {
-						event.player.send(func, event);
+					// Close controls left by an interrupted choice before opening another.
+					for (const control of ui.control.querySelectorAll(".button-target-control")) {
+						control.close();
 					}
+					const control = ui.create.control("隐藏窗口", "stayleft", () => {
+						if (event.dialog.style.display === "none") {
+							control.firstChild.innerHTML = "隐藏窗口";
+							event.dialog.style.display = "";
+						} else {
+							control.firstChild.innerHTML = "显示窗口";
+							event.dialog.style.display = "none";
+						}
+					});
+					control.classList.add("button-target-control");
+					event.controls = [control];
 					if (event.custom == undefined) {
 						event.custom = {
 							add: {},
@@ -8115,6 +8096,11 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 		async (event, _trigger, player, result) => {
 			//处理选择的结果
 			event.resume();
+			// processAI/auto can complete without running the confirmation callback.
+			for (const control of event.controls || []) {
+				control.close();
+			}
+			event.controls = [];
 			if (event.result.bool && event.animate !== false) {
 				for (const target of event.result.targets) {
 					target.addTempClass("target");

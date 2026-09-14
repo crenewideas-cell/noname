@@ -5,7 +5,7 @@ import { security } from "@/util/sandbox.js"
 import { Character } from "@/library/element/index.js";
 import { groupExtensionMenus, mergedMenuSections, createPackSubmenu } from "../extensionGroups.js";
 
-export const extensionMenu = function (connectMenu) {
+export const extensionMenu = function (connectMenu, context) {
 	if (connectMenu) {
 		return;
 	}
@@ -15,7 +15,7 @@ export const extensionMenu = function (connectMenu) {
 	// const cacheMenuContainer = menuContainer;
 	// const cachePopupContainer = popupContainer;
 	// const cacheMenux = menux;
-	const cacheMenuxpages = menuxpages;
+	const cacheMenuxpages = context?.menuxpages || menuxpages;
 	/** @type { HTMLDivElement } */
 	// @ts-expect-error ignore
 	var start = cacheMenuxpages.shift();
@@ -2433,7 +2433,7 @@ export const extensionMenu = function (connectMenu) {
 			createDash("技", "编辑技能", dash3);
 			createDash("码", "编辑代码", dash4);
 		};
-		if (!get.config("menu_loadondemand")) {
+		if (!context?.lazy && !get.config("menu_loadondemand")) {
 			node._initLink();
 		}
 	})();
@@ -2765,7 +2765,7 @@ export const extensionMenu = function (connectMenu) {
 				node.update();
 			}
 		};
-		if (!get.config("menu_loadondemand")) {
+		if (!context?.lazy && !get.config("menu_loadondemand")) {
 			node._initLink();
 		}
 	})();

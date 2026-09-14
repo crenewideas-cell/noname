@@ -1,14 +1,14 @@
 import { menuContainer, popupContainer, updateActive, setUpdateActive, updateActiveCard, setUpdateActiveCard, menux, menuxpages, menuUpdates, openMenu, clickToggle, clickSwitcher, clickContainer, clickMenuItem, createMenu, createConfig } from "../index.js";
 import { ui, game, get, ai, lib, _status } from "noname";
 
-export const cardPackMenu = function (connectMenu) {
+export const cardPackMenu = function (connectMenu, context) {
 	/**
 	 * 由于联机模式会创建第二个菜单，所以需要缓存一下可变的变量
 	 */
 	// const cacheMenuContainer = menuContainer;
 	// const cachePopupContainer = popupContainer;
-	const cacheMenux = menux;
-	const cacheMenuxpages = menuxpages;
+	const cacheMenux = context?.menux || menux;
+	const cacheMenuxpages = context?.menuxpages || menuxpages;
 	/** @type { HTMLDivElement } */
 	// @ts-expect-error ignore
 	var start = cacheMenuxpages.shift();
@@ -41,7 +41,7 @@ export const cardPackMenu = function (connectMenu) {
 			rightPane.appendChild(this.link);
 		}
 	};
-	setUpdateActiveCard(function (node) {
+	const updateActiveCard = function (node) {
 		if (!node) {
 			node = start.firstChild.querySelector(".active");
 			if (!node) {
@@ -56,7 +56,8 @@ export const cardPackMenu = function (connectMenu) {
 				node.link.childNodes[i].updateBanned();
 			}
 		}
-	});
+	};
+	setUpdateActiveCard(updateActiveCard);
 	var updateNodes = function () {
 		for (var i = 0; i < start.firstChild.childNodes.length; i++) {
 			var node = start.firstChild.childNodes[i];
@@ -470,7 +471,7 @@ export const cardPackMenu = function (connectMenu) {
 				ui.create.div(".menuplaceholder", page);
 			}
 		};
-		if (!get.config("menu_loadondemand")) {
+		if (!context?.lazy && !get.config("menu_loadondemand")) {
 			node._initLink();
 		}
 		return node;

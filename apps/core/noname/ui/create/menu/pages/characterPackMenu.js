@@ -2,14 +2,14 @@ import { menuContainer, popupContainer, updateActive, setUpdateActive, updateAct
 import { ui, game, get, ai, lib, _status } from "noname";
 import { characterMenuOwner, createPackSubmenu, mergedMenuSections } from "../extensionGroups.js";
 
-export const characterPackMenu = function (connectMenu) {
+export const characterPackMenu = function (connectMenu, context) {
 	/**
 	 * 由于联机模式会创建第二个菜单，所以需要缓存一下可变的变量
 	 */
 	// const cacheMenuContainer = menuContainer;
 	// const cachePopupContainer = popupContainer;
-	const cacheMenux = menux;
-	const cacheMenuxpages = menuxpages;
+	const cacheMenux = context?.menux || menux;
+	const cacheMenuxpages = context?.menuxpages || menuxpages;
 	/** @type { HTMLDivElement } */
 	// @ts-expect-error ignore
 	var start = cacheMenuxpages.shift();
@@ -36,7 +36,7 @@ export const characterPackMenu = function (connectMenu) {
 			rightPane.appendChild(this.link);
 		}
 	};
-	setUpdateActive(function (node) {
+	const updateActive = function (node) {
 		if (!node) {
 			node = start.firstChild.querySelector(".active");
 			if (!node) {
@@ -47,7 +47,8 @@ export const characterPackMenu = function (connectMenu) {
 			node._initLink();
 		}
 		for (const child of node.link.querySelectorAll("*")) child.updateBanned?.();
-	});
+	};
+	setUpdateActive(updateActive);
 	var updateNodes = function () {
 		for (const node of new Set([...start.firstChild.childNodes, ...packNodes.values()])) {
 			if (node.mode) {
@@ -394,7 +395,7 @@ export const characterPackMenu = function (connectMenu) {
 				}
 			}
 		};
-		if (!get.config("menu_loadondemand")) {
+		if (!context?.lazy && !get.config("menu_loadondemand")) {
 			node._initLink();
 		}
 		return node;

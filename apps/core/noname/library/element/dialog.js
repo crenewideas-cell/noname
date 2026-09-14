@@ -393,6 +393,7 @@ export class Dialog extends HTMLDivElement {
 			return;
 		}
 		this.characterPager?.resume();
+		ui.create.prepareButtons(Array.from(this.querySelectorAll(".prebutton-pending")));
 		this.characterSearch?.clear();
 		for (let i = 0; i < ui.dialogs.length; i++) {
 			if (ui.dialogs[i] == this) {
@@ -438,6 +439,7 @@ export class Dialog extends HTMLDivElement {
 		return this;
 	}
 	close() {
+		ui.create.cancelButtonPreparation(this);
 		this.characterPager?.pause();
 		this.characterSearch?.cancel();
 		ui.dialogs.remove(this);

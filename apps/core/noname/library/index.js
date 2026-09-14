@@ -12,6 +12,7 @@ import { ai, get, game, _status, ui } from "noname";
 import { refreshCharacterSkins } from "../skin/index.js";
 import { openSkinGallery } from "../ui/skinGallery.js";
 import { openConnectionRecovery } from "../ui/gameNavigation.js";
+import { applyPresentation } from "../ui/presentation.js";
 import { LibInit } from "./init/index.js";
 import { Announce } from "./announce/index.js";
 import { experimental } from "./experimental/index.js";
@@ -2356,10 +2357,10 @@ export class Library {
 					name: "武将界面风格",
 					init: "shousha",
 					item: { shousha: "手杀", classic: "经典" },
-					intro: "调整选将、武将资料和衣橱的外观，即时生效。",
+					intro: "调整单机选将、武将资料和衣橱的外观，即时生效。联机菜单统一使用手杀风格。",
 					onclick(item) {
 						game.saveConfig("presentation_style", item);
-						document.documentElement.dataset.presentation = item === "classic" ? "classic" : "shousha";
+						applyPresentation();
 					},
 				},
 				skin_gallery: {
@@ -13199,6 +13200,7 @@ export class Library {
 			},
 			init: function (id, config, ip, servermode, roomId) {
 				game.online = true;
+				applyPresentation();
 				game.onlineID = id;
 				game.ip = ip;
 				game.servermode = servermode;
@@ -13311,6 +13313,7 @@ export class Library {
 				game.clearConnect();
 				clearTimeout(_status.createNodeTimeout);
 				game.online = true;
+				applyPresentation();
 				game.ip = ip;
 				game.servermode = state.servermode;
 				game.roomId = state.roomId;

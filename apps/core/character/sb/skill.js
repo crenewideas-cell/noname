@@ -9073,6 +9073,15 @@ const skills = {
 		audio: 2,
 		inherit: "mbcmqingzheng",
 		persevereSkill: false,
+		filter(event, player) {
+			const required = 3 - player.countMark("sbjianxiong");
+			const groups = Object.values(Object.groupBy(player.getCards("h"), card => get.suit(card, player)));
+			return (
+				required > 0 &&
+				groups.filter(cards => cards.every(card => lib.filter.cardDiscardable(card, player, "sbqingzheng"))).length >= required &&
+				game.hasPlayer(target => target !== player && target.countCards("h") > 0)
+			);
+		},
 		ai: { combo: "sbjianxiong" },
 	},
 	sbhujia: {

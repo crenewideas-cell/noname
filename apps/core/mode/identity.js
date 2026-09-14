@@ -2357,18 +2357,6 @@ export default {
 						});
 						delete _status.createControl;
 					};
-					if (lib.onfree) {
-						lib.onfree.push(() => {
-							event.dialogxx = ui.create.characterDialog("heightset", "paged");
-							if (ui.cheat2) {
-								ui.cheat2.addTempClass("controlpressdownx", 500);
-								ui.cheat2.classList.remove("disabled");
-							}
-						});
-					} else {
-						event.dialogxx = ui.create.characterDialog("heightset", "paged");
-					}
-
 					ui.create.cheat2 = () => {
 						ui.cheat2 = ui.create.control("自由选将", () => {
 							const control = ui.cheat2;
@@ -2391,6 +2379,8 @@ export default {
 									game.changeCoin(-10);
 								}
 								control.backup = _status.event.dialog;
+								// Prepare only when requested; no stale onfree callback after selection.
+								_status.event.parent.dialogxx ||= ui.create.characterDialog("heightset", "paged");
 								_status.event.dialog.close();
 								_status.event.dialog = _status.event.parent.dialogxx;
 								control.dialog = _status.event.dialog;
@@ -2402,9 +2392,6 @@ export default {
 								}
 							}
 						});
-						if (lib.onfree) {
-							ui.cheat2.classList.add("disabled");
-						}
 					};
 					if (!_status.brawl || !_status.brawl.chooseCharacterFixed) {
 						if (!ui.cheat && get.config("change_choice")) {

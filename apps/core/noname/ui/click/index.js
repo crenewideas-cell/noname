@@ -1,6 +1,7 @@
 import { getSkinService } from "../../skin/index.js";
 import { openSkinGallery } from "../skinGallery.js";
 import { openGameNavigation } from "../gameNavigation.js";
+import { usesModernPresentation } from "../presentation.js";
 import { lib, game, get, _status, ui } from "noname";
 export class Click {
 	/**
@@ -547,7 +548,7 @@ export class Click {
 	shortcut(show) {
 		// The current presentation already has a shared navigation dialog. Keep
 		// toolbar, round-menu and keyboard entries on that same existing design.
-		if (show !== false && lib.config.presentation_style !== "classic") {
+		if (show !== false && usesModernPresentation()) {
 			ui.click.shortcut(false);
 			openGameNavigation();
 			return;

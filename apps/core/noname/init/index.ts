@@ -13,6 +13,7 @@ import { registerOrganizedExtensions, isValidExtensionName } from "./organizedEx
 import { registerOrganizedCompatibility } from "./organizedCompatibility.js";
 import { warmImages } from "../util/imageReady.js";
 import { fontFaces } from "../util/fontFaces.js";
+import { applyPresentation } from "../ui/presentation.js";
 import { perfAwait, perfBegin, perfEnd, perfMark } from "../util/performance.js";
 
 // 无名杀，启动！
@@ -1007,7 +1008,7 @@ async function loadConfig() {
 
 async function loadCss() {
 	ui.css = {};
-	document.documentElement.dataset.presentation = lib.config.presentation_style === "classic" ? "classic" : "shousha";
+	applyPresentation();
 	const stylesLoading = {
 		lobby: lib.init.promises.css(lib.assetURL + "layout/default", "lobby"),
 		menuPresentation: lib.init.promises.css(lib.assetURL + "layout/default", "menu-presentation"),

@@ -21,6 +21,8 @@ import { security } from "@/util/sandbox.js";
 import { save } from "@/util/config.js";
 import { debounce } from "@/util/utils.js";
 import { connect, disconnect } from "./connection.js";
+import { backgroundTasks } from "../util/backgroundTasks.js";
+import { perfBegin, perfEnd } from "../util/performance.js";
 
 export class Game {
 	documentZoom;
@@ -4906,6 +4908,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		},
 	};
 	reload() {
+		backgroundTasks.cancelAll();
 		if (_status) {
 			if (_status.reloading) {
 				return;
@@ -8976,9 +8979,12 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		}
 	}
 	finishCards() {
+		const start = perfBegin();
+		try {
 		_status.cardsFinished = true;
 		Object.keys(lib.card).forEach(i => game.finishCard(i));
 		Object.keys(lib.skill).forEach(i => game.finishSkill(i));
+		} finally { perfEnd("rules.finishCards", start); }
 	}
 	/**@type {CheckMod} */
 	checkMod() {
@@ -9021,6 +9027,10 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		game.finishCards();
 	}
 	clearArena() {
+		ui.create.cancelButtonPreparation();
+		delete _status.waitingForCards;
+		ui.menuContainer?.cancelPreparation?.();
+		ui.connectMenuContainer?.cancelPreparation?.();
 		ui.control.innerHTML = "";
 		ui.arenalog.innerHTML = "";
 		Array.from(ui.arena.childNodes).forEach(value => {

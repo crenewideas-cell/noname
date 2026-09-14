@@ -5,17 +5,17 @@ import { security } from "@/util/sandbox.js"
 import { formatBuildLabel } from "@/util/meta"
 import dedent from "dedent";
 
-export const otherMenu = function (/** @type { boolean | undefined } */ connectMenu) {
+export const otherMenu = function (/** @type { boolean | undefined } */ connectMenu, context) {
 	if (connectMenu) {
 		return;
 	}
 	/**
 	 * 由于联机模式会创建第二个菜单，所以需要缓存一下可变的变量
 	 */
-	const cacheMenuContainer = menuContainer;
+	const cacheMenuContainer = context?.menuContainer || menuContainer;
 	// const cachePopupContainer = popupContainer;
 	// const cacheMenux = menux;
-	const cacheMenuxpages = menuxpages;
+	const cacheMenuxpages = context?.menuxpages || menuxpages;
 	/** @type { HTMLDivElement } */
 	// @ts-expect-error ignore
 	var start = cacheMenuxpages.shift();
@@ -698,7 +698,7 @@ export const otherMenu = function (/** @type { boolean | undefined } */ connectM
 				game.print("<button onclick='window.noname_shijianInterfaces.showDevTools();'>开启DevTools</button>");
 			}
 		};
-		if (!get.config("menu_loadondemand")) {
+		if (!context?.lazy && !get.config("menu_loadondemand")) {
 			node._initLink();
 		}
 	})();
@@ -758,7 +758,7 @@ export const otherMenu = function (/** @type { boolean | undefined } */ connectM
 			});
 			page.appendChild(button);
 		};
-		if (!get.config("menu_loadondemand")) {
+		if (!context?.lazy && !get.config("menu_loadondemand")) {
 			node._initLink();
 		}
 	})();
@@ -797,7 +797,7 @@ export const otherMenu = function (/** @type { boolean | undefined } */ connectM
 				}
 			}
 		};
-		if (!get.config("menu_loadondemand")) {
+		if (!context?.lazy && !get.config("menu_loadondemand")) {
 			node._initLink();
 		}
 	})();
@@ -992,7 +992,7 @@ export const otherMenu = function (/** @type { boolean | undefined } */ connectM
 				}
 			};
 		};
-		if (!get.config("menu_loadondemand")) {
+		if (!context?.lazy && !get.config("menu_loadondemand")) {
 			node._initLink();
 		}
 	})();

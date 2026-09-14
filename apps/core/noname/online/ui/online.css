@@ -189,6 +189,11 @@
 .online-managed-game .online-choice-dialog .content { position: relative; }
 .online-managed-game .online-choice-dialog .caption { box-sizing: border-box; width: calc(100% - 8px); color: #f3d79d; font: 20px/1.5 xinwei,serif; padding: 4px 10px; }
 .online-managed-game .online-choice-dialog .caption > .textbutton { width: 100%; margin: 0; }
+.online-managed-game .online-card-group-dialog .online-card-group { box-sizing: border-box; min-width: 0; min-height: 130px; height: auto; padding: 6px 6px 30px; border: 2px solid #9b8c72; align-items: flex-start; }
+.online-managed-game .online-card-group-dialog .online-card-group.selectable { cursor: pointer; border-color: #d5b573; }
+.online-managed-game .online-card-group-dialog .online-card-group.selected { background: #526143; border-color: #ffe0a0; box-shadow: inset 0 0 0 1px #ffe0a0; }
+.online-managed-game .online-card-group-dialog .online-card-group > .card { flex: 0 0 auto; }
+.online-managed-game .online-card-group-dialog .online-card-group-label { position: absolute; left: 0; bottom: 0; width: 100%; padding: 4px 0; background: #352929eb; color: #f3d79d; font: 16px/1.4 sans-serif; pointer-events: none; }
 @media (max-width:700px) { .online-managed-game #control .online-skill-action { min-width: 72px; padding: 6px 10px; font-size: 17px; } }
 .online-lobby button:focus-visible, .online-lobby summary:focus-visible, .online-dialog button:focus-visible { outline: 2px solid #ebd09a; outline-offset: 3px; }
 @media (min-width:1400px) { .online-room-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }

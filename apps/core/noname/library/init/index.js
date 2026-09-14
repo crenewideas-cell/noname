@@ -2,6 +2,7 @@ import { rootURL, get, lib, game, _status, ui } from "noname";
 import { LibInitPromises } from "./promises.js";
 import { ContentCompiler } from "@/library/element/gameEvent.js";
 import { security } from "@/util/sandbox.js";
+import { backgroundTasks } from "../../util/backgroundTasks.js";
 
 export class LibInit {
 	#promises;
@@ -113,13 +114,13 @@ export class LibInit {
 
 			var onfree = lib.onfree;
 			delete lib.onfree;
-			var loop = function () {
-				if (onfree.length) {
-					onfree.shift()();
-					setTimeout(loop, 100);
-				}
-			};
-			setTimeout(loop, 500);
+			backgroundTasks.schedule(() => {
+				// Extension callbacks retain FIFO order and atomic execution. Known
+				// bulk UI work is split at its own safe boundaries, not inside rules.
+				try { onfree.shift()?.(); }
+				catch (error) { console.error("onfree 回调失败", error); }
+				return onfree.length > 0;
+			}, { label: "onfree" });
 			if (!_status.new_tutorial) {
 				game.saveConfig("menu_loadondemand", true, lib.config.mode);
 			}

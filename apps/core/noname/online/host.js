@@ -93,8 +93,13 @@ export function installHost() {
 				if (dialog) {
 					// DOM dialogs serialize as {}. Send their trusted button data and
 					// rebuild them before applying the original engine prompt.
-					promptArgs[1] = promptArgs[1].map(arg => arg === dialog ? undefined :
-						arg?.dialog === dialog ? { ...arg, dialog: undefined } : arg);
+					promptArgs[1] = promptArgs[1].map(arg => {
+						if (arg === dialog || arg === sendingEvent.createDialog) return undefined;
+						if (arg && typeof arg === "object" && !Array.isArray(arg) && (arg.dialog === dialog || arg.createDialog)) {
+							return { ...arg, dialog: undefined, createDialog: undefined };
+						}
+						return arg;
+					});
 					promptArgs[2] = promptArgs[2].filter(([key]) => key !== "dialog" && key !== "createDialog");
 				}
 				args = [function (prompt, parameters, skill, info, dialogData, backup) {
@@ -106,8 +111,29 @@ export function installHost() {
 					} else if (skill) lib.skill[skill] = info;
 					if (dialogData) {
 						const dialog = ui.create.dialog(dialogData.title, "hidden");
+						if (dialogData.grouped) dialog.classList.add("online-card-group-dialog");
 						for (const [item, type, disabled] of dialogData.buttons) {
-							dialog.add([[item], type]);
+							if (type === "cardgroup") {
+								// A group is one selectable button with several real cards.
+								// Its links are also read by skill filters and AI callbacks.
+								dialog.addNewRow({
+									item: item.cards,
+									ItemNoclick: true,
+									link: item.link,
+									label: item.label,
+									custom(container) {
+										container.link = this.link;
+										container.buttonid = get.id();
+										Object.setPrototypeOf(container, lib.element.Button.prototype);
+										container.classList.add("online-card-group");
+										container.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.button);
+										container.closest(".dialog").buttons.add(container);
+										ui.create.div(".online-card-group-label", container).textContent = this.label;
+									},
+								});
+							} else {
+								dialog.add([[item], type]);
+							}
 							if (disabled) dialog.buttons[dialog.buttons.length - 1].classList.add("unselectable");
 						}
 						parameters[2].push(["dialog", dialog], ["closeDialog", true]);
@@ -445,8 +471,14 @@ export function decodeChoice(value) {
 
 export function describeChoiceDialog(dialog, prompt) {
 	return {
-		title: dialog.content.querySelector(".text")?.textContent || prompt || "请选择",
+		title: Array.from(dialog.content.querySelectorAll(".caption, .text"))
+			.filter(node => !dialog.buttons.some(button => button.contains(node) || node.contains(button)) && !node.parentElement?.closest(".caption, .text"))
+			.map(node => node.innerHTML).join("<br>") || prompt || "请选择",
+		grouped: dialog.buttons.some(button => button.classList.contains("item-container") && Array.isArray(button.links)),
 		buttons: dialog.buttons.map(button => {
+			if (button.classList.contains("item-container") && Array.isArray(button.links)) {
+				return [{ link: button.link, cards: button.links, label: button.lastElementChild?.textContent || get.translation(button.link) }, "cardgroup", button.classList.contains("unselectable")];
+			}
 			// textbuttons() creates plain text nodes, not Button instances with
 			// _args. Keep their stable link and trusted display HTML separately.
 			const [item, type] = button._args || [[button.link, button.innerHTML], "textbutton"];

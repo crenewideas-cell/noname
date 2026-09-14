@@ -10,6 +10,10 @@ import { Pagination } from "@/util/pagination.js";
 import { openGameNavigation } from "../gameNavigation.js";
 import { createCharacterBrowser } from "../characterBrowser.js";
 import { CharacterSearch } from "../../util/characterSearch.js";
+import { backgroundTasks } from "../../util/backgroundTasks.js";
+
+const buttonPreparations = new Set();
+const preparingButtons = new WeakSet();
 
 export class Create {
 	/**
@@ -3116,14 +3120,11 @@ export class Create {
 		ui.arena.appendChild(ui.timer);
 
 		if (!game.syncMenu) {
-			lib.onfree.push(function () {
-				ui.create.menu();
-				ui.config2.classList.remove("hidden");
-				ui.roundmenu.classList.remove("transparent2");
-				setTimeout(function () {
-					ui.config2.style.transition = "";
-				}, 500);
-			});
+			// Only create the tab shell here. Its pages prepare when opened.
+			ui.create.menu();
+			ui.config2.classList.remove("hidden");
+			ui.roundmenu.classList.remove("transparent2");
+			ui.config2.style.transition = "";
 		} else {
 			ui.create.menu();
 		}
@@ -3256,14 +3257,48 @@ export class Create {
 	}
 	prebutton(item, type, position, noclick) {
 		var node = ui.create.div(position);
+		node.classList.add("prebutton-pending");
 		node.style.display = "none";
 		node.link = item;
 		node.activate = function () {
+			if (!node.classList.contains("prebutton-pending")) return;
 			ui.create.button(item, type, position, noclick, node);
+			node.classList.remove("prebutton-pending");
 			delete node.activate;
 		};
-		_status.prebutton.push(node);
+		(_status.prebutton ||= []).push(node);
 		return node;
+	}
+	prepareButtons(buttons) {
+		const pending = buttons.filter(node => node.activate && !preparingButtons.has(node));
+		if (!pending.length) return;
+		const members = new Set(pending);
+		pending.forEach(node => preparingButtons.add(node));
+		let cursor = 0, cancel;
+		const batch = {
+			members,
+			cancel() {
+				cancel?.();
+				pending.forEach(node => preparingButtons.delete(node));
+				buttonPreparations.delete(batch);
+				if (_status.prebutton) {
+					_status.prebutton = _status.prebutton.filter(node => !members.has(node));
+					if (!_status.prebutton.length) delete _status.prebutton;
+				}
+			},
+		};
+		buttonPreparations.add(batch);
+		cancel = backgroundTasks.schedule(() => {
+			try { pending[cursor++].activate?.(); }
+			catch (error) { batch.cancel(); throw error; }
+			if (cursor < pending.length) return true;
+			batch.cancel();
+		}, { label: "prebutton" });
+	}
+	cancelButtonPreparation(root) {
+		for (const batch of buttonPreparations) {
+			if (!root || [...batch.members].some(node => root.contains(node))) batch.cancel();
+		}
 	}
 	buttonPresets = {
 		/**
@@ -3597,19 +3632,6 @@ export class Create {
 	buttons(list, type, position, noclick, zoom) {
 		var buttons = [];
 		var pre = typeof type == "string" && type.slice(0, 3) == "pre";
-		if (pre) {
-			if (!_status.prebutton) {
-				_status.prebutton = [];
-				lib.onfree.push(function () {
-					for (var i = 0; i < _status.prebutton.length; i++) {
-						if (_status.prebutton[i].activate) {
-							_status.prebutton[i].activate();
-						}
-					}
-					delete _status.prebutton;
-				});
-			}
-		}
 		var fragment = document.createDocumentFragment();
 		for (var i = 0; i < list.length; i++) {
 			if (pre) {
@@ -3621,6 +3643,7 @@ export class Create {
 		if (position) {
 			position.appendChild(fragment);
 		}
+		if (pre) ui.create.prepareButtons(buttons);
 		return buttons;
 	}
 	textbuttons(list, dialog, noclick) {

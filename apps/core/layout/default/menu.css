@@ -2177,3 +2177,15 @@ div.popup-container.editor2 > div {
 #window:not(.nopointer) .popup-container > .prompt-container > div > div > div > .menubutton {
 	cursor: pointer;
 }
+.menu-preparing {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	background: #252722;
+	color: #eee0c6;
+	font: 15px/1.6 sans-serif;
+}

@@ -3,7 +3,7 @@ import { ui, game, get, ai, lib, _status } from "noname";
 import { nonameInitialized } from "@/util/index.js";
 import JSZip from "jszip";
 
-export const optionsMenu = function (connectMenu) {
+export const optionsMenu = function (connectMenu, context) {
 	if (connectMenu) {
 		return;
 	}
@@ -11,9 +11,9 @@ export const optionsMenu = function (connectMenu) {
 	 * 由于联机模式会创建第二个菜单，所以需要缓存一下可变的变量
 	 */
 	// const cacheMenuContainer = menuContainer;
-	const cachePopupContainer = popupContainer;
+	const cachePopupContainer = context?.popupContainer || popupContainer;
 	// const cacheMenux = menux;
-	const cacheMenuxpages = menuxpages;
+	const cacheMenuxpages = context?.menuxpages || menuxpages;
 	/** @type { HTMLDivElement } */
 	// @ts-expect-error ignore
 	var start = cacheMenuxpages.shift();
@@ -46,9 +46,10 @@ export const optionsMenu = function (connectMenu) {
 		}
 		game.saveConfig("autoskilllist", list);
 	};
-	var skilllistexpanded = game.expandSkills(lib.skilllist);
+	const prepareSkills = function () {
+	const skilllistexpanded = new Set(game.expandSkills(lib.skilllist.slice()));
 	for (var i in lib.skill) {
-		if (!skilllistexpanded.includes(i)) {
+		if (!skilllistexpanded.has(i)) {
 			continue;
 		}
 		if (lib.skill[i].frequent && lib.translate[i]) {
@@ -107,14 +108,17 @@ export const optionsMenu = function (connectMenu) {
 		};
 	}
 
+	};
 	var updateView = null;
 	var updateAppearence = null;
 	var createModeConfig = function (mode, position) {
 		var info = lib.configMenu[mode];
-		var page = ui.create.div("");
 		var node = ui.create.div(".menubutton.large", info.name, position, clickMode);
 		node.mode = mode;
-		// node._initLink=function(){
+		node._initLink = function () {
+		if (node.link) return;
+		if (mode === "skill") prepareSkills();
+		var page = ui.create.div("");
 		node.link = page;
 		var map = {};
 		if (info.config) {
@@ -512,8 +516,8 @@ export const optionsMenu = function (connectMenu) {
 				info.config.update(config, map);
 			}
 		}
-		// };
-		// if(!get.config('menu_loadondemand')) node._initLink();
+		};
+		if (!context?.lazy && !get.config("menu_loadondemand")) node._initLink();
 		return node;
 	};
 
@@ -1073,7 +1077,7 @@ export const optionsMenu = function (connectMenu) {
 			createDash("字", "字体文件", dash3);
 			createDash("全", "全部文件", dash4);
 		};
-		if (!get.config("menu_loadondemand")) {
+		if (!context?.lazy && !get.config("menu_loadondemand")) {
 			node._initLink();
 		}
 	})();

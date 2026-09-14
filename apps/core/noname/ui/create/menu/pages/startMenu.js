@@ -1,14 +1,14 @@
 import { menuContainer, popupContainer, updateActive, setUpdateActive, updateActiveCard, setUpdateActiveCard, menux, menuxpages, menuUpdates, openMenu, clickToggle, clickSwitcher, clickContainer, clickMenuItem, createMenu, createConfig } from "../index.js";
 import { ui, game, get, ai, lib, _status } from "noname";
 
-export const startMenu = function (connectMenu) {
+export const startMenu = function (connectMenu, context) {
 	/**
 	 * 由于联机模式会创建第二个菜单，所以需要缓存一下可变的变量
 	 */
-	const cacheMenuContainer = menuContainer;
+	const cacheMenuContainer = context?.menuContainer || menuContainer;
 	// const cachePopupContainer = popupContainer;
 	// const cacheMenux = menux;
-	const cacheMenuxpages = menuxpages;
+	const cacheMenuxpages = context?.menuxpages || menuxpages;
 	/** @type { HTMLDivElement } */
 	// @ts-expect-error ignore
 	var start = cacheMenuxpages.shift();
@@ -340,7 +340,7 @@ export const startMenu = function (connectMenu) {
 				updateConnectDisplayMap();
 			}
 		};
-		if (!get.config("menu_loadondemand")) {
+		if (!context?.lazy && !get.config("menu_loadondemand")) {
 			node._initLink();
 		}
 		return node;

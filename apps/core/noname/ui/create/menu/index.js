@@ -1,5 +1,7 @@
 import { ui, game, get, lib, _status } from "noname";
 import { openGameNavigation } from "../../gameNavigation.js";
+import { backgroundTasks } from "../../../util/backgroundTasks.js";
+import { perfBegin, perfEnd } from "../../../util/performance.js";
 
 export function openMenu(node, e, onclose) {
 	popupContainer.innerHTML = "";
@@ -102,6 +104,7 @@ export function clickSwitcher() {
  * @this { HTMLDivElement } menuContainer
  */
 export function clickContainer(connectMenu) {
+	this.cancelPreparation?.();
 	this.classList.add("hidden");
 	if (connectMenu) {
 		if (_status.enteringroom) {
@@ -171,6 +174,7 @@ export function createMenu(connectMenu, tabs, config) {
 		}
 		var active = this.parentNode.querySelector(".active");
 		if (active) {
+			active._link.cancelPreparation?.();
 			active.classList.remove("active");
 			active._link.remove();
 		}
@@ -178,14 +182,21 @@ export function createMenu(connectMenu, tabs, config) {
 		menuTabBar.style.transform =
 			"translateX(" + (this.getBoundingClientRect().left - this.parentNode.firstChild.getBoundingClientRect().left) / get.menuZoom() + "px)";
 		menuContent.appendChild(this._link);
+		this._link.prepare?.();
 	};
-	ui.click.menuTab = function (tab) {
+	menu.selectTab = function (tab) {
 		for (var i = 0; i < menuTab.childNodes.length; i++) {
 			if (menuTab.childNodes[i].innerHTML == tab) {
 				clickTab.call(menuTab.childNodes[i]);
+				// Historical programmatic callers inspect the page immediately.
+				menuTab.childNodes[i]._link.ensure?.();
 				return;
 			}
 		}
+	};
+	ui.click.menuTab = function (tab) {
+		const container = [ui.connectMenuContainer, ui.menuContainer].find(node => node && !node.classList.contains("hidden")) || ui.menuContainer;
+		container?.querySelector(".main.menu")?.selectTab(tab);
 	};
 	var pages = [];
 	for (var i = 0; i < tabs.length; i++) {
@@ -440,11 +451,8 @@ export const menuUpdates = [];
  * @param { boolean } [connectMenu]
  */
 export function menu(connectMenu) {
-	/** 提示重启的计时器 */
-	let menuTimeout = null;
-	if (!connectMenu && !game.syncMenu) {
-		menuTimeout = setTimeout(lib.init.reset, 1000);
-	}
+	const existing = connectMenu ? ui.connectMenuContainer : ui.menuContainer;
+	if (existing?.isConnected) return;
 	/** menu是menux.menu，目前只有赋值没有使用，所以先注释掉 */
 	// let menu;
 
@@ -473,11 +481,13 @@ export function menu(connectMenu) {
 		ui.click.configMenu = function () {
 			ui.click.shortcut(false);
 			if (cacheMenuContainer.classList.contains("hidden")) {
+				activate();
 				ui.config2.classList.add("pressdown2");
 				ui.arena.classList.add("menupaused");
 				ui.historybar.classList.add("menupaused");
 				ui.window.classList.add("touchinfohidden");
 				cacheMenuContainer.classList.remove("hidden");
+				cacheMenux.menu.querySelector(".menu-tab > .active")._link.prepare();
 				for (var i = 0; i < menuUpdates.length; i++) {
 					menuUpdates[i]();
 				}
@@ -493,7 +503,9 @@ export function menu(connectMenu) {
 		ui.connectMenuContainer = cacheMenuContainer;
 		ui.click.connectMenu = function () {
 			if (cacheMenuContainer.classList.contains("hidden")) {
-				if (_status.waitingForPlayer) {
+				activate();
+				cacheMenux.pages[0].ensure();
+			if (_status.waitingForPlayer) {
 					startButton.innerHTML = "设";
 					var start = cacheMenux.pages[0].firstChild;
 					for (var i = 0; i < start.childNodes.length; i++) {
@@ -508,13 +520,15 @@ export function menu(connectMenu) {
 							if (start.childNodes[i].link) {
 								start.nextSibling.appendChild(start.childNodes[i].link);
 							} else {
-								console.log(start.nextSibling, start.childNodes[i]);
+								start.childNodes[i]._initLink();
+								start.nextSibling.appendChild(start.childNodes[i].link);
 							}
 						}
 					}
 				}
 				ui.window.classList.add("shortcutpaused");
 				cacheMenuContainer.classList.remove("hidden");
+				cacheMenux.menu.querySelector(".menu-tab > .active")._link.prepare();
 				for (var i = 0; i < menuUpdates.length; i++) {
 					menuUpdates[i]();
 				}
@@ -528,33 +542,67 @@ export function menu(connectMenu) {
 			bar: 123,
 		});
 		// menu = menux.menu;
-		let cacheMenux = menux;
 	}
-	menuxpages = menux.pages.slice(0);
-
-	// 开始
-	let startButton = ui.create.startMenu(connectMenu);
-
-	// 选项
-	ui.create.optionsMenu(connectMenu);
-
-	// 武将
-	let updateCharacterPackMenu = ui.create.characterPackMenu(connectMenu);
-	ui.updateCharacterPackMenu.push(updateCharacterPackMenu);
-
-	// 卡牌
-	let updatecardPackMenu = ui.create.cardPackMenu(connectMenu);
-	ui.updateCardPackMenu.push(updatecardPackMenu);
-
-	// 扩展
-	ui.create.extensionMenu(connectMenu);
-
-	// 其他
-	ui.create.otherMenu(connectMenu);
-
-	if (menuTimeout) {
-		clearTimeout(menuTimeout);
-		delete window.resetExtension;
-		localStorage.removeItem(lib.configprefix + "disable_extension", true);
+	const cacheMenux = menux;
+	menuxpages = cacheMenux.pages.slice();
+	const context = { menuContainer: cacheMenuContainer, popupContainer: cachePopupContainer, menux: cacheMenux, lazy: !game.syncMenu };
+	const activate = () => {
+		menuContainer = cacheMenuContainer; popupContainer = cachePopupContainer; menux = cacheMenux;
+		updateActive = context.updateActive; updateActiveCard = context.updateActiveCard;
+	};
+	let startButton;
+	const builders = connectMenu ? ["startMenu", "characterPackMenu", "cardPackMenu"] : ["startMenu", "optionsMenu", "characterPackMenu", "cardPackMenu", "extensionMenu", "otherMenu"];
+	for (const [index, name] of builders.entries()) {
+		const page = cacheMenux.pages[index];
+		let ready = false, failed = false, cancel;
+		page.ensure = () => {
+			cancel?.(); cancel = undefined;
+			if (ready || failed) return;
+			activate();
+			menuxpages = [page];
+			page.querySelector(":scope > .menu-preparing")?.remove();
+			const begin = perfBegin();
+			try {
+				// Each page captures its own context, including menus created later
+				// for room settings. Do not consume a shared mutable pages queue.
+				const result = ui.create[name](connectMenu, { ...context, menuxpages: [page] });
+				if (name === "startMenu") startButton = result;
+				if (name === "characterPackMenu") ui.updateCharacterPackMenu.push(result);
+				if (name === "cardPackMenu") ui.updateCardPackMenu.push(result);
+				context.updateActive = updateActive; context.updateActiveCard = updateActiveCard;
+				ready = true;
+			} catch (error) {
+				failed = true;
+				const notice = ui.create.div(".menu-preparing", "菜单准备失败，请重新载入后重试。", page);
+				notice.setAttribute("role", "alert");
+				const retry = document.createElement("button");
+				retry.textContent = "重新载入"; retry.onclick = () => game.reload(); notice.append(retry);
+				throw error;
+			} finally { page.removeAttribute("aria-busy"); perfEnd(`menu.prepare:${name}`, begin); }
+		};
+		page.prepare = () => {
+			activate();
+			if (ready || failed || cancel) return;
+			if (!page.querySelector(":scope > .menu-preparing")) ui.create.div(".menu-preparing", "正在准备…", page);
+			page.setAttribute("aria-busy", "true");
+			cancel = backgroundTasks.schedule(() => {
+				cancel = undefined;
+				if (!page.isConnected || cacheMenuContainer.classList.contains("hidden")) { page.removeAttribute("aria-busy"); return; }
+				page.ensure();
+			}, { priority: "user-visible", label: "menu-page" });
+		};
+		page.cancelPreparation = () => { cancel?.(); cancel = undefined; page.removeAttribute("aria-busy"); };
 	}
+	cacheMenuContainer.cancelPreparation = () => cacheMenux.pages.forEach(page => page.cancelPreparation());
+	if (!connectMenu) {
+		// Preserve synchronous entry points used by engine shortcuts/extensions.
+		for (const [method, index] of [["extensionTab", 4], ["consoleMenu", 5]]) {
+			const forward = function (...args) {
+				cacheMenux.pages[index].ensure();
+				if (ui.click[method] !== forward) return ui.click[method](...args);
+			};
+			ui.click[method] = forward;
+		}
+	}
+	if (game.syncMenu) cacheMenux.pages.forEach(page => page.ensure());
 }
