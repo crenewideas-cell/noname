@@ -24,6 +24,7 @@ import { connect, disconnect } from "./connection.js";
 import { backgroundTasks } from "../util/backgroundTasks.js";
 import { perfBegin, perfEnd } from "../util/performance.js";
 import { applyPresentation } from "../ui/presentation.js";
+import { clearSelectionGuide, updateSelectionGuide } from "../ui/selectionGuide.js";
 
 export class Game {
 	documentZoom;
@@ -1788,6 +1789,7 @@ export class Game {
 		} else {
 			next.setContent("replaceHandcards");
 		}
+		return next;
 	}
 	/**
 	 * @param { string } name
@@ -7351,6 +7353,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		const uppercaseType = type => type[0].toUpperCase() + type.slice(1);
 
 		if (!event.filterButton && !event.filterCard && !event.filterTarget && (!event.skill || !event._backup)) {
+			clearSelectionGuide();
 			if (event.choosing) {
 				_status.imchoosing = true;
 			}
@@ -7404,6 +7407,11 @@ ${e instanceof Error ? e.stack : String(e)}`);
 			}
 		}
 		const cardinfo = get.info(get.card()) || {};
+		// Manual target choices remain visible until confirmed, including direct
+		// skills and the final click of an ordered multi-target card.
+		if (event.filterTarget && (get.select(event.selectTarget)[1] > 0 || ui.selected.targets.length > 1)) {
+			auto = false; auto_confirm = false;
+		}
 		if (_status.event.name == "chooseToUse" && (skillinfo?.manualConfirm === true || cardinfo?.manualConfirm === true)) {
 			auto_confirm = false;
 		}
@@ -7457,6 +7465,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 			}
 		}
 
+		updateSelectionGuide(event, ok);
 		game.callHook("checkEnd", [event, { ok, auto, auto_confirm, autoConfirm: auto_confirm }]);
 
 		// if (ui.confirm && ui.confirm.lastChild.link == 'cancel') {
@@ -7508,6 +7517,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 			ui.selected.cards.length = 0;
 		}
 		if (args.includes("target")) {
+			clearSelectionGuide();
 			players.forEach(target => {
 				target.classList.remove("selected");
 				target.classList.remove("selectable");

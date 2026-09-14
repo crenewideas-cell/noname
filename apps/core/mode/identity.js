@@ -58,6 +58,7 @@ export default {
 				};
 				event.finish();
 			} else if (!_status.connectMode) {
+				if (![5, 8].includes(Number(get.config("player_number")))) game.saveConfig("player_number", "8", "identity");
 				if (_status.mode == "zhong") {
 					if (get.config("zhong_card")) {
 						event.replacePile();
@@ -230,8 +231,8 @@ export default {
 						game.broadcast(identityList => (lib.config.mode_config.identity.identity = identityList), lib.config.mode_config.identity.identity);
 					}
 				}
-				if (lib.configOL.number < 2) {
-					lib.configOL.number = 2;
+				if (![5, 8].includes(Number(lib.configOL.number))) {
+					lib.configOL.number = 8;
 				}
 				if (_status.mode != "purple" && lib.configOL.enable_year_limit) {
 					lib.onwash.push(yearLimitCheck);
@@ -457,14 +458,21 @@ export default {
 			if (_status.mode != "stratagem") {
 				event.beginner = _status.firstAct2 || game.zhong || game.zhu || _status.firstAct || game.me;
 			}
-			game.gameDraw(event.beginner, player => {
+			await game.gameDraw(event.beginner, player => {
 				if (_status.mode == "purple" && player.seatNum > 5) {
 					return 5;
 				}
 				return 4;
 			});
 			if (_status.connectMode && lib.configOL.change_card) {
-				game.replaceHandcards(game.players.slice(0));
+				let candidates = game.players.slice();
+				const rounds = lib.configOL.mulligan_rounds === 2 ? 2 : 1;
+				for (let round = 0; round < rounds && candidates.length; round++) {
+					const result = await game.replaceHandcards(candidates)
+						.set("prompt", `开局手气卡（剩余 ${rounds - round} 次）：是否整手换牌？选择“否”保留当前手牌并结束换牌，超时默认保留。`)
+						.forResult();
+					candidates = Array.isArray(result) ? result : [];
+				}
 			}
 		},
 		async (event, trigger, player) => {
@@ -2710,9 +2718,15 @@ export default {
 						};
 						list = getZhuList(list2).concat(list3.randomGets(lib.configOL.choice_zhu));
 					}
+					if (lib.configOL.free_choose) list = event.list.flatMap(name => lib.characterReplace[name] || [name]).sort(lib.sort.character);
 					const chooseButtonEvent = game.zhu.chooseButton(true);
 					chooseButtonEvent.set("selectButton", lib.configOL.double_character ? 2 : 1);
-					chooseButtonEvent.set("createDialog", ["选择角色", [list, "characterx"]]);
+					chooseButtonEvent.set("createDialog", [lib.configOL.free_choose ? "点将：主公先选，随后按座次依次选择（可搜索武将）" : "选择角色", [list, lib.configOL.free_choose ? "character" : "characterx"]]);
+					if (lib.configOL.free_choose) {
+						chooseButtonEvent.set("characterChoices", list);
+						chooseButtonEvent.set("complexSelect", lib.configOL.double_character === true);
+						chooseButtonEvent.set("filterButton", button => !ui.selected.buttons.some(current => get.sourceCharacter(current.link) === get.sourceCharacter(button.link)));
+					}
 					chooseButtonEvent.set("ai", () => Math.random());
 				},
 				// "step 1"
@@ -2767,6 +2781,26 @@ export default {
 					const list = [];
 					const selectButton = lib.configOL.double_character ? 2 : 1;
 
+					if (lib.configOL.free_choose) {
+						// Allocate the shared pool sequentially so simultaneous choices
+						// cannot claim the same general or another version of that general.
+						event.draftedResults = {};
+						let current = game.zhu.next;
+						for (let seat = 1; seat < game.players.length; seat++, current = current.next) {
+							const options = event.list.flatMap(name => lib.characterReplace[name] || [name]).sort(lib.sort.character);
+							const picked = await current.chooseButton(true)
+								.set("selectButton", selectButton)
+								.set("createDialog", [`点将：第 ${seat + 1}/${game.players.length} 位，请从剩余武将中选择（可搜索）`, [options, "character"]])
+								.set("characterChoices", options)
+								.set("complexSelect", lib.configOL.double_character === true)
+								.set("filterButton", button => !ui.selected.buttons.some(current => get.sourceCharacter(current.link) === get.sourceCharacter(button.link)))
+								.set("ai", () => Math.random()).forResult();
+							event.draftedResults[current.playerid] = picked;
+							for (const name of picked.links) event.list.remove(get.sourceCharacter(name));
+						}
+						return;
+					}
+
 					const num = Math.floor(event.list.length / (game.players.length - 1));
 					for (const currentPlayer of game.players) {
 						if (currentPlayer === game.zhu) {
@@ -2798,6 +2832,7 @@ export default {
 				// step 3
 				async (event, trigger, player, result) => {
 					let shen = [];
+					result = event.draftedResults || result;
 					for (const id in result) {
 						if (result[id] && result[id].links) {
 							for (const link of result[id].links) {

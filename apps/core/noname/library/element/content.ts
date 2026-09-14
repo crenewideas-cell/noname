@@ -5,6 +5,7 @@ import { Player } from "./player.js";
 import type { GainAnimate } from "./Player/type";
 
 import { delay } from "@/util/index.js";
+import { createCharacterBrowser } from "../../ui/characterBrowser.js";
 
 // 未来再改
 export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
@@ -4507,37 +4508,17 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 		}
 	},
 	async replaceHandcardsOL(event, trigger, player) {
-		const chooseRemote = () => {
-			game.me.chooseBool({ prompt: "是否置换手牌？" });
-			game.resume();
-		};
-		const chooseMe = () => {
-			return game.me.chooseBool({ prompt: "是否置换手牌？" });
-		};
-		const choose = (current: Player) => {
-			return new Promise<boolean>(resolve => {
-				if (current.isOnline()) {
-					current.wait(result => resolve(!!result?.bool));
-					current.send(chooseRemote);
-					return;
-				} else if (current === game.me) {
-					const next = chooseMe();
-					game.me.wait(result => resolve(!!result?.bool));
-					next.forResult()
-						.then(result => game.me.unwait(result))
-						.catch(() => resolve(false));
-				} else {
-					resolve(false);
-				}
-			});
-		};
-
-		const events = event.players.map(async current => {
-			const result = await choose(current);
-
-			if (!result) {
-				return;
-			}
+		// Use real per-player choices so hosted validation and reconnect replay
+		// have the same event, token and deadline as any other player decision.
+		const decisions = await game.chooseAnyOL(event.players.filter(current => current.countCards("h") > 0),
+			(current, prompt) => current.chooseBool(prompt).set("ai", () => false),
+			[event.prompt || "开局手气卡：是否整手换牌？选择否或超时将保留当前手牌。"]
+		).forResult();
+		const replaced: Player[] = [];
+		// Apply in seat order after all private decisions, independently of
+		// network arrival order. Passing once ends that player's opening redraws.
+		for (const current of event.players) {
+			if (decisions.get(current)?.bool !== true) continue;
 
 			/*otherPile主要是针对那些用专属牌堆，不从一般牌堆摸牌的角色（如陈寿），该属性目前只有两个键值对，且都为函数
 			 *getCards函数与获得牌相关，只传入要获得的牌数num作为参数
@@ -4588,8 +4569,9 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 				current.directgain(cards);
 			}
 			current._start_cards = cards;
-		});
-		await Promise.allSettled(events);
+			replaced.push(current);
+		}
+		event.result = replaced;
 	},
 	phase: [
 		async (event, trigger, player) => {
@@ -7435,6 +7417,10 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 	},
 	chooseButton: [
 		async (event, trigger, player) => {
+			if (event.isMine() && Array.isArray(event.characterChoices) && !event.dialog) {
+				event.dialog = createCharacterBrowser({ ids: event.characterChoices, caption: event.createDialog?.[0] || "点将", heightset: true, expandall: true, noclick: false, onlypack: undefined });
+				event.closeDialog = true;
+			}
 			if (typeof event.dialog == "number") {
 				event.dialog = get.idDialog(event.dialog);
 			}
@@ -7455,7 +7441,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 
 			const filterButton = event.filterButton ?? (() => true);
 			const selectButton = get.select(event.selectButton);
-			const buttons = event.dialog.buttons;
+			const buttons = event.dialog.characterPager && event.isMine() && !event.direct && !event.forceDirect ? event.dialog.characterPager.buttons : event.dialog.buttons;
 			const buttonsx = [];
 			let num = 0;
 			for (const button of buttons) {

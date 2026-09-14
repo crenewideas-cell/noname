@@ -1,7 +1,7 @@
 import { randomUUID, randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
 import { GameHost, type HostEvent } from "@noname/game-host";
-import { OnlineError, ONLINE_BUILD, modePreset, normalizeCharacterPool, type Account, type Room, type ChatMessage, text } from "@noname/online-protocol";
+import { OnlineError, ONLINE_BUILD, modePreset, normalizeCharacterPool, normalizeRoomRules, type Account, type Room, type ChatMessage, text } from "@noname/online-protocol";
 import { Database, hashPassword, verifyPassword } from "./database";
 type InternalRoom = { view: Room; passwordHash?: string; chat: ChatMessage[]; startupTimer?: NodeJS.Timeout; touchedAt?: number };
 const maxInstances = () => Math.max(1, Math.min(4, Number(process.env.MAX_GAME_INSTANCES) || 2));
@@ -136,7 +136,7 @@ export class Rooms {
       const result: Room = authorized ? { ...room, members: room.members.map(member => ({ ...member })) } : {
         id: room.id, code: room.code, name: room.name, ownerId: "", modeId: room.modeId, preset: room.preset,
         capacity: room.capacity, visibility: room.visibility, locked: room.locked, state: room.state,
-        revision: room.revision, createdAt: room.createdAt, characterPool: room.characterPool,
+        revision: room.revision, createdAt: room.createdAt, characterPool: room.characterPool, rules: room.rules,
         // Search results only need seat occupancy. Account identifiers,
         // player codes, presence and the worker instance stay private.
         members: room.members.map(member => ({ id: "", code: "", nickname: "", avatar: "", ready: false, online: false, seat: member.seat, isAI: member.isAI })),
@@ -162,6 +162,7 @@ export class Rooms {
           id: randomUUID(), code: randomBytes(6).toString("hex").toUpperCase(), name: text(payload.name, 1, 32), ownerId: account.id,
           modeId: mode.id, preset: mode.preset, capacity: payload.capacity, visibility: payload.visibility, locked: !!password,
           characterPool: normalizeCharacterPool(payload.characterPool),
+          rules: normalizeRoomRules(payload.rules, mode.id),
           state: "waiting", revision: 0, members: [{ ...account, ready: false, online: true, seat: 0 }], createdAt: Date.now(),
         }, passwordHash: password ? await hashPassword(password) : undefined, chat: [] };
         await this.save(room); this.rooms.set(room.view.id, room); this.active.set(account.id, room.view.id);
@@ -249,9 +250,10 @@ export class Rooms {
         view.members.find(item => item.id === account.id)!.ready = payload.ready;
       } else if (type === "room.update") {
         this.waiting(room); this.owner(room, account.id);
-        if (payload.name === undefined && payload.characterPool === undefined) throw new OnlineError("INVALID_ARGUMENT", "请提供要修改的房间规则");
+        if (payload.name === undefined && payload.characterPool === undefined && payload.rules === undefined) throw new OnlineError("INVALID_ARGUMENT", "请提供要修改的房间规则");
         if (payload.name !== undefined) view.name = text(payload.name, 1, 32);
         if (payload.characterPool !== undefined) view.characterPool = normalizeCharacterPool(payload.characterPool);
+        if (payload.rules !== undefined) view.rules = normalizeRoomRules(payload.rules, view.modeId);
         view.members.forEach(member => member.ready = !!member.isAI);
       } else if (type === "room.rematch") {
         this.owner(room, account.id);
@@ -261,14 +263,17 @@ export class Rooms {
         view.members.forEach(member => { member.ready = !!member.isAI; delete member.abandoned; delete member.resumeUntil; });
       } else if (type === "room.start") {
         this.waiting(room); this.owner(room, account.id);
+        const supportedCounts: readonly number[] = modePreset(view.modeId)?.players || [];
+        if (!supportedCounts.includes(view.capacity)) throw new OnlineError("INVALID_ARGUMENT", "房间人数不符合当前规则；身份场仅支持 5 人或 8 人，请重新创建房间");
         if (view.members.length !== view.capacity || !view.members.every(member => member.isAI || member.ready && member.online)) throw new OnlineError("NOT_READY", "请等待真人玩家准备，并由房主为剩余空位添加 AI 或等待玩家加入");
         if (this.hosts.count >= maxInstances()) throw new OnlineError("SERVICE_BUSY", "服务器对局已满，请稍后再试");
         view.characterPool = normalizeCharacterPool(view.characterPool);
+        view.rules = normalizeRoomRules(view.rules, view.modeId);
         view.state = "starting"; view.instanceId = randomUUID(); view.instanceReady = false;
         await this.save(room);
         const instanceId = view.instanceId;
         room.startupTimer = setTimeout(() => { void this.recoverHostFailure(room, instanceId); }, 120000);
-        void this.hosts.start({ instanceId, roomId: view.id, modeId: view.modeId, characterPool: structuredClone(view.characterPool), build: process.env.ONLINE_BUILD_ID || ONLINE_BUILD, members: [...view.members].sort((a, b) => a.seat - b.seat) }, event => this.hostEvent(room, instanceId, event))
+        void this.hosts.start({ instanceId, roomId: view.id, modeId: view.modeId, characterPool: structuredClone(view.characterPool), rules: structuredClone(view.rules), build: process.env.ONLINE_BUILD_ID || ONLINE_BUILD, members: [...view.members].sort((a, b) => a.seat - b.seat) }, event => this.hostEvent(room, instanceId, event))
           .catch(() => this.recoverHostFailure(room, instanceId));
         return view;
       } else if (type === "room.chat") {
@@ -424,6 +429,7 @@ export class Rooms {
       const room: InternalRoom = { view: { id: randomUUID(), code: randomBytes(6).toString("hex").toUpperCase(), name: mode.name + " · 匹配对局", ownerId: accounts[0].id,
         modeId, preset: mode.preset, capacity, visibility: "invite", locked: false, state: "waiting", revision: 0, createdAt: Date.now(),
         characterPool: normalizeCharacterPool(undefined),
+        rules: normalizeRoomRules(undefined, modeId),
         members: accounts.map((account, seat) => ({ ...account, seat, ready: true, online: true })) }, chat: [] };
       await this.save(room);
       this.rooms.set(room.view.id, room); for (const account of accounts) this.active.set(account.id, room.view.id);

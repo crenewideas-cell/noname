@@ -5791,3 +5791,22 @@ progress.progress::-webkit-progress-value {
 }
 .dialog.character-browser-paged .character-browser-selection:empty { display: none; }
 .dialog.character-browser-paged input[aria-invalid="true"] { border-color: #d88b79 !important; }
+
+/* Target selection contrast and ordered-choice guidance. */
+#arena .player.selection-candidate { outline: 3px solid #55ecff !important; outline-offset: 3px; box-shadow: 0 0 20px #20d7edb0 !important; cursor: pointer; }
+#arena .player.selection-picked { outline: 5px solid #ffdd62 !important; outline-offset: 4px; box-shadow: 0 0 0 8px #694615aa, 0 0 30px #ffd24dcc !important; opacity: 1 !important; }
+#arena .player.selection-unavailable { opacity: .45 !important; }
+#arena .player > .selection-target-badge { position: absolute; z-index: 100; top: 5px; left: 5px; right: 5px; width: auto; height: auto; padding: 5px 3px; border: 1px solid #aeffff; border-radius: 6px; color: #092229; background: #75edff; font: 700 14px/1.35 "Microsoft YaHei", sans-serif; text-align: center; text-shadow: none; pointer-events: none; white-space: normal; overflow-wrap: anywhere; transform: none; }
+#arena .player.selection-picked > .selection-target-badge { color: #382700; background: #ffe177; border: 2px solid #fff6ca; }
+.selection-guide { position: absolute; z-index: 70; bottom: 180px; left: 50%; transform: translateX(-50%); box-sizing: border-box; width: min(670px, calc(100% - 36px)); max-height: min(180px, 28vh); overflow: auto; padding: 10px 16px; border: 2px solid #e7cf85; border-radius: 12px; background: #102b35f2; color: #fff5d7; box-shadow: 0 5px 24px #0008; font: 14px/1.5 "Microsoft YaHei", sans-serif; text-shadow: none; text-align: center; pointer-events: none; }
+.selection-guide * { position: static; box-sizing: border-box; text-shadow: none; }
+.selection-guide > strong { display: block; font-size: 17px; color: #ffe18a; }
+.selection-guide-steps { color: #9ee8f7; margin: 3px 0; }
+.selection-guide-chosen { overflow-wrap: anywhere; }
+.selection-guide-actions { display: flex; justify-content: center; gap: 12px; margin-top: 6px; }
+.selection-guide button { min-height: 32px; padding: 4px 14px; border: 1px solid #b7cdd1; border-radius: 6px; color: #fff5d7; background: #29434e; font: inherit; cursor: pointer; pointer-events: auto; }
+.selection-guide button:disabled { opacity: .4; cursor: default; }
+.selection-guide button:focus-visible { outline: 3px solid #ffe177; outline-offset: 2px; }
+.selection-guide [hidden] { display: none !important; }
+@media (max-width: 700px) { .selection-guide { bottom: 155px; padding: 6px 10px; font-size: 12px; max-height: 24vh; } .selection-guide > strong { font-size: 14px; } #arena .player > .selection-target-badge { font-size: 12px; padding: 3px 1px; } }
+

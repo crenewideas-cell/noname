@@ -4,7 +4,7 @@ export const PROTOCOL_VERSION = 2;
 export const ONLINE_BUILD = "online-packs-v2";
 export const RULESET = "identity-standard-v1";
 export const ONLINE_MODES = [
-  { id: "identity", name: "身份", preset: RULESET, players: [2, 4, 6, 8], characterPacks: DEFAULT_CHARACTER_PACKS, cardPacks: ["standard"] },
+  { id: "identity", name: "身份", preset: RULESET, players: [5, 8], characterPacks: DEFAULT_CHARACTER_PACKS, cardPacks: ["standard"] },
   { id: "doudizhu", name: "斗地主", preset: "doudizhu-standard-v1", players: [3], characterPacks: DEFAULT_CHARACTER_PACKS, cardPacks: ["standard"] },
 ] as const;
 export function modePreset(id: unknown) { return ONLINE_MODES.find(mode => mode.id === id); }
@@ -12,10 +12,24 @@ export type SessionType = "offline" | "online";
 export type RoomState = "waiting" | "starting" | "in_game" | "finished" | "closed";
 export interface Account { id: string; code: string; nickname: string; avatar: string; }
 export interface Member extends Account { ready: boolean; online: boolean; seat: number; isAI?: boolean; resumeUntil?: number; abandoned?: boolean; }
+export interface RoomRules { mulligan: 0 | 1 | 2; freeChoose: boolean; chooseTimeout: 15 | 30 | 60 | 90; }
+export function normalizeRoomRules(value: unknown, modeId = "identity"): RoomRules {
+  const defaults: RoomRules = { mulligan: modeId === "identity" ? 1 : 0, freeChoose: false, chooseTimeout: 30 };
+  if (value === undefined) return defaults;
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new OnlineError("INVALID_ROOM_RULES", "对局规则格式无效");
+  const rules = { ...defaults, ...value };
+  if (Object.keys(value).some(key => !Object.hasOwn(defaults, key)) || ![0, 1, 2].includes(rules.mulligan)
+    || typeof rules.freeChoose !== "boolean" || ![15, 30, 60, 90].includes(rules.chooseTimeout)
+    || modeId !== "identity" && (rules.freeChoose || rules.mulligan !== 0)) {
+    throw new OnlineError("INVALID_ROOM_RULES", "身份场手气卡支持 0～2 次，点将可开关；行动时限支持 15、30、60、90 秒");
+  }
+  return rules;
+}
 export interface Room {
   id: string; code: string; name: string; ownerId: string; modeId: string;
   preset: string; capacity: number; visibility: "public" | "invite";
   characterPool?: CharacterPool;
+  rules?: RoomRules;
   locked: boolean; state: RoomState; revision: number; members: Member[];
   instanceId?: string; instanceReady?: boolean; createdAt: number;
 }

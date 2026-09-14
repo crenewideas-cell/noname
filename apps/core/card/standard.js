@@ -2975,7 +2975,7 @@ export default {
 			type: "trick",
 			enable: true,
 			singleCard: true,
-			targetprompt: ["被借刀", "出杀目标"],
+			targetprompt: ["持武器的出杀者", "该角色杀的目标"],
 			complexSelect: true,
 			complexTarget: true,
 			multicheck() {

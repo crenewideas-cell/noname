@@ -5780,6 +5780,7 @@ export class Library {
 			name: "身份",
 			connect: {
 				update: function (config, map) {
+					map.connect_free_choose[!config.connect_identity_mode || config.connect_identity_mode === "normal" ? "show" : "hide"]();
 					if (config.connect_identity_mode == "stratagem") {
 						map.connect_round_one_use_fury.show();
 					} else {
@@ -6026,9 +6027,13 @@ export class Library {
 				},
 				connect_change_card: {
 					name: "启用手气卡",
-					init: false,
+					init: true,
 					frequent: true,
 					restart: true,
+				},
+				connect_free_choose: {
+					name: "开启点将", init: false, frequent: true, restart: true,
+					intro: "主公先选，随后按座次依次从房间武将池选择，已选武将不重复。",
 				},
 				connect_special_identity: {
 					name: "特殊身份",
@@ -6246,13 +6251,7 @@ export class Library {
 					name: "游戏人数",
 					init: "8",
 					get item() {
-						const minimumNumberOfPlayers = 2,
-							maximumNumberOfPlayers = Math.max(_status.maximumNumberOfPlayers || 10, minimumNumberOfPlayers),
-							item = {};
-						for (let playerNumber = minimumNumberOfPlayers; playerNumber <= maximumNumberOfPlayers; playerNumber++) {
-							item[playerNumber] = `${get.cnNumber(playerNumber)}人`;
-						}
-						return item;
+						return { "5": "五人", "8": "八人" };
 					},
 					frequent: true,
 					restart: true,
@@ -6419,7 +6418,7 @@ export class Library {
 				},
 				change_card: {
 					name: "开启手气卡",
-					init: "disabled",
+					init: "once",
 					item: {
 						disabled: "禁用",
 						once: "一次",

@@ -1,5 +1,5 @@
 import { lib, game, ui, get, _status } from "noname";
-import { ONLINE_BUILD, modePreset, normalizeCharacterPool } from "@noname/online-protocol";
+import { ONLINE_BUILD, modePreset, normalizeCharacterPool, normalizeRoomRules } from "@noname/online-protocol";
 import { onlineCharacterLoadList, onlineCardLoadList, validateHostedCharacterPool } from "./characterPool.js";
 import { visibleSkillState } from "./publicSkillState.js";
 
@@ -11,6 +11,8 @@ export function configureHost() {
 	const spec = window.__nonameHost;
 	if (spec.build !== (import.meta.env.VITE_ONLINE_BUILD_ID || ONLINE_BUILD) || !modePreset(spec.modeId)) throw new Error("HOST_BUILD_MISMATCH");
 	normalizeCharacterPool(spec.characterPool);
+	normalizeRoomRules(spec.rules, spec.modeId);
+	if (!modePreset(spec.modeId).players.includes(spec.members.length)) throw new Error("HOST_PLAYER_COUNT_MISMATCH");
 	Object.assign(lib.config, {
 		mode: spec.modeId, new_tutorial: true, show_splash: "off", extensions: [],
 		characters: onlineCharacterLoadList(), cards: ["standard"], plays: [],
@@ -32,6 +34,7 @@ export function installHost() {
 	const spec = window.__nonameHost;
 	const emit = message => window.__nonameHostEmit(message);
 	const characterPool = normalizeCharacterPool(spec.characterPool);
+	const rules = normalizeRoomRules(spec.rules, spec.modeId);
 	game.notMe = true;
 	game.online = false;
 	game.onlineroom = true;
@@ -39,11 +42,12 @@ export function installHost() {
 	game.roomId = spec.roomId;
 	lib.configOL = {
 		mode: spec.modeId, identity_mode: "normal", doudizhu_mode: "normal", number: spec.members.length,
-		player_number: String(spec.members.length), choose_timeout: "30", observe: false,
+		player_number: String(spec.members.length), choose_timeout: String(rules.chooseTimeout), observe: false,
 		characterPack: characterPool.packs, cardPack: ["standard"], banned: characterPool.banned, bannedcards: [],
 		choice_zhu: 3, choice_zhong: 3, choice_fan: 3, choice_nei: 3,
 		double_character: false, double_nei: false, special_identity: false,
-		enable_commoner: false, enable_year_limit: false, change_card: false, feiyang_version: "online", enhance_dizhu: "none",
+		enable_commoner: false, enable_year_limit: false, change_card: rules.mulligan > 0,
+		mulligan_rounds: rules.mulligan, free_choose: rules.freeChoose, feiyang_version: "online", enhance_dizhu: "none",
 	};
 	try {
 		const code = validateHostedCharacterPool(characterPool, spec.members.length);
@@ -88,7 +92,7 @@ export function installHost() {
 				const promptArgs = args.slice(1);
 				promptArgs[2] = [...(promptArgs[2] || [])];
 				if (skill) promptArgs[2].push(["_backupevent", skill]);
-				const dialog = ["chooseButton", "chooseButtonTarget", "chooseControl"].includes(sendingEvent.name) && sendingEvent.dialog?.buttons ? sendingEvent.dialog : undefined;
+				const dialog = !sendingEvent.characterChoices && ["chooseButton", "chooseButtonTarget", "chooseControl"].includes(sendingEvent.name) && sendingEvent.dialog?.buttons ? sendingEvent.dialog : undefined;
 				const dialogData = dialog && describeChoiceDialog(dialog, sendingEvent.prompt);
 				if (dialog) {
 					// DOM dialogs serialize as {}. Send their trusted button data and
@@ -190,7 +194,8 @@ export function installHost() {
 		const token = `${spec.instanceId}:${++serial}`;
 		const event = sendingEvent || _status.event;
 		const prompt = prompts.get(this.playerid);
-		choices.set(this.playerid, { token, event, selection: selectionEvent(event, this, prompt), prompt, deadline: Date.now() + 35000 });
+		const timeout = rules.chooseTimeout * 1000;
+		choices.set(this.playerid, { token, event, selection: selectionEvent(event, this, prompt), prompt, deadline: Date.now() + timeout });
 		deliver(this.playerid, { type: "choice", accountId: this.playerid, token, deadline: choices.get(this.playerid).deadline });
 		originalWait.apply(this, args);
 		clearTimeout(lib.node.torespondtimeout[this.playerid]);
@@ -202,7 +207,7 @@ export function installHost() {
 			this.isAuto = true;
 			seatStatus(this);
 			this.unwait("ai");
-		}, 35000);
+		}, timeout);
 	};
 	game.createServer = () => {
 		lib.node = { clients: [], observing: [], banned: [], torespond: {}, torespondtimeout: {}, waitForResult: {}, reconnectTokens: new Map() };
@@ -524,6 +529,7 @@ function validateSelection(event, player, result) {
 		if (result[name] !== undefined && (!Array.isArray(result[name]) || new Set(result[name]).size !== result[name].length)) throw new Error("重复或无效选择");
 	}
 	if (result.bool === false) {
+		if (Array.isArray(event.characterChoices) && event.forced) throw new Error("请完成点将；超时将由托管代选");
 		// A cancellation cannot carry a second, executable skill/card result.
 		for (const key of Object.keys(result)) if (key !== "bool") delete result[key];
 		return;

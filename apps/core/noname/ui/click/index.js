@@ -2861,6 +2861,9 @@ export class Click {
 				if (lib.configOL.mode == "identity" && (lib.configOL.identity_mode == "zhong" || lib.configOL.identity_mode == "purple")) {
 					return;
 				}
+				// Identity rooms use a fixed five/eight-seat ruleset. Individual
+				// seat toggles must not create unsupported player counts.
+				if (lib.configOL.mode == "identity") return;
 				if (!this.classList.contains("unselectable2") && lib.configOL.number <= 2) {
 					return;
 				}
