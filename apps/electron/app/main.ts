@@ -6,14 +6,14 @@ import { onlineEntry, onlineAssetPath } from "./online-assets";
 import fs from "fs";
 import path from "path";
 import remote from "@electron/remote/main/index.js";
-import createApp from "@noname/fs";
+import createApp from "@noname/fs/dist/index.js";
 remote.initialize();
 const dirname = path.join(import.meta.dirname, "../");
 const onlineWindows = new Map<number, BrowserWindow>();
 const configuredOnlineSessions = new Set<string>();
 ipcMain.handle("noname:open-online", async (event, address: unknown) => {
   const caller = new URL(event.sender.getURL());
-  if (!["http://localhost:8080", "http://localhost:8089"].includes(caller.origin) || typeof address !== "string") throw new Error("Invalid online entry");
+  if (!["http://localhost:8081", "http://localhost:8089"].includes(caller.origin) || typeof address !== "string") throw new Error("Invalid online entry");
   const assetRoot = path.join(dirname, "online-client");
   const url = await onlineEntry(assetRoot, address);
   const partition = "persist:noname-online-" + createHash("sha256").update(url.origin).digest("hex").slice(0, 16);
@@ -57,7 +57,7 @@ if (!gotTheLock) {
 	// 如果获取失败，说明已经有实例在运行了，直接退出
 	app.quit();
 }
-const fileService = gotTheLock ? createApp({ port: 8089, dirname, server: true }) : undefined;
+const fileService = gotTheLock ? createApp({ port: 8089, dirname, server: true, listen: false }) : undefined;
 let servicesClosed = false;
 let closingServices = false;
 app.on("will-quit", event => {
@@ -84,15 +84,16 @@ function setPath(path1: any, path2: any) {
 	app.setPath(path1, path2);
 }
 
-setPath("home", path.join(dirname, "Home"));
-setPath("appData", path.join(dirname, "Home", "AppData"));
-setPath("userData", path.join(dirname, "Home", "UserData"));
-setPath("temp", path.join(dirname, "Home", "Temp"));
-setPath("cache", path.join(dirname, "Home", "Cache"));
+// Portable EXEs extract to a temporary directory. Keep saves outside that tree.
+const dataRoot = app.commandLine.getSwitchValue("user-data-dir")
+	|| (app.isPackaged ? path.join(app.getPath("appData"), "noname-desktop") : path.join(dirname, "Home"));
+setPath("userData", path.join(dataRoot, "UserData"));
+setPath("temp", path.join(dataRoot, "Temp"));
+setPath("cache", path.join(dataRoot, "Cache"));
 //崩溃转储文件存储的目录
-setPath("crashDumps", path.join(dirname, "Home", "crashDumps"));
+setPath("crashDumps", path.join(dataRoot, "crashDumps"));
 //日志目录
-setPath("logs", path.join(dirname, "Home", "logs"));
+setPath("logs", path.join(dataRoot, "logs"));
 
 //崩溃处理
 crashReporter.start({
@@ -136,7 +137,7 @@ function createMainWindow() {
 		icon: path.join(dirname, "noname.ico"),
 		webPreferences: {
 			webSecurity: false,
-			preload: path.join(dirname, "app/preload.js"),
+			preload: path.join(dirname, "app/preload.cjs"),
 			nodeIntegration: true, //主页面用node
 			nodeIntegrationInSubFrames: true, //子页面用node
 			nodeIntegrationInWorker: true, //worker用node
@@ -148,9 +149,9 @@ function createMainWindow() {
 		},
 	});
 	if (import.meta.env.DEV) {
-		win.loadURL(`http://localhost:8080`);
+		win.loadURL(`http://localhost:8081`);
 	} else {
-		win.loadURL(`http://localhost:8089/index.html`);
+		win.loadURL(`http://localhost:8089/index.html#desktop-lobby`);
 	}
 	remote.enable(win.webContents);
 	const menuTemplate: Electron.MenuItemConstructorOptions[] = [
@@ -197,6 +198,7 @@ function createMainWindow() {
 		{
 			label: "帮助",
 			submenu: [
+				{ label: "开源许可（GPLv3）", click: () => { shell.openPath(path.join(dirname, "LICENSE")); } },
 				{
 					label: "bug反馈",
 					click: () => {
@@ -222,8 +224,15 @@ function createMainWindow() {
 	return win;
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
 	if (!gotTheLock) return;
+	try {
+		await fileService!.listen({ port: 8089, host: "localhost" });
+	} catch (error) {
+		dialog.showErrorBox("无名杀启动失败", `无法启动本地文件服务，请关闭占用 8089 端口的开发服务或其他客户端后重试。\n${error}`);
+		app.quit();
+		return;
+	}
 	createWindow();
 	app.on("activate", () => {
 		if (BrowserWindow.getAllWindows().length === 0) {

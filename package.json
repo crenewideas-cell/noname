@@ -9,6 +9,8 @@
     "scripts": {
         "dev": "tsx scripts/dev.ts",
         "build": "tsx scripts/build.ts",
+		"build:exe": "node scripts/build-exe.mjs",
+		"test:exe": "node --test scripts/build-exe.test.mjs",
         "build:online": "tsx scripts/build-online.ts",
         "build:online:client": "tsx scripts/build-online.ts --client",
         "dev:online": "pnpm --filter @noname/server platform",

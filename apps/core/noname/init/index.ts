@@ -375,7 +375,9 @@ export async function boot() {
 		localStorage.removeItem(lib.configprefix + "directstart");
 	}
 	// Explicit navigation takes precedence over automatic start and splash preferences once.
-	const returnToLobby = sessionStorage.getItem(lib.configprefix + "return_to_lobby") === "true";
+	const desktopLobby = typeof window.require === "function" && location.hash === "#desktop-lobby";
+	if (desktopLobby) history.replaceState(null, "", location.pathname + location.search);
+	const returnToLobby = desktopLobby || sessionStorage.getItem(lib.configprefix + "return_to_lobby") === "true";
 	if (returnToLobby) {
 		sessionStorage.removeItem(lib.configprefix + "return_to_lobby");
 		show_splash = true;

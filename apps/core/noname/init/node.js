@@ -7,12 +7,7 @@ export default function nodeReady({ lib, game, get, _status, ui }) {
 		// 在http环境下修改__dirname和require的逻辑
 		if (window.__dirname.endsWith("electron.asar\\renderer") || window.__dirname.endsWith("electron.asar/renderer")) {
 			const path = require("path");
-			if (window.process.platform === "darwin") {
-				//@ts-ignore
-				window.__dirname = path.join(window.process.resourcesPath, "app");
-			} else {
-				window.__dirname = path.join(path.resolve(), "resources/app");
-			}
+			window.__dirname = require("@electron/remote").app.getAppPath();
 			const oldRequire = window.require;
 			// @ts-expect-error ignore
 			window.require = function (moduleId) {

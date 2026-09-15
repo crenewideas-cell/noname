@@ -11,6 +11,8 @@ import { moderned_characters } from "../game/config.json";
 import { ONLINE_CHARACTER_PACKS } from "@noname/online-protocol";
 const root = join(import.meta.dirname, "..");
 const publicOnlineBuild = process.env.NONAME_PUBLIC_BUILD === "1";
+const desktopBuild = process.env.NONAME_DESKTOP_BUILD === "1";
+const standaloneBuild = publicOnlineBuild || desktopBuild;
 
 /**
  * 构建脚本入口。
@@ -68,7 +70,7 @@ async function main() {
 		],
 		card: [],
 	};
-	if (publicOnlineBuild) {
+	if (standaloneBuild) {
 		individuals.mode = readdirSync(join(root, "mode"), { withFileTypes: true }).flatMap(file => {
 			if (file.isFile() && /\.(js|ts)$/.test(file.name)) return [{ name: getEntryName(file.name), index: `mode/${file.name}`, moderned: false }];
 			const index = ["index.ts", "index.js"].find(entry => existsSync(join(root, "mode", file.name, entry)));
@@ -80,7 +82,10 @@ async function main() {
 	// Every online package must be compiled, including legacy entries such as
 	// xianding that import another pack's source and engine internals. Those
 	// source paths do not exist in the assembled online runtime.
-	const characterEntries = publicOnlineBuild ? ONLINE_CHARACTER_PACKS.map(pack => pack.id) : moderned_characters;
+	const characterEntries = desktopBuild
+		? readdirSync(join(root, "character"), { withFileTypes: true }).filter(file => file.isDirectory()
+			&& ["index.js", "index.ts"].some(entry => existsSync(join(root, "character", file.name, entry)))).map(file => file.name)
+		: publicOnlineBuild ? ONLINE_CHARACTER_PACKS.map(pack => pack.id) : moderned_characters;
 	for (const name of characterEntries) {
 		let index = `character/${name}/index.ts`
 		if (!existsSync(join(root, index))) {
@@ -160,20 +165,20 @@ async function buildSelf(target: string | string[], importMap: Record<string, st
 				// In the module-preserving build, keep engine self-imports routed
 				// through the public entry. Rewriting its cyclic reexports to direct
 				// imports can instantiate Game before GamePromises is initialized.
-				external: publicOnlineBuild ? ["vue"] : ["vue", "noname"],
+					external: standaloneBuild ? ["vue"] : ["vue", "noname"],
 				input: {
 					index: "index.html",
 					noname: "noname.js",
-					...(publicOnlineBuild ? { "noname/entry": join(root, "noname/entry.ts") } : {}),
+					...(standaloneBuild ? { "noname/entry": join(root, "noname/entry.ts") } : {}),
 				},
 				output: {
-					paths: publicOnlineBuild ? { vue: "/vendor/vue.js" } : { noname: "/noname.js" },
-					hoistTransitiveImports: !publicOnlineBuild,
-					preserveModules: !publicOnlineBuild, // Online runtime must order cyclic engine initializers together.
+					paths: standaloneBuild ? { vue: "/vendor/vue.js" } : { noname: "/noname.js" },
+					hoistTransitiveImports: !standaloneBuild,
+					preserveModules: !standaloneBuild, // Standalone runtime must order cyclic engine initializers together.
 					preserveModulesRoot: "./",
 
 					// 去掉 hash
-					entryFileNames: chunk => publicOnlineBuild && chunk.name === "index" ? "noname/entry.js" : "[name].js", // 入口文件
+					entryFileNames: chunk => standaloneBuild && chunk.name === "index" ? "noname/entry.js" : "[name].js", // 入口文件
 					chunkFileNames: "[name].js", // 代码分块
 					assetFileNames: "[name][extname]", // 静态资源
 				},

@@ -34,7 +34,9 @@ import "vue/dist/vue.esm-browser.js";
 		lib.buildInfo = await loadBuildInfo(url => lib.init.promises.json(url));
 
 		// GPL确认
-		if (!localStorage.getItem("gplv3_noname_alerted")) {
+		// Packaged desktop clients include LICENSE and expose it in the Help menu.
+		const packagedDesktop = typeof window.require === "function" && window.require("@electron/remote").app.isPackaged;
+		if (!packagedDesktop && !localStorage.getItem("gplv3_noname_alerted")) {
 			if (
 				confirm(`①无名杀是一款基于GPLv3协议的开源软件
 你可以在遵守GPLv3协议的基础上任意使用，修改并转发《无名杀》，以及所有基于《无名杀》开发的扩展

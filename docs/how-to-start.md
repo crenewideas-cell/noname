@@ -340,6 +340,10 @@ pnpm -F @noname/electron dev
 
 构建 Windows 桌面包：
 
+需要一键生成可直接运行、自动进入大厅的 EXE，请优先使用 `pnpm build:exe` 或双击根目录 `build-exe.cmd`。输出为 `output/windows/win-unpacked/noname.exe`，分发时保留整个文件夹。文件筛选、单文件 EXE 参数和存档位置见 [Windows EXE 打包](windows-exe.md)。
+
+原有安装包命令仍保留：
+
 ```powershell
 pnpm build
 pnpm -F @noname/electron build:win
