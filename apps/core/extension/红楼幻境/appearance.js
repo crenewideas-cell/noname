@@ -55,6 +55,9 @@ export function installCharacterAppearance(lib, game, ui, get, status, paths) {
 export const installDaiyuAppearance = installCharacterAppearance;
 
 function createAppearanceController(lib, game, ui, spec) {
+    // The engine drains and deletes this queue after creating the arena.
+    // Controllers created after character selection must start directly.
+    const arenaReady = lib.arenaReady;
     const { character, label, themes } = spec;
     const themeKeys = Object.keys(themes);
     const portraitKeys = themeKeys.filter(key => themes[key].portrait?.image || themes[key].portrait?.fallback);
@@ -531,6 +534,7 @@ function createAppearanceController(lib, game, ui, spec) {
         else { schedule(); if (music && !audioBlocked) playMusic(); }
     }
     function stop() {
+        if (ended) return;
         ended = true;
         cancelAnimationFrame(frame); frame = null;
         for (const item of portraits.values()) { item.revision++; clearTimeout(item.cleanup); removeVisual(item.overlay); }
@@ -538,8 +542,8 @@ function createAppearanceController(lib, game, ui, spec) {
         motion.dispose(); reducedMotion.removeEventListener?.("change", onMotionPreference);
         dialog?.close();
         stylesheet?.remove();
-        const index = lib.arenaReady.indexOf(start);
-        if (index !== -1) lib.arenaReady.splice(index, 1);
+        const index = arenaReady?.indexOf(start) ?? -1;
+        if (index !== -1) arenaReady.splice(index, 1);
         document.removeEventListener("pointerdown", onGesture);
         document.removeEventListener("pointerup", onGesture);
         document.removeEventListener("keydown", onGesture);
@@ -567,7 +571,7 @@ function createAppearanceController(lib, game, ui, spec) {
         window.addEventListener("pagehide", stop, { once: true });
         schedule();
     }
-    lib.arenaReady.push(start);
+    arenaReady?.push(start);
     if (ui.window) start();
     return { open, prepare, refresh: schedule, dispose: stop };
 }

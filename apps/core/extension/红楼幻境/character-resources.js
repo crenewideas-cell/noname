@@ -10,6 +10,8 @@ export function selectedCharacters(game) {
 }
 
 export function createCharacterResourceMenu(lib, game, ui, { registry, suffix, available, open, update }) {
+    // Keep the original queue for cleanup; never recreate a consumed queue.
+    const arenaReady = lib.arenaReady;
     const buttons = new Map();
     let timer, frame, disposed = false;
     function characters() { return selectedCharacters(game).filter(id => registry.has(id) && available(registry.get(id))); }
@@ -36,14 +38,15 @@ export function createCharacterResourceMenu(lib, game, ui, { registry, suffix, a
         schedule();
     }
     function dispose() {
+        if (disposed) return;
         disposed = true; clearInterval(timer); cancelAnimationFrame(frame);
         for (const button of buttons.values()) button.remove();
         buttons.clear();
-        const index = lib.arenaReady.indexOf(start);
-        if (index !== -1) lib.arenaReady.splice(index, 1);
+        const index = arenaReady?.indexOf(start) ?? -1;
+        if (index !== -1) arenaReady.splice(index, 1);
         window.removeEventListener("pagehide", dispose);
     }
-    (lib.arenaReady ||= []).push(start);
+    arenaReady?.push(start);
     window.addEventListener("pagehide", dispose, { once: true });
     if (ui.window) start();
     return { characters, refresh: schedule, dispose };
