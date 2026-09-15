@@ -20,6 +20,9 @@ val releaseSigningConfigured = listOf(
     releaseKeyAlias,
     releaseKeyPassword,
 ).all { it != null }
+require(releaseSigningConfigured || listOf(releaseStoreFile, releaseStorePassword, releaseKeyAlias, releaseKeyPassword).all { it == null }) {
+    "Incomplete release signing configuration: provide all four keystore values, or remove all of them for development signing."
+}
 
 plugins {
     id("com.android.application")
@@ -121,4 +124,3 @@ if (servicesJSON.exists() && servicesJSON.readText().isNotEmpty()) {
 } else {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
 }
-

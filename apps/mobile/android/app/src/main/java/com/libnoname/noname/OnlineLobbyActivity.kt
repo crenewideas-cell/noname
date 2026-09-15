@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
+import java.io.IOException
 
 /** Local bundled game files share the API origin, without a native JS bridge. */
 class OnlineLobbyActivity : Activity() {
@@ -62,7 +63,14 @@ class OnlineLobbyActivity : Activity() {
                 val parts = name.split('/')
                 if (parts.any { it == "." || it == ".." } || parts.first() in listOf("extension", "src", "preload.js", ".env", ".git")) return missing(403)
                 return try {
-                    val stream = assets.open("public/online-client/" + name.replace(".pnpm", "_pnpm"))
+                    val stream = try {
+                        assets.open("public/online-client/" + name.replace(".pnpm", "_pnpm"))
+                    } catch (error: IOException) {
+                        // Reuse identical packaged media without duplicating ~1.4 GB.
+                        // Executable code always stays inside the isolated online client.
+                        if (parts.first() !in listOf("audio", "image", "font")) throw error
+                        assets.open("public/" + name)
+                    }
                     val extension = name.substringAfterLast('.', "").lowercase()
                     val mime = when (extension) {
                         "js", "mjs" -> "application/javascript"

@@ -2,9 +2,41 @@
 
 Android client for Noname, built with Capacitor.
 
-## Build Flow
+## 一键打包（Windows）
 
-The Android project serves the built web app from `../../dist`.
+在工程根目录双击 `build-android.cmd`，或运行 `pnpm build:android`。
+首次使用先执行 `pnpm install --frozen-lockfile`。构建需要 Node.js 22.18+、pnpm 10、JDK 21 和 Android SDK（API 36）。
+脚本会从 `ANDROID_JAVA_HOME`、`JAVA_HOME`、PATH 中 Java 安装的相邻目录及常见安装目录选择 JDK 21，仅影响本次构建。
+通过 `ANDROID_HOME` / `ANDROID_SDK_ROOT` 定位 SDK；已接受 SDK 许可时，Gradle 会下载缺少的平台和 Build Tools。
+首次构建需联网下载 Gradle 和 Maven 依赖。Windows 简单系统代理会自动应用，也可设置 `NONAME_ANDROID_PROXY=http://host:port`。
+
+输出目录为根目录的 `output/android/`：
+
+- `noname-release.apk`：可安装 APK，内含本体、公共联机客户端和修复后的“絶伦逸羣”。
+- `noname-extensions.zip`：全部扩展运行资源，保留中文目录和运行时加载的 JS/TS/Vue、图片、音频及许可证；排除工程缓存、原始压缩包和已有桌面构建规则定义的非运行素材。
+- `安装说明.txt`、`LICENSE`、`build-report.json`：安装步骤、许可证、文件大小及 SHA-256。
+
+将 ZIP 解压到手机普通目录，例如 `Documents/noname`，确保该目录下直接存在 `extension/`。
+安装 APK 后，首次启动选择这个目录并授予读写权限。也可以先选空目录运行本体，之后将资源解压到该目录并重启。
+扩展在游戏菜单中按需启用。旧目录中的文件优先于 APK，升级时也应更新资源包，尤其是 `extension/絶伦逸羣/extension.js`。
+请勿选择 Android/data、存储根目录或 Download 根目录，系统可能不允许授予这些目录权限。
+
+```powershell
+pnpm build:android --check          # 检查本地环境，不构建
+pnpm build:android                  # release APK + 全部扩展 ZIP
+pnpm build:android --variant=debug  # 同样离线运行，可调试
+pnpm build:android --aab            # AAB + ZIP；AAB 不能直接安装
+pnpm build:android --skip-web-build # 复用 output/android-stage
+pnpm test:android                  # 打包工具与装备栏技能回归测试
+```
+
+本体/扩展源码更新后应完整构建；`--skip-web-build` 仅用于本体资源未变的原生代码迭代。
+脚本逐步检查退出码，构建失败立即停止；成功后检查 APK 签名。无正式签名配置时采用开发签名，部分签名字段缺失会报错。
+自动化调用 `.cmd` 时设置 `NONAME_BUILD_NO_PAUSE=1` 可关闭结束暂停。
+
+## Manual Sync
+
+The one-click builder uses the isolated `output/android-stage` directory and standalone browser imports. Direct `sync` uses `../../dist` unless `NONAME_MOBILE_WEB_DIR` is set.
 
 ```bash
 pnpm build
@@ -22,7 +54,7 @@ pnpm -F @noname/mobile build:android
 pnpm -F @noname/mobile build:android -- --aab
 ```
 
-The default command builds `android/app/build/outputs/apk/release/app-release.apk`. Use `--variant=debug` for a debug APK, or `--skip-web-build` when `dist` has already been built and you only need to run the Android build. Build machines need Node.js, pnpm, JDK 21, and an Android SDK with the required SDK/build-tools packages; Android Studio itself is not needed.
+The package command is an alias of the root builder described above. Gradle also retains its native output at `android/app/build/outputs/apk/release/app-release.apk`. `--skip-web-build` requires the root builder's previously generated `output/android-stage`, not a development `dist` directory.
 
 Gradle builds require JDK 21. If another Java version is active, set `JAVA_HOME` and prepend its `bin` directory for the current shell before building. This is temporary and does not change the system-wide Java configuration.
 
@@ -42,7 +74,7 @@ export PATH="$JAVA_HOME/bin:$PATH"
 pnpm -F @noname/mobile build:android
 ```
 
-The script checks the active Java version before building and stops with a clear error if it is not JDK 21. JDK 25 currently fails during Android project configuration.
+The script selects an installed JDK 21 and uses it consistently for both preflight and Gradle, even if PATH and JAVA_HOME originally point to different versions.
 
 ### Release Signing
 

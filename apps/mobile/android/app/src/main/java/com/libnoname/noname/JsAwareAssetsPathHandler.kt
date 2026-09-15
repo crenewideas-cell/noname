@@ -37,7 +37,8 @@ class JsAwarePathHandler(
     }
 
     private fun guessMime(name: String): String {
-        val ext = MimeTypeMap.getFileExtensionFromUrl(name)
+        // Android's URL helper rejects non-ASCII filenames (Chinese extension paths).
+        val ext = name.substringAfterLast('.', "").lowercase(java.util.Locale.ROOT)
         return MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext)
             ?: when (ext) {
                 "js" -> "application/javascript"

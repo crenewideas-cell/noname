@@ -5,7 +5,7 @@ import { build } from "vite";
 
 const root = import.meta.dirname;
 const workspaceRoot = resolve(root, "../..");
-const distDir = resolve(workspaceRoot, "dist");
+const distDir = resolve(process.env.NONAME_MOBILE_WEB_DIR || resolve(workspaceRoot, "dist"));
 const preloadOutDir = resolve(root, ".mobile-preload");
 const androidAssetsNodeModules = resolve(root, "android/app/src/main/assets/public/node_modules");
 

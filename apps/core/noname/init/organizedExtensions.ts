@@ -28,7 +28,7 @@ export const isValidExtensionName = (name: unknown): name is string => typeof na
 	!/[\\/\0]/.test(name) && name !== "." && name !== ".." && !isRetiredExtension(name) && !privateOptionNames.has(name);
 
 /** Register this repository's installed packages once, preserving later user choices. */
-export async function registerOrganizedExtensions(config: { get: (key: string) => any; has: (key: string) => boolean }, save: (key: string, value: any) => Promise<unknown>, savedKeys: string[] = []) {
+export async function registerOrganizedExtensions(config: { get: (key: string) => any; has: (key: string) => boolean }, save: (key: string, value: any) => Promise<unknown>, savedKeys: string[] = [], availableNames?: string[]) {
 	// Preserve old options for rollback; explicit choices under the real name win.
 	// Repeat safely after a failed write, without overwriting later user choices.
 	for (const key of new Set(["extension_红楼幻梦_enable", ...savedKeys])) {
@@ -95,6 +95,8 @@ export async function registerOrganizedExtensions(config: { get: (key: string) =
 	// by getExtensionList's file discovery or registered through explicit import.
 	const names = new Set([...bundled, ...installed.map(item => item.name), ...registered]);
 	for (const name of names) {
+		// Mobile extensions may be supplied later through the external resource pack.
+		if (availableNames && !availableNames.includes(name)) continue;
 		if (registered.has(name)) {
 			// Registration history is not the load list. Repair a missing enabled
 			// entry, while respecting explicit disable/uninstall choices.
@@ -108,7 +110,7 @@ export async function registerOrganizedExtensions(config: { get: (key: string) =
 		// Enable the first-party pack on first registration, but retain an
 		// explicit saved choice, including one migrated from its old name.
 		if (!config.has(`extension_${name}_enable`)) {
-			await save(`extension_${name}_enable`, name === "红楼幻境" || (!bundled.includes(name) && !disabled.has(name) && !defaultDisabled.has(name)));
+			await save(`extension_${name}_enable`, availableNames ? false : name === "红楼幻境" || (!bundled.includes(name) && !disabled.has(name) && !defaultDisabled.has(name)));
 		}
 		registered.add(name);
 		changed = true;

@@ -720,7 +720,9 @@ async function getExtensionList() {
 		return [];
 	}
 	if (localStorage.getItem(lib.configprefix + "disable_extension")) return [];
-	await registerOrganizedExtensions(config, (key, value) => game.promises.saveConfig(key, value), Object.keys(lib.config));
+	const mobileFolders = import.meta.env.VITE_NONAME_MOBILE === "1"
+		? (await game.promises.getFileList("extension"))[0] : undefined;
+	await registerOrganizedExtensions(config, (key, value) => game.promises.saveConfig(key, value), Object.keys(lib.config), mobileFolders);
 
 	const autoImport = (() => {
 		if (!config.get("extension_auto_import")) {
@@ -744,7 +746,7 @@ async function getExtensionList() {
 	const extensions: string[] = [...config.get("extensions")];
 	const toLoad: string[] = [];
 	toLoad.addArray(config.get("plays").filter(i => config.get("all").plays.includes(i)));
-	toLoad.addArray(extensions);
+	toLoad.addArray(mobileFolders ? extensions.filter(name => mobileFolders.includes(name)) : extensions);
 
 	if (autoImport) {
 		const extensionPath = new URL("./extension/", rootURL);

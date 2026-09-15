@@ -680,14 +680,11 @@ player.loseHp();
                 audio:"ext:絶伦逸羣:2",
                 forced:true,
                 mod:{
-                    globalTo:function (from,to,distance){
-            return distance-from.storage.disableEquip.length
-        },
                     globalFrom:function(from,to,distance){
-            return distance-from.storage.disableEquip.length;
+            return distance-from.countDisabledSlot();
         },
                     maxHandcard:function(player,num){
-            return num+=player.storage.disableEquip.length;
+            return num+player.countDisabledSlot();
         },
                 },
             },
@@ -697,7 +694,7 @@ player.loseHp();
                 direct:true,
                 filter:function(event,player){
         if(player.storage.jvelun_dongxi_duanlanUse==0) return false;
-        return player.storage.disableEquip.length<5;
+        return player.countEnabledSlot()>0;
     },
                 init:function(player){
         player.storage.jvelun_dongxi_duanlan=false;

@@ -21,7 +21,7 @@ export default function vitePluginJIT(importMap: Record<string, string> = {}): P
 			if (!isBuild) return;
 			// Public deployments have no workspace node_modules. Ship standalone
 			// browser ESM entries and keep both generated import maps on these URLs.
-			if (process.env.NONAME_PUBLIC_BUILD === "1" || process.env.NONAME_DESKTOP_BUILD === "1") {
+			if (process.env.NONAME_PUBLIC_BUILD === "1" || process.env.NONAME_DESKTOP_BUILD === "1" || process.env.NONAME_MOBILE_BUILD === "1") {
 				const browserEntries: Record<string, string> = {
 					vue: require.resolve("vue/dist/vue.esm-browser.prod.js"),
 					"pinyin-pro": require.resolve("pinyin-pro/dist/index.mjs"),

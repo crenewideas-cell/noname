@@ -1,15 +1,14 @@
 package com.libnoname.noname
 
 import android.os.Bundle
-import android.util.Log
 import android.webkit.ServiceWorkerClient
 import android.webkit.ServiceWorkerController
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.webkit.WebViewAssetLoader
 import com.getcapacitor.BridgeActivity
+import com.getcapacitor.BridgeWebViewClient
 
 class MainActivity : BridgeActivity() {
 
@@ -19,29 +18,25 @@ class MainActivity : BridgeActivity() {
         super.onCreate(savedInstanceState)
 
         val webView = bridge.webView
-        if (BuildConfig.DEBUG) {
-            webView.loadUrl("http://10.0.2.2:8080")
-            return
-        }
 
         val assetLoader = WebViewAssetLoader.Builder()
             .setDomain("localhost")
             .addPathHandler("/", JsAwarePathHandler(this, "public"))
             .build()
 
-        webView.webViewClient = object : WebViewClient(){
+        bridge.setWebViewClient(object : BridgeWebViewClient(bridge) {
             override fun shouldInterceptRequest(
                 view: WebView,
                 request: WebResourceRequest
             ): WebResourceResponse? {
                 return if (request.url.host == "localhost") {
-                    assetLoader.shouldInterceptRequest(request.url)
-                        ?: bridge.webViewClient.shouldInterceptRequest(view, request)
+                    overlayResponse(assetLoader, request)
+                        ?: super.shouldInterceptRequest(view, request)
                 } else {
-                    bridge.webViewClient.shouldInterceptRequest(view, request)
+                    super.shouldInterceptRequest(view, request)
                 }
             }
-        }
+        })
 
         if (bridge.config.isResolveServiceWorkerRequests) {
             val swController = ServiceWorkerController.getInstance()
@@ -49,7 +44,7 @@ class MainActivity : BridgeActivity() {
                 object : ServiceWorkerClient() {
                     override fun shouldInterceptRequest(request: WebResourceRequest): WebResourceResponse? {
                         return if (request.url.host == "localhost") {
-                            assetLoader.shouldInterceptRequest(request.url)
+                            overlayResponse(assetLoader, request)
                                 ?: bridge.localServer.shouldInterceptRequest(request)
                         } else {
                             bridge.localServer.shouldInterceptRequest(request)
@@ -60,5 +55,14 @@ class MainActivity : BridgeActivity() {
         }
 
         webView.loadUrl("https://localhost/index.html")
+    }
+
+    private fun overlayResponse(loader: WebViewAssetLoader, request: WebResourceRequest): WebResourceResponse? {
+        val response = loader.shouldInterceptRequest(request.url) ?: return null
+        // Older WebViews require Capacitor's bridge script to be injected into HTML.
+        if (response.mimeType == "text/html") {
+            response.data = bridge.localServer.getJavaScriptInjectedStream(response.data)
+        }
+        return response
     }
 }

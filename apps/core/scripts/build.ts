@@ -11,7 +11,8 @@ import { moderned_characters } from "../game/config.json";
 import { ONLINE_CHARACTER_PACKS } from "@noname/online-protocol";
 const root = join(import.meta.dirname, "..");
 const publicOnlineBuild = process.env.NONAME_PUBLIC_BUILD === "1";
-const desktopBuild = process.env.NONAME_DESKTOP_BUILD === "1";
+// Both installed clients need every pack and workspace-independent imports.
+const desktopBuild = process.env.NONAME_DESKTOP_BUILD === "1" || process.env.NONAME_MOBILE_BUILD === "1";
 const standaloneBuild = publicOnlineBuild || desktopBuild;
 
 /**

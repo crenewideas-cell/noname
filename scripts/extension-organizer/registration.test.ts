@@ -20,6 +20,21 @@ function fixture(initial: Record<string, unknown> = {}) {
 	};
 }
 
+test("mobile only registers installed resource directories and preserves choices when resources arrive", async () => {
+	const f = fixture();
+	await registerOrganizedExtensions(f.config, f.save, [], ["絶伦逸羣"]);
+	assert.deepEqual(f.values.get("extensions"), ["絶伦逸羣"]);
+	assert.equal(f.values.get("extension_絶伦逸羣_enable"), false);
+	assert.equal(f.values.has("extension_红楼幻境_enable"), false);
+	f.values.set("extension_絶伦逸羣_enable", true);
+	await registerOrganizedExtensions(f.config, f.save, [], ["絶伦逸羣", "红楼幻境"]);
+	assert.deepEqual(f.values.get("extensions"), ["絶伦逸羣", "红楼幻境"]);
+	assert.equal(f.values.get("extension_絶伦逸羣_enable"), true);
+	assert.equal(f.values.get("extension_红楼幻境_enable"), false);
+	await registerOrganizedExtensions(f.config, f.save, [], []);
+	assert.equal(f.values.get("extension_絶伦逸羣_enable"), true);
+});
+
 test("removing crossover packs preserves advanced pack IDs and unrelated saved switches", async () => {
 	const f = fixture({
 		characters: ["gwent", "hearth", "offline", "diy", "key", "yunchou"],
