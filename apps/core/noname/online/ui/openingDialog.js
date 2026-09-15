@@ -28,7 +28,7 @@ export function installOpeningUI() {
         update(); stageTimer = setInterval(update, 250);
     };
     game.showOnlineOpening = (data, token) => {
-        const previousView = currentToken === token ? { ...viewState, query: dialog.querySelector(".op-search")?.value || "", focusSearch: document.activeElement?.classList.contains("op-search"), cursor: dialog.querySelector(".op-search")?.selectionStart, focusedCharacter: document.activeElement?.dataset.character, minimized: !dialog.open, scroll: dialog.querySelector(".op-character-grid")?.scrollTop || 0, dialogScroll: dialog.scrollTop } : null;
+        const previousView = currentToken === token ? { ...viewState, query: dialog.querySelector(".op-search")?.value || "", focusSearch: document.activeElement?.classList.contains("op-search"), cursor: dialog.querySelector(".op-search")?.selectionStart, focusedCharacter: document.activeElement?.dataset.character, minimized: !dialog.open, contentScroll: dialog.querySelector(".op-body")?.scrollTop || 0 } : null;
         game.closeOnlineOpening(); currentToken = token;
         viewState = previousView || { selected: [], page: 0, query: "" };
         let selected = viewState.selected.filter(id => data.characters?.includes(id)), page = viewState.page, matches = data.characters || [], pending = false;
@@ -46,19 +46,22 @@ export function installOpeningUI() {
         node(title, "h2", "", data.title);
         const clock = node(header, "strong", "op-clock"); clock.setAttribute("role", "timer");
         button(header, "查看牌桌", minimize);
-        const notice = node(dialog, "p", "op-notice", characterMode ?
+        // Only the content scrolls. Header and confirmation controls occupy
+        // their own layout space and never float over general/card details.
+        const body = node(dialog, "div", "op-body");
+        const notice = node(body, "p", "op-notice", characterMode ?
             data.notice || (lostSelection ? "刚才选中的武将已被锁定，请重新选择，不扣换候选次数。" :
                 data.simultaneous ? data.poolMode === "partitioned" ? "主公已选定，其他玩家同时选将。这是你的独立武将池，按“确认选将”锁定。" : "主公已选定，其他玩家同时抢选。按“确认选将”才锁定，先确认者获得；不显示武将归属。" :
                 "主公先选：点击武将查看并选中，按“确认选将”锁定。换一批与点将共享倒计时。") :
             "以下为你的当前起手牌。使用手气卡后立即展示新手牌，确认保留后等待其他玩家准备。换牌不重新计时。");
-        const controls = node(dialog, "div", "op-actions");
+        const controls = node(body, "div", "op-actions");
         const send = (control, links) => {
             if (pending || currentToken !== token || Date.now() >= data.deadline) return;
             pending = true;
             void game.submitOpeningChoice({ control, ...(links ? { links } : {}) }, token);
         };
         let search, grid, count, previous, next, pageLabel, confirm, preview;
-        const summary = node(dialog, "p", "op-selection"); summary.setAttribute("aria-live", "polite");
+        const summary = node(body, "p", "op-selection"); summary.setAttribute("aria-live", "polite");
         if (characterMode) {
             const candidates = button(controls, "候选武将", () => send("candidates"));
             candidates.classList.toggle("active", data.mode === "candidates"); candidates.disabled = data.mode === "candidates";
@@ -66,15 +69,15 @@ export function installOpeningUI() {
             free.classList.toggle("active", data.mode === "all"); free.disabled = !data.freeChoose || data.mode === "all";
             const reroll = button(controls, `换一批（剩余 ${data.remaining} 次）`, () => send("reroll"));
             reroll.disabled = !data.remaining;
-            if (!data.freeChoose) node(dialog, "p", "op-hint", "本房间未开启点将；房主可在大厅的“开局与操作设置”中开启，下一局生效。");
-            search = node(dialog, "input", "op-search"); search.type = "search"; search.placeholder = "搜索武将名称或技能";
+            if (!data.freeChoose) node(body, "p", "op-hint", "本房间未开启点将；房主可在大厅的“开局与操作设置”中开启，下一局生效。");
+            search = node(body, "input", "op-search"); search.type = "search"; search.placeholder = "搜索武将名称或技能";
             search.value = viewState.query;
             search.setAttribute("aria-label", "搜索当前可选武将");
-            count = node(dialog, "div", "op-hint"); grid = node(dialog, "div", "op-character-grid");
-            const pages = node(dialog, "nav", "op-pages"); pages.setAttribute("aria-label", "武将分页");
+            count = node(body, "div", "op-hint"); grid = node(body, "div", "op-character-grid");
+            const pages = node(body, "nav", "op-pages"); pages.setAttribute("aria-label", "武将分页");
             previous = button(pages, "上一页", () => { page--; render(); }); pageLabel = node(pages, "span");
             next = button(pages, "下一页", () => { page++; render(); });
-            preview = node(dialog, "section", "op-preview");
+            preview = node(body, "section", "op-preview");
             preview.setAttribute("aria-label", "已选武将技能说明");
             const textCache = new Map();
             const filter = () => {
@@ -95,7 +98,7 @@ export function installOpeningUI() {
             };
         } else {
             node(controls, "strong", "", `手气卡剩余 ${data.remaining} 次`);
-            grid = node(dialog, "div", "op-hand-grid");
+            grid = node(body, "div", "op-hand-grid");
             for (const card of data.hand || []) ui.create.button(card, "card", grid, true);
             summary.textContent = `当前手牌 ${data.hand?.length || 0} 张 · ${data.remaining ? "可整手换牌，也可直接保留" : "次数已用完，请确认保留新手牌"}`;
         }
@@ -167,7 +170,7 @@ export function installOpeningUI() {
                 }
                 else Array.from(grid.children).find(item => item.dataset.character === previousView.focusedCharacter)?.focus({ preventScroll: true });
             }
-            grid.scrollTop = previousView.scroll; dialog.scrollTop = previousView.dialogScroll;
+            body.scrollTop = previousView.contentScroll;
         }
     };
     window.addEventListener("pagehide", () => { game.closeOnlineOpening(); game.renderOpeningStage(null); }, { once: true });

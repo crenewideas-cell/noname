@@ -171,7 +171,8 @@
 .match-countdown small { font: 13px sans-serif; color: #bfc4aa; }
 .online-connection[data-state="blocked"] { color: #e5ac92; }
 .online-turn-clock { position: fixed; bottom: max(16px,env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); z-index: 100; pointer-events: none; padding: 7px 16px; border: 1px solid #c8ad705c; border-radius: 22px; background: #142b2be8; color: #e9d4a5; font: 12px/1.5 sans-serif; box-shadow: 0 4px 20px #0005; white-space: nowrap; }
-.online-opening-dialog { position: fixed; inset: 0; box-sizing: border-box; width: min(1000px,94vw); max-width: 94vw; height: fit-content; max-height: 92dvh; margin: auto; padding: 24px; overflow: auto; overscroll-behavior: contain; border: 1px solid #cdb27a; border-radius: 16px; background: #152a2a; color: #f2e6cd; font: 15px/1.5 sans-serif; text-align: left; box-shadow: 0 24px 80px #0009; }
+.online-opening-dialog { position: fixed; inset: 0; box-sizing: border-box; width: min(1000px,94vw); max-width: 94vw; height: fit-content; max-height: 92dvh; margin: auto; padding: 24px; overflow: hidden; border: 1px solid #cdb27a; border-radius: 16px; background: #152a2a; color: #f2e6cd; font: 15px/1.5 sans-serif; text-align: left; box-shadow: 0 24px 80px #0009; }
+.online-opening-dialog[open] { display: flex; flex-direction: column; }
 .online-opening-dialog::backdrop { background: #061110b8; }
 .online-opening-dialog :is(header,footer,p,h2,small,nav,strong,input,button,[class^="op-"]) { box-sizing: border-box; position: relative; inset: auto; }
 .online-opening-dialog :is(h2,p) { margin: 0; }
@@ -181,7 +182,8 @@
 .online-opening-dialog button:disabled { opacity: .48; cursor: default; }
 .online-opening-dialog button.active { opacity: 1; background: #536244; color: #fff2d4; border-color: #f4d594; }
 .online-opening-dialog :is(button,input):focus-visible, .online-opening-launcher:focus-visible { outline: 3px solid #ffe5aa; outline-offset: 3px; }
-.online-opening-dialog .op-header { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid #b9a06b40; }
+.online-opening-dialog .op-header { display: flex; flex: 0 0 auto; align-items: center; flex-wrap: wrap; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid #b9a06b40; }
+.online-opening-dialog .op-body { display: block; flex: 1 1 auto; min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; padding: 0 6px 6px 0; scroll-padding-block: 8px; }
 .online-opening-dialog .op-title { flex: 1; min-width: 140px; }
 .online-opening-dialog .op-title small { display: block; color: #b7c8b7; font: 12px/1.5 sans-serif; letter-spacing: 2px; }
 .online-opening-dialog .op-clock { color: #ffe0a0; min-width: 75px; font: bold 24px/1.2 monospace; white-space: nowrap; }
@@ -192,7 +194,7 @@
 .online-opening-dialog .op-hint { margin: 8px 0; color: #b8c7b9; font: 12px/1.6 sans-serif; }
 .online-opening-dialog .op-search { display: block; width: 100%; min-height: 44px; margin: 12px 0; padding: 10px 14px; border: 1px solid #a9b59775; border-radius: 8px; background: #0d2021; color: #f9ecd4; font: 15px/1.4 sans-serif; }
 .online-opening-dialog .op-search::placeholder { color: #a0afa5; }
-.online-opening-dialog .op-character-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(120px,1fr)); gap: 12px; max-height: 45dvh; min-height: 180px; padding: 5px; overflow-y: auto; overscroll-behavior: contain; }
+.online-opening-dialog .op-character-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(120px,1fr)); gap: 12px; min-height: 180px; padding: 5px; }
 .online-opening-dialog .op-character { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 0; padding: 9px 5px; background: #1c3331; border: 2px solid #82957b65; }
 .online-opening-dialog .op-character.chosen { border-color: #ffe3a1; background: #4b6245; box-shadow: inset 0 0 0 2px #ffe3a1; }
 .online-opening-dialog .op-character > .button { position: relative; flex: 0 0 auto; margin: 0; transform: none; pointer-events: none; }
@@ -210,7 +212,7 @@
 .online-opening-dialog .op-preview[hidden] { display: none; }
 .online-opening-dialog .op-hand-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; padding: 22px 8px; }
 .online-opening-dialog .op-hand-grid > .button { position: relative; margin: 0; transform: none; }
-.online-opening-dialog .op-footer { position: sticky; bottom: 0; z-index: 3; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; padding: 12px 0; border-top: 1px solid #b9a06b40; background: #152a2a; box-shadow: 0 -8px 12px #152a2a; }
+.online-opening-dialog .op-footer { position: relative; flex: 0 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; padding: 12px 0 0; border-top: 1px solid #b9a06b40; background: transparent; box-shadow: none; }
 .online-opening-dialog .op-footer > .op-hint { flex: 1; min-width: 180px; }
 .online-opening-dialog button.op-primary { min-width: 160px; background: #d8bd7d; color: #182c24; font-weight: bold; border-color: #f4d89c; }
 .online-opening-dialog button.op-primary:enabled:hover { background: #f1d797; }
