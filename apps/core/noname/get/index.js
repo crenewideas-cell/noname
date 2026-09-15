@@ -2142,10 +2142,13 @@ export class Get {
 	}
 	config(item, mode) {
 		mode = mode || lib.config.mode;
-		if (!lib.config.mode_config[mode]) {
-			return;
-		}
-		return lib.config.mode_config[mode][item];
+		const saved = lib.config.mode_config[mode]?.[item];
+		if (saved !== undefined) return saved;
+		// Starting from the lobby does not mount every settings panel.
+		// Defaults must also be available before those panels are opened.
+		return lib.mode[mode]?.config?.[item]?.init
+			?? lib.mode[mode]?.connect?.[item]?.init
+			?? lib.config.mode_config.global?.[item];
 	}
 	coinCoeff(list) {
 		var num = 0;

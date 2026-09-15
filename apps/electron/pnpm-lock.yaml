@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@electron/get':
-        specifier: ^4.0.2
-        version: 4.0.2
       '@electron/remote':
         specifier: ^2.1.3
         version: 2.1.3(electron@39.5.2)
@@ -21,6 +18,9 @@ importers:
         specifier: 8.19.0
         version: 8.19.0
     devDependencies:
+      '@electron/get':
+        specifier: ^4.0.2
+        version: 4.0.2
       electron:
         specifier: ^39.5.2
         version: 39.5.2

@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
-import { app, BrowserWindow, crashReporter, dialog, ipcMain, Menu, shell, session, net } from "electron";
+import { app, BrowserWindow, crashReporter, dialog, ipcMain, Menu, shell, session } from "electron";
 import { createHash } from "node:crypto";
-import { pathToFileURL } from "node:url";
-import { onlineEntry, onlineAssetPath } from "./online-assets";
+import { onlineEntry } from "./online-assets";
+import { installOnlineProtocol } from "./online-protocol";
 import fs from "fs";
 import path from "path";
 import remote from "@electron/remote/main/index.js";
@@ -11,7 +11,25 @@ remote.initialize();
 const dirname = path.join(import.meta.dirname, "../");
 const onlineWindows = new Map<number, BrowserWindow>();
 const configuredOnlineSessions = new Set<string>();
+const onlineFailures = new Map<string, string>();
+
+function reportOnlineError(partition: string, stage: string, error: unknown) {
+  const detail = error instanceof Error ? error.message : String(error);
+  onlineFailures.set(partition, `${stage}：${detail}`);
+  console.error(stage, error);
+  try {
+    const log = path.join(app.getPath("logs"), "online.log");
+    fs.appendFileSync(log, `${new Date().toISOString()} [${stage}] ${error instanceof Error ? error.stack || detail : detail}\n`, "utf8");
+  } catch (logError) {
+    console.error("联机错误日志写入失败", logError);
+  }
+}
+let quitting = false;
+let relaunchRequested = false;
+let serviceReady = false;
+let mainWindow: BrowserWindow | undefined;
 ipcMain.handle("noname:open-online", async (event, address: unknown) => {
+  if (quitting) throw new Error("程序正在退出，请重新打开后进入联机。");
   const caller = new URL(event.sender.getURL());
   if (!["http://localhost:8081", "http://localhost:8089"].includes(caller.origin) || typeof address !== "string") throw new Error("Invalid online entry");
   const assetRoot = path.join(dirname, "online-client");
@@ -19,15 +37,12 @@ ipcMain.handle("noname:open-online", async (event, address: unknown) => {
   const partition = "persist:noname-online-" + createHash("sha256").update(url.origin).digest("hex").slice(0, 16);
   const onlineSession = session.fromPartition(partition);
   if (!configuredOnlineSessions.has(partition)) {
-    for (const scheme of ["http", "https"]) {
-    onlineSession.protocol.handle(scheme, async request => {
-      const target = new URL(request.url);
-      if (target.origin !== url.origin) return new Response("Forbidden", { status: 403 });
-      if (target.pathname.startsWith("/api/v1/")) return onlineSession.fetch(request, { bypassCustomProtocolHandlers: true });
-      if (!["GET", "HEAD"].includes(request.method)) return new Response("Method not allowed", { status: 405 });
-      try { return await net.fetch(pathToFileURL(await onlineAssetPath(assetRoot, target.pathname)).href); }
-      catch { return new Response("Local client asset missing", { status: 404 }); }
-    });
+    try {
+      installOnlineProtocol(onlineSession, assetRoot, url.origin,
+        (stage, error) => reportOnlineError(partition, stage, error));
+    } catch (error) {
+      reportOnlineError(partition, "联机协议初始化", error);
+      throw error;
     }
     configuredOnlineSessions.add(partition);
   }
@@ -42,35 +57,23 @@ ipcMain.handle("noname:open-online", async (event, address: unknown) => {
   win.removeMenu();
   win.webContents.session.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
   win.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
+  win.webContents.on("will-prevent-unload", event => {
+    if (quitting) event.preventDefault();
+  });
   const restrictNavigation = (navigation: Electron.Event, target: string) => {
     if (new URL(target).origin !== url.origin) navigation.preventDefault();
   };
   win.webContents.on("will-navigate", restrictNavigation);
   win.webContents.on("will-redirect", restrictNavigation);
-  win.on("closed", () => onlineWindows.delete(ownerId));
-  try { await win.loadURL(url.href); } catch (error) { if (!win.isDestroyed()) win.close(); throw error; }
-});
-
-// 获取单实例锁
-const gotTheLock = app.requestSingleInstanceLock();
-if (!gotTheLock) {
-	// 如果获取失败，说明已经有实例在运行了，直接退出
-	app.quit();
-}
-const fileService = gotTheLock ? createApp({ port: 8089, dirname, server: true, listen: false }) : undefined;
-let servicesClosed = false;
-let closingServices = false;
-app.on("will-quit", event => {
-	if (servicesClosed || !fileService) return;
-	event.preventDefault();
-	if (closingServices) return;
-	closingServices = true;
-	const timeout = setTimeout(() => app.exit(0), 5000);
-	fileService.close().catch(error => console.error("文件服务关闭失败", error)).finally(() => {
-		clearTimeout(timeout);
-		servicesClosed = true;
-		app.quit();
-	});
+  win.on("closed", () => { if (onlineWindows.get(ownerId) === win) onlineWindows.delete(ownerId); });
+  onlineFailures.delete(partition);
+  try { await win.loadURL(url.href); }
+  catch (error) {
+    const cause = onlineFailures.get(partition) || (error instanceof Error ? error.message : String(error));
+    reportOnlineError(partition, "联机页面加载失败", error);
+    if (!win.isDestroyed()) win.close();
+    throw new Error(`联机页面加载失败：${cause}\n错误日志：${path.join(app.getPath("logs"), "online.log")}`);
+  }
 });
 
 app.setAppUserModelId("com.libnoname.noname");
@@ -95,6 +98,37 @@ setPath("crashDumps", path.join(dataRoot, "crashDumps"));
 //日志目录
 setPath("logs", path.join(dataRoot, "logs"));
 
+// The lock and Chromium must use the same, stable profile directory.
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) app.quit();
+const fileService = gotTheLock ? createApp({ port: 8089, dirname, server: true, listen: false }) : undefined;
+let closingServices = false;
+app.on("before-quit", () => { quitting = true; });
+app.on("will-quit", event => {
+	if (!fileService) return;
+	event.preventDefault();
+	if (closingServices) return;
+	closingServices = true;
+	quitting = true;
+	const finish = () => {
+		if (relaunchRequested) app.relaunch();
+		app.exit(0);
+	};
+	const timeout = setTimeout(finish, 5000);
+	void (async () => {
+		const sessions = [session.defaultSession, ...Array.from(configuredOnlineSessions, partition => session.fromPartition(partition))];
+		await Promise.allSettled(sessions.map(async current => {
+			current.flushStorageData();
+			await current.cookies.flushStore();
+		}));
+		fileService.server.closeAllConnections();
+		await fileService.close();
+	})().catch(error => console.error("退出清理失败", error)).finally(() => {
+		clearTimeout(timeout);
+		finish();
+	});
+});
+
 //崩溃处理
 crashReporter.start({
 	productName: "无名杀",
@@ -104,11 +138,10 @@ crashReporter.start({
 });
 
 // 其他实例启动时，主实例会通过 second-instance 事件接收其他实例的启动参数 `argv`
-app.on("second-instance", (event, argv) => {
-	// Windows 下通过协议URL启动时，URL会作为参数，所以需要在这个事件里处理
-	if (process.platform === "win32") {
-		createWindow();
-	}
+app.on("second-instance", () => {
+	// Never open a new renderer against a file server that is shutting down.
+	if (quitting) { relaunchRequested = true; return; }
+	createWindow();
 });
 
 // macOS 下通过协议URL启动时，主实例会通过 open-url 事件接收这个 URL
@@ -126,7 +159,14 @@ process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 process.noDeprecation = true;
 
 function createWindow() {
-	createMainWindow();
+	if (quitting || !serviceReady || !app.isReady()) return;
+	if (mainWindow && !mainWindow.isDestroyed()) {
+		if (mainWindow.isMinimized()) mainWindow.restore();
+		mainWindow.show(); mainWindow.focus();
+		return;
+	}
+	mainWindow = createMainWindow();
+	mainWindow.on("closed", () => { mainWindow = undefined; });
 }
 
 function createMainWindow() {
@@ -148,12 +188,15 @@ function createMainWindow() {
 			experimentalFeatures: true, //启用Chromium的实验功能
 		},
 	});
+	remote.enable(win.webContents);
+	win.webContents.on("will-prevent-unload", event => {
+		if (quitting) event.preventDefault();
+	});
 	if (import.meta.env.DEV) {
 		win.loadURL(`http://localhost:8081`);
 	} else {
 		win.loadURL(`http://localhost:8089/index.html#desktop-lobby`);
 	}
-	remote.enable(win.webContents);
 	const menuTemplate: Electron.MenuItemConstructorOptions[] = [
 		{
 			label: "操作",
@@ -228,6 +271,7 @@ app.whenReady().then(async () => {
 	if (!gotTheLock) return;
 	try {
 		await fileService!.listen({ port: 8089, host: "localhost" });
+		serviceReady = true;
 	} catch (error) {
 		dialog.showErrorBox("无名杀启动失败", `无法启动本地文件服务，请关闭占用 8089 端口的开发服务或其他客户端后重试。\n${error}`);
 		app.quit();

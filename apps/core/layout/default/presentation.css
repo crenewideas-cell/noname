@@ -12,7 +12,7 @@ html[data-presentation="shousha"] .dialog.character-browser > .content-container
 }
 html[data-presentation="shousha"] .dialog.character-browser .searcher.caption {
 	box-sizing: border-box;
-	display: flex;
+	display: block;
 	align-items: center;
 	gap: 8px;
 	width: calc(100% - 32px);
@@ -20,7 +20,7 @@ html[data-presentation="shousha"] .dialog.character-browser .searcher.caption {
 	margin: 12px auto 8px;
 	padding: 0;
 }
-html[data-presentation="shousha"] .dialog.character-browser .searcher > input {
+html[data-presentation="shousha"] .dialog.character-browser .searcher input {
 	box-sizing: border-box;
 	flex: 1;
 	min-width: 0;
@@ -36,11 +36,11 @@ html[data-presentation="shousha"] .dialog.character-browser .searcher > input {
 	text-shadow: none;
 	box-shadow: inset 0 2px 5px #0003;
 }
-html[data-presentation="shousha"] .dialog.character-browser .searcher > input::placeholder {
+html[data-presentation="shousha"] .dialog.character-browser .searcher input::placeholder {
 	color: #b0a58f;
 	opacity: 1;
 }
-html[data-presentation="shousha"] .dialog.character-browser .searcher > .button {
+html[data-presentation="shousha"] .dialog.character-browser .searcher .character-search-submit {
 	box-sizing: border-box;
 	flex: none;
 	width: auto;

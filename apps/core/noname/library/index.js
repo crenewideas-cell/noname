@@ -4375,19 +4375,24 @@ export class Library {
 				show_log: {
 					name: "历史记录栏",
 					init: "off",
-					intro: "在屏幕中部显示出牌文字记录",
+					intro: "在屏幕边缘显示紧凑的出牌记录，也可点击顶部“日志”随时开关",
 					unfrequent: true,
 					item: {
 						off: "关闭",
 						left: "靠左",
-						center: "居中",
 						right: "靠右",
 					},
 					onclick(bool) {
 						game.saveConfig("show_log", bool);
+						document.getElementById("arena-log-toggle")?.setAttribute("aria-pressed", String(bool !== "off"));
+						if (!ui.arenalog) return;
 						if (lib.config.show_log != "off") {
 							ui.arenalog.style.display = "";
 							ui.arenalog.dataset.position = bool;
+							ui.arenalog.replaceChildren(...Array.from(ui.sidebar?.children || []).slice(0, 20).map(node => node.cloneNode(true)));
+							while (ui.arenalog.childNodes.length > 1 && ui.arenalog.scrollHeight > ui.arenalog.clientHeight) {
+								ui.arenalog.lastChild.remove();
+							}
 						} else {
 							ui.arenalog.style.display = "none";
 							ui.arenalog.innerHTML = "";

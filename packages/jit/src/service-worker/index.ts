@@ -8,14 +8,9 @@ worker.addEventListener("install", event => {
 });
 
 worker.addEventListener("activate", event => {
-	// 当一个 service worker 被初始注册时，页面在下次加载之前不会使用它。 claim() 方法会立即控制这些页面
-	// event.waitUntil(worker.clients.claim());
-	event.waitUntil(
-		worker.clients.claim().then(() => {
-			console.log("service worker加载完成，重启页面");
-			sendReload();
-		})
-	);
+	// Startup waits for controllerchange; activation must not reload a running
+	// game or a renderer that is currently saving and quitting.
+	event.waitUntil(worker.clients.claim());
 });
 
 worker.addEventListener("message", event => {

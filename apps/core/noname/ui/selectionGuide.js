@@ -15,6 +15,7 @@ export function clearSelectionGuide() {
     }
     marked.clear();
     panel?.remove(); panel = null; activeEvent = null;
+	ui.window?.style.removeProperty("--selection-guide-clearance");
 }
 
 function scheduleLayout() {
@@ -29,6 +30,8 @@ function scheduleLayout() {
         // assuming every device has a fixed 155/180px action area.
         panel.style.bottom = `${Math.max(12, (container.bottom - top) / scale + 12)}px`;
         panel.style.maxHeight = `${Math.max(52, Math.min(180, (top - container.top) / scale - 20))}px`;
+		// Subtitles share this coordinate system and sit above the whole guide.
+		ui.window.style.setProperty("--selection-guide-clearance", `${parseFloat(panel.style.bottom) + panel.offsetHeight + 12}px`);
     });
 }
 
@@ -78,6 +81,7 @@ export function updateSelectionGuide(event, ok) {
         panel.append(message, steps, selection, actions); ui.window.append(panel);
         resizeObserver = new ResizeObserver(scheduleLayout);
         resizeObserver.observe(ui.window);
+		resizeObserver.observe(panel);
         if (ui.control) {
             resizeObserver.observe(ui.control);
             ui.control.addEventListener("transitionend", scheduleLayout);

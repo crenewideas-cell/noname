@@ -22,9 +22,8 @@ export default function vitePluginJIT(): Plugin {
 				tags: [
 					{
 						tag: "script",
-						attrs: {
-							type: "module",
-						},
+						// Establish the readiness promise before the game module runs.
+						attrs: {},
 						children: script,
 						injectTo: "head-prepend",
 					},

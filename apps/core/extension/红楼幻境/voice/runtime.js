@@ -46,8 +46,9 @@ export function installVoiceRuntime(lib, game, ui, get, status) {
         if (!captions.length) { caption?.remove(); caption = null; return; }
         if (!caption) {
             caption = document.createElement("div");
-            caption.style.cssText = "position:fixed;left:10%;right:10%;bottom:19%;max-height:28vh;overflow-y:auto;z-index:100;pointer-events:none;display:flex;flex-direction:column;gap:4px;text-align:center;color:#fff3d0;font:20px/1.65 serif;text-shadow:0 1px 4px #000,0 0 8px #000;";
-            document.body.append(caption);
+            caption.className = "hlhj-voice-captions";
+            caption.style.cssText = "position:absolute;left:15%;right:15%;bottom:var(--selection-guide-clearance,19%);max-height:96px;overflow-y:auto;z-index:65;pointer-events:none;display:flex;flex-direction:column;gap:4px;text-align:center;color:#fff3d0;font:18px/1.5 serif;text-shadow:0 1px 4px #000,0 0 8px #000;";
+            (ui.window || document.body).append(caption);
         }
         for (const job of captions) {
             if (!job.row && job.started) {

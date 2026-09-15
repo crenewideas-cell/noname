@@ -143,6 +143,9 @@ export default function nodeReady({ lib, game, get, _status, ui }) {
 			remote = require("electron").remote;
 		}
 		window.onbeforeunload = null;
+		_status.reloading = true;
+		clearTimeout(window.resetGameTimeout);
+		lib.db?.close();
 		remote.app.quit();
 	};
 

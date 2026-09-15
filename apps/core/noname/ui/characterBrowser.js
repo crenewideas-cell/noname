@@ -9,10 +9,11 @@ export function createCharacterBrowser({ ids, caption, heightset, noclick, onlyp
 	if (heightset) { dialog.style.height = (game.layout === "long2" || game.layout === "nova" ? 430 : 400) + "px"; dialog._scrollset = true; }
 	if (caption) dialog.add(caption);
 	const search = ui.create.div(".searcher.caption", dialog.content);
+	const searchRow = ui.create.div(".character-search-row", search);
 	const input = document.createElement("input");
 	input.placeholder = "支持正则搜索和技能搜索";
 	input.setAttribute("aria-label", "搜索武将名称或技能，支持正则表达式");
-	search.append(input);
+	searchRow.append(input);
 	const control = (parent, text, action, translatedHTML = false) => {
 		const button = document.createElement("button");
 		button.type = "button"; button.className = "tdnode pointerdiv shadowed reduce_radius";
@@ -21,8 +22,8 @@ export function createCharacterBrowser({ ids, caption, heightset, noclick, onlyp
 		else button.textContent = text;
 		button.onclick = action; parent.append(button); return button;
 	};
-	const searchButton = control(search, "搜索", () => { void pager.search(input.value); });
-	searchButton.classList.add("button");
+	const searchButton = control(searchRow, "搜索", () => { void pager.search(input.value); });
+	searchButton.className = "character-search-submit";
 	const filters = ui.create.div(".caption.character-filters", dialog.content);
 	const alphabet = ui.create.div(".character-filter-alphabet", filters);
 	const groups = ui.create.div(".character-filter-groups", filters);

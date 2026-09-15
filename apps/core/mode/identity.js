@@ -2470,7 +2470,9 @@ export default {
 					for (const currentPlayer of game.players) {
 						if ((event.stratagemMode || currentPlayer !== game.zhu) && currentPlayer !== game.me) {
 							event.list.randomSort();
-							event.ai(currentPlayer, event.list.splice(0, get.config(`choice_${currentPlayer.identity}`)), null, event.list);
+							const configuredCount = Number(get.config(`choice_${currentPlayer.identity}`));
+							const choiceCount = Number.isFinite(configuredCount) && configuredCount > 0 ? Math.floor(configuredCount) : 3;
+							event.ai(currentPlayer, event.list.splice(0, Math.max(get.config("double_character") ? 2 : 1, choiceCount)), null, event.list);
 						}
 					}
 				},

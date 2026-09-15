@@ -47,7 +47,6 @@ async function main(targets: PackagerOptions["targets"], config: Partial<Configu
 			npmRebuild: false,
 			extraMetadata: {
 				main: "app/main.js",
-				...(desktopStage ? { dependencies: {} } : {}),
 			},
 			...config,
 		},

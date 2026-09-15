@@ -465,40 +465,37 @@ table {
 #arena.hide_name > .dialog .button.character > .name {
 	display: none !important;
 }
-#arenalog {
-	width: calc(50% - 210px);
-	height: calc(100% - 370px);
-	left: calc(50% + 60px);
-	top: 200px;
+#window #arena > #arenalog {
+	box-sizing: border-box;
+	width: min(260px, 32%);
+	height: min(160px, 25%);
+	left: auto;
+	right: 8px;
+	top: 38px;
+	padding: 10px;
+	border: 1px solid #b6945b80;
+	border-radius: 8px;
+	background: #182124ed;
+	font: 13px/1.45 "Microsoft YaHei", sans-serif;
+	text-align: left;
+	z-index: 6;
 	overflow: hidden;
 }
 #arenalog.withdialog {
 	opacity: 0.5;
 }
-#arena:not(.oldlayout) > #arenalog[data-position="center"] {
-	left: calc(25% + 105px);
-}
-#arena:not(.oldlayout) > #arenalog[data-position="left"] {
-	left: 150px;
-}
-#arena.oldlayout > #arenalog {
-	top: 160px;
-	width: calc(50% - 300px);
-	height: calc(100% - 325px);
-}
-#arena.oldlayout > #arenalog[data-position="center"] {
-	left: calc(25% + 150px);
-}
-#arena.oldlayout > #arenalog[data-position="left"] {
-	left: 240px;
+#window #arena > #arenalog[data-position="left"] {
+	left: 8px;
+	right: auto;
 }
 
 #arenalog > div {
 	position: relative;
 	display: block;
-	width: calc(100% - 20px);
-	left: 20px;
-	line-height: 18px;
+	width: 100%;
+	left: 0;
+	line-height: inherit;
+	overflow-wrap: anywhere;
 }
 #window:not(.low_performance) #arena #arenalog > div {
 	animation: game_start 0.5s;
@@ -5791,6 +5788,70 @@ progress.progress::-webkit-progress-value {
 }
 .dialog.character-browser-paged .character-browser-selection:empty { display: none; }
 .dialog.character-browser-paged input[aria-invalid="true"] { border-color: #d88b79 !important; }
+
+/* Search controls use normal document flow, independent of card-button layout. */
+#window .dialog .searcher.caption {
+	position: relative;
+	display: block;
+	box-sizing: border-box;
+	width: calc(100% - 32px);
+	max-width: 580px;
+	height: auto;
+	left: auto;
+	right: auto;
+	margin: 12px auto 8px;
+	padding: 0;
+	transform: none;
+}
+#window .dialog .searcher .character-search-row {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	height: auto;
+}
+#window .dialog .searcher .character-search-row > input,
+#window .dialog .searcher .character-search-submit {
+	position: static;
+	box-sizing: border-box;
+	height: 38px;
+	min-height: 38px;
+	margin: 0;
+	float: none;
+	transform: none;
+	writing-mode: horizontal-tb;
+	font: 16px/1.4 "Microsoft YaHei", sans-serif;
+}
+#window .dialog .searcher .character-search-row > input {
+	display: block;
+	flex: 1 1 0;
+	width: 0;
+	min-width: 0;
+	padding: 6px 10px;
+	text-align: left;
+}
+#window .dialog .searcher .character-search-submit {
+	display: block;
+	flex: 0 0 76px;
+	width: 76px;
+	padding: 4px 12px;
+	white-space: nowrap;
+	border: 1px solid #b6945b85;
+	border-radius: 6px;
+	background: #594a34;
+	color: #ffe9be;
+	cursor: pointer;
+}
+#window .dialog .searcher .character-browser-status {
+	position: relative;
+	display: block;
+	width: 100%;
+	margin-top: 6px;
+	font: 13px/1.5 "Microsoft YaHei", sans-serif;
+	white-space: normal;
+}
+#window .dialog .searcher .character-browser-status:empty { display: none; }
 
 /* Target selection contrast and ordered-choice guidance. */
 #arena .player.selection-candidate { outline: 3px solid #55ecff !important; outline-offset: 3px; box-shadow: 0 0 20px #20d7edb0 !important; cursor: pointer; }

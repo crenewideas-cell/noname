@@ -575,6 +575,7 @@ export async function boot() {
 	const registrationStart = perfBegin();
 	const currentMode = lib.imported.mode[lib.config.mode];
 	loadMode(currentMode);
+	initializeModeDefaults();
 	// 为了模式扩展，两个东西删不了
 	lib.init.start = currentMode.start;
 	lib.init.startBefore = currentMode.startBefore;
@@ -901,6 +902,22 @@ function initSheet() {
 	}
 }
 
+function initializeModeDefaults() {
+	for (const mode of Object.keys(lib.mode)) {
+		const saved = lib.config.mode_config[mode] ??= {};
+		for (const [name, value] of Object.entries(lib.config.mode_config.global || {})) {
+			if (saved[name] === undefined) saved[name] = get.copy(value);
+		}
+		for (const definitions of [lib.mode[mode].config, lib.mode[mode].connect]) {
+			for (const [name, definition] of Object.entries(definitions || {})) {
+				if (definition && typeof definition === "object" && "init" in definition && saved[name] === undefined) {
+					saved[name] = get.copy(definition.init);
+				}
+			}
+		}
+	}
+}
+
 async function loadConfig() {
 	lib.config = await lib.init.promises.json(lib.assetURL + "game/config.json");
 	lib.configOL = {};
@@ -995,6 +1012,11 @@ async function loadConfig() {
 			config.set(name, result[name]);
 		}
 	}
+
+	initializeModeDefaults();
+	// An unset preference used to show the arena log at its legacy center position.
+	lib.config.show_log ??= "off";
+	if (lib.config.show_log === "center") lib.config.show_log = "right";
 
 	config.get("all").characters = [];
 	config.get("all").cards = [];

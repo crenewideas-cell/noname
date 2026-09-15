@@ -10,6 +10,7 @@ import "vue/dist/vue.esm-browser.js";
 (async () => {
 	perfMark("boot.entry-body");
 	try {
+		await (window as Window & { nonameJITReady?: Promise<void> }).nonameJITReady;
 		lib.device = device;
 
 		// 预加载脚本

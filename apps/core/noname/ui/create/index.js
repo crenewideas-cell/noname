@@ -1763,12 +1763,14 @@ export class Create {
 			fontWeight: "bold",
 			fontSize: "21px",
 		});
-		const div = ui.create.div(".searcher.find");
+		const searchRow = ui.create.div(".character-search-row");
 		input.placeholder = "支持正则搜索和技能搜索";
 		input.setAttribute("aria-label", "搜索武将名称或技能，支持正则表达式");
 		//使用click事件搜索，因为用input事件，难以解决按下a键会触发自动托管的bug
-		let find = ui.create.button(["find", "搜索"], "tdnodes");
-		find.style.display = "inline";
+		const find = document.createElement("button");
+		find.type = "button";
+		find.className = "character-search-submit";
+		find.textContent = "搜索";
 		const updatePagination = () => {
 			if (dialog.paginationMaxCount.get("character")) {
 				const buttons = dialog.content.querySelector(".buttons");
@@ -1793,7 +1795,6 @@ export class Create {
 		dialog.characterSearch = searchIndex;
 		const searchStatus = ui.create.div(".character-browser-status");
 		searchStatus.setAttribute("role", "status");
-		Searcher.append(searchStatus);
 		const updateFind = async () => {
 			searchStatus.textContent = "正在搜索…";
 			try {
@@ -1824,7 +1825,11 @@ export class Create {
 		input.onmousedown = function (e) {
 			e.stopPropagation();
 		};
-		Searcher.append(input, find);
+		for (const type of ["keyup", "keypress", "pointerdown", "touchstart"]) {
+			input.addEventListener(type, event => event.stopPropagation());
+		}
+		searchRow.append(input, find);
+		Searcher.append(searchRow, searchStatus);
 		container.prepend(Searcher);
 
 		if (str) {
@@ -2635,6 +2640,20 @@ export class Create {
 		ui.replay = ui.create.system("重来", game.reload, true);
 		ui.replay.id = "restartbutton";
 		ui.config2 = ui.create.system("选项", ui.click.config);
+		const logToggle = ui.create.system("日志", () => {
+			const position = lib.config.show_log === "off" ? "right" : "off";
+			lib.configMenu.view.config.show_log.onclick(position);
+		});
+		logToggle.id = "arena-log-toggle";
+		logToggle.title = "打开或关闭出牌日志";
+		logToggle.setAttribute("role", "button");
+		logToggle.setAttribute("aria-pressed", String(lib.config.show_log !== "off"));
+		logToggle.tabIndex = 0;
+		logToggle.addEventListener("keydown", event => {
+			if (event.key === "Enter" || event.key === " ") {
+				event.preventDefault(); event.stopPropagation(); logToggle.click();
+			}
+		});
 		ui.pause = ui.create.system("暂停", ui.click.pause);
 		ui.pause.id = "pausebutton";
 		if (!_status.video) {
