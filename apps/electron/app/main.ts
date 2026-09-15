@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import { app, BrowserWindow, crashReporter, dialog, ipcMain, Menu, shell, session } from "electron";
+import { app, BrowserWindow, WebContentsView, crashReporter, dialog, ipcMain, Menu, shell, session } from "electron";
 import { createHash } from "node:crypto";
 import { onlineEntry } from "./online-assets";
 import { installOnlineProtocol } from "./online-protocol";
@@ -9,7 +9,8 @@ import remote from "@electron/remote/main/index.js";
 import createApp from "@noname/fs/dist/index.js";
 remote.initialize();
 const dirname = path.join(import.meta.dirname, "../");
-const onlineWindows = new Map<number, BrowserWindow>();
+const onlineViews = new Map<number, { view: WebContentsView; dispose: () => void }>();
+let pendingOnlineEntry: Promise<string | undefined> | undefined;
 const configuredOnlineSessions = new Set<string>();
 const onlineFailures = new Map<string, string>();
 
@@ -28,10 +29,18 @@ let quitting = false;
 let relaunchRequested = false;
 let serviceReady = false;
 let mainWindow: BrowserWindow | undefined;
-ipcMain.handle("noname:open-online", async (event, address: unknown) => {
+ipcMain.handle("noname:open-online", (event, address: unknown) => {
   if (quitting) throw new Error("程序正在退出，请重新打开后进入联机。");
   const caller = new URL(event.sender.getURL());
-  if (!["http://localhost:8081", "http://localhost:8089"].includes(caller.origin) || typeof address !== "string") throw new Error("Invalid online entry");
+  const owner = mainWindow;
+  if (!owner || event.sender !== owner.webContents || event.senderFrame !== event.sender.mainFrame ||
+    !["http://localhost:8081", "http://localhost:8089"].includes(caller.origin) || typeof address !== "string") throw new Error("Invalid online entry");
+  // Rapid repeated clicks share one transition and one embedded view.
+  pendingOnlineEntry ??= openOnlineView(owner, address).finally(() => { pendingOnlineEntry = undefined; });
+  return pendingOnlineEntry;
+});
+
+async function openOnlineView(owner: BrowserWindow, address: string): Promise<string | undefined> {
   const assetRoot = path.join(dirname, "online-client");
   const url = await onlineEntry(assetRoot, address);
   const partition = "persist:noname-online-" + createHash("sha256").update(url.origin).digest("hex").slice(0, 16);
@@ -46,35 +55,77 @@ ipcMain.handle("noname:open-online", async (event, address: unknown) => {
     }
     configuredOnlineSessions.add(partition);
   }
-  const ownerId = event.sender.id;
-  const existing = onlineWindows.get(ownerId);
-  if (existing && !existing.isDestroyed()) { existing.show(); existing.focus(); return; }
-  const win = new BrowserWindow({
-    width: 1100, height: 800, title: "无名杀 · 联机", parent: BrowserWindow.fromWebContents(event.sender) || undefined,
-    webPreferences: { nodeIntegration: false, contextIsolation: true, sandbox: true, webSecurity: true, partition },
+  if (quitting || owner.isDestroyed()) return;
+  // A separate renderer retains the online sandbox/session without another OS window.
+  const view = new WebContentsView({
+    webPreferences: {
+      nodeIntegration: false, contextIsolation: true, sandbox: true, webSecurity: true, partition,
+    },
   });
-  onlineWindows.set(ownerId, win);
-  win.removeMenu();
-  win.webContents.session.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
-  win.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
-  win.webContents.on("will-prevent-unload", event => {
+  const contents = view.webContents;
+  const contentsId = contents.id;
+  const wasMuted = owner.webContents.isAudioMuted();
+  let disposed = false;
+  let resolveReturn!: (value: string | undefined) => void;
+  const returned = new Promise<string | undefined>(resolve => { resolveReturn = resolve; });
+  const resize = () => {
+    if (disposed || owner.isDestroyed()) return;
+    const { width, height } = owner.getContentBounds();
+    view.setBounds({ x: 0, y: 0, width, height });
+  };
+  const dispose = () => {
+    if (disposed) return;
+    disposed = true;
+    onlineViews.delete(contentsId);
+    const backMenu = Menu.getApplicationMenu()?.getMenuItemById("return-local-lobby");
+    if (backMenu) backMenu.enabled = false;
+    owner.removeListener("resize", resize);
+    owner.removeListener("closed", dispose);
+    if (!owner.isDestroyed()) {
+      owner.contentView.removeChildView(view);
+      owner.webContents.setAudioMuted(wasMuted);
+      if (!quitting) owner.webContents.focus();
+    }
+    // WebContentsView is not automatically destroyed with its containing window.
+    if (!contents.isDestroyed()) contents.close({ waitForBeforeUnload: false });
+    resolveReturn(quitting || owner.isDestroyed() ? undefined : "offline");
+  };
+  onlineViews.set(contentsId, { view, dispose });
+  owner.once("closed", dispose);
+  contents.once("destroyed", dispose);
+  owner.on("resize", resize);
+  view.setVisible(false);
+  view.setBackgroundColor("#182124");
+  owner.contentView.addChildView(view);
+  resize();
+  contents.session.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
+  contents.setWindowOpenHandler(() => ({ action: "deny" }));
+  contents.on("will-prevent-unload", event => {
     if (quitting) event.preventDefault();
   });
   const restrictNavigation = (navigation: Electron.Event, target: string) => {
     if (new URL(target).origin !== url.origin) navigation.preventDefault();
   };
-  win.webContents.on("will-navigate", restrictNavigation);
-  win.webContents.on("will-redirect", restrictNavigation);
-  win.on("closed", () => { if (onlineWindows.get(ownerId) === win) onlineWindows.delete(ownerId); });
+  contents.on("will-navigate", restrictNavigation);
+  contents.on("will-redirect", restrictNavigation);
   onlineFailures.delete(partition);
-  try { await win.loadURL(url.href); }
+  try {
+    await contents.loadURL(url.href);
+    if (disposed || owner.isDestroyed() || quitting) { dispose(); return; }
+    owner.webContents.setAudioMuted(true);
+    const backMenu = Menu.getApplicationMenu()?.getMenuItemById("return-local-lobby");
+    if (backMenu) backMenu.enabled = true;
+    resize(); view.setVisible(true); contents.focus();
+  }
   catch (error) {
+    if (disposed || owner.isDestroyed() || quitting) { dispose(); return; }
     const cause = onlineFailures.get(partition) || (error instanceof Error ? error.message : String(error));
     reportOnlineError(partition, "联机页面加载失败", error);
-    if (!win.isDestroyed()) win.close();
+    dispose();
     throw new Error(`联机页面加载失败：${cause}\n错误日志：${path.join(app.getPath("logs"), "online.log")}`);
   }
-});
+  return returned;
+}
 
 app.setAppUserModelId("com.libnoname.noname");
 
@@ -201,6 +252,13 @@ function createMainWindow() {
 		{
 			label: "操作",
 			submenu: [
+				{
+					id: "return-local-lobby", label: "返回主大厅", enabled: false,
+					click: () => {
+						const state = onlineViews.values().next().value;
+						state?.dispose();
+					},
+				},
 				{ label: "退出程序", role: "quit", accelerator: "CmdOrCtrl+Q" },
 				{ type: "separator" },
 				{
