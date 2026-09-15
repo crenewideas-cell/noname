@@ -308,7 +308,7 @@ export class Rooms {
     } else if (event.type === "choiceClosed") {
       if (event.accountId && this.active.get(event.accountId) === room.view.id) this.publish(event.accountId, "game.choiceClosed", { instanceId, token: event.token });
     } else if (event.type === "engine" || event.type === "choice") {
-      if (event.accountId && room.view.members.some(member => member.id === event.accountId && this.active.get(member.id) === room.view.id)) this.publish(event.accountId, "game." + event.type, { instanceId, raw: event.raw, token: event.token, deadline: event.deadline });
+      if (event.accountId && room.view.members.some(member => member.id === event.accountId && this.active.get(member.id) === room.view.id)) this.publish(event.accountId, "game." + event.type, { instanceId, raw: event.raw, token: event.token, deadline: event.deadline, opening: event.opening });
     } else if (event.type === "finished") {
       void this.serial(async () => {
         if (room.view.instanceId !== instanceId || room.view.state === "finished") return;
@@ -343,7 +343,7 @@ export class Rooms {
       await this.save(room);
       clearTimeout(startupTimer); room.startupTimer = undefined;
       const missing = Array.isArray(resources) ? resources.filter(id => typeof id === "string" && /^(character|card):[a-zA-Z0-9_]{1,100}$/.test(id)).slice(0, 35).join("、") : "";
-      const message = code === "CHARACTER_POOL_TOO_SMALL" ? "可选武将不足：扣除禁将、模式限制并合并同名版本后，需至少每席 3 名候选。请增加武将包或减少禁将。"
+      const message = code === "CHARACTER_POOL_TOO_SMALL" ? "可选武将不足：扣除禁将和模式限制后，需至少每席 3 个有效选项；身份场同名不同版本分别计数。请增加武将包或减少禁将。"
         : code === "CHARACTER_PACK_UNAVAILABLE" ? `联机资源未加载${missing ? "：" + missing : ""}。请重新构建并更新服务端与客户端的完整联机资源。`
         : code === "CHARACTER_POOL_VALIDATION_FAILED" ? "武将池规则校验异常，已取消开局；具体异常已记录到服务端日志。"
         : code === "INVALID_CHARACTER_BAN" ? "禁将不属于当前武将池，请重新配置房间武将规则。"

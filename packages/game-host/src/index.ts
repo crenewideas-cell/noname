@@ -1,7 +1,7 @@
 import { chromium, type Browser, type BrowserContext, type Page } from "playwright-core";
 import { hasRoomMemory } from "./resources.js";
-export interface HostSpec { instanceId: string; roomId: string; modeId: string; build: string; characterPool?: { packs: string[]; banned: string[] }; rules?: { mulligan: 0 | 1 | 2; freeChoose: boolean; chooseTimeout: 15 | 30 | 60 | 90 }; members: { id: string; nickname: string; isAI?: boolean }[]; }
-export interface HostEvent { type: string; code?: string; resources?: string[]; diagnostic?: string; accountId?: string; raw?: string; token?: string; deadline?: number; results?: { accountId: string; won: boolean | null }[]; }
+export interface HostSpec { instanceId: string; roomId: string; modeId: string; build: string; characterPool?: { packs: string[]; banned: string[] }; rules?: { mulligan: 0 | 1 | 2; freeChoose: boolean; chooseTimeout: 15 | 30 | 60 | 90; characterRerolls?: 0 | 1 | 2 | 3; openingTimeout?: 30 | 60 | 90; characterPoolMode?: "shared" | "partitioned" }; members: { id: string; nickname: string; isAI?: boolean }[]; }
+export interface HostEvent { type: string; code?: string; resources?: string[]; diagnostic?: string; accountId?: string; raw?: string; token?: string; deadline?: number; opening?: boolean; results?: { accountId: string; won: boolean | null }[]; }
 export class GameHost {
   private instances = new Map<string, { context?: BrowserContext; page?: Page; ended: boolean; timer?: NodeJS.Timeout; fail?: (error: Error) => void }>();
   private browser?: Browser;

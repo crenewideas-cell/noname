@@ -5801,8 +5801,8 @@ progress.progress::-webkit-progress-value {
 .selection-guide { position: absolute; z-index: 70; bottom: 180px; left: 50%; transform: translateX(-50%); box-sizing: border-box; width: min(670px, calc(100% - 36px)); max-height: min(180px, 28vh); overflow: auto; padding: 10px 16px; border: 2px solid #e7cf85; border-radius: 12px; background: #102b35f2; color: #fff5d7; box-shadow: 0 5px 24px #0008; font: 14px/1.5 "Microsoft YaHei", sans-serif; text-shadow: none; text-align: center; pointer-events: none; }
 .selection-guide * { position: static; box-sizing: border-box; text-shadow: none; }
 .selection-guide > strong { display: block; font-size: 17px; color: #ffe18a; }
-.selection-guide-steps { color: #9ee8f7; margin: 3px 0; }
-.selection-guide-chosen { overflow-wrap: anywhere; }
+.selection-guide-steps { display: block; color: #9ee8f7; margin: 5px 0; }
+.selection-guide-chosen { display: block; overflow-wrap: anywhere; }
 .selection-guide-actions { display: flex; justify-content: center; gap: 12px; margin-top: 6px; }
 .selection-guide button { min-height: 32px; padding: 4px 14px; border: 1px solid #b7cdd1; border-radius: 6px; color: #fff5d7; background: #29434e; font: inherit; cursor: pointer; pointer-events: auto; }
 .selection-guide button:disabled { opacity: .4; cursor: default; }

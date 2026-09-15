@@ -1,7 +1,7 @@
 <template>
   <fieldset class="online-pool-editor" :disabled="disabled || loading">
     <legend>开局武将池</legend>
-    <p>选择武将包，再按需禁用具体武将。引擎自带的联机禁用、模式限制和同名版本合并仍然生效。</p>
+    <p>选择武将包，再按需禁用具体武将。引擎自带的联机禁用和模式限制仍然生效；身份场按具体武将分别分配，同名不同版本也是独立选项。</p>
     <div class="online-pool-actions">
       <button type="button" @click="replace(defaultCharacterPool())">推荐经典包</button>
       <button type="button" @click="setPacks(['standard'])">仅标准</button>
@@ -18,6 +18,8 @@
       </label>
     </div>
     <p>已选 {{ modelValue.packs.length }} 个包 · 禁用 {{ modelValue.banned.length }} 名武将</p>
+    <p :class="{ 'online-modal-error': !validation.valid }" role="status">{{ validation.message }}</p>
+    <p v-if="!loading">有效选项 {{ validation.count }} / 最低 {{ validation.minimum }} · 已扣除禁将和模式限制，{{ modeId === 'identity' ? '同一武将编号去重，不合并同名版本。' : '按此模式的同名版本合并规则计数。' }}</p>
     <details>
       <summary>设置禁将 / 查看武将</summary>
       <input v-model="query" type="search" placeholder="搜索武将名或编号" aria-label="搜索武将" />
@@ -34,13 +36,15 @@
   </fieldset>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref, shallowRef } from "vue";
-import { lib, _status } from "noname";
+import { computed, onMounted, ref, shallowRef, watch } from "vue";
+import { lib } from "noname";
 import { ONLINE_CHARACTER_PACKS, defaultCharacterPool, normalizeCharacterPool, type CharacterPool } from "@noname/online-protocol";
-import { importCharacterPack } from "../../init/import.js";
-const props = defineProps<{ modelValue: CharacterPool; modeId: string; disabled?: boolean }>();
-const emit = defineEmits<{ 'update:modelValue': [value: CharacterPool] }>();
+import { inspectCharacterPool, loadOnlineCharacterCatalog } from "../characterPool.js";
+const props = defineProps<{ modelValue: CharacterPool; modeId: string; capacity: number; disabled?: boolean }>();
+const emit = defineEmits<{ 'update:modelValue': [value: CharacterPool]; validation: [valid: boolean] }>();
 const catalog = shallowRef<Record<string, any>>({}), loading = ref(true), notice = ref(''), query = ref(''), onlyBanned = ref(false);
+const validation = computed(() => inspectCharacterPool(props.modelValue, props.capacity, props.modeId, catalog.value));
+watch(() => validation.value.valid && !loading.value, valid => emit('validation', valid), { immediate: true });
 const characters = computed(() => {
   const result = new Map<string, { id: string; name: string; pack: string }>();
   for (const pack of ONLINE_CHARACTER_PACKS) {
@@ -76,9 +80,7 @@ function importLocal(online: boolean) {
 onMounted(async () => {
   try {
     // The splash already imports stock packages, but local hidden packs may be absent.
-    await Promise.all(ONLINE_CHARACTER_PACKS.filter(pack => !lib.imported.character?.[pack.id]).map(pack => importCharacterPack(pack.id)));
-    await Promise.all(_status.importing?.character || []);
-    catalog.value = { ...lib.imported.character };
+    catalog.value = await loadOnlineCharacterCatalog();
     if (ONLINE_CHARACTER_PACKS.some(pack => !catalog.value[pack.id]?.character)) notice.value = '部分武将目录缺失，请更新联机客户端；开局时服务端还会检查资源。';
   } catch { notice.value = '武将目录加载失败，请更新客户端后重新进入。'; }
   finally { loading.value = false; }

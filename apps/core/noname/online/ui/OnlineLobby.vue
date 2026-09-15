@@ -57,9 +57,9 @@
         <div v-if="isOwner && s.room.state === 'waiting'" class="online-room-management"><form @submit.prevent="renameRoom"><input v-model="newName" maxlength="32" placeholder="新的房间名称" aria-label="新的房间名称" /><button :disabled="busy || !newName.trim()">修改房名</button></form><button v-for="member in s.room.members.filter(m => !m.isAI && m.id !== s.account?.id)" :key="member.id" :disabled="busy" @click="run(() => roomCommand('room.kick', { accountId: member.id }))">移出 {{ member.nickname }}</button></div>
         <details v-if="isOwner && s.room.state === 'waiting'" class="online-pool-settings" @toggle="togglePoolEditor">
           <summary>修改武将池</summary>
-          <CharacterPoolEditor v-if="poolEditorOpen" v-model="editPool" :mode-id="s.room.modeId" :disabled="busy" />
+          <CharacterPoolEditor v-if="poolEditorOpen" v-model="editPool" :capacity="s.room.capacity" @validation="editPoolValid = $event" :mode-id="s.room.modeId" :disabled="busy" />
           <p>保存后所有玩家需要重新准备。</p>
-          <button class="online-primary" :disabled="busy || !poolChanged" @click="savePool">保存武将池</button>
+          <button class="online-primary" :disabled="busy || !poolChanged || !editPoolValid" @click="savePool">保存武将池</button>
           <button :disabled="busy" @click="editPool = normalizeCharacterPool(s.room.characterPool)">还原当前规则</button>
         </details>
         <details v-if="isOwner && s.room.state === 'waiting'" class="online-pool-settings">
@@ -87,7 +87,7 @@
       </div>
       <SocialPanel @joined="mode => emit('mode', mode)" />
     </template>
-    <dialog ref="createDialog" class="online-dialog online-pool-dialog" @close="showCreate = false"><form @submit.prevent="createRoom"><header><h2>创建{{ modeName }}房间</h2><button type="button" @click="showCreate = false" aria-label="关闭">×</button></header><label>房间名称<input v-model="roomName" required maxlength="32" /></label><label>对局人数<select v-model.number="roomCapacity"><option v-for="n in playerCounts" :key="n" :value="n">{{ n }} 人{{ ruleName }}</option></select></label><label>房间可见性<select v-model="visibility"><option value="public">公开 · 所有玩家可搜索</option><option value="invite">邀请 · 仅凭房间码加入</option></select></label><label>房间密码（可选）<input v-model="roomPassword" type="password" minlength="4" maxlength="64" autocomplete="new-password" /></label><CharacterPoolEditor v-if="showCreate" v-model="createPool" :mode-id="modeId" :disabled="busy" /><RoomRulesEditor v-model="createRules" :mode-id="modeId" :disabled="busy" /><p>标准卡牌、单将；所有玩家共享房间规则。</p><p v-if="modalError" class="online-modal-error" role="alert">{{ modalError }}</p><button class="online-primary" :disabled="busy">{{ busy ? '正在创建…' : '创建并入席' }}</button></form></dialog>
+    <dialog ref="createDialog" class="online-dialog online-pool-dialog" @close="showCreate = false"><form @submit.prevent="createRoom"><header><h2>创建{{ modeName }}房间</h2><button type="button" @click="showCreate = false" aria-label="关闭">×</button></header><label>房间名称<input v-model="roomName" required maxlength="32" /></label><label>对局人数<select v-model.number="roomCapacity"><option v-for="n in playerCounts" :key="n" :value="n">{{ n }} 人{{ ruleName }}</option></select></label><label>房间可见性<select v-model="visibility"><option value="public">公开 · 所有玩家可搜索</option><option value="invite">邀请 · 仅凭房间码加入</option></select></label><label>房间密码（可选）<input v-model="roomPassword" type="password" minlength="4" maxlength="64" autocomplete="new-password" /></label><CharacterPoolEditor v-if="showCreate" v-model="createPool" :capacity="roomCapacity" @validation="createPoolValid = $event" :mode-id="modeId" :disabled="busy" /><RoomRulesEditor v-model="createRules" :mode-id="modeId" :disabled="busy" /><p>标准卡牌、单将；所有玩家共享房间规则。</p><p v-if="modalError" class="online-modal-error" role="alert">{{ modalError }}</p><button class="online-primary" :disabled="busy || !createPoolValid">{{ busy ? '正在创建…' : '创建并入席' }}</button></form></dialog>
     <dialog ref="joinDialog" class="online-dialog" @close="showJoin = false"><form @submit.prevent="joinRoom"><header><h2>加入房间</h2><button type="button" @click="showJoin = false" aria-label="关闭">×</button></header><label>房间码<input v-model="joinCode" required maxlength="32" /></label><label>房间密码（如有）<input v-model="joinPassword" type="password" maxlength="64" /></label><p v-if="modalError" class="online-modal-error" role="alert">{{ modalError }}</p><button class="online-primary" :disabled="busy">加入房间</button></form></dialog>
   </main>
 </template>
@@ -99,6 +99,7 @@ import SocialPanel from "./SocialPanel.vue";
 import MatchPanel from "./MatchPanel.vue";
 import CharacterPoolEditor from "./CharacterPoolEditor.vue";
 import RoomRulesEditor from "./RoomRulesEditor.vue";
+import { inspectCharacterPool, loadOnlineCharacterCatalog } from "../characterPool.js";
 import { onlineState as s, restoreAccount, login, logout, searchRooms, command, onOnlineEvent, copyOnlineText } from "../client";
 const props = defineProps<{ modeId: string }>();
 const emit = defineEmits<{ back: []; play: []; mode: [id: string] }>();
@@ -117,13 +118,14 @@ const roomName = ref('群英小聚'), roomCapacity = ref<number>(props.modeId ==
 const myMember = computed(() => s.room?.members.find(member => member.id === s.account?.id));
 watch(() => props.modeId, () => { roomCapacity.value = props.modeId === 'doudizhu' ? 3 : 5; createRules.value = normalizeRoomRules(undefined, props.modeId); page.value = 1; capacity.value = ''; void refresh(); });
 const newName = ref(''), codeCopied = ref(false);
+const createPoolValid = ref(false), editPoolValid = ref(false);
 const createPool = ref(defaultCharacterPool()), editPool = ref(defaultCharacterPool()), poolEditorOpen = ref(false);
 const createRules = ref(normalizeRoomRules(undefined, props.modeId)), editRules = ref(normalizeRoomRules(undefined, props.modeId));
 const rulesChanged = computed(() => JSON.stringify(editRules.value) !== JSON.stringify(normalizeRoomRules(s.room?.rules, s.room?.modeId || props.modeId)));
 watch(() => `${s.room?.id}:${JSON.stringify(s.room?.rules)}`, () => { editRules.value = normalizeRoomRules(s.room?.rules, s.room?.modeId || props.modeId); }, { immediate: true });
 function describeRules(room: Room) {
   const rules = normalizeRoomRules(room.rules, room.modeId);
-  return `${room.modeId === 'identity' ? `手气卡：${rules.mulligan ? rules.mulligan + ' 次' : '关闭'} · 点将：${rules.freeChoose ? '开启，按座次选将' : '关闭'} · ` : ''}${rules.chooseTimeout} 秒操作时限`;
+  return `${room.modeId === 'identity' ? `手气卡：${rules.mulligan ? rules.mulligan + ' 次' : '关闭'} · 主公点将：${rules.freeChoose ? '开启' : '关闭'} · ${rules.characterPoolMode === 'partitioned' ? '均分独立池' : '共享抢选池'} · 换候选：${rules.characterRerolls} 次 · 开局准备 ${rules.openingTimeout} 秒 · ` : ''}${rules.chooseTimeout} 秒操作时限`;
 }
 const poolChanged = computed(() => JSON.stringify(normalizeCharacterPool(editPool.value)) !== JSON.stringify(normalizeCharacterPool(s.room?.characterPool)));
 watch(() => `${s.room?.id}:${JSON.stringify(s.room?.characterPool)}`, () => { editPool.value = normalizeCharacterPool(s.room?.characterPool); }, { immediate: true });
@@ -139,14 +141,20 @@ async function run(action: () => Promise<any>) { if (busy.value) return; busy.va
 async function refresh() { if (!s.account || disposed) return; listLoading.value = true; listError.value = ''; try { await searchRooms(props.modeId, query.value, page.value, filterState.value, capacity.value); } catch (e: any) { listError.value = e.message; } finally { listLoading.value = false; } }
 async function retry() { loading.value = true; error.value = ''; s.error = ''; try { await restoreAccount(); if (s.room?.modeId && s.room.modeId !== props.modeId) emit('mode', s.room.modeId); await refresh(); } catch (e: any) { error.value = e.message; } finally { loading.value = false; } }
 async function authenticate() { await run(async () => { await login(authKind.value, { username: username.value, password: password.value, nickname: nickname.value, recovery: recoveryCode.value }); password.value = ''; if (authKind.value === 'recover') authKind.value = 'login'; else { if (s.room) emit('mode', s.room.modeId); await refresh(); } }); }
-async function createRoom() { await run(async () => { s.room = await command('room.create', { modeId: props.modeId, preset: preset.value!.preset, name: roomName.value, capacity: roomCapacity.value, visibility: visibility.value, password: roomPassword.value, characterPool: createPool.value, rules: createRules.value }); s.chat = []; showCreate.value = false; roomPassword.value = ''; }); }
+async function createRoom() { if (!createPoolValid.value) return; await run(async () => { s.room = await command('room.create', { modeId: props.modeId, preset: preset.value!.preset, name: roomName.value, capacity: roomCapacity.value, visibility: visibility.value, password: roomPassword.value, characterPool: createPool.value, rules: createRules.value }); s.chat = []; showCreate.value = false; roomPassword.value = ''; }); }
 function openJoin(room: Room) { joinCode.value = room.code; joinPassword.value = ''; if (room.locked) showJoin.value = true; else void joinRoom(); }
 async function joinRoom() { await run(async () => { s.room = await command('room.join', { code: joinCode.value, password: joinPassword.value }); s.chat = []; showJoin.value = false; joinPassword.value = ''; if (s.room) emit('mode', s.room.modeId); }); }
 const roomCommand = (type: string, payload = {}) => command(type, { roomId: s.room!.id, revision: s.room!.revision, ...payload });
-const savePool = () => run(() => roomCommand('room.update', { characterPool: editPool.value }));
+const savePool = () => editPoolValid.value && run(() => roomCommand('room.update', { characterPool: editPool.value }));
 const saveRules = () => run(() => roomCommand('room.update', { rules: editRules.value }));
 const ready = () => run(() => roomCommand('room.ready', { ready: !myReady.value }));
-const start = () => run(() => roomCommand('room.start'));
+const start = () => run(async () => {
+  const room = s.room!;
+  const catalog = await loadOnlineCharacterCatalog();
+  const validation = inspectCharacterPool(normalizeCharacterPool(room.characterPool), room.capacity, room.modeId, catalog);
+  if (!validation.valid) throw new Error(validation.message);
+  await roomCommand('room.start');
+});
 const setAI = (seats: number[], enabled: boolean) => run(() => roomCommand('room.ai', { seats, enabled }));
 const leaveRoom = () => run(async () => { await roomCommand('room.leave'); s.room = null; await refresh(); });
 const chat = () => run(async () => { await command('room.chat', { roomId: s.room!.id, text: chatText.value }); chatText.value = ''; });

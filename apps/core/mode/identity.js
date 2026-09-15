@@ -458,13 +458,16 @@ export default {
 			if (_status.mode != "stratagem") {
 				event.beginner = _status.firstAct2 || game.zhong || game.zhu || _status.firstAct || game.me;
 			}
-			await game.gameDraw(event.beginner, player => {
+			const openingDraw = game.gameDraw(event.beginner, player => {
 				if (_status.mode == "purple" && player.seatNum > 5) {
 					return 5;
 				}
 				return 4;
 			});
-			if (_status.connectMode && lib.configOL.change_card) {
+			await openingDraw;
+			if (game.onlineOpening) {
+				await game.onlineOpening.handcards(game.players.slice(), openingDraw);
+			} else if (_status.connectMode && lib.configOL.change_card) {
 				let candidates = game.players.slice();
 				const rounds = lib.configOL.mulligan_rounds === 2 ? 2 : 1;
 				for (let round = 0; round < rounds && candidates.length; round++) {
@@ -2718,6 +2721,14 @@ export default {
 						};
 						list = getZhuList(list2).concat(list3.randomGets(lib.configOL.choice_zhu));
 					}
+					if (game.onlineOpening) {
+						const expand = name => lib.characterReplace[name]?.length ? lib.characterReplace[name] : [name];
+						event.openingPool = Object.keys(libCharacter).filter(id => !lib.filter.characterDisabled(id));
+						return await game.onlineOpening.character(game.zhu, {
+							pool: event.openingPool, initial: list.flatMap(expand), count: lib.configOL.double_character ? 2 : 1,
+							title: "主公选将", position: 1, total: game.players.length,
+						});
+					}
 					if (lib.configOL.free_choose) list = event.list.flatMap(name => lib.characterReplace[name] || [name]).sort(lib.sort.character);
 					const chooseButtonEvent = game.zhu.chooseButton(true);
 					chooseButtonEvent.set("selectButton", lib.configOL.double_character ? 2 : 1);
@@ -2780,6 +2791,12 @@ export default {
 				async (event, trigger, player) => {
 					const list = [];
 					const selectButton = lib.configOL.double_character ? 2 : 1;
+
+					if (game.onlineOpening) {
+						const pool = event.openingPool.filter(id => id !== game.zhu.name1 && id !== game.zhu.name2);
+						event.draftedResults = await game.onlineOpening.characters(game.players.filter(current => current !== game.zhu), { pool, count: selectButton });
+						return;
+					}
 
 					if (lib.configOL.free_choose) {
 						// Allocate the shared pool sequentially so simultaneous choices

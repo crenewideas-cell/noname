@@ -1,7 +1,7 @@
 import { ONLINE_CHARACTER_PACKS, DEFAULT_CHARACTER_PACKS, defaultCharacterPool, type CharacterPool } from "./character-pool";
 export * from "./character-pool";
 export const PROTOCOL_VERSION = 2;
-export const ONLINE_BUILD = "online-packs-v2";
+export const ONLINE_BUILD = "online-draft-v4";
 export const RULESET = "identity-standard-v1";
 export const ONLINE_MODES = [
   { id: "identity", name: "身份", preset: RULESET, players: [5, 8], characterPacks: DEFAULT_CHARACTER_PACKS, cardPacks: ["standard"] },
@@ -12,16 +12,18 @@ export type SessionType = "offline" | "online";
 export type RoomState = "waiting" | "starting" | "in_game" | "finished" | "closed";
 export interface Account { id: string; code: string; nickname: string; avatar: string; }
 export interface Member extends Account { ready: boolean; online: boolean; seat: number; isAI?: boolean; resumeUntil?: number; abandoned?: boolean; }
-export interface RoomRules { mulligan: 0 | 1 | 2; freeChoose: boolean; chooseTimeout: 15 | 30 | 60 | 90; }
-export function normalizeRoomRules(value: unknown, modeId = "identity"): RoomRules {
-  const defaults: RoomRules = { mulligan: modeId === "identity" ? 1 : 0, freeChoose: false, chooseTimeout: 30 };
+export interface RoomRules { mulligan: 0 | 1 | 2; freeChoose: boolean; chooseTimeout: 15 | 30 | 60 | 90; characterRerolls?: 0 | 1 | 2 | 3; openingTimeout?: 30 | 60 | 90; characterPoolMode?: "shared" | "partitioned"; }
+export function normalizeRoomRules(value: unknown, modeId = "identity"): Required<RoomRules> {
+  const defaults: Required<RoomRules> = { mulligan: modeId === "identity" ? 1 : 0, freeChoose: modeId === "identity", chooseTimeout: 30, characterRerolls: modeId === "identity" ? 2 : 0, openingTimeout: 60, characterPoolMode: "shared" };
   if (value === undefined) return defaults;
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new OnlineError("INVALID_ROOM_RULES", "对局规则格式无效");
   const rules = { ...defaults, ...value };
   if (Object.keys(value).some(key => !Object.hasOwn(defaults, key)) || ![0, 1, 2].includes(rules.mulligan)
     || typeof rules.freeChoose !== "boolean" || ![15, 30, 60, 90].includes(rules.chooseTimeout)
-    || modeId !== "identity" && (rules.freeChoose || rules.mulligan !== 0)) {
-    throw new OnlineError("INVALID_ROOM_RULES", "身份场手气卡支持 0～2 次，点将可开关；行动时限支持 15、30、60、90 秒");
+    || ![0, 1, 2, 3].includes(rules.characterRerolls) || ![30, 60, 90].includes(rules.openingTimeout)
+    || !["shared", "partitioned"].includes(rules.characterPoolMode)
+    || modeId !== "identity" && (rules.freeChoose || rules.mulligan !== 0 || rules.characterRerolls !== 0)) {
+    throw new OnlineError("INVALID_ROOM_RULES", "身份场手气卡支持 0～2 次、换将 0～3 次，开局时限支持 30/60/90 秒；请使用有效的房间设置");
   }
   return rules;
 }

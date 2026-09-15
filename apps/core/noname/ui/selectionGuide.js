@@ -1,16 +1,35 @@
 import { game, ui, get, _status } from "noname";
 
 let panel, message, steps, selection, undo, reset, activeEvent;
+let resizeObserver, controlObserver, layoutFrame;
 const marked = new Set();
 const plain = value => String(value ?? "").replace(/<[^>]*>/g, "");
 
 export function clearSelectionGuide() {
+    resizeObserver?.disconnect(); controlObserver?.disconnect(); cancelAnimationFrame(layoutFrame);
+    window.removeEventListener("resize", scheduleLayout);
+    ui.control?.removeEventListener("transitionend", scheduleLayout);
     for (const target of marked) {
         target.classList.remove("selection-candidate", "selection-picked", "selection-unavailable");
         target.querySelector(":scope > .selection-target-badge")?.remove();
     }
     marked.clear();
     panel?.remove(); panel = null; activeEvent = null;
+}
+
+function scheduleLayout() {
+    cancelAnimationFrame(layoutFrame);
+    layoutFrame = requestAnimationFrame(() => {
+        if (!panel?.isConnected) return;
+        const container = ui.window.getBoundingClientRect();
+        const scale = container.height / ui.window.clientHeight || 1;
+        const controls = Array.from(ui.control?.children || []).filter(node => !node.classList.contains("removing") && node.getClientRects().length && getComputedStyle(node).visibility !== "hidden");
+        const top = Math.min(container.bottom, ...controls.map(node => node.getBoundingClientRect().top));
+        // Measure actual wrapped skill rows, including UI zoom, rather than
+        // assuming every device has a fixed 155/180px action area.
+        panel.style.bottom = `${Math.max(12, (container.bottom - top) / scale + 12)}px`;
+        panel.style.maxHeight = `${Math.max(52, Math.min(180, (top - container.top) / scale - 20))}px`;
+    });
 }
 
 // Display the engine's actual selection order and legal targets. This module
@@ -57,6 +76,15 @@ export function updateSelectionGuide(event, ok) {
         });
         reset = button("重选目标", () => { game.uncheck("target"); event.custom?.add?.target?.(); game.check(); });
         panel.append(message, steps, selection, actions); ui.window.append(panel);
+        resizeObserver = new ResizeObserver(scheduleLayout);
+        resizeObserver.observe(ui.window);
+        if (ui.control) {
+            resizeObserver.observe(ui.control);
+            ui.control.addEventListener("transitionend", scheduleLayout);
+            controlObserver = new MutationObserver(scheduleLayout);
+            controlObserver.observe(ui.control, { childList: true, subtree: true, attributes: true, attributeFilter: ["style", "class"] });
+        }
+        window.addEventListener("resize", scheduleLayout);
     }
     const stageText = counts.map((item, index) => `${index + 1}. ${item.label} ${item.count}/${item.max < 0 ? "全部" : item.min === item.max ? item.max : item.min + "～" + item.max}`).join(" → ") + (ordered ? " · 按编号依次选人" : "");
     if (steps.textContent !== stageText) steps.textContent = stageText;
@@ -72,7 +100,8 @@ export function updateSelectionGuide(event, ok) {
     const summary = names.length ? names.join(ordered ? " → " : "；") : roles.length ? roles.map((name, index) => `${index + 1}. ${name}`).join(" → ") : "青色边框：可选 · 金色边框与编号：已选";
     if (selection.textContent !== summary) selection.textContent = summary;
     undo.disabled = reset.disabled = !chosen.length || targetRange[1] < 0;
-    undo.hidden = reset.hidden = typeof event.custom?.replace?.target === "function";
+    scheduleLayout();
+    undo.hidden = reset.hidden = !chosen.length || typeof event.custom?.replace?.target === "function";
     const targets = new Set([...game.players, ...game.dead]);
     for (const target of new Set([...marked, ...targets])) {
         const index = chosen.indexOf(target), picked = targetStage && index !== -1;

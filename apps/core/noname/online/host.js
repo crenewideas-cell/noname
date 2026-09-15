@@ -2,6 +2,7 @@ import { lib, game, ui, get, _status } from "noname";
 import { ONLINE_BUILD, modePreset, normalizeCharacterPool, normalizeRoomRules } from "@noname/online-protocol";
 import { onlineCharacterLoadList, onlineCardLoadList, validateHostedCharacterPool } from "./characterPool.js";
 import { visibleSkillState } from "./publicSkillState.js";
+import { installOpeningFlow } from "./opening.js";
 
 // Only the internally launched browser has this binding. A public URL parameter
 // cannot opt a player's browser into the trusted host role.
@@ -180,6 +181,14 @@ export function installHost() {
 	const originalWait = lib.element.Player.prototype.wait;
 	const originalUnwait = lib.element.Player.prototype.unwait;
 	lib.element.Player.prototype.unwait = function (result) {
+		const opening = choices.get(this.playerid);
+		if (opening?.opening) {
+			clearTimeout(lib.node.torespondtimeout[this.playerid]);
+			choices.delete(this.playerid); prompts.delete(this.playerid);
+			deliver(this.playerid, { type: "choiceClosed", accountId: this.playerid, token: opening.token });
+			opening.resolve(result === "ai" ? null : result);
+			return;
+		}
 		if (aiSeats.has(this.playerid)) return originalUnwait.call(this, result);
 		const token = choices.get(this.playerid)?.token;
 		choices.get(this.playerid)?.selection._onlineValidationDialog?.close();
@@ -188,6 +197,67 @@ export function installHost() {
 		deliver(this.playerid, { type: "choiceClosed", accountId: this.playerid, token });
 		return originalUnwait.call(this, result);
 	};
+	if (spec.modeId === "identity") installOpeningFlow((player, data, validate) => {
+		if (aiSeats.has(player.playerid) || player.isAuto || player.ws?.closed || data.deadline <= Date.now()) return Promise.resolve(null);
+		if (choices.has(player.playerid)) throw new Error("开局选择与已有选择冲突");
+		return new Promise(resolve => {
+			const token = `${spec.instanceId}:opening:${++serial}`;
+			const prompt = [function (data, token) { game.showOnlineOpening(data, token); }, data, token];
+			const choice = { token, opening: true, deadline: data.deadline, event: _status.event,
+				selection: {}, prompt, resolve, validate(result) {
+					if (Object.keys(result).some(key => !["control", "links"].includes(key)) ||
+						result.links !== undefined && (!Array.isArray(result.links) || result.links.some(id => typeof id !== "string"))) throw new Error("开局操作格式无效");
+					validate(result);
+				} };
+			choices.set(player.playerid, choice); prompts.set(player.playerid, prompt);
+			deliver(player.playerid, { type: "choice", accountId: player.playerid, token, deadline: data.deadline, opening: true });
+			sendingChoice = { accountId: player.playerid, token };
+			try { originalSend.apply(player, prompt); }
+			finally { sendingChoice = undefined; }
+			lib.node.torespondtimeout[player.playerid] = setTimeout(() => {
+				if (choices.get(player.playerid)?.token === token) player.unwait("ai");
+			}, Math.max(0, data.deadline - Date.now()));
+		});
+	}, state => {
+		game.broadcastAll(function (state) {
+			game.onlineOpeningState = state; game.renderOpeningStage?.(state);
+		}, state);
+	}, (player, drawEvent) => {
+		const old = player.getCards("h");
+		const pile = drawEvent?.otherPile?.[player.playerid];
+		game.addVideo("lose", player, [get.cardsInfo(old), [], [], []]);
+		// Only the host changes the deck. Other players receive opaque card IDs.
+		game.broadcast(function (player, ids) {
+			for (const card of player.getCards("h")) if (ids.includes(card.cardid)) {
+				card.removeGaintag(true); card.remove();
+			}
+		}, player, old.map(card => card.cardid));
+		for (const card of old) {
+			card.removeGaintag(true);
+			if (pile?.discard) pile.discard(card);
+			else card.discard(false);
+		}
+		const cards = pile?.getCards ? pile.getCards(old.length) : get.cards(old.length);
+		const tag = drawEvent?.gaintag?.[player.playerid];
+		const groups = typeof tag === "function" ? tag(old.length, cards) : [[cards, tag]];
+		for (const [hand, tags] of groups.slice().reverse()) player.directgain(hand, false, tags);
+		player._start_cards = player.getCards("h");
+		for (const [id, client] of clients) {
+			const visible = id === player.playerid ? groups : groups.map(([hand]) => [hand.map(card => "_noname_card:" + JSON.stringify([card.cardid, null, null, null, null])), undefined]);
+			client.send(function (player, groups) {
+				for (const [hand, tags] of groups.slice().reverse()) player.directgain(hand, false, tags);
+				player._start_cards = player.getCards("h");
+			}, player, visible);
+		}
+	}, rules, (player, data) => {
+		const choice = choices.get(player.playerid);
+		if (!choice?.opening || choice.prompt[1].phase !== "character") return;
+		if (JSON.stringify(choice.prompt[1]) === JSON.stringify(data)) return;
+		choice.prompt[1] = data;
+		sendingChoice = { accountId: player.playerid, token: choice.token };
+		try { originalSend.apply(player, choice.prompt); }
+		finally { sendingChoice = undefined; }
+	});
 	lib.element.Player.prototype.wait = function (...args) {
 		// Parallel choices may call wait even for the local game.me element.
 		if (aiSeats.has(this.playerid)) return originalWait.apply(this, args);
@@ -312,10 +382,11 @@ export function installHost() {
 				if (ui.cardPileNumber) ui.cardPileNumber.textContent = round + "轮 剩余牌: " + pileSize;
 			}, get.skillState(player), _status.currentPhase, game.phaseNumber, game.roundNumber, game.zhu, ui.cardPile.childNodes.length);
 			for (const member of spec.members) seatStatus(lib.playerOL[member.id]);
+			client.send(function (state) { game.onlineOpeningState = state; game.renderOpeningStage?.(state); }, game.onlineOpeningState || null);
 			for (const message of client.pending) emit(message);
 			client.pending = []; client.pendingBytes = 0;
 			if (choice && choice.token === client.snapshotToken && choice.deadline > Date.now() && choice.prompt) {
-				emit({ type: "choice", accountId, token: choice.token, deadline: choice.deadline });
+				emit({ type: "choice", accountId, token: choice.token, deadline: choice.deadline, opening: !!choice.opening });
 				sendingChoice = { accountId, token: choice.token };
 				try { client.send(...choice.prompt); }
 				finally { sendingChoice = undefined; }
@@ -340,7 +411,8 @@ export function installHost() {
 			let result;
 			try {
 				result = decodeChoice(payload.result);
-				validateResult(choice.selection, player, result);
+				if (choice.opening) choice.validate(result);
+				else validateResult(choice.selection, player, result);
 			} catch (error) {
 				const source = choice.selection.skill || choice.event.getParent()?.name || "unknown";
 				throw new Error(`HOST_CHOICE_REJECTED (${choice.event.name}/${choice.selection.name}; source=${source}): ${error.message}`, { cause: error });
@@ -354,7 +426,7 @@ export function installHost() {
 			// Correlation metadata comes from the host event, never from the client.
 			// In particular, _wuxie's sendback ignores otherwise valid results
 			// without the id of the outstanding counterspell request.
-			if (choice.event.id !== undefined) result.id = choice.event.id;
+			if (!choice.opening && choice.event.id !== undefined) result.id = choice.event.id;
 			consumed.set(payload.actionId, fingerprint); if (consumed.size > 2048) consumed.delete(consumed.keys().next().value);
 			player.unwait(result);
 		} else if (type === "disconnect") {

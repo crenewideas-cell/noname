@@ -3,6 +3,7 @@ import { command, onlineState, restoreAccount, onOnlineEvent, disconnectPlatform
 import { security } from "@/util/sandbox.js";
 import { assertOnlineCharacterResources } from "./characterPool.js";
 import { installSkillControls } from "./ui/skillControls.js";
+import { installOpeningUI } from "./ui/openingDialog.js";
 import "./ui/online.css";
 
 let statusPanel;
@@ -46,6 +47,7 @@ export async function returnToOnlineLobby(leave = false) {
 	if (leave) await leaveManagedRoom(true);
 	else if (onlineState.status === "connected") await prepareRoomNavigation("lobby");
 	clearChoiceClock();
+	game.closeOnlineOpening?.(); game.renderOpeningStage?.(null);
 	sessionStorage.removeItem("noname_online_game");
 	sessionStorage.setItem("noname_online_return", assignment?.modeId || onlineState.room?.modeId || "identity");
 	sessionStorage.setItem(lib.configprefix + "return_to_lobby", "true");
@@ -79,6 +81,7 @@ export async function startManagedGame() {
 		assignment.modeId = onlineState.room.modeId;
 		assertOnlineCharacterResources();
 		installSkillControls();
+		installOpeningUI();
 		game.onlineID = onlineState.account.id;
 		_status.ip = "online-platform";
 		// Force the existing engine sandbox without the legacy "trust this IP" prompt.
@@ -120,6 +123,10 @@ export async function startManagedGame() {
 				showStatus("选择提交未完成", error.message + "。可重新同步当前选择；超过行动时限后由服务端托管。", "重新同步", reloadManagedGame);
 			}
 		};
+		game.submitOpeningChoice = (result, token) => {
+			game.closeOnlineOpening(token);
+			return submit(result, token);
+		};
 		game.send = (type, ...args) => {
 			if (type === "result") {
 				// startOnline submits the same result object produced by its child.
@@ -144,8 +151,10 @@ export async function startManagedGame() {
 				choiceToken = payload.token;
 				// The matching engine prompt carries the token. Do not relabel an
 				// earlier live event/result merely because a new request has arrived.
-				showChoiceClock(payload.deadline);
+				if (payload.opening) clearChoiceClock();
+				else showChoiceClock(payload.deadline);
 			} else if (type === "game.choiceClosed") {
+				game.closeOnlineOpening(payload.token);
 				closedChoices.add(payload.token);
 				if (closedChoices.size > 256) closedChoices.delete(closedChoices.values().next().value);
 				if (payload.token === choiceToken) { choiceToken = undefined; clearChoiceClock(); }
@@ -167,6 +176,7 @@ export async function startManagedGame() {
 					player.say(text.innerHTML);
 				}
 			} else if (type === "game.finished") {
+				game.closeOnlineOpening(); game.renderOpeningStage(null);
 				finished = true;
 				choiceToken = undefined;
 				clearChoiceClock();
@@ -184,6 +194,7 @@ export async function startManagedGame() {
 			else if (type === "game.resumeFailed") fail(new Error("快照同步超时，可返回房间重新恢复。"));
 			else if (type === "game.resumeExpired") fail(new Error("席位保留时间已过，本局由服务端继续托管。"));
 			else if (type === "connection.closed" && !finished) {
+				game.closeOnlineOpening(); game.renderOpeningStage(null);
 				choiceToken = undefined;
 				clearChoiceClock();
 				const terminal = [4001,4002,4003,4004,1008].includes(payload.code);
@@ -205,4 +216,4 @@ async function reloadManagedGame() {
 	localStorage.setItem(lib.configprefix + "directstart", "true");
 	window.onbeforeunload = null; game.reload();
 }
-function fail(error) { if (finished || leaving) return; clearChoiceClock(); showStatus("暂时无法继续", error.message, "返回房间", () => returnToOnlineLobby()); }
+function fail(error) { if (finished || leaving) return; clearChoiceClock(); game.closeOnlineOpening?.(); game.renderOpeningStage?.(null); showStatus("暂时无法继续", error.message, "返回房间", () => returnToOnlineLobby()); }

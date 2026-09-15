@@ -171,6 +171,53 @@
 .match-countdown small { font: 13px sans-serif; color: #bfc4aa; }
 .online-connection[data-state="blocked"] { color: #e5ac92; }
 .online-turn-clock { position: fixed; bottom: max(16px,env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); z-index: 100; pointer-events: none; padding: 7px 16px; border: 1px solid #c8ad705c; border-radius: 22px; background: #142b2be8; color: #e9d4a5; font: 12px/1.5 sans-serif; box-shadow: 0 4px 20px #0005; white-space: nowrap; }
+.online-opening-dialog { position: fixed; inset: 0; box-sizing: border-box; width: min(1000px,94vw); max-width: 94vw; height: fit-content; max-height: 92dvh; margin: auto; padding: 24px; overflow: auto; overscroll-behavior: contain; border: 1px solid #cdb27a; border-radius: 16px; background: #152a2a; color: #f2e6cd; font: 15px/1.5 sans-serif; text-align: left; box-shadow: 0 24px 80px #0009; }
+.online-opening-dialog::backdrop { background: #061110b8; }
+.online-opening-dialog :is(header,footer,p,h2,small,nav,strong,input,button,[class^="op-"]) { box-sizing: border-box; position: relative; inset: auto; }
+.online-opening-dialog :is(h2,p) { margin: 0; }
+.online-opening-dialog h2 { font: 28px/1.4 xinwei,serif; color: #ffe0a0; }
+.online-opening-dialog button, .online-opening-launcher { min-height: 42px; margin: 0; padding: 9px 16px; border: 1px solid #b49c68; border-radius: 8px; background: #30483f; color: #f6e4bd; font: 14px/1.4 sans-serif; cursor: pointer; touch-action: manipulation; }
+.online-opening-dialog button:enabled:hover { background: #445f4c; border-color: #ffe0a0; }
+.online-opening-dialog button:disabled { opacity: .48; cursor: default; }
+.online-opening-dialog button.active { opacity: 1; background: #536244; color: #fff2d4; border-color: #f4d594; }
+.online-opening-dialog :is(button,input):focus-visible, .online-opening-launcher:focus-visible { outline: 3px solid #ffe5aa; outline-offset: 3px; }
+.online-opening-dialog .op-header { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid #b9a06b40; }
+.online-opening-dialog .op-title { flex: 1; min-width: 140px; }
+.online-opening-dialog .op-title small { display: block; color: #b7c8b7; font: 12px/1.5 sans-serif; letter-spacing: 2px; }
+.online-opening-dialog .op-clock { color: #ffe0a0; min-width: 75px; font: bold 24px/1.2 monospace; white-space: nowrap; }
+.online-opening-dialog .op-clock.urgent { color: #ffad8f; }
+.online-opening-dialog .op-notice { margin: 16px 0; padding: 10px 14px; border-left: 3px solid #d4bd84; background: #c5b9770d; color: #d3dacb; }
+.online-opening-dialog .op-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.online-opening-dialog .op-selection { margin: 12px 0; color: #ffe5af; font-weight: bold; }
+.online-opening-dialog .op-hint { margin: 8px 0; color: #b8c7b9; font: 12px/1.6 sans-serif; }
+.online-opening-dialog .op-search { display: block; width: 100%; min-height: 44px; margin: 12px 0; padding: 10px 14px; border: 1px solid #a9b59775; border-radius: 8px; background: #0d2021; color: #f9ecd4; font: 15px/1.4 sans-serif; }
+.online-opening-dialog .op-search::placeholder { color: #a0afa5; }
+.online-opening-dialog .op-character-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(120px,1fr)); gap: 12px; max-height: 45dvh; min-height: 180px; padding: 5px; overflow-y: auto; overscroll-behavior: contain; }
+.online-opening-dialog .op-character { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 0; padding: 9px 5px; background: #1c3331; border: 2px solid #82957b65; }
+.online-opening-dialog .op-character.chosen { border-color: #ffe3a1; background: #4b6245; box-shadow: inset 0 0 0 2px #ffe3a1; }
+.online-opening-dialog .op-character > .button { position: relative; flex: 0 0 auto; margin: 0; transform: none; pointer-events: none; }
+.online-opening-dialog .op-character > .op-portrait { display: block; width: 100%; height: 156px; min-height: 156px; border-radius: 6px; background-size: cover; background-position: center top; overflow: hidden; opacity: 1; visibility: visible; }
+.online-opening-dialog .op-portrait > .name { top: 26px; max-height: 124px; }
+.online-opening-dialog .op-portrait > .identity { right: 5px; left: auto; }
+.online-opening-dialog .op-character { justify-content: flex-start; min-height: 220px; }
+.online-opening-dialog .op-character.chosen::after { content: "✓ 已选"; position: absolute; top: 12px; right: 8px; padding: 3px 7px; border-radius: 4px; background: #ffe3a1; color: #173428; font-weight: bold; pointer-events: none; }
+.online-opening-dialog .op-name { display: block; color: #ffedc6; font-weight: bold; }
+.online-opening-dialog .op-skills { display: block; color: #c1cfbc; font-size: 11px; overflow-wrap: anywhere; }
+.online-opening-dialog .op-pages { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 12px 0; }
+.online-opening-dialog .op-preview { max-height: 160px; margin-bottom: 16px; padding: 10px 14px; overflow-y: auto; border-radius: 8px; background: #0e2222; }
+.online-opening-dialog .op-preview summary { color: #f3d89d; cursor: pointer; }
+.online-opening-dialog .op-preview p { margin: 8px 0; color: #d1d9cb; font: 13px/1.6 sans-serif; }
+.online-opening-dialog .op-preview[hidden] { display: none; }
+.online-opening-dialog .op-hand-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; padding: 22px 8px; }
+.online-opening-dialog .op-hand-grid > .button { position: relative; margin: 0; transform: none; }
+.online-opening-dialog .op-footer { position: sticky; bottom: 0; z-index: 3; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; padding: 12px 0; border-top: 1px solid #b9a06b40; background: #152a2a; box-shadow: 0 -8px 12px #152a2a; }
+.online-opening-dialog .op-footer > .op-hint { flex: 1; min-width: 180px; }
+.online-opening-dialog button.op-primary { min-width: 160px; background: #d8bd7d; color: #182c24; font-weight: bold; border-color: #f4d89c; }
+.online-opening-dialog button.op-primary:enabled:hover { background: #f1d797; }
+.online-opening-stage { position: fixed; top: max(12px,env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); z-index: 101; box-sizing: border-box; max-width: 90vw; padding: 9px 18px; border: 1px solid #b9a16b; border-radius: 10px; background: #122b29f5; color: #f4e2b7; font: 14px/1.5 sans-serif; text-align: center; pointer-events: none; }
+.online-opening-launcher { position: fixed; right: 22px; bottom: max(22px,env(safe-area-inset-bottom)); z-index: 110; border-width: 2px; box-shadow: 0 5px 24px #0008; }
+.online-opening-launcher[hidden] { display: none; }
+@media (max-width:650px) { .online-opening-dialog { padding: 14px; width: 96vw; max-width: 96vw; max-height: 96dvh; } .online-opening-dialog .op-character-grid { grid-template-columns: repeat(auto-fill,minmax(104px,1fr)); gap: 8px; } .online-opening-dialog .op-footer > .op-hint { flex-basis: 100%; } .online-opening-dialog h2 { font-size: 24px; } }
 .online-managed-game #control { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; }
 .online-managed-game #control > .control:not(.stayleft) { position: relative; left: auto; transform: none !important; max-width: 100%; white-space: normal; }
 .online-managed-game #control > .control.removing { display: none; }
