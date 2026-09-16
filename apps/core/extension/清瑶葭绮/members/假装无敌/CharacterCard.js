@@ -1263,7 +1263,7 @@ export function createCharacterPack(lib, game, ui, get, ai, _status) {
                             if(players.contains(evt.player.next)&&players.contains(evt.player.previous)) return false;
                             if(evt.player.hp<=0&&(evt.player.next.hp<=0||players.contains(evt.player.next))&&(evt.player.previous.hp<=0||players.contains(evt.player.previous))) return false;
                             var name='ymtianjie_damage',e=event,num=0;
-                            while(e.name){
+                            while(e && e.name){
                                 if(e.name==name) num++;
                                 e=e.parent;
                             }
@@ -1593,7 +1593,7 @@ export function createCharacterPack(lib, game, ui, get, ai, _status) {
                             if(!players.contains(player.next)&&!players.contains(player.previous)) return false;
                             if(player.next.hp>=player.next.maxHp&&player.previous.hp>=player.previous.maxHp) return false;
                             var name='ymtianyu_recover',e=event,num=0;
-                            while(e.name){
+                            while(e && e.name){
                                 if(e.name==name) num++;
                                 e=e.parent;
                             }

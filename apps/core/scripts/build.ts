@@ -4,6 +4,7 @@ import { join, dirname } from "path";
 import { existsSync, readdirSync, writeFileSync } from "fs";
 import { Target, viteStaticCopy } from "vite-plugin-static-copy";
 import generateImportMap from "./vite-plugin-importmap";
+import preserveLegacySteps from "./vite-plugin-legacy-steps";
 import jit from "@noname/jit";
 import type { BuildChannel, BuildInfo } from "../noname/util/meta";
 
@@ -189,7 +190,7 @@ async function buildSelf(target: string | string[], importMap: Record<string, st
 				},
 			},
 		},
-		plugins: [viteStaticCopy({ targets: copies }), generateImportMap(importMap), ...(publicOnlineBuild ? [] : [jit()])],
+		plugins: [preserveLegacySteps(), viteStaticCopy({ targets: copies }), generateImportMap(importMap), ...(publicOnlineBuild ? [] : [jit()])],
 	});
 }
 
@@ -231,7 +232,7 @@ async function buildIndividual(type: string, target: string | string[], input: R
 				},
 			},
 		},
-		plugins: [viteStaticCopy({ targets: copies })],
+		plugins: [preserveLegacySteps(), viteStaticCopy({ targets: copies })],
 	});
 }
 
