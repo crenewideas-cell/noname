@@ -986,7 +986,7 @@ player.loseHp();
                 check:function (card){
         if(get.type(card)!='equip') return 0;
         var player=_status.currentPhase;
-        if(player.num('he',{subtype:get.subtype(card)})>1){
+        if(player.countCards('he',{subtype:get.subtype(card)})>1){
             return 11-ai.get.equipValue(card);
         }
         return 6-ai.get.equipValue(card);
@@ -997,7 +997,7 @@ player.loseHp();
         "step 1"
         if(get.type(cards[0])=='equip'){
             player.chooseTarget('是否弃置一名角色的两张牌？',function(card,player,target){
-                return player!=target&&target.num('he')>0;
+                return player!=target&&target.countCards('he')>0;
             }).set('ai',function(target){
                 var player=_status.event.player;
                 if(ai.get.attitude(player,target)<0){

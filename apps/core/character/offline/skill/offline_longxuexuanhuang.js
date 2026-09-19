@@ -1063,7 +1063,9 @@ const skills = {
 				alllist.removeArray([current.name, current.name1, current.name2]);
 			});
 			const characters = alllist.filter(name => get.characterSurname(name).some(j => j[0] == "曹") && get.character(name, 1) == "wei").randomGets(num);
-			const skills = characters.flatMap(name => get.character(name).skills);
+			// 同名技能只展示一次；否则要求选择的数量可能大于实际可辨认的选项数，
+			// 强制选择弹窗就会一直占用操作流程。
+			const skills = [...new Set(characters.flatMap(name => get.character(name).skills))];
 			if (!characters.length || !skills.length) {
 				player.popup("孩子你都禁了什么将");
 				return;

@@ -5859,7 +5859,7 @@ progress.progress::-webkit-progress-value {
 #arena .player.selection-unavailable { opacity: .45 !important; }
 #arena .player > .selection-target-badge { position: absolute; z-index: 100; top: 5px; left: 5px; right: 5px; width: auto; height: auto; padding: 5px 3px; border: 1px solid #aeffff; border-radius: 6px; color: #092229; background: #75edff; font: 700 14px/1.35 "Microsoft YaHei", sans-serif; text-align: center; text-shadow: none; pointer-events: none; white-space: normal; overflow-wrap: anywhere; transform: none; }
 #arena .player.selection-picked > .selection-target-badge { color: #382700; background: #ffe177; border: 2px solid #fff6ca; }
-.selection-guide { position: absolute; z-index: 70; bottom: 180px; left: 50%; transform: translateX(-50%); box-sizing: border-box; width: min(670px, calc(100% - 36px)); max-height: min(180px, 28vh); overflow: auto; padding: 10px 16px; border: 2px solid #e7cf85; border-radius: 12px; background: #102b35f2; color: #fff5d7; box-shadow: 0 5px 24px #0008; font: 14px/1.5 "Microsoft YaHei", sans-serif; text-shadow: none; text-align: center; pointer-events: none; }
+.selection-guide { position: absolute; z-index: 3; bottom: 180px; left: 50%; transform: translateX(-50%); box-sizing: border-box; width: min(670px, calc(100% - 36px)); max-height: min(180px, 28vh); overflow: auto; padding: 10px 16px; border: 2px solid #e7cf85; border-radius: 12px; background: #102b35f2; color: #fff5d7; box-shadow: 0 5px 24px #0008; font: 14px/1.5 "Microsoft YaHei", sans-serif; text-shadow: none; text-align: center; pointer-events: none; }
 .selection-guide * { position: static; box-sizing: border-box; text-shadow: none; }
 .selection-guide > strong { display: block; font-size: 17px; color: #ffe18a; }
 .selection-guide-steps { display: block; color: #9ee8f7; margin: 5px 0; }
@@ -5870,4 +5870,101 @@ progress.progress::-webkit-progress-value {
 .selection-guide button:focus-visible { outline: 3px solid #ffe177; outline-offset: 2px; }
 .selection-guide [hidden] { display: none !important; }
 @media (max-width: 700px) { .selection-guide { bottom: 155px; padding: 6px 10px; font-size: 12px; max-height: 24vh; } .selection-guide > strong { font-size: 14px; } #arena .player > .selection-target-badge { font-size: 12px; padding: 3px 1px; } }
+
+/* Selection dialogs must end above the action bar on short screens. */
+#arena > .dialog.control-safe-dialog:not(.fullheight):not(.fullwidth) {
+	top: 12px !important;
+	height: calc(200% / 3 - 28px) !important;
+	min-height: 120px;
+}
+
+/* Text choices need an explicit state: many skill rows also carry .text, which
+ * is intentionally excluded from the engine's generic .selected rule. */
+.dialog.textbutton-dialog .textbutton {
+	position: relative;
+	box-sizing: border-box;
+	width: calc(100% - 16px) !important;
+	margin: 7px 8px !important;
+	padding: 12px 46px 12px 14px !important;
+	border: 1px solid #8c795b80;
+	border-radius: 8px;
+	background: linear-gradient(135deg, #2d2923e8, #211f1ce8);
+	cursor: default;
+	transition: border-color 120ms, background 120ms, box-shadow 120ms;
+}
+.dialog.textbutton-dialog .textbutton.selectable {
+	cursor: pointer;
+}
+.dialog.textbutton-dialog .textbutton.selectable::after {
+	content: "选择";
+	position: absolute;
+	top: 50%;
+	right: 12px;
+	transform: translateY(-50%);
+	padding: 2px 7px;
+	border: 1px solid #b99b68;
+	border-radius: 10px;
+	color: #ead6ae;
+	font: 12px/1.4 "Microsoft YaHei", sans-serif;
+}
+.dialog.textbutton-dialog .textbutton.selected {
+	border-color: #f0c86f;
+	background: linear-gradient(135deg, #5a4b31f2, #302a22f2);
+	box-shadow: inset 4px 0 #f0c86f, 0 0 10px #dcae4c55;
+}
+.dialog.textbutton-dialog .textbutton.selected::after {
+	content: "✓ 已选";
+	border-color: #ffe19a;
+	background: #d4aa58;
+	color: #291d0e;
+	font-weight: 700;
+}
+
+/* Styled numeric selector used by chooseNumbers. */
+.dialog.number-choice-dialog .number-choice-field {
+	position: relative;
+	display: block;
+	box-sizing: border-box;
+	width: min(220px, calc(100% - 40px));
+	height: 46px;
+	margin: 8px auto 14px;
+}
+.dialog.number-choice-dialog .number-choice-select {
+	position: relative;
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	height: 46px;
+	margin: 0;
+	padding: 7px 46px 7px 16px;
+	border: 1px solid #d4ae68;
+	border-radius: 8px;
+	outline: none;
+	appearance: none;
+	-webkit-appearance: none;
+	background: linear-gradient(#554631, #332a22);
+	box-shadow: inset 0 1px #fff1bf1f, 0 3px 8px #0005;
+	color: #fff0cb;
+	font: 600 18px/1.4 "Microsoft YaHei", "PingFang SC", sans-serif;
+	text-align: center;
+	text-align-last: center;
+	cursor: pointer;
+}
+.dialog.number-choice-dialog .number-choice-select:focus-visible {
+	border-color: #ffe09a;
+	box-shadow: 0 0 0 3px #e4b85d55, inset 0 1px #fff1bf1f;
+}
+.dialog.number-choice-dialog .number-choice-select option {
+	background: #332a22;
+	color: #fff0cb;
+}
+.dialog.number-choice-dialog .number-choice-arrow {
+	position: absolute;
+	top: 50%;
+	right: 14px;
+	transform: translateY(-58%);
+	color: #f2cf83;
+	font: 700 22px/1 sans-serif;
+	pointer-events: none;
+}
 

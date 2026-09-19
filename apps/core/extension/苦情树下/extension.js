@@ -3,7 +3,18 @@ export const type = "extension";
 export default function(lib,game,ui,get,ai,_status){return {name:"苦情树下",content:function(config,pack){
     
 },precontent:function(){
-    
+    //兼容修复：本扩展的技能AI代码移植自太阳神三国杀，引用了其全局助手 jlsg（needKongcheng），
+    //但移植时未带上该助手定义，且技能step代码经引擎编译后只能访问全局变量，
+    //导致AI评估时必报 "jlsg is not defined"。这里在全局补上等效实现。
+    if (typeof window.jlsg === "undefined") {
+        window.jlsg = {
+            //是否需要空城：拥有依赖空手牌状态获益的技能（如空城）时返回true
+            needKongcheng: function (player, check) {
+                if (!player) return false;
+                return player.hasSkill("kongcheng");
+            },
+        };
+    }
 },help:{},config:{},package:{
     character:{
         character:{
@@ -470,7 +481,7 @@ player.gain(result.card);
             "摸一张牌",
             "额外出牌阶段"
           ], true).set('ai', function (event, player) {
-            if (player.num('h') > 2) return 1;
+            if (player.countCards('h') > 2) return 1;
             if (jlsg.needKongcheng(player, true)) return 1;
             return 0;
           });
@@ -478,7 +489,7 @@ player.gain(result.card);
           event.finish();
         }
         'step 2'
-        player.logSkill("jlsg_wuqin");
+        player.logSkill("道法符");
         if (result.index == 0) {
           player.draw(1);
         } else {

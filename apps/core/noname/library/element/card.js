@@ -345,7 +345,8 @@ export class Card extends HTMLDivElement {
 	 * @param {[string, number, string, string]} card
 	 */
 	$init(card) {
-		var info = lib.card[card[2]];
+		//牌名未注册到lib.card时（如扩展虚拟牌），用空对象兜底防止读取属性报错
+		var info = lib.card[card[2]] || {};
 		var cardnum = card[1] || "";
 		if (parseInt(cardnum) == cardnum) {
 			cardnum = parseInt(cardnum);

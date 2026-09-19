@@ -144,6 +144,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 				_status.imchoosing = true;
 				event.settleed = false;
 				event.dialog = ui.create.dialog(event.prompt || "请调整以下数值", "forcebutton", "hidden");
+				event.dialog.classList.add("number-choice-dialog", "control-safe-dialog");
 				if (event.prompt2) {
 					event.dialog.addText(event.prompt2);
 				}
@@ -231,12 +232,12 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 
 				for (const [index, item] of event.list.entries()) {
 					event.dialog.addText(item.prompt || "选择一个数值");
+					const field = document.createElement("label");
+					field.className = "number-choice-field";
 					const select = document.createElement("select");
 					select.id = `select${index}`;
-					select.classList.add("add-setting");
-					select.style.margin = "0";
-					select.style.width = "30%";
-					select.style.position = "relative";
+					select.classList.add("add-setting", "number-choice-select");
+					select.setAttribute("aria-label", item.prompt || `第${index + 1}项数值`);
 					select.onchange = () => {
 						event.numbers[parseInt(select.id.slice(6))] = parseInt(select.value);
 						event.dialog.content.querySelectorAll(`[id ^= 'select']`).forEach(select => optionUpdate(select));
@@ -255,7 +256,12 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 						}
 					};
 					optionUpdate(select);
-					event.dialog.content.appendChild(select);
+					const arrow = document.createElement("span");
+					arrow.className = "number-choice-arrow";
+					arrow.setAttribute("aria-hidden", "true");
+					arrow.textContent = "⌄";
+					field.append(select, arrow);
+					event.dialog.content.appendChild(field);
 				}
 				event.dialog.add(" <br> ");
 				event.dialog.open();
@@ -7431,6 +7437,9 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 				}
 				event.closeDialog = true;
 			}
+			if (event.dialog?.classList.contains("textbutton-dialog")) {
+				event.dialog.classList.add("textbutton-choice-dialog", "control-safe-dialog");
+			}
 			if (event.dialog == undefined) {
 				event.dialog = ui.dialog;
 			}
@@ -8234,6 +8243,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 						event.dialog.open();
 					} else if (event.choiceList) {
 						event.dialog = ui.create.dialog(event.prompt || "选择一项", "hidden");
+						event.dialog.classList.add("choice-list-dialog", "control-safe-dialog");
 						event.dialog.forcebutton = true;
 						event.dialog.open();
 						for (const [i, choice] of event.choiceList.entries()) {

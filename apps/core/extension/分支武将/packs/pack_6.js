@@ -6170,7 +6170,7 @@ return {
 						], true).set('ai', function (event, player) {
 							if (get.effect(player, { name: 'losehp' }, player, player) >= 0) return 1;
 							if (player.storage.baonu > 6) return 0;
-							if (player.hp + player.num('h', 'tao') > 3) return 1;
+							if (player.hp + player.countCards('h', 'tao') > 3) return 1;
 							return 0;
 						});
 					}

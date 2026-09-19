@@ -188,7 +188,7 @@ export class Get {
 		let str = "",
 			name = node.name;
 		if (lib.translate[name + "_info"]) {
-			if (lib.card[name].type && lib.translate[lib.card[name].type]) {
+			if (lib.card[name] && lib.card[name].type && lib.translate[lib.card[name].type]) {
 				str += "" + get.translation(lib.card[name].type) + "牌|";
 			}
 			if (get.subtype(name)) {
@@ -5839,7 +5839,7 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 						if (typeinfo) {
 							uiintro.add('<div class="text center">' + typeinfo + "</div>");
 						}
-						if (lib.card[name].unique && lib.card[name].type == "equip") {
+						if (lib.card[name] && lib.card[name].unique && lib.card[name].type == "equip") {
 							if (lib.cardPile.guozhan && lib.cardPack.guozhan.includes(name)) {
 								uiintro.add('<div class="text center">专属装备</div>').style.marginTop = "-5px";
 							} else {
@@ -5864,7 +5864,7 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 							}
 						}
 					}
-					if (lib.card[name].cardPrompt) {
+					if (lib.card[name] && lib.card[name].cardPrompt) {
 						var str = lib.card[name].cardPrompt(node.link || node, get.owner(node)),
 							placetext = uiintro.add('<div class="text" style="display:inline">' + str + "</div>");
 						if (!str.startsWith('<div class="skill"')) {

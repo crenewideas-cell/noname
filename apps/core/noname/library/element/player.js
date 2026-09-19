@@ -12709,7 +12709,8 @@ export class Player extends HTMLDivElement {
 		const range = cards.reduce((range, card) => {
 			let newRange = false;
 			const info = get.info(card, false);
-			if (info.distance) {
+			//get.info(card,false)可能返回undefined（牌名未注册到lib.card，如扩展虚拟牌）
+			if (info && info.distance) {
 				//如果存在attackRange 则通过attackRange动态获取攻击范围
 				if (typeof info.distance.attackRange == "function") {
 					newRange = info.distance.attackRange(card, player);
@@ -12739,7 +12740,8 @@ export class Player extends HTMLDivElement {
 			});
 		});
 		for (var i = 0; i < equips.length; i++) {
-			var info = get.info(equips[i]).distance;
+			//get.info可能返回undefined（牌名未注册到lib.card）
+			var info = get.info(equips[i])?.distance;
 			if (!info) {
 				continue;
 			}
@@ -12759,7 +12761,8 @@ export class Player extends HTMLDivElement {
 			});
 		});
 		for (var i = 0; i < equips.length; i++) {
-			var info = get.info(equips[i]).distance;
+			//get.info可能返回undefined（牌名未注册到lib.card）
+			var info = get.info(equips[i])?.distance;
 			if (!info) {
 				continue;
 			}

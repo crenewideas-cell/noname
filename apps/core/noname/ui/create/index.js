@@ -3668,6 +3668,7 @@ export class Create {
 		return buttons;
 	}
 	textbuttons(list, dialog, noclick) {
+		dialog.classList.add("textbutton-dialog");
 		for (var item of list) {
 			var str, link;
 			if (Array.isArray(item)) {
@@ -3681,12 +3682,18 @@ export class Create {
 				str = '<div class="popup text textbutton">' + str + "</div>";
 			}
 			var next = dialog.add(str);
+			const button = next.firstChild;
+			button.classList.add("textbutton");
 			if (!noclick) {
-				next.firstChild.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.button);
+				button.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.button);
+			} else {
+				button.classList.add("noclick");
 			}
-			next.firstChild.link = link;
-			Object.setPrototypeOf(next, lib.element.Button.prototype);
-			dialog.buttons.add(next.firstChild);
+			button.link = link;
+			Object.setPrototypeOf(button, lib.element.Button.prototype);
+			if (!button.buttonid) button.buttonid = get.id();
+			button._args = [item, "textbutton", dialog, noclick, button];
+			dialog.buttons.add(button);
 		}
 	}
 	player(position, noclick) {

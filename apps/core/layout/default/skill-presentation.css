@@ -157,6 +157,7 @@ html[data-presentation="shousha"] #control > .control > div:focus-visible {
 /* Skill readers retain every paragraph in one scrollable pane in both themes. */
 #window > #nodeintro.dialog.skill-reading-panel {
 	box-sizing: border-box;
+	z-index: 90;
 	max-width: none;
 	max-height: none;
 	margin: 0;

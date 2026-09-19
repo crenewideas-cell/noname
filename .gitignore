@@ -31,6 +31,9 @@ apps/electron/Home/
 # versioned copies live under apps/core/extension/.
 扩展包/
 
+# Cleanup staging area (files moved out of the project root)
+temp/
+
 # Local environment and temporary files
 .env
 .env.local

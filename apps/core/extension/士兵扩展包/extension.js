@@ -3,7 +3,23 @@ export const type = "extension";
 export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展包",content:function (config,pack){
     
 },precontent:function (){
-    
+    //兼容修复：本扩展的技能AI代码移植自太阳神三国杀，引用了其全局助手 sgs（isFriend/needKongcheng），
+    //但移植时未带上该助手定义，且技能step代码经引擎编译后只能访问全局变量，
+    //触发相关AI评估时必报 "sgs is not defined"。这里在全局补上等效实现。
+    if (typeof window.sgs === "undefined") {
+        window.sgs = {
+            //是否友方：态度值大于0视为友方
+            isFriend: function (player, target) {
+                if (!player || !target) return false;
+                return get.attitude(player, target) > 0;
+            },
+            //是否需要空城：拥有依赖空手牌状态获益的技能（如空城）时返回true
+            needKongcheng: function (player, check) {
+                if (!player) return false;
+                return player.hasSkill("kongcheng");
+            },
+        };
+    }
 },help:{},config:{},package:{
     character:{
         character:{
@@ -253,7 +269,7 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
                 enable:"phaseUse",
                 usable:1,
                 filter:function (event,player){
-        return player.num('h')>0;
+        return player.countCards('h')>0;
     },
                 selectTarget:[1,4],
                 filterTarget:function (card,player,target){
@@ -340,11 +356,11 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
                 enable:"phaseUse",
                 usable:1,
                 filter:function (event,player){
-        return player.num('h')>0;
+        return player.countCards('h')>0;
     },
                 check:function (){return 1;},
                 content:function (){
-        player.draw(player.num('h'));
+        player.draw(player.countCards('h'));
         player.damage(1);
     },
                 ai:{
@@ -379,7 +395,7 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
                 },
                 forced:true,
                 filter:function (event,player){
-        return event.player!=player&&event.player.num('h')>=player.num('h');
+        return event.player!=player&&event.player.countCards('h')>=player.countCards('h');
     },
                 content:function (){
         "step 0"
@@ -471,7 +487,7 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
                     cards:[{"node":{"image":{},"info":{},"name":{},"name2":{},"background":{},"intro":{},"range":{}},"storage":{},"vanishtag":[],"_uncheck":[],"suit":"diamond","number":1,"name":"zhuge","cardid":"7707239385","_transform":"translateX(112px)","clone":{"name":"zhuge","suit":"diamond","number":1,"node":{"name":{},"info":{},"intro":{},"background":{},"image":{}},"_transitionEnded":true,"timeout":5658},"timeout":5641,"original":"h"}],
                 },
                 viewAsFilter:function (player){
-        if(!player.num('he')) return false;
+        if(!player.countCards('he')) return false;
     },
                 prompt:"将一张手牌当作无中生有使用",
                 check:function (card){return 6-ai.get.value(card)},
@@ -499,7 +515,7 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
                 enable:"phaseUse",
                 usable:2,
                 filter:function (event,player){
-        return player.num('h')>0;
+        return player.countCards('h')>0;
     },
                 filterCard:true,
                 check:function (card){
@@ -576,21 +592,21 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
                 enable:"phaseUse",
                 usable:1,
                 filterTarget:function (card,player,target){
-        return player!=target&&target.num('he')>0;
+        return player!=target&&target.countCards('he')>0;
     },
                 filterCard:true,
                 position:"he",
                 content:function (){
        player.discard(player.get('he'));
        player.gain(target.get('he'));
-       target.$give(target.num('he'),player);
+       target.$give(target.countCards('he'),player);
     },
                 ai:{
                     threaten:4.8,
                     order:1,
                     result:{
                         target:function (player,target){
-                if(target.num('h')>target.hp) return -100;
+                if(target.countCards('h')>target.hp) return -100;
                 return -2;
             },
                     },
@@ -604,7 +620,7 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
                 usable:1,
                 selectTarget:[1,3],
                 filter:function (event,player){
-        return player.num('he',{subtype:'equip1'});
+        return player.countCards('he',{subtype:'equip1'});
     },
                 filterCard:function (card){
         return get.subtype(card)=='equip1';
@@ -633,7 +649,7 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
                 filterCard:true,
                 position:"he",
                 filterTarget:function (card,player,target){
-        return player!=target&&target.num('he')>0;
+        return player!=target&&target.countCards('he')>0;
     },
                 check:function (card){
         return 6-ai.get.value(card);
@@ -739,12 +755,12 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
         if(get.distance(player,trigger.player,'attack')<=8){
             player.chooseBool(get.prompt('护卫',trigger.player)).ai=function(){
                 if(sgs.isFriend(player,trigger.player)){
-                    if(sgs.needKongcheng(trigger.player)&&trigger.player.num('h')==1) return true;
+                    if(sgs.needKongcheng(trigger.player)&&trigger.player.countCards('h')==1) return true;
                     if(ai.get.effect(trigger.target,{name:'sha'},trigger.player)<0) return true;
                     return false;
                 }
                 else{
-                    if(sgs.needKongcheng(trigger.player)&&trigger.player.num('h')==1) return false;
+                    if(sgs.needKongcheng(trigger.player)&&trigger.player.countCards('h')==1) return false;
                     if(ai.get.effect(trigger.target,{name:'sha'},trigger.player)<0) return false;
                     return true;
                 }
@@ -754,16 +770,16 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
         else{
             player.chooseToDiscard(get.prompt('护卫',trigger.player)).ai=function(card){
                 if(sgs.isFriend(player,trigger.player)){
-                    if(sgs.needKongcheng(trigger.player)&&trigger.player.num('h')==1) return 6-ai.get.value(card);
+                    if(sgs.needKongcheng(trigger.player)&&trigger.player.countCards('h')==1) return 6-ai.get.value(card);
                     if(ai.get.effect(trigger.target,{name:'sha'},trigger.player)<0) return 6-ai.get.value(card);
                     return 0;
                 }
                 else{
-                    if(trigger.player.num('h')&&!sgs.isFriend(player,trigger.target)) return 0;
+                    if(trigger.player.countCards('h')&&!sgs.isFriend(player,trigger.target)) return 0;
                     if(sgs.isFriend(player,trigger.target)) return 6-ai.get.value(card);
-                    if(sgs.needKongcheng(trigger.player)&&trigger.player.num('h')==1) return 0;
+                    if(sgs.needKongcheng(trigger.player)&&trigger.player.countCards('h')==1) return 0;
                     if(ai.get.effect(trigger.target,{name:'sha'},trigger.player)<0) return 0;
-                    if(sgs.needKongcheng(player)&&player.num('h')==1) return 10-ai.get.value(card);
+                    if(sgs.needKongcheng(player)&&player.countCards('h')==1) return 10-ai.get.value(card);
                     return 4-ai.get.value(card);
                 }
                 return 0;
@@ -772,7 +788,7 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
         'step 1'
         if(result.bool){
             player.logSkill('护卫',trigger.player);
-            if(trigger.player.num('h')){
+            if(trigger.player.countCards('h')){
                 trigger.player.chooseControl('选项一','选项二').set('prompt','护卫<br><br><div class="text">选项一：令'+get.translation(player)+'获得你一张手牌</div><br><div class="text">选项二：即将对'+get.translation(trigger.target)+'生效的杀无效</div>').ai=function(){
                     if(ai.get.effect(trigger.target,{name:'sha'},trigger.player)<0) return '选项二';
                     return '选项一';
@@ -823,8 +839,8 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
         "step 2"
         if(event.targets2.length){
             var cur=event.targets2.shift();
-            if(cur&&cur.num('he')){
-                if(cur.num('e')){
+            if(cur&&cur.countCards('he')){
+                if(cur.countCards('e')){
                     cur.discard(cur.get('e'));
                 }
                 cur.chooseToDiscard('h',true,1);
@@ -919,8 +935,8 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
                     },
                     result:{
                         target:function (player,target){
-                if(target.num('j','lebu')) return 1;
-                return Math.max(1,2-target.num('h')/10);
+                if(target.countCards('j','lebu')) return 1;
+                return Math.max(1,2-target.countCards('h')/10);
             },
                     },
                 },
@@ -956,7 +972,7 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
                 enable:"phaseUse",
                 usable:1,
                 filterTarget:function (card,player,target){
-        return player!=target&&target.num('he')>0;
+        return player!=target&&target.countCards('he')>0;
     },
                 selectTarget:[1,2],
                 content:function (){
@@ -1082,7 +1098,7 @@ export default function(lib,game,ui,get,ai,_status){return {name:"士兵扩展�
                 }
                 if(notarget) return false;
                 if(name=='phaseJudgeBefore'){
-                    return player.num('j')>0;
+                    return player.countCards('j')>0;
                 }
                 return true;
             },

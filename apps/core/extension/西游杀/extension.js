@@ -53,8 +53,8 @@ export default {name:"西游杀",content:function (config,pack){
     },
                 ai:{
                     wuxie:function (target,card,player,viewer){
-            if(ai.get.attitude(viewer,target)>0&&target.num('h','shan')){
-                if(!target.num('h')||target.hp==1||Math.random()<0.7) return 0;
+            if(ai.get.attitude(viewer,target)>0&&target.countCards('h','shan')){
+                if(!target.countCards('h')||target.hp==1||Math.random()<0.7) return 0;
             }
         },
                     basic:{
@@ -68,7 +68,7 @@ export default {name:"西游杀",content:function (config,pack){
                     if(game.players[i].ai.shown==0) num++;
                 }
                 if(num>1) return 0;
-                var nh=target.num('h');
+                var nh=target.countCards('h');
                 if(get.mode()=='identity'){
                     if(target.isZhu&&nh<=2&&target.hp<=1) return -100;
                 }
@@ -195,7 +195,7 @@ export default {name:"西游杀",content:function (config,pack){
                 },
                 direct:true,
                 filter:function (event,player){
-        return player.num('h',{suit:'diamond'})>0&&event.num>0;
+        return player.countCards('h',{suit:'diamond'})>0&&event.num>0;
     },
                 content:function (){
         "step 0"
@@ -239,7 +239,7 @@ export default {name:"西游杀",content:function (config,pack){
                     number:12,
                 },
                 viewAsFilter:function (player){
-                if(!player.num('he',{suit:'spade'})) return false;
+                if(!player.countCards('he',{suit:'spade'})) return false;
                 },
                 prompt:"将一张♠牌当无中生有使用",
                 check:function (card){return 4-ai.get.value(card)},
@@ -265,7 +265,7 @@ export default {name:"西游杀",content:function (config,pack){
                   return get.suit(card)=='spade';
                 },
                 viewAsFilter:function (player){
-                  return player.num('h',{suit:'spade'})>0;
+                  return player.countCards('h',{suit:'spade'})>0;
                 },
                 viewAs:{
                     name:"wuxie",
@@ -319,7 +319,7 @@ export default {name:"西游杀",content:function (config,pack){
                     number:5,
                 },
                 viewAsFilter:function (player){
-        if(!player.num('he',{suit:'spade'})) return false;
+        if(!player.countCards('he',{suit:'spade'})) return false;
     },
                 prompt:"弃置一张♠牌，令所有玩家出闪",
                 check:function (card){return 8-ai.get.value(card)},
@@ -342,8 +342,8 @@ export default {name:"西游杀",content:function (config,pack){
                         multineg:1,
                     },
                     wuxie:function (target,card,player,viewer){
-            if(ai.get.attitude(viewer,target)>0&&target.num('h','shan')){
-                if(!target.num('h')||target.hp==1||Math.random()<0.7) return 0;
+            if(ai.get.attitude(viewer,target)>0&&target.countCards('h','shan')){
+                if(!target.countCards('h')||target.hp==1||Math.random()<0.7) return 0;
             }
         },
                 },
@@ -373,11 +373,11 @@ export default {name:"西游杀",content:function (config,pack){
                 direct:true,
                 priority:5,
                 filter:function (event,player){
-        if(player.num('he')<=1) return false;
+        if(player.countCards('he')<=1) return false;
         return true;
     },
                 filterCard:function (card){
-       return(player.num('he'));
+       return(player.countCards('he'));
     },
                 filterTarget:function (card,player,target){
         if(player==target) return false;
@@ -407,7 +407,7 @@ export default {name:"西游杀",content:function (config,pack){
                 selectCard:1,
                 check:function (card){
         var player=get.owner(card);
-        if(player.num('h')>player.hp)
+        if(player.countCards('h')>player.hp)
             return 8-ai.get.value(card)
         if(player.hp<player.maxHp)
             return 6-ai.get.value(card)
@@ -427,7 +427,7 @@ export default {name:"西游杀",content:function (config,pack){
                     result:{
                         player:function (player){
                 if(player.hp<player.maxHp) return 4;
-                if(player.num('h')>player.hp) return 0
+                if(player.countCards('h')>player.hp) return 0
                 return -1;
             },
                         target:4,
@@ -470,7 +470,7 @@ export default {name:"西游杀",content:function (config,pack){
                 usable:1,
                 filterTarget:function (card,player,target){
         if(get.distance(player,target)>=2) return false;
-        if(target.num('h')<=0) return false;
+        if(target.countCards('h')<=0) return false;
         return true;
     },
                 content:function (){
@@ -482,7 +482,7 @@ export default {name:"西游杀",content:function (config,pack){
                     result:{
                         target:-1,
                         player:function (player,target){
-                if(target.num('h')==0) return 0;
+                if(target.countCards('h')==0) return 0;
             },
                     },
                 },

@@ -54,7 +54,7 @@ export class Is {
 				return true;
 			}
 			const info = get.info(card, player),
-				distance = info.distance;
+				distance = info && info.distance;
 			if (!distance) {
 				return false;
 			}
@@ -80,7 +80,7 @@ export class Is {
 				return true;
 			}
 			const info = get.info(card, player),
-				distance = info.distance;
+				distance = info && info.distance;
 			if (!distance) {
 				return false;
 			}

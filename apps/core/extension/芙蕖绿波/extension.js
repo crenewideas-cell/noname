@@ -511,7 +511,7 @@ export default function(lib,game,ui,get,ai,_status){return {name:"芙蕖绿波",
                 enable:"phaseUse",
                 usable:1,
                 filter:function (event,player){
-        return player.num("he")>0;
+        return player.countCards("he")>0;
     },
                 filterTarget:function (card,player,target){
         return player!=target;

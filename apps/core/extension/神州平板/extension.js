@@ -971,7 +971,7 @@ else{
                             trigger.player.discard(trigger.player.get('h'));
                             trigger.player.draw(num);
                             trigger.player.showHandcards();
-                            var num2=trigger.player.num('h',function(card){
+                            var num2=trigger.player.countCards('h',function(card){
                                 return get.type(card)=='basic';
                             });
                             trigger.player.discard(trigger.player.get('h',function(card){

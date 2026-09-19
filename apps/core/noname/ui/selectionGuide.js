@@ -5,6 +5,12 @@ let resizeObserver, controlObserver, layoutFrame;
 const marked = new Set();
 const plain = value => String(value ?? "").replace(/<[^>]*>/g, "");
 
+function formatRange(min, max) {
+	if (max < 0) return "全部";
+	if (!Number.isFinite(max)) return min > 0 ? `至少${min}` : "不限";
+	return min === max ? String(max) : `${min}～${max}`;
+}
+
 export function clearSelectionGuide() {
     resizeObserver?.disconnect(); controlObserver?.disconnect(); cancelAnimationFrame(layoutFrame);
     window.removeEventListener("resize", scheduleLayout);
@@ -90,7 +96,7 @@ export function updateSelectionGuide(event, ok) {
         }
         window.addEventListener("resize", scheduleLayout);
     }
-    const stageText = counts.map((item, index) => `${index + 1}. ${item.label} ${item.count}/${item.max < 0 ? "全部" : item.min === item.max ? item.max : item.min + "～" + item.max}`).join(" → ") + (ordered ? " · 按编号依次选人" : "");
+    const stageText = counts.map((item, index) => `${index + 1}. ${item.label} ${item.count}/${formatRange(item.min, item.max)}`).join(" → ") + (ordered ? " · 按编号依次选人" : "");
     if (steps.textContent !== stageText) steps.textContent = stageText;
     const role = (index, target) => roles[Math.min(index, roles.length - 1)] ||
         (target && typeof prompts === "function" ? plain(prompts(target)) : "") || "目标";
