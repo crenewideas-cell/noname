@@ -106,7 +106,7 @@ test("all injected step locals retain their names across scopes and nested callb
   assert.ok(event.trace.every((value: any) => value === event.seed));
 });
 
-for (const path of ["apps/core/extension/清瑶葭绮/members/假装无敌/CharacterCard.js", "apps/core/extension/分支武将/packs/pack_36.js"]) {
+for (const path of ["apps/core/extension/collections/清瑶葭绮/members/假装无敌/CharacterCard.js", "apps/core/extension/collections/分支武将/packs/pack_36.js"]) {
   test(`${path}: damage/recover filters stop at missing parents and retain the recursion limit`, () => {
     const code = read(path);
     for (const [skill, parentName] of [["ymtianjie", "damage"], ["ymtianyu", "recover"]]) {

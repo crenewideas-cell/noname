@@ -25,7 +25,7 @@ export const isRetiredExtension = (name: string) => retiredExtensions.has(name);
 // Compatibility export for the first APK cleanup migration and its tests.
 export const isRetiredApkExtension = isRetiredExtension;
 export const isValidExtensionName = (name: unknown): name is string => typeof name === "string" && !!name.trim() &&
-	!/[\\/\0]/.test(name) && name !== "." && name !== ".." && !isRetiredExtension(name) && !privateOptionNames.has(name);
+	!/[\\/\0]/.test(name) && name !== "." && name !== ".." && !["characters", "packs", "collections", "ui", "imports", "archived"].includes(name) && !isRetiredExtension(name) && !privateOptionNames.has(name);
 
 /** Register this repository's installed packages once, preserving later user choices. */
 export async function registerOrganizedExtensions(config: { get: (key: string) => any; has: (key: string) => boolean }, save: (key: string, value: any) => Promise<unknown>, savedKeys: string[] = [], availableNames?: string[]) {
@@ -94,7 +94,9 @@ export async function registerOrganizedExtensions(config: { get: (key: string) =
 	// Restore only manifest/registration identities; new directories are verified
 	// by getExtensionList's file discovery or registered through explicit import.
 	const names = new Set([...bundled, ...installed.map(item => item.name), ...registered]);
+	const deleted = new Set<string>(config.get("deleted_extensions") || []);
 	for (const name of names) {
+		if (deleted.has(name)) continue;
 		// Mobile extensions may be supplied later through the external resource pack.
 		if (availableNames && !availableNames.includes(name)) continue;
 		if (registered.has(name)) {

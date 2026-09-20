@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { installCharacterUI, playOptionalAudio } from "../../apps/core/extension/清瑶葭绮/members/假装无敌/compatibility.js";
-import create from "../../apps/core/extension/清瑶葭绮/members/假装无敌/characters.js";
+import { installCharacterUI, playOptionalAudio } from "../../apps/core/extension/collections/清瑶葭绮/members/假装无敌/compatibility.js";
+import create from "../../apps/core/extension/collections/清瑶葭绮/members/假装无敌/characters.js";
 
 test("Qingyao installs its selection helper through the active lifecycle", () => {
 	const lib: any = { config: {}, group: { add() {} }, groupnature: {}, translate: {}, characterPack: {} };

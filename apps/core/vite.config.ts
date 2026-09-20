@@ -1,5 +1,6 @@
-import { defineConfig } from "vite";
+import { defineConfig, type PluginOption } from "vite";
 import vue from "@vitejs/plugin-vue";
+import { classifiedExtensionsPlugin } from "../../scripts/extension-layout.mjs";
 
 const port = {
 	client: 8081,
@@ -29,7 +30,7 @@ export default defineConfig({
 			noname: "/noname.js",
 		},
 	},
-	plugins: [vue()],
+	plugins: [classifiedExtensionsPlugin(import.meta.dirname) as PluginOption, vue()],
 	// Discover common runtime dependencies before the first browser request, rather
 	// than restarting dependency optimization as dynamic packs arrive.
 	optimizeDeps: {

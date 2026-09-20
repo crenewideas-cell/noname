@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
+import { resolveExtensionPath } from "./extension-layout.mjs";
+import { extensionCategories } from "../packages/fs/src/extensionLayout.mjs";
 import { Archive, hashFile, safePath, within, digest } from "./extension-organizer/archive.js";
 import { parseSource } from "./extension-organizer/analyze.js";
 
@@ -25,8 +27,9 @@ async function saveRegistry() {
 
 for (const product of manifest.products) {
 	safePath(product.name);
+	if (Object.hasOwn(extensionCategories, product.name)) throw new Error(`扩展名与分类目录冲突：${product.name}`);
 	if (/[\\/]/.test(product.name) || !/^[a-f0-9]{64}\.zip$/.test(product.file)) throw new Error("Invalid manifest path");
-	const destination = path.join(target, product.name);
+	const destination = resolveExtensionPath(path.dirname(target), `extension/${product.name}`, true);
 	if (!within(target, destination)) throw new Error("Target outside extension directory");
 	const archivePath = path.join(input, "packages", product.file);
 	if ((await hashFile(archivePath)) !== product.hash) throw new Error(`ZIP 校验失败：${product.name}`);
@@ -66,6 +69,7 @@ for (const product of manifest.products) {
 				hashes[name] = await hashFile(output);
 			}
 		}
+		await fs.mkdir(path.dirname(destination), { recursive: true });
 		await fs.rename(staging, destination);
 		registry.push({ name: product.name, hash: product.hash, characters: product.characters, files: hashes });
 		// Checkpoint every completed installation so an interrupted run is resumable.

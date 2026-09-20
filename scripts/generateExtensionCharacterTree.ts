@@ -2,6 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
+import { extensionEntries, resolveExtensionPath } from "./extension-layout.mjs";
 import groups from "../apps/core/game/extension-groups.json";
 import registry from "../apps/core/game/organized-extensions.json";
 import restructure from "../apps/core/game/extension-restructure.json";
@@ -67,8 +68,8 @@ function inspect(source: string, filename: string, ids: Set<string>, stringValue
   visit(ast);
 }
 
-const dirs = (await fs.readdir(extensionRoot, { withFileTypes: true }))
-  .filter(entry => entry.isDirectory() && !excluded.has(entry.name))
+const dirs = extensionEntries(extensionRoot)
+  .filter(entry => !excluded.has(entry.name))
   .map(entry => entry.name)
   .sort((a, b) => a.localeCompare(b, "zh-CN"));
 
@@ -79,11 +80,12 @@ for (const name of dirs) {
   const translations = new Map<string, string>();
   const stringValues: [string, string, number][] = [];
   const origins: [string, number][] = [];
-  const files = await sourceFiles(path.join(extensionRoot, name), deepScan.has(name));
+  const directory = resolveExtensionPath(path.dirname(extensionRoot), `extension/${name}`);
+  const files = await sourceFiles(directory, deepScan.has(name));
   for (const file of files) {
     try {
       const before = ids.size;
-      inspect(await fs.readFile(path.join(extensionRoot, name, file), "utf8"), file, ids, stringValues);
+      inspect(await fs.readFile(path.join(directory, file), "utf8"), file, ids, stringValues);
       if (ids.size > before) origins.push([file.replaceAll("\\", "/"), ids.size - before]);
     }
     catch (error) { console.error(`Skipped unparsable ${name}/${file}:`, error); }
@@ -95,7 +97,7 @@ for (const name of dirs) {
       priorities.set(key, priority);
     }
   }
-  records.push({ name, ids: [...ids], translations, files, origins, registered: !!row, runtimeCount: row?.characters?.length });
+  records.push({ name, directory: path.relative(path.resolve('.'), directory).replaceAll('\\', '/'), ids: [...ids], translations, files, origins, registered: !!row, runtimeCount: row?.characters?.length });
 }
 
 const characterPacks = records.filter(record => record.ids.length);
@@ -131,7 +133,7 @@ characterPacks.forEach((record, packageIndex) => {
   const child = lastPackage ? "│     " : "│  │  ";
   let countLabel = `${record.ids.length} 个定义`;
   if (record.name === "手杀武将" && record.runtimeCount !== record.ids.length) countLabel += `，登记启用清单 ${record.runtimeCount} 个`;
-  output.push(`${branch} apps/core/extension/${record.name}/（${countLabel}）`);
+  output.push(`${branch} ${record.directory}/（${countLabel}）`);
   record.ids.forEach((id, index) => {
     const isLast = index === record.ids.length - 1;
     const pending = record.name === "手杀武将" && ["s_weiyan", "s_weiyan2", "s_weiyan3", "hy_zhouyu", "hy_zhouyu2", "hy_zhouyu3", "hy_xiaoqiao"].includes(id) ? "【待兼容，未加载】" : "";
@@ -140,7 +142,7 @@ characterPacks.forEach((record, packageIndex) => {
 });
 output.push(`└─ 无静态武将定义（${nonCharacterPacks.length}）`);
 nonCharacterPacks.forEach((record, index) => {
-  output.push(`   ${index === nonCharacterPacks.length - 1 ? "└─" : "├─"} apps/core/extension/${record.name}/`);
+  output.push(`   ${index === nonCharacterPacks.length - 1 ? "└─" : "├─"} ${record.directory}/`);
 });
 output.push("```", "", "### 使用建议", "", "- 优先合并“含武将定义”里的小包；先用 ID 检查与目标包的冲突，再迁移图片、音频、技能和翻译。", "- “无静态武将定义”表示扫描不到独立武将字典，不代表目录可以直接删除；它可能是玩法、卡牌、技能补丁或工具。", "- 手杀武将的 7 个势魏延相关定义只是物理收纳，仍处于待兼容状态，不应按可玩武将计算。", "- 清瑶葭绮中的“清瑶”会按真实 ID 列出；它是合并包内武将，不是一级扩展。", "<!-- GENERATED:EXTENSION_CHARACTER_TREE:END -->", "");
 const generated = output.join("\n");

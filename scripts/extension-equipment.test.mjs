@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
 
-const source = readFileSync(new URL("../apps/core/extension/絶伦逸羣/extension.js", import.meta.url), "utf8");
+const source = readFileSync(new URL("../apps/core/extension/packs/絶伦逸羣/extension.js", import.meta.url), "utf8");
 const factory = vm.runInNewContext(source.replace(/^import .*?;\s*/, "").replace("export const type", "const type").replace("export default function", "const createExtension = function") + ";createExtension;");
 const skills = factory({}, {}, {}, {}, {}, {}).package.skill.skill;
 const playerSource = readFileSync(new URL("../apps/core/noname/library/element/player.js", import.meta.url), "utf8");

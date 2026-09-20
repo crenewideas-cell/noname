@@ -2,6 +2,7 @@ import groups from "../../../../game/extension-groups.json";
 import restructure from "../../../../game/extension-restructure.json";
 import apk from "../../../../game/apk-extension-cleanup.json";
 import characterGroups from "../../../../game/character-menu-groups.json";
+import catalogue from "../../../../game/extension-catalog.json";
 
 export interface ExtensionMenuGroup {
 	name: string;
@@ -15,10 +16,14 @@ export function groupExtensionMenus(modes: readonly string[]): (string | Extensi
 	const owners = new Map<string, ExtensionMenuGroup>();
 	// Only installed extensions have settings entries. Activity subpacks still use
 	// their source extension's settings, while standalone extensions follow the menu group.
-	const settingsGroups = [...groups, ...characterGroups.groups.map(group => ({
-		name: group.name,
-		members: group.members.filter(name => available.has(`extension_${name}`)),
-	}))];
+	const categories = { characters: "独立武将", packs: "武将扩展包", collections: "合并扩展包", ui: "界面与特效", imports: "新导入待分类" };
+	const settingsGroups = Object.entries(categories).map(([category, name]) => ({
+		name,
+		members: modes.filter(mode => mode.startsWith("extension_")).map(mode => mode.slice(10)).filter(identity => {
+			const entry = catalogue.find(item => item.name === identity);
+			return (entry?.category || "imports") === category;
+		}),
+	}));
 	for (const group of settingsGroups) {
 		// An independently installed extension with the same name takes precedence.
 		if (available.has(`extension_${group.name}`)) continue;

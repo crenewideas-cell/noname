@@ -2,6 +2,8 @@ import compress from "@fastify/compress";
 import fastifyStatic, { type FastifyStaticOptions } from "@fastify/static";
 import type { FastifyInstance } from "fastify";
 import { constants } from "node:zlib";
+import path from "node:path";
+import { resolveExtensionPath } from "./extensionLayout.mjs";
 
 /** Shared by the real filesystem server and the production performance harness. */
 export async function registerStaticCompression(app: FastifyInstance) {
@@ -28,5 +30,15 @@ export async function registerStaticCompression(app: FastifyInstance) {
 /** Encapsulation keeps compression off the filesystem APIs. */
 export async function staticAssets(app: FastifyInstance, options: FastifyStaticOptions) {
 	await registerStaticCompression(app);
+	app.addHook("onRequest", async request => {
+		if (typeof options.root !== "string") return;
+		const url = new URL(request.raw.url!, "http://localhost");
+		const logical = decodeURIComponent(url.pathname);
+		if (!logical.startsWith("/extension/")) return;
+		const file = resolveExtensionPath(options.root, logical);
+		const relative = path.relative(options.root, file).split(path.sep).join("/");
+		request.raw.url = "/" + relative.split("/").map(encodeURIComponent).join("/") + url.search;
+		if (request.params && typeof request.params === "object" && "*" in request.params) request.params["*"] = relative;
+	});
 	await app.register(fastifyStatic, options);
 }

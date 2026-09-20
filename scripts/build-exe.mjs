@@ -95,7 +95,19 @@ async function main() {
   }
   console.log("\n收集游戏运行文件（不复制整个工程）…");
   await copyTree(join(root, "apps/core/dist"));
-  for (const name of ["audio", "image", "extension"]) await copyTree(join(root, "apps/core", name), name);
+  for (const name of ["audio", "image"]) await copyTree(join(root, "apps/core", name), name);
+  const { extensionEntries } = await import("./extension-layout.mjs");
+  const extensionRoot = join(root, "apps/core/extension");
+  for (const entry of extensionEntries(extensionRoot)) await copyTree(entry.directory, `extension/${entry.name}`);
+  for (const entry of await readdir(extensionRoot, { withFileTypes: true })) {
+    if (entry.isFile() && /\.(js|ts)$/.test(entry.name)) {
+      const name = `extension/${entry.name}`;
+      const bytes = (await stat(join(extensionRoot, entry.name))).size;
+      await mkdir(dirname(join(stage, name)), { recursive: true });
+      await cp(join(extensionRoot, entry.name), join(stage, name));
+      files.push({ path: name, bytes }); totalBytes += bytes;
+    }
+  }
   await cp(join(root, "LICENSE"), join(stage, "LICENSE"));
   const attribution = "无名杀 / noname\n源码出处：https://github.com/libnoname/noname\n许可证：GPL-3.0-only，详见 LICENSE。\n本包包含本工程修改及第三方扩展，各扩展许可证随运行资源保留。\n";
   await writeFile(join(stage, "NOTICE.txt"), attribution);

@@ -229,19 +229,42 @@ export class Game {
 				e.style.transform = `translate(${dx / game.documentZoom}px, ${dy / game.documentZoom}px)`;
 			});
 			e1.offsetHeight;
-			//play
-			requestAnimationFrame(() => {
+			// Missing transitions (hidden tabs, removed nodes or zero movement)
+			// must not leave the game waiting for an animation forever.
+			let frame;
+			let settled = false;
+			const pending = new Set([...change].filter(([, { dx, dy }]) => dx || dy).map(([element]) => element));
+			const finish = () => {
+				if (settled) return;
+				settled = true;
+				clearTimeout(timer);
+				cancelAnimationFrame(frame);
+				change.forEach((_, element) => {
+					element.removeEventListener("transitionend", onEnd);
+					element.removeEventListener("transitioncancel", onEnd);
+					element.style.removeProperty("transform");
+				});
+				e1p.style.overflow = old1_overflow;
+				e2p.style.overflow = old2_overflow;
+				resolve();
+			};
+			const onEnd = event => {
+				if (event.target !== event.currentTarget || event.propertyName !== "transform") return;
+				pending.delete(event.currentTarget);
+				if (!pending.size) finish();
+			};
+			const timer = setTimeout(finish, Math.max(0, duration) + 100);
+			if (!pending.size || duration <= 0 || document.hidden) { finish(); return; }
+			frame = requestAnimationFrame(() => {
+				if (settled) return;
+				pending.forEach(element => {
+					element.addEventListener("transitionend", onEnd);
+					element.addEventListener("transitioncancel", onEnd);
+				});
 				change.forEach(({ dx, dy }, e) => {
 					e.style.transition = `${duration}ms ${timefun}`;
 					e.style.removeProperty("transform");
 				});
-				let transitionEndHandler = () => {
-					change.forEach(({ dx, dy }, e) => e.removeEventListener("transitionend", transitionEndHandler));
-					e1p.style.overflow = old1_overflow;
-					e2p.style.overflow = old2_overflow;
-					resolve();
-				};
-				change.forEach(({ dx, dy }, e) => e.addEventListener("transitionend", transitionEndHandler, { once: true }));
 			});
 		});
 	}
@@ -450,7 +473,7 @@ export class Game {
 		}
 
 		// 额外增强喵，对于duration == 0的情况跳过动画喵
-		if (duration == 0) {
+		if (duration <= 0 || document.hidden) {
 			updateDOM();
 			return Promise.resolve();
 		}
@@ -563,6 +586,9 @@ export class Game {
 				const parent = element.parentElement;
 
 				if (!position || !parent) {
+					const resolve = game.$elementGotoAnimData.animationResolver.get(element);
+					game.$elementGotoAnimData.animationResolver.delete(element);
+					resolve?.();
 					continue;
 				}
 
@@ -643,12 +669,22 @@ export class Game {
 					game.$elementGotoAnimData.animationResolver.delete(element);
 				}
 
+				let completed = false;
+				const timer = setTimeout(() => {
+					onAnimationEnd();
+					animation.cancel();
+				}, Math.max(0, duration) + 100);
 				function onAnimationEnd() {
+					if (completed) return;
+					completed = true;
+					clearTimeout(timer);
 					if (typeof resolve == "function") {
 						resolve();
 					}
 
-					game.$elementGotoAnimData.invertingAnimations.delete(element);
+					if (game.$elementGotoAnimData.invertingAnimations.get(element) === animation) {
+						game.$elementGotoAnimData.invertingAnimations.delete(element);
+					}
 				}
 
 				animation.addEventListener("finish", onAnimationEnd);
@@ -661,8 +697,23 @@ export class Game {
 
 		// 剩下的东西交给发射函数就好哦喵
 		const { promise, resolve } = Promise.withResolvers();
-		game.$elementGotoAnimData.animationResolver.set(element, resolve);
-		requestAnimationFrame(emitAllPendingAnimations);
+		// Coalesced moves share the final animation instead of losing an older
+		// waiter or advancing its event before the animation has completed.
+		const previousResolve = game.$elementGotoAnimData.animationResolver.get(element);
+		game.$elementGotoAnimData.animationResolver.set(element, () => {
+			previousResolve?.();
+			resolve();
+		});
+		let emitted = false;
+		const emit = () => {
+			if (emitted) return;
+			emitted = true;
+			clearTimeout(timer);
+			cancelAnimationFrame(frame);
+			emitAllPendingAnimations();
+		};
+		const timer = setTimeout(emit, 100);
+		const frame = requestAnimationFrame(emit);
 		await promise;
 	}
 	//Stratagem
@@ -3043,14 +3094,17 @@ export class Game {
 			};
 		}
 		extensionMenu.delete = {
-			name: "删除此扩展",
+			name: "物理删除此扩展",
 			clear: true,
-			onclick() {
-				if (this.innerHTML != "<span>确认删除</span>") {
-					this.innerHTML = "<span>确认删除</span>";
-					new Promise(resolve => setTimeout(resolve, 1000)).then(() => (this.innerHTML = "<span>删除此扩展</span>"));
+			async onclick() {
+				if (this._deleting) return;
+				this._deleting = true;
+				try {
+					if (!await game.removeExtension(name)) return;
+				} catch (error) {
+					alert(`删除未完成：${error.message || error}。请处理后重试。`);
 					return;
-				}
+				} finally { this._deleting = false; }
 				const page = this.parentNode,
 					start = page.parentNode.previousSibling;
 				page.remove();
@@ -3063,15 +3117,15 @@ export class Game {
 						}
 						pageInStart.remove();
 						if (active) {
-							start.firstChild.classList.add("active");
-							start.nextSibling.appendChild(start.firstChild.link);
+							start.firstChild?.classList.add("active");
+							if (start.firstChild?.link) start.nextSibling.appendChild(start.firstChild.link);
 						}
 					}
 				}
-				game.removeExtension(name);
 				if (typeof object.onremove == "function") {
 					object.onremove();
 				}
+				alert(`已删除「${name}」的文件和配置。请重启游戏，使已加载内容退出内存。`);
 			},
 		};
 
@@ -3328,6 +3382,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 				game.removeExtension(name, true);
 			}
 			extensions.add(name);
+			await game.promises.saveConfig("deleted_extensions", (lib.config.deleted_extensions || []).filter(item => item !== name));
 			game.saveConfigValue("extensions");
 			game.saveConfig(`extension_${name}_enable`, true);
 			delete game.importedPack;
@@ -6406,17 +6461,29 @@ ${e instanceof Error ? e.stack : String(e)}`);
 	 * @param { string } extensionName
 	 * @param { boolean } [keepFile]
 	 */
-	removeExtension(extensionName, keepFile) {
+	async removeExtension(extensionName, keepFile) {
+		if (typeof extensionName !== "string" || !extensionName.trim() || /[\\/\0:]/.test(extensionName) || [".", ".."].includes(extensionName)) throw new Error("无效扩展名称");
+		if (["characters", "packs", "collections", "ui", "imports", "archived"].includes(extensionName)) throw new Error("不能将分类目录作为扩展删除");
+		if (!keepFile) {
+			if (!confirm(`永久删除扩展「${extensionName}」？\n\n将物理删除 extension/${extensionName} 的整个目录，包括其中的武将、子包、图片和音频，并清理扩展配置。此操作不可撤销。`)) return false;
+			if (!game.readFile) throw new Error("当前环境没有文件系统权限，无法物理删除扩展");
+			// A failed disk operation must leave the management entry available for retry.
+			await game.promises.removeDir(`extension/${extensionName}`);
+			const removed = [...new Set([...(lib.config.deleted_extensions || []), extensionName])];
+			await game.promises.saveConfig("deleted_extensions", removed);
+		}
 		const prefix = `extension_${extensionName}`;
-		Object.keys(lib.config).forEach(key => {
+		for (const key of Object.keys(lib.config)) {
 			if (key === prefix || key.startsWith(prefix + "_")) {
-				game.saveConfig(key);
+				if (keepFile) game.saveConfig(key);
+				else await game.promises.saveConfig(key, undefined);
 			}
-		});
+		}
 		localStorage.removeItem(`${lib.configprefix}${prefix}`);
 		game.deleteDB("data", prefix);
 		lib.config.extensions.remove(extensionName);
-		game.saveConfig("extensions", lib.config.extensions);
+		if (keepFile) game.saveConfig("extensions", lib.config.extensions);
+		else await game.promises.saveConfig("extensions", lib.config.extensions);
 		const modeList = lib.config.extensionInfo[extensionName];
 		if (modeList) {
 			if (modeList.file) {
@@ -6428,10 +6495,8 @@ ${e instanceof Error ? e.stack : String(e)}`);
 			delete lib.config.extensionInfo[extensionName];
 			game.saveConfigValue("extensionInfo");
 		}
-		if (!game.readFile || keepFile) {
-			return;
-		}
-		game.promises.removeDir(`extension/${extensionName}`).catch(console.error);
+		if (!keepFile) await game.promises.saveConfig(`extension_${extensionName}_enable`, false);
+		return true;
 	}
 	addRecentCharacter() {
 		let list = get.config("recentCharacter") || [];

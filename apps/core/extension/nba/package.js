@@ -1,9 +1,0 @@
-extension["nba"]={
-	intro:"",
-	author:"无名玩家",
-	netdisk:"",
-	forum:"",
-	version:"1.0",
-	files:["蔡徐坤.jpg","extension.js"],
-	size:"6.9MB"
-};

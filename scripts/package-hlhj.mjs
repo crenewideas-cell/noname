@@ -7,7 +7,7 @@ import yazl from "yazl";
 import yauzl from "yauzl";
 
 const root = resolve(import.meta.dirname, "..");
-const source = resolve(root, "apps/core/extension/红楼幻境");
+const source = resolve(root, "apps/core/extension/packs/红楼幻境");
 const output = resolve(root, "output/红楼幻境");
 const info = JSON.parse(await readFile(join(source, "info.json"), "utf8"));
 const zipPath = join(output, `${info.name}-${info.version}.zip`);

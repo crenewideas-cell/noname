@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import extension from '../../apps/core/extension/分支武将/extension.js';
-import {packs,reservedSkills,reservedCharacters} from '../../apps/core/extension/分支武将/catalog.js';
+import extension from '../../apps/core/extension/collections/分支武将/extension.js';
+import {packs,reservedSkills,reservedCharacters} from '../../apps/core/extension/collections/分支武将/catalog.js';
 import installed from '../../apps/core/game/organized-extensions.json';
 
 function fixture() {

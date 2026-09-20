@@ -757,7 +757,7 @@ async function getExtensionList() {
 			return [[], []] as [string[], string[]];
 		});
 
-		const unimportedExtensions = [...new Set(extFolders)].filter(folder => isValidExtensionName(folder) && !extensions.includes(folder) && !config.get("all").plays.includes(folder));
+		const unimportedExtensions = [...new Set(extFolders)].filter(folder => isValidExtensionName(folder) && !(config.get("deleted_extensions") || []).includes(folder) && !extensions.includes(folder) && !config.get("all").plays.includes(folder));
 
 		const promises = unimportedExtensions.map(async ext => {
 			const path = new URL(`./${encodeURIComponent(ext)}/`, extensionPath);
@@ -779,6 +779,7 @@ async function getExtensionList() {
 	// An explicit import is independent of directory discovery. Discovery may
 	// have just added this pack as disabled; honor the requested import once.
 	if (isValidExtensionName(searchParamsImportExtension)) {
+		await game.promises.saveConfig("deleted_extensions", (config.get("deleted_extensions") || []).filter(name => name !== searchParamsImportExtension));
 		if (!extensions.includes(searchParamsImportExtension)) extensions.push(searchParamsImportExtension);
 		if (!toLoad.includes(searchParamsImportExtension)) toLoad.push(searchParamsImportExtension);
 		await game.promises.saveConfig("extensions", extensions);

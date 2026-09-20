@@ -1,10 +1,10 @@
 import { cp, readdir, writeFile, unlink } from "node:fs/promises";
-import { themes } from "../apps/core/extension/红楼幻境/theme/catalog.js";
+import { themes } from "../apps/core/extension/packs/红楼幻境/theme/catalog.js";
 import { basename } from "node:path";
 
 // Browser clients cannot enumerate static directories. Generate the checked-in
 // catalog after adding/removing MP3/M4A files, then refresh the dev-client mirror.
-const source = new URL("../apps/core/extension/红楼幻境/theme/", import.meta.url);
+const source = new URL("../apps/core/extension/packs/红楼幻境/theme/", import.meta.url);
 const mirror = new URL("../apps/core/image/hlhj/theme/", import.meta.url);
 for (const theme of Object.values(themes)) {
     const entries = await readdir(new URL(theme.album + "/", source), { withFileTypes: true });

@@ -92,7 +92,7 @@ test("advanced group retains eleven core packs and includes the two activity sub
 	for (const name of group.members) {
 		assert.equal(characterMenuOwner(name), "进阶");
 		if (["HD_chaoshikong", "huodongcharacter"].includes(name)) {
-			await fs.access(`apps/core/extension/活动武将/js/precontent/${name}.js`);
+			await fs.access(`apps/core/extension/packs/活动武将/js/precontent/${name}.js`);
 		} else {
 			await fs.access(`apps/core/character/${name}`);
 		}
@@ -104,7 +104,7 @@ test("advanced group retains eleven core packs and includes the two activity sub
 });
 
 test("retired crossover packs have no load entry or switches; independent packs remain", async () => {
-	const base = "apps/core/extension/群雄并起/members/杀海拾遗/main/";
+	const base = "apps/core/extension/collections/群雄并起/members/杀海拾遗/main/";
 	const source = await fs.readFile(base + "precontent.js", "utf8");
 	const config = await fs.readFile(base + "config.js", "utf8");
 	for (const id of characterGroups.removed) {
@@ -120,5 +120,5 @@ test("consolidated package credits display PXLNGU", async () => {
 		const info = JSON.parse(await fs.readFile(`apps/core/extension/${name}/info.json`, "utf8"));
 		assert.equal(info.author, "PXLNGU");
 	}
-	assert.match(await fs.readFile("apps/core/extension/手杀武将/extension.js", "utf8"), /pack\.package\.author = "PXLNGU"/);
+	assert.match(await fs.readFile("apps/core/extension/collections/手杀武将/extension.js", "utf8"), /pack\.package\.author = "PXLNGU"/);
 });

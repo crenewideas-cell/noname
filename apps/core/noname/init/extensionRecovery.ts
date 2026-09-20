@@ -14,7 +14,7 @@ export function recoveryNames(snapshot: unknown): string[] {
 
 export async function restoreExtensions(names: string[], config: { get(key: string): any }, save: (key: string, value: any) => Promise<unknown>) {
 	const extensions = new Set<string>(config.get("extensions") || []);
-	for (const name of names.filter(isValidExtensionName)) {
+	for (const name of names.filter(isValidExtensionName).filter(name => !(config.get("deleted_extensions") || []).includes(name))) {
 		extensions.add(name);
 		await save(`extension_${name}_enable`, true);
 	}

@@ -1,0 +1,262 @@
+[
+  {
+    "name": "3D精选",
+    "category": "packs",
+    "path": "extension/packs/3D精选"
+  },
+  {
+    "name": "八废合体",
+    "category": "archived",
+    "path": "extension/archived/八废合体"
+  },
+  {
+    "name": "蔡阳",
+    "category": "characters",
+    "path": "extension/characters/蔡阳"
+  },
+  {
+    "name": "超神赵云",
+    "category": "archived",
+    "path": "extension/archived/超神赵云"
+  },
+  {
+    "name": "彻里吉",
+    "category": "characters",
+    "path": "extension/characters/彻里吉"
+  },
+  {
+    "name": "岛市老八",
+    "category": "archived",
+    "path": "extension/archived/岛市老八"
+  },
+  {
+    "name": "分支武将",
+    "category": "collections",
+    "path": "extension/collections/分支武将"
+  },
+  {
+    "name": "风云浮生明辉月",
+    "category": "collections",
+    "path": "extension/collections/风云浮生明辉月"
+  },
+  {
+    "name": "芙蕖绿波",
+    "category": "packs",
+    "path": "extension/packs/芙蕖绿波"
+  },
+  {
+    "name": "瀚海辰星",
+    "category": "packs",
+    "path": "extension/packs/瀚海辰星"
+  },
+  {
+    "name": "红楼幻境",
+    "category": "packs",
+    "path": "extension/packs/红楼幻境"
+  },
+  {
+    "name": "虎牢关吕布",
+    "category": "characters",
+    "path": "extension/characters/虎牢关吕布"
+  },
+  {
+    "name": "活动武将",
+    "category": "packs",
+    "path": "extension/packs/活动武将"
+  },
+  {
+    "name": "界王基",
+    "category": "characters",
+    "path": "extension/characters/界王基"
+  },
+  {
+    "name": "界周妃",
+    "category": "characters",
+    "path": "extension/characters/界周妃"
+  },
+  {
+    "name": "觉醒突破",
+    "category": "collections",
+    "path": "extension/collections/觉醒突破"
+  },
+  {
+    "name": "絶伦逸羣",
+    "category": "packs",
+    "path": "extension/packs/絶伦逸羣"
+  },
+  {
+    "name": "苦情树下",
+    "category": "packs",
+    "path": "extension/packs/苦情树下"
+  },
+  {
+    "name": "乐曹植",
+    "category": "characters",
+    "path": "extension/characters/乐曹植"
+  },
+  {
+    "name": "乱世英杰",
+    "category": "packs",
+    "path": "extension/packs/乱世英杰"
+  },
+  {
+    "name": "马腾",
+    "category": "characters",
+    "path": "extension/characters/马腾"
+  },
+  {
+    "name": "名将杀",
+    "category": "packs",
+    "path": "extension/packs/名将杀"
+  },
+  {
+    "name": "魔刘禅",
+    "category": "characters",
+    "path": "extension/characters/魔刘禅"
+  },
+  {
+    "name": "谋·孙尚香",
+    "category": "characters",
+    "path": "extension/characters/谋·孙尚香"
+  },
+  {
+    "name": "谋张郃",
+    "category": "characters",
+    "path": "extension/characters/谋张郃"
+  },
+  {
+    "name": "清瑶葭绮",
+    "category": "collections",
+    "path": "extension/collections/清瑶葭绮"
+  },
+  {
+    "name": "群雄并起",
+    "category": "collections",
+    "path": "extension/collections/群雄并起"
+  },
+  {
+    "name": "森罗隔世",
+    "category": "packs",
+    "path": "extension/packs/森罗隔世"
+  },
+  {
+    "name": "神关兴张苞",
+    "category": "characters",
+    "path": "extension/characters/神关兴张苞"
+  },
+  {
+    "name": "神姜维",
+    "category": "characters",
+    "path": "extension/characters/神姜维"
+  },
+  {
+    "name": "神州平板",
+    "category": "packs",
+    "path": "extension/packs/神州平板"
+  },
+  {
+    "name": "时间管理大师",
+    "category": "archived",
+    "path": "extension/archived/时间管理大师"
+  },
+  {
+    "name": "士兵扩展包",
+    "category": "packs",
+    "path": "extension/packs/士兵扩展包"
+  },
+  {
+    "name": "势贺齐",
+    "category": "characters",
+    "path": "extension/characters/势贺齐"
+  },
+  {
+    "name": "势小乔",
+    "category": "characters",
+    "path": "extension/characters/势小乔"
+  },
+  {
+    "name": "手杀武将",
+    "category": "collections",
+    "path": "extension/collections/手杀武将"
+  },
+  {
+    "name": "手杀新赵襄",
+    "category": "characters",
+    "path": "extension/characters/手杀新赵襄"
+  },
+  {
+    "name": "无敌霸王",
+    "category": "archived",
+    "path": "extension/archived/无敌霸王"
+  },
+  {
+    "name": "西游杀",
+    "category": "packs",
+    "path": "extension/packs/西游杀"
+  },
+  {
+    "name": "戏志才",
+    "category": "characters",
+    "path": "extension/characters/戏志才"
+  },
+  {
+    "name": "新诸葛果",
+    "category": "characters",
+    "path": "extension/characters/新诸葛果"
+  },
+  {
+    "name": "英雄杀",
+    "category": "archived",
+    "path": "extension/archived/英雄杀"
+  },
+  {
+    "name": "笮融",
+    "category": "characters",
+    "path": "extension/characters/笮融"
+  },
+  {
+    "name": "张三丰",
+    "category": "characters",
+    "path": "extension/characters/张三丰"
+  },
+  {
+    "name": "长衫",
+    "category": "archived",
+    "path": "extension/archived/长衫"
+  },
+  {
+    "name": "征战虎牢",
+    "category": "packs",
+    "path": "extension/packs/征战虎牢"
+  },
+  {
+    "name": "柊舞缇娜",
+    "category": "packs",
+    "path": "extension/packs/柊舞缇娜"
+  },
+  {
+    "name": "朱绩",
+    "category": "characters",
+    "path": "extension/characters/朱绩"
+  },
+  {
+    "name": "EpicFX",
+    "category": "archived",
+    "path": "extension/archived/EpicFX"
+  },
+  {
+    "name": "nba",
+    "category": "characters",
+    "path": "extension/characters/nba"
+  },
+  {
+    "name": "PY武将",
+    "category": "packs",
+    "path": "extension/packs/PY武将"
+  },
+  {
+    "name": "Thunder",
+    "category": "packs",
+    "path": "extension/packs/Thunder"
+  }
+]

@@ -5,6 +5,7 @@ import fs from "fs/promises";
 import path from "path";
 import { cwd } from "process";
 import { exec } from "child_process";
+import { extensionEntries, resolveExtensionPath, forgetExtension } from "./extensionLayout.mjs";
 
 interface JsonResult<T = any> {
 	success: boolean;
@@ -33,8 +34,11 @@ export const defaultConfig = {
 };
 
 function createFsHandler(dirname: string) {
-	const join = (url: string) => path.join(dirname, url);
-	const isInProject = (url: string) => path.normalize(join(url)).startsWith(dirname);
+	const join = (url: string) => resolveExtensionPath(dirname, url, true);
+	const isInProject = (url: string) => {
+		const relative = path.relative(dirname, join(url));
+		return relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
+	};
 
 	const ensureSafe = (url: string) => {
 		if (!isInProject(url)) throw new Error(`只能访问 ${dirname} 下的资源`);
@@ -92,9 +96,15 @@ export default function createApp(config: Partial<typeof defaultConfig> = {}) {
 		"/removeDir",
 		wrap(async ({ dir }: { dir: string }) => {
 			const full = ensureSafe(dir);
+			const extension = extensionEntries(path.join(cfg.dirname, "extension"), true).find(entry => entry.directory === full);
+			if (extension?.name === "红楼幻境") {
+				const dependency = await fs.readFile(path.join(cfg.dirname, "character/hlhj/index.js"), "utf8").catch(() => "");
+				if (/extension\/(?:packs\/)?红楼幻境\//.test(dependency)) throw new Error("红楼幻境被本体红楼武将包引用，请先解除源码依赖");
+			}
 			const stat = await fs.stat(full);
 			if (!stat.isDirectory()) throw new Error(`${full} 不是文件夹`);
 			await fs.rm(full, { recursive: true, force: true });
+			if (extension) await forgetExtension(cfg.dirname, extension.name);
 			return true;
 		})
 	);
@@ -146,6 +156,9 @@ export default function createApp(config: Partial<typeof defaultConfig> = {}) {
 			const full = ensureSafe(dir);
 			const stat = await fs.stat(full);
 			if (stat.isFile()) throw new Error("路径不是文件夹");
+			if (full === path.join(cfg.dirname, "extension")) {
+				return { folders: extensionEntries(full).map(entry => entry.name), files: (await fs.readdir(full, { withFileTypes: true })).filter(entry => entry.isFile()).map(entry => entry.name) };
+			}
 
 			const entries = await fs.readdir(full);
 			const files: string[] = [];

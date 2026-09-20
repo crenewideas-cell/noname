@@ -171,7 +171,13 @@ export function installHost() {
 		const client = clients.get(id);
 		if (client?.restoring) {
 			client.pendingBytes += JSON.stringify(message).length;
-			if (client.pendingBytes > 8 * 1024 * 1024) { client.closed = true; client.restoring = false; client.pending = []; emit({ type: "failed" }); return; }
+			if (client.pendingBytes > 8 * 1024 * 1024) {
+				client.closed = true; client.restoring = false; client.pending = []; client.pendingBytes = 0;
+				clearTimeout(client.restoreTimer);
+				// A slow reconnect belongs to this seat, not to the whole match.
+				emit({ type: "resumeFailed", accountId: id });
+				return;
+			}
 			client.pending.push(message);
 		} else emit(message);
 	};
@@ -271,7 +277,9 @@ export function installHost() {
 		clearTimeout(lib.node.torespondtimeout[this.playerid]);
 		lib.node.torespondtimeout[this.playerid] = setTimeout(() => {
 			if (choices.get(this.playerid)?.token !== token) return;
-			this.send(function () {
+			// This is a control message, not another choice prompt. In particular
+			// chooseAnyOL must not capture it and discard it after unwait().
+			originalSend.call(this, function () {
 				if (!_status.auto) ui.click.auto();
 			});
 			this.isAuto = true;
@@ -366,6 +374,10 @@ export function installHost() {
 			if (payload.generation !== client.generation || !client.restoring) throw new Error("STALE_GENERATION");
 			clearTimeout(client.restoreTimer); client.restoring = false; client.inited = true;
 			const player = lib.playerOL[accountId], choice = choices.get(accountId);
+			// Apply deltas after the snapshot before sending the latest state.
+			// Otherwise old queued updates can overwrite current skills/turn data.
+			for (const message of client.pending) emit(message);
+			client.pending = []; client.pendingBytes = 0;
 			player.isAuto = false;
 			client.send(function (skills, current, number, round, zhu, pileSize) {
 				game.me.applySkills(skills); _status.auto = false; _status.currentPhase = current;
@@ -383,8 +395,6 @@ export function installHost() {
 			}, get.skillState(player), _status.currentPhase, game.phaseNumber, game.roundNumber, game.zhu, ui.cardPile.childNodes.length);
 			for (const member of spec.members) seatStatus(lib.playerOL[member.id]);
 			client.send(function (state) { game.onlineOpeningState = state; game.renderOpeningStage?.(state); }, game.onlineOpeningState || null);
-			for (const message of client.pending) emit(message);
-			client.pending = []; client.pendingBytes = 0;
 			if (choice && choice.token === client.snapshotToken && choice.deadline > Date.now() && choice.prompt) {
 				emit({ type: "choice", accountId, token: choice.token, deadline: choice.deadline, opening: !!choice.opening });
 				sendingChoice = { accountId, token: choice.token };

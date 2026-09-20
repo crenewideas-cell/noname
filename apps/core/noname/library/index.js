@@ -5377,7 +5377,7 @@ export class Library {
 								for (let name of extensionList) {
 									let num = await game.promises.checkDir(`extension/${name}`);
 									if (num !== 1) {
-										game.removeExtension(name);
+										game.removeExtension(name, true);
 									} else {
 										let all = await game.promises.getFileList(`extension/${name}`);
 										if (all?.[1].length) {
@@ -5389,7 +5389,7 @@ export class Library {
 													? `扩展${name}有 info.json 但缺少 extension.js 文件`
 													: `扩展${name}缺少必须的 extension.js 文件`;
 												console.error(message);
-												game.removeExtension(name);
+												game.removeExtension(name, true);
 											}
 										}
 									}
@@ -10787,7 +10787,9 @@ export class Library {
 				} catch (e) {
 					console.log(e);
 					console.warn("收到无效联机消息");
-					return;
+					// Dropping a state mutation silently leaves this client on a
+					// different game state. Let the transport enter recovery instead.
+					throw e;
 				}
 				lib.message.client[message.shift()].apply(null, message);
 			},

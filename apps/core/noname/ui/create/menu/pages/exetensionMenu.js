@@ -399,10 +399,12 @@ export const extensionMenu = function (connectMenu, context) {
 				node.classList.add("active");
 				rightPane.appendChild(node.link);
 			};
-			var processExtension = function (exportext) {
+			var processExtension = async function (exportext) {
 				if (page.currentExtension) {
 					if (page.currentExtension != inputExtName.value && !exportext) {
-						game.removeExtension(page.currentExtension);
+						try {
+							if (!await game.removeExtension(page.currentExtension)) return;
+						} catch (error) { alert(`删除原扩展失败：${error.message || error}`); return; }
 					}
 				}
 				inputExtName.disabled = true;

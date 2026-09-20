@@ -96,19 +96,49 @@ export async function startManagedGame() {
 		// Associate results with the prompt that created the event. A late UI
 		// callback must never borrow the token of a later server choice.
 		const eventTokens = new WeakMap(), resultTokens = new WeakMap();
+		const choiceEvents = new Map();
 		const closedChoices = new Set();
+		const closeChoice = token => {
+			const active = token && eventTokens.get(_status.event) === token;
+			for (const event of choiceEvents.get(token) || []) {
+				event.finish();
+				event.dialog?.close?.();
+				event.control?.close?.();
+			}
+			choiceEvents.delete(token);
+			if (active) {
+				game.stopCountChoose();
+				ui.confirm?.close();
+				game.uncheck();
+				_status.imchoosing = false;
+				game.resume();
+			}
+		};
 		let dispatchToken;
 		const createEvent = game.createEvent, startEvent = lib.element.GameEvent.prototype.start;
 		game.createEvent = function (...args) {
 			const event = createEvent.apply(this, args);
 			const token = dispatchToken || eventTokens.get(_status.event);
-			if (token) eventTokens.set(event, token);
+			if (token) {
+				eventTokens.set(event, token);
+				if (closedChoices.has(token)) event.finish();
+				else {
+					if (!choiceEvents.has(token)) choiceEvents.set(token, new Set());
+					choiceEvents.get(token).add(event);
+				}
+			}
 			return event;
 		};
 		lib.element.GameEvent.prototype.start = async function (...args) {
-			await startEvent.apply(this, args);
 			const token = eventTokens.get(this);
-			if (token && this.result && typeof this.result === "object") resultTokens.set(this.result, token);
+			try {
+				await startEvent.apply(this, args);
+				if (token && this.result && typeof this.result === "object") resultTokens.set(this.result, token);
+			} finally {
+				const events = choiceEvents.get(token);
+				events?.delete(this);
+				if (events && !events.size) choiceEvents.delete(token);
+			}
 		};
 		const submit = async (result, token) => {
 			if (!token || token !== choiceToken) return;
@@ -156,6 +186,7 @@ export async function startManagedGame() {
 			} else if (type === "game.choiceClosed") {
 				game.closeOnlineOpening(payload.token);
 				closedChoices.add(payload.token);
+				closeChoice(payload.token);
 				if (closedChoices.size > 256) closedChoices.delete(closedChoices.values().next().value);
 				if (payload.token === choiceToken) { choiceToken = undefined; clearChoiceClock(); }
 				if (payload.token === rejectedChoiceToken) { rejectedChoiceToken = undefined; statusPanel?.remove(); statusPanel = undefined; }

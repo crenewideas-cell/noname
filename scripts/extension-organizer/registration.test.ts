@@ -191,7 +191,7 @@ test("Honglou adopts a legacy enabled or disabled choice on first registration",
 });
 
 test("Honglou runtime identity and default assets resolve to the installed directory", async () => {
-	const { default: extension } = await import("../../apps/core/extension/红楼幻境/extension.js");
+	const { default: extension } = await import("../../apps/core/extension/packs/红楼幻境/extension.js");
 	const pack = extension({}, {}, {}, {}, {}, {});
 	assert.equal(pack.name, "红楼幻境");
 	assert.ok(pack.package.character.characterSort[pack.name]);

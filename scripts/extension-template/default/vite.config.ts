@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => ({
 			},
 			formats: ["es"],
 		},
-		outDir: `../../../apps/core/extension/${info.name}`,
+		outDir: `../../../apps/core/extension/imports/${info.name}`,
 		emptyOutDir: true,
 		rollupOptions: {
 			preserveEntrySignatures: "strict",

@@ -8,6 +8,7 @@ import { pipeline } from "node:stream/promises";
 import { createHash } from "node:crypto";
 import { includeRuntimeFile, validateRuntime } from "./build-exe.mjs";
 import { validateApk } from "./android-apk.mjs";
+import { extensionEntries, resolveExtensionPath } from "./extension-layout.mjs";
 
 const require = createRequire(import.meta.url);
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -177,7 +178,8 @@ export async function main(args = process.argv.slice(2)) {
     await rm(stage, { recursive: true, force: true }); await mkdir(stage, { recursive: true });
     const files = await collectRuntime(join(root, "apps/core/dist"));
     for (const dir of ["audio", "image"]) files.push(...await collectRuntime(join(root, "apps/core", dir), dir));
-    files.push(...await collectRuntime(join(root, "apps/core/extension/絶伦逸羣"), "extension/絶伦逸羣"));
+    const equipment = resolveExtensionPath(join(root, "apps/core"), "extension/絶伦逸羣");
+    if (existsSync(equipment)) files.push(...await collectRuntime(equipment, "extension/絶伦逸羣"));
     console.log(`复制 ${files.length} 个本体运行文件…`);
     await forEachFile(files, async file => { await mkdir(dirname(join(stage, file.path)), { recursive: true }); await cp(file.source, join(stage, file.path)); });
     await cp(join(root, "LICENSE"), join(stage, "LICENSE"));
@@ -205,7 +207,15 @@ export async function main(args = process.argv.slice(2)) {
   }
   const packaged = join(output, `noname-${options.variant}.${extension}`); await cp(artifact, packaged);
   console.log("生成全部扩展资源包（大文件，可能需要数分钟）…");
-  const resources = await collectRuntime(join(root, "apps/core/extension"), "extension");
+  const extensionRoot = join(root, "apps/core/extension");
+  const resources = [];
+  for (const entry of extensionEntries(extensionRoot)) resources.push(...await collectRuntime(entry.directory, `extension/${entry.name}`));
+  for (const entry of await readdir(extensionRoot, { withFileTypes: true })) {
+    if (entry.isFile() && /\.(js|ts)$/.test(entry.name)) {
+      const source = join(extensionRoot, entry.name);
+      resources.push({ source, path: `extension/${entry.name}`, bytes: (await stat(source)).size });
+    }
+  }
   const resourceZip = join(output, "noname-extensions.zip"); await writeResourceZip(resources, resourceZip);
   await cp(join(root, "LICENSE"), join(output, "LICENSE"));
   await writeFile(join(output, "安装说明.txt"), `无名杀 Android\n\n1. 安装 noname-${options.variant}.apk（AAB 仅供发布工具使用，不能直接安装）。\n2. 将 noname-extensions.zip 解压到手机普通目录，例如 Documents/noname，确认其下直接有 extension 文件夹。不要选择 Android/data、存储根目录或 Download 根目录。\n3. 首次启动时授予该 noname 目录读写权限。本体从 APK 读取，无须再复制本体。也可先选空目录体验本体，之后退出应用、解压资源到该目录并重启。\n4. 在扩展菜单中按需开启扩展；新发现的扩展默认关闭。\n5. 升级时使用相同签名；正式发布请配置自己的 keystore.properties 并备份密钥。\n\n本体包含絶伦逸羣，修复版本也在资源包内；旧资源覆盖包内同名文件，更新时请同步替换资源包中的 extension/絶伦逸羣。\n源码：https://github.com/libnoname/noname；本包含本工程修改，GPL-3.0-only，见 LICENSE。\n`);

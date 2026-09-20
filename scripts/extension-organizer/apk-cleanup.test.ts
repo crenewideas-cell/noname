@@ -4,11 +4,11 @@ import fs from "node:fs/promises";
 import vm from "node:vm";
 import policy from "../../apps/core/game/apk-extension-cleanup.json";
 import installed from "../../apps/core/game/organized-extensions.json";
-import { sources, composeApk, appendPackage } from "../../apps/core/extension/手杀武将/apk.js";
+import { sources, composeApk, appendPackage } from "../../apps/core/extension/collections/手杀武将/apk.js";
 import { registerOrganizedExtensions, isRetiredApkExtension } from "../../apps/core/noname/init/organizedExtensions.js";
 
 async function factory(relative: string, args: any[]) {
-  const code = (await fs.readFile(`apps/core/extension/手杀武将/${relative}`, "utf8"))
+  const code = (await fs.readFile(`apps/core/extension/collections/手杀武将/${relative}`, "utf8"))
     .replace(/^import[^\n]*\n/gm, "").replace(/export const type[^\n]*\n/, "")
     .replace("export default function", "globalThis.factory = function");
   const context = vm.createContext({ args, console });

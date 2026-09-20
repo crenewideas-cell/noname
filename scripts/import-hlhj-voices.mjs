@@ -10,7 +10,7 @@ const configPath = process.argv[2];
 if (!configPath) throw new Error("请提供人物导入清单 JSON 路径");
 const config = JSON.parse(await readFile(resolve(root, configPath), "utf8"));
 if (!/^[a-z][a-z0-9_]*$/.test(config.character)) throw new Error("无效人物 ID");
-const extension = resolve(root, "apps/core/extension/红楼幻境");
+const extension = resolve(root, "apps/core/extension/packs/红楼幻境");
 const inside = (base, path) => {
     const target = resolve(base, path), rel = relative(base, target);
     if (rel.startsWith("..") || /^[A-Za-z]:/.test(rel)) throw new Error("路径越界：" + path);

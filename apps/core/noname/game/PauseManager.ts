@@ -12,7 +12,7 @@ export default class PauseManager {
 		if (!this.delay.isStarted) {
 			this.delay.start();
 		}
-		const newValue = promise.then(() => {
+		const newValue = promise.finally(() => {
 			if (!this.#delayList.includes(newValue)) {
 				return;
 			}
@@ -31,7 +31,13 @@ export default class PauseManager {
 				lib.status.dateDelaying = new Date();
 			}
 		}
-		await Promise.all([this.pause, this.pause2, this.pause3, this.over, this.delay].filter(i => i.isStarted));
+		// A new pause can begin while an earlier pause is being released.
+		// Always observe the current gates before advancing the event loop.
+		while (true) {
+			const pending = [this.pause, this.pause2, this.pause3, this.over, this.delay].filter(i => i.isStarted);
+			if (!pending.length) break;
+			await Promise.all(pending);
+		}
 		if (lib.status.dateDelaying) {
 			lib.status.dateDelayed += lib.getUTC(new Date()) - lib.getUTC(lib.status.dateDelaying);
 			delete lib.status.dateDelaying;
@@ -55,12 +61,12 @@ class Deferred {
 		if (!this.isStarted) {
 			return;
 		}
-		Promise.resolve()
-			.then(() => this.#resolver && this.#resolver())
-			.then(() => {
-				this.#promise = null;
-				this.#resolver = null;
-			});
+		// Detach synchronously: resume() followed by pause() must create a new
+		// gate, and releasing the old gate must never clear that new pause.
+		const resolve = this.#resolver;
+		this.#promise = null;
+		this.#resolver = null;
+		resolve?.();
 	}
 	then(onfulfilled?: ((value: void) => void | PromiseLike<void>) | null, onrejected?: ((reason: any) => never | PromiseLike<never>) | null) {
 		if (!this.#promise) {

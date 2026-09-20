@@ -352,7 +352,7 @@ export class Rooms {
     });
   }
   async gameCommand(accountId: string, type: string, payload: Record<string, any>, isCurrent = () => true) {
-    return this.serial(async () => {
+    const execute = async () => {
     if (!isCurrent()) throw new OnlineError("AUTH_EXPIRED", "此连接已失效");
     const room = this.require(String(payload.roomId), accountId);
     if (!room.view.instanceId || room.view.instanceId !== payload.instanceId) throw new OnlineError("RESUME_EXPIRED", "对局已结束或分配已失效");
@@ -375,7 +375,12 @@ export class Rooms {
       await this.save(room);
     }
     return {};
-    });
+    };
+    // Results and auto toggles only mutate the authoritative host. They must
+    // not wait behind another room's database writes, password hashing or
+    // host shutdown, nor clone every room on each card played. Validation
+    // above runs immediately before dispatch; the host also checks generation.
+    return type === "result" || type === "auto" ? execute() : this.serial(execute);
   }
   async presence(accountId: string, online: boolean) {
     return this.serial(async () => {

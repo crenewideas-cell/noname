@@ -26,6 +26,6 @@ const config = {
     character: "hlhj_daiyu", source: "theme/绛珠仙子_配音", document: "VOICE-LINES-REVIEW.md",
     missing: ["XX11"], pendingGroups: [], folders,
 };
-const folder = new URL("../apps/core/extension/红楼幻境/voice/import/", import.meta.url);
+const folder = new URL("../apps/core/extension/packs/红楼幻境/voice/import/", import.meta.url);
 await mkdir(folder, { recursive: true });
 await writeFile(new URL("hlhj_daiyu.json", folder), JSON.stringify(config, null, 2) + "\n");

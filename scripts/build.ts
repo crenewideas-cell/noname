@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
+import { copyExtensions } from "./extension-layout.mjs";
 spawnSync("pnpm -F noname... build", {
 	shell: true,
 	stdio: "inherit",
@@ -17,7 +18,7 @@ await Promise.all([
 	fs.cp("apps/core/dist", "dist", { recursive: true }),
 	fs.cp("apps/core/audio", "dist/audio", { recursive: true }),
 	fs.cp("apps/core/image", "dist/image", { recursive: true }),
-	fs.cp("apps/core/extension", "dist/extension", { recursive: true }),
+	copyExtensions("apps/core/extension", "dist/extension"),
 	fs.cp("docs", "dist/docs", { recursive: true }),
 	fs.cp(".nomedia", "dist/.nomedia"),
 	fs.cp("LICENSE", "dist/LICENSE"),

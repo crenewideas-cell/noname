@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createMergedExtension, normalizeCharacterMetadata } from "../../apps/core/extension/_merge.js";
-import qingyao from "../../apps/core/extension/清瑶葭绮/extension.js";
+import qingyao from "../../apps/core/extension/collections/清瑶葭绮/extension.js";
 import { recoveryNames, restoreExtensions, showExtensionRecovery } from "../../apps/core/noname/init/extensionRecovery.js";
-import { copyCardAttributes } from "../../apps/core/extension/清瑶葭绮/members/假装无敌/CharacterCard.js";
+import { copyCardAttributes } from "../../apps/core/extension/collections/清瑶葭绮/members/假装无敌/CharacterCard.js";
 
 test("a failed import, precontent or content cannot hide healthy merged characters", async () => {
 	const calls: string[] = [];

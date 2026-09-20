@@ -3,7 +3,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-const folder = resolve(import.meta.dirname, "../apps/core/extension/红楼幻境/theme");
+const folder = resolve(import.meta.dirname, "../apps/core/extension/packs/红楼幻境/theme");
 await mkdir(folder, { recursive: true });
 const rate = 22050;
 function render({ file, bpm, melody, chords, seed }) {
