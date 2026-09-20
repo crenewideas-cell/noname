@@ -169,6 +169,12 @@ export const extensionMenu = function (connectMenu, context) {
 				};
 			}
 			var cfgnode = createConfig(cfg);
+			if (["edit", "delete"].includes(i)) {
+				cfgnode.classList.add("extension-action", i === "delete" ? "extension-action-danger" : "extension-action-edit");
+				cfgnode.setAttribute("role", "button"); cfgnode.tabIndex = 0;
+				const actionNode = cfgnode;
+				cfgnode.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); actionNode.click(); } });
+			}
 			if (cfg.onswitch) {
 				cfgnode.onswitch = cfg.onswitch;
 			}
@@ -184,6 +190,15 @@ export const extensionMenu = function (connectMenu, context) {
 				help.textContent = lib.config[`${mode}_enable`] ? "随主包加载；该成员无独立设置。武将资料请在“武将”页展开对应分组。" : "当前主包未开启；成员资源仍在，启用主包并重启后显示设置。";
 				details.append(help);
 			}
+		}
+		if (import.meta.env.DEV && mode.startsWith("extension_")) {
+			const manage = document.createElement("button");
+			manage.className = "extension-pack-manage"; manage.textContent = "目录、武将管理与导出 ↗";
+			manage.onclick = () => {
+				const url = new URL("/__extensions/", location.origin); url.searchParams.set("name", mode.slice(10));
+				window.open(url.href, "_blank", "noopener");
+			};
+			page.appendChild(manage);
 		}
 		// };
 		// if(!get.config('menu_loadondemand')) node._initLink();
@@ -215,7 +230,7 @@ export const extensionMenu = function (connectMenu, context) {
 			// onclick/onswitch callbacks. Never import disabled extension code here.
 			const member = createModeConfig(mode, document.createElement("div"));
 			groupedNodes.push(member);
-			const name = member.textContent;
+			const name = member.textContent?.trim() || mode.slice(10);
 			const details = createPackSubmenu(page, name, `settings:${group.name}:${mode}`);
 			details.dataset.extension = mode.slice(10);
 			const summary = details.querySelector("summary");
@@ -241,6 +256,12 @@ export const extensionMenu = function (connectMenu, context) {
 	const visibleExtensions = extensionsInMenu.filter(i =>
 		!(lib.config.all.stockextension.includes(i) && !lib.config.all.plays.includes(i)) && !lib.config.hiddenPlayPack.includes(i)
 	);
+	if (import.meta.env.DEV) {
+		const toolbar = document.createElement("div"); toolbar.className = "extension-studio-entry";
+		const button = document.createElement("button"); button.textContent = "扩展工坊 · 管理与导出";
+		button.onclick = () => window.open(new URL("/__extensions/", location.origin).href, "_blank", "noopener");
+		toolbar.append(button); start.firstChild.prepend(toolbar);
+	}
 	for (const entry of groupExtensionMenus(visibleExtensions)) {
 		if (typeof entry === "string") createModeConfig(entry, start.firstChild);
 		else createGroup(entry);
@@ -2773,7 +2794,7 @@ export const extensionMenu = function (connectMenu, context) {
 	})();
 	var active = start.firstChild.querySelector(".active");
 	if (!active) {
-		active = start.firstChild.firstChild;
+		active = start.firstChild.querySelector(".menubutton");
 		active.classList.add("active");
 	}
 	if (!active.link) {

@@ -35,6 +35,11 @@ export const optionsMenu = function (connectMenu, context) {
 			rightPane.appendChild(this.link);
 		}
 	};
+	// Also used by lobby shortcuts; do not synthesize mouse events on touch UIs.
+	start.selectCategory = category => {
+		const node = Array.from(start.firstChild.children).find(node => node.mode === category);
+		if (node) clickMode.call(node);
+	};
 
 	var clickAutoSkill = function (bool) {
 		var name = this._link.config._name;

@@ -1,5 +1,6 @@
 import { menuContainer, popupContainer, updateActive, setUpdateActive, updateActiveCard, setUpdateActiveCard, menux, menuxpages, menuUpdates, openMenu, clickToggle, clickSwitcher, clickContainer, clickMenuItem, createMenu, createConfig } from "../index.js";
 import { ui, game, get, ai, lib, _status } from "noname";
+import { isLobbySettings, closeLobbySettings } from "../../../lobbySettings.js";
 
 export const startMenu = function (connectMenu, context) {
 	/**
@@ -16,6 +17,10 @@ export const startMenu = function (connectMenu, context) {
 
 	/** 启动按钮 */
 	let startButton = ui.create.div(".menubutton.round.highlight", "启", start, function () {
+		if (isLobbySettings) {
+			closeLobbySettings();
+			return;
+		}
 		if (this.animating || this.classList.contains("dim")) {
 			return;
 		}
@@ -105,6 +110,10 @@ export const startMenu = function (connectMenu, context) {
 		}
 	});
 
+	if (isLobbySettings) {
+		startButton.textContent = "完成";
+		startButton.title = "保存设置并返回大厅";
+	}
 	var clickMode = function () {
 		if (this.classList.contains("unselectable")) {
 			return;

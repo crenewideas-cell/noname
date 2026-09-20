@@ -133,17 +133,17 @@ export class Library {
 				return Reflect.get(target, prop, receiver);
 			},
 			set(target, prop, newValue) {
-				if (typeof prop == "string") {
-					if (!Reflect.has(target, prop)) {
-						Promise.resolve().then(() => {
-							ui.updateCardPackMenu.forEach(fun => fun(prop));
-						});
-					}
-				}
-				if (prop.startsWith("mode_extension_")) {
+				if (typeof prop === "string" && prop.startsWith("mode_extension_")) {
 					prop = prop.slice("mode_extension_".length);
 				}
-				return Reflect.set(target, prop, newValue);
+				const changed = Reflect.get(target, prop) !== newValue;
+				const saved = Reflect.set(target, prop, newValue);
+				if (saved && changed && typeof prop === "string") {
+					Promise.resolve().then(() => {
+						ui.updateCardPackMenu.forEach(fun => fun(prop));
+					});
+				}
+				return saved;
 			},
 			defineProperty(target, prop, descriptor) {
 				if (typeof prop == "string" && prop.startsWith("mode_extension_")) {

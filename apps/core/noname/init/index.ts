@@ -15,6 +15,7 @@ import { warmImages } from "../util/imageReady.js";
 import { fontFaces } from "../util/fontFaces.js";
 import { applyPresentation } from "../ui/presentation.js";
 import { perfAwait, perfBegin, perfEnd, perfMark } from "../util/performance.js";
+import { isLobbySettings, showLobbySettings } from "../ui/lobbySettings.js";
 
 // 无名杀，启动！
 export async function boot() {
@@ -53,6 +54,13 @@ export async function boot() {
 
 	await perfAwait("boot.config", () => loadConfig());
 	configureHost();
+	const settingsOnly = isLobbySettings && !isHosted();
+	if (settingsOnly) {
+		// Prepare menus in a local rules context without changing the saved mode.
+		lib.config.mode = "identity";
+		document.documentElement.classList.add("lobby-settings-page");
+		for (const key of ["playback", "playbackmode", "directstart"]) localStorage.removeItem(lib.configprefix + key);
+	}
 	configLoadTime = parseInt(config.get("max_loadtime"));
 	refreshLoadTimeout();
 
@@ -356,6 +364,9 @@ export async function boot() {
 			break;
 	}
 	localStorage.removeItem("show_splash_off");
+	if (settingsOnly) {
+		show_splash = false;
+	}
 	// Native shells open the public client in an isolated same-origin view.
 	// Consume the gameplay intent once, before directstart can bypass the lobby.
 	const onlineEntry = /^#online=([a-z0-9_-]+)$/i.exec(location.hash);
@@ -385,7 +396,9 @@ export async function boot() {
 		localStorage.removeItem(lib.configprefix + "playback");
 	}
 
-	if (localStorage.getItem(`${lib.configprefix}playback`)) {
+	if (settingsOnly) {
+		toLoad.push(importMode("identity"));
+	} else if (localStorage.getItem(`${lib.configprefix}playback`)) {
 		toLoad.push(importMode(config.get("mode")));
 	} else if ((localStorage.getItem(`${lib.configprefix}directstart`) || !show_splash) && config.get("all").mode.includes(config.get("mode"))) {
 		toLoad.push(importMode(config.get("mode")));
@@ -529,7 +542,7 @@ export async function boot() {
 	});
 
 	localStorage.removeItem(lib.configprefix + "directstart");
-	if (returnToLobby || !lib.imported.mode?.[lib.config.mode]) {
+	if (!settingsOnly && (returnToLobby || !lib.imported.mode?.[lib.config.mode])) {
 		window.inSplash = true;
 		clearTimeout(window.resetGameTimeout);
 
@@ -640,7 +653,7 @@ export async function boot() {
 				cardData[2] = "sha";
 				cardData[3] = "kami";
 			}
-			return lib.card[cardData[2]] && !lib.card[cardData[2]].mode?.includes(lib.config.mode);
+			return lib.card[cardData[2]] && lib.card[cardData[2]].mode?.includes(lib.config.mode) !== false;
 		});
 	}
 
@@ -661,13 +674,13 @@ export async function boot() {
 		await Promise.allSettled(lib.extensions.map(extension => perfAwait(`extension.content:${extension[0]}`, () => trackLoad(loadExtension(extension)))));
 	}
 
-	if (lib.init.startBefore) {
+	if (!settingsOnly && lib.init.startBefore) {
 		lib.init.startBefore();
 		delete lib.init.startBefore;
 	}
 	// Begin loading only the actual deck artwork while the arena/selection UI is
 	// being assembled. Hidden pile cards otherwise don't fetch CSS backgrounds.
-	if (!lib.config.hide_card_image) {
+	if (!settingsOnly && !lib.config.hide_card_image) {
 		const images: string[] = [];
 		for (const name of new Set<string>((lib.card.list || []).map(card => card[2]))) {
 			const info = lib.card[name];
@@ -684,9 +697,13 @@ export async function boot() {
 	}
 
 	const arenaStart = perfBegin();
-	ui.create.arena();
+	ui.create.arena(settingsOnly);
 	perfEnd("boot.arena", arenaStart);
 	document.getElementById("noname-boot-status")?.remove();
+	if (settingsOnly) {
+		showLobbySettings();
+		return;
+	}
 	if (installHost() === false) return;
 	game.createEvent("game", false).setContent(lib.init.start);
 	if (lib.mode[lib.config.mode] && lib.mode[lib.config.mode].fromextension) {

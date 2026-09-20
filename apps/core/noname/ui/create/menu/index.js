@@ -2,6 +2,7 @@ import { ui, game, get, lib, _status } from "noname";
 import { openGameNavigation } from "../../gameNavigation.js";
 import { backgroundTasks } from "../../../util/backgroundTasks.js";
 import { perfBegin, perfEnd } from "../../../util/performance.js";
+import { isLobbySettings, closeLobbySettings } from "../../lobbySettings.js";
 
 export function openMenu(node, e, onclose) {
 	popupContainer.innerHTML = "";
@@ -104,6 +105,10 @@ export function clickSwitcher() {
  * @this { HTMLDivElement } menuContainer
  */
 export function clickContainer(connectMenu) {
+	if (isLobbySettings && !connectMenu) {
+		closeLobbySettings();
+		return;
+	}
 	this.cancelPreparation?.();
 	this.classList.add("hidden");
 	if (connectMenu) {
@@ -165,8 +170,8 @@ export function createMenu(connectMenu, tabs, config) {
 	const sessionActions = ui.create.div(".menu-session-actions", menu);
 	const navigation = document.createElement("button");
 	navigation.type = "button";
-	navigation.textContent = "退出 / 返回主界面";
-	navigation.addEventListener("click", openGameNavigation);
+	navigation.textContent = isLobbySettings ? "完成 / 返回大厅" : "退出 / 返回主界面";
+	navigation.addEventListener("click", isLobbySettings ? closeLobbySettings : openGameNavigation);
 	sessionActions.appendChild(navigation);
 	var clickTab = function () {
 		if (this.classList.contains("disabled")) {

@@ -25,6 +25,7 @@ import { backgroundTasks } from "../util/backgroundTasks.js";
 import { perfBegin, perfEnd } from "../util/performance.js";
 import { applyPresentation } from "../ui/presentation.js";
 import { clearSelectionGuide, updateSelectionGuide } from "../ui/selectionGuide.js";
+import { confirmExtensionRemoval } from "../ui/extensionManagement.js";
 
 export class Game {
 	documentZoom;
@@ -3317,7 +3318,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 				}
 			} else {
 				//保存
-				game.importExtension.apply(this, [zip.generate({ type: "arraybuffer" }), finishLoad]);
+				return game.importExtension.apply(this, [zip.generate({ type: "arraybuffer" }), finishLoad]);
 			}
 			return;
 		}
@@ -3327,6 +3328,26 @@ ${e instanceof Error ? e.stack : String(e)}`);
 				throw new Error("没有文件系统操作权限，无法导入扩展。");
 			}
 			zip.load(data);
+			const bundleFile = zip.file("extension-bundle.json");
+			if (bundleFile) {
+				const bundle = JSON.parse(bundleFile.asText());
+				if (bundle.version !== 1 || !Array.isArray(bundle.packages) || !bundle.packages.length || bundle.packages.length > 500) throw new Error("扩展合集清单无效");
+				const names = new Set();
+				// Validate the complete list before installing the first member.
+				for (const item of bundle.packages) {
+					if (typeof item.name !== "string" || names.has(item.name) || !/^packages\/[\w-]+\.zip$/.test(item.file) || !zip.file(item.file)) throw new Error("合集成员缺失或重复");
+					const child = await get.promises.zip(); child.load(zip.file(item.file).asArrayBuffer());
+					if (child.file("extension-bundle.json") || !child.file("info.json") || JSON.parse(child.file("info.json").asText()).name !== item.name) throw new Error("合集成员身份不匹配");
+					names.add(item.name);
+				}
+				const installed = [];
+				for (const item of bundle.packages) {
+					if (await game.importExtension(zip.file(item.file).asArrayBuffer()) === false) throw new Error(`「${item.name}」安装失败。此前已安装：${installed.join("、") || "无"}。可修正后重试；现有扩展配置会保留。`);
+					installed.push(item.name);
+				}
+				finishLoad?.(); return true;
+			}
+			delete game.importedPack;
 
 			const importExtensionInfo = async () => {
 				// 标准工程扩展
@@ -3374,21 +3395,21 @@ ${e instanceof Error ? e.stack : String(e)}`);
 				throw new Error("此压缩包不是一个扩展");
 			}
 			const name = game.importedPack.name;
+			if (typeof name !== "string" || !name.trim() || /[\\/\0:<>"|?*]/.test(name) || name.startsWith(".") || /[. ]$/.test(name) || ["characters", "packs", "collections", "ui", "imports", "archived"].includes(name)) throw new Error("无效扩展名称");
 			if (lib.config.all.plays.includes(name)) {
 				throw new Error("禁止安装游戏原生扩展");
 			}
 			const extensions = lib.config.extensions;
-			if (extensions.includes(name)) {
-				game.removeExtension(name, true);
-			}
-			extensions.add(name);
-			await game.promises.saveConfig("deleted_extensions", (lib.config.deleted_extensions || []).filter(item => item !== name));
-			game.saveConfigValue("extensions");
-			game.saveConfig(`extension_${name}_enable`, true);
+			const wasInstalled = extensions.includes(name);
 			delete game.importedPack;
 
 			const targetDir = `extension/${name}`;
-			const tasks = [];
+			// ZIP members must stay inside this extension. Validate every path
+			// before writing, then use bounded batches instead of opening all files.
+			for (const relativePath of Object.keys(zip.files)) {
+				if (!relativePath || relativePath.startsWith("/") || /[\\\0:]/.test(relativePath) || relativePath.split("/").some(part => part === "..")) throw new Error("压缩包包含非法文件路径");
+			}
+			let tasks = [];
 			for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
 				const outputPath = lib.path.join(targetDir, relativePath);
 
@@ -3406,12 +3427,19 @@ ${e instanceof Error ? e.stack : String(e)}`);
 
 					tasks.push(task);
 				}
+				if (tasks.length >= 16) { await Promise.all(tasks); tasks = []; }
 			}
 			await Promise.all(tasks);
+			extensions.add(name);
+			await game.promises.saveConfig("deleted_extensions", (lib.config.deleted_extensions || []).filter(item => item !== name));
+			await game.promises.saveConfig("extensions", extensions);
+			// Reinstallation updates files without resetting existing options.
+			if (!wasInstalled) await game.promises.saveConfig(`extension_${name}_enable`, true);
 
 			if (typeof finishLoad == "function") {
 				finishLoad();
 			}
+			return true;
 		} catch (error) {
 			alert(`导入失败：\n${error}`);
 			console.error(error);
@@ -6228,22 +6256,41 @@ ${e instanceof Error ? e.stack : String(e)}`);
 	 * @param { string } [packagename]
 	 */
 	addCardPack(pack, packagename) {
-		let extname = _status.extension || "扩展";
+		let extname = pack.extension || _status.extension || "扩展";
 		packagename = packagename || extname;
-		let packname = packagename;
+		let packname = packagename.replace(/^mode_extension_/, "");
+		const registeredKey = `@Experimental.extension.${packname}.card`;
+		if (!lib.config[registeredKey]) {
+			// Migrate the legacy switch once; future changes use the card menu's pack ID.
+			if (lib.config[`extension_${extname}_cards_enable`] !== false) lib.config.cards.add(packname);
+			game.saveConfig("cards", lib.config.cards);
+			game.saveConfig(registeredKey, true);
+		}
+		const enabled = lib.config.cards.includes(packname);
 		lib.cardPack[packname] = [];
 		lib.cardPackInfo[packname] = pack;
 		lib.translate[packname + "_card_config"] = packagename;
+		if (pack.connect === true) lib.connectCardPack?.add(packname);
 		for (let i in pack) {
-			if (i == "mode" || i == "forbid") {
+			if (["name", "extension", "mode", "forbid", "connect", "closeable"].includes(i)) {
 				continue;
 			}
 			if (i == "list") {
-				for (let j = 0; j < pack[i].length; j++) {
-					lib.card.list.push(pack[i][j]);
+				const source = typeof pack.list === "function" ? pack.list() : pack.list;
+				if (!Array.isArray(source)) continue;
+				lib.cardPile[packname] = get.copy(source);
+				if (lib.config.mode === "connect") {
+					lib.cardPackList ||= {};
+					lib.cardPackList[packname] = get.copy(source);
+				} else if (enabled) {
+					const banned = lib.config.bannedpile?.[packname] || [];
+					const pile = source.filter((card, index) => !banned.includes(index));
+					pile.push(...(lib.config.addedpile?.[packname] || []));
+					lib.card.list.push(...get.copy(pile));
 				}
 				continue;
 			}
+			if (!pack[i] || typeof pack[i] !== "object" || !lib[i]) continue;
 			for (let j in pack[i]) {
 				if (i == "card") {
 					if (pack[i][j].audio == true) {
@@ -6266,23 +6313,14 @@ ${e instanceof Error ? e.stack : String(e)}`);
 					}
 					lib.cardPack[packname].push(j);
 				} else if (i == "skill") {
+					if (j.startsWith("_") && !pack[i][j].forceLoad && (lib.config.mode === "connect" ? !pack.connect : !enabled)) continue;
 					if (typeof pack[i][j].audio == "number" || typeof pack[i][j].audio == "boolean") {
 						pack[i][j].audio = "ext:" + extname + ":" + pack[i][j].audio;
 					}
 				}
 				if (lib[i][j] == undefined) {
-					// 判断扩展卡牌包是否开启
-					if (i == "card") {
-						// if (!game.hasExtension(extname) || !game.hasExtensionLoaded(extname)) continue;
-						if (lib.config[`extension_${extname}_cards_enable`] === undefined) {
-							game.saveExtensionConfig(extname, "cards_enable", true);
-						}
-						if (lib.config[`extension_${extname}_cards_enable`] === true) {
-							lib[i][j] = pack[i][j];
-						}
-					} else {
-						lib[i][j] = pack[i][j];
-					}
+					// Disabled packs remain browsable; only their deck entries are disabled.
+					lib[i][j] = pack[i][j];
 				}
 			}
 		}
@@ -6465,7 +6503,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		if (typeof extensionName !== "string" || !extensionName.trim() || /[\\/\0:]/.test(extensionName) || [".", ".."].includes(extensionName)) throw new Error("无效扩展名称");
 		if (["characters", "packs", "collections", "ui", "imports", "archived"].includes(extensionName)) throw new Error("不能将分类目录作为扩展删除");
 		if (!keepFile) {
-			if (!confirm(`永久删除扩展「${extensionName}」？\n\n将物理删除 extension/${extensionName} 的整个目录，包括其中的武将、子包、图片和音频，并清理扩展配置。此操作不可撤销。`)) return false;
+			if (!await confirmExtensionRemoval(extensionName)) return false;
 			if (!game.readFile) throw new Error("当前环境没有文件系统权限，无法物理删除扩展");
 			// A failed disk operation must leave the management entry available for retry.
 			await game.promises.removeDir(`extension/${extensionName}`);
@@ -6484,6 +6522,12 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		lib.config.extensions.remove(extensionName);
 		if (keepFile) game.saveConfig("extensions", lib.config.extensions);
 		else await game.promises.saveConfig("extensions", lib.config.extensions);
+		if (!keepFile) {
+			for (const key of ["characters", "cards", "plays", "organized_extensions_registered"]) {
+				if (Array.isArray(lib.config[key])) await game.promises.saveConfig(key, lib.config[key].filter(name => name !== extensionName && name !== `mode_extension_${extensionName}`));
+			}
+			for (const section of ["character", "card"]) await game.promises.saveConfig(`@Experimental.extension.${extensionName}.${section}`, undefined);
+		}
 		const modeList = lib.config.extensionInfo[extensionName];
 		if (modeList) {
 			if (modeList.file) {

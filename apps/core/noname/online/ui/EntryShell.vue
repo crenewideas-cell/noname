@@ -8,6 +8,16 @@
       <span class="session-hint">{{ sessionType === 'online' ? '选择玩法，进入在线房间' : '随时开局，独享策略时光' }}</span>
       <button class="session-exit" @click="exit">退出</button>
     </div>
+    <nav class="lobby-common-tools" aria-label="通用设置">
+      <button type="button" class="primary" @click="settings('options')">选项</button>
+      <button type="button" @click="settings('log')">日志设置</button>
+      <button type="button" @click="settings('audio')">♫ 音乐与音效</button>
+      <button type="button" @click="settings('characters')">武将</button>
+      <button type="button" @click="settings('cards')">卡牌</button>
+      <button type="button" @click="settings('extensions')">扩展</button>
+      <button type="button" @click="settings('other')">其它</button>
+      <span>开局前即可调整设置</span>
+    </nav>
     <OnlineLobby v-if="activeMode" :mode-id="activeMode" @back="activeMode = ''" @play="play" @mode="activeMode = $event" />
     <component v-else :is="shousha ? ShoushaSplash : OnloadSplash" :handle="handle" :click="choose" />
     <div v-if="notice" class="entry-notice" role="status">{{ notice }}<button @click="notice = ''">知道了</button></div>
@@ -21,6 +31,7 @@ import OnloadSplash from "../../init/onload/OnloadSplash.vue";
 const OnlineLobby = defineAsyncComponent(() => import("./OnlineLobby.vue"));
 import { disconnectPlatform, onlineState, prepareRoomNavigation } from "../client";
 import { openGameNavigation } from "../../ui/gameNavigation.js";
+import { openLobbySettings } from "../../ui/lobbySettings.js";
 import "./online.css";
 const props = defineProps<{ shousha: boolean; handle: (mode: string) => string; click: (mode: string, node: HTMLElement) => void }>();
 const sessionType = ref(lib.config.sessionType || (lib.config.mode === "connect" ? "online" : "offline"));
@@ -28,6 +39,15 @@ const activeMode = ref(sessionStorage.getItem("noname_online_return") || "");
 sessionStorage.removeItem("noname_online_return");
 const notice = ref("");
 let entering = false;
+function settings(page: string) {
+  if (entering) return;
+  if (onlineState.room || onlineState.match.state !== 'idle') {
+    notice.value = "请先离开当前房间或取消匹配，再进入完整设置。";
+    return;
+  }
+  if (activeMode.value) sessionStorage.setItem("noname_online_return", activeMode.value);
+  openLobbySettings(page);
+}
 function selectType(type: string) {
   if (onlineState.room || onlineState.match.state !== 'idle') { notice.value = "请先离开当前房间或取消匹配，再切换对局方式。"; return; }
   sessionType.value = type; game.saveConfig("sessionType", type);

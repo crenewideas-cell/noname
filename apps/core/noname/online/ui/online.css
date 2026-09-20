@@ -1,4 +1,15 @@
 /* Scoped to the entry/lobby: retain the engine's arena and original mode artwork. */
+#splash .lobby-common-tools { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 12px 24px; border-bottom: 1px solid #b7965940; background: #211f1bd9; }
+#splash .lobby-common-tools button { min-height: 40px; padding: 8px 18px; border: 1px solid #b59b6266; border-radius: 7px; background: linear-gradient(#3c352a,#29261f); color: #f0dfbb; font: inherit; }
+#splash .lobby-common-tools button.primary { background: linear-gradient(#40667a,#284656); border-color: #7095a7; }
+#splash .lobby-common-tools button:hover { border-color: #e0c48c; filter: brightness(1.15); }
+#splash .lobby-common-tools button:focus-visible { outline: 2px solid #e9ca8e; outline-offset: 3px; }
+#splash .lobby-common-tools span { position: relative; margin-left: auto; color: #bdad90; font-size: 12px; }
+@media (max-width: 640px) {
+  #splash .lobby-common-tools { padding: 10px 14px; gap: 6px; }
+  #splash .lobby-common-tools button { flex: 1 0 auto; padding: 8px 12px; }
+  #splash .lobby-common-tools span { width: 100%; margin: 2px 0 0; }
+}
 #splash:has(.session-entry) { overflow: auto; }
 #splash.shousha-lobby:has(.session-entry) {
 	overflow-x: hidden;

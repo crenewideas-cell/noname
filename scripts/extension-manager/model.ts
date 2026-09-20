@@ -5,7 +5,7 @@ import { createHash } from "node:crypto";
 import { extensionEntries, extensionCategories } from "../../packages/fs/src/extensionLayout.mjs";
 
 export const core = path.resolve(import.meta.dirname, "../../apps/core");
-const root = path.join(core, "extension");
+export const root = path.join(core, "extension");
 const key = (node: ts.Node | undefined): string | undefined => node && (ts.isIdentifier(node) || ts.isStringLiteralLike(node) || ts.isNumericLiteral(node)) ? node.text : undefined;
 const hash = (value: string) => createHash("sha256").update(value).digest("hex");
 const metadata = new Set(["translate", "translates", "characterSort", "characterReplace", "characterIntro", "characterTitle", "characterFilter", "characterPerfectPair", "perfectPair", "characterPack", "characterSubstitute", "characterSubstitutes", "characterReplace", "characterPrefix", "character", "characters"]);
@@ -13,7 +13,7 @@ const skipped = new Set(["node_modules", "assets", "audio", "image", "images", "
 type Edit = { start: number; end: number; text: string };
 type Source = { file: string; text: string; ast: ts.SourceFile; definitions: Map<string, ts.PropertyAssignment[]> };
 
-async function files(directory: string, codeOnly = false): Promise<string[]> {
+export async function files(directory: string, codeOnly = false): Promise<string[]> {
   const result: string[] = [];
   for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
     const file = path.join(directory, entry.name);
@@ -38,7 +38,7 @@ function isCharacter(value: ts.Expression) {
   if (ts.isObjectLiteralExpression(value)) return value.properties.some(item => key(item.name) === "sex") && value.properties.some(item => key(item.name) === "skills");
   return false;
 }
-async function sources(directory: string): Promise<Source[]> {
+export async function sources(directory: string): Promise<Source[]> {
   const result: Source[] = [];
   for (const file of await files(directory, true)) {
     const text = await fs.readFile(file, "utf8");
@@ -63,7 +63,7 @@ async function json(name: string, fallback: any = []) {
   try { return JSON.parse(await fs.readFile(path.join(core, "game", name), "utf8")); }
   catch (error: any) { if (error.code === "ENOENT") return fallback; throw error; }
 }
-function entryFor(name: string) {
+export function entryFor(name: string) {
   const entry = extensionEntries(root, true).find(item => item.name === name);
   if (!entry) throw new Error("扩展目录不存在，请刷新列表");
   return entry;

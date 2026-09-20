@@ -10,11 +10,12 @@ import { isClass } from "@/util/index.js";
  */
 export function loadCard(cardConfig: importCardConfig) {
 	const cardConfigName = cardConfig.name;
+	lib.cardPackInfo[cardConfigName] = cardConfig;
 
 	lib.cardPack[cardConfigName] ??= [];
 	if (cardConfig.card) {
 		for (let [cardPackName, cardPack2] of Object.entries(cardConfig.card)) {
-			if (!(!cardPack2.hidden && cardConfig.translate[`${cardPackName}_info`])) {
+			if (!(!cardPack2.hidden && cardConfig.translate?.[`${cardPackName}_info`])) {
 				continue;
 			}
 			lib.cardPack[cardConfigName].add(cardPackName);
@@ -29,34 +30,36 @@ export function loadCard(cardConfig: importCardConfig) {
 				break;
 			case "connect":
 				// @ts-expect-error ignore
-				lib.connectCardPack.push(cardConfigName);
+				if (configItem === true) lib.connectCardPack.add(cardConfigName);
 				break;
-			case "list":
+			case "list": {
+				const source = typeof configItem === "function" ? configItem() : configItem;
+				if (!Array.isArray(source)) break;
+				// Keep the unmodified source list for the editor, even for disabled packs.
+				lib.cardPile[cardConfigName] = get.copy(source);
 				if (lib.config.mode === "connect") {
 					// @ts-expect-error ignore
 					lib.cardPackList[cardConfigName] ??= [];
 					// @ts-expect-error ignore
-					lib.cardPackList[cardConfigName].addArray(configItem);
+					lib.cardPackList[cardConfigName].addArray(get.copy(source));
 				} else if (lib.config.cards.includes(cardConfigName)) {
 					/**
 					 * @type {any[]}
 					 */
-					let pile = typeof configItem == "function" ? configItem() : configItem;
-
-					lib.cardPile[cardConfigName] ??= [];
-					lib.cardPile[cardConfigName].addArray(pile);
+					let pile = get.copy(source);
 
 					if (lib.config.bannedpile[cardConfigName]) {
 						pile = pile.filter((_value, index) => !lib.config.bannedpile[cardConfigName].includes(index));
 					}
 
 					if (lib.config.addedpile[cardConfigName]) {
-						pile = [...pile, ...lib.config.addedpile[cardConfigName]];
+						pile = [...pile, ...get.copy(lib.config.addedpile[cardConfigName])];
 					}
 
 					lib.card.list.addArray(pile);
 				}
 				break;
+			}
 			default:
 				for (const [itemName, item] of Object.entries(configItem)) {
 					if (configName === "skill" && itemName[0] === "_" && !item.forceLoad && (lib.config.mode !== "connect" ? !lib.config.cards.includes(cardConfigName) : !cardConfig.connect)) {

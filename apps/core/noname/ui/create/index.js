@@ -2283,7 +2283,7 @@ export class Create {
 		event.dialog.content.insertBefore(buttonChooseAll, caption);
 		return buttonChooseAll;
 	}
-	arena() {
+	arena(settingsOnly = false) {
 		applyPresentation();
 		var i, j;
 		ui.window = ui.create.div("#window.hidden", document.body);
@@ -3191,7 +3191,7 @@ export class Create {
 			setTimeout(lib.init.onfree);
 		}
 
-		if (lib.config.test_game) {
+		if (!settingsOnly && lib.config.test_game) {
 			ui.window.classList.add("testing");
 			lib.config.game_speed = "vfast";
 			lib.config.low_performance = true;

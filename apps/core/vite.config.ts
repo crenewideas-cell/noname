@@ -1,6 +1,7 @@
 import { defineConfig, type PluginOption } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { classifiedExtensionsPlugin } from "../../scripts/extension-layout.mjs";
+import { extensionManagerPlugin } from "../../scripts/extension-manager/server.js";
 
 const port = {
 	client: 8081,
@@ -30,7 +31,10 @@ export default defineConfig({
 			noname: "/noname.js",
 		},
 	},
-	plugins: [classifiedExtensionsPlugin(import.meta.dirname) as PluginOption, vue()],
+	plugins: [classifiedExtensionsPlugin(import.meta.dirname) as PluginOption, extensionManagerPlugin() as PluginOption, vue()],
+	// Classified extensions keep logical URLs; a filesystem glob on those
+	// virtual directories is empty. Let the browser resolve variable imports.
+	build: { dynamicImportVarsOptions: { exclude: /[\\/]extension[\\/]/ } },
 	// Discover common runtime dependencies before the first browser request, rather
 	// than restarting dependency optimization as dynamic packs arrive.
 	optimizeDeps: {
