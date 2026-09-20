@@ -98,8 +98,11 @@ export async function startManagedGame() {
 		const eventTokens = new WeakMap(), resultTokens = new WeakMap();
 		const choiceEvents = new Map();
 		const closedChoices = new Set();
+		let pendingPrompt, openingChoice = false, flushScheduled = false;
 		const closeChoice = token => {
+			if (pendingPrompt?.token === token) pendingPrompt = undefined;
 			const active = token && eventTokens.get(_status.event) === token;
+			const queued = _status.event?.name === "game" && _status.event.next.some(event => eventTokens.get(event) === token);
 			for (const event of choiceEvents.get(token) || []) {
 				event.finish();
 				event.dialog?.close?.();
@@ -112,9 +115,43 @@ export async function startManagedGame() {
 				game.uncheck();
 				_status.imchoosing = false;
 				game.resume();
-			}
+			} else if (queued) game.resume();
 		};
 		let dispatchToken;
+		const dispatchEngine = payload => {
+			try {
+				dispatchToken = payload.token;
+				const type = lib.element.ws.onmessage.call(game.ws, { data: payload.raw });
+				if (type === "gameStart") { statusPanel?.remove(); statusPanel = undefined; }
+			} catch (error) {
+				console.error("Online engine message failed", error);
+				fail(new Error("对局资源同步失败，请返回房间。"));
+			} finally { dispatchToken = undefined; }
+		};
+		const flushPrompt = () => {
+			flushScheduled = false;
+			if (!pendingPrompt || finished || leaving) return;
+			if (pendingPrompt.token !== choiceToken || closedChoices.has(pendingPrompt.token)) { pendingPrompt = undefined; return; }
+			const event = _status.eventManager.getStartedEvent();
+			// Wait until startOnline is waiting for its next child. Attaching to
+			// a finishing choice can resolve the new event without executing it.
+			if (event?.name !== "game" || eventTokens.has(event) || !_status.paused || event.next.length) return;
+			const prompt = pendingPrompt;
+			pendingPrompt = undefined;
+			dispatchEngine(prompt);
+		};
+		const schedulePrompt = () => {
+			if (!pendingPrompt || flushScheduled) return;
+			flushScheduled = true;
+			queueMicrotask(flushPrompt);
+		};
+		const pause = game.pause;
+		game.pause = function (...args) {
+			const result = pause.apply(this, args);
+			schedulePrompt();
+			return result;
+		};
+		lib.announce.subscribe("Noname.Game.Event.Changed", schedulePrompt);
 		const createEvent = game.createEvent, startEvent = lib.element.GameEvent.prototype.start;
 		game.createEvent = function (...args) {
 			const event = createEvent.apply(this, args);
@@ -172,13 +209,14 @@ export async function startManagedGame() {
 			// The public protocol has no exec, eval, edit-state or client result reporting.
 			return false;
 		};
-		unsubscribe = onOnlineEvent((type, payload) => {
+		const stopListening = onOnlineEvent((type, payload) => {
 			if (leaving) return;
 			if (payload?.instanceId && payload.instanceId !== assignment.instanceId) return;
 			if (type === "game.choice") {
 				if (finished) return;
 				if (rejectedChoiceToken) { rejectedChoiceToken = undefined; statusPanel?.remove(); statusPanel = undefined; }
 				choiceToken = payload.token;
+				openingChoice = !!payload.opening;
 				// The matching engine prompt carries the token. Do not relabel an
 				// earlier live event/result merely because a new request has arrived.
 				if (payload.opening) clearChoiceClock();
@@ -192,13 +230,10 @@ export async function startManagedGame() {
 				if (payload.token === rejectedChoiceToken) { rejectedChoiceToken = undefined; statusPanel?.remove(); statusPanel = undefined; }
 			} else if (type === "game.engine") {
 				if (finished || payload.token && payload.token !== choiceToken) return;
-				try {
-					const message = JSON.parse(payload.raw);
-					dispatchToken = payload.token;
-					lib.element.ws.onmessage.call(game.ws, { data: payload.raw });
-					if (message[0] === "gameStart") { statusPanel?.remove(); statusPanel = undefined; }
-				} catch { fail(new Error("对局资源同步失败，请返回房间。")); }
-				finally { dispatchToken = undefined; }
+				if (payload.token && !openingChoice) {
+					pendingPrompt = payload;
+					schedulePrompt();
+				} else dispatchEngine(payload);
 			} else if (type === "room.chat") {
 				// Render as text through the engine's chat helper (never as a command).
 				const player = lib.playerOL?.[payload.accountId];
@@ -207,6 +242,7 @@ export async function startManagedGame() {
 					player.say(text.innerHTML);
 				}
 			} else if (type === "game.finished") {
+				pendingPrompt = undefined;
 				game.closeOnlineOpening(); game.renderOpeningStage(null);
 				finished = true;
 				choiceToken = undefined;
@@ -225,6 +261,7 @@ export async function startManagedGame() {
 			else if (type === "game.resumeFailed") fail(new Error("快照同步超时，可返回房间重新恢复。"));
 			else if (type === "game.resumeExpired") fail(new Error("席位保留时间已过，本局由服务端继续托管。"));
 			else if (type === "connection.closed" && !finished) {
+				pendingPrompt = undefined;
 				game.closeOnlineOpening(); game.renderOpeningStage(null);
 				choiceToken = undefined;
 				clearChoiceClock();
@@ -236,6 +273,11 @@ export async function startManagedGame() {
 				void reloadManagedGame().catch(fail);
 			}
 		});
+		unsubscribe = () => {
+			pendingPrompt = undefined;
+			stopListening();
+			lib.announce.unsubscribe("Noname.Game.Event.Changed", schedulePrompt);
+		};
 		ui.create.menu(true);
 		lib.init.onfree();
 		attaching = command(onlineState.room.state === "in_game" ? "game.resume" : "game.attach", assignment).then(result => { seatGeneration = result.generation; });

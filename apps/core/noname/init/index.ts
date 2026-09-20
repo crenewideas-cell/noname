@@ -16,6 +16,7 @@ import { fontFaces } from "../util/fontFaces.js";
 import { applyPresentation } from "../ui/presentation.js";
 import { perfAwait, perfBegin, perfEnd, perfMark } from "../util/performance.js";
 import { isLobbySettings, showLobbySettings } from "../ui/lobbySettings.js";
+import { initializeWorkshop } from "../ui/workshop/service.js";
 
 // 无名杀，启动！
 export async function boot() {
@@ -54,6 +55,7 @@ export async function boot() {
 
 	await perfAwait("boot.config", () => loadConfig());
 	configureHost();
+	if (!isHosted()) await trackLoad(initializeWorkshop());
 	const settingsOnly = isLobbySettings && !isHosted();
 	if (settingsOnly) {
 		// Prepare menus in a local rules context without changing the saved mode.
@@ -231,11 +233,15 @@ export async function boot() {
 	}
 
 	if (config.get("image_background_random")) {
+		const managedBackground = lib.uiWorkshop?.ownsSetting("image_background") || lib.uiWorkshop?.ownsSetting("image_background_random");
 		if (_status.htmlbg) {
-			game.saveConfig("image_background", _status.htmlbg);
+			if (managedBackground) lib.config.image_background = _status.htmlbg;
+			else game.saveConfig("image_background", _status.htmlbg);
 		} else {
 			const list = Object.keys(lib.configMenu.appearence.config.image_background.item).filter(i => i !== "default");
-			game.saveConfig("image_background", list.randomGet(lib.config.image_background));
+			const background = list.randomGet(lib.config.image_background);
+			if (managedBackground) lib.config.image_background = background;
+			else game.saveConfig("image_background", background);
 		}
 		lib.init.background();
 		delete _status.htmlbg;
@@ -913,7 +919,7 @@ function initSheet() {
 	game.zsOriginLineXy = game.linexy;
 	if (zhishixian && zhishixian != "default") {
 		const layout = zhishixian;
-		game.saveConfig("zhishixian", zhishixian);
+		if (!lib.uiWorkshop?.ownsSetting("zhishixian")) game.saveConfig("zhishixian", zhishixian);
 		if (layout == "default") {
 			game.linexy = game.zsOriginLineXy;
 		} else {

@@ -83,8 +83,13 @@ export function installHost() {
 	const originalSend = lib.element.Player.prototype.send;
 	lib.element.Player.prototype.send = function (...args) {
 		const evt = sendingEvent || choices.get(this.playerid)?.event || _status.event;
-		const functionName = typeof args[0] === "function" ? args[0].name : "";
-		if (typeof args[0] === "function" && (sendingEvent?.player === this || typeof args[1] === "string" && args[1].startsWith("choose") || functionName === "chooseRemote" || ["chooseButtonOL", "chooseCardOL"].includes(evt?.name) && (Array.isArray(args[1]) || args[1] && typeof args[1] === "object") || evt?.name === "chooseAnyOL" || evt?.name === "_wuxie" && args[0] === evt.send)) {
+		const isPrompt = sendingEvent?.player === this && args[1] === sendingEvent.name
+			|| ["chooseButtonOL", "chooseCardOL"].includes(evt?.name) && args[0] === evt._onlinePrompt
+			|| evt?.name === "chooseAnyOL" && args[1] === evt.func && args[2] === this
+			|| evt?.name === "_wuxie" && args[0] === evt.send;
+		// Only defer actual prompts. State updates and cancellation callbacks sent
+		// during a parallel choice must not replace its prompt or be discarded.
+		if (typeof args[0] === "function" && isPrompt) {
 			// A server-generated backup is scoped to this prompt. Replay both its
 			// definition and selection state, including when reconnecting mid-skill.
 			if (sendingEvent && args[1] === sendingEvent.name) {

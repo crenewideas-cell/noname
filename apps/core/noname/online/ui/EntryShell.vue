@@ -10,6 +10,7 @@
     </div>
     <nav class="lobby-common-tools" aria-label="通用设置">
       <button type="button" class="primary" @click="settings('options')">选项</button>
+      <button type="button" @click="workshop">UI 工坊</button>
       <button type="button" @click="settings('log')">日志设置</button>
       <button type="button" @click="settings('audio')">♫ 音乐与音效</button>
       <button type="button" @click="settings('characters')">武将</button>
@@ -39,6 +40,11 @@ const activeMode = ref(sessionStorage.getItem("noname_online_return") || "");
 sessionStorage.removeItem("noname_online_return");
 const notice = ref("");
 let entering = false;
+async function workshop() {
+  if (entering) return;
+  try { await (await import("../../ui/workshop/manager.js")).openWorkshop(); }
+  catch (error: any) { notice.value = error.message || "无法打开 UI 工坊"; }
+}
 function settings(page: string) {
   if (entering) return;
   if (onlineState.room || onlineState.match.state !== 'idle') {

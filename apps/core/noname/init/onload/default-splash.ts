@@ -17,7 +17,7 @@ export class DefaultSplash implements IOnloadSplash {
 		const { default: EntryShell } = await import("@/online/ui/EntryShell.vue");
 		this.resolve = resolve;
 		this.clicked = undefined;
-		const shousha = lib.config.presentation_style !== "classic";
+		const shousha = (lib.config.ui_workshop_home_style || lib.config.presentation_style) !== "classic";
 		node.classList.toggle("shousha-lobby", shousha);
 
 		if (lib.config.touchscreen) {

@@ -2,6 +2,7 @@ import { getSkinService } from "../../skin/index.js";
 import { openSkinGallery } from "../skinGallery.js";
 import { openGameNavigation } from "../gameNavigation.js";
 import { usesModernPresentation } from "../presentation.js";
+import { styleDragLine } from "../workshop/runtime.js";
 import { lib, game, get, _status, ui } from "noname";
 export class Click {
 	/**
@@ -1510,6 +1511,7 @@ export class Click {
 					ctx.strokeStyle = "white";
 					ctx.lineWidth = 3;
 					ctx.setLineDash([8, 2]);
+					styleDragLine(ctx);
 
 					ctx.beginPath();
 
@@ -1892,6 +1894,7 @@ export class Click {
 				ctx.strokeStyle = "white";
 				ctx.lineWidth = 3;
 				ctx.setLineDash([8, 2]);
+				styleDragLine(ctx);
 
 				ctx.beginPath();
 

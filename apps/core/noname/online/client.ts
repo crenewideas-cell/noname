@@ -163,6 +163,14 @@ export async function connectPlatform() {
     const protocols = allowMultiOpen && sessionToken ? ["noname-auth." + sessionToken] : undefined;
     const next = socket = protocols ? new WebSocket(url, protocols) : new WebSocket(url);
     await new Promise<void>((resolve, reject) => {
+      let progressEnabled = false, processedSequence = 0, acknowledgedSequence = 0, reporting = false;
+      const progressTimer = setInterval(() => {
+        if (!progressEnabled || reporting || processedSequence <= acknowledgedSequence || socket !== next || onlineState.status !== "connected") return;
+        reporting = true;
+        const sequence = processedSequence;
+        void command("session.progress", { sequence }).then(() => { acknowledgedSequence = sequence; })
+          .catch(() => {}).finally(() => { reporting = false; });
+      }, 1000);
       const timeout = setTimeout(() => { next.close(); reject(new Error("联机连接超时")); }, 12000);
       next.onmessage = event => {
         if (socket !== next) return;
@@ -180,13 +188,17 @@ export async function connectPlatform() {
         if (message.type === "match.updated") onlineState.match = message.payload;
         if (message.type === "social.changed") { clearTimeout(socialTimer); socialTimer = setTimeout(() => { void loadSocial().catch(() => {}); }, 150); }
         for (const listener of listeners) { try { listener(message.type, message.payload); } catch (error) { console.error("Online event handler failed", error); } }
+        // Acknowledge after synchronous state application, never on receipt or
+        // native pong. The server can now distinguish a live but lagging page.
+        if (message.type === "game.engine" && Number.isSafeInteger(message.gameSequence)) processedSequence = Math.max(processedSequence, message.gameSequence);
       };
       next.onopen = async () => {
         if (socket !== next) { next.close(); return; }
         try {
-          const result = await command("session.authenticate", { ticket, build: onlineState.build });
+          const result = await command("session.authenticate", { ticket, build: onlineState.build, gameProgress: true });
           if (socket !== next || intentional) { next.close(); reject(new Error("连接已取消")); return; }
           onlineState.room = result.room; onlineState.match = result.match; onlineState.status = "connected"; onlineState.error = "";
+          progressEnabled = result.gameProgress === true;
           const recovered = onlineState.reconnectAttempt > 0;
           onlineState.reconnectAttempt = 0; recoveryStarted = 0; clearTimeout(reconnectTimer); reconnectTimer = undefined;
           clearTimeout(timeout); resolve();
@@ -203,6 +215,7 @@ export async function connectPlatform() {
       };
       next.onerror = () => { clearTimeout(timeout); next.close(); reject(new Error("无法连接联机服务，请检查网络")); };
       next.onclose = event => {
+        clearInterval(progressTimer);
         clearTimeout(timeout);
         if (socket !== next) { reject(new Error("连接已取消")); return; }
         for (const item of pending.values()) { clearTimeout(item.timer); item.reject(new Error("联机连接已断开")); }

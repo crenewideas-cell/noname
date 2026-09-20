@@ -7,7 +7,7 @@
 		<p class="lobby-welcome">选择模式，开启对局</p>
 	</header>
 	<main class="lobby-modes" aria-label="游戏模式">
-		<button v-for="(mode, index) in modes" :key="mode" type="button" class="lobby-mode" :disabled="selected !== null" :class="{ clicked: selected === mode }" :aria-label="get.translation(mode)" @click="enter(mode, $event)">
+		<button v-for="(mode, index) in modes" :key="mode" :data-ui-mode="mode" type="button" class="lobby-mode" :disabled="selected !== null" :class="{ clicked: selected === mode }" :aria-label="get.translation(mode)" @click="enter(mode, $event)">
 			<img class="lobby-art" :ref="node => setArtwork(node, mode)" width="913" height="1275" alt="" decoding="async" draggable="false" @error="useFallback" />
 			<div class="lobby-mode-caption">
 				<span>{{ get.translation(mode) }}</span

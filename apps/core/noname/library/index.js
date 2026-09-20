@@ -384,6 +384,8 @@ export class Library {
 	 * @type { IOnloadSplash[] }
 	 */
 	onloadSplashes = [...defaultSplashs];
+	/** @type {import("../ui/workshop/service.js").WorkshopAPI | undefined} */
+	uiWorkshop;
 
 	cardType = {};
 	hook = { globalskill: {} };
@@ -10791,7 +10793,9 @@ export class Library {
 					// different game state. Let the transport enter recovery instead.
 					throw e;
 				}
-				lib.message.client[message.shift()].apply(null, message);
+				const type = message.shift();
+				lib.message.client[type].apply(null, message);
+				return type;
 			},
 			onerror: function (e) {
 				if (this._nocallback) {

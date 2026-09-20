@@ -2740,12 +2740,27 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 		}
 		return "";
 	}
+	// Keep compilation factories scoped to their sandbox and scope. Calling a
+	// factory still creates a fresh function: skill properties must never leak
+	// between messages. Repeated broadcasts should not recompile identical code.
+	#onlineFunctionFactories = new WeakMap();
 	infoFuncOL(info) {
 		let func;
 		if ("sandbox" in window) {
 			console.log("[infoFuncOL] info:", info);
 		}
-		const str = get.pureFunctionStr(info.slice(13), true); // 清洗函数并阻止注入
+		const box = security.isSandboxRequired() ? security.currentSandbox() : null;
+		let cache, cached;
+		if (box) {
+			const scope = box.scope;
+			cache = get.#onlineFunctionFactories.get(box);
+			if (!cache || cache.scope !== scope) {
+				cache = { scope, entries: new Map(), size: 0 };
+				get.#onlineFunctionFactories.set(box, cache);
+			}
+			cached = cache.entries.get(info);
+		}
+		const str = cached ? cached.source : get.pureFunctionStr(info.slice(13), true); // 清洗函数并阻止注入
 		if ("sandbox" in window) {
 			console.log("[infoFuncOL] pured:", str);
 		}
@@ -2756,11 +2771,20 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 			}
 			if (security.isSandboxRequired()) {
 				const loadStr = `return (${str});`;
-				const box = security.currentSandbox();
 				if (!box) {
 					throw new ReferenceError("没有找到当前沙盒");
 				}
-				func = box.exec(loadStr);
+				const factory = cached?.factory || box.compile(loadStr);
+				func = factory();
+				if (!cached && info.length + str.length <= 65536) {
+					while (cache.entries.size >= 512 || cache.size + info.length + str.length > 1024 * 1024) {
+						const key = cache.entries.keys().next().value;
+						cache.size -= key.length + cache.entries.get(key).source.length;
+						cache.entries.delete(key);
+					}
+					cache.entries.set(info, { source: str, factory });
+					cache.size += info.length + str.length;
+				}
 				ErrorManager.setCodeSnippet(func, new CodeSnippet(str, 5));
 			} else {
 				func = security.exec(`return (${str});`);

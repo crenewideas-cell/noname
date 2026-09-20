@@ -125,6 +125,16 @@ export const optionsMenu = function (connectMenu, context) {
 		if (mode === "skill") prepareSkills();
 		var page = ui.create.div("");
 		node.link = page;
+		if (mode === "appearence") {
+			const workshop = document.createElement("button");
+			workshop.textContent = "UI 工坊 · 套装、混搭与导入导出";
+			workshop.style.cssText = "position:relative;display:block;margin:14px 20px;padding:10px 16px;cursor:pointer";
+			workshop.onclick = async () => {
+				try { await (await import("../../../workshop/manager.js")).openWorkshop(); }
+				catch (error) { alert(`无法打开 UI 工坊：${error.message || error}`); }
+			};
+			page.appendChild(workshop);
+		}
 		var map = {};
 		if (info.config) {
 			var hiddenNodes = [];

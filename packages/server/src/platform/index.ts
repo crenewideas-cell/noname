@@ -25,6 +25,7 @@ export async function createPlatform() {
   const tickets = new Map<string, { account: Account; sessionHash: string; expires: number }>();
   const sockets = new Map<string, WebSocket>();
   const socketAuth = new Map<WebSocket, { token: string; csrf: string }>();
+  const gameProgress = new WeakMap<WebSocket, { enabled: boolean; sent: number; acknowledged: number; checkpoints: Map<number, number>; sampledAt: number }>();
   const limits = new Map<string, { count: number; expires: number }>();
   const metrics = { connections: 0, commands: 0, failedCommands: 0 };
   const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -32,6 +33,15 @@ export async function createPlatform() {
   let stopping = false;
   function send(socket: WebSocket, message: unknown) {
     if (socket.readyState !== WebSocket.OPEN) return;
+    const progress = gameProgress.get(socket);
+    if (progress?.enabled && (message as { type?: string }).type === "game.engine") {
+      const now = Date.now();
+      message = { ...(message as object), gameSequence: ++progress.sent };
+      // One checkpoint per second bounds memory even during broadcast bursts.
+      if (!progress.checkpoints.size || now - progress.sampledAt >= 1000) {
+        progress.checkpoints.set(progress.sent, now); progress.sampledAt = now;
+      }
+    }
     const encoded = JSON.stringify(message);
     if (socket.bufferedAmount + Buffer.byteLength(encoded) > 8 * 1024 * 1024) { socket.terminate(); return; }
     socket.send(encoded, error => { if (error) socket.terminate(); });
@@ -217,12 +227,24 @@ export async function createPlatform() {
   });
   wss.on("connection", socket => {
     metrics.connections++;
+    const progress = { enabled: false, sent: 0, acknowledged: 0, checkpoints: new Map<number, number>(), sampledAt: 0 };
+    gameProgress.set(socket, progress);
     let account: Account | undefined, sessionHash = "", alive = true, chain = Promise.resolve(), queued = 0;
     let sessionExpiry: NodeJS.Timeout | undefined, checkingSession = false;
     const cache = new Map<string, { fingerprint: string; response: unknown }>();
     const handshake = setTimeout(() => socket.close(1008, "Authentication timeout"), 10000);
     socket.on("error", () => socket.terminate());
     socket.on("pong", () => { alive = true; });
+    // Native pong is answered even when the page cannot process game updates.
+    // Replace a stale stream with the existing reconnect/snapshot flow before
+    // a slow seat spends minutes replaying obsolete turns over a live socket.
+    const progressWatch = setInterval(() => {
+      const oldest = progress.checkpoints.values().next().value;
+      if (oldest !== undefined && Date.now() - oldest > 15000) {
+        app.log.warn({ accountId: account?.id, pendingMessages: progress.sent - progress.acknowledged }, "Game client fell behind; reconnecting for snapshot");
+        socket.terminate();
+      }
+    }, 2000);
     const heartbeat = setInterval(() => {
       if (!alive) { socket.terminate(); return; }
       if (socket.readyState !== WebSocket.OPEN) return;
@@ -253,6 +275,7 @@ export async function createPlatform() {
             if (!ticket || ticket.expires < Date.now() || ticket.account.id !== auth.account.id || ticket.sessionHash !== auth.tokenHash) throw new OnlineError("AUTH_EXPIRED", "连接票据已失效");
             if (command.payload.build !== build) throw new OnlineError("VERSION_MISMATCH", "客户端资源版本与服务器不匹配");
             account = auth.account; sessionHash = auth.tokenHash;
+            progress.enabled = command.payload.gameProgress === true;
             sessionExpiry = setTimeout(() => socket.close(4002, "Session expired"), Math.max(0, auth.expiresAt - Date.now()));
             const previous = sockets.get(account.id); if (previous && previous !== socket) previous.close(4001, "Session replaced");
             sockets.set(account.id, socket); clearTimeout(handshake);
@@ -260,7 +283,7 @@ export async function createPlatform() {
             if (previous && previous !== socket) await activity.presence(account.id, false);
             await activity.presence(account.id, true);
             if (sockets.get(account.id) !== socket || socket.readyState !== WebSocket.OPEN) throw new OnlineError("AUTH_EXPIRED", "此连接已失效");
-            send(socket, { requestId: command.requestId, ok: true, payload: { account, room: rooms.current(account.id), match: activity.state(account.id) } }); return;
+            send(socket, { requestId: command.requestId, ok: true, payload: { account, room: rooms.current(account.id), match: activity.state(account.id), gameProgress: true } }); return;
           }
           if (sockets.get(account.id) !== socket) throw new OnlineError("AUTH_EXPIRED", "已在另一窗口登录");
           rate("command:" + account.id, 240, 60000);
@@ -277,6 +300,14 @@ export async function createPlatform() {
           if (cached) {
             if (cached.fingerprint !== fingerprint) throw new OnlineError("INVALID_ARGUMENT", "请求标识已被使用");
             send(socket, cached.response); return;
+          }
+          if (command.type === "session.progress") {
+            const sequence = command.payload.sequence;
+            if (!progress.enabled || typeof sequence !== "number" || !Number.isSafeInteger(sequence) || sequence < progress.acknowledged || sequence > progress.sent) throw new OnlineError("INVALID_ARGUMENT", "无效同步进度");
+            progress.acknowledged = sequence;
+            for (const key of progress.checkpoints.keys()) if (key <= sequence) progress.checkpoints.delete(key);
+            send(socket, { requestId: command.requestId, ok: true, payload: { sequence } });
+            return;
           }
           const payload = command.type.startsWith("game.")
             ? await rooms.gameCommand(account.id, command.type.slice(5), command.payload, () => sockets.get(account!.id) === socket && socket.readyState === WebSocket.OPEN)
@@ -301,7 +332,7 @@ export async function createPlatform() {
       }).catch(() => socket.close(1011)).finally(() => { queued--; });
     });
     socket.on("close", () => {
-      clearTimeout(handshake); clearTimeout(sessionExpiry); clearInterval(heartbeat); socketAuth.delete(socket);
+      clearTimeout(handshake); clearTimeout(sessionExpiry); clearInterval(heartbeat); clearInterval(progressWatch); socketAuth.delete(socket);
       if (account && sockets.get(account.id) === socket) { sockets.delete(account.id); if (!stopping) void activity.presence(account.id, false).catch(() => {}); }
     });
   });

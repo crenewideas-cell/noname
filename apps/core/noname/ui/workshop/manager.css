@@ -1,0 +1,23 @@
+:host { all: initial; position: fixed !important; inset: 0 !important; z-index: 2147483000 !important; display: block !important; color: #e7edf4; font: 14px/1.5 "Microsoft YaHei", sans-serif; }
+* { box-sizing: border-box; }
+.veil { position: absolute; inset: 0; background: #090e16dd; display: grid; place-items: center; padding: 16px; }
+.panel { width: min(1320px, 100%); height: min(880px, 100%); display: flex; flex-direction: column; background: #111c2b; border: 1px solid #3e536a; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 90px #0009; }
+header { display: flex; align-items: center; gap: 14px; padding: 15px 22px; border-bottom: 1px solid #344457; }
+h1 { font-size: 21px; margin: 0; color: #f4ddb0; } h2 { font-size: 17px; margin: 0 0 14px; } h3 { margin: 15px 0 8px; font-size: 14px; color: #b9cee6; }
+p { margin: 6px 0 12px; } .muted { color: #a5b5c8; font-size: 12px; } .spacer { flex: 1; }
+button, input, select, textarea { font: inherit; color: inherit; border: 1px solid #43576e; background: #1c2b3e; border-radius: 7px; min-height: 36px; padding: 6px 10px; }
+button { cursor: pointer; } button:hover { border-color: #e6c280; background: #2b4058; } button:disabled { opacity: .5; cursor: wait; } button.primary { background: #bca16c; color: #152033; border-color: #e4c98e; font-weight: bold; } button.danger { color: #ffb2aa; } button.selected { background: #334c67; border-color: #cbb47d; }
+input, select, textarea { width: 100%; } input[type="file"] { max-width: 100%; } textarea { resize: vertical; min-height: 110px; } label { display: block; } label > span { display: block; margin-bottom: 4px; color: #bdcde0; font-size: 12px; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid #e4c98e; outline-offset: 2px; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 22px; background: #142235; border-bottom: 1px solid #344457; }
+.workspace { min-height: 0; flex: 1; display: grid; grid-template-columns: 210px minmax(300px, 1fr) minmax(280px, .9fr); }
+aside, .editor, .preview { min-height: 0; overflow: auto; padding: 18px; } aside { border-right: 1px solid #344457; } .preview { border-left: 1px solid #344457; background: #0d1827; }
+.parts { display: grid; gap: 5px; margin-top: 14px; } .parts button { text-align: left; font-size: 12px; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; } .row > label { flex: 1; min-width: 110px; } .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 10px 0; }
+.field { margin: 10px 0; } .asset { display: grid; grid-template-columns: 56px 1fr auto; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2a3c50; } .asset img { width: 56px; height: 56px; object-fit: contain; background: #253347; border-radius: 5px; } .asset small { overflow-wrap: anywhere; } .asset .actions { display: grid; gap: 5px; }
+.preview iframe { width: 100%; height: 405px; border: 1px solid #42586f; border-radius: 10px; background: #172233; } .preview .summary { white-space: pre-line; }
+.status { padding: 10px 22px; color: #cfdded; background: #17273b; border-top: 1px solid #344457; min-height: 42px; white-space: pre-wrap; } .status.error { color: #ffc1b7; }
+details { margin-top: 16px; border-top: 1px solid #344457; padding-top: 12px; } summary { cursor: pointer; color: #d4c49f; } details textarea { font: 12px/1.5 Consolas, monospace; margin: 10px 0; min-height: 220px; }
+.library-actions { display: grid; gap: 6px; margin-top: 8px; } .badge { padding: 2px 7px; background: #38506a; border-radius: 8px; font-size: 11px; }
+@media(max-width:1000px) { .workspace { grid-template-columns: 175px minmax(0,1fr); overflow: auto; align-content: start; } .preview { grid-column: 1 / -1; overflow: visible; } aside, .editor { overflow: visible; } }
+@media(max-width:600px) { .veil { padding: 0; } .panel { height: 100%; border-radius: 0; } header { padding: 10px; } header .muted { display: none; } .toolbar { padding: 8px; } .toolbar button { font-size: 12px; } .workspace { display: flex; flex-direction: column; overflow: auto; } aside { flex: none; padding: 10px; border-right: 0; border-bottom: 1px solid #344457; } .parts { display: flex; flex-wrap: wrap; gap: 4px; } .parts button { flex: 1 0 100px; } .editor { flex: none; overflow: visible; padding: 14px; } .fields { grid-template-columns: 1fr 1fr; } }

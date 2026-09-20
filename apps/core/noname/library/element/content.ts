@@ -7527,6 +7527,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 			game.me.chooseCard(...args).set(set);
 			game.resume();
 		};
+		Reflect.set(event, "_onlinePrompt", chooseRemote);
 		const chooseLocal = (current: Player) => {
 			return current.chooseCard(...event._args).set(event._set);
 		};
@@ -7603,6 +7604,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 			next.complexSelect = true;
 			game.resume();
 		};
+		Reflect.set(event, "_onlinePrompt", chooseRemote);
 		const chooseLocal = (current: Player, args: any[]) => {
 			const next = current.chooseButton(...args);
 			next.callback = event.callback;
