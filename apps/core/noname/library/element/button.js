@@ -1,4 +1,5 @@
 import { _status, get, lib, ui } from "noname";
+import { listenForActivation } from "../../ui/activation.js";
 export class Button extends HTMLDivElement {
 	/**
 	 * @type { string | undefined }
@@ -32,7 +33,7 @@ export class Button extends HTMLDivElement {
 		if (button) {
 			Object.setPrototypeOf(button, (lib.element.Button || Button).prototype);
 			if (!noClick) {
-				button.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.button);
+				listenForActivation(button, ui.click.button);
 			} else {
 				button.classList.add("noclick");
 				const intro = button.querySelector(".intro");

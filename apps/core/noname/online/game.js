@@ -133,11 +133,14 @@ export async function startManagedGame() {
 			if (!pendingPrompt || finished || leaving) return;
 			if (pendingPrompt.token !== choiceToken || closedChoices.has(pendingPrompt.token)) { pendingPrompt = undefined; return; }
 			const event = _status.eventManager.getStartedEvent();
-			// Wait until startOnline is waiting for its next child. Attaching to
-			// a finishing choice can resolve the new event without executing it.
-			if (event?.name !== "game" || eventTokens.has(event) || !_status.paused || event.next.length) return;
+			// Only startOnline can declare itself ready for a new prompt. State
+			// broadcasts may have queued children while it was paused: requiring
+			// next.length === 0 deadlocks, since this prompt's resume() is what
+			// lets waitNext() drain those children in the first place.
+			if (!event?._onlineWaiting || event.finished || eventTokens.has(event) || !_status.paused) return;
 			const prompt = pendingPrompt;
 			pendingPrompt = undefined;
+			event._onlineWaiting = false;
 			dispatchEngine(prompt);
 		};
 		const schedulePrompt = () => {
@@ -145,12 +148,7 @@ export async function startManagedGame() {
 			flushScheduled = true;
 			queueMicrotask(flushPrompt);
 		};
-		const pause = game.pause;
-		game.pause = function (...args) {
-			const result = pause.apply(this, args);
-			schedulePrompt();
-			return result;
-		};
+		lib.announce.subscribe("Noname.Game.Online.Waiting", schedulePrompt);
 		lib.announce.subscribe("Noname.Game.Event.Changed", schedulePrompt);
 		const createEvent = game.createEvent, startEvent = lib.element.GameEvent.prototype.start;
 		game.createEvent = function (...args) {
@@ -276,6 +274,7 @@ export async function startManagedGame() {
 		unsubscribe = () => {
 			pendingPrompt = undefined;
 			stopListening();
+			lib.announce.unsubscribe("Noname.Game.Online.Waiting", schedulePrompt);
 			lib.announce.unsubscribe("Noname.Game.Event.Changed", schedulePrompt);
 		};
 		ui.create.menu(true);

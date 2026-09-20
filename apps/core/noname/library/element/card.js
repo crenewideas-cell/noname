@@ -1,4 +1,5 @@
 import { _status, game, get, lib, ui } from "noname";
+import { listenForActivation } from "../../ui/activation.js";
 
 export class Card extends HTMLDivElement {
 	/**
@@ -36,7 +37,7 @@ export class Card extends HTMLDivElement {
 	buildEventListener(info) {
 		let card = this;
 		if (info != "noclick") {
-			card.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.card);
+			listenForActivation(card, ui.click.card);
 			if (lib.config.touchscreen) {
 				card.addEventListener("touchstart", ui.click.cardtouchstart);
 				card.addEventListener("touchmove", ui.click.cardtouchmove);

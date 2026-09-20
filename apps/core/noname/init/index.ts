@@ -15,8 +15,9 @@ import { warmImages } from "../util/imageReady.js";
 import { fontFaces } from "../util/fontFaces.js";
 import { applyPresentation } from "../ui/presentation.js";
 import { perfAwait, perfBegin, perfEnd, perfMark } from "../util/performance.js";
-import { isLobbySettings, showLobbySettings } from "../ui/lobbySettings.js";
+import { isLobbySettings, showLobbySettings, configureLobbySettings } from "../ui/lobbySettings.js";
 import { initializeWorkshop } from "../ui/workshop/service.js";
+import { importOnlineAppearance } from "../online/appearance.js";
 
 // 无名杀，启动！
 export async function boot() {
@@ -54,9 +55,11 @@ export async function boot() {
 	setOnError({ lib, game, get, _status });
 
 	await perfAwait("boot.config", () => loadConfig());
+	await importOnlineAppearance();
 	configureHost();
 	if (!isHosted()) await trackLoad(initializeWorkshop());
-	const settingsOnly = isLobbySettings && !isHosted();
+	let settingsOnly = isLobbySettings && !isHosted();
+	let settingsReady: (() => void) | undefined;
 	if (settingsOnly) {
 		// Prepare menus in a local rules context without changing the saved mode.
 		lib.config.mode = "identity";
@@ -315,6 +318,18 @@ export async function boot() {
 		document.addEventListener("mouseup", ui.click.windowmouseup);
 		document.addEventListener("contextmenu", ui.click.right);
 	} else {
+		// Touch-capable laptops and native webviews can still receive real mouse
+		// input. Clear drag state and run the normal mouse selection lifecycle.
+		for (const [type, handler] of [["mousemove", ui.click.windowmousemove], ["mousedown", ui.click.windowmousedown], ["mouseup", ui.click.windowmouseup]] as const) {
+			document.addEventListener(type, event => {
+				if ((event as MouseEvent & { sourceCapabilities?: { firesTouchEvents: boolean } }).sourceCapabilities?.firesTouchEvents) return;
+				if (type === "mousedown") {
+					_status.dragged = false;
+					_status.clicked = false;
+				}
+				handler.call(document, event);
+			});
+		}
 		document.addEventListener("touchstart", ui.click.touchconfirm);
 		document.addEventListener("touchstart", ui.click.windowtouchstart);
 		document.addEventListener("touchend", ui.click.windowtouchend);
@@ -563,20 +578,38 @@ export async function boot() {
 		let node = ui.create.div("#splash", document.body);
 
 		let { promise, resolve } = Promise.withResolvers();
-		await splash.init(node, resolve);
+		const ready = Promise.withResolvers<void>();
+		configureLobbySettings(() => {
+			settingsOnly = true;
+			settingsReady = ready.resolve;
+			resolve("identity");
+			return ready.promise;
+		});
+		await splash.init(node, mode => {
+			if (settingsOnly) {
+				// Settings have registered a local menu runtime. Start with fresh
+				// rules so changed packs/extensions are applied exactly once.
+				game.saveConfig("mode", mode);
+				localStorage.setItem(lib.configprefix + "directstart", "true");
+				window.onbeforeunload = null;
+				game.reload();
+			} else resolve(mode);
+		});
 		document.getElementById("noname-boot-status")?.remove();
 		perfMark("boot.lobby-mounted");
 
 		let result = await promise;
 		perfMark("mode.selected");
 
-		let splashInRemoing = await splash.dispose(node);
-		if (!splashInRemoing) {
-			node.remove();
+		if (!settingsOnly) {
+			let splashInRemoing = await splash.dispose(node);
+			if (!splashInRemoing) node.remove();
+			delete window.inSplash;
+			game.saveConfig("mode", result);
+		} else {
+			lib.config.mode = result;
 		}
 		refreshLoadTimeout();
-		delete window.inSplash;
-		game.saveConfig("mode", result);
 		await perfAwait("mode.import", () => trackLoad(importMode(result)));
 	}
 	lib.storage = (await trackLoad(config.load(lib.config.mode, "data"))) || {};
@@ -707,7 +740,12 @@ export async function boot() {
 	perfEnd("boot.arena", arenaStart);
 	document.getElementById("noname-boot-status")?.remove();
 	if (settingsOnly) {
-		showLobbySettings();
+		if (settingsReady) {
+			ui.window.classList.add("lobby-settings-runtime");
+			settingsReady();
+		} else showLobbySettings();
+		clearTimeout(window.resetGameTimeout);
+		delete window.resetGameTimeout;
 		return;
 	}
 	if (installHost() === false) return;

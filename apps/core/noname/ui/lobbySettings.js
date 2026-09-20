@@ -10,19 +10,44 @@ const destinations = {
 	other: ["其它"],
 };
 export const lobbySettingsPage = new URLSearchParams(location.search).get("lobbySettings");
-export const isLobbySettings = Object.hasOwn(destinations, lobbySettingsPage || "");
+export let isLobbySettings = Object.hasOwn(destinations, lobbySettingsPage || "");
+let prepareSettings;
+let pendingSettings;
+let heading;
+let previousFocus;
 
-export function openLobbySettings(page = "options") {
+export function configureLobbySettings(prepare) {
+	prepareSettings = prepare;
+}
+
+export async function openLobbySettings(page = "options") {
 	if (!Object.hasOwn(destinations, page)) return;
-	const url = new URL(location.href);
-	url.hash = "";
-	url.searchParams.set("lobbySettings", page);
-	history.replaceState(null, "", url);
-	window.onbeforeunload = null;
-	game.reload();
+	previousFocus = document.activeElement;
+	isLobbySettings = true;
+	if (prepareSettings) {
+		pendingSettings ||= prepareSettings();
+		await pendingSettings;
+	}
+	showLobbySettings(page);
 }
 
 export function closeLobbySettings() {
+	if (window.inSplash) {
+		ui.menuContainer.cancelPreparation?.();
+		ui.menuContainer.classList.add("hidden");
+		ui.window.querySelectorAll(".popup-container").forEach(node => node.classList.add("hidden"));
+		ui.window.classList.remove("lobby-settings-overlay");
+		ui.window.classList.remove("touchinfohidden");
+		ui.arena.classList.remove("menupaused");
+		ui.historybar.classList.remove("menupaused");
+		ui.config2.classList.remove("pressdown2");
+		document.documentElement.classList.remove("lobby-settings-page");
+		heading?.remove();
+		heading = undefined;
+		game.resume2();
+		previousFocus?.focus?.();
+		return;
+	}
 	const url = new URL(location.href);
 	url.searchParams.delete("lobbySettings");
 	history.replaceState(null, "", url);
@@ -33,9 +58,12 @@ export function closeLobbySettings() {
 	game.reload();
 }
 
-export function showLobbySettings() {
+export function showLobbySettings(page = lobbySettingsPage || "options") {
+	isLobbySettings = true;
 	document.documentElement.classList.add("lobby-settings-page");
-	const header = document.createElement("header");
+	if (window.inSplash) ui.window.classList.add("lobby-settings-overlay");
+	heading?.remove();
+	const header = heading = document.createElement("header");
 	header.className = "lobby-settings-heading";
 	const title = document.createElement("strong");
 	title.textContent = "大厅设置";
@@ -47,8 +75,8 @@ export function showLobbySettings() {
 	back.onclick = closeLobbySettings;
 	header.append(title, hint, back);
 	document.body.appendChild(header);
-	ui.click.config();
-	const [tab, category] = destinations[lobbySettingsPage];
+	if (ui.menuContainer.classList.contains("hidden")) ui.click.config();
+	const [tab, category] = destinations[page];
 	ui.click.menuTab(tab);
 	if (category) {
 		ui.menuContainer.querySelector(".menu-content > div")?.selectCategory?.(category);

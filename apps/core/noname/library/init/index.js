@@ -82,9 +82,12 @@ export class LibInit {
 		async event => {
 			event._resultid = null;
 			event._result = null;
+			event._onlineWaiting = true;
 			game.pause();
+			lib.announce.publish("Noname.Game.Online.Waiting", event);
 		},
 		async event => {
+			event._onlineWaiting = false;
 			if (event._result) {
 				if (event._resultid) {
 					event._result.id = event._resultid;

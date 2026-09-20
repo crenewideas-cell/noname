@@ -155,6 +155,10 @@ html[data-presentation="shousha"] .extension-config-control.toggle > div > div {
 .extension-management-dialog :focus-visible { outline: 2px solid #d6b77b; outline-offset: 3px; }
 .menu.main .extension-pack-manage { position: relative; display: block; box-sizing: border-box; width: 100%; margin: 15px 0 5px; border: 1px solid #c5a36766; border-radius: 9px; background: #b99b6220; color: #e5c995; padding: 12px; cursor: pointer; font: inherit; }
 /* Full pre-game menus share the engine controls, but never expose match actions. */
+#window.lobby-settings-runtime:not(.lobby-settings-overlay) { display: none !important; }
+#window.lobby-settings-overlay { visibility: visible; pointer-events: auto; z-index: 110; background: #0007; }
+html.lobby-settings-page .lobby-settings-heading { z-index: 111; }
+.lobby-settings-page .menu-tab > div:first-child { display: none; }
 .lobby-settings-page #system,
 .lobby-settings-page #arena,
 .lobby-settings-page #historybar { visibility: hidden !important; pointer-events: none !important; }

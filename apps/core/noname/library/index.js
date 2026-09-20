@@ -2359,7 +2359,7 @@ export class Library {
 					name: "武将界面风格",
 					init: "shousha",
 					item: { shousha: "手杀", classic: "经典" },
-					intro: "调整单机选将、武将资料和衣橱的外观，即时生效。联机菜单统一使用手杀风格。",
+					intro: "调整选将、武将资料和衣橱的外观，即时生效，单机与联机均使用此设置。",
 					onclick(item) {
 						game.saveConfig("presentation_style", item);
 						applyPresentation();

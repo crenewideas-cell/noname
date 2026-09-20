@@ -12,6 +12,7 @@ import { createCharacterBrowser } from "../characterBrowser.js";
 import { CharacterSearch } from "../../util/characterSearch.js";
 import { backgroundTasks } from "../../util/backgroundTasks.js";
 import { applyPresentation, usesModernPresentation } from "../presentation.js";
+import { listenForActivation } from "../activation.js";
 
 const buttonPreparations = new Set();
 const preparingButtons = new WeakSet();
@@ -2323,7 +2324,7 @@ export class Create {
 		// 	);
 		// }
 
-		ui.window.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.window);
+		listenForActivation(ui.window, ui.click.window);
 		ui.system = ui.create.div("#system.", ui.window);
 		ui.arena = ui.create.div("#arena.nome", ui.window);
 		if (lib.device == "ios" && !get.is.phoneLayout()) {
@@ -3685,7 +3686,7 @@ export class Create {
 			const button = next.firstChild;
 			button.classList.add("textbutton");
 			if (!noclick) {
-				button.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.button);
+				listenForActivation(button, ui.click.button);
 			} else {
 				button.classList.add("noclick");
 			}

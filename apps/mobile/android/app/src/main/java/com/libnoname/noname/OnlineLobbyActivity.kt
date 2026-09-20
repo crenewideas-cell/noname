@@ -26,7 +26,7 @@ class OnlineLobbyActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val fragment = intent.getStringExtra("url") ?: run { finish(); return }
-        if (!Regex("^#online=[a-z0-9_-]+$").matches(fragment)) { finish(); return }
+        if (!Regex("^#online=[a-z0-9_-]+(?:&appearance=[A-Za-z0-9_-]{1,8192})?$").matches(fragment)) { finish(); return }
         val manifest = try { assets.open("public/online-client/deployment.json").bufferedReader().use { JSONObject(it.readText()) } }
             catch (_: Exception) { finish(); return }
         if (manifest.optString("kind") != "client") { finish(); return }

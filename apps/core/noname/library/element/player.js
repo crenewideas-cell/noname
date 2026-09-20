@@ -5,6 +5,7 @@ import { security } from "@/util/sandbox.js";
 import { ContentCompiler } from "./gameEvent.js";
 import { AsyncFunction } from "@/util/index.js";
 import dedent from "dedent";
+import { listenForActivation } from "../../ui/activation.js";
 
 export class Player extends HTMLDivElement {
 	/**
@@ -191,8 +192,8 @@ export class Player extends HTMLDivElement {
 		if (noclick) {
 			player.noclick = true;
 		} else {
-			player.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.target);
-			node.identity.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.identity);
+			listenForActivation(player, ui.click.target);
+			listenForActivation(node.identity, ui.click.identity);
 			node.count.addEventListener("pointerdown", ui.click.count);
 
 			if (lib.config.touchscreen) {
@@ -10639,7 +10640,7 @@ export class Player extends HTMLDivElement {
 			info.content = get.skillintro(name, learn, learn2);
 		}
 		node.info = info;
-		node.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.card);
+		listenForActivation(node, ui.click.card);
 		if (!lib.config.touchscreen) {
 			if (lib.config.hover_all) {
 				lib.setHover(node, ui.click.hoverplayer);
@@ -10727,7 +10728,7 @@ export class Player extends HTMLDivElement {
 			} else if (typeof info == "string") {
 				node.markidentifer = info;
 			}
-			node.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.card);
+			listenForActivation(node, ui.click.card);
 			if (!lib.config.touchscreen) {
 				if (lib.config.hover_all) {
 					lib.setHover(node, ui.click.hoverplayer);

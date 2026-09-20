@@ -12,7 +12,7 @@ class OnlineLobbyPlugin : Plugin() {
     @PluginMethod
     fun open(call: PluginCall) {
         val url = call.getString("url")
-        if (url == null || !Regex("^#online=[a-z0-9_-]+$").matches(url)) {
+        if (url == null || !Regex("^#online=[a-z0-9_-]+(?:&appearance=[A-Za-z0-9_-]{1,8192})?$").matches(url)) {
             call.reject("联机玩法格式无效")
             return
         }

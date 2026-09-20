@@ -1,4 +1,5 @@
 import { _status, get, lib, ui } from "noname";
+import { listenForActivation } from "../../ui/activation.js";
 
 export class Control extends HTMLDivElement {
 	// @ts-expect-error ignore
@@ -47,7 +48,7 @@ export class Control extends HTMLDivElement {
 			control.style.transition = "";
 		}
 
-		control.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.control2);
+		listenForActivation(control, ui.click.control2);
 
 		if (lib.config.button_press) {
 			control.addEventListener(lib.config.touchscreen ? "touchstart" : "mousedown", function () {
@@ -95,7 +96,7 @@ export class Control extends HTMLDivElement {
 		node.innerHTML = get.translation(item);
 		if (item === "ok") node.dataset.action = "confirm";
 		else if (["cancel", "cancel2", "取消", "取消2"].includes(item)) node.dataset.action = "cancel";
-		node.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.control);
+		listenForActivation(node, ui.click.control);
 	}
 	close() {
 		this.addTempClass("controlpressdownx", 500);

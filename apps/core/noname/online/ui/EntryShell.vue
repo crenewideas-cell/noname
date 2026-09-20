@@ -33,6 +33,7 @@ const OnlineLobby = defineAsyncComponent(() => import("./OnlineLobby.vue"));
 import { disconnectPlatform, onlineState, prepareRoomNavigation } from "../client";
 import { openGameNavigation } from "../../ui/gameNavigation.js";
 import { openLobbySettings } from "../../ui/lobbySettings.js";
+import { onlineEntryFragment } from "../appearance.js";
 import "./online.css";
 const props = defineProps<{ shousha: boolean; handle: (mode: string) => string; click: (mode: string, node: HTMLElement) => void }>();
 const sessionType = ref(lib.config.sessionType || (lib.config.mode === "connect" ? "online" : "offline"));
@@ -45,14 +46,14 @@ async function workshop() {
   try { await (await import("../../ui/workshop/manager.js")).openWorkshop(); }
   catch (error: any) { notice.value = error.message || "无法打开 UI 工坊"; }
 }
-function settings(page: string) {
+async function settings(page: string) {
   if (entering) return;
   if (onlineState.room || onlineState.match.state !== 'idle') {
     notice.value = "请先离开当前房间或取消匹配，再进入完整设置。";
     return;
   }
-  if (activeMode.value) sessionStorage.setItem("noname_online_return", activeMode.value);
-  openLobbySettings(page);
+  try { await openLobbySettings(page); }
+  catch (error: any) { notice.value = error.message || "无法打开设置"; }
 }
 function selectType(type: string) {
   if (onlineState.room || onlineState.match.state !== 'idle') { notice.value = "请先离开当前房间或取消匹配，再切换对局方式。"; return; }
@@ -66,7 +67,7 @@ async function choose(mode: string, node: HTMLElement) {
     const nativeEntry = (game as any).openOnlineLobby;
     // Native launchers use their bundled manifest and intercept static requests
     // locally; only API/WebSocket traffic reaches the configured server.
-    if (nativeEntry) { await nativeEntry("#online=" + encodeURIComponent(mode)); return; }
+    if (nativeEntry) { await nativeEntry(onlineEntryFragment(mode)); return; }
     const target = new URL("/index.html", configuredOrigin || location.origin);
     if (target.origin !== location.origin) throw new Error("请使用下载的完整客户端进入联机。");
   } catch (error: any) { notice.value = error.message; return; }

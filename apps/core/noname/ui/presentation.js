@@ -1,8 +1,8 @@
-import { lib, game, _status } from "noname";
+import { lib } from "noname";
 
-/** Room participants share the current menus; keep offline theme preferences. */
+/** Presentation is a local preference, independent of the room's rules. */
 export function usesModernPresentation() {
-	return game.online || _status.connectMode || lib.config.mode === "connect" || lib.config.presentation_style !== "classic";
+	return lib.config.presentation_style !== "classic";
 }
 
 export function applyPresentation() {

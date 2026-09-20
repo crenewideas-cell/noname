@@ -56,7 +56,7 @@ export async function onlineAssetResponse(root: string, request: ProtocolRequest
 }
 
 export async function onlineEntry(root: string, fragment: unknown) {
-  if (typeof fragment !== "string" || !/^#online=[a-z0-9_-]+$/.test(fragment)) throw new Error("Invalid online mode");
+  if (typeof fragment !== "string" || !/^#online=[a-z0-9_-]+(?:&appearance=[A-Za-z0-9_-]{1,8192})?$/.test(fragment)) throw new Error("Invalid online mode");
   let manifest;
   try { manifest = JSON.parse(await readFile(resolve(root, "deployment.json"), "utf8")); }
   catch { throw new Error("缺少本地联机资源，请安装完整客户端。"); }
