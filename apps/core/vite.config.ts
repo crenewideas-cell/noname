@@ -35,6 +35,8 @@ export default defineConfig({
 	// than restarting dependency optimization as dynamic packs arrive.
 	optimizeDeps: {
 		entries: ["index.html"],
+		// Supplied by the desktop runtime; never pre-bundle them for the web.
+		exclude: ["electron", "@electron/remote"],
 		include: ["core-js-bundle", "vue", "vue/dist/vue.esm-browser.js", "pinyin-pro", "jszip", "dedent", "path-browserify-esm",
 			"stackframe", "error-stack-parser", "stacktrace-gps", "stacktrace-js", "crypto-js", "nosleep.js", "pressure"],
 	},

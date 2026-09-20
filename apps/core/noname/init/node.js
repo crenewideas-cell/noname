@@ -2,12 +2,17 @@
 import { checkVersion } from "../library/update.js";
 
 export default function nodeReady({ lib, game, get, _status, ui }) {
+	// These modules belong to Electron's runtime, not the browser bundle.
+	// Use the injected loader explicitly so Vite does not scan bare require().
+	if (typeof window.require !== "function" || !window.process?.versions) {
+		throw new Error("桌面初始化需要 Electron 提供的 Node 运行环境");
+	}
 	// 处理Node环境下的http情况
 	if (typeof window.process == "object" && typeof window.__dirname == "string") {
 		// 在http环境下修改__dirname和require的逻辑
 		if (window.__dirname.endsWith("electron.asar\\renderer") || window.__dirname.endsWith("electron.asar/renderer")) {
-			const path = require("path");
-			window.__dirname = require("@electron/remote").app.getAppPath();
+			const path = window.require("path");
+			window.__dirname = window.require("@electron/remote").app.getAppPath();
 			const oldRequire = window.require;
 			// @ts-expect-error ignore
 			window.require = function (moduleId) {
@@ -56,16 +61,16 @@ export default function nodeReady({ lib, game, get, _status, ui }) {
 	// @ts-expect-error ignore
 	const electronVersion = parseFloat(versions.electron);
 	lib.node = {
-		fs: require("fs"),
-		path: require("path"),
+		fs: window.require("fs"),
+		path: window.require("path"),
 		debug() {
 			let remote;
 			if (electronVersion >= 14) {
 				// @ts-expect-error ignore
-				remote = require("@electron/remote");
+				remote = window.require("@electron/remote");
 			} else {
 				// @ts-expect-error ignore
-				remote = require("electron").remote;
+				remote = window.require("electron").remote;
 			}
 			remote.getCurrentWindow().toggleDevTools();
 		},
@@ -87,12 +92,12 @@ export default function nodeReady({ lib, game, get, _status, ui }) {
 				lib.config.brokenFile.add(folder);
 				game.saveConfigValue("brokenFile");
 				if (!lib.node.http) {
-					lib.node.http = require("http");
+					lib.node.http = window.require("http");
 				}
 				if (!lib.node.https) {
-					lib.node.https = require("https");
+					lib.node.https = window.require("https");
 				}
-				var opts = require("url").parse(encodeURI(url));
+				var opts = window.require("url").parse(encodeURI(url));
 				opts.headers = { "User-Agent": "AppleWebkit" };
 				(url.startsWith("https") ? lib.node.https : lib.node.http).get(opts, function (response) {
 					var stream = response.pipe(file);
@@ -138,9 +143,9 @@ export default function nodeReady({ lib, game, get, _status, ui }) {
 		var electronVersion = parseFloat(versions.electron);
 		var remote;
 		if (electronVersion >= 14) {
-			remote = require("@electron/remote");
+			remote = window.require("@electron/remote");
 		} else {
-			remote = require("electron").remote;
+			remote = window.require("electron").remote;
 		}
 		window.onbeforeunload = null;
 		_status.reloading = true;
@@ -152,7 +157,7 @@ export default function nodeReady({ lib, game, get, _status, ui }) {
 	game.open = function (url) {
 		window.open(url);
 	};
-	game.openOnlineLobby = url => require("electron").ipcRenderer.invoke("noname:open-online", url);
+	game.openOnlineLobby = url => window.require("electron").ipcRenderer.invoke("noname:open-online", url);
 	
 	/**
 	 * 检查指定的路径是否是一个文件
