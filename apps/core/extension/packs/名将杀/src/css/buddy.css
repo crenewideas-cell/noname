@@ -1,0 +1,36 @@
+#buddy {
+    width: 118px;
+    height: 118px;
+    left: 270px;
+    top: 280px;
+    z-index: 20;
+    display: block;
+    transition: unset;
+    background-repeat: no-repeat;
+    position: absolute;
+    background-image: url("../../image/buddy/feifei/default.png");
+    background-size: 100%, 100%;
+}
+#buddy.buddyDrag {
+    height: 167px;
+}
+
+.buddyImage {
+    position: absolute;
+    right: 0%;
+    top: 0%;
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+}
+
+.buddyText {
+    width: 100%;
+    height: 20%;
+    font-family: 'shousha';
+    font-size: 12px;
+    text-align: center;
+    bottom: 0;
+    position: absolute;
+    margin-bottom: inherit;
+}

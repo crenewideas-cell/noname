@@ -1,0 +1,95 @@
+.card.mark.mj-mark.overflowmark {
+    background: none;
+    width: 27px;
+    height: 15px;
+    line-height: 15px;
+    border-radius: 0px;
+    background-repeat: no-repeat !important;
+    
+    display: flex;
+    white-space: nowrap;
+    background: rgba(30, 30, 30, 0.7);
+    margin-bottom: 1px;
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+.card.mark.mj-mark.overflowmark>.background.skillmark {
+    text-align: center;
+    font-family: 'shousha';
+    padding-top: 0px;
+    font-size: 15px;
+
+    display: inline;
+    position: static;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    line-height: 17px;
+    font-size: 13px;
+    color: white;
+    background-image: none;
+    box-shadow: none;
+    animation: none;
+    background-repeat: no-repeat;
+}
+.card.mark.mj-mark.overflowmark>.markcount.menubutton {
+    white-space: nowrap;
+    background: rgba(30, 30, 30, 0.7);
+    /*border: 1px solid rgba(255, 255, 255, 0.8);*/
+    font-size: 13px;
+    color: white;
+    left: 32px;
+    top: 2px;
+}
+.card.mark.mj-mark.overflowmark.mj-mark-long {
+    display: inline-table;
+}
+.card.mark.mj-mark.overflowmark.mj-mark-long>.markcount.menubutton {
+    left: 54px;
+}
+
+.card.mark.mj-mark {
+    background: none;
+    width: 27px;
+    height: 15px;
+    line-height: 15px;
+    border-radius: 0px;
+
+    display: flex;
+    white-space: nowrap;
+    background: rgba(30, 30, 30, 0.7);
+    margin-bottom: 1px;
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.card.mark.mj-mark>.background.skillmark {
+    text-align: center;
+    font-family: 'shousha';
+    padding-top: 0px;
+    font-size: 15px;
+
+    display: inline;
+    position: static;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    line-height: 17px;
+    font-size: 13px;
+    color: white;
+    background-image: none;
+    box-shadow: none;
+    animation: none;
+}
+.card.mark.mj-mark.juexingji {
+    display: inline-table;
+    background: rgb(61, 123, 190);
+}
+.card.mark.mj-mark.limited {
+    display: inline-table;
+    background: rgb(192, 131, 1);
+}
+.card.mark.mj-mark.dutySkill {
+    display: inline-table;
+    background: rgb(222, 53, 53);
+}

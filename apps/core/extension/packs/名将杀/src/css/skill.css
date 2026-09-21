@@ -1,0 +1,618 @@
+
+
+/*--------位置(8人)------*/
+#arena[data-number="8"] > .player[data-position="1"] {
+	top: calc(30% - 128px);
+	left: calc(-300% / 94 + 4375% / 47 - 735px + 720px);
+}
+#arena[data-number="8"] > .player[data-position="2"] {
+	top: calc(8% - 34px);
+	left: calc(-300% / 94 + 3750% / 47 - 630px + 600px);
+}
+#arena[data-number="8"] > .player[data-position="3"] {
+	top: 0;
+	left: calc(-300% / 94 + 3125% / 47 - 525px + 480px);
+}
+#arena[data-number="8"] > .player[data-position="4"] {
+	top: 0;
+	left: calc(-300% / 94 + 2500% / 47 - 420px + 360px);
+}
+#arena[data-number="8"] > .player[data-position="5"] {
+	top: 0;
+	left: calc(-300% / 94 + 1875% / 47 - 315px + 240px);
+}
+#arena[data-number="8"] > .player[data-position="6"] {
+	top: calc(8% - 34px);
+	left: calc(-300% / 94 + 1250% / 47 - 210px + 120px);
+}
+#arena[data-number="8"] > .player[data-position="7"] {
+	top: calc(30% - 128px);
+	left: calc(-300% / 94 + 625% / 47 - 105px);
+}
+#arena[data-number="8"] > .player[data-position="0"] {
+	left: calc(-300% / 94 + 625% / 47 - 105px);
+}
+#arena > .player[data-position="0"] {
+	left: 0;
+}
+@media screen and (min-width: 1105px) {
+	#arena[data-number="8"] > .player[data-position="1"] {
+		left: calc(100% - 120px);
+	}
+	#arena[data-number="8"] > .player[data-position="2"] {
+		left: calc(500% / 6 - 100px);
+	}
+	#arena[data-number="8"] > .player[data-position="3"] {
+		left: calc(400% / 6 - 80px);
+	}
+	#arena[data-number="8"] > .player[data-position="4"] {
+		left: calc(300% / 6 - 60px);
+	}
+	#arena[data-number="8"] > .player[data-position="5"] {
+		left: calc(200% / 6 - 40px);
+	}
+	#arena[data-number="8"] > .player[data-position="6"] {
+		left: calc(100% / 6 - 20px);
+	}
+	#arena[data-number="8"] > .player[data-position="7"] {
+		left: 0;
+	}
+	#arena[data-number="8"] > .player[data-position="0"] {
+		left: 0;
+	}
+}
+/*--------位置(7人)------*/
+#arena[data-number="7"] > .player[data-position="1"] {
+	top: calc(30% - 128px);
+	left: calc(100% - 120px);
+}
+#arena[data-number="7"] > .player[data-position="2"] {
+	top: calc(8% - 34px);
+	left: calc(80% - 96px);
+}
+#arena[data-number="7"] > .player[data-position="3"] {
+	top: 0;
+	left: calc(60% - 72px);
+}
+#arena[data-number="7"] > .player[data-position="4"] {
+	top: 0;
+	left: calc(40% - 48px);
+}
+#arena[data-number="7"] > .player[data-position="5"] {
+	top: calc(8% - 34px);
+	left: calc(20% - 24px);
+}
+#arena[data-number="7"] > .player[data-position="6"] {
+	top: calc(30% - 128px);
+	left: 0;
+}
+/*--------位置(6人)------*/
+#arena[data-number="6"] > .player[data-position="1"] {
+	top: calc(30% - 128px);
+	left: calc(100% - 120px);
+}
+#arena[data-number="6"] > .player[data-position="2"] {
+	top: 0px;
+	left: calc(75% - 90px);
+}
+#arena[data-number="6"] > .player[data-position="3"] {
+	top: 0;
+	left: calc(50% - 60px);
+}
+#arena[data-number="6"] > .player[data-position="4"] {
+	top: 0px;
+	left: calc(25% - 30px);
+}
+#arena[data-number="6"] > .player[data-position="5"] {
+	top: calc(30% - 128px);
+	left: 0;
+}
+/*--------位置(5人)------*/
+#arena[data-number="5"] > .player[data-position="1"] {
+	top: calc(30% - 128px);
+	left: calc(100% - 120px);
+}
+#arena[data-number="5"] > .player[data-position="2"] {
+	top: 0;
+	left: calc(200% / 3 - 80px);
+}
+#arena[data-number="5"] > .player[data-position="3"] {
+	top: 0;
+	left: calc(100% / 3 - 40px);
+}
+#arena[data-number="5"] > .player[data-position="4"] {
+	top: calc(30% - 128px);
+	left: 0;
+}
+/*--------位置(4人)------*/
+#arena[data-number="4"] > .player[data-position="1"] {
+	top: calc(30% - 128px);
+	left: calc(100% - 120px);
+}
+#arena[data-number="4"] > .player[data-position="2"] {
+	top: 0;
+	left: calc(50% - 60px);
+}
+#arena[data-number="4"] > .player[data-position="3"] {
+	top: calc(30% - 128px);
+	left: 0;
+}
+/*--------位置(3人)------*/
+#arena[data-number="3"] > .player[data-position="1"] {
+	top: calc(60% / 3 - 88px);
+	left: calc(75% + 80px);
+}
+#arena[data-number="3"] > .player[data-position="2"] {
+	top: calc(60% / 3 - 88px);
+	left: calc(25% - 200px);
+}
+/*--------位置(2人)------*/
+#arena[data-number="2"] > .player[data-position="1"] {
+	top: 0;
+	left: calc(50% - 60px);
+}
+
+/**结束回合*/
+#control [data-id="stayrigth"] {
+  /*transform: translateX(349px) !important;*/
+  left: 60px;
+  transform: none !important;
+}
+/*结束回合与不无懈*/
+[data-number = "8"] > #control > div.stayleft {
+  /*transform: translateX(349px) !important;*/
+  left: 60px;
+  transform: none !important;
+}
+/**取消*/
+#control [data-id="confirm"] {
+    transform: translateX(-37px) !important;
+}
+
+/**取消*/
+#control [data-confirm="true"] {
+    pointer-events: none;
+}
+
+#control [data-confirm="true"] > * {
+    opacity: 0.6 !important;
+    cursor: default !important;
+}
+
+#control [data-confirm="true"] .selectable {
+    pointer-events: auto;
+    opacity: 1 !important;
+}
+
+
+#control [data-id="skills-control"] {
+  background: none;
+  box-shadow: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: 129px;
+  /*height: 150px;
+  min-height: 150px;*/
+  min-height: 100px;
+  bottom: -7px;
+  right: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
+  pointer-events: none;
+  transition: none !important;
+}
+
+#control [data-id="skills-control"] {
+    transform: none !important;
+    top: 80px;
+    left: calc(80% + 10px);
+    /*flex-direction: column-reverse;*/
+    max-width: 127px;
+}
+
+/**skills*/
+#control [data-id="skills-control"].control-max-width {
+	/*max-width: 320px;*/
+  max-width: 258px;
+  max-width: 127px;
+}
+
+#control [data-id="skills-control"].control-max-heigth {
+  top: -20px;
+  min-height: 200px;
+}
+
+/**skills2*/
+#control [data-id="skills-control"].control-max-heigth2 {
+  top: 25px;
+}
+
+#control [data-id="skills-control"].control-max-heigth2.control-max-heigth22 {
+  top: -22px;
+}
+/**skills3*/
+#control [data-id="skills-control"].control-max-heigth3 {
+  top: -78px;
+}
+#control [data-id="skills-control"].control-max-heigth3.control-max-heigth31 {
+  top: -28px;
+}
+#control [data-id="skills-control"].control-max-heigth3.control-max-heigth32 {
+  top: -74px;
+}
+#control [data-id="skills-control"].control-max-heigth3.control-max-heigth33 {
+  /*top: -132px;*/
+  top: -126px;
+}
+
+#control [data-id="skills-control"] div {
+  position: relative;
+  height: 40px;
+  width: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  pointer-events: auto;
+}
+
+#control [data-skill="true"] {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+  /*color: #ceb193;
+  font-family: "shousha";
+  text-shadow: black 0px 0px 2px;*/
+  position: relative;
+  height: 40px;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: inline-block !important;
+  /*text-overflow: ellipsis;*/
+  text-overflow: clip;
+  overflow-y: hidden;
+}
+
+#system {
+    width: calc(100% - 12px) !important;
+    left: 0 !important;
+    height: calc(80% - 140px);
+    overflow-y: scroll;
+}
+
+#system > div.shown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+#system > #system2 {
+    width: calc(100% - 140px);
+}
+
+.touchinfo {
+    font-family: "shousha";
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+}
+
+/*.touchinfo.right {
+    right: auto;
+}*/
+
+/**右手布局*/
+#arena > .player[data-position="0"],
+#arena > .player[data-position="0"]:not(.miniskin) {
+    left: auto;
+    right: 25px;
+}
+
+#arena > .player,
+#arena > .player:not(.miniskin) {
+    height: 180px;
+	width: 120px;
+	border-radius: 8px;
+	/*box-shadow: 0px -1px 3px black, 0px 3px 8px black;
+	background-image: linear-gradient(rgb(53, 38, 32), rgb(53, 38, 32));
+	transition-property: transform, opacity, left, top, right, bottom;*/
+}
+
+#arena.slim_player .player:not(.minskin):not(.fakeme) .avatar,
+#arena.slim_player .player.fullskin2:not(.minskin) .avatar2,
+#arena.uslim_player .player:not(.minskin):not(.fakeme) .avatar,
+#arena.uslim_player .player.fullskin2:not(.minskin) .avatar2,
+#arena.mslim_player .player:not(.minskin):not(.fakeme) .avatar,
+#arena.mslim_player .player.fullskin2:not(.minskin) .avatar2,
+#arena.lslim_player .player:not(.minskin):not(.fakeme) .avatar,
+#arena.lslim_player .player.fullskin2:not(.minskin) .avatar2 {
+    top: auto;
+    bottom: 0;
+    width: 81%;
+    height: 100%;
+    opacity: 1;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    border-radius: 8px;
+    transition-property: opacity, transform;
+}
+
+#arena.slim_player .player:not(.minskin):not(.fakeme) .avatar,
+#arena.uslim_player .player:not(.minskin):not(.fakeme) .avatar,
+#arena.mslim_player .player:not(.minskin):not(.fakeme) .avatar,
+#arena.lslim_player .player:not(.minskin):not(.fakeme) .avatar {
+    left: 22.4px;
+}
+
+#arena.slim_player .player.fullskin2:not(.minskin):not(.fakeme) .avatar,
+#arena.slim_player .player.fullskin2:not(.minskin) .avatar2,
+#arena.uslim_player .player.fullskin2:not(.minskin):not(.fakeme) .avatar,
+#arena.uslim_player .player.fullskin2:not(.minskin) .avatar2,
+#arena.mslim_player .player.fullskin2:not(.minskin):not(.fakeme) .avatar,
+#arena.mslim_player .player.fullskin2:not(.minskin) .avatar2,
+#arena.lslim_player .player.fullskin2:not(.minskin):not(.fakeme) .avatar,
+#arena.lslim_player .player.fullskin2:not(.minskin) .avatar2 {
+    width: 40%;
+}
+
+#arena.slim_player .player .hp, #window > .player:not(.minskin) .hp {
+    left: 100px;
+}
+
+#arena:not(.single-handcard):not(.chess) > #me #handcards1 {
+    left: 120px !important;
+    width: calc(75% - 120px) !important;
+}
+
+
+#arena > .player:not(.minskin) > .marks {
+    left: -15px;
+    left: auto;
+    right: -25px;
+}
+
+
+
+/*装备区*/
+.player[data-position="0"]:has(> .group)>.equips,
+#arena>.player[data-position="0"]:has(> .group):not(.minskin)>.equips {
+    position: fixed;
+    left: 78px;
+    max-height: fit-content;
+    max-height: 138px;
+    overflow-y: auto;
+    position: fixed;
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.player:has(> .group)>.equips, #arena>.player:has(> .group):not(.minskin)>.equips {
+    width: 95px;
+}
+
+.judges {
+    left: 0px;
+    top: 208px;
+}
+
+.player .judges {
+    height: 20px;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 5px;
+    left: 0;
+    bottom: -40px;
+    top: auto;
+}
+#arena > .player[data-position="0"] .judges,
+#arena > .player[data-position="0"]:not(.miniskin) .judges {
+    top: -30px;
+}
+
+.player .judges  > .card.fullskin > .info {
+  visibility: hidden;
+}
+
+#window:not(.nopointer) .player .judges > .card, #window:not(.nopointer) .player .marks > .card {
+    cursor: context-menu;
+    transform: none !important;
+}
+
+#window:not(.nopointer) .player .judges > .card, #window:not(.nopointer) .player .marks > .card {
+    cursor: context-menu;
+    transform: none !important;
+    position: relative;
+}
+
+
+
+
+.gameLogv {
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: rgba(0, 0, 0, 0.3) 0 0 0 1px;
+  text-align: center;
+  z-index: 10;
+  min-width: 400px;
+  min-height: 54px;
+  line-height: 54px;
+  animation: gameLogvMoveToShow 2s forwards;
+  border-radius: 4px;
+  font-size: 20px;
+}
+
+@keyframes gameLogvMoveToShow {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+    top: 25%;
+  }
+
+  100% {
+    opacity: 0;
+    top: 25%;
+  }
+}
+
+/*.card.fullskin > .name {
+    top: 7px;
+    transform: none !important;
+    left: 18px;
+    width: 75px;
+    height: 18px;
+    background-image: url(../../image/ui/cardstyle_bg.png);
+    writing-mode: initial;
+    -webkit-writing-mode: initial;
+    font-weight: bold;
+    text-shadow: 0 0 1px white, 0 0 3px white;
+    border: 1px solid black;
+    border-radius: 0px;
+}*/
+
+.card.fullskin > .name,
+.card.fullskin > .name.long,
+.card.fullimage > .name,
+.card.fullimage > .name.long {
+    top: 40px;
+    transform: none !important;
+}
+
+.dialog .buttons > .card > .name,
+.dialog .buttons > .card > .name.long {
+    top: 20px;
+}
+
+div:not(.handcards).menu-buttons > .button.card > .name,
+div:not(.handcards).menu-buttons > .button.card > .name.long {
+    top: 20px;
+}
+
+.card.fullskin > .info,
+.card.fullimage > .info {
+    transform: none !important;
+    display: flex;
+    flex-direction: column-reverse;
+    text-align: center;
+    left: 0;
+    width: 25px;
+    height: auto;
+    line-height: 12px;
+    text-shadow: 0 0 3px #ffffff, 0 0 8px #ffffff;
+    letter-spacing: 0px;
+    transform-origin: 0 0;
+    z-index: 1;
+    /*writing-mode: vertical-rl !important;
+    direction: rtl !important;*/
+}
+
+/*牌名*/
+.card.fullskin > .namex,
+.card.fullimage > .namex {
+    /*left: 12px;
+    width: 80px;
+    height: 18px;*/
+    top: 7px;
+    left: 10%;
+    width: 80%;
+    background-image: url(../../image/ui/cardstyle_bg.png);
+    font-weight: bold;
+    text-shadow: 0 0 1px white, 0 0 3px white;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/*选择弃置获得*/
+.dialog.mjs-skillDialog.fullheight {
+    height: calc(70% - 123px) !important;
+}
+.dialog.mjs-skillDialog > .content-container > .content > .buttons {
+    left: 5%;
+    max-width: 70%;
+    white-space: nowrap;
+    text-align: left;
+    overflow-x: scroll;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+    margin: 10px;
+    transition: none !important;
+}
+.dialog.mjs-skillDialog > .content-container > .content > .caption > .text.center {
+    /* writing-mode: sideways-lr; */
+    width: min-content;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    word-break: break-all;
+    left: 18%;
+    top: 30px;
+    margin: 0 0 !important;
+    transition: none !important;
+}
+.dialog.mjs-skillDialog >.characterBg {
+    position: absolute;
+    display: flex;
+    width: 250px;
+    height: 295px;
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    background-repeat: no-repeat;
+    -webkit-mask: radial-gradient(115px 160px at 125px 160px, #000 70%, transparent 100%);
+    z-index: -1;
+ }
+
+/*div:not(.handcards).menu-buttons > .button.card > .namex {
+    width: 70px;
+}
+.dialog > .content-container >.content >.buttons>.card.fullskin.button > .namex {
+    width: 70px;
+}
+#window > .dialog.popped > .content-container >.content >.buttons.smallzoom  >.card.fullskin.button > .namex {
+    width: 70px;
+}*/
+
+/*.card.fullskin > .info span {
+    flex-direction: column;
+    writing-mode: unset;
+}*/
+
+/*
+.player {
+	height: 180px;
+	width: 120px;
+	border-radius: 8px;
+	box-shadow:
+		0px -1px 3px black,
+		0px 3px 8px black;
+	background-image: linear-gradient(rgb(53, 38, 32), rgb(53, 38, 32));
+	transition-property: transform, opacity, left, top, right, bottom;
+}
+
+#arena.slim_player .player:not(.minskin):not(.fakeme) .avatar,
+#arena.uslim_player .player:not(.minskin):not(.fakeme) .avatar,
+#arena.mslim_player .player:not(.minskin):not(.fakeme) .avatar,
+#arena.lslim_player .player:not(.minskin):not(.fakeme) .avatar {
+    width: 114px;
+    height: 174px;
+    left: 3px;
+    top: 3px;
+}
+
+#arena.slim_player .player .hp,
+#arena.uslim_player .player .hp,
+#arena.mslim_player .player .hp,
+#arena.lslim_player .player .hp {
+    bottom: 15px;
+    left: 93px;
+}
+*/
