@@ -1,0 +1,341 @@
+
+juexing_guansuo.png
+size: 2047,2047
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+anse_0017
+  rotate: true
+  xy: 708, 9
+  size: 190, 234
+  orig: 210, 263
+  offset: 11, 14
+  index: -1
+baokai/0018
+  rotate: false
+  xy: 2, 1470
+  size: 634, 575
+  orig: 637, 581
+  offset: 3, 6
+  index: -1
+baokai/0019
+  rotate: true
+  xy: 2, 201
+  size: 631, 575
+  orig: 637, 581
+  offset: 3, 6
+  index: -1
+baokai/0020
+  rotate: true
+  xy: 577, 836
+  size: 632, 574
+  orig: 637, 581
+  offset: 3, 7
+  index: -1
+baokai/0022
+  rotate: false
+  xy: 1274, 1470
+  size: 633, 575
+  orig: 637, 581
+  offset: 3, 6
+  index: -1
+baokai/0023
+  rotate: false
+  xy: 638, 1470
+  size: 634, 575
+  orig: 637, 581
+  offset: 3, 6
+  index: -1
+baokai/0024
+  rotate: true
+  xy: 1153, 836
+  size: 632, 573
+  orig: 637, 581
+  offset: 3, 8
+  index: -1
+baokai/0025
+  rotate: true
+  xy: 2, 834
+  size: 634, 573
+  orig: 637, 581
+  offset: 3, 8
+  index: -1
+baokai/0026
+  rotate: true
+  xy: 579, 201
+  size: 633, 573
+  orig: 637, 581
+  offset: 3, 8
+  index: -1
+baokai/0027
+  rotate: true
+  xy: 1154, 203
+  size: 631, 572
+  orig: 637, 581
+  offset: 3, 9
+  index: -1
+fangsheguang/0016
+  rotate: true
+  xy: 1728, 795
+  size: 361, 273
+  orig: 361, 284
+  offset: 0, 1
+  index: -1
+heidi/0009
+  rotate: true
+  xy: 1868, 676
+  size: 117, 143
+  orig: 224, 253
+  offset: 72, 56
+  index: -1
+heidi/0010
+  rotate: false
+  xy: 1909, 1431
+  size: 122, 146
+  orig: 224, 253
+  offset: 69, 55
+  index: -1
+heidi/0011
+  rotate: false
+  xy: 1909, 1579
+  size: 127, 150
+  orig: 224, 253
+  offset: 67, 55
+  index: -1
+heidi/0012
+  rotate: false
+  xy: 1909, 1731
+  size: 130, 154
+  orig: 224, 253
+  offset: 66, 55
+  index: -1
+heidi/0013
+  rotate: false
+  xy: 1909, 1887
+  size: 133, 158
+  orig: 224, 253
+  offset: 65, 54
+  index: -1
+heidi/0014
+  rotate: false
+  xy: 1891, 1268
+  size: 142, 161
+  orig: 224, 253
+  offset: 58, 53
+  index: -1
+heidi/0015
+  rotate: false
+  xy: 1728, 1158
+  size: 138, 164
+  orig: 224, 253
+  offset: 57, 54
+  index: -1
+heidi/0016
+  rotate: true
+  xy: 1728, 1324
+  size: 144, 161
+  orig: 224, 253
+  offset: 57, 54
+  index: -1
+heidi/0022
+  rotate: true
+  xy: 1642, 14
+  size: 187, 224
+  orig: 224, 253
+  offset: 20, 17
+  index: -1
+heidi/0023
+  rotate: true
+  xy: 1413, 9
+  size: 192, 227
+  orig: 224, 253
+  offset: 18, 15
+  index: -1
+heidi/0024
+  rotate: true
+  xy: 944, 5
+  size: 194, 229
+  orig: 224, 253
+  offset: 17, 13
+  index: -1
+heidi/0025
+  rotate: true
+  xy: 474, 2
+  size: 197, 232
+  orig: 224, 253
+  offset: 19, 11
+  index: -1
+heidi/0026
+  rotate: true
+  xy: 239, 2
+  size: 197, 233
+  orig: 224, 253
+  offset: 19, 8
+  index: -1
+heidi/0027
+  rotate: true
+  xy: 2, 2
+  size: 197, 235
+  orig: 224, 253
+  offset: 19, 7
+  index: -1
+heidi/0028
+  rotate: true
+  xy: 1175, 2
+  size: 199, 236
+  orig: 224, 253
+  offset: 19, 6
+  index: -1
+heidi/0033
+  rotate: false
+  xy: 1728, 216
+  size: 212, 242
+  orig: 224, 253
+  offset: 12, 1
+  index: -1
+heidi/0035
+  rotate: true
+  xy: 1728, 460
+  size: 214, 243
+  orig: 224, 253
+  offset: 9, 2
+  index: -1
+
+juexing_guansuo2.png
+size: 1973,1973
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+baokai/0016
+  rotate: true
+  xy: 626, 267
+  size: 557, 548
+  orig: 637, 581
+  offset: 43, 14
+  index: -1
+baokai/0017
+  rotate: false
+  xy: 1263, 262
+  size: 613, 568
+  orig: 637, 581
+  offset: 16, 11
+  index: -1
+baokai/0021
+  rotate: false
+  xy: 635, 826
+  size: 626, 574
+  orig: 637, 581
+  offset: 8, 7
+  index: -1
+baokai/0028
+  rotate: false
+  xy: 2, 1399
+  size: 631, 572
+  orig: 637, 581
+  offset: 3, 9
+  index: -1
+baokai/0029
+  rotate: false
+  xy: 1268, 1400
+  size: 628, 571
+  orig: 637, 581
+  offset: 6, 10
+  index: -1
+baokai/0030
+  rotate: false
+  xy: 635, 1402
+  size: 631, 569
+  orig: 637, 581
+  offset: 3, 12
+  index: -1
+baokai/0031
+  rotate: false
+  xy: 2, 830
+  size: 625, 567
+  orig: 637, 581
+  offset: 8, 14
+  index: -1
+baokai/0032
+  rotate: false
+  xy: 2, 261
+  size: 622, 567
+  orig: 637, 581
+  offset: 8, 14
+  index: -1
+baokai/0033
+  rotate: false
+  xy: 1263, 832
+  size: 622, 566
+  orig: 637, 581
+  offset: 8, 14
+  index: -1
+heidi/0017
+  rotate: false
+  xy: 1789, 51
+  size: 182, 209
+  orig: 224, 253
+  offset: 20, 25
+  index: -1
+heidi/0018
+  rotate: false
+  xy: 1605, 46
+  size: 182, 214
+  orig: 224, 253
+  offset: 20, 22
+  index: -1
+heidi/0019
+  rotate: false
+  xy: 1420, 42
+  size: 183, 218
+  orig: 224, 253
+  offset: 19, 21
+  index: -1
+heidi/0020
+  rotate: false
+  xy: 1043, 44
+  size: 186, 221
+  orig: 224, 253
+  offset: 18, 19
+  index: -1
+heidi/0021
+  rotate: false
+  xy: 1231, 41
+  size: 187, 219
+  orig: 224, 253
+  offset: 18, 18
+  index: -1
+heidi/0029
+  rotate: false
+  xy: 839, 27
+  size: 202, 238
+  orig: 224, 253
+  offset: 18, 5
+  index: -1
+heidi/0030
+  rotate: false
+  xy: 634, 26
+  size: 203, 239
+  orig: 224, 253
+  offset: 18, 4
+  index: -1
+heidi/0031
+  rotate: false
+  xy: 427, 19
+  size: 205, 240
+  orig: 224, 253
+  offset: 17, 3
+  index: -1
+heidi/0032
+  rotate: false
+  xy: 216, 19
+  size: 209, 240
+  orig: 224, 253
+  offset: 15, 2
+  index: -1
+heidi/0034
+  rotate: false
+  xy: 2, 17
+  size: 212, 242
+  orig: 224, 253
+  offset: 12, 1
+  index: -1

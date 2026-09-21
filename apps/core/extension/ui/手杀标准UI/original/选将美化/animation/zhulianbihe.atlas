@@ -1,0 +1,97 @@
+
+zhulianbihe.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Bi111
+  rotate: true
+  xy: 2, 2
+  size: 77, 152
+  orig: 77, 152
+  offset: 0, 0
+  index: -1
+lz
+  rotate: false
+  xy: 406, 605
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+zhulianhebizi001
+  rotate: false
+  xy: 516, 878
+  size: 443, 131
+  orig: 443, 131
+  offset: 0, 0
+  index: -1
+zhulianhebizi001_00
+  rotate: false
+  xy: 2, 849
+  size: 512, 160
+  orig: 512, 160
+  offset: 0, 0
+  index: -1
+zhulianhebizi001_01
+  rotate: false
+  xy: 2, 687
+  size: 512, 160
+  orig: 512, 160
+  offset: 0, 0
+  index: -1
+zlbh_00
+  rotate: false
+  xy: 2, 485
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+zlbh_01
+  rotate: false
+  xy: 2, 283
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+zlbh_02
+  rotate: false
+  xy: 204, 485
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+zlbh_03
+  rotate: false
+  xy: 2, 81
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+zlbh_04
+  rotate: false
+  xy: 204, 283
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+zlbh_05
+  rotate: false
+  xy: 204, 81
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+zlbh_06
+  rotate: false
+  xy: 516, 676
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+zlbh_07
+  rotate: false
+  xy: 718, 676
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1

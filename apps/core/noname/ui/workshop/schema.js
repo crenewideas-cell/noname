@@ -1,4 +1,4 @@
-/** Data-only UI packages. No game rules, extension switches or executable code. */
+/** Declarative UI packages; runtime IDs reference bundled providers, never imported code. */
 export const FORMAT = "noname-ui-workshop";
 export const VERSION = 1;
 export const MAX_BYTES = 128 * 1024 * 1024;
@@ -40,7 +40,8 @@ export function validateManifest(input) {
 	assert(Object.keys(input.components).length <= Object.keys(PARTS).length, "部件数量无效");
 	for (const [id, part] of Object.entries(input.components)) {
 		assert(Object.hasOwn(PARTS, id) && record(part), `不支持的 UI 部件：${id}`);
-		assert(Object.keys(part).every(key => ["name", "settings", "assets", "style", "rules"].includes(key)), `部件 ${id} 含有不支持的字段`);
+		assert(Object.keys(part).every(key => ["name", "settings", "assets", "style", "rules", "runtime"].includes(key)), `部件 ${id} 含有不支持的字段`);
+		assert(part.runtime === undefined || (id === "home" && part.runtime === "rzsh") || (id !== "lobby" && part.runtime === "shousha"), "不支持的交互界面组件");
 		assert(text(part.name || "", 100), "部件名称无效");
 		assert(record(part.settings || {}) && record(part.assets || {}) && record(part.style || {}), `部件 ${id} 格式无效`);
 		for (const [key, value] of Object.entries(part.settings || {})) {

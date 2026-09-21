@@ -62,6 +62,17 @@ function getStatusInfo({ lib, get, _status }) {
 
 function normalizeError(reason: unknown): Error {
 	if (reason instanceof Error) return reason;
+	if (reason instanceof ErrorEvent) return reason.error instanceof Error ? reason.error : new Error(reason.message || `浏览器错误：${reason.filename || "未知来源"}`);
+	if (reason instanceof Event) {
+		// Event fields are non-enumerable; JSON.stringify only kept isTrusted,
+		// losing the resource URL and misleadingly blaming this error handler.
+		const target = reason.target;
+		const source = target instanceof HTMLImageElement || target instanceof HTMLMediaElement ? target.currentSrc || target.src
+			: target instanceof HTMLScriptElement ? target.src
+			: target instanceof HTMLLinkElement ? target.href
+			: target instanceof XMLHttpRequest ? target.responseURL : "";
+		return new Error(`资源事件：${reason.type}${source ? `；资源地址：${source}` : ""}`);
+	}
 
 	if (typeof reason === "string") {
 		return new Error(reason);
@@ -159,7 +170,7 @@ export function setOnError({ lib, game, get, _status }) {
 				};
 				// 解析step content的错误
 				if (frame.functionName === "packStep") {
-					const codes = _status.event.content.originals[_status.event.step];
+					const codes = _status.event?.content?.originals?.[_status.event.step];
 					if (typeof codes == "function") {
 						const regex = /<anonymous>:(\d+):\d+/;
 						const match = err.stack?.split("\n")[1].match(regex);

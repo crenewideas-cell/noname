@@ -116,6 +116,7 @@ export function returnToMainMenu() {
 /** Shared by the toolbar and both local/online settings menus. */
 export function openGameNavigation() {
 	if (_status.reloading) return;
+	if (!_status.connectMode && !game.online && lib.config.mode !== "connect" && lib.uiWorkshop?.openGameMenu?.() === true) return;
 	if (activeDialog?.isConnected) {
 		activeDialog.querySelector("button")?.focus();
 		return;

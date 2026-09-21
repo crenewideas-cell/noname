@@ -3,6 +3,15 @@ import { game, ui, get, _status } from "noname";
 let panel, message, steps, selection, undo, reset, activeEvent;
 let resizeObserver, controlObserver, layoutFrame;
 const marked = new Set();
+const presentationOwners = new Set();
+// A UI provider owns its complete prompt/target presentation for its lifetime.
+// Releasing it restores the host guide without changing saved preferences.
+export function suspendSelectionGuide() {
+    const owner = {};
+    presentationOwners.add(owner);
+    clearSelectionGuide();
+    return () => presentationOwners.delete(owner);
+}
 const plain = value => String(value ?? "").replace(/<[^>]*>/g, "");
 
 function formatRange(min, max) {
@@ -44,7 +53,7 @@ function scheduleLayout() {
 // Display the engine's actual selection order and legal targets. This module
 // never adds candidates or changes a card/skill's target filters.
 export function updateSelectionGuide(event, ok) {
-    if (!event.isMine() || !event.filterTarget || !ui.arena || typeof window.__nonameHostEmit === "function") {
+    if (presentationOwners.size || !event.isMine() || !event.filterTarget || !ui.arena || typeof window.__nonameHostEmit === "function") {
         clearSelectionGuide(); return;
     }
     if (activeEvent !== event) clearSelectionGuide();

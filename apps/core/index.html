@@ -120,4 +120,65 @@
 		<strong style="font-size:26px;letter-spacing:.2em">无名杀</strong>
 		<span>正在载入游戏…</span>
 	</div>
+	<script>
+		// Paint the selected UI before the game/module graph loads. Only a fixed,
+		// known local appearance is cached here; no package HTML/code is executed.
+		try {
+			const status = document.getElementById("noname-boot-status");
+			const safe = new URLSearchParams(location.search).has("uiSafe");
+			window.nonameApplyBootAppearance = function (runtime) {
+				if (!status.isConnected || safe) return;
+				status.style.visibility = "visible";
+				if (status.dataset.runtime === runtime) return;
+				status.dataset.runtime = runtime || "default";
+				if (runtime === "shousha") {
+					status.style.background = "#211a12 url('extension/手杀标准UI/original/如真似幻/images/hom.jpg') center/100% 100%";
+					const frame = document.createElement("iframe");
+					frame.title = "手杀标准UI · 加载中";
+					frame.src = "extension/手杀标准UI/boot.html";
+					frame.style.cssText = "position:absolute;inset:0;width:100%;height:100%;border:0";
+					status.replaceChildren(frame);
+					return;
+				}
+				status.innerHTML = '<strong style="font-size:26px;letter-spacing:.2em">无名杀</strong><span>正在载入游戏…</span>';
+				if (runtime !== "rzsh") { status.style.background = "#172326"; return; }
+				status.style.background = "#211a12 url('extension/如真似幻/images/hom.jpg') center/cover";
+				status.style.color = "#dfc594";
+				const logo = status.querySelector("strong");
+				logo.textContent = ""; logo.setAttribute("aria-label", "无名杀");
+				logo.style.cssText = "display:block;width:528px;height:224px;background:url('extension/如真似幻/spine/loding.png') -657px -170px;transform:scale(.8);margin:auto";
+				status.querySelector("span").textContent = "加载中 · · ·";
+			};
+			const cached = localStorage.getItem("noname-ui-workshop-boot");
+			if (cached || safe) window.nonameApplyBootAppearance(cached);
+			else {
+				// Upgrade older installations whose selected suite was only in IDB.
+				// Read the existing config; never install a suite or create a database.
+				status.style.visibility = "hidden";
+				const reveal = setTimeout(() => { status.style.visibility = "visible"; }, 1500);
+				let prefix = "noname_0.9_";
+				if (typeof __dirname === "string" && __dirname.length) {
+					for (const part of __dirname.split("/")) if (part) prefix += /[A-Za-z]/.test(part[0]) ? part[0] : "_";
+					prefix += "_";
+				}
+				const request = indexedDB.open(prefix + "data");
+				const finish = runtime => { clearTimeout(reveal); window.nonameApplyBootAppearance(runtime); };
+				request.onupgradeneeded = () => request.transaction.abort();
+				request.onerror = () => finish("default");
+				request.onsuccess = () => {
+					const db = request.result;
+					if (!db.objectStoreNames.contains("config") || !db.objectStoreNames.contains("data")) { db.close(); finish("default"); return; }
+					const transaction = db.transaction(["config", "data"], "readonly");
+					transaction.oncomplete = () => db.close();
+					transaction.onabort = () => { db.close(); finish("default"); };
+					const selected = transaction.objectStore("config").get("ui_workshop_active");
+					selected.onsuccess = () => {
+						if (["builtin-shousha-standard", "shousha-standard"].includes(selected.result)) { finish("shousha"); return; }
+						const pack = transaction.objectStore("data").get("ui-workshop:" + selected.result);
+						pack.onsuccess = () => finish(pack.result?.manifest?.components?.home?.runtime || "default");
+					};
+				};
+			}
+		} catch {}
+	</script>
 </body>

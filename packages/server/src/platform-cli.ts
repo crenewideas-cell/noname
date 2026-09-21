@@ -1,6 +1,9 @@
 import { createPlatform } from "./platform/index";
+import { reclaimPort } from "../../../scripts/reclaim-port.mjs";
+const port = Number(process.env.PORT || 8082);
+await reclaimPort(port);
 const app = await createPlatform();
-await app.listen({ port: Number(process.env.PORT || 8082), host: process.env.HOST || "127.0.0.1" });
+await app.listen({ port, host: process.env.HOST || "127.0.0.1" });
 let stopping = false;
 async function stop() {
   if (stopping) return; stopping = true;

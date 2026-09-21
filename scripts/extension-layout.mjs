@@ -26,7 +26,12 @@ export function classifiedExtensionsPlugin(core) {
       if (clean.startsWith("/extension/")) logical = path.join(core, clean.slice(1));
       else if (importer && clean.startsWith(".")) logical = path.resolve(path.dirname(importer.split("?")[0]), clean);
       else if (clean.replaceAll("\\", "/").startsWith(logicalRoot)) logical = clean;
-      if (logical && logical.replaceAll("\\", "/").startsWith(logicalRoot) && physical(logical) !== logical) return logical.replaceAll("\\", "/") + source.slice(clean.length);
+      if (logical && logical.replaceAll("\\", "/").startsWith(logicalRoot) && physical(logical) !== logical) {
+        // PostCSS resolves @import against the module filename on disk, not
+        // through Vite's logical extension resolver. Give CSS its real path.
+        const resolved = clean.endsWith(".css") ? physical(logical) : logical;
+        return resolved.replaceAll("\\", "/") + source.slice(clean.length);
+      }
     },
     async load(id) {
       const clean = id.split("?")[0];
@@ -36,17 +41,44 @@ export function classifiedExtensionsPlugin(core) {
       this.addWatchFile(file);
       return fs.readFile(file, "utf8");
     },
+    handleHotUpdate(context) {
+      const changed=context.file.replaceAll("\\", "/");
+      const affected=new Set(context.modules);
+      // Logical extension IDs and their physical source paths differ. Vite's
+      // watch event must invalidate the logical modules as well as disk IDs.
+      for(const module of context.server.moduleGraph.idToModuleMap.values()) {
+        const clean=module.id?.split("?")[0];
+        if(clean?.startsWith(logicalRoot)&&physical(clean).replaceAll("\\", "/")===changed) {
+          context.server.moduleGraph.invalidateModule(module);
+          affected.add(module);
+        }
+      }
+      return [...affected];
+    },
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         try {
           const url = new URL(req.url, "http://localhost");
-          const name = decodeURIComponent(url.pathname);
+          // Legacy assets include literal percent signs (for example %.png).
+          // Escape only bare %, retaining already encoded UTF-8 and %25 paths.
+          const pathname = url.pathname.replace(/%(?![\da-f]{2})/gi, "%25");
+          const name = decodeURIComponent(pathname);
+          if (pathname !== url.pathname) req.url = pathname + url.search;
           if (name.startsWith("/extension/") && !/\.(?:js|ts|css)$/.test(name) && !(name.endsWith(".json") && url.searchParams.has("import"))) {
             const file = resolveExtensionPath(core, name);
             req.url = "/" + path.relative(core, file).split(path.sep).map(encodeURIComponent).join("/") + url.search;
           }
           next();
-        } catch (error) { next(error); }
+        } catch (error) {
+          if (error instanceof URIError) {
+            // Invalid UTF-8 is a bad request, not a Vite internal error overlay.
+            res.statusCode = 400;
+            res.setHeader("Content-Type", "text/plain; charset=utf-8");
+            res.end("Malformed URL encoding");
+            return;
+          }
+          next(error);
+        }
       });
     },
   };

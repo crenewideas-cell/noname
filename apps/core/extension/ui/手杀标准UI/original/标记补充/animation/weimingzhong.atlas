@@ -1,0 +1,13 @@
+
+weimingzhong.png
+size: 131,45
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+weimingzhong
+  rotate: false
+  xy: 2, 2
+  size: 127, 41
+  orig: 127, 41
+  offset: 0, 0
+  index: -1

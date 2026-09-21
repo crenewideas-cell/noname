@@ -1,19 +1,23 @@
 import { lib, game } from "noname";
 import { PARTS, SETTING_KEYS, MIME, clone, newId, emptyPack, validateManifest, validateRecord, referencedAssets } from "./schema.js";
 import { mountAppearance } from "./runtime.js";
+import { builtinPacks } from "./presets.js";
 
 const PREFIX = "ui-workshop:";
-/** @typedef {{version: number, registerExtension: typeof registerExtension, use: typeof usePack, ownsSetting: (key: string) => boolean, open: () => Promise<void>, error?: string}} WorkshopAPI */
+/** @typedef {{version: number, registerExtension: typeof registerExtension, use: typeof usePack, ownsSetting: (key: string) => boolean, open: () => Promise<void>, openRooms?: (mode: string) => Promise<unknown>, openSkins?: (id?: string) => Promise<unknown>, openSettings?: (page: string) => Promise<void>, openSuiteSettings?: () => void, prepareCharacters?: () => Promise<void>, error?: string}} WorkshopAPI */
 let dispose;
 let urls = [];
 let baseline;
 let loaded;
+let disposeProvider;
 let mutation = Promise.resolve();
 const serial = action => { const result = mutation.then(action); mutation = result.catch(() => {}); return result; };
 export const catalog = () => Array.isArray(lib.config.ui_workshop_catalog) ? lib.config.ui_workshop_catalog : [];
 export const activeId = () => lib.config.ui_workshop_active || "";
 export async function readPack(id) {
 	if (!/^[a-zA-Z0-9_-]{1,100}$/.test(id)) throw new Error("套装 ID 无效");
+	const preset = builtinPacks().find(pack => pack.manifest.id === id);
+	if (preset) return validateRecord(preset);
 	const data = await game.getDB("data", PREFIX + id);
 	if (!data) throw new Error("套装素材不存在，请重新导入");
 	return validateRecord(data);
@@ -57,11 +61,20 @@ export function deletePack(id) {
 }
 export function usePack(id) {
 	return serial(async () => {
-		if (id) { const pack = await readPack(id); checkNativeSettings(pack.manifest); }
+		const pack = id ? await readPack(id) : undefined;
+		if (pack) checkNativeSettings(pack.manifest);
 		const previous = activeId();
-		if (previous === id) return;
+		if (previous === id) { cacheBootAppearance(pack); return; }
 		await commit({ ui_workshop_previous: previous, ui_workshop_active: id });
+		cacheBootAppearance(pack);
 	});
+}
+function cacheBootAppearance(pack) {
+	try {
+		const runtime = pack?.manifest.components.home?.runtime;
+		localStorage.setItem("noname-ui-workshop-boot", ["rzsh", "shousha"].includes(runtime) ? runtime : "default");
+		window.nonameApplyBootAppearance?.(runtime);
+	} catch { /* Optional first-paint cache; IndexedDB remains authoritative. */ }
 }
 export async function undoPack() {
 	if (lib.config.ui_workshop_previous === undefined) throw new Error("没有可撤销的应用记录");
@@ -69,6 +82,7 @@ export async function undoPack() {
 	await usePack(previous);
 }
 export function releaseAppearance() {
+	disposeProvider?.(); disposeProvider = undefined;
 	dispose?.(); dispose = undefined;
 	urls.forEach(url => URL.revokeObjectURL(url)); urls = [];
 }
@@ -82,25 +96,89 @@ function render(pack) {
 export async function initializeWorkshop() {
 	baseline = Object.fromEntries(SETTING_KEYS.map(key => [key, lib.config[key]]));
 	lib.uiWorkshop = { version: 1, registerExtension, use: usePack, ownsSetting: key => !!loaded && Object.values(loaded.manifest.components).some(part => Object.hasOwn(part.settings || {}, key)), open: async () => (await import("./manager.js")).openWorkshop() };
+	lib.uiWorkshop.openRooms = async mode => (await import("../../online/entry.js")).openOnlineRooms(mode);
+	lib.uiWorkshop.openSkins = async id => (await import("../skinGallery.js")).openSkinGallery(id);
+	lib.uiWorkshop.openSettings = async page => (await import("../lobbySettings.js")).openLobbySettings(page);
+	lib.uiWorkshop.prepareCharacters = async () => {
+		for (const [name, pack] of Object.entries(lib.imported.character || {})) {
+			if (pack.character) lib.characterPack[name] = pack.character;
+			Object.assign(lib.translate, pack.translate || {});
+			lib.translate[name + "_character_config"] ||= pack.translate?.[name] || lib.translate[name] || name;
+		}
+	};
+	await repairBuiltinCopies().catch(error => {
+		console.warn("UI 套装重复记录暂未整理，下次启动会重试", error);
+		lib.uiWorkshop.error = "旧套装重复记录暂未整理，请检查本地存储空间；仍可正常选择和使用套装。";
+	});
 	window.addEventListener("keydown", event => {
 		if (!event.ctrlKey || !event.shiftKey || event.code !== "KeyU") return;
 		event.preventDefault(); event.stopImmediatePropagation();
 		void lib.uiWorkshop.open().catch(error => alert(`无法打开 UI 工坊：${error.message || error}`));
 	}, { capture: true });
 	if (new URLSearchParams(location.search).has("uiSafe")) return;
-	if (!activeId()) return;
+	if (!activeId()) { cacheBootAppearance(); return; }
 	try {
 		loaded = await readPack(activeId());
+		cacheBootAppearance(loaded);
 		checkNativeSettings(loaded.manifest);
 		for (const part of Object.values(loaded.manifest.components)) Object.assign(lib.config, part.settings || {});
 		render(loaded);
+		if (loaded.manifest.components.home?.runtime === "rzsh") {
+			const provider = await import(/* @vite-ignore */ new URL(`${lib.assetURL}extension/如真似幻/extension.js`, document.baseURI).href);
+			await provider.activate();
+		}
+		if (Object.values(loaded.manifest.components).some(part => part.runtime === "shousha")) {
+			const provider = await import(/* @vite-ignore */ new URL(`${lib.assetURL}extension/手杀标准UI/extension.js`, document.baseURI).href);
+			disposeProvider = await provider.activate(loaded.manifest);
+		}
 	} catch (error) {
 		loaded = undefined;
+		cacheBootAppearance();
 		Object.assign(lib.config, baseline);
 		releaseAppearance();
 		console.error("UI 套装加载失败，已回退原有外观", error);
 		lib.uiWorkshop.error = `UI 套装加载失败，已使用原有外观：${error.message || error}`;
 	}
+}
+
+/** Old quick-apply saved fresh copies of builtin, active and undo packs.
+ * Collapse byte-identical legacy copies once; keep edited/renamed variants. */
+export function repairBuiltinCopies() {
+	return serial(async () => {
+		if (!lib.db || lib.config.ui_workshop_builtin_repair === 2) return;
+		const stable = value => JSON.stringify(value, function (key, item) {
+			return item && typeof item === "object" && !Array.isArray(item)
+				? Object.fromEntries(Object.keys(item).sort().map(key => [key, item[key]])) : item;
+		});
+		const fingerprint = manifest => { const { id, ...content } = manifest; return stable(content); };
+		const candidates = new Map(builtinPacks().map(pack => [fingerprint(pack.manifest), [pack]]));
+		const aliases = new Map();
+		const digests = new WeakMap();
+		async function digest(pack) {
+			if (!digests.has(pack)) digests.set(pack, Promise.all(Object.entries(pack.assets).sort(([a],[b]) => a.localeCompare(b)).map(async ([name,blob]) => {
+				const hash = await crypto.subtle.digest("SHA-256", await blob.arrayBuffer());
+				return [name, ...new Uint8Array(hash)].join(":");
+			})).then(parts => parts.join("|")));
+			return digests.get(pack);
+		}
+		for (const entry of catalog()) {
+			try {
+				const pack = await readPack(entry.id);
+				const key = fingerprint(pack.manifest), matches = candidates.get(key) || [];
+				let canonical;
+				for (const match of matches) if (await digest(match) === await digest(pack)) {canonical=match.manifest.id;break;}
+				if (canonical) aliases.set(entry.id, canonical);
+				else {matches.push(pack);candidates.set(key,matches);}
+			} catch { /* Keep damaged entries visible for manual recovery/deletion. */ }
+		}
+		await commit({
+			ui_workshop_builtin_repair: 2,
+			ui_workshop_catalog: catalog().filter(entry => !aliases.has(entry.id)),
+			ui_workshop_active: aliases.get(activeId()) || activeId(),
+			...(lib.config.ui_workshop_previous !== undefined ? { ui_workshop_previous: aliases.get(lib.config.ui_workshop_previous) || lib.config.ui_workshop_previous } : {}),
+		});
+		// Keep old data records for recovery. They no longer appear in the catalog.
+	});
 }
 export function checkNativeSettings(manifest) {
 	for (const part of Object.values(manifest.components)) for (const [key, value] of Object.entries(part.settings || {})) {
@@ -183,6 +261,14 @@ export async function captureCurrent() {
 			pack.manifest.components[id] = { ...clone(part), settings: { ...pack.manifest.components[id].settings, ...part.settings } };
 		}
 		Object.assign(pack.assets, loaded.assets);
+	}
+	// The interactive provider selects its splash for this boot only. Capturing
+	// it as a stock mode template would make the otherwise valid mix uneditable.
+	if (pack.manifest.components.home.runtime === "rzsh" && pack.manifest.components.modes.settings.splash_style === "rzsh-modern") {
+		pack.manifest.components.modes.settings.splash_style = ["style1", "style2"].includes(baseline?.splash_style) ? baseline.splash_style : "style1";
+	}
+	if (pack.manifest.components.home.runtime === "shousha" && pack.manifest.components.modes.settings.splash_style === "shousha-standard") {
+		pack.manifest.components.modes.settings.splash_style = ["style1", "style2"].includes(baseline?.splash_style) ? baseline.splash_style : "style1";
 	}
 	checkNativeSettings(pack.manifest);
 	return validateRecord(pack);

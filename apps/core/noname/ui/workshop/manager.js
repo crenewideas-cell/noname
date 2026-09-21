@@ -34,7 +34,7 @@ export async function openWorkshop() {
 		if (!preset) return readPack(id);
 		return { manifest: clone(preset.manifest), assets: {} };
 	};
-	let previewDispose, previewURLs = [], thumbnailURLs = [];
+	let previewDispose, previewURLs = [], thumbnailURLs = [], previewScreen = "home", previewGeneration = 0;
 	const priorFocus = document.activeElement;
 	const previousInert = [...document.body.children].filter(node => node instanceof HTMLElement).map(node => [node, node.inert]);
 	previousInert.forEach(([node]) => { node.inert = true; });
@@ -86,6 +86,7 @@ export async function openWorkshop() {
 	}
 	async function saved(copy = false) {
 		checkNativeSettings(draft.manifest);
+		if (!copy && !dirty && (draft.manifest.id.startsWith("builtin-") || catalog().some(item => item.id === draft.manifest.id))) return draft;
 		const pack = await savePack(draft, copy || draft.manifest.id === activeId() || draft.manifest.id.startsWith("builtin-"));
 		draft = pack; dirty = false; selectedLibrary = pack.manifest.id;
 		renderSidebar(); updatePreview(); return pack;
@@ -132,6 +133,12 @@ export async function openWorkshop() {
 		for (const item of available()) values[item.id] = `${item.name}${item.id === activeId() ? " · 使用中" : ""}`;
 		select(sidebar, "套装", values, selectedLibrary, value => { selectedLibrary = value; });
 		const commands = el("div", sidebar, undefined, "library-actions");
+		action(commands, "一键使用所选套装", async () => {
+			if (!selectedLibrary) throw new Error("请先选择套装");
+			await canReload();
+			if (!mayReplace()) return;
+			await usePack(selectedLibrary); reloadLobby();
+		}, "primary");
 		action(commands, "载入整套到编辑器", async () => {
 			if (!selectedLibrary) throw new Error("请先选择套装");
 			if (!mayReplace()) return;
@@ -185,6 +192,7 @@ export async function openWorkshop() {
 			});
 		}
 		el("h3", editor, "素材");
+		if (part.runtime) el("p", editor, `此部件使用${part.runtime === "shousha" ? "手杀标准UI" : "如真似幻"}内置素材与界面程序，导出时会一并打包。下方可添加自己的覆盖素材。`, "muted");
 		el("p", editor, "图片支持 PNG / JPG / WebP / GIF / AVIF；字体支持 WOFF / WOFF2 / TTF / OTF。素材会复制到套装中。", "muted");
 		for (const slot of PARTS[partId].slots) assetRow(part, slot);
 		if (PARTS[partId].map) {
@@ -247,20 +255,37 @@ export async function openWorkshop() {
 		const path = `assets/${newId()}.${extension}`; pack.assets[path] = file; pack.manifest.components[id].assets[slot] = path;
 	}
 	function updatePreview() {
+		const generation = ++previewGeneration;
 		previewDispose?.(); previewDispose = undefined; previewURLs.forEach(url => URL.revokeObjectURL(url)); previewURLs = [];
 		preview.replaceChildren(); el("h2", preview, "素材搭配预览");
 		el("p", preview, "这是素材与样式的示意预览；本体主题、布局和启动模板在应用后生效。", "muted");
-		const frame = el("iframe", preview); frame.title = "UI 素材预览"; frame.setAttribute("sandbox", "allow-same-origin");
+		if (draft.manifest.components.home?.runtime === "rzsh") el("p", preview, "已包含如真似幻交互大厅。动画、原版菜单与模式选择会在应用后整套启用；下方仅预览其余素材搭配。", "muted");
+		const shousha = Object.values(draft.manifest.components).some(part => part.runtime === "shousha");
+		if (shousha) {
+			el("p", preview, "手杀标准UI：登录页播放原版动画；大厅、选将和对局展示原版参考图。完整交互在应用套装后启用。所有依赖封装在套装内部，不列为独立扩展。", "muted");
+			select(preview, "预览页面", {login:"登录界面",home:"大厅 / 模式选择",arena:"对局 / 卡牌 / 控件"}, previewScreen, value => {previewScreen=value;updatePreview();});
+		}
+		const frame = el("iframe", preview); frame.title = "UI 素材预览"; frame.setAttribute("sandbox", shousha ? "allow-same-origin allow-scripts" : "allow-same-origin");
 		frame.srcdoc = `<!doctype html><html><head><style>body{margin:0;color:#eddfc5;font:14px sans-serif;background:#18283a}#splash{padding:16px;background:#283748}h2{font-size:18px}.lobby-modes{display:flex;gap:10px}.lobby-mode{width:95px;height:106px;background:#596573;border:1px solid #bbab82;border-radius:8px;color:#fff}.lobby-art{width:65px;height:65px;object-fit:cover}.online-lobby{padding:12px;background:#34434c}#window{padding:16px}.cards{display:flex;gap:10px}.card{width:65px;height:88px;padding:8px;border-radius:6px;background:#d4c7a6;color:#1b2a3a}.infohidden{background:#786754}.control{display:inline-block;margin-top:12px;padding:7px 14px;background:#557085;border-radius:6px}.player{padding:6px;margin:12px 0;background:#3c5167}.hp>div{display:inline-block;background:#67b88f;width:15px;height:18px}.linexy{height:48px;width:3px;background:white;margin:8px auto}.menu{padding:9px;background:#334658}</style></head><body><section id="splash"><h2>主界面 · 选择模式</h2><main class="lobby-modes"><button class="lobby-mode" data-ui-mode="identity"><img class="lobby-art" alt="身份"><br>身份</button><button class="lobby-mode" data-ui-mode="guozhan"><img class="lobby-art" alt="国战"><br>国战</button></main></section><main class="online-lobby">联机大厅 · 房间列表</main><section id="window"><div class="cards"><div class="card" data-card-name="sha">杀</div><div class="card" data-card-name="shan">闪</div><div class="card infohidden"></div></div><div class="player">武将框 <div class="hp" data-condition="high"><div></div><div></div><div class="lost"></div></div></div><div class="control">确认出牌</div><div class="linexy"></div><div class="menu">菜单与弹窗</div></section></body></html>`;
-		frame.onload = () => {
+		frame.onload = async () => {
 			if (!frame.isConnected) return;
 			try {
 				const valid = validateRecord(draft); const lookup = {};
+				let runtimeDispose;
+				if (shousha) {
+					const provider = await import(/* @vite-ignore */ new URL(`${lib.assetURL}extension/手杀标准UI/extension.js`, document.baseURI).href);
+					if (generation !== previewGeneration || !frame.isConnected) return;
+					const body = frame.contentDocument.body;
+					if (previewScreen !== "arena") body.replaceChildren();
+					runtimeDispose = await provider.mountPreview(body, valid.manifest, previewScreen);
+					if (generation !== previewGeneration || !frame.isConnected) {runtimeDispose?.();return;}
+				}
 				for (const [path, blob] of Object.entries(valid.assets)) { lookup[path] = URL.createObjectURL(blob); previewURLs.push(lookup[path]); }
-				previewDispose = mountAppearance(valid.manifest, path => lookup[path], frame.contentDocument.head);
+				const appearanceDispose = mountAppearance(valid.manifest, path => lookup[path], frame.contentDocument.head);
+				previewDispose = () => {appearanceDispose();runtimeDispose?.();};
 			} catch (error) { message(error.message || String(error), true); }
 		};
-		const lines = Object.entries(draft.manifest.components).map(([id, part]) => `${PARTS[id].name}：${part.name || "自定义"} · ${Object.keys(part.assets || {}).length} 项素材`);
+		const lines = Object.entries(draft.manifest.components).map(([id, part]) => `${PARTS[id].name}：${part.name || "自定义"} · ${part.runtime ? "内置界面素材 + " : ""}${Object.keys(part.assets || {}).length} 项自定义素材`);
 		el("p", preview, lines.join("\n"), "summary muted");
 	}
 	busy = true; workspace.inert = true; toolbar.inert = true;

@@ -1,0 +1,9 @@
+/* Skin positioning controls referenced by the bundled editor. */
+.adjustBox { position:relative; box-sizing:border-box; width:100%; padding:14px; color:#ead9b0; background:#29251fed; border:1px solid #a68a50; border-radius:6px; }
+.adjustBox .title { position:relative; margin-bottom:14px; font-size:20px; text-align:center; }
+.adjustBox .closeBtn { position:absolute; top:4px; right:9px; padding:4px; font-size:26px; cursor:pointer; }
+.adjustBox .btnGroup { position:relative; display:flex; flex-wrap:wrap; gap:8px; }
+.adjustBox .btnItem { position:relative; box-sizing:border-box; padding:8px 12px; border:1px solid #967b47; border-radius:4px; background:#4d402d; color:inherit; cursor:pointer; text-align:center; }
+.adjustBox .btnGroup .btnItem { flex:1 1 40%; }
+.adjustBox .btnItem:hover,.adjustBox .btnSelect { background:#7e6435; border-color:#ead292; }
+.adjustBox .bottomBtns { position:relative; display:flex; justify-content:center; gap:12px; margin-top:14px; }

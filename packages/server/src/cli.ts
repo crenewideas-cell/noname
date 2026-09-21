@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { createServer } from "./server/createServer";
+import { reclaimPort } from "../../../scripts/reclaim-port.mjs";
 
 function readPort(): number {
 	const portArgIndex = process.argv.findIndex(arg => arg === "--port" || arg === "-p");
@@ -36,6 +37,7 @@ process.on("SIGINT", stop);
 process.on("SIGTERM", stop);
 
 async function main() {
+	await reclaimPort(port);
 	await server.start();
 	console.log(`Server listening on port ${port}`);
 }

@@ -5,7 +5,7 @@ import { createSkinGallery } from "../skin/gallery.js";
 let activeGallery;
 export function openSkinGallery(character, onApply) {
 	activeGallery?.close();
-	const characters = Object.keys(lib.character).filter(id => !get.character(id).isUnseen);
+	const characters = [...new Set([...Object.keys(lib.character), ...Object.values(lib.characterPack).flatMap(pack => Object.keys(pack))])].filter(id => !get.character(id).isUnseen);
 	if (character && !characters.includes(character)) characters.unshift(character);
 	activeGallery = createSkinGallery({
 		characters,

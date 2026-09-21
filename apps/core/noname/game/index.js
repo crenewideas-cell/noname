@@ -2186,6 +2186,10 @@ export class Game {
 		const { startManagedGame } = await import("../online/game.js");
 		return startManagedGame();
 	}
+	async openOnlineRooms(mode = "identity") {
+		const { openOnlineRooms } = await import("../online/entry.js");
+		return openOnlineRooms(mode);
+	}
 	disconnect() {
 		disconnect();
 		if (game.localServer) {
@@ -2590,7 +2594,8 @@ export class Game {
 			}
 
 			audio.src = resolvedPath;
-			ui.window.appendChild(audio);
+			// Splash screens also play UI audio before the arena/window is created.
+			(ui.window || document.body).appendChild(audio);
 		});
 
 		return audio;

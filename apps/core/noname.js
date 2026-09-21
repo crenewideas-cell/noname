@@ -12,3 +12,4 @@ export { status, _status, setStatus } from "./noname/status/index.js";
 export { UI, ui, setUI } from "./noname/ui/index.js";
 export { getSkinService } from "./noname/skin/index.js";
 export { openSkinGallery } from "./noname/ui/skinGallery.js";
+export { suspendSelectionGuide } from "./noname/ui/selectionGuide.js";

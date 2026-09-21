@@ -1,0 +1,118 @@
+
+juexing_zhangqiying.png
+size: 2017,1923
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+chusha/caihong_00
+  rotate: false
+  xy: 2, 1342
+  size: 591, 579
+  orig: 612, 612
+  offset: 10, 11
+  index: -1
+qiehuan/qiehuan_18
+  rotate: false
+  xy: 2, 831
+  size: 537, 509
+  orig: 544, 544
+  offset: 0, 0
+  index: -1
+qiehuan/qiehuan_20
+  rotate: false
+  xy: 595, 1412
+  size: 537, 509
+  orig: 544, 544
+  offset: 0, 0
+  index: -1
+qiehuan/qiehuan_22
+  rotate: false
+  xy: 2, 320
+  size: 537, 509
+  orig: 544, 544
+  offset: 0, 0
+  index: -1
+qiehuan/qiehuan_24
+  rotate: false
+  xy: 1134, 1412
+  size: 537, 509
+  orig: 544, 544
+  offset: 0, 0
+  index: -1
+qiehuan/qiehuan_26
+  rotate: false
+  xy: 595, 901
+  size: 537, 509
+  orig: 544, 544
+  offset: 0, 0
+  index: -1
+qiehuan/qiehuan_28
+  rotate: false
+  xy: 1134, 902
+  size: 537, 508
+  orig: 544, 544
+  offset: 0, 0
+  index: -1
+qiehuan/qiehuan_30
+  rotate: false
+  xy: 541, 391
+  size: 536, 508
+  orig: 544, 544
+  offset: 0, 0
+  index: -1
+qiehuan/qiehuan_32
+  rotate: true
+  xy: 1526, 405
+  size: 495, 453
+  orig: 544, 544
+  offset: 13, 28
+  index: -1
+qiehuan/qiehuan_34
+  rotate: true
+  xy: 1079, 396
+  size: 503, 445
+  orig: 544, 544
+  offset: 10, 40
+  index: -1
+qiehuan/qiehuan_36
+  rotate: true
+  xy: 1526, 3
+  size: 400, 423
+  orig: 544, 544
+  offset: 54, 30
+  index: -1
+qiehuan/qiehuan_38
+  rotate: false
+  xy: 1079, 2
+  size: 406, 392
+  orig: 544, 544
+  offset: 60, 73
+  index: -1
+qiehuan/qiehuan_40
+  rotate: false
+  xy: 1673, 1550
+  size: 341, 371
+  orig: 544, 544
+  offset: 69, 67
+  index: -1
+qiehuan/qiehuan_42
+  rotate: true
+  xy: 1673, 1197
+  size: 351, 342
+  orig: 544, 544
+  offset: 64, 100
+  index: -1
+qiehuan/qiehuan_44
+  rotate: false
+  xy: 1673, 1105
+  size: 83, 90
+  orig: 544, 544
+  offset: 252, 247
+  index: -1
+qiehuan/xx_18
+  rotate: false
+  xy: 541, 6
+  size: 479, 383
+  orig: 479, 384
+  offset: 0, 0
+  index: -1

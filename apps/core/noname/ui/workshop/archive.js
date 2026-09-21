@@ -1,31 +1,35 @@
 import JSZip from "jszip";
 import { FORMAT, VERSION, MAX_BYTES, MAX_ASSETS, MIME, assetPath, referencedAssets, validateManifest, validateRecord, newId } from "./schema.js";
 import { mountAppearance } from "./runtime.js";
+import { openLargeArchive, writeLargeArchive, MAX_PROVIDER_BYTES, MAX_PROVIDER_FILES } from "./largeArchive.js";
 
 /** Never evaluate extension.js here. The workshop imports only its data manifest. */
 export async function readArchive(file) {
-	if (file.size > MAX_BYTES) throw new Error("压缩包不能超过 128 MB");
+	if (file.size > 512 * 1024 * 1024) return readProviderArchive(file);
 	const zip = new JSZip();
 	zip.load(await file.arrayBuffer(), { checkCRC32: false });
 	const entries = Object.entries(zip.files);
-	if (entries.length > MAX_ASSETS + 20) throw new Error("压缩包文件过多");
+	const fileManifest = zip.file("ui-workshop.json");
+	if (!fileManifest || (fileManifest._data?.uncompressedSize || 0) > 1024 * 1024) throw new Error("缺少有效的 UI 工坊套装清单");
+	const manifestText = fileManifest.asText();
+	if (manifestText.length > 1024 * 1024) throw new Error("套装清单过大");
+	const manifest = validateManifest(JSON.parse(manifestText));
+	const provider = runtimeProvider(manifest);
+	const interactive = !!provider;
+	const limit = provider === "手杀标准UI" ? MAX_PROVIDER_BYTES : interactive ? 512 * 1024 * 1024 : MAX_BYTES;
+	if (entries.length > (provider === "手杀标准UI" ? MAX_PROVIDER_FILES : interactive ? 4096 : MAX_ASSETS + 20)) throw new Error("压缩包文件过多");
+	// Interactive code is installed by the engine's extension importer only.
+	// The workshop uses its bundled, migrated provider and reads the data manifest.
+	const providerFiles = interactive ? new Set(await runtimeFiles(provider)) : new Set();
 	let bytes = 0;
 	for (const [path, entry] of entries) {
 		if (/^[\/\\]|[\\\0:]/.test(path) || path.split("/").some(part => part === ".." || part === ".")) throw new Error("压缩包包含非法路径");
 		if (entry.dir) continue;
-		if (!["ui-workshop.json", "extension.js", "info.json", "README.txt"].includes(path) && !assetPath(path)) throw new Error(`不是可拆分 UI 套装，含有未声明文件：${path}。普通扩展请使用游戏的扩展导入入口。`);
+		if (!["ui-workshop.json", "extension.js", "info.json", "README.txt"].includes(path) && !assetPath(path) && !providerFiles.has(path)) throw new Error(`不是可拆分 UI 套装，含有未声明文件：${path}。普通扩展请使用游戏的扩展导入入口。`);
 		const size = entry._data?.uncompressedSize;
 		if (typeof size === "number") bytes += size;
-		if (bytes > MAX_BYTES + 1024 * 1024) throw new Error("解压后的套装超过 128 MB");
+		if (bytes > limit + 1024 * 1024) throw new Error("解压后的套装超过允许大小");
 	}
-	const fileManifest = zip.file("ui-workshop.json");
-	if (!fileManifest) throw new Error("此扩展没有 ui-workshop.json 素材清单，不能自动拆分。可在“扩展 → 获取扩展”安装原扩展，或在这里分别添加图片建立套装。");
-	if ((fileManifest._data?.uncompressedSize || 0) > 1024 * 1024) throw new Error("套装清单过大");
-	const json = fileManifest.asText();
-	if (json.length > 1024 * 1024) throw new Error("套装清单过大");
-	const manifest = JSON.parse(json);
-	// Validate before enumerating paths from the untrusted manifest.
-	validateManifest(manifest);
 	const assets = {};
 	for (const path of referencedAssets(manifest)) {
 		const entry = zip.file(path);
@@ -33,6 +37,32 @@ export async function readArchive(file) {
 		assets[path] = new Blob([entry.asArrayBuffer()], { type: MIME[path.split(".").pop()] });
 	}
 	return validateRecord({ manifest, assets });
+}
+async function readProviderArchive(file) {
+	const archive=await openLargeArchive(file);
+	const manifest=validateManifest(JSON.parse(await(await archive.read("ui-workshop.json",1024*1024)).text()));
+	const provider=runtimeProvider(manifest);
+	if(provider!=="手杀标准UI")throw new Error("此套装不能超过 512 MB");
+	const allowed=new Set(await runtimeFiles(provider));
+	for(const [path,entry] of archive.entries)if(!entry.dir&&!allowed.has(path)&&!["ui-workshop.json","extension.js","info.json","README.txt"].includes(path)&&!assetPath(path))throw new Error(`套装含有未声明文件：${path}`);
+	const assets={};let size=0;
+	for(const path of referencedAssets(manifest)){const blob=await archive.read(path,MAX_BYTES);size+=blob.size;if(size>MAX_BYTES)throw new Error("自定义素材过大");assets[path]=new Blob([blob],{type:MIME[path.split(".").pop()]});}
+	return validateRecord({manifest,assets});
+}
+function runtimeProvider(manifest) {
+	if (Object.values(manifest.components).some(part => part.runtime === "shousha")) return "手杀标准UI";
+	if (manifest.components.home?.runtime === "rzsh") return "如真似幻";
+}
+async function runtimeResource(path, provider) {
+	const { lib } = await import("noname");
+	const response = await fetch(`${lib.assetURL}extension/${provider}/${path}`);
+	if (!response.ok) throw new Error(`${provider}文件缺失：${path}`);
+	return response;
+}
+async function runtimeFiles(provider) {
+	const files = await (await runtimeResource("files.json", provider)).json();
+	if (!Array.isArray(files) || files.length > (provider === "手杀标准UI" ? MAX_PROVIDER_FILES : 4096) || files.some(path => typeof path !== "string" || /(^\/|\\|:|\0|(^|\/)\.\.?($|\/))/.test(path))) throw new Error(`${provider}文件清单无效`);
+	return [...new Set([...files, "files.json"])];
 }
 
 // Kept self-contained so recipients do not need this project's manager installed.
@@ -83,6 +113,25 @@ export async function writeArchive(input) {
 	const escape = value => String(value || "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 	const metadata = { name: extensionName, translation: escape(manifest.name), author: escape(manifest.author || "UI 工坊"), intro: "可拆分 UI 套装。支持 UI 工坊导入，也可作为标准 ESM 扩展安装。", version: "1.0.0" };
 	const zip = new JSZip();
+	const provider = runtimeProvider(manifest);
+	if (provider) {
+		const files = await runtimeFiles(provider);
+		if(provider === "手杀标准UI"){
+			const generated={...assets,"ui-workshop.json":new Blob([JSON.stringify(manifest,null,2)]),"README.txt":new Blob([`${manifest.name}：手杀标准UI程序及本地素材。联机房间使用宿主项目服务，不含玩家个人数据。`])};
+			return writeLargeArchive([...new Set([...files,...Object.keys(generated)])],async path=>generated[path]||await(await runtimeResource(path,provider)).blob());
+		}
+		let cursor = 0;
+		await Promise.all(Array.from({ length: 6 }, async () => {
+			while (cursor < files.length) {
+				const path = files[cursor++];
+				zip.file(path, await (await runtimeResource(path, provider)).arrayBuffer());
+			}
+		}));
+		zip.file("ui-workshop.json", JSON.stringify(manifest, null, 2));
+		for (const [path, blob] of Object.entries(assets)) zip.file(path, await blob.arrayBuffer());
+		zip.file("README.txt", `${manifest.name}新式扩展。请在本工程 UI 工坊中导入并应用，或用支持 ESM 的无名杀扩展入口安装。包含交互界面程序及其完整本地素材，不含玩家个人数据。\n`);
+		return zip.generate({ type: "blob", compression: "STORE" });
+	}
 	zip.file("ui-workshop.json", JSON.stringify(manifest, null, 2));
 	zip.file("info.json", JSON.stringify(metadata, null, 2));
 	// Use the same ESM extension contract as this repository's extension maker.

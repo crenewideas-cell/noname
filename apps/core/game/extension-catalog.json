@@ -258,5 +258,15 @@
     "name": "Thunder",
     "category": "packs",
     "path": "extension/packs/Thunder"
+  },
+  {
+    "name": "如真似幻",
+    "category": "ui",
+    "path": "extension/ui/如真似幻"
+  },
+  {
+    "name": "手杀标准UI",
+    "category": "ui",
+    "path": "extension/ui/手杀标准UI"
   }
 ]
