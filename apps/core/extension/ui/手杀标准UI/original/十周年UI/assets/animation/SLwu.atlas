@@ -1,0 +1,146 @@
+
+SLwu.png
+size: 622,622
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+kongzhi_gaoji0001
+  rotate: false
+  xy: 480, 54
+  size: 42, 43
+  orig: 222, 226
+  offset: 124, 48
+  index: -1
+kongzhi_gaoji0002
+  rotate: true
+  xy: 403, 20
+  size: 49, 75
+  orig: 222, 226
+  offset: 124, 49
+  index: -1
+kongzhi_gaoji0003
+  rotate: true
+  xy: 295, 6
+  size: 57, 106
+  orig: 222, 226
+  offset: 118, 49
+  index: -1
+kongzhi_gaoji0004
+  rotate: false
+  xy: 397, 71
+  size: 67, 120
+  orig: 222, 226
+  offset: 113, 49
+  index: -1
+kongzhi_gaoji0005
+  rotate: true
+  xy: 479, 99
+  size: 100, 123
+  orig: 222, 226
+  offset: 80, 50
+  index: -1
+kongzhi_gaoji0006
+  rotate: false
+  xy: 295, 65
+  size: 100, 123
+  orig: 222, 226
+  offset: 80, 50
+  index: -1
+kongzhi_gaoji0007
+  rotate: true
+  xy: 479, 201
+  size: 128, 126
+  orig: 222, 226
+  offset: 53, 49
+  index: -1
+kongzhi_gaoji0008
+  rotate: true
+  xy: 492, 479
+  size: 141, 128
+  orig: 222, 226
+  offset: 41, 49
+  index: -1
+kongzhi_gaoji0009
+  rotate: true
+  xy: 492, 336
+  size: 141, 128
+  orig: 222, 226
+  offset: 41, 49
+  index: -1
+kongzhi_gaoji0010
+  rotate: false
+  xy: 167, 190
+  size: 153, 134
+  orig: 222, 226
+  offset: 35, 46
+  index: -1
+kongzhi_gaoji0011
+  rotate: false
+  xy: 167, 326
+  size: 163, 142
+  orig: 222, 226
+  offset: 28, 42
+  index: -1
+kongzhi_gaoji0012
+  rotate: false
+  xy: 2, 166
+  size: 162, 148
+  orig: 222, 226
+  offset: 29, 37
+  index: -1
+kongzhi_gaoji0013
+  rotate: true
+  xy: 2, 2
+  size: 162, 148
+  orig: 222, 226
+  offset: 29, 37
+  index: -1
+kongzhi_gaoji0014
+  rotate: false
+  xy: 167, 470
+  size: 163, 150
+  orig: 222, 226
+  offset: 28, 35
+  index: -1
+kongzhi_gaoji0015
+  rotate: false
+  xy: 2, 469
+  size: 163, 151
+  orig: 222, 226
+  offset: 28, 34
+  index: -1
+kongzhi_gaoji0016
+  rotate: false
+  xy: 2, 316
+  size: 163, 151
+  orig: 222, 226
+  offset: 28, 34
+  index: -1
+kongzhi_gaoji0017
+  rotate: false
+  xy: 332, 474
+  size: 158, 146
+  orig: 222, 226
+  offset: 30, 37
+  index: -1
+kongzhi_gaoji0018
+  rotate: false
+  xy: 332, 331
+  size: 154, 141
+  orig: 222, 226
+  offset: 32, 39
+  index: -1
+kongzhi_gaoji0019
+  rotate: true
+  xy: 152, 10
+  size: 154, 141
+  orig: 222, 226
+  offset: 32, 39
+  index: -1
+kongzhi_gaoji0020
+  rotate: false
+  xy: 332, 193
+  size: 145, 136
+  orig: 222, 226
+  offset: 37, 41
+  index: -1

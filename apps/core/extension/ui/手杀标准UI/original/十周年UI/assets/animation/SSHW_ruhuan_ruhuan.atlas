@@ -1,0 +1,222 @@
+
+SSHW_ruhuan_ruhuan.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+lan/1_00
+  rotate: true
+  xy: 1346, 851
+  size: 1195, 147
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_01
+  rotate: true
+  xy: 1495, 851
+  size: 1195, 147
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_02
+  rotate: true
+  xy: 1644, 851
+  size: 1195, 147
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_03
+  rotate: true
+  xy: 1793, 851
+  size: 1195, 147
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_06
+  rotate: false
+  xy: 2, 590
+  size: 1195, 145
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_07
+  rotate: false
+  xy: 2, 1613
+  size: 1195, 144
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_08
+  rotate: false
+  xy: 2, 1904
+  size: 1195, 142
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_09
+  rotate: false
+  xy: 2, 1467
+  size: 1195, 144
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_10
+  rotate: false
+  xy: 2, 1759
+  size: 1195, 143
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_11
+  rotate: false
+  xy: 2, 1321
+  size: 1195, 144
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_12
+  rotate: false
+  xy: 2, 1175
+  size: 1186, 144
+  orig: 1200, 160
+  offset: 14, 0
+  index: -1
+lan/1_13
+  rotate: true
+  xy: 1199, 863
+  size: 1183, 145
+  orig: 1200, 160
+  offset: 17, 0
+  index: -1
+lan/1_14
+  rotate: false
+  xy: 2, 443
+  size: 1195, 145
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_19
+  rotate: false
+  xy: 2, 296
+  size: 1195, 145
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_20
+  rotate: false
+  xy: 2, 149
+  size: 1195, 145
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_21
+  rotate: false
+  xy: 2, 1029
+  size: 1195, 144
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_22
+  rotate: false
+  xy: 2, 883
+  size: 1195, 144
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_23
+  rotate: false
+  xy: 2, 737
+  size: 1195, 144
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_24
+  rotate: false
+  xy: 2, 2
+  size: 1195, 145
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+
+SSHW_ruhuan_ruhuan2.png
+size: 1487,1487
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+lan/1_04
+  rotate: false
+  xy: 2, 1338
+  size: 1195, 147
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_05
+  rotate: false
+  xy: 2, 594
+  size: 1195, 146
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_15
+  rotate: false
+  xy: 2, 446
+  size: 1195, 146
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_16
+  rotate: false
+  xy: 2, 298
+  size: 1195, 146
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_17
+  rotate: false
+  xy: 2, 150
+  size: 1195, 146
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_18
+  rotate: true
+  xy: 1199, 290
+  size: 1195, 146
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_25
+  rotate: false
+  xy: 2, 2
+  size: 1195, 146
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_26
+  rotate: false
+  xy: 2, 1189
+  size: 1195, 147
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_27
+  rotate: false
+  xy: 2, 1040
+  size: 1195, 147
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_28
+  rotate: false
+  xy: 2, 891
+  size: 1195, 147
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
+lan/1_29
+  rotate: false
+  xy: 2, 742
+  size: 1195, 147
+  orig: 1200, 160
+  offset: 5, 0
+  index: -1
