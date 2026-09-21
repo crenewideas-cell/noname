@@ -2,6 +2,19 @@ audio/*.TXT
 image/*.TXT
 
 extension/**
+!extension/packs/
+!extension/packs/名将杀/
+!extension/packs/名将杀/**
+!extension/packs/极略/
+!extension/packs/极略/**
+!extension/packs/梦澈涤花/
+!extension/packs/梦澈涤花/**
+!extension/packs/怒焰三国/
+!extension/packs/怒焰三国/**
+!extension/packs/红楼幻境/
+!extension/packs/红楼幻境/extension.js
+!extension/packs/红楼幻境/baoyu.js
+!extension/packs/红楼幻境/README.md
 !extension/ui/
 !extension/ui/如真似幻/
 !extension/ui/如真似幻/**

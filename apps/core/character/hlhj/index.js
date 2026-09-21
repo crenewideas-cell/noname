@@ -1,4 +1,4 @@
-import createExtension from "../../extension/红楼幻境/extension.js";
+import createExtension from "../../extension/packs/红楼幻境/extension.js";
 
 export const type = "character";
 
