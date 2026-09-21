@@ -1,0 +1,11 @@
+{
+  "format": "noname-ui-workshop",
+  "version": 1,
+  "id": "rzsh-modern",
+  "name": "如真似幻",
+  "author": "蒸、某个萌新、非凡欧德内里、文和",
+  "description": "新式如真似幻交互大厅，由 UI 工坊统一切换。",
+  "components": {
+    "home": { "name": "如真似幻 · 交互大厅", "runtime": "rzsh", "settings": {}, "assets": {}, "style": {} }
+  }
+}

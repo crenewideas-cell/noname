@@ -1,0 +1,76 @@
+
+kaimen.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+guang-4
+  rotate: false
+  xy: 804, 1393
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+guang-_00000
+  rotate: false
+  xy: 434, 674
+  size: 85, 61
+  orig: 85, 61
+  offset: 0, 0
+  index: -1
+jin-huan
+  rotate: false
+  xy: 2, 2
+  size: 350, 300
+  orig: 350, 300
+  offset: 0, 0
+  index: -1
+men
+  rotate: false
+  xy: 2, 1380
+  size: 800, 596
+  orig: 800, 596
+  offset: 0, 0
+  index: -1
+men-guangxiao_00000
+  rotate: true
+  xy: 1254, 1446
+  size: 121, 274
+  orig: 122, 275
+  offset: 0, 1
+  index: -1
+pifu-jin
+  rotate: false
+  xy: 2, 304
+  size: 430, 431
+  orig: 443, 447
+  offset: 6, 10
+  index: -1
+pifu-yin
+  rotate: false
+  xy: 1254, 1569
+  size: 406, 407
+  orig: 420, 425
+  offset: 6, 12
+  index: -1
+yin-huan
+  rotate: false
+  xy: 524, 1115
+  size: 275, 263
+  orig: 275, 263
+  offset: 0, 0
+  index: -1
+you_renwu
+  rotate: false
+  xy: 804, 1427
+  size: 448, 549
+  orig: 448, 565
+  offset: 0, 16
+  index: -1
+zuo_renwu
+  rotate: false
+  xy: 2, 737
+  size: 520, 641
+  orig: 520, 641
+  offset: 0, 0
+  index: -1

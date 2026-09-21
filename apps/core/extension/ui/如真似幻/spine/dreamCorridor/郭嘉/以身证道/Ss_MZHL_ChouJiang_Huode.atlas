@@ -1,0 +1,251 @@
+
+Ss_MZHL_ChouJiang_Huode.png
+size: 650,650
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dange/andi_00000
+  rotate: false
+  xy: 444, 77
+  size: 63, 63
+  orig: 128, 128
+  offset: 32, 33
+  index: -1
+dange/dgxs_00000
+  rotate: false
+  xy: 2, 520
+  size: 128, 128
+  orig: 256, 256
+  offset: 63, 65
+  index: -1
+dange/dgxs_00001
+  rotate: false
+  xy: 337, 225
+  size: 107, 107
+  orig: 256, 256
+  offset: 74, 75
+  index: -1
+dange/dgxs_00002
+  rotate: false
+  xy: 550, 147
+  size: 85, 85
+  orig: 256, 256
+  offset: 85, 86
+  index: -1
+dange/dgxs_00003
+  rotate: false
+  xy: 446, 142
+  size: 85, 85
+  orig: 256, 256
+  offset: 85, 86
+  index: -1
+dange/dgxs_00010
+  rotate: true
+  xy: 117, 274
+  size: 113, 108
+  orig: 256, 256
+  offset: 73, 74
+  index: -1
+dange/dgxs_00011
+  rotate: false
+  xy: 2, 13
+  size: 114, 116
+  orig: 256, 256
+  offset: 72, 73
+  index: -1
+dange/dgxs_00012
+  rotate: false
+  xy: 249, 525
+  size: 115, 123
+  orig: 256, 256
+  offset: 72, 71
+  index: -1
+dange/dgxs_00013
+  rotate: false
+  xy: 132, 522
+  size: 115, 126
+  orig: 256, 256
+  offset: 71, 71
+  index: -1
+dange/dgxs_00014
+  rotate: false
+  xy: 2, 389
+  size: 115, 129
+  orig: 256, 256
+  offset: 72, 70
+  index: -1
+dange/dgxs_00015
+  rotate: false
+  xy: 2, 259
+  size: 113, 128
+  orig: 256, 256
+  offset: 74, 70
+  index: -1
+dange/dgxs_00016
+  rotate: false
+  xy: 2, 131
+  size: 110, 126
+  orig: 256, 256
+  offset: 77, 72
+  index: -1
+dange/dgxs_00017
+  rotate: true
+  xy: 366, 539
+  size: 109, 124
+  orig: 256, 256
+  offset: 78, 74
+  index: -1
+dange/dgxs_00018
+  rotate: true
+  xy: 492, 544
+  size: 104, 119
+  orig: 256, 256
+  offset: 81, 78
+  index: -1
+dange/dgxs_00019
+  rotate: false
+  xy: 119, 400
+  size: 101, 118
+  orig: 256, 256
+  offset: 82, 79
+  index: -1
+dange/dgxs_00020
+  rotate: true
+  xy: 366, 438
+  size: 99, 119
+  orig: 256, 256
+  offset: 81, 79
+  index: -1
+dange/dgxs_00021
+  rotate: true
+  xy: 492, 440
+  size: 102, 118
+  orig: 256, 256
+  offset: 80, 80
+  index: -1
+dange/dgxs_00022
+  rotate: true
+  xy: 366, 334
+  size: 102, 119
+  orig: 256, 256
+  offset: 81, 80
+  index: -1
+dange/dgxs_00023
+  rotate: false
+  xy: 114, 139
+  size: 100, 118
+  orig: 256, 256
+  offset: 84, 80
+  index: -1
+dange/dgxs_00024
+  rotate: true
+  xy: 487, 335
+  size: 103, 117
+  orig: 256, 256
+  offset: 83, 81
+  index: -1
+dange/dgxs_00025
+  rotate: true
+  xy: 249, 418
+  size: 105, 115
+  orig: 256, 256
+  offset: 81, 82
+  index: -1
+dange/dgxs_00026
+  rotate: false
+  xy: 118, 23
+  size: 108, 114
+  orig: 256, 256
+  offset: 80, 84
+  index: -1
+dange/dgxs_00027
+  rotate: false
+  xy: 227, 303
+  size: 108, 113
+  orig: 256, 256
+  offset: 80, 85
+  index: -1
+dange/dgxs_00028
+  rotate: true
+  xy: 227, 194
+  size: 107, 108
+  orig: 256, 256
+  offset: 81, 88
+  index: -1
+dange/dgxs_00029
+  rotate: false
+  xy: 228, 85
+  size: 107, 107
+  orig: 256, 256
+  offset: 82, 90
+  index: -1
+dange/dgxs_00030
+  rotate: true
+  xy: 446, 229
+  size: 103, 102
+  orig: 256, 256
+  offset: 87, 90
+  index: -1
+dange/dgxs_00031
+  rotate: false
+  xy: 337, 121
+  size: 105, 102
+  orig: 256, 256
+  offset: 85, 90
+  index: -1
+dange/dgxs_00032
+  rotate: true
+  xy: 337, 22
+  size: 97, 102
+  orig: 256, 256
+  offset: 83, 90
+  index: -1
+dange/dgxs_00033
+  rotate: false
+  xy: 550, 234
+  size: 98, 99
+  orig: 256, 256
+  offset: 83, 93
+  index: -1
+dange/dgxs_00034
+  rotate: true
+  xy: 228, 15
+  size: 68, 88
+  orig: 256, 256
+  offset: 83, 104
+  index: -1
+dange/dgxs_00035
+  rotate: false
+  xy: 613, 605
+  size: 32, 43
+  orig: 256, 256
+  offset: 83, 106
+  index: -1
+dange/dgxs_00036
+  rotate: false
+  xy: 613, 570
+  size: 32, 33
+  orig: 256, 256
+  offset: 84, 108
+  index: -1
+dange/dgxs_00037
+  rotate: true
+  xy: 533, 211
+  size: 16, 15
+  orig: 256, 256
+  offset: 85, 111
+  index: -1
+dange/dgxs_00038
+  rotate: false
+  xy: 117, 259
+  size: 13, 13
+  orig: 256, 256
+  offset: 87, 113
+  index: -1
+dange/dgxs_00039
+  rotate: false
+  xy: 441, 118
+  size: 1, 1
+  orig: 256, 256
+  offset: 93, 120
+  index: -1

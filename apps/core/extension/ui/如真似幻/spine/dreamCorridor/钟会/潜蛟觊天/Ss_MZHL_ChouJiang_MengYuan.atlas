@@ -1,0 +1,230 @@
+
+Ss_MZHL_ChouJiang_MengYuan.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/Glow
+  rotate: false
+  xy: 852, 840
+  size: 264, 264
+  orig: 1334, 1334
+  offset: 535, 535
+  index: -1
+images/mengyuan/F_00000
+  rotate: false
+  xy: 1, 1
+  size: 121, 125
+  orig: 667, 375
+  offset: 272, 120
+  index: -1
+images/mengyuan/F_00001
+  rotate: true
+  xy: 1641, 780
+  size: 147, 152
+  orig: 667, 375
+  offset: 255, 99
+  index: -1
+images/mengyuan/F_00002
+  rotate: true
+  xy: 1641, 928
+  size: 182, 177
+  orig: 667, 375
+  offset: 231, 91
+  index: -1
+images/mengyuan/F_00003
+  rotate: true
+  xy: 1829, 1503
+  size: 231, 215
+  orig: 667, 375
+  offset: 219, 83
+  index: -1
+images/mengyuan/F_00004
+  rotate: false
+  xy: 1117, 865
+  size: 276, 243
+  orig: 667, 375
+  offset: 193, 75
+  index: -1
+images/mengyuan/F_00005
+  rotate: true
+  xy: 595, 802
+  size: 300, 256
+  orig: 667, 375
+  offset: 178, 69
+  index: -1
+images/mengyuan/F_00006
+  rotate: true
+  xy: 304, 1092
+  size: 319, 269
+  orig: 667, 375
+  offset: 167, 69
+  index: -1
+images/mengyuan/F_00007
+  rotate: true
+  xy: 574, 1103
+  size: 317, 270
+  orig: 667, 375
+  offset: 170, 67
+  index: -1
+images/mengyuan/F_00008
+  rotate: true
+  xy: 845, 1105
+  size: 315, 271
+  orig: 667, 375
+  offset: 171, 63
+  index: -1
+images/mengyuan/F_00009
+  rotate: true
+  xy: 1117, 1109
+  size: 311, 270
+  orig: 667, 375
+  offset: 172, 61
+  index: -1
+images/mengyuan/F_00010
+  rotate: true
+  xy: 973, 1421
+  size: 307, 275
+  orig: 667, 375
+  offset: 171, 55
+  index: -1
+images/mengyuan/F_00011
+  rotate: true
+  xy: 1249, 1423
+  size: 305, 284
+  orig: 667, 375
+  offset: 171, 48
+  index: -1
+images/mengyuan/F_00012
+  rotate: true
+  xy: 303, 785
+  size: 303, 291
+  orig: 667, 375
+  offset: 172, 42
+  index: -1
+images/mengyuan/F_00013
+  rotate: true
+  xy: 1680, 1117
+  size: 305, 296
+  orig: 667, 375
+  offset: 170, 37
+  index: -1
+images/mengyuan/F_00014
+  rotate: true
+  xy: 649, 1421
+  size: 306, 298
+  orig: 667, 375
+  offset: 169, 34
+  index: -1
+images/mengyuan/F_00015
+  rotate: true
+  xy: 1534, 1423
+  size: 308, 294
+  orig: 667, 375
+  offset: 168, 33
+  index: -1
+images/mengyuan/F_00016
+  rotate: true
+  xy: 1388, 1111
+  size: 311, 291
+  orig: 667, 375
+  offset: 166, 32
+  index: -1
+images/mengyuan/F_00017
+  rotate: false
+  xy: 1611, 1735
+  size: 315, 292
+  orig: 667, 375
+  offset: 164, 31
+  index: -1
+images/mengyuan/F_00018
+  rotate: false
+  xy: 1292, 1732
+  size: 318, 295
+  orig: 667, 375
+  offset: 163, 31
+  index: -1
+images/mengyuan/F_00019
+  rotate: false
+  xy: 973, 1729
+  size: 318, 298
+  orig: 667, 375
+  offset: 162, 30
+  index: -1
+images/mengyuan/F_00020
+  rotate: true
+  xy: 1, 127
+  size: 319, 300
+  orig: 667, 375
+  offset: 162, 30
+  index: -1
+images/mengyuan/F_00021
+  rotate: true
+  xy: 1, 447
+  size: 320, 300
+  orig: 667, 375
+  offset: 162, 30
+  index: -1
+images/mengyuan/F_00022
+  rotate: false
+  xy: 649, 1728
+  size: 323, 299
+  orig: 667, 375
+  offset: 162, 31
+  index: -1
+images/mengyuan/F_00023
+  rotate: true
+  xy: 1, 1089
+  size: 322, 302
+  orig: 667, 375
+  offset: 163, 31
+  index: -1
+images/mengyuan/F_00024
+  rotate: true
+  xy: 1, 768
+  size: 320, 301
+  orig: 667, 375
+  offset: 163, 32
+  index: -1
+images/mengyuan/F_00025
+  rotate: false
+  xy: 327, 1723
+  size: 321, 304
+  orig: 667, 375
+  offset: 162, 32
+  index: -1
+images/mengyuan/F_00026
+  rotate: false
+  xy: 321, 1421
+  size: 322, 301
+  orig: 667, 375
+  offset: 163, 36
+  index: -1
+images/mengyuan/F_00027
+  rotate: false
+  xy: 1, 1723
+  size: 325, 304
+  orig: 667, 375
+  offset: 164, 36
+  index: -1
+images/mengyuan/my_1
+  rotate: true
+  xy: 1394, 868
+  size: 242, 246
+  orig: 242, 246
+  offset: 0, 0
+  index: -1
+images/mengyuan/my_2
+  rotate: false
+  xy: 1819, 954
+  size: 162, 162
+  orig: 162, 162
+  offset: 0, 0
+  index: -1
+images/mengyuan/myglow
+  rotate: false
+  xy: 1, 1412
+  size: 319, 310
+  orig: 319, 310
+  offset: 0, 0
+  index: -1

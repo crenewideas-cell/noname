@@ -1,0 +1,153 @@
+
+Ss_MZHL_ChouJiang_GeZiGuang.png
+size: 1238,1005
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/gzxs/gzxs1_00000
+  rotate: false
+  xy: 502, 8
+  size: 246, 245
+  orig: 256, 256
+  offset: 5, 6
+  index: -1
+images/gzxs/gzxs_00000
+  rotate: false
+  xy: 1235, 1002
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/gzxs/gzxs_00001
+  rotate: true
+  xy: 1001, 553
+  size: 200, 235
+  orig: 256, 256
+  offset: 17, 6
+  index: -1
+images/gzxs/gzxs_00002
+  rotate: false
+  xy: 750, 8
+  size: 212, 245
+  orig: 256, 256
+  offset: 11, 4
+  index: -1
+images/gzxs/gzxs_00003
+  rotate: false
+  xy: 964, 8
+  size: 217, 246
+  orig: 256, 256
+  offset: 8, 4
+  index: -1
+images/gzxs/gzxs_00004
+  rotate: false
+  xy: 1002, 756
+  size: 231, 247
+  orig: 256, 256
+  offset: 7, 4
+  index: -1
+images/gzxs/gzxs_00005
+  rotate: false
+  xy: 997, 256
+  size: 239, 247
+  orig: 256, 256
+  offset: 6, 4
+  index: -1
+images/gzxs/gzxs_00006
+  rotate: false
+  xy: 752, 256
+  size: 243, 247
+  orig: 256, 256
+  offset: 5, 4
+  index: -1
+images/gzxs/gzxs_00007
+  rotate: false
+  xy: 752, 505
+  size: 247, 248
+  orig: 256, 256
+  offset: 5, 4
+  index: -1
+images/gzxs/gzxs_00008
+  rotate: false
+  xy: 252, 504
+  size: 248, 248
+  orig: 256, 256
+  offset: 5, 4
+  index: -1
+images/gzxs/gzxs_00009
+  rotate: false
+  xy: 502, 755
+  size: 248, 248
+  orig: 256, 256
+  offset: 5, 4
+  index: -1
+images/gzxs/gzxs_00010
+  rotate: false
+  xy: 2, 2
+  size: 248, 248
+  orig: 256, 256
+  offset: 5, 4
+  index: -1
+images/gzxs/gzxs_00011
+  rotate: false
+  xy: 252, 254
+  size: 248, 248
+  orig: 256, 256
+  offset: 5, 4
+  index: -1
+images/gzxs/gzxs_00012
+  rotate: false
+  xy: 502, 505
+  size: 248, 248
+  orig: 256, 256
+  offset: 5, 4
+  index: -1
+images/gzxs/gzxs_00013
+  rotate: false
+  xy: 752, 755
+  size: 248, 248
+  orig: 256, 256
+  offset: 5, 4
+  index: -1
+images/gzxs/gzxs_00014
+  rotate: false
+  xy: 252, 4
+  size: 248, 248
+  orig: 256, 256
+  offset: 5, 4
+  index: -1
+images/gzxs/gzxs_00015
+  rotate: false
+  xy: 502, 255
+  size: 248, 248
+  orig: 256, 256
+  offset: 5, 4
+  index: -1
+images/gzxs/gzxs_00016
+  rotate: false
+  xy: 2, 754
+  size: 248, 249
+  orig: 256, 256
+  offset: 5, 3
+  index: -1
+images/gzxs/gzxs_00017
+  rotate: false
+  xy: 2, 503
+  size: 248, 249
+  orig: 256, 256
+  offset: 5, 3
+  index: -1
+images/gzxs/gzxs_00018
+  rotate: false
+  xy: 252, 754
+  size: 248, 249
+  orig: 256, 256
+  offset: 5, 3
+  index: -1
+images/gzxs/gzxs_00019
+  rotate: false
+  xy: 2, 252
+  size: 248, 249
+  orig: 256, 256
+  offset: 5, 3
+  index: -1

@@ -1,0 +1,125 @@
+
+Ss_MZHL_ChouJiang_HengXian.png
+size: 523,523
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+g1_00
+  rotate: false
+  xy: 321, 239
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+g2_00
+  rotate: false
+  xy: 403, 239
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+glow_00
+  rotate: false
+  xy: 2, 321
+  size: 512, 200
+  orig: 512, 200
+  offset: 0, 0
+  index: -1
+shizi_00
+  rotate: false
+  xy: 2, 199
+  size: 120, 120
+  orig: 128, 128
+  offset: 4, 4
+  index: -1
+xx_01
+  rotate: true
+  xy: 2, 2
+  size: 17, 21
+  orig: 105, 105
+  offset: 48, 44
+  index: -1
+xx_02
+  rotate: false
+  xy: 485, 288
+  size: 29, 31
+  orig: 105, 105
+  offset: 38, 39
+  index: -1
+xx_03
+  rotate: false
+  xy: 406, 195
+  size: 43, 42
+  orig: 105, 105
+  offset: 29, 33
+  index: -1
+xx_04
+  rotate: false
+  xy: 349, 188
+  size: 55, 49
+  orig: 105, 105
+  offset: 23, 28
+  index: -1
+xx_05
+  rotate: true
+  xy: 289, 170
+  size: 66, 58
+  orig: 105, 105
+  offset: 18, 24
+  index: -1
+xx_06
+  rotate: false
+  xy: 211, 169
+  size: 76, 67
+  orig: 105, 105
+  offset: 13, 20
+  index: -1
+xx_07
+  rotate: false
+  xy: 124, 163
+  size: 85, 75
+  orig: 105, 105
+  offset: 9, 16
+  index: -1
+xx_08
+  rotate: false
+  xy: 228, 238
+  size: 91, 81
+  orig: 105, 105
+  offset: 6, 13
+  index: -1
+xx_09
+  rotate: false
+  xy: 2, 21
+  size: 95, 85
+  orig: 105, 105
+  offset: 3, 11
+  index: -1
+xx_10
+  rotate: false
+  xy: 2, 108
+  size: 98, 89
+  orig: 105, 105
+  offset: 1, 9
+  index: -1
+xx_11
+  rotate: false
+  xy: 124, 240
+  size: 102, 79
+  orig: 105, 105
+  offset: 0, 21
+  index: -1
+xx_12
+  rotate: true
+  xy: 102, 118
+  size: 43, 81
+  orig: 105, 105
+  offset: 21, 21
+  index: -1
+xx_13
+  rotate: false
+  xy: 185, 150
+  size: 11, 11
+  orig: 105, 105
+  offset: 20, 93
+  index: -1

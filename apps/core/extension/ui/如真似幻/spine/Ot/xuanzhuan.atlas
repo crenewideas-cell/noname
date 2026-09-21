@@ -1,0 +1,76 @@
+
+xuanzhuan.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+01
+  rotate: false
+  xy: 2, 1082
+  size: 882, 882
+  orig: 882, 882
+  offset: 0, 0
+  index: -1
+02
+  rotate: false
+  xy: 2, 218
+  size: 862, 862
+  orig: 862, 862
+  offset: 0, 0
+  index: -1
+11ss22_00000
+  rotate: false
+  xy: 1400, 1536
+  size: 254, 238
+  orig: 256, 256
+  offset: 0, 18
+  index: -1
+default
+  rotate: false
+  xy: 1801, 1905
+  size: 27, 59
+  orig: 64, 64
+  offset: 18, 3
+  index: -1
+dizuozhuanqian
+  rotate: false
+  xy: 886, 1776
+  size: 913, 188
+  orig: 914, 199
+  offset: 1, 0
+  index: -1
+dizuozhuanqian_00000
+  rotate: false
+  xy: 2, 61
+  size: 537, 155
+  orig: 537, 156
+  offset: 0, 0
+  index: -1
+dizuozhuanqian_00001
+  rotate: false
+  xy: 886, 1109
+  size: 390, 153
+  orig: 412, 164
+  offset: 10, 0
+  index: -1
+lizihuoyan1
+  rotate: false
+  xy: 541, 157
+  size: 27, 59
+  orig: 64, 64
+  offset: 18, 3
+  index: -1
+pzm0554_00000
+  rotate: false
+  xy: 886, 1264
+  size: 512, 510
+  orig: 512, 512
+  offset: 0, 1
+  index: -1
+xzmh1_00001
+  rotate: false
+  xy: 2, 2
+  size: 255, 57
+  orig: 269, 114
+  offset: 7, 2
+  index: -1

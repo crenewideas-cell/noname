@@ -1,0 +1,76 @@
+{"frames": {
+
+"lobby_corridor_bg":
+{
+	"frame": {"x":1,"y":472,"w":347,"h":406},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":347,"h":406},
+	"sourceSize": {"w":347,"h":406}
+},
+"lobby_corridor_title":
+{
+	"frame": {"x":409,"y":377,"w":206,"h":217},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":0,"w":206,"h":217},
+	"sourceSize": {"w":207,"h":218}
+},
+"lobby_czg_bg":
+{
+	"frame": {"x":385,"y":1,"w":347,"h":406},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":347,"h":406},
+	"sourceSize": {"w":347,"h":406}
+},
+"lobby_czg_title":
+{
+	"frame": {"x":409,"y":596,"w":205,"h":217},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":1,"w":205,"h":217},
+	"sourceSize": {"w":207,"h":218}
+},
+"lobby_item_bg_frame":
+{
+	"frame": {"x":1,"y":1,"w":382,"h":469},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":382,"h":469},
+	"sourceSize": {"w":382,"h":469}
+},
+"全天开放":
+{
+	"frame": {"x":385,"y":377,"w":71,"h":14},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":71,"h":14},
+	"sourceSize": {"w":71,"h":14}
+},
+"稀有珍宝等你来拿":
+{
+	"frame": {"x":385,"y":350,"w":213,"h":25},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":213,"h":25},
+	"sourceSize": {"w":213,"h":25}
+},
+"追寻旧的回忆":
+{
+	"frame": {"x":617,"y":350,"w":159,"h":26},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":159,"h":26},
+	"sourceSize": {"w":159,"h":26}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "anim_pick2.png",
+	"format": "RGBA8888",
+	"size": {"w":792,"h":820},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:35cbd1bd0afab598c9b9aa9d7229ae67:70047984c9bdcdfc82c319fb8d77228d:3993593f06a997422c316aec5413fc63$"
+}
+}

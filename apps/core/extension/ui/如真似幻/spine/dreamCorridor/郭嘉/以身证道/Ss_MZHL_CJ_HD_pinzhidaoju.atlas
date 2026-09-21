@@ -1,0 +1,139 @@
+
+Ss_MZHL_CJ_HD_pinzhidaoju.png
+size: 416,416
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/pzdj/pzdj_00000
+  rotate: false
+  xy: 169, 246
+  size: 80, 83
+  orig: 90, 90
+  offset: 5, 3
+  index: -1
+images/pzdj/pzdj_00001
+  rotate: true
+  xy: 333, 248
+  size: 80, 81
+  orig: 90, 90
+  offset: 5, 4
+  index: -1
+images/pzdj/pzdj_00002
+  rotate: false
+  xy: 171, 167
+  size: 80, 77
+  orig: 90, 90
+  offset: 5, 6
+  index: -1
+images/pzdj/pzdj_00003
+  rotate: false
+  xy: 253, 166
+  size: 80, 79
+  orig: 90, 90
+  offset: 5, 5
+  index: -1
+images/pzdj/pzdj_00004
+  rotate: false
+  xy: 251, 247
+  size: 80, 82
+  orig: 90, 90
+  offset: 5, 4
+  index: -1
+images/pzdj/pzdj_00005
+  rotate: false
+  xy: 170, 83
+  size: 80, 82
+  orig: 90, 90
+  offset: 5, 4
+  index: -1
+images/pzdj/pzdj_00006
+  rotate: false
+  xy: 335, 164
+  size: 78, 82
+  orig: 90, 90
+  offset: 6, 4
+  index: -1
+images/pzdj/pzdj_00007
+  rotate: false
+  xy: 252, 82
+  size: 77, 82
+  orig: 90, 90
+  offset: 6, 4
+  index: -1
+images/pzdj/pzdj_00008
+  rotate: false
+  xy: 254, 331
+  size: 80, 83
+  orig: 90, 90
+  offset: 5, 3
+  index: -1
+images/pzdj/pzdj_00009
+  rotate: false
+  xy: 2, 331
+  size: 82, 83
+  orig: 90, 90
+  offset: 4, 3
+  index: -1
+images/pzdj/pzdj_00010
+  rotate: true
+  xy: 2, 245
+  size: 84, 81
+  orig: 90, 90
+  offset: 3, 4
+  index: -1
+images/pzdj/pzdj_00011
+  rotate: true
+  xy: 2, 73
+  size: 84, 79
+  orig: 90, 90
+  offset: 3, 5
+  index: -1
+images/pzdj/pzdj_00012
+  rotate: false
+  xy: 85, 167
+  size: 84, 77
+  orig: 90, 90
+  offset: 3, 6
+  index: -1
+images/pzdj/pzdj_00013
+  rotate: true
+  xy: 2, 159
+  size: 84, 80
+  orig: 90, 90
+  offset: 3, 5
+  index: -1
+images/pzdj/pzdj_00014
+  rotate: false
+  xy: 86, 331
+  size: 82, 83
+  orig: 90, 90
+  offset: 4, 3
+  index: -1
+images/pzdj/pzdj_00015
+  rotate: false
+  xy: 85, 246
+  size: 82, 83
+  orig: 90, 90
+  offset: 4, 3
+  index: -1
+images/pzdj/pzdj_00016
+  rotate: false
+  xy: 170, 331
+  size: 82, 83
+  orig: 90, 90
+  offset: 4, 3
+  index: -1
+images/pzdj/pzdj_00017
+  rotate: false
+  xy: 336, 330
+  size: 78, 84
+  orig: 90, 90
+  offset: 6, 3
+  index: -1
+images/pzdj/pzdj_00018
+  rotate: true
+  xy: 84, 87
+  size: 78, 84
+  orig: 90, 90
+  offset: 6, 3
+  index: -1

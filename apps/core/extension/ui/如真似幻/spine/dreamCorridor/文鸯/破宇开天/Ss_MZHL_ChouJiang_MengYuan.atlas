@@ -1,0 +1,375 @@
+
+Ss_MZHL_ChouJiang_MengYuan.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/glow_00000
+  rotate: false
+  xy: 1012, 1552
+  size: 494, 494
+  orig: 494, 494
+  offset: 0, 0
+  index: -1
+images/my/mygx_00000
+  rotate: false
+  xy: 502, 11
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/my/mygx_00001
+  rotate: false
+  xy: 502, 8
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/my/mygx_00002
+  rotate: false
+  xy: 502, 5
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/my/mygx_00003
+  rotate: false
+  xy: 502, 2
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/my/mygx_00004
+  rotate: false
+  xy: 505, 11
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/my/mygx_00005
+  rotate: false
+  xy: 505, 8
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/my/mygx_00006
+  rotate: false
+  xy: 505, 5
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/my/mygx_00007
+  rotate: false
+  xy: 505, 2
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/my/mygx_00008
+  rotate: false
+  xy: 508, 11
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/my/mygx_00009
+  rotate: false
+  xy: 508, 8
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/my/mygx_00010
+  rotate: false
+  xy: 508, 5
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+images/my/mygx_00021
+  rotate: true
+  xy: 1487, 103
+  size: 469, 483
+  orig: 512, 512
+  offset: 4, 29
+  index: -1
+images/my/mygx_00023
+  rotate: false
+  xy: 1012, 83
+  size: 473, 486
+  orig: 512, 512
+  offset: 0, 26
+  index: -1
+images/my/mygx_00024
+  rotate: false
+  xy: 1478, 574
+  size: 473, 486
+  orig: 512, 512
+  offset: 0, 26
+  index: -1
+images/my/mygx_00025
+  rotate: false
+  xy: 2, 1534
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+images/my/mygx_00026
+  rotate: false
+  xy: 2, 1020
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+images/my/mygx_00027
+  rotate: false
+  xy: 2, 506
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+images/my/mygx_00028
+  rotate: true
+  xy: 1508, 1566
+  size: 480, 474
+  orig: 512, 512
+  offset: 32, 0
+  index: -1
+images/my/mygx_00029
+  rotate: true
+  xy: 1001, 571
+  size: 489, 475
+  orig: 512, 512
+  offset: 23, 0
+  index: -1
+images/my/mygx_00030
+  rotate: true
+  xy: 516, 1051
+  size: 497, 483
+  orig: 512, 512
+  offset: 15, 0
+  index: -1
+images/my/mygx_00031
+  rotate: true
+  xy: 2, 2
+  size: 502, 498
+  orig: 512, 512
+  offset: 2, 0
+  index: -1
+images/my/mygx_00032
+  rotate: true
+  xy: 502, 14
+  size: 490, 508
+  orig: 512, 512
+  offset: 22, 0
+  index: -1
+images/my/mygx_00033
+  rotate: true
+  xy: 1005, 1062
+  size: 488, 493
+  orig: 512, 512
+  offset: 24, 0
+  index: -1
+images/my/mygx_00034
+  rotate: false
+  xy: 516, 1550
+  size: 487, 496
+  orig: 512, 512
+  offset: 18, 0
+  index: -1
+images/my/mygx_00035
+  rotate: true
+  xy: 1500, 1070
+  size: 480, 477
+  orig: 512, 512
+  offset: 22, 0
+  index: -1
+images/my/mygx_00036
+  rotate: false
+  xy: 516, 572
+  size: 483, 477
+  orig: 512, 512
+  offset: 24, 0
+  index: -1
+
+Ss_MZHL_ChouJiang_MengYuan2.png
+size: 1968,1968
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/my/my_2
+  rotate: false
+  xy: 1808, 431
+  size: 158, 160
+  orig: 512, 512
+  offset: 176, 174
+  index: -1
+images/my/mygx_00011
+  rotate: false
+  xy: 473, 1493
+  size: 474, 473
+  orig: 512, 512
+  offset: 0, 39
+  index: -1
+images/my/mygx_00012
+  rotate: false
+  xy: 949, 1493
+  size: 474, 473
+  orig: 512, 512
+  offset: 0, 39
+  index: -1
+images/my/mygx_00013
+  rotate: true
+  xy: 2, 1008
+  size: 473, 468
+  orig: 512, 512
+  offset: 0, 44
+  index: -1
+images/my/mygx_00014
+  rotate: false
+  xy: 1425, 1498
+  size: 473, 468
+  orig: 512, 512
+  offset: 0, 44
+  index: -1
+images/my/mygx_00015
+  rotate: true
+  xy: 953, 1028
+  size: 463, 470
+  orig: 512, 512
+  offset: 10, 42
+  index: -1
+images/my/mygx_00016
+  rotate: true
+  xy: 1425, 1033
+  size: 463, 470
+  orig: 512, 512
+  offset: 10, 42
+  index: -1
+images/my/mygx_00017
+  rotate: false
+  xy: 2, 532
+  size: 463, 474
+  orig: 512, 512
+  offset: 10, 38
+  index: -1
+images/my/mygx_00018
+  rotate: false
+  xy: 2, 56
+  size: 463, 474
+  orig: 512, 512
+  offset: 10, 38
+  index: -1
+images/my/mygx_00019
+  rotate: true
+  xy: 473, 1036
+  size: 455, 478
+  orig: 512, 512
+  offset: 18, 34
+  index: -1
+images/my/mygx_00020
+  rotate: true
+  xy: 472, 579
+  size: 455, 478
+  orig: 512, 512
+  offset: 18, 34
+  index: -1
+images/my/mygx_00022
+  rotate: false
+  xy: 2, 1483
+  size: 469, 483
+  orig: 512, 512
+  offset: 4, 29
+  index: -1
+images/my/mygx_00037
+  rotate: false
+  xy: 467, 100
+  size: 459, 477
+  orig: 512, 512
+  offset: 29, 0
+  index: -1
+images/my/mygx_00038
+  rotate: true
+  xy: 952, 588
+  size: 438, 477
+  orig: 512, 512
+  offset: 50, 0
+  index: -1
+images/my/mygx_00039
+  rotate: true
+  xy: 1431, 593
+  size: 438, 475
+  orig: 512, 512
+  offset: 50, 2
+  index: -1
+images/my/mygx_00040
+  rotate: false
+  xy: 928, 100
+  size: 438, 477
+  orig: 512, 512
+  offset: 50, 0
+  index: -1
+images/my/mygx_00043
+  rotate: false
+  xy: 1368, 139
+  size: 438, 447
+  orig: 512, 512
+  offset: 50, 30
+  index: -1
+
+Ss_MZHL_ChouJiang_MengYuan3.png
+size: 1322,1322
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/my/my_1
+  rotate: false
+  xy: 882, 632
+  size: 240, 248
+  orig: 512, 512
+  offset: 136, 132
+  index: -1
+images/my/mygx_00041
+  rotate: false
+  xy: 442, 438
+  size: 438, 438
+  orig: 512, 512
+  offset: 50, 39
+  index: -1
+images/my/mygx_00042
+  rotate: false
+  xy: 2, 426
+  size: 438, 445
+  orig: 512, 512
+  offset: 50, 32
+  index: -1
+images/my/mygx_00044
+  rotate: false
+  xy: 2, 873
+  size: 438, 447
+  orig: 512, 512
+  offset: 50, 30
+  index: -1
+images/my/mygx_00045
+  rotate: false
+  xy: 442, 878
+  size: 438, 442
+  orig: 512, 512
+  offset: 50, 35
+  index: -1
+images/my/mygx_00046
+  rotate: false
+  xy: 882, 882
+  size: 438, 438
+  orig: 512, 512
+  offset: 50, 39
+  index: -1
+images/my/mygx_00047
+  rotate: false
+  xy: 2, 156
+  size: 264, 268
+  orig: 512, 512
+  offset: 130, 47
+  index: -1

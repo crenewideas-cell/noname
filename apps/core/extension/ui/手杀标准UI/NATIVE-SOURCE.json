@@ -1,0 +1,19 @@
+{
+  "source": "三国杀·琉璃版5.5",
+  "modules": [
+    "如真似幻",
+    "十周年UI",
+    "手杀ui",
+    "选将美化",
+    "手杀MVP",
+    "皮肤切换",
+    "千幻聆音",
+    "标记补充",
+    "电脑适配"
+  ],
+  "files": 15178,
+  "bytes": 2785755889,
+  "onlineRooms": "host",
+  "registration": "one-private-ui-provider",
+  "personalData": false
+}

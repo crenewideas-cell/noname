@@ -1,0 +1,83 @@
+
+jinmenhuan.png
+size: 754,754
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+jin-huan
+  rotate: false
+  xy: 2, 19
+  size: 350, 300
+  orig: 350, 300
+  offset: 0, 0
+  index: -1
+pifu-jin
+  rotate: false
+  xy: 2, 321
+  size: 430, 431
+  orig: 443, 447
+  offset: 6, 10
+  index: -1
+pifu-jin-1_00000
+  rotate: false
+  xy: 354, 101
+  size: 210, 218
+  orig: 221, 245
+  offset: 5, 7
+  index: -1
+pifu-jin-liuguang_00000
+  rotate: true
+  xy: 534, 2
+  size: 97, 149
+  orig: 218, 307
+  offset: 17, 107
+  index: -1
+pifu-jin-liuguang_00001
+  rotate: false
+  xy: 434, 567
+  size: 128, 185
+  orig: 218, 307
+  offset: 17, 71
+  index: -1
+pifu-jin-liuguang_00002
+  rotate: true
+  xy: 566, 252
+  size: 150, 185
+  orig: 218, 307
+  offset: 17, 71
+  index: -1
+pifu-jin-liuguang_00003
+  rotate: true
+  xy: 564, 404
+  size: 172, 185
+  orig: 218, 307
+  offset: 17, 71
+  index: -1
+pifu-jin-liuguang_00004
+  rotate: true
+  xy: 566, 578
+  size: 174, 185
+  orig: 218, 307
+  offset: 26, 71
+  index: -1
+pifu-jin-liuguang_00005
+  rotate: true
+  xy: 566, 101
+  size: 149, 182
+  orig: 218, 307
+  offset: 51, 74
+  index: -1
+pifu-jin-liuguang_00006
+  rotate: false
+  xy: 434, 383
+  size: 119, 182
+  orig: 218, 307
+  offset: 81, 74
+  index: -1
+pifu-jin-liuguang_00007
+  rotate: true
+  xy: 354, 6
+  size: 93, 178
+  orig: 218, 307
+  offset: 107, 75
+  index: -1

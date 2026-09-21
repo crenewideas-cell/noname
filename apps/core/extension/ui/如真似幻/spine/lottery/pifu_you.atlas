@@ -1,0 +1,181 @@
+
+pifu_you.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+GLOW
+  rotate: false
+  xy: 681, 584
+  size: 52, 52
+  orig: 64, 64
+  offset: 6, 6
+  index: -1
+diaochan-1
+  rotate: false
+  xy: 681, 813
+  size: 38, 209
+  orig: 38, 209
+  offset: 0, 0
+  index: -1
+diaochan-2
+  rotate: false
+  xy: 387, 356
+  size: 28, 99
+  orig: 28, 99
+  offset: 0, 0
+  index: -1
+fazhan_00000
+  rotate: true
+  xy: 101, 14
+  size: 68, 86
+  orig: 129, 115
+  offset: 1, 27
+  index: -1
+fazhan_00001
+  rotate: true
+  xy: 2, 4
+  size: 78, 97
+  orig: 129, 115
+  offset: 1, 16
+  index: -1
+fazhan_00002
+  rotate: false
+  xy: 681, 714
+  size: 100, 97
+  orig: 129, 115
+  offset: 1, 16
+  index: -1
+fazhan_00003
+  rotate: false
+  xy: 259, 120
+  size: 121, 106
+  orig: 129, 115
+  offset: 1, 8
+  index: -1
+fazhan_00004
+  rotate: false
+  xy: 848, 913
+  size: 124, 109
+  orig: 129, 115
+  offset: 1, 4
+  index: -1
+fazhan_00005
+  rotate: false
+  xy: 259, 228
+  size: 124, 112
+  orig: 129, 115
+  offset: 1, 1
+  index: -1
+fazhan_00006
+  rotate: false
+  xy: 721, 909
+  size: 125, 113
+  orig: 129, 115
+  offset: 1, 0
+  index: -1
+fazhan_00007
+  rotate: false
+  xy: 259, 342
+  size: 126, 113
+  orig: 129, 115
+  offset: 1, 0
+  index: -1
+fazhan_00008
+  rotate: false
+  xy: 721, 813
+  size: 121, 94
+  orig: 129, 115
+  offset: 5, 0
+  index: -1
+fazhan_00009
+  rotate: false
+  xy: 681, 638
+  size: 92, 74
+  orig: 129, 115
+  offset: 34, 0
+  index: -1
+hua
+  rotate: false
+  xy: 189, 32
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+luxunlizi1_00003
+  rotate: true
+  xy: 417, 401
+  size: 54, 22
+  orig: 91, 91
+  offset: 25, 31
+  index: -1
+luxunlizi1_00004
+  rotate: false
+  xy: 259, 84
+  size: 58, 34
+  orig: 91, 91
+  offset: 21, 25
+  index: -1
+renwu
+  rotate: false
+  xy: 2, 457
+  size: 442, 565
+  orig: 488, 565
+  offset: 5, 0
+  index: -1
+renwu_diaochan
+  rotate: false
+  xy: 2, 84
+  size: 255, 371
+  orig: 255, 371
+  offset: 0, 0
+  index: -1
+shuye
+  rotate: false
+  xy: 974, 974
+  size: 48, 48
+  orig: 64, 64
+  offset: 8, 6
+  index: -1
+suishandian_000
+  rotate: false
+  xy: 974, 936
+  size: 48, 36
+  orig: 64, 64
+  offset: 11, 12
+  index: -1
+suishandian_004
+  rotate: false
+  xy: 783, 726
+  size: 34, 22
+  orig: 64, 64
+  offset: 22, 15
+  index: -1
+suishandian_005
+  rotate: false
+  xy: 681, 540
+  size: 38, 42
+  orig: 64, 64
+  offset: 12, 4
+  index: -1
+yan
+  rotate: false
+  xy: 735, 611
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+you
+  rotate: false
+  xy: 446, 472
+  size: 233, 550
+  orig: 233, 550
+  offset: 0, 0
+  index: -1
+you-2
+  rotate: false
+  xy: 783, 750
+  size: 49, 61
+  orig: 49, 61
+  offset: 0, 0
+  index: -1

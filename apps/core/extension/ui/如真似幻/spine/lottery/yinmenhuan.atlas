@@ -1,0 +1,83 @@
+
+yinmenhuan.png
+size: 729,729
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pifu-yin
+  rotate: false
+  xy: 2, 320
+  size: 406, 407
+  orig: 420, 425
+  offset: 6, 12
+  index: -1
+pifu-yin-1_00000
+  rotate: false
+  xy: 410, 522
+  size: 198, 205
+  orig: 212, 212
+  offset: 7, 0
+  index: -1
+pifu-yin-liuguang_00000
+  rotate: false
+  xy: 591, 214
+  size: 93, 131
+  orig: 211, 214
+  offset: 13, 72
+  index: -1
+pifu-yin-liuguang_00001
+  rotate: true
+  xy: 279, 2
+  size: 125, 153
+  orig: 211, 214
+  offset: 11, 51
+  index: -1
+pifu-yin-liuguang_00002
+  rotate: false
+  xy: 581, 347
+  size: 146, 173
+  orig: 211, 214
+  offset: 14, 31
+  index: -1
+pifu-yin-liuguang_00003
+  rotate: false
+  xy: 425, 145
+  size: 164, 184
+  orig: 211, 214
+  offset: 20, 20
+  index: -1
+pifu-yin-liuguang_00004
+  rotate: false
+  xy: 410, 331
+  size: 169, 189
+  orig: 211, 214
+  offset: 21, 15
+  index: -1
+pifu-yin-liuguang_00005
+  rotate: false
+  xy: 279, 129
+  size: 144, 189
+  orig: 211, 214
+  offset: 50, 15
+  index: -1
+pifu-yin-liuguang_00006
+  rotate: true
+  xy: 434, 23
+  size: 120, 181
+  orig: 211, 214
+  offset: 79, 21
+  index: -1
+pifu-yin-liuguang_00007
+  rotate: false
+  xy: 610, 560
+  size: 99, 167
+  orig: 211, 214
+  offset: 100, 34
+  index: -1
+yin-huan
+  rotate: false
+  xy: 2, 55
+  size: 275, 263
+  orig: 275, 263
+  offset: 0, 0
+  index: -1

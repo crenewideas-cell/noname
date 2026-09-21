@@ -1,0 +1,520 @@
+.setting-home {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  overflow-x: visible;
+  transition: all 0s;
+  z-index: 10;
+}
+
+.setting-dialog {
+  position: absolute;
+  width: 790px;
+  height: 536px;
+  display: block;
+  zoom: 0.69;
+  background-image: url("../images/setting/set_dialog.png");
+  background-size: 100%;
+  overflow-x: visible;
+  /*opacity: 0.5;*/
+}
+
+.setting-list {
+  position: relative;
+  width: 150px;
+  height: 370px;
+  left: -28.5%;
+  top: 2%;
+  display: block;
+  overflow: auto;
+}
+
+.setting-list-button {
+  position: relative;
+  display: block;
+  width: 147.66px;
+  height: 73.14px;
+  color: #d0b999;
+  font-family: shousha;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 0 -18px 0;
+  white-space: nowrap;
+  line-height: 73.14px;
+  background-image: url("../images/setting/set_tab.png");
+  background-size: 100%;
+  transition: all 0s;
+}
+
+.setting-list-button.active {
+  background-image: url("../images/setting/set_tab_choose.png");
+}
+
+.setting-content {
+  width: 100%;
+  height: 88%;
+  overflow-x: visible;
+  overflow-y: auto;
+  top: 6%;
+}
+
+.setting-contentx {
+  position: relative;
+  display: flex;
+  width: 80%;
+  height: auto;
+  left: 10%;
+  /* top: 10.5%; */
+  margin-bottom: 3.5%;
+  flex-flow: row wrap;
+  align-items: center;
+  /*background-color: aquamarine;*/
+}
+
+.setting-title {
+  position: relative;
+  font-family: shousha;
+  font-size: 30px;
+  color: #4c3221;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 500;
+  text-shadow: none;
+  letter-spacing: -0.8px;
+  margin-right: 100%;
+}
+
+.setting-choice-background {
+  position: relative;
+  display: flex;
+  border-width: 19px 10px 19px 10px;
+  border-style: solid;
+  border-color: transparent;
+  border-image-source: url("../images/setting/publicui_setting_btn_bg.png");
+  border-image-slice: 19 10 19 10 fill;
+  border-image-repeat: stretch;
+  flex-direction: column;
+  align-content: center;
+  height: 18px;
+  margin-top: 6px;
+  transition: all 0.2s linear;
+  overflow: visible;
+}
+
+.setting-choice-background.short {
+  width: 40.4%;
+  /*长款92.1%，短款40.4%*/
+  margin-right: 6.5%;
+}
+
+.setting-choice-background.long {
+  width: 92.1%;
+}
+
+.setting-choice-background.huge {
+  width: 92.1%;
+  height: 35%;
+}
+
+.setting-choice-detail01 {
+  position: absolute;
+  width: 31px;
+  height: 33px;
+  left: -24px;
+  top: -25px;
+  background-image: url("../images/setting/publicui_setting_btn_detail01.png");
+  background-size: 100%;
+}
+
+.setting-choice-detail-dialog01 {
+  transition: all 0s;
+  display: flex;
+  width: auto;
+  height: auto;
+  border-width: 18px 28px 37px 28px;
+  border-style: solid;
+  border-color: transparent;
+  border-image-source: url("../images/setting/pubui_tip.9.png");
+  border-image-slice: 18 28 37 28 fill;
+  border-image-repeat: stretch;
+  position: absolute;
+  font-family: shousha;
+  font-size: 20px;
+  font-weight: 500;
+  text-shadow: none;
+  text-align: left;
+  white-space: nowrap;
+  color: rgb(217, 194, 153);
+  left: -75px;
+  /*overflow-y属性导致超出框外的元素无法显示*/
+  bottom: -100px;
+  z-index: 20;
+}
+
+.setting-choice-text {
+  font-family: shousha;
+  font-size: 24px;
+  color: #cbb796;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 500;
+  text-shadow: none;
+  letter-spacing: -0.8px;
+  margin-top: -3px;
+  left: 18px;
+}
+
+.setting-choice-btn {
+  width: 51px;
+  height: 52px;
+  margin-top: -9px;
+  left: 305px;
+  background-image: url("../images/setting/checkbtn_unselected.png");
+  background-size: 100%;
+  zoom: 0.69;
+  transition: all 0s;
+}
+
+.setting-choice-btn.select {
+  background-image: url("../images/setting/checkbtn_selected.png");
+}
+
+.setting-choice-progress {
+  width: 50%;
+  height: auto;
+  right: 2px;
+  /*background-color: aquamarine;*/
+}
+
+.setting-choice-progress-track {
+  width: 218px;
+  height: 16px;
+  left: 42px;
+  margin-top: 2px;
+  background-image: url("../images/setting/pubui_sound_progressBg.png");
+  background-size: 100%;
+}
+
+.setting-choice-progress-fill {
+  position: absolute;
+  display: flex;
+  width: 0px;
+  height: 16px;
+  border-width: 0px 10px 0px 10px;
+  border-style: solid;
+  border-color: transparent;
+  border-image-source: url("../images/setting/pubui_sound_progress.png");
+  border-image-slice: 0 10 0 10 fill;
+  border-image-repeat: stretch;
+  pointer-events: none;
+  /* 防止点击生效部分时移动滑块 */
+}
+
+.setting-choice-progress-thumb {
+  position: absolute;
+  display: flex;
+  width: 22px;
+  height: 22px;
+  left: 20px;
+  margin-top: -2px;
+  background-image: url("../images/setting/pubui_sound_slider.png");
+  background-size: 100%;
+  cursor: pointer;
+  user-select: none;
+  /* 防止拖动时选中文本 */
+  z-index: 11;
+}
+
+.setting-contenty {
+  position: relative;
+  display: flex;
+  width: 82%;
+  height: 82%;
+  border-width: 12px 12px 12px 12px;
+  border-style: solid;
+  border-color: transparent;
+  border-image-source: url("../images/setting/setting_bgs_content_bg.png");
+  border-image-slice: 12 12 12 12 fill;
+  border-image-repeat: stretch;
+  flex-direction: column;
+  left: 8%;
+  top: 12%;
+}
+
+.setting-contentz {
+  width: 82%;
+  height: 82%;
+  left: 8%;
+  top: 12%;
+  overflow-y: auto;
+  /*background-color: aquamarine;*/
+}
+.setting-contentw {
+  display: flex;
+  width: 80%;
+  height: 87%;
+  left: 10%;
+  top: 10.5%;
+  margin-bottom: 3.5%;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  /*background-color: aquamarine;*/
+}
+
+.setting-contentz::-webkit-scrollbar,
+.setting-contentw::-webkit-scrollbar {
+  display: block !important;
+  width: 18px;
+  height: 100%;
+  zoom: 0.7;
+}
+
+.setting-contentz::-webkit-scrollbar-track,
+.setting-contentw::-webkit-scrollbar-track {
+  border-width: 3px 0px 5px 0px;
+  border-style: solid;
+  border-color: transparent;
+  border-image-source: url("../images/setting/scrollbar_bg.png");
+  border-image-slice: 3 0 5 0 fill;
+  border-image-repeat: stretch;
+  background: none;
+}
+
+.setting-contentz::-webkit-scrollbar-thumb,
+.setting-contentw::-webkit-scrollbar-thumb {
+  border-width: 4px 0px 7px 0px;
+  border-style: solid;
+  border-color: transparent;
+  border-image-source: url("../images/setting/scrollbar_src.png");
+  border-image-slice: 4 0 7 0 fill;
+  border-image-repeat: stretch;
+  background: none;
+}
+
+.setting-normalbtn {
+  position: relative;
+  display: flex;
+  width: 216px;
+  height: 62px;
+  background-image: url("../images/setting/pub_btn_common2.png");
+  background-size: 100%;
+  font-family: shousha;
+  font-weight: 200;
+  font-size: 24px;
+  text-shadow: none;
+  color: white;
+  line-height: 62px;
+  text-align: center;
+  zoom: 0.69;
+}
+
+.huanpaiwenzi {
+  font-family: "shousha";
+  font-size: 22px;
+  position: absolute;
+  left: 50%;
+  top: 82%;
+  text-shadow:
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116;
+  color: #eddac3;
+  letter-spacing: 4px;
+  white-space: nowrap;
+  /*-webkit-filter: blur(0.5px) brightness(0.95) saturate(1.2) contrast(1.2);*/
+  text-align: center;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.72) 15%,
+    rgba(0, 0, 0, 0.72) 85%,
+    transparent 100%
+  );
+  height: 35px;
+  line-height: 38px !important;
+  z-index: 66;
+  pointer-events: none;
+  animation: huanpaiwenzi 2.1s linear forwards;
+  transform: translateX(-50%);
+}
+
+@keyframes huanpaiwenzi {
+  0% {
+    top: 82%;
+    opacity: 1;
+  }
+
+  84% {
+    top: 82%;
+    opacity: 1;
+  }
+
+  100% {
+    top: 66%;
+    opacity: 0;
+  }
+}
+
+.setting-titlew {
+  position: relative;
+  font-family: shousha;
+  font-size: 24px;
+  color: #4c3221;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 500;
+  text-shadow: none;
+  letter-spacing: -0.8px;
+}
+
+.setting-account-titie {
+  position: relative;
+  width: 129px;
+  height: 35px;
+  margin: 0 25%;
+  background-image: url("../images/setting/pbtn_ic_account_info.png");
+  background-size: 100% 100%;
+}
+.hyper-link-box {
+  position: relative;
+  justify-content: left;
+  width: auto;
+  height: auto;
+  margin: 0 25%;
+  left: -15%;
+}
+.hyper-link {
+  position: relative;
+  font-size: 24px;
+  font-family: shousha;
+  font-weight: 500;
+  line-height: 30px;
+  color: blue;
+  text-align: left;
+  white-space: nowrap;
+  text-shadow: none;
+  text-decoration: underline;
+  letter-spacing: -0.8px;
+}
+
+.profile-head {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 6px;
+  background-size: 100%;
+  border-radius: 100%;
+}
+
+.rzshUpdateInfo1 > .rzshUpdateInfo2 > .rzshUpdateInfoTitle {
+  font-weight: bold;
+  margin-bottom: 15px;
+  height: 10%;
+  top: 12%;
+  width: 100%;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "shousha";
+  font-size: xxx-large;
+  pointer-events: none;
+  color: yellow;
+}
+
+.rzshUpdateInfo1 > .rzshUpdateInfo2 > .rzshUpdateInfo3 {
+  width: 80%;
+  top: calc(25% + 20px);
+  left: 10%;
+  height: 60%;
+  overflow-y: auto;
+}
+
+.rzshUpdateInfo1 > .rzshUpdateInfo2 > .rzshUpdateInfo3 > .rzshUpdateInfoInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "shousha";
+  font-size: xx-large;
+  width: 100%;
+}
+
+.rzshUpdateInfoTip {
+  width: 100%;
+  text-align: center;
+  font-family: "shousha";
+  font-size: x-large;
+  margin-bottom: 10px;
+  top: 22%;
+  height: 15px;
+}
+
+.rzshCopyText {
+  color: #4aa3ff;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.rzshCopyText:hover {
+  color: #77c7ff;
+}

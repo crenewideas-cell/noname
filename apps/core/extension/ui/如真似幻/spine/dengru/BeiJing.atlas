@@ -1,0 +1,118 @@
+
+BeiJing.png
+size: 1820,559
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BeiJing
+  rotate: false
+  xy: 2, 2
+  size: 1110, 555
+  orig: 1110, 555
+  offset: 0, 0
+  index: -1
+fengsha_00
+  rotate: false
+  xy: 1114, 265
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_01
+  rotate: false
+  xy: 1256, 412
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_02
+  rotate: false
+  xy: 1678, 118
+  size: 138, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_03
+  rotate: false
+  xy: 1114, 118
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_04
+  rotate: false
+  xy: 1255, 265
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_05
+  rotate: false
+  xy: 1397, 412
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_06
+  rotate: false
+  xy: 1114, 412
+  size: 140, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_07
+  rotate: false
+  xy: 1255, 118
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_08
+  rotate: false
+  xy: 1396, 265
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_09
+  rotate: false
+  xy: 1538, 412
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_10
+  rotate: false
+  xy: 1396, 118
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_11
+  rotate: false
+  xy: 1537, 265
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_12
+  rotate: false
+  xy: 1679, 412
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_13
+  rotate: false
+  xy: 1537, 118
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1
+fengsha_14
+  rotate: false
+  xy: 1678, 265
+  size: 139, 145
+  orig: 140, 150
+  offset: 0, 5
+  index: -1

@@ -1,0 +1,76 @@
+
+Ss_MZHL_ChouJiang_DaoJu.png
+size: 360,360
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+daoju_00
+  rotate: false
+  xy: 2, 2
+  size: 84, 88
+  orig: 90, 90
+  offset: 3, 1
+  index: -1
+daoju_02
+  rotate: false
+  xy: 90, 98
+  size: 84, 84
+  orig: 90, 90
+  offset: 3, 3
+  index: -1
+daoju_04
+  rotate: false
+  xy: 90, 184
+  size: 84, 86
+  orig: 90, 90
+  offset: 3, 2
+  index: -1
+daoju_06
+  rotate: true
+  xy: 269, 274
+  size: 84, 86
+  orig: 90, 90
+  offset: 3, 2
+  index: -1
+daoju_08
+  rotate: true
+  xy: 2, 181
+  size: 87, 86
+  orig: 90, 90
+  offset: 1, 2
+  index: -1
+daoju_10
+  rotate: false
+  xy: 90, 272
+  size: 87, 86
+  orig: 90, 90
+  offset: 1, 2
+  index: -1
+daoju_12
+  rotate: true
+  xy: 88, 2
+  size: 88, 84
+  orig: 90, 90
+  offset: 1, 3
+  index: -1
+daoju_14
+  rotate: true
+  xy: 2, 92
+  size: 87, 86
+  orig: 90, 90
+  offset: 1, 2
+  index: -1
+daoju_16
+  rotate: false
+  xy: 2, 270
+  size: 86, 88
+  orig: 90, 90
+  offset: 2, 1
+  index: -1
+daoju_18
+  rotate: true
+  xy: 179, 274
+  size: 84, 88
+  orig: 90, 90
+  offset: 3, 1
+  index: -1

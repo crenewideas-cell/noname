@@ -1,0 +1,76 @@
+
+jinpaixunhuan.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+beijingguang_00000
+  rotate: false
+  xy: 257, 500
+  size: 245, 235
+  orig: 255, 237
+  offset: 4, 1
+  index: -1
+beijingguang_00001
+  rotate: false
+  xy: 2, 737
+  size: 253, 235
+  orig: 255, 237
+  offset: 1, 1
+  index: -1
+beijingguang_00002
+  rotate: false
+  xy: 2, 500
+  size: 253, 235
+  orig: 255, 237
+  offset: 1, 1
+  index: -1
+beijingguang_00003
+  rotate: false
+  xy: 257, 737
+  size: 253, 235
+  orig: 255, 237
+  offset: 1, 1
+  index: -1
+beijingguang_00004
+  rotate: false
+  xy: 2, 263
+  size: 253, 235
+  orig: 255, 237
+  offset: 1, 1
+  index: -1
+beijingguang_00005
+  rotate: false
+  xy: 2, 38
+  size: 235, 223
+  orig: 255, 237
+  offset: 4, 1
+  index: -1
+beijingguang_00006
+  rotate: false
+  xy: 750, 765
+  size: 222, 207
+  orig: 255, 237
+  offset: 4, 15
+  index: -1
+beijingguang_00007
+  rotate: false
+  xy: 504, 509
+  size: 226, 226
+  orig: 255, 237
+  offset: 4, 6
+  index: -1
+beijingguang_00008
+  rotate: false
+  xy: 257, 270
+  size: 230, 228
+  orig: 255, 237
+  offset: 4, 5
+  index: -1
+beijingguang_00009
+  rotate: false
+  xy: 512, 737
+  size: 236, 235
+  orig: 255, 237
+  offset: 4, 1
+  index: -1

@@ -1,0 +1,1056 @@
+
+BeiJing.png
+size: 1906,1428
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+EffectTexs/hudieglow_00000
+  rotate: false
+  xy: 1754, 686
+  size: 21, 21
+  orig: 23, 23
+  offset: 1, 1
+  index: -1
+EffectTexs/hudieglow_green_00000
+  rotate: false
+  xy: 987, 18
+  size: 19, 19
+  orig: 23, 23
+  offset: 2, 2
+  index: -1
+EffectTexs/hudiestar_00000
+  rotate: false
+  xy: 1820, 544
+  size: 17, 17
+  orig: 23, 23
+  offset: 3, 3
+  index: -1
+EffectTexs/hudietuowei_00000
+  rotate: true
+  xy: 1892, 641
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00001
+  rotate: true
+  xy: 1559, 14
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00002
+  rotate: true
+  xy: 1884, 575
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00003
+  rotate: true
+  xy: 1895, 579
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00004
+  rotate: true
+  xy: 1570, 14
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00005
+  rotate: false
+  xy: 1216, 306
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00006
+  rotate: false
+  xy: 1686, 274
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00007
+  rotate: false
+  xy: 1686, 263
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00008
+  rotate: false
+  xy: 1699, 13
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00009
+  rotate: false
+  xy: 1666, 2
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00010
+  rotate: false
+  xy: 1728, 2
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00011
+  rotate: false
+  xy: 1761, 13
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00012
+  rotate: false
+  xy: 1790, 2
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00013
+  rotate: false
+  xy: 1823, 13
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00014
+  rotate: true
+  xy: 1832, 216
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00015
+  rotate: true
+  xy: 1843, 205
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00016
+  rotate: true
+  xy: 1854, 205
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00017
+  rotate: true
+  xy: 1865, 205
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00018
+  rotate: true
+  xy: 1876, 205
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00019
+  rotate: false
+  xy: 1832, 194
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00020
+  rotate: false
+  xy: 1798, 161
+  size: 59, 9
+  orig: 60, 9
+  offset: 1, 0
+  index: -1
+EffectTexs/hudietuowei_00021
+  rotate: false
+  xy: 1798, 150
+  size: 59, 9
+  orig: 60, 9
+  offset: 1, 0
+  index: -1
+EffectTexs/hudietuowei_00022
+  rotate: true
+  xy: 1887, 249
+  size: 59, 9
+  orig: 60, 9
+  offset: 1, 0
+  index: -1
+EffectTexs/hudietuowei_00023
+  rotate: false
+  xy: 1798, 183
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/hudietuowei_00024
+  rotate: false
+  xy: 1798, 172
+  size: 60, 9
+  orig: 60, 9
+  offset: 0, 0
+  index: -1
+EffectTexs/shuibowen1_00000
+  rotate: false
+  xy: 1709, 534
+  size: 75, 68
+  orig: 92, 92
+  offset: 9, 7
+  index: -1
+EffectTexs/shuibowen1_00001
+  rotate: false
+  xy: 1133, 160
+  size: 75, 69
+  orig: 92, 92
+  offset: 9, 6
+  index: -1
+EffectTexs/shuibowen1_00002
+  rotate: false
+  xy: 1620, 355
+  size: 75, 69
+  orig: 92, 92
+  offset: 9, 6
+  index: -1
+EffectTexs/shuibowen1_00003
+  rotate: false
+  xy: 1827, 845
+  size: 77, 69
+  orig: 92, 92
+  offset: 8, 6
+  index: -1
+EffectTexs/shuibowen1_00004
+  rotate: false
+  xy: 1827, 774
+  size: 77, 69
+  orig: 92, 92
+  offset: 8, 6
+  index: -1
+EffectTexs/shuibowen1_00005
+  rotate: false
+  xy: 1827, 916
+  size: 77, 71
+  orig: 92, 92
+  offset: 8, 5
+  index: -1
+EffectTexs/shuibowen1_00006
+  rotate: true
+  xy: 1469, 410
+  size: 78, 71
+  orig: 92, 92
+  offset: 7, 5
+  index: -1
+EffectTexs/shuibowen1_00007
+  rotate: true
+  xy: 1469, 330
+  size: 78, 71
+  orig: 92, 92
+  offset: 7, 5
+  index: -1
+EffectTexs/shuibowen1_00008
+  rotate: true
+  xy: 1709, 604
+  size: 78, 71
+  orig: 92, 92
+  offset: 7, 5
+  index: -1
+EffectTexs/shuibowen1_00009
+  rotate: false
+  xy: 1542, 428
+  size: 78, 71
+  orig: 92, 92
+  offset: 7, 5
+  index: -1
+EffectTexs/shuibowen1_00010
+  rotate: false
+  xy: 1628, 610
+  size: 79, 72
+  orig: 92, 92
+  offset: 6, 5
+  index: -1
+EffectTexs/shuibowen1_00011
+  rotate: false
+  xy: 1628, 536
+  size: 79, 72
+  orig: 92, 92
+  offset: 6, 5
+  index: -1
+EffectTexs/shuibowen1_00012
+  rotate: true
+  xy: 1395, 408
+  size: 79, 72
+  orig: 92, 92
+  offset: 6, 5
+  index: -1
+EffectTexs/shuibowen1_00013
+  rotate: false
+  xy: 1133, 231
+  size: 80, 72
+  orig: 92, 92
+  offset: 6, 5
+  index: -1
+EffectTexs/shuibowen1_00014
+  rotate: true
+  xy: 1395, 327
+  size: 79, 72
+  orig: 92, 92
+  offset: 6, 5
+  index: -1
+EffectTexs/shuibowen1_00015
+  rotate: true
+  xy: 1134, 78
+  size: 80, 72
+  orig: 92, 92
+  offset: 6, 5
+  index: -1
+EffectTexs/shuibowen1_00016
+  rotate: false
+  xy: 1133, 305
+  size: 81, 72
+  orig: 92, 92
+  offset: 5, 5
+  index: -1
+EffectTexs/shuibowen1_00017
+  rotate: false
+  xy: 1546, 610
+  size: 80, 72
+  orig: 92, 92
+  offset: 5, 5
+  index: -1
+EffectTexs/shuibowen1_00018
+  rotate: true
+  xy: 1754, 709
+  size: 80, 71
+  orig: 92, 92
+  offset: 5, 6
+  index: -1
+EffectTexs/shuibowen1_00019
+  rotate: false
+  xy: 1546, 537
+  size: 80, 71
+  orig: 92, 92
+  offset: 5, 6
+  index: -1
+EffectTexs/shuibowen1_00020
+  rotate: false
+  xy: 1542, 355
+  size: 76, 71
+  orig: 92, 92
+  offset: 9, 6
+  index: -1
+EffectTexs/shuibowen1_00021
+  rotate: false
+  xy: 1622, 426
+  size: 76, 71
+  orig: 92, 92
+  offset: 9, 6
+  index: -1
+EffectTexs/shuibowen1_00022
+  rotate: false
+  xy: 1827, 703
+  size: 77, 69
+  orig: 92, 92
+  offset: 9, 7
+  index: -1
+EffectTexs/shuibowen1_00023
+  rotate: true
+  xy: 1838, 1174
+  size: 72, 66
+  orig: 92, 92
+  offset: 14, 10
+  index: -1
+EffectTexs/shuibowen1_00024
+  rotate: true
+  xy: 1215, 231
+  size: 72, 65
+  orig: 92, 92
+  offset: 14, 11
+  index: -1
+EffectTexs/shuibowen1_00025
+  rotate: false
+  xy: 1357, 251
+  size: 72, 64
+  orig: 92, 92
+  offset: 14, 11
+  index: -1
+EffectTexs/shuibowen1_00026
+  rotate: false
+  xy: 1282, 251
+  size: 73, 64
+  orig: 92, 92
+  offset: 13, 11
+  index: -1
+EffectTexs/shuibowen1_00027
+  rotate: true
+  xy: 1199, 2
+  size: 74, 62
+  orig: 92, 92
+  offset: 13, 11
+  index: -1
+EffectTexs/shuibowen1_00028
+  rotate: true
+  xy: 1263, 2
+  size: 74, 62
+  orig: 92, 92
+  offset: 13, 11
+  index: -1
+EffectTexs/shuibowen1_00029
+  rotate: false
+  xy: 1709, 469
+  size: 75, 63
+  orig: 92, 92
+  offset: 12, 11
+  index: -1
+EffectTexs/shuibowen2_00000
+  rotate: true
+  xy: 1500, 109
+  size: 65, 57
+  orig: 92, 92
+  offset: 16, 9
+  index: -1
+EffectTexs/shuibowen2_00003
+  rotate: false
+  xy: 1628, 295
+  size: 67, 58
+  orig: 92, 92
+  offset: 15, 9
+  index: -1
+EffectTexs/shuibowen2_00006
+  rotate: true
+  xy: 1490, 176
+  size: 70, 59
+  orig: 92, 92
+  offset: 13, 9
+  index: -1
+EffectTexs/shuibowen2_00009
+  rotate: false
+  xy: 1426, 112
+  size: 72, 62
+  orig: 92, 92
+  offset: 12, 8
+  index: -1
+EffectTexs/shuibowen2_00012
+  rotate: true
+  xy: 1210, 160
+  size: 69, 63
+  orig: 92, 92
+  offset: 11, 8
+  index: -1
+EffectTexs/shuibowen2_00015
+  rotate: false
+  xy: 1351, 115
+  size: 73, 63
+  orig: 92, 92
+  offset: 9, 8
+  index: -1
+EffectTexs/shuibowen2_00018
+  rotate: false
+  xy: 1526, 256
+  size: 73, 64
+  orig: 92, 92
+  offset: 10, 8
+  index: -1
+EffectTexs/shuibowen2_00021
+  rotate: false
+  xy: 1697, 344
+  size: 75, 64
+  orig: 92, 92
+  offset: 9, 8
+  index: -1
+EffectTexs/shuibowen2_00024
+  rotate: false
+  xy: 1697, 285
+  size: 75, 57
+  orig: 92, 92
+  offset: 8, 14
+  index: -1
+EffectTexs/shuibowen2_00027
+  rotate: false
+  xy: 1778, 410
+  size: 64, 57
+  orig: 92, 92
+  offset: 17, 13
+  index: -1
+EffectTexs/shuibowen2_00030
+  rotate: true
+  xy: 1786, 469
+  size: 67, 56
+  orig: 92, 92
+  offset: 15, 12
+  index: -1
+EffectTexs/shuibowen2_00033
+  rotate: false
+  xy: 1774, 278
+  size: 68, 59
+  orig: 92, 92
+  offset: 14, 10
+  index: -1
+EffectTexs/shuibowen2_00036
+  rotate: true
+  xy: 1368, 180
+  size: 69, 61
+  orig: 92, 92
+  offset: 13, 9
+  index: -1
+EffectTexs/shuibowen2_00039
+  rotate: false
+  xy: 1838, 1109
+  size: 66, 63
+  orig: 92, 92
+  offset: 11, 8
+  index: -1
+EffectTexs/shuibowen2_00042
+  rotate: true
+  xy: 1559, 109
+  size: 69, 64
+  orig: 92, 92
+  offset: 10, 7
+  index: -1
+EffectTexs/shuibowen2_00045
+  rotate: false
+  xy: 1818, 637
+  size: 72, 64
+  orig: 92, 92
+  offset: 9, 7
+  index: -1
+EffectTexs/shuibowen2_00048
+  rotate: true
+  xy: 1327, 2
+  size: 74, 60
+  orig: 92, 92
+  offset: 9, 11
+  index: -1
+EffectTexs/shuibowen2_00051
+  rotate: true
+  xy: 1431, 250
+  size: 75, 57
+  orig: 92, 92
+  offset: 9, 13
+  index: -1
+EffectTexs/shuibowen2_00054
+  rotate: false
+  xy: 1837, 350
+  size: 67, 58
+  orig: 92, 92
+  offset: 16, 12
+  index: -1
+EffectTexs/shuibowen2_00057
+  rotate: false
+  xy: 1838, 989
+  size: 66, 57
+  orig: 92, 92
+  offset: 17, 11
+  index: -1
+EffectTexs/shuibowen2_00060
+  rotate: false
+  xy: 1838, 1048
+  size: 66, 59
+  orig: 92, 92
+  offset: 16, 10
+  index: -1
+EffectTexs/shuibowen2_00063
+  rotate: true
+  xy: 1844, 494
+  size: 67, 60
+  orig: 92, 92
+  offset: 15, 10
+  index: -1
+EffectTexs/shuibowen2_00066
+  rotate: true
+  xy: 1774, 339
+  size: 69, 61
+  orig: 92, 92
+  offset: 14, 9
+  index: -1
+EffectTexs/shuibowen2_00069
+  rotate: true
+  xy: 1820, 563
+  size: 72, 62
+  orig: 92, 92
+  offset: 12, 8
+  index: -1
+EffectTexs/shuibowen2_00072
+  rotate: true
+  xy: 1134, 2
+  size: 74, 63
+  orig: 92, 92
+  offset: 11, 8
+  index: -1
+EffectTexs/shuibowen2_00075
+  rotate: true
+  xy: 1551, 180
+  size: 74, 59
+  orig: 92, 92
+  offset: 10, 11
+  index: -1
+EffectTexs/shuibowen2_00078
+  rotate: false
+  xy: 1700, 410
+  size: 76, 57
+  orig: 92, 92
+  offset: 9, 13
+  index: -1
+EffectTexs/shuibowen2_00081
+  rotate: true
+  xy: 1431, 176
+  size: 72, 57
+  orig: 92, 92
+  offset: 8, 12
+  index: -1
+EffectTexs/shuibowen2_00084
+  rotate: false
+  xy: 1275, 162
+  size: 72, 52
+  orig: 92, 92
+  offset: 8, 10
+  index: -1
+EffectTexs/shuibowen2_00087
+  rotate: true
+  xy: 1844, 419
+  size: 73, 55
+  orig: 92, 92
+  offset: 8, 9
+  index: -1
+EffectTexs/yanwu_00000
+  rotate: true
+  xy: 1407, 80
+  size: 30, 83
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00003
+  rotate: true
+  xy: 1492, 76
+  size: 31, 83
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00006
+  rotate: true
+  xy: 1542, 322
+  size: 31, 84
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00009
+  rotate: true
+  xy: 1474, 7
+  size: 32, 83
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00012
+  rotate: false
+  xy: 1661, 102
+  size: 33, 83
+  orig: 36, 90
+  offset: 2, 4
+  index: -1
+EffectTexs/yanwu_00015
+  rotate: true
+  xy: 1389, 9
+  size: 33, 83
+  orig: 36, 90
+  offset: 2, 4
+  index: -1
+EffectTexs/yanwu_00018
+  rotate: true
+  xy: 1581, 10
+  size: 32, 83
+  orig: 36, 90
+  offset: 2, 4
+  index: -1
+EffectTexs/yanwu_00021
+  rotate: false
+  xy: 1317, 78
+  size: 32, 82
+  orig: 36, 90
+  offset: 2, 5
+  index: -1
+EffectTexs/yanwu_00024
+  rotate: true
+  xy: 1696, 109
+  size: 32, 82
+  orig: 36, 90
+  offset: 2, 4
+  index: -1
+EffectTexs/yanwu_00027
+  rotate: false
+  xy: 1666, 17
+  size: 31, 83
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00030
+  rotate: false
+  xy: 1696, 143
+  size: 32, 83
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00033
+  rotate: false
+  xy: 1730, 143
+  size: 32, 83
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00036
+  rotate: true
+  xy: 1474, 41
+  size: 33, 83
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00039
+  rotate: true
+  xy: 1282, 216
+  size: 33, 84
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00042
+  rotate: true
+  xy: 1581, 44
+  size: 33, 83
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00045
+  rotate: true
+  xy: 1540, 501
+  size: 34, 84
+  orig: 36, 90
+  offset: 2, 4
+  index: -1
+EffectTexs/yanwu_00048
+  rotate: true
+  xy: 819, 2
+  size: 35, 82
+  orig: 36, 90
+  offset: 1, 5
+  index: -1
+EffectTexs/yanwu_00051
+  rotate: true
+  xy: 903, 2
+  size: 35, 82
+  orig: 36, 90
+  offset: 1, 5
+  index: -1
+EffectTexs/yanwu_00054
+  rotate: false
+  xy: 1208, 78
+  size: 35, 80
+  orig: 36, 90
+  offset: 1, 5
+  index: -1
+EffectTexs/yanwu_00057
+  rotate: true
+  xy: 1626, 499
+  size: 35, 81
+  orig: 36, 90
+  offset: 1, 5
+  index: -1
+EffectTexs/yanwu_00060
+  rotate: false
+  xy: 1245, 78
+  size: 34, 80
+  orig: 36, 90
+  offset: 2, 5
+  index: -1
+EffectTexs/yanwu_00063
+  rotate: false
+  xy: 1490, 248
+  size: 34, 80
+  orig: 36, 90
+  offset: 2, 5
+  index: -1
+EffectTexs/yanwu_00066
+  rotate: false
+  xy: 1844, 267
+  size: 34, 81
+  orig: 36, 90
+  offset: 2, 5
+  index: -1
+EffectTexs/yanwu_00069
+  rotate: true
+  xy: 1612, 223
+  size: 34, 81
+  orig: 36, 90
+  offset: 2, 5
+  index: -1
+EffectTexs/yanwu_00072
+  rotate: false
+  xy: 1782, 624
+  size: 34, 83
+  orig: 36, 90
+  offset: 2, 4
+  index: -1
+EffectTexs/yanwu_00075
+  rotate: false
+  xy: 1281, 78
+  size: 34, 82
+  orig: 36, 90
+  offset: 2, 4
+  index: -1
+EffectTexs/yanwu_00078
+  rotate: true
+  xy: 1612, 187
+  size: 34, 82
+  orig: 36, 90
+  offset: 2, 4
+  index: -1
+EffectTexs/yanwu_00081
+  rotate: false
+  xy: 1625, 104
+  size: 34, 81
+  orig: 36, 90
+  offset: 2, 5
+  index: -1
+EffectTexs/yanwu_00084
+  rotate: true
+  xy: 1601, 259
+  size: 34, 83
+  orig: 36, 90
+  offset: 2, 3
+  index: -1
+EffectTexs/yanwu_00087
+  rotate: true
+  xy: 1389, 44
+  size: 34, 83
+  orig: 36, 90
+  offset: 2, 3
+  index: -1
+EffectTexs/yanwu_00090
+  rotate: true
+  xy: 1695, 228
+  size: 33, 83
+  orig: 36, 90
+  offset: 2, 3
+  index: -1
+EffectTexs/yanwu_00093
+  rotate: false
+  xy: 1764, 143
+  size: 32, 83
+  orig: 36, 90
+  offset: 3, 3
+  index: -1
+EffectTexs/yanwu_00096
+  rotate: true
+  xy: 1780, 109
+  size: 32, 82
+  orig: 36, 90
+  offset: 3, 3
+  index: -1
+EffectTexs/yanwu_00099
+  rotate: false
+  xy: 1798, 194
+  size: 32, 82
+  orig: 36, 90
+  offset: 3, 3
+  index: -1
+EffectTexs/yanwu_00102
+  rotate: false
+  xy: 1699, 24
+  size: 32, 83
+  orig: 36, 90
+  offset: 3, 3
+  index: -1
+EffectTexs/yanwu_00105
+  rotate: false
+  xy: 1733, 24
+  size: 32, 83
+  orig: 36, 90
+  offset: 3, 3
+  index: -1
+EffectTexs/yanwu_00108
+  rotate: false
+  xy: 1786, 538
+  size: 32, 84
+  orig: 36, 90
+  offset: 3, 3
+  index: -1
+EffectTexs/yanwu_00111
+  rotate: false
+  xy: 1767, 24
+  size: 32, 83
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00114
+  rotate: false
+  xy: 1801, 24
+  size: 32, 83
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+EffectTexs/yanwu_00117
+  rotate: false
+  xy: 1835, 24
+  size: 30, 83
+  orig: 36, 90
+  offset: 3, 4
+  index: -1
+bg
+  rotate: false
+  xy: 2, 2
+  size: 815, 667
+  orig: 815, 667
+  offset: 0, 0
+  index: -1
+bghua1
+  rotate: false
+  xy: 1442, 546
+  size: 102, 123
+  orig: 102, 123
+  offset: 0, 0
+  index: -1
+bghua2
+  rotate: true
+  xy: 1008, 45
+  size: 113, 124
+  orig: 115, 126
+  offset: 2, 0
+  index: -1
+bghua3
+  rotate: true
+  xy: 1577, 79
+  size: 28, 46
+  orig: 29, 46
+  offset: 1, 0
+  index: -1
+chuanglian1
+  rotate: false
+  xy: 1544, 791
+  size: 281, 218
+  orig: 281, 218
+  offset: 0, 0
+  index: -1
+chuanglian2
+  rotate: false
+  xy: 819, 379
+  size: 402, 290
+  orig: 402, 290
+  offset: 0, 0
+  index: -1
+hd1
+  rotate: false
+  xy: 1079, 12
+  size: 37, 31
+  orig: 39, 37
+  offset: 2, 6
+  index: -1
+hd2
+  rotate: true
+  xy: 1880, 310
+  size: 38, 24
+  orig: 38, 25
+  offset: 0, 1
+  index: -1
+heye1
+  rotate: false
+  xy: 1351, 85
+  size: 54, 28
+  orig: 54, 28
+  offset: 0, 0
+  index: -1
+heye2
+  rotate: false
+  xy: 1442, 490
+  size: 96, 54
+  orig: 96, 54
+  offset: 0, 0
+  index: -1
+huaban1
+  rotate: true
+  xy: 1349, 194
+  size: 20, 17
+  orig: 20, 17
+  offset: 0, 0
+  index: -1
+huaban2
+  rotate: false
+  xy: 1884, 563
+  size: 20, 10
+  orig: 20, 10
+  offset: 0, 0
+  index: -1
+shinei
+  rotate: false
+  xy: 2, 671
+  size: 1540, 755
+  orig: 1540, 755
+  offset: 0, 0
+  index: -1
+zhiwu1
+  rotate: false
+  xy: 1544, 1011
+  size: 292, 415
+  orig: 292, 415
+  offset: 0, 0
+  index: -1
+zhiwu2
+  rotate: false
+  xy: 1008, 2
+  size: 69, 41
+  orig: 69, 41
+  offset: 0, 0
+  index: -1
+zhiwu3
+  rotate: true
+  xy: 1544, 684
+  size: 105, 208
+  orig: 106, 209
+  offset: 0, 1
+  index: -1
+zhiwu4
+  rotate: true
+  xy: 1838, 1248
+  size: 178, 58
+  orig: 178, 58
+  offset: 0, 0
+  index: -1
+zhiwu5
+  rotate: false
+  xy: 819, 39
+  size: 187, 113
+  orig: 187, 113
+  offset: 0, 0
+  index: -1
+zhiwu6
+  rotate: true
+  xy: 1006, 160
+  size: 217, 125
+  orig: 217, 125
+  offset: 0, 0
+  index: -1
+zhiwu7
+  rotate: false
+  xy: 819, 154
+  size: 185, 223
+  orig: 185, 223
+  offset: 0, 0
+  index: -1
+zhiwu8
+  rotate: false
+  xy: 1223, 489
+  size: 217, 180
+  orig: 220, 180
+  offset: 0, 0
+  index: -1
+zhiwu9
+  rotate: false
+  xy: 1223, 317
+  size: 170, 170
+  orig: 170, 170
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,188 @@
+
+Ss_MZHL_ChouJiang_MengYuan.png
+size: 712,712
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+my_2
+  rotate: false
+  xy: 570, 2
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: -1
+my_q_00
+  rotate: false
+  xy: 645, 175
+  size: 19, 37
+  orig: 87, 89
+  offset: 68, 15
+  index: -1
+my_q_01
+  rotate: false
+  xy: 678, 252
+  size: 23, 52
+  orig: 87, 89
+  offset: 64, 15
+  index: -1
+my_q_02
+  rotate: false
+  xy: 678, 306
+  size: 32, 64
+  orig: 87, 89
+  offset: 55, 15
+  index: -1
+my_q_03
+  rotate: true
+  xy: 2, 10
+  size: 45, 72
+  orig: 87, 89
+  offset: 42, 15
+  index: -1
+my_q_04
+  rotate: false
+  xy: 570, 62
+  size: 56, 74
+  orig: 87, 89
+  offset: 31, 15
+  index: -1
+my_q_05
+  rotate: true
+  xy: 329, 2
+  size: 78, 74
+  orig: 87, 89
+  offset: 9, 15
+  index: -1
+my_q_06
+  rotate: false
+  xy: 405, 6
+  size: 87, 74
+  orig: 87, 89
+  offset: 0, 15
+  index: -1
+my_q_07
+  rotate: false
+  xy: 556, 138
+  size: 87, 74
+  orig: 87, 89
+  offset: 0, 15
+  index: -1
+my_q_08
+  rotate: true
+  xy: 494, 34
+  size: 87, 74
+  orig: 87, 89
+  offset: 0, 15
+  index: -1
+my_q_09
+  rotate: false
+  xy: 467, 123
+  size: 87, 89
+  orig: 87, 89
+  offset: 0, 0
+  index: -1
+yan_00
+  rotate: false
+  xy: 329, 82
+  size: 136, 137
+  orig: 180, 162
+  offset: 20, 11
+  index: -1
+yan_02
+  rotate: false
+  xy: 178, 69
+  size: 149, 149
+  orig: 180, 162
+  offset: 14, 6
+  index: -1
+yan_04
+  rotate: true
+  xy: 519, 214
+  size: 156, 157
+  orig: 180, 162
+  offset: 12, 3
+  index: -1
+yan_06
+  rotate: false
+  xy: 358, 223
+  size: 159, 159
+  orig: 180, 162
+  offset: 12, 3
+  index: -1
+yan_08
+  rotate: false
+  xy: 537, 372
+  size: 163, 158
+  orig: 180, 162
+  offset: 11, 3
+  index: -1
+yan_10
+  rotate: false
+  xy: 366, 386
+  size: 169, 161
+  orig: 180, 162
+  offset: 8, 0
+  index: -1
+yan_12
+  rotate: false
+  xy: 184, 221
+  size: 172, 161
+  orig: 180, 162
+  offset: 8, 0
+  index: -1
+yan_14
+  rotate: false
+  xy: 2, 57
+  size: 174, 161
+  orig: 180, 162
+  offset: 6, 0
+  index: -1
+yan_16
+  rotate: false
+  xy: 184, 384
+  size: 179, 162
+  orig: 180, 162
+  offset: 1, 0
+  index: -1
+yan_18
+  rotate: false
+  xy: 2, 548
+  size: 180, 162
+  orig: 180, 162
+  offset: 0, 0
+  index: -1
+yan_20
+  rotate: false
+  xy: 2, 384
+  size: 180, 162
+  orig: 180, 162
+  offset: 0, 0
+  index: -1
+yan_22
+  rotate: false
+  xy: 184, 548
+  size: 180, 162
+  orig: 180, 162
+  offset: 0, 0
+  index: -1
+yan_24
+  rotate: false
+  xy: 2, 220
+  size: 180, 162
+  orig: 180, 162
+  offset: 0, 0
+  index: -1
+yan_26
+  rotate: false
+  xy: 366, 549
+  size: 180, 161
+  orig: 180, 162
+  offset: 0, 1
+  index: -1
+yan_28
+  rotate: true
+  xy: 548, 532
+  size: 178, 162
+  orig: 180, 162
+  offset: 2, 0
+  index: -1

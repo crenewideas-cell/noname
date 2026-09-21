@@ -1,0 +1,722 @@
+/*html{
+  overflow-y:visible;
+}*/
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+#kcdh {
+  position: absolute;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+
+#transitionscreen {
+  width: 100vw;
+  height: 100vh;
+  overflow: visible;
+  z-index: -1;
+  background-size: 100% 100%;
+}
+
+#spinebg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: absolute;
+  z-index: -1;
+  background-size: 100% 100%;
+}
+
+#spinepe {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 0;
+  position: absolute;
+  background-size: 100% 100%;
+}
+
+#startgamebutton {
+  /* border:none;*/
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  box-shadow: none;
+  position: absolute;
+  background-size: contain;
+  right: 13%;
+  top: 46%;
+  z-index: 0;
+}
+
+/* 右上角图片样式 */
+#imagecontainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  /* justify-content: flex-end;
+        align-items: center;    */
+  height: 95px;
+  width: 290px;
+  z-index: 10;
+  background-position: 35px 0px;
+  background-image: url("../images/loginui/right.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+#updatelogimage {
+  border: none;
+  box-shadow: none;
+  width: 47px;
+  height: 47px;
+  top: -2px;
+  margin-left: 65px;
+  position: relative;
+  z-index: 10;
+  background-image: url("../images/loginui/gg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+#updatelogmodal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  /* transform: translate(-50%, -50%);*/
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  box-shadow: none;
+  z-index: 100;
+}
+
+#updatelog {
+  position: absolute;
+  width: 60%;
+  display: flex;
+  height: 80%;
+  left: 20%;
+  top: 10%;
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  background-position: center;
+  background-image: url("../images/loginui/update.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+#updateve {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: justify;
+  font-family: "shousha";
+  top: 17%;
+  height: 10%;
+  left: 0;
+  width: 100%;
+  font-size: 12px;
+  font-weight: bold;
+  color: #b6a593;
+  filter: drop-shadow(1px 0 0 #000) drop-shadow(-1px 0 0 #000)
+    drop-shadow(0 1px 0 #000) drop-shadow(0 -1px 0 #000);
+  letter-spacing: 2px;
+}
+
+#updatetext {
+  position: absolute;
+  font-family: "shousha";
+  top: 26%;
+  left: 10%;
+  width: 80%;
+  height: 61%;
+  font-size: 12px;
+  font-weight: bold;
+  color: #b6a593;
+  filter: drop-shadow(1px 0 0 #000) drop-shadow(-1px 0 0 #000)
+    drop-shadow(0 1px 0 #000) drop-shadow(0 -1px 0 #000);
+  letter-spacing: 2px;
+  line-height: 15px;
+  overflow: auto;
+}
+
+#kfbt {
+  border: none;
+  box-shadow: none;
+  width: 43px;
+  height: 43px;
+  top: 3px;
+  margin-left: 6.5px;
+  position: relative;
+  z-index: 10;
+  background-image: url("../images/loginui/kf.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+#kfsp {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  box-shadow: none;
+  z-index: 100;
+}
+
+#kfbg {
+  position: absolute;
+  width: 60%;
+  display: flex;
+  height: 80%;
+  left: 20%;
+  top: 10%;
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  background-position: center;
+  background-image: url("../images/loginui/loginbg2.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+#kfhe {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: justify;
+  font-family: "shousha";
+  top: 12%;
+  height: 10%;
+  left: 0;
+  width: 100%;
+  font-size: 12px;
+  font-weight: bold;
+  color: #b6a593;
+  filter: drop-shadow(1px 0 0 #000) drop-shadow(-1px 0 0 #000)
+    drop-shadow(0 1px 0 #000) drop-shadow(0 -1px 0 #000);
+  letter-spacing: 2px;
+}
+
+#kftext {
+  position: absolute;
+  font-family: "shousha";
+  top: 21%;
+  left: 10%;
+  width: 80%;
+  height: 61%;
+  font-size: 12px;
+  font-weight: bold;
+  color: #b6a593;
+  filter: drop-shadow(1px 0 0 #000) drop-shadow(-1px 0 0 #000)
+    drop-shadow(0 1px 0 #000) drop-shadow(0 -1px 0 #000);
+  letter-spacing: 2px;
+  line-height: 15px;
+  overflow: auto;
+}
+
+#sqbt {
+  border: none;
+  box-shadow: none;
+  transform: rotate(-90deg);
+  width: 43px;
+  height: 43px;
+  top: 3px;
+  margin-left: 6.5px;
+  position: relative;
+  z-index: 10;
+  background-image: url("../images/loginui/sq.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+#sqsp {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  /* transform: translate(-50%, -50%);*/
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  box-shadow: none;
+  z-index: 100;
+}
+
+#sqbg {
+  position: absolute;
+  width: 30%;
+  display: block;
+  height: 60%;
+  left: 35%;
+  top: 26%;
+  border: none;
+  z-index: 50;
+  box-shadow: none;
+  background-position: center;
+  background-size: 70% 100%;
+  /* background-color:yellow; */
+  background-image:
+    url("https://gitee.com/UnknownMaxin/as-real-as-fantasy/raw/master/images/loginui/sqm.jpg"),
+    url("../images/loginui/sqm.jpg");
+  background-repeat: no-repeat;
+}
+
+#sqbg::before {
+  content: "";
+  position: absolute;
+  background-image: url("../images/loginui/sqbg.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  top: -40%;
+  left: -30%;
+  height: 160%;
+  width: 160%;
+  /*  background-color:red;   */
+}
+
+#sqtext {
+  position: absolute;
+  top: 28%;
+  left: 10%;
+  width: 80%;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+}
+
+#offlinebutton {
+  border: none;
+  box-shadow: none;
+  width: 65px;
+  height: 65px;
+  top: 4px;
+  margin-left: 6px;
+  margin-right: 4px;
+  position: relative;
+  z-index: 10;
+  background-image: url("../images/loginui/offline.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+#offlinefix {
+  width: 50px;
+  height: 65px;
+  top: 4px;
+  right: -38px;
+  position: absolute;
+  z-index: 10;
+  background-image: url("../images/loginui/fix_login_btn.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(0.8);
+  }
+
+  75% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+#startgamebutton:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+#loginoverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#loginbox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  padding-top: 60px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 70px;
+  margin: 5px;
+  border: none;
+  box-shadow: none;
+  background-image: url("../images/loginui/loginbg2.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+#loginbox h2 {
+  margin-top: 5px;
+}
+
+#loginbox input {
+  display: block;
+  width: 80%;
+  padding: 5px;
+  transform: translate(20%, -150%);
+  margin-top: 10px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#loginzh {
+  transform: translateY(80%);
+}
+
+#loginmm {
+  transform: translateY(170%);
+}
+
+#loginbox button {
+  display: block;
+  position: absolute;
+  top: 70%;
+  left: 52%;
+  transform: translate(-50%, -50%);
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-bottom: 60px;
+  margin-top: 10px;
+  background-image: url("../images/loginui/loginbtn.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+#version {
+  position: absolute;
+  top: 2%;
+  left: 5%;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #b6a593;
+  text-shadow:
+    0.75px 0px 0.75px rgb(36, 35, 35),
+    -0.75px 0px 0.75px rgb(36, 35, 35),
+    0px 0.75px 0.75px rgb(36, 35, 35),
+    0px -0.75px 0.75px rgb(36, 35, 35);
+  filter: drop-shadow(0.75px 0px 0px rgb(36, 35, 35))
+    drop-shadow(-0.75px 0px 0px rgb(36, 35, 35))
+    drop-shadow(0px 0.75px 0px rgb(36, 35, 35))
+    drop-shadow(0px -0.75px 0px rgb(36, 35, 35));
+  z-index: 30;
+  letter-spacing: 1px;
+}
+
+#xuanqu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 45px;
+  right: 47px;
+  z-index: 21;
+  width: 225px;
+  height: 30px;
+  background-position: center bottom;
+  background-image: url("../images/loginui/xuanqu.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  box-shadow: none;
+  font-size: 12px;
+  font-family: shousha;
+  text-align: center;
+}
+
+/*底下三国杀图片*/
+#under {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  margin: 0px;
+  background-size: 100% 100%;
+  z-index: 20;
+  opacity: 0.4;
+  background-color: black;
+}
+
+#nunder {
+  position: absolute;
+  bottom: 0px;
+  left: 50px;
+  z-index: 21;
+  width: 170px;
+  height: 80px;
+  background-position: center bottom;
+  background-image:
+    url("https://gitee.com/UnknownMaxin/as-real-as-fantasy/raw/master/images/loginui/nunder.png"),
+    url("../images/loginui/nunder.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  box-shadow: none;
+}
+
+#undertext {
+  position: absolute;
+  bottom: 16px;
+  left: 190px;
+  z-index: 21;
+  width: 75%;
+  height: 20px;
+  font-size: 8px;
+  line-height: 12px;
+}
+
+#page {
+  position: absolute;
+  bottom: 60px;
+  left: 30px;
+  display: flex;
+  z-index: 21;
+  width: 33px;
+  height: 42px;
+  background-image:
+    url("https://gitee.com/UnknownMaxin/as-real-as-fantasy/raw/master/images/loginui/page.png"),
+    url("../images/loginui/page.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+#loginfo {
+  display: none;
+  align-items: center;
+  position: absolute;
+  top: 12px;
+  left: 280px;
+  z-index: 21;
+  width: 180px;
+  height: 28px;
+  background-position: center;
+  background-image: url("../images/loginui/loginfo.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow: none;
+}
+
+#logqq {
+  position: absolute;
+  z-index: 21;
+  left: 15px;
+  top: 2px;
+  width: 24px;
+  height: 24px;
+  background-position: center;
+  background-image: url("../images/loginui/logqq.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border: none;
+  box-shadow: none;
+}
+
+#loginfoname {
+  position: absolute;
+  z-index: 21;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: justify;
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
+  border: none;
+  box-shadow: none;
+  font-weight: normal;
+}
+
+#relog {
+  position: absolute;
+  z-index: 21;
+  top: 5px;
+  right: 10px;
+  width: 45px;
+  height: 18px;
+  background-position: center;
+  background-image: url("../images/loginui/relog.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border: none;
+  box-shadow: none;
+}
+
+@font-face {
+  font-family: "shousha";
+  src: url("../fonts/shousha.TTF");
+}
+
+.huanpaiwenzi {
+  font-family: "shousha";
+  font-size: 22px;
+  position: absolute;
+  left: 50%;
+  top: 82%;
+  text-shadow:
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116,
+    0 0 2.5px #3b3116;
+  color: #eddac3;
+  letter-spacing: 4px;
+  white-space: nowrap;
+  /*-webkit-filter: blur(0.5px) brightness(0.95) saturate(1.2) contrast(1.2);*/
+  text-align: center;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.72) 15%,
+    rgba(0, 0, 0, 0.72) 85%,
+    transparent 100%
+  );
+  height: 35px;
+  line-height: 38px !important;
+  z-index: 999;
+  pointer-events: none;
+  animation: huanpaiwenzi 2.1s linear forwards;
+  transform: translateX(-50%);
+  zoom: 0.69;
+}
+
+#rzshLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-family: "shousha";
+  font-size: xxx-large;
+}
+
+@keyframes huanpaiwenzi {
+  0% {
+    top: 82%;
+    opacity: 1;
+  }
+
+  84% {
+    top: 82%;
+    opacity: 1;
+  }
+
+  100% {
+    top: 66%;
+    opacity: 0;
+  }
+}

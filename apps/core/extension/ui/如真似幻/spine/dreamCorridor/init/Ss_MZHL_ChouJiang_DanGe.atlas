@@ -1,0 +1,111 @@
+
+Ss_MZHL_ChouJiang_DanGe.png
+size: 300,300
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+g1_00
+  rotate: false
+  xy: 128, 131
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+g2_00
+  rotate: false
+  xy: 210, 135
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+xx_01
+  rotate: true
+  xy: 79, 63
+  size: 17, 21
+  orig: 105, 105
+  offset: 48, 44
+  index: -1
+xx_02
+  rotate: true
+  xy: 210, 104
+  size: 29, 31
+  orig: 105, 105
+  offset: 38, 39
+  index: -1
+xx_03
+  rotate: false
+  xy: 83, 82
+  size: 43, 42
+  orig: 105, 105
+  offset: 29, 33
+  index: -1
+xx_04
+  rotate: false
+  xy: 147, 11
+  size: 55, 49
+  orig: 105, 105
+  offset: 23, 28
+  index: -1
+xx_05
+  rotate: false
+  xy: 79, 2
+  size: 66, 58
+  orig: 105, 105
+  offset: 18, 24
+  index: -1
+xx_06
+  rotate: false
+  xy: 128, 62
+  size: 76, 67
+  orig: 105, 105
+  offset: 13, 20
+  index: -1
+xx_07
+  rotate: true
+  xy: 2, 18
+  size: 85, 75
+  orig: 105, 105
+  offset: 9, 16
+  index: -1
+xx_08
+  rotate: false
+  xy: 199, 217
+  size: 91, 81
+  orig: 105, 105
+  offset: 6, 13
+  index: -1
+xx_09
+  rotate: false
+  xy: 102, 213
+  size: 95, 85
+  orig: 105, 105
+  offset: 3, 11
+  index: -1
+xx_10
+  rotate: false
+  xy: 2, 209
+  size: 98, 89
+  orig: 105, 105
+  offset: 1, 9
+  index: -1
+xx_11
+  rotate: true
+  xy: 2, 105
+  size: 102, 79
+  orig: 105, 105
+  offset: 0, 21
+  index: -1
+xx_12
+  rotate: false
+  xy: 83, 126
+  size: 43, 81
+  orig: 105, 105
+  offset: 21, 21
+  index: -1
+xx_13
+  rotate: false
+  xy: 2, 5
+  size: 11, 11
+  orig: 105, 105
+  offset: 20, 93
+  index: -1
