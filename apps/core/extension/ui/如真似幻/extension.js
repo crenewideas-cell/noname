@@ -1,4 +1,4 @@
-import { lib, game, ui, get, ai, _status } from "noname";
+import { lib, game, ui, get, createSceneContext } from "noname";
 import { createSceneGame, prepareCharacters, createPortraitLoader, packLabel, openTools } from "./bridge.js";
 import { createLobbyAudio, createCharacterGrid, addSessionButtons } from "./runtime.js";
 
@@ -6,13 +6,12 @@ export const type = "extension";
 export const workshopManifest = {
  format: "noname-ui-workshop", version: 1, id: "rzsh-modern", name: "如真似幻",
  author: "蒸、某个萌新、非凡欧德内里、文和",
- description: "如真似幻 2.0.2 新式扩展。包含动画大厅、模式选择、天梯、梦之回廊、招募及原版设置。由 UI 工坊统一切换。",
+ description: "动画大厅与模式选择使用如真似幻素材；规则、设置、皮肤和联机统一接入本体。",
  components: { home: { name: "如真似幻 · 交互大厅", runtime: "rzsh", settings: {}, assets: {}, style: {} } }
 };
 const base = () => `${lib.assetURL}extension/如真似幻/`;
 let prepared, installed = false;
-let fileList, sceneGame, activeScene;
-const silentAudio = {add() {}, play() {}, stop() {}};
+let fileList, sceneGame, activeScene, sceneContext;
 function script(file) {
  return new Promise((resolve, reject) => {
   const node = document.createElement("script"); node.src = base() + file;
@@ -25,22 +24,21 @@ async function prepare() {
   await script("js/gsap.min.js");
   await script("js/pixi6.min.js");
   const response = await fetch(base()+"files.json"); if (!response.ok) throw new Error("如真似幻文件清单缺失"); fileList = await response.json();
-  sceneGame = createSceneGame(fileList);
+  sceneContext = createSceneContext({lib,game,ui,get}, {settingsKey:"ui_workshop_rzsh_settings", actions:{reload:()=>game.reload()}});
+  sceneGame = createSceneGame(fileList, sceneContext.game);
+  sceneContext.game = sceneGame;
   const scene = await import("./scenes.js");
+  scene.bindSceneContext(sceneContext);
   // The old alert used an audio path relative to its HTML login page.
   window.rzsh.function.alert = message => {
-   if (_status.rzsh_alerting) return;
-   _status.rzsh_alerting = true;
+   if (sceneContext._status.rzsh_alerting) return;
+   sceneContext._status.rzsh_alerting = true;
    const toast = document.createElement("div"); toast.className = "huanpaiwenzi";
    toast.textContent = String(message).replace(/<br\s*\/?>/g,"\n").replace(/<[^>]*>/g, ""); document.body.append(toast);
    sceneGame.playAudio("audio/sgs/Notice02.mp3");
-   setTimeout(() => { toast.remove(); delete _status.rzsh_alerting; },3000);
+   setTimeout(() => { toast.remove(); delete sceneContext._status.rzsh_alerting; },3000);
   };
-  for (const file of ["dynamicCorridor", "dream_corridor", "setting"]) {
-   const module = await import(/* @vite-ignore */ `./js/${file}.js`);
-   const pixi = new Proxy(globalThis.PIXI, {get(target,key) { return key === "sound" ? (activeScene?.sound || silentAudio) : Reflect.get(target,key); }});
-   module.default(lib, sceneGame, ui, get, ai, _status, pixi);
-  }
+  window.我们敬爱你呀丞相 = () => lib.uiWorkshop.openSettings("options");
   return scene;
  })().catch(error => { prepared = undefined; throw error; });
  return prepared;
@@ -158,29 +156,15 @@ export async function activate() {
     },
     optionalSpine(loader, name, path) { throw new Error("此动态皮肤未随原素材包提供"); },
     openTools(onOriginal) { openTools(() => lifecycle.settings(), onOriginal); },
-    settings() { const url = new URL(location.href); url.searchParams.set("lobbySettings", "options"); location.href = url.href; },
+    settings() { return lib.uiWorkshop.openSettings("options"); },
     restart() { game.reload(); },
-    async skins() { const { openSkinGallery } = await import("../../noname/ui/skinGallery.js"); openSkinGallery(Object.keys(lib.characterPack).flatMap(key => Object.keys(lib.characterPack[key]))[0]); },
-    async corridor() {
-     // These skins belong to a separate extension and were not distributed in
-     // the supplied package. Check them before the original Spine scene uses them.
-     const entries = Object.values(window.dzxy_mzhl_dynamic || {}).flatMap(group => Object.values(group));
-     const paths = [...new Set(entries.flatMap(entry => [entry.name, entry.beijing?.name]).filter(Boolean))];
-     const missing = [];
-     for (const path of paths) {
-      try { const response = await fetch(`${lib.assetURL}${path}.skel`, {method:"HEAD"}); if (!response.ok) missing.push(path); }
-      catch { missing.push(path); }
-     }
-     if (missing.length || !window.dzxy_mzhl) {
-      window.rzsh.function.alert("梦之回廊需要的第三方动态皮肤未包含在原素材包中。补齐十周年 UI 的对应动态皮肤后可使用；现有武将与皮肤可通过底部“皮肤”浏览。");
-      return;
-     }
-     window.dzxy_mzhl();
-    },
+    character(name) { return lib.uiWorkshop.openSkins(name); },
+    skins() { return lib.uiWorkshop.openSkins(Object.keys(lib.characterPack).flatMap(key => Object.keys(lib.characterPack[key]))[0]); },
+    corridor() { return lifecycle.skins(); },
     timeout(fn, ms, ...args) { const id = setTimeout(() => { timers.delete(id); if (!done) fn(...args); }, ms); timers.add(id); return id; },
     interval(fn, ms, ...args) { const id = setInterval(() => { if (!done) fn(...args); }, ms); intervals.add(id); return id; },
     frame(fn) { const id = requestAnimationFrame(t => { frames.delete(id); if (!done) fn(t); }); frames.add(id); return id; },
-    finish(mode) { if (done || finishing) return; finishing = true; clearTimeout(resizing); lifecycle.sound.dispose(); resolve(mode); },
+    async finish(mode) { if (done || finishing) return; finishing = true; try { await sceneContext.commitMode(mode); clearTimeout(resizing); lifecycle.sound.dispose(); resolve(mode); } catch(error) { finishing=false;window.rzsh.function.alert(error.message); } },
     dispose(resize = false) {
      if (done) return; done = true;
      onlineController?.close();
@@ -204,8 +188,9 @@ export async function activate() {
     lifecycle.portraits = createPortraitLoader(lifecycle);
     lifecycle.grid = createCharacterGrid(lifecycle);
     prepareCharacters(); status.remove();
-     lib.config.extension_如真似幻_menuInit ??= "0";
-     scene.createScene(lib, sceneGame, ui, get, ai, _status, node, lifecycle);
+     sceneContext.refreshCharacters();
+     sceneContext.config.extension_如真似幻_menuInit ??= "0";
+     scene.createScene(sceneContext.lib, sceneGame, sceneContext.ui, sceneContext.get, sceneContext.ai, sceneContext._status, node, lifecycle);
      const onlineReturn = sessionStorage.getItem("noname_online_return");
      if (onlineReturn) { sessionStorage.removeItem("noname_online_return"); void lifecycle.online(onlineReturn); }
    } catch (error) {
@@ -219,8 +204,7 @@ export async function activate() {
  };
  lib.onloadSplashes.push(splash);
  lib.config.splash_style = splash.id;
- const { rankingContent } = await import("./scenes.js");
- lib.onload2.push(() => rankingContent({}, {}));
+ return () => { activeScene?.dispose(); lib.onloadSplashes = lib.onloadSplashes.filter(item=>item!==splash); installed=false; };
 }
 export default function () {
  return {

@@ -101,8 +101,8 @@ export function createPortraitLoader(lifecycle) {
   dispose() { disposed = true; queue.length = 0; textures.clear(); waiting.clear(); }
  };
 }
-export function createSceneGame(files) {
- return new Proxy(game, { get(target, key) {
+export function createSceneGame(files, sceneGame) {
+ return new Proxy(sceneGame, { get(target, key) {
   if (key === "getFileList") return (directory, callback) => {
    const prefix = directory.replace(/^.*extension\/如真似幻\//, "").replace(/\/$/, "") + "/";
    const children = files.filter(path => path.startsWith(prefix)).map(path => path.slice(prefix.length));

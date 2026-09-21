@@ -125,7 +125,7 @@ export async function initializeWorkshop() {
 		render(loaded);
 		if (loaded.manifest.components.home?.runtime === "rzsh") {
 			const provider = await import(/* @vite-ignore */ new URL(`${lib.assetURL}extension/如真似幻/extension.js`, document.baseURI).href);
-			await provider.activate();
+			disposeProvider = await provider.activate();
 		}
 		if (Object.values(loaded.manifest.components).some(part => part.runtime === "shousha")) {
 			const provider = await import(/* @vite-ignore */ new URL(`${lib.assetURL}extension/手杀标准UI/extension.js`, document.baseURI).href);

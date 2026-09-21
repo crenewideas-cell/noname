@@ -268,5 +268,20 @@
     "name": "手杀标准UI",
     "category": "ui",
     "path": "extension/ui/手杀标准UI"
+  },
+  {
+    "name": "极略",
+    "category": "packs",
+    "path": "extension/packs/极略"
+  },
+  {
+    "name": "梦澈涤花",
+    "category": "packs",
+    "path": "extension/packs/梦澈涤花"
+  },
+  {
+    "name": "怒焰三国",
+    "category": "packs",
+    "path": "extension/packs/怒焰三国"
   }
 ]

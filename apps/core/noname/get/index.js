@@ -5146,8 +5146,10 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 			const related = [];
 			if (skills.includes("hlhj_guimeng") && !skills.includes("hlhj_yiyuan")) related.push("hlhj_yiyuan");
 			if (skills.includes("hlhj_jiangzhu")) related.push("hlhj_qingsi");
+			if (skills.includes("hlhj_xianyu")) related.push("hlhj_tonglingbaoyu", "hlhj_qingjian");
+			if (skills.includes("hlhj_duzhuan")) related.push("hlhj_furonglei");
 			for (const name of related) {
-				const description = name === "hlhj_qingsi" ? lib.translate[name + "_info"] : get.skillInfoTranslation(name, player, false);
+				const description = lib.card[name] ? lib.translate[name + "_info"] : get.skillInfoTranslation(name, player, false);
 				if (description) uiintro.add('<div><div class="skill">【' + get.translation(name) + '】</div><div>' + description + '</div></div>');
 			}
 		};
@@ -5270,11 +5272,11 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 
 			var skills = node.getSkills(null, false, false).slice(0);
 			var skills2 = game.filterSkills(skills, node);
-			// Keep all printed Daiyu skills visible after death/loss of a skill,
+			// Keep printed Honglou skills visible after death/loss of a skill,
 			// while respecting unrevealed generals in hidden-character modes.
-			if ([node.name1 || node.name, node.name2].some((name, index) => name === "hlhj_daiyu" && !node.isUnseen?.(index))) {
-				skills.addArray(get.character("hlhj_daiyu", 3));
-			}
+			[node.name1 || node.name, node.name2].forEach((name, index) => {
+				if (["hlhj_daiyu", "hlhj_baoyu"].includes(name) && !node.isUnseen?.(index)) skills.addArray(get.character(name, 3));
+			});
 			if (node == game.me && node.hiddenSkills.length) {
 				skills.addArray(node.hiddenSkills);
 			}

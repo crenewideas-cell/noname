@@ -389,10 +389,17 @@ export function installHost() {
 				// Reinit restores storage after player.init. Rebuild public badges
 				// locally without broadcasting or revealing hidden hand data.
 				for (const target of Object.values(lib.playerOL)) {
-					for (const name of ["hlhj_mushi", "hlhj_mushiyuan", "hlhj_lei"]) {
+					for (const name of ["hlhj_mushi", "hlhj_mushiyuan", "hlhj_lei", "hlhj_jade", "hlhj_readers", "hlhj_furonglei"]) {
 						const value = target.storage[name];
 						if (Array.isArray(value) ? value.length > 0 : Number(value) > 0) target.markSkill(name, null, null, true);
 						else if (target.marks[name]) target.unmarkSkill(name, true);
+					}
+					for (const [name, key] of [["hlhj_book", "hlhj_book_pages"], ["hlhj_dream", "hlhj_dream_target"]]) {
+						if (target.storage[key]?.length) target.markSkill(name, null, null, true);
+						else if (target.marks[name]) target.unmarkSkill(name, true);
+					}
+					for (const memorial of target.storage.hlhj_furonglei || []) {
+						lib.skill.hlhj_furonglei?.showMemorial(memorial.dead, target, memorial.name);
 					}
 				}
 				game.phaseNumber = number; game.roundNumber = round; game.zhu = zhu;
@@ -757,6 +764,8 @@ function visibleArena(accountId) {
 		if (id === accountId) continue;
 		info.handcards = info.handcards.map(card => "_noname_card:" + JSON.stringify([card.cardid, null, null, null, null]));
 		info.gaintag = info.handcards.map(() => []); info.specials = [];
+		info.expansions = info.expansions.map(card => card.hasGaintag("hlhj_dream")
+			? "_noname_card:" + JSON.stringify([card.cardid, null, null, null, null]) : card);
 		if (lib.configOL.mode === "identity" && !info.identityShown) { info.identity = "cai"; info.identityNode = ["猜", "unknown"]; delete info.side; }
 	}
 	return state;

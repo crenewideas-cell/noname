@@ -27,7 +27,7 @@ export async function onlineBuildId(root: string) {
   }
   for (const path of ["apps/core/noname", "apps/core/character", "apps/core/card", "apps/core/mode", "apps/core/game",
     "apps/core/layout", "apps/core/theme", "apps/core/scripts", "apps/core/index.html", "apps/core/noname.js",
-    "apps/core/extension/packs/红楼幻境/extension.js", "apps/core/extension/packs/红楼幻境/info.json",
+    "apps/core/extension/packs/红楼幻境/extension.js", "apps/core/extension/packs/红楼幻境/baoyu.js", "apps/core/extension/packs/红楼幻境/info.json",
     "apps/core/extension/packs/红楼幻境/appearance.js", "apps/core/extension/packs/红楼幻境/motion.js", "apps/core/extension/packs/红楼幻境/theme/appearance.css",
     "apps/core/extension/packs/红楼幻境/appearance-catalog.js", "apps/core/extension/packs/红楼幻境/character-resources.js",
     "apps/core/extension/packs/红楼幻境/theme/catalog.js", "apps/core/extension/packs/红楼幻境/voice/runtime.js",

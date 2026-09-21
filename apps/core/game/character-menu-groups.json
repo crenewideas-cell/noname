@@ -30,6 +30,10 @@
       "members": ["名将杀", "mjs", "mjsnew", "mjsold"]
     },
     {
+      "name": "极略",
+      "members": ["极略", "jlsg_sk", "jlsg_sr", "jlsg_soul", "jlsg_sy", "jlsg_skpf"]
+    },
+    {
       "name": "森罗隔世",
       "members": ["森罗隔世", "decadeZhuoGui", "decadeKuiBa"]
     }

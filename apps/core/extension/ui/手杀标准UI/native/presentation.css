@@ -1,0 +1,28 @@
+/* Stock nodes, stock activation handlers, stock visibility and selection rules. */
+body[data-shousha-parts~="arena"] #arena{background:transparent}
+body[data-shousha-parts~="arena"]>.background{background-image:url('../original/core/image/background/1.jpg')!important;background-size:cover}
+body[data-shousha-parts~="players"] #arena>.player{border:2px solid #b49a62;border-radius:10px;box-shadow:0 0 0 2px #38291b,0 3px 12px #0009;background-color:#34271d}
+body[data-shousha-parts~="players"] #arena>.player>.avatar,body[data-shousha-parts~="players"] #arena>.player>.avatar2{border-radius:8px;background-position:50% 20%;background-size:cover}
+body[data-shousha-parts~="players"] #arena>.player>.name{color:#ffedb5;text-shadow:0 1px 2px #000,0 0 4px #1b0e00}
+body[data-shousha-parts~="players"] .ss-character-dialog{background:linear-gradient(135deg,#302820f5,#151310f5);border:2px solid #ad945e;border-radius:12px;color:#f4dfae}
+body[data-shousha-parts~="players"] .ss-character-dialog .button.character{border:1px solid #b49a62;border-radius:6px;box-shadow:0 3px 8px #0008}
+body[data-shousha-parts~="players"] .ss-character-dialog .button.character.selected{box-shadow:0 0 2px 2px #ffe4a0,0 0 14px #d79c2d}
+body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden){background-image:var(--ss-card-art)!important;background-size:100% 100%!important;border-radius:7px}
+body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden)>.image,body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden)>.background{background-image:none!important}
+body[data-shousha-parts~="cardback"] .card.infohidden{background-image:url('../original/十周年UI/assets/image/cardstyle_back.png')!important;background-size:100% 100%}
+body[data-shousha-parts~="buttons"] #control .control{background:linear-gradient(#765532,#34251a);border:1px solid #b99b5c;border-radius:6px;color:#fce6ab;box-shadow:inset 0 0 0 2px #372817,0 2px 6px #0009;text-shadow:0 1px 2px #000}
+body[data-shousha-parts~="buttons"] #control .control>div{font-family:shousha,serif;font-size:20px;padding:6px 16px}
+body[data-shousha-parts~="buttons"] #control .control.disabled{filter:grayscale(1);opacity:.65}
+body[data-shousha-parts~="menus"] :is(.menu,.menubg,#window>.dialog){background-color:#241d16ef;border-color:#ad945e;color:#f4dfae}
+body[data-shousha-parts~="fonts"] :is(#arena,#control,.dialog,.menu){font-family:shousha,serif}
+body[data-shousha-parts~="lines"] .linexy{background:linear-gradient(transparent,#e6be62,#e6be62);box-shadow:0 0 4px #dbaf58}
+body[data-shousha-parts~="buttons"] #system .ss-utility-button{background:url('./menu-medallion.svg') center/contain no-repeat!important;border:0!important;border-radius:50%;color:#fce7af;text-shadow:0 1px 3px #000}
+body[data-shousha-parts~="players"] #arena>.player.target{box-shadow:0 0 0 2px #ffe6a1,0 0 18px #ecb644}
+body[data-shousha-parts~="players"] #arena>.player>.marks .mark{border-color:#bca16b;background-color:#322417;color:#f3dc9b}
+body[data-shousha-parts~="hp"] .hp:not(.textstyle)>div{background:url('../original/core/theme/style/hp/image/glass1.png') center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important}
+body[data-shousha-parts~="hp"] .hp[data-condition="mid"]>div{background-image:url('../original/core/theme/style/hp/image/glass2.png')!important}
+body[data-shousha-parts~="hp"] .hp[data-condition="low"]>div{background-image:url('../original/core/theme/style/hp/image/glass3.png')!important}
+body[data-shousha-parts~="hp"] .hp>div.lost{background-image:url('../original/core/theme/style/hp/image/glass4.png')!important}
+.ss-core-settlement{position:fixed;inset:12% 20%;z-index:10000;overflow:auto;padding:24px;background:#241c16f5;color:#f2dfb3;border:2px solid #ad8d53;border-radius:12px;text-align:center;box-shadow:0 0 0 100vmax #0008;font:20px shousha,serif}
+.ss-core-settlement table{position:relative;width:100%;border-collapse:collapse}.ss-core-settlement td{padding:10px;border-bottom:1px solid #ad8d5366}.ss-core-settlement button{position:relative;margin:16px;padding:10px;color:inherit;background:#584327;border:1px solid #ad8d53;font:inherit}
+@media(max-width:700px){.ss-core-settlement{inset:8% 4%}body[data-shousha-parts~="buttons"] #control .control>div{font-size:16px;padding:5px 9px}}

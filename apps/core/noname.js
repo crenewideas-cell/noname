@@ -13,3 +13,5 @@ export { UI, ui, setUI } from "./noname/ui/index.js";
 export { getSkinService } from "./noname/skin/index.js";
 export { openSkinGallery } from "./noname/ui/skinGallery.js";
 export { suspendSelectionGuide } from "./noname/ui/selectionGuide.js";
+export { createSceneContext } from "./noname/ui/workshop/sceneContext.js";
+export { CacheContext } from "./noname/library/cache/cacheContext.js";

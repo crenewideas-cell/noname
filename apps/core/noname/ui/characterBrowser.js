@@ -47,7 +47,8 @@ export function createCharacterBrowser({ ids, caption, heightset, noclick, onlyp
 	const disabled = new Map();
 	const index = new CharacterSearch();
 	let view = [], matches = ids.slice(), full = false, retired = false, token = 0, activeQuery = "", focusedId, legacyButtons;
-	let alpha = "", group = "", category = !expandall && lib.characterDialogGroup[lib.config.character_dialog_tool] ? lib.config.character_dialog_tool : "";
+	let alpha = "", group = "", category = !onlypack && !expandall && lib.characterDialogGroup[lib.config.character_dialog_tool] ? lib.config.character_dialog_tool : "";
+	const refreshFilterControls = [];
 	const matchesFilters = id => {
 		if (!lib.character[id]) return false;
 		if (alpha && capt(id) !== alpha) return false;
@@ -137,7 +138,8 @@ export function createCharacterBrowser({ ids, caption, heightset, noclick, onlyp
 			previous.disabled = pager.page === 1; next.disabled = pager.page === pages;
 			previous.classList.toggle("no-prev", previous.disabled); next.classList.toggle("no-next", next.disabled);
 			pageNumber.textContent = ` ${pager.page} / ${pages} `;
-			status.textContent = filtered.length ? `共 ${filtered.length} 名人物` : "没有匹配的人物";
+			const filterLabels = [category, alpha && `首字母：${alpha.toUpperCase()}`, group && `势力：${get.plainText(get.translation(group))}`, activeQuery && `搜索：${activeQuery}`].filter(Boolean);
+			status.textContent = (filtered.length ? `共 ${filtered.length} 名人物` : "没有匹配的人物") + (filterLabels.length ? `（${filterLabels.join("，")}）` : "");
 			if (check && _status.event.dialog === dialog && _status.event.filterButton) { delete _status.event._buttonChoice; game.check(); }
 			if (keepFocus) (view.find(node => node.link === focusedId) || view[0])?.focus({ preventScroll: true });
 		},
@@ -178,12 +180,21 @@ export function createCharacterBrowser({ ids, caption, heightset, noclick, onlyp
 			for (let i = 0; i < controls.length; i++) { const active = values[i][0] === getValue(); controls[i].classList.toggle("thundertext", active); controls[i].setAttribute("aria-pressed", String(active)); }
 			pager.page = 1; pager.render();
 		}, translatedHTML));
-		controls.forEach((button, i) => { button.classList.toggle("thundertext", values[i][0] === getValue()); button.setAttribute("aria-pressed", String(values[i][0] === getValue())); });
+		const refresh = () => controls.forEach((button, i) => { button.classList.toggle("thundertext", values[i][0] === getValue()); button.setAttribute("aria-pressed", String(values[i][0] === getValue())); });
+		refreshFilterControls.push(refresh);
+		refresh();
 	};
 	toggle(alphabet, [...new Set(ids.map(capt))].sort().map(value => [value, value.toUpperCase()]), () => alpha, value => { alpha = value; });
 	toggle(groups, [...new Set(ids.map(id => get.is.double(id) ? "double" : lib.character[id][1]))].sort(lib.sort.group).map(value => [value, get.translation(value)]), () => group, value => { group = value; }, true);
 	toggle(groups, Object.keys(lib.characterDialogGroup).map(value => [value, value]), () => category, value => { category = value; });
-	packs.onchange = () => { pager.page = 1; pager.render(); };
+	packs.onchange = () => {
+		// Selecting a pack starts a new browse scope. A saved "recent" default,
+		// a previous search or faction must not silently hide most of the pack.
+		alpha = group = category = "";
+		input.value = "";
+		refreshFilterControls.forEach(refresh => refresh());
+		void pager.search("");
+	};
 	input.onkeydown = event => { event.stopPropagation(); if (event.key === "Enter" && !event.isComposing) { event.preventDefault(); void pager.search(input.value); } };
 	for (const element of [search, filters, footer, selection]) for (const event of ["keydown", "keyup", "keypress", "mousedown", "touchend", "click"]) element.addEventListener(event, e => e.stopPropagation());
 	grid.addEventListener("keydown", event => {

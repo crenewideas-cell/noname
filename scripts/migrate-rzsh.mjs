@@ -1,3 +1,4 @@
+import {isolateRzshScenes} from './isolate-rzsh-scenes.mjs';
 // Reproducible migration of the supplied community source. Never writes to temp.
 import fs from "node:fs";
 import path from "node:path";
@@ -68,7 +69,7 @@ scene = scene.replace('case "bottom_plus":\n', 'case "bottom_plus": lifecycle.op
 scene = scene.replace('case "wujiangbutton":', 'case "pifubutton": lifecycle.skins(); break;\ncase "wujiangbutton":');
 for (const type of ["Loader", "Ticker", "Container"]) scene = scene.replaceAll(`new PIXI["${type}"]()`, `lifecycle.${type.toLowerCase()}()`);
 scene = scene.replace('new PIXI["Application"](I)', 'lifecycle.application(I)');
-const banner = '// Migrated from 如真似幻 2.0.2. Original authors: 蒸、某个萌新、非凡欧德内里、文和.\n// UI scenes and ranking logic retained; legacy game bootstrap is intentionally excluded.\n';
+const banner = '// Migrated from 如真似幻 2.0.2. Original authors: 蒸、某个萌新、非凡欧德内里、文和.\n// UI scenes retained; gameplay and ranking hooks are excluded.\n';
 function modernize(code) {
  const result = ts.transform(parse(code), [context => node => {
   const walk = n => {
@@ -82,7 +83,7 @@ function modernize(code) {
  }]);
  return printer.printFile(result.transformed[0]);
 }
-fs.writeFileSync(path.join(target, "scenes.js"), banner + fixScenes(modernize('import { lib, game, ui, get, ai, _status } from "noname";\n' + tree.statements.slice(0,-1).map(text).join("\n") + '\nexport const rankingContent = ' + text(prop("content")) + ';\nexport function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {\n' + scene + '\n}\n')));
+fs.writeFileSync(path.join(target, "scenes.js"), banner + isolateRzshScenes(fixScenes(modernize('import { lib, game, ui, get, ai, _status } from "noname";\n' + tree.statements.slice(0,-1).map(text).join("\n") + '\nexport const rankingContent = ' + text(prop("content")) + ';\nexport function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {\n' + scene + '\n}\n'))));
 for (const file of ["dream_corridor.js", "dynamicCorridor.js", "setting.js"]) {
  const original = fs.readFileSync(path.join(source, "js", file), "utf8");
  fs.writeFileSync(path.join(target,"js",file), banner + modernize('export default function(lib, game, ui, get, ai, _status, PIXI = globalThis.PIXI) { const register = callback => callback(lib, game, ui, get, ai, _status);\n'+original+'\n}'));

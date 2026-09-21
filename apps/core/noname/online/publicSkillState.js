@@ -3,6 +3,9 @@
 const honglouPublicKeys = [
     "hlhj_mushi", "hlhj_lei", "hlhj_flower_step",
     "hlhj_gain_step", "hlhj_loss_step", "hlhj_wish_used", "hlhj_mushiyuan",
+    "hlhj_jade", "hlhj_jade_created", "hlhj_gongdu", "hlhj_readers",
+    "hlhj_book_pages", "hlhj_book_session", "hlhj_dream_target",
+    "hlhj_furonglei", "hlhj_epitaph_round",
 ];
 
 export function visibleSkillState(state, viewerId, playerIds) {
