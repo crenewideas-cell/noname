@@ -1,0 +1,97 @@
+@font-face{font-family:shousha;src:url('./original/如真似幻/fonts/shousha.ttf')}
+.shousha-native-splash{position:fixed!important;inset:0!important;width:100%!important;height:100%!important;overflow:hidden;z-index:50;background:#302a23;font-family:shousha}
+.shousha-native-splash>iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:4}
+.shousha-native-splash>canvas{position:absolute;left:50%!important;top:50%!important;transform:translate(-50%,-50%);z-index:1!important}
+.shousha-native-tools{position:absolute;right:6px;bottom:5px;z-index:25;display:flex;gap:4px;opacity:.35}
+.shousha-native-tools:hover,.shousha-native-tools:focus-within{opacity:1}
+.shousha-native-tools button{font-family:shousha;color:#ebd590;background:#292014c9;border:1px solid #a98b4e;border-radius:4px;padding:4px 8px;font-size:12px;cursor:pointer}
+.shousha-native-confirm{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0009;z-index:10000;color:#ead9af;font-family:shousha}
+.shousha-native-confirm>div{position:relative;width:min(600px,85vw);padding:25px;border:2px solid #a48747;border-radius:10px;background:#292720;box-shadow:0 0 25px #000;max-height:85vh;overflow:auto}
+.shousha-native-confirm p{white-space:pre-wrap;line-height:1.5}
+.shousha-native-confirm button{position:relative;margin:8px;padding:8px 16px;color:#ead9af;background:#51402a;border:1px solid #a48747;font:inherit;cursor:pointer}
+.shousha-native-settings label{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:8px;border-bottom:1px solid #685735}
+.shousha-native-settings details{position:relative;margin:10px 0;padding:10px;border:1px solid #685735;border-radius:5px}
+.shousha-native-settings summary{cursor:pointer;font-size:18px}
+.shousha-native-settings select,.shousha-native-settings input{position:relative;font:inherit;color:#ead9af;background:#352d21;max-width:50%}
+.shousha-native-loading{position:absolute;inset:0;display:grid;place-items:center;color:#ead9af;font-size:22px;z-index:3;pointer-events:none}
+/* Override the host's #splash > div mode tiles, including hover transforms. */
+#splash.shousha-native-splash{overflow:hidden;white-space:normal;transition:none}
+#splash.shousha-native-splash>.shousha-native-tools,
+#splash.shousha-native-splash>.shousha-native-loading{position:absolute;margin:0;transform:none;transition:none;box-shadow:none;border:0;border-radius:0;cursor:default}
+#splash.shousha-native-splash>.shousha-native-tools{inset:auto 6px 5px auto;width:auto;height:auto;display:flex}
+#splash.shousha-native-splash>.shousha-native-tools button{position:relative;inset:auto;width:auto;height:auto;min-height:28px;margin:0;flex:none;line-height:1.4;transform:none}
+#splash.shousha-native-splash>.shousha-native-loading{inset:0;width:100%;height:100%;display:grid;white-space:normal}
+#splash.shousha-native-splash>.shousha-native-loading>iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.shousha-native-notice{position:fixed;left:50%;top:12%;transform:translateX(-50%);z-index:10001;max-width:80vw;padding:12px 22px;border:1px solid #a88c58;border-radius:6px;background:#25251fea;color:#f1dfb5;font:18px/1.5 shousha;pointer-events:none}
+body.shousha-native-game #system>.game-navigation-slot{display:none}
+
+/* Provider-owned selection: only the shipped prompts appear in this arena. */
+body.shousha-native-game .selection-guide,
+body.shousha-native-game .selection-target-badge{display:none!important}
+body.shousha-native-game .ss-guozhan-choice .button.character{border-radius:9px!important;background-size:cover!important}
+body.shousha-native-game .ss-guozhan-choice .button.character.ss-choice-unavailable{filter:grayscale(1) brightness(.55);opacity:.8}
+body.shousha-native-game .ss-guozhan-choice .button.character.selected{filter:none;opacity:1;box-shadow:0 0 2px 2px #ffe4a0,0 0 14px #d79c2d!important}
+body.shousha-native-game .ss-guozhan-choice .button.character[data-ss-general]::after{content:attr(data-ss-general);position:absolute;left:0;right:0;bottom:6px;top:auto;width:auto;height:auto;background:none;transform:none;text-align:center;color:#ffe997;font:26px/1.2 shousha;text-shadow:0 2px 2px #37200b,0 0 5px #c59b32;pointer-events:none;z-index:10}
+body.shousha-native-game .ss-guozhan-confirm .primary2.disabled{display:none!important}
+
+/* Glass HP artwork belongs to this provider, irrespective of host HP settings. */
+body.shousha-native-game :is(.player,.button.character) .hp:not(.actcount):not(.treasure){--ss-hp:url('./original/core/theme/style/hp/image/glass1.png')}
+body.shousha-native-game :is(.player,.button.character) .hp[data-condition='mid']{--ss-hp:url('./original/core/theme/style/hp/image/glass2.png')}
+body.shousha-native-game :is(.player,.button.character) .hp[data-condition='low']{--ss-hp:url('./original/core/theme/style/hp/image/glass3.png')}
+body.shousha-native-game :is(.player,.button.character) .hp[data-condition='hidden']{--ss-hp:url('./original/core/theme/style/hp/image/glass4.png')}
+body.shousha-native-game :is(.player,.button.character) .hp:not(.actcount):not(.treasure)>div:not(.text):not(.shield){background:var(--ss-hp) center/100% 100% no-repeat!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:none!important;transform:none!important;flex-shrink:0}
+body.shousha-native-game :is(.player,.button.character) .hp:not(.actcount):not(.treasure)>div:is(.lost,.exclude){background-image:url('./original/core/theme/style/hp/image/glass4.png')!important;opacity:1!important}
+body.shousha-native-game :is(.player,.button.character) .hp.textstyle{font-family:shousha!important;color:#e7d8a4!important;text-shadow:0 1px 2px #17110a!important}
+
+/* Rounded portrait edges, without clipping the frame, HP or identity ornament. */
+body.shousha-native-game #arena>.player{border-radius:10px!important;background-clip:padding-box}
+body.shousha-native-game #arena>.player>.primary-avatar,
+body.shousha-native-game #arena>.player>.dynamic-wrap{border-radius:9px!important;clip-path:url(#ss-solo-clip)!important;-webkit-clip-path:url(#ss-solo-clip)!important;background-size:cover!important}
+body.shousha-native-game #arena>.player.fullskin2>.primary-avatar{border-radius:9px 0 0 9px!important;clip-path:url(#ss-left-clip)!important;-webkit-clip-path:url(#ss-left-clip)!important}
+body.shousha-native-game #arena>.player>.deputy-avatar{border-radius:0 9px 9px 0!important;clip-path:url(#ss-right-clip)!important;-webkit-clip-path:url(#ss-right-clip)!important;background-size:cover!important}
+body.shousha-native-game #arena>.player>.framebg{border-radius:10px!important}
+
+/* Newly drawn bronze medallions: reference palette, distinct action artwork. */
+body.shousha-native-game #roundmenu{box-sizing:border-box;width:72px!important;height:72px!important;padding:0!important;border:0!important;border-radius:50%!important;background:url('./native/menu-medallion.svg') center/contain no-repeat!important;box-shadow:none!important;cursor:pointer}
+body.shousha-native-game #roundmenu>div{display:none!important}
+body.shousha-native-game #roundmenu::before{content:''!important;display:block!important;position:absolute;inset:auto!important;left:50%!important;top:10px!important;width:32px!important;height:32px!important;margin:0!important;padding:0!important;transform:translateX(-50%)!important;background:url('./native/menu-icons.svg') 0 0/416px 32px no-repeat!important;box-shadow:none!important;border:0!important;pointer-events:none}
+body.shousha-native-game #roundmenu::after{content:'功能'!important;display:block!important;position:absolute;inset:auto!important;left:0!important;right:0!important;top:43px!important;width:auto!important;height:20px!important;margin:0!important;padding:0!important;transform:none!important;text-align:center;font:16px/20px shousha!important;letter-spacing:0!important;color:#dfbb6e;text-shadow:0 1px 1px #130c03;background:none!important;border:0!important;box-shadow:none!important;pointer-events:none}
+body.shousha-native-game #roundmenu:hover{filter:brightness(1.12)}
+body.shousha-native-game #roundmenu:focus-visible{outline:2px solid #e9c575;outline-offset:3px}
+/* Skin the original toolbar; keep .shown/.hidden and popup stacking intact. */
+body.shousha-native-game #system.with-game-navigation>#system2{order:-1;flex:0 1 auto;width:auto;max-width:min(560px,calc(100vw - 28px));height:auto;min-height:80px;margin-left:0;white-space:normal;overflow:visible}
+body.shousha-native-game #system2 .ss-utility-button{--ss-icon:12;position:relative!important;box-sizing:border-box;vertical-align:top;width:80px;height:80px;min-height:0;margin:2px;padding:0!important;border:0!important;border-radius:50%!important;background:url('./native/menu-medallion.svg') center/contain no-repeat!important;box-shadow:none!important;color:transparent!important;text-shadow:none!important;font-size:0!important;white-space:normal!important;text-align:center;cursor:pointer;transition:filter .15s}
+body.shousha-native-game #system2 .ss-utility-button::before{content:''!important;display:block;position:absolute;left:22px;top:10px;width:36px;height:36px;background:url('./native/menu-icons.svg') calc(var(--ss-icon) * -36px) 0/468px 36px no-repeat!important;border:0;box-shadow:none;pointer-events:none}
+body.shousha-native-game #system2 .ss-utility-button::after{content:attr(data-ss-label)!important;display:block;position:absolute;left:3px;right:3px;top:auto;bottom:14px;width:auto;height:auto;background:none!important;box-shadow:none;font:16px/1.05 shousha!important;color:#dfbb6e!important;text-shadow:0 1px 1px #130c03,0 -1px #fff0c333;pointer-events:none}
+body.shousha-native-game #system2 [data-ss-icon='identity']{--ss-icon:1}
+body.shousha-native-game #system2 [data-ss-icon='record']{--ss-icon:2}
+body.shousha-native-game #system2 [data-ss-icon='public']{--ss-icon:3}
+body.shousha-native-game #system2 [data-ss-icon='pile']{--ss-icon:5}
+body.shousha-native-game #system2 [data-ss-icon='surrender']{--ss-icon:7}
+body.shousha-native-game #system2 .ss-utility-button:hover{filter:brightness(1.18)}
+body.shousha-native-game #system2 .ss-utility-button:active{filter:brightness(.95)}
+/* Native arena: keep fixed frame geometry and scale all its layers together. */
+body.shousha-native-game #arena>.player>.avatar,
+body.shousha-native-game #arena>.player>.avatar2{background-size:cover!important;background-position:center top!important}
+body.shousha-native-game #arena[data-right-layout='on']>.hand-wrap,
+body.shousha-native-game #arena[data-right-layout='on']>.hand-back{right:calc(var(--ss-self-width,128px) + clamp(155px,16vw,270px))!important;left:130px!important}
+body.shousha-native-game #arena[data-right-layout='off']>.hand-wrap,
+body.shousha-native-game #arena[data-right-layout='off']>.hand-back{left:calc(var(--ss-self-width,128px) + clamp(155px,16vw,270px))!important;right:35px!important}
+body.shousha-native-game .skill-control{right:calc(var(--ss-self-width,128px) + 38px)!important;bottom:34px!important;max-width:clamp(150px,17vw,260px)!important;zoom:1!important;z-index:20}
+body.shousha-native-game #arena[data-right-layout='off'] .skill-control{right:auto!important;left:calc(var(--ss-self-width,128px) + 38px)!important}
+body.shousha-native-game .skill-control>.enable,
+body.shousha-native-game .skill-control>.trigger{gap:5px;flex-wrap:wrap;justify-content:flex-end}
+body.shousha-native-game .skill-control>.enable>div,
+body.shousha-native-game .skill-control>.trigger>div{width:auto!important;min-width:60px;height:auto;min-height:32px;box-sizing:border-box;margin:2px!important;padding:4px 8px;border:1px solid #a98b50;border-radius:6px;background:linear-gradient(#57462d,#302920)!important;background-clip:border-box!important;-webkit-background-clip:border-box!important;color:#f3dfad!important;-webkit-text-fill-color:#f3dfad!important;-webkit-text-stroke:0!important;text-shadow:0 1px 2px #000!important;font:600 clamp(16px,1.25vw,20px)/1.3 shousha,'Microsoft YaHei',sans-serif!important;zoom:1!important;white-space:nowrap;box-shadow:inset 0 0 0 1px #d5b37222,0 2px 4px #0006}
+body.shousha-native-game .skill-control .skillitem-child{display:none!important}
+body.shousha-native-game .skill-control>.enable>div::before{display:none!important}
+body.shousha-native-game .skill-control>.enable>.usable{border-color:#efcf79;background:linear-gradient(#72572b,#40301a)!important;cursor:pointer}
+body.shousha-native-game .skill-control>.enable>.select{box-shadow:0 0 7px #efc865!important}
+body.shousha-native-game .skill-control>.enable>div:not(.usable):not(.select),
+body.shousha-native-game .skill-control .lockedSkill{opacity:.58}
+
+@media(max-width:850px){
+ body.shousha-native-game .skill-control{bottom:23px!important;max-width:150px!important}
+ body.shousha-native-game .skill-control>.enable>div,body.shousha-native-game .skill-control>.trigger>div{min-width:48px;padding:3px 5px;font-size:15px!important}
+ body.shousha-native-game #arena[data-right-layout='on']>.hand-wrap,body.shousha-native-game #arena[data-right-layout='on']>.hand-back{left:95px!important;right:calc(var(--ss-self-width,128px) + 155px)!important}
+}

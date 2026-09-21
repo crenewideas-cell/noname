@@ -1,0 +1,8 @@
+html,body{width:100%;height:100%;overflow:hidden;background:#211a12}
+/* The old community roster was baked into sqm.jpg. Use a text panel instead. */
+#sqsp{display:none;background:rgba(9,12,17,.75);backdrop-filter:blur(5px)}
+#sqbg{box-sizing:border-box;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,84vw);height:auto;min-height:250px;padding:48px 36px;border:1px solid #a88c58;border-radius:14px;background:linear-gradient(145deg,#303a3c,#171e23);box-shadow:0 24px 80px #0009;text-align:center}
+#sqbg::before{display:none;background:none}
+#sqhe{position:static;color:#bfa77b;font:16px/1.5 sans-serif;letter-spacing:.2em}
+#sqtext{position:static;width:auto;margin:20px 0 28px;color:#f4e3bc;font:600 clamp(24px,4vw,36px)/1.4 sans-serif;letter-spacing:.06em}
+#sqbg button{position:static;display:inline-block;padding:9px 28px;border:1px solid #a88c58;border-radius:5px;background:#433a28;color:#efdfba;font:16px sans-serif;cursor:pointer}

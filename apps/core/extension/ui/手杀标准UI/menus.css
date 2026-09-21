@@ -1,0 +1,2481 @@
+
+/*基本对话框*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI>.dialog {
+	bottom: calc(23% + 86px);
+	color: rgb(255, 255, 150);
+}
+
+
+
+/*-----------------分割线-----------------*/
+/*选项光标*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='on']>.dialog .tdnode {
+	--h: 30px;
+	--w: calc(var(--h) * 77 / 44);
+	width: var(--w) !important;
+	height: var(--h) !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+	background-image: url("assets/912b53b2476e5be60ac126f8.png");
+	background-size: 100% 100%;
+	line-height: var(--h);
+	text-align: center;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='on']>.dialog .tdnode.bluebg,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='on']>.dialog .tdnode.thundertext {
+	background-image: url("assets/8fb7ff10f77b91296a45d499.png") !important;
+}
+
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='On']>.dialog .tdnode {
+	--h: 35px;
+	--w: calc(var(--h) * 100 / 70);
+	width: var(--w) !important;
+	height: var(--h) !important;
+	padding: 0 !important;
+	border-radius: 3px !important;
+	background-image: url("assets/aa0f61b1d79aef63b19d8b3b.png");
+	background-size: 110% 115% !important;
+	background-position: center;
+	line-height: var(--h);
+	text-align: center;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='On']>.dialog .tdnode.bluebg,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='On']>.dialog .tdnode.thundertext {
+	background-image: url("assets/55428852aa66f01aba6fd5a0.png") !important;
+}
+
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='othersOn']>.dialog .tdnode {
+	--h: 30px;
+	--w: calc(var(--h) * 77 / 44);
+	width: var(--w) !important;
+	height: var(--h) !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+	background-image: url("assets/cbd12104c15782163ad189e0.png");
+	background-size: 100% 100%;
+	line-height: var(--h);
+	text-align: center;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='othersOn']>.dialog .tdnode.bluebg,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='othersOn']>.dialog .tdnode.thundertext {
+	background-image: url("assets/868e35f211c4e1153427dde7.png") !important;
+}
+
+
+/*-----------------分割线-----------------*/
+
+
+
+
+
+/*-----------------分割线-----------------*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='On']>.dialog.scroll1:not([dialog-name='wugu']),
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='On']>.dialog.scroll2:not([dialog-name='wugu']) { /*所有选项框*/
+	background-position: center;
+	background-image: url("assets/8df61256c7f33f2e98ba93ea.png") !important;
+	background-size: 100% 100% !important;
+	background-repeat: no-repeat !important;
+	/*padding: -10px 120px !important; /*高度 + 宽度*/
+	/*margin: -10px -120px !important;*/
+	white-space: normal;
+	width: 900px !important;
+	left: calc(50% - 450px) !important;
+	height: 200px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='on']>.dialog.scroll1:not([dialog-name='wugu']),
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='on']>.dialog.scroll2:not([dialog-name='wugu']) { /*所有选项框*/
+	background-position: center;
+	background-image: url("assets/869343b4d68c43f933409759.png") !important;
+	background-size: 100% 100% !important;
+	background-repeat: no-repeat !important;
+	/*padding: -10px 120px !important; /*高度 + 宽度*/
+	/*margin: -10px -120px !important;*/
+	white-space: normal;
+	width: 900px !important;
+	left: calc(50% - 450px) !important;
+	height: 200px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='othersOn']>.dialog.scroll1:not([dialog-name='wugu']),
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI[data-loading-style='othersOn']>.dialog.scroll2:not([dialog-name='wugu']) { /*所有选项框*/
+	background-position: center;
+	background-image: url("assets/1fea7799115f2ff03e8353e2.png") !important;
+	background-size: 100% 100% !important;
+	background-repeat: no-repeat !important;
+	/*padding: -10px 120px !important; /*高度 + 宽度*/
+	/*margin: -10px -120px !important;*/
+	white-space: normal;
+	width: 900px !important;
+	left: calc(50% - 450px) !important;
+	height: 200px;
+}
+/*-----------------分割线-----------------*/
+
+
+
+/*选将界面*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI.choose-character>.dialog{
+	bottom: 70px;
+	zoom: 1.1;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #window>.dialog.bosscharacter {
+	bottom: calc(1% + 70px);
+}
+
+/*出牌响应提示*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.hand-tip {
+	left: 150px;
+	right: 150px;
+	bottom: calc(20% + 14px);
+	height: 20px;
+	line-height: 20px;
+	color: white;
+	font-size: 20px;
+	text-align: center;
+	text-shadow: none;
+	z-index: 6;
+	transition: opacity 0.1s linear;
+	pointer-events: none;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.dui-mobile>.hand-tip {
+	bottom: calc(20% + 28px); /*提示条高度*/
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.hand-tip::before {
+	content: attr(data-text);
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	color: transparent;
+	-webkit-text-stroke: 3px rgb(65, 52, 25);
+	z-index: -1;
+}
+
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.hand-tip>span[data-type='phase'] {
+	color: rgb(245, 145, 5);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.hand-tip>span[data-type='player'] {
+	color: rgb(200, 140, 75);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.hand-tip>span[data-type='number'] {
+	color: rgb(255, 155, 0);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.hand-tip>span[data-type='card'] {
+	color: rgb(255, 150, 0);
+}
+
+/*技能卡牌响应文字*/
+/*部分技能在这，比如赵襄的扶汉*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.hand-tip-info {
+	left: 150px;
+	right: 150px;
+	top: 230px;
+	bottom: calc(20% + 80px);
+	height: 90px;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	background: linear-gradient(to right, transparent 0%, rgba(156,102,31,0.2) 10%, rgba(156,102,31,0.2) 90%, transparent 100%);
+	/*文本背景，156，102，31是颜色，0.2可调整透明度*/
+	color: rgb(255, 255, 255);
+	font-size: 22px;
+	text-align: center;
+	text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px rgb(0,0,0);
+	/*文本发光:2像素黑色发光三次*/
+	transition: opacity 0.1s linear;
+	pointer-events: none;
+	z-index: 6;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.dui-mobile>.hand-tip-info {
+	bottom: calc(24% + 80px);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.hand-tip-info:empty {
+	visibility: hidden;
+	font-size: 25px;
+}
+/*卡牌（毒，赠予等）和部分技能在这，比如马钧的精械*/
+/*界面文本提示框*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI>.dialog.prompt {
+    top: auto;
+	height: auto;
+	background: none;
+	transform: none;
+	box-shadow: none;
+	bottom: calc(24% + 80px);/*技能描述框高度*/
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI>.dialog.prompt>.content-container,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI>.dialog.prompt>.content-container>.content {
+	position: relative;
+	font-size: 22px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI>.dialog.prompt>.content-container>.content>.caption {
+	border: none;
+    bottom: 0;
+	height: auto;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	color: rgb(255, 255, 255);
+	background: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.2) 10%, rgba(0,0,0,0.2) 90%, transparent 100%);
+	/*文本背景:0,0,0,黑色，255,255,255,白色0.2可调整透明度*/
+	font-size: 25px;
+	text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px rgb(0,0,0);
+}
+
+/* #arena.decadeUI>.dialog:not(.prompt)>.dui-container>.dui-content>.caption:last-child { */
+	/* margin-bottom: 10px; */
+/* } */
+
+/* #arena.decadeUI>.dialog.prompt>.dui-container>.dui-content>.caption>.text { */
+	/* text-align: center; */
+/* } */
+
+/*基本技能框*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	width: auto;
+    height: auto;
+	border-width: 46px 59px 28px 59px;
+    border-style: solid;
+    border-color: transparent;
+    border-image-source: url("assets/c0e659a06b0d48ef748bcac1.png");
+    border-image-slice:  46 59 28 59 fill;
+	transition: opacity, background, transform 0.5s;
+    z-index: 6;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.skill-dialog {
+	left: 18%;
+    top: auto;
+    right: 18%;
+	bottom: calc(20% + 85px);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.skill-dialog {
+	bottom: calc(23% + 86px);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog>.caption {
+	position: absolute;
+	left: auto;
+    top: -45px;
+    padding-top: 0;
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    font-size: 20px;
+    font-family: shousha;
+    color: rgb(255,255,200);
+    text-align: center;
+	pointer-events: auto;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog>div {
+	position: relative;
+	width: 100%;
+	height: auto;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog>.content {
+	flex-grow: 1;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog>.content>div {
+	margin: 0;
+	flex: 0 0 auto;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog>.tip:not(:empty) {
+	height: 24px;
+	line-height: 24px;
+    color: rgb(50,25,0);
+    font-size: 20px;
+    font-family: shousha;
+    text-align: center;
+    text-shadow: none;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog>.controls {
+	display: flex;
+	justify-content: center;
+	height: 40px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog>.controls:empty {
+	display: none;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog>.controls>.control-button {
+	position: static;
+	line-height: 28px;
+    color: rgb(40,30,20);
+    font-size: 28px;
+    font-family: xingkai;
+    text-align: center;
+    text-shadow: none;
+    white-space: nowrap;
+    border-width: 6px 36px 6px 36px;
+    border-style: solid;
+    border-color: transparent;
+    border-image-source: url("assets/f91f4ac79168ecd81803fe23.png");
+    border-image-slice: 6 36 6 36 fill;
+    box-shadow: none;
+    border-radius: 0;
+	cursor: pointer;
+	transition: opacity, background, transform 0.5s;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog>.controls>.control-button.disable {
+	cursor: default;
+	filter: grayscale(1);
+	-webkit-filter: grayscale(1);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog>.controls>.control-button:not(.disable):hover {
+	filter: brightness(1.1);
+	-webkit-filter: brightness(1.1);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog>.controls>.control-button:not(.disable):active {
+	filter: brightness(0.8);
+	-webkit-filter: brightness(0.8);
+}
+
+
+/*拼点框*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>div {
+	position: relative;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-character {
+	width: 120px;
+	height: 180px;
+	background: rgba(0,0,0,0.4);
+    box-shadow: 0px -1px 5px black, 0px 3px 15px black;
+	border-radius: 8px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-character.player1 {
+	order: 1;
+	margin-left: 6px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-character.player2 {
+	order: 5;
+	margin-right: 6px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-character>.image {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+	border-radius: 8px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena[data-outcrop-skin='on']>.skill-dialog.compare>.content>.player-character>.image {
+	height: 207.5px;
+	/*clip-path: url(#solo-clip);
+    -webkit-clip-path: url(#solo-clip);*/
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.vs {
+	order: 3;
+	width: 70px;
+    height: 70px;
+	margin: 0;
+    background: url("assets/38ebf243b987a5777e81dab1.png");
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-card {
+	order: 2;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.target-card {
+	order: 4;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-card,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.target-card {
+	width: 108px;
+    height: 150px;
+	background: rgb(141,125,103);
+    box-shadow: 1px 1px 4px rgb(66,66,66) inset
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-card>div,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.target-card>div {
+	margin: 0;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-card::before,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.target-card::before {
+	content: attr(data-text);
+    position: absolute;
+    left: 0;
+	top: calc(50% + 80px);
+    width: 100%;
+    height: auto;
+    color: red;
+    font-family: xingkai;
+    font-size: 20px;
+    text-align: center;
+    text-shadow: none;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-card::after {
+	content: attr(data-result);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 60px;
+    color: red;
+    font-size: 66px;
+    font-family: xingkai;
+    text-align: center;
+    text-shadow: 0 0 5px black, 0 0 7px black, 0 0 10px black;
+    
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-card[data-result='赢']::after {
+	color: red;
+	animation: open 0.2s;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-card[data-result='没赢']::after {
+	color: white;
+	animation: open 0.2s;
+}
+
+/*拼点框*/			
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog{
+min-height:0px !important;
+}	
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare{
+   position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+   /* top:0px !important;*/
+    bottom:40% !important;
+	left: 0px !important;
+	right: 0px !important;
+    min-height: 0px !important;
+    max-height: 250px !important;
+    border-width: 50px 0px 1px 0px;
+    border-style: solid;
+    border-color: transparent;
+    border-image-source: url("assets/8df61256c7f33f2e98ba93ea.png");
+    border-image-slice: 50 1 50 1 fill;
+    transition: opacity, background, transform 0.5s;
+    z-index: 6;
+}	
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.caption {
+    top: -30px;
+    font-family: 'yuanli';
+    font-size:30px;
+    text-shadow:none;
+    background-image:-webkit-linear-gradient(bottom,#c7a746 58%, #f0d775 22%); 
+	/*字体渐变色，色调*/
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+		font-weight: 700;
+	-webkit-text-stroke: 0.1px rgba(0,0,0,0.16);
+    }  
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content{
+bottom:0px !important;
+top:auto;
+
+}      
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-card::before, 
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.target-card::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0%;
+    display: flex;
+    writing-mode: vertical-lr;
+    width: 1.8em;
+    word-break: break-word;
+    height: 100%;
+    text-align: center;
+    left: -50%;
+    color: white;
+    font-family: 'yuanli';
+    font-size: 24px;
+    text-align: center;
+    text-shadow: none;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-content: flex-start;    
+    background-image: url("assets/69d8e26b60c6bbc900a6b12e.png");
+    background-size:100% 100%;
+    background-repeat: no-repeat;
+}    
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-character>.image {
+    height: 0px;
+    opacity:0;
+    box-shadow:none;
+    background:none;
+    /*clip-path: url(#solo-clip);
+    -webkit-clip-path: url(#solo-clip);*/
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-character{
+opacity:0;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom:20px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.vs{
+opacity:0;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.target-card{
+left:2%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.target-card::after, body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-card::after {
+    content: attr(data-result);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top:50%;
+    width: 80%;
+    height: 80%;
+    background-size: 100% 100%;
+    color: red;
+    font-size: 0px;
+    font-family: xingkai;
+    text-align: center;
+    left: 30%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.target-card[data-result='赢']::after,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-card[data-result='赢']::after {
+	background-image: url("assets/14b31897bd8ee2a99d3a6a55.png");
+	z-index:100;
+	width: 100%;
+	height: 60%;
+	/*background-position: 180% 120%;*/
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.target-card[data-result='没赢']::after,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .skill-dialog.compare>.content>.player-card[data-result='没赢']::after {
+	background-image: url("assets/d87cb3acb4d79f6f87376a75.png");
+	width: 100%;
+	height: 60%;
+	z-index:100;
+	/*background-position: 100% 60%;*/
+}
+
+/*观星*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box {
+	display: block;
+    position: absolute;
+    left: 12%;
+    top: 10%;
+    right: 12%;
+    /* bottom: 25%; */
+    width: auto;
+    height: auto;
+	min-height: 100px;
+    border-width: 46px 59px 28px 59px;
+    border-style: solid;
+    border-color: transparent;
+    border-image-source: url("assets/c0e659a06b0d48ef748bcac1.png");
+    border-image-slice: 46 61 28 59 fill;
+    pointer-events: auto;
+    z-index: 5;
+    animation: player-died 0.5s linear forwards;
+    -webkit-animation: open 0.4s;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box>.caption {
+	position: absolute;
+	left: auto;
+    top: -45px;
+    padding-top: 0;
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    font-size: 20px;
+    font-family: shousha;
+    color: rgb(255,255,200);
+    text-align: center;
+	pointer-events: auto;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box>.tip {
+	position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    line-height: 24px;
+    color: rgb(50,25,0);
+    font-size: 20px;
+    font-family: shousha;
+    text-align: center;
+    text-shadow: none;
+	pointer-events: auto;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box.guan-xing>.button.ok {
+	position: relative;
+	cursor: pointer;
+    left: calc(50% - 66px);
+    bottom: -2px;
+    width: 60px;
+    height: 30px;
+    line-height: 30px;
+    color: rgb(40,30,20);
+    font-size: 30px;
+    font-family: shousha;
+    text-align: center;
+    text-shadow: none;
+	white-space: nowrap;
+    background: rgb(150,150,100);
+    border-width: 6px 36px 6px 36px;
+    border-style: solid;
+    border-color: transparent;
+    border-image-source: url("assets/f91f4ac79168ecd81803fe23.png");
+    border-image-slice: 6 36 6 36 fill;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box.guan-xing.ok-disable>.button.ok {
+	cursor: default;
+	filter: grayscale(1);
+	-webkit-filter: grayscale(1);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box.guan-xing:not(.ok-disable)>.button.ok:hover {
+	color: white;
+}
+
+
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box.guan-xing>.content {
+	position: relative;
+	width: 100%;
+    height: 80%;
+    background: linear-gradient(rgb(145,125,106), rgb(145,125,106) 149px, rgb(224,197,161) 150px, rgb(224,197,161) 159px, rgb(145,125,106) 160px, rgb(145,125,106));
+	transition: none;
+}
+    
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box.guan-xing>.content>.card {
+	cursor: pointer;
+	position: absolute;
+	margin: 0;
+	left: 35px;
+	zoom: 0.95;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box.guan-xing>.content>.header {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	display: -webkit-flex;
+    -webkit-align-items: center;
+    -webkit-justify-content: center;
+    position: absolute;
+    left: 0;
+    margin: 0;
+    width: 30px;
+    height: 150px;
+    color: rgb(50,25,0);
+    font-size: 22px;
+    font-weight: bold;
+    font-family: shousha;
+    text-align: center;
+    text-shadow: none;
+    background: rgb(194,164,131);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box.guan-xing>.content>.header:last-of-type {
+	bottom: 0;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box.guan-xing>.content>.card.selected::after {
+	opacity: 0;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .confirm-box.guan-xing>.content>.card.selected>.card-mask {
+	display: block !important;
+	opacity: 1;
+}
+
+/*同时拼点*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) .compareDialog {
+	background-image: url("assets/8df61256c7f33f2e98ba93ea.png");
+	background-size: 100% 100%;
+	width: 1000px;
+	height: 360px;
+	left: 3%;
+	top: 0%;
+	/* pointer-events: none; */
+	z-index: 7;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .compareDialogTitle{
+	font-size: 24px;
+	left:390px;
+	right: 0px;
+	bottom:320px;
+	width: 225px;
+	height: 20px;	
+	text-align: center;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .compareDialogMultiple>:nth-child(n+3){
+	margin-left: 5px;
+
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .playerAreaDialog {
+	top: 50px;
+	left: 200px;
+	width: 115px;
+	height: 180px;
+	background-size: 100% 100%;
+	border: 1px solid rgb(98 89 34);
+	display: inline-block;
+	position: relative;
+	white-space: nowrap;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .playerAreaName {
+	left: 5px;
+	top: 2px;
+	width: 105px;
+	height: 30px;
+	background-size: 100% 100%;
+	background-image: url("assets/c0688d5a701465c9ae6ed20f.png");
+	font-family: shousha;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #eddac3;
+	text-shadow: -1.5px 0px 2px #392f22, 0px -1.5px 2px #392f22, 1.5px 0px 2px #392f22, 0px 1.5px 2px #392f22;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .playerArea {
+	left: 5px;
+	top: 35px;
+	width: 105px;
+	height: 140px;
+	background-size: 100% 100%;
+	background-image: url("assets/d89aa458370755a4065cd32e.png");
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .playerArea>div {
+	top: -10px;
+	right: 5px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .targetAreaDialog {
+	left: 300px;
+	top: 50px;
+	width: 115px;
+	height: 180px;
+	background-size: 100% 100%;
+	border: 1px solid rgb(98 89 34);
+	margin-left: 50px;
+	display: inline-block;
+	position: relative;
+	white-space: nowrap;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .targetAreaName {
+	left: 5px;
+	top: 2px;
+	width: 105px;
+	height: 30px;
+	background-size: 100% 100%;
+	background-image: url("assets/c0688d5a701465c9ae6ed20f.png");
+	font-family: shousha;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #eddac3;
+	text-shadow: -1.5px 0px 2px #392f22, 0px -1.5px 2px #392f22, 1.5px 0px 2px #392f22, 0px 1.5px 2px #392f22;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .targetArea {
+	left: 5px;
+	top: 35px;
+	width: 105px;
+	height: 140px;
+	background-size: 100% 100%;
+	background-image: url("assets/d89aa458370755a4065cd32e.png");
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .targetArea>div {
+	top: -10px;
+	right: 5px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .targetArea>div[data-result='win']::before {
+	background-image: url("assets/14b31897bd8ee2a99d3a6a55.png") !important;
+	content: '';
+	background-size: 100% 100%;
+	z-index: 1;
+	opacity: 1;
+	width: 80px;
+	height: 80px;
+	bottom: -5px;
+	top: auto;
+	left: auto;
+	right: -25px;
+	animation: losewin 2s;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .targetArea>div[data-result='lose']::before {
+	background-image: url("assets/d87cb3acb4d79f6f87376a75.png") !important;
+	content: '';
+	background-size: 100% 100%;
+	z-index: 1;
+	opacity: 1;
+	width: 100px;
+	height: 80px;
+	bottom: -10px;
+	top: auto;
+	left: auto;
+	right: -30px;
+	animation: losewin 2s;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .playerArea>div[data-result='win']::before {
+	background-image: url("assets/14b31897bd8ee2a99d3a6a55.png") !important;
+	content: '';
+	background-size: 100% 100%;
+	z-index: 1;
+	opacity: 1;
+	width: 80px;
+	height: 80px;
+	bottom: -5px;
+	top: auto;
+	left: auto;
+	right: -25px;
+	animation: losewin 2s;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .playerArea>div[data-result='lose']::before {
+	background-image: url("assets/d87cb3acb4d79f6f87376a75.png") !important;
+	content: '';
+	background-size: 100% 100%;
+	z-index: 1;
+	opacity: 1;
+	width: 100px;
+	height: 80px;
+	bottom: -10px;
+	top: auto;
+	left: auto;
+	right: -30px;
+	animation: losewin 2s;
+}
+
+@keyframes losewin {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+/*同时拼点结束*/
+
+/*多人拼点*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) .compareDialogMultiple{
+	background-image: url("assets/8df61256c7f33f2e98ba93ea.png");
+	background-size: 100% 100%;
+	width: 1138px;
+	height: 350px;
+	left: -3%;
+	top: 0%;
+	/* pointer-events: none; */
+	z-index: 7;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .compareTitleMultiple{
+	font-size: 24px;
+	left:470px;
+	right: 0px;
+	bottom:310px;
+	width: 200px;
+	height: 20px;	
+	text-align: center;
+	
+
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .cardArea{
+	top: 60px;
+	left: 260px;
+	width: 160px;
+	height: 150px;
+	background-size: 100% 100%;
+	/* border: 1px solid rgb(98 89 34); */
+	display: inline-block;
+	position: relative;
+	white-space: nowrap;
+	margin-left: 50px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .cardArea>.playerAreaName{
+	background-image: url("assets/d87cb3acb4d79f6f87376a75.png") !important;
+	background-size: 100% 100%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .cardArea>.playerArea{
+	left: 50px;
+	top: 5px;
+	width: 105px;
+	height: 140px;
+	background-size: 100% 100%;
+	background-image: url("assets/d89aa458370755a4065cd32e.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .cardArea>.targetArea{
+	left: 50px;
+	top: 5px;
+	width: 105px;
+	height: 140px;
+	background-size: 100% 100%;
+	background-image: url("assets/d89aa458370755a4065cd32e.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .cardArea>.playerAreaName{
+	background-image: url("assets/69d8e26b60c6bbc900a6b12e.png") !important;
+	background-size: 100% 100%;
+	height:140px;
+	width:35px;
+	writing-mode: tb-rl;
+	font-size:20px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .cardArea>.targetAreaName{
+	background-image: url("assets/69d8e26b60c6bbc900a6b12e.png") !important;
+	background-size: 100% 100%;
+	height:140px;
+	width:35px;
+	writing-mode: tb-rl;
+	font-size:20px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .cardArea:not(:first-child){
+	margin-left:3px;
+}
+/*多人拼点结束*/
+
+/*五谷*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) .xtx {
+	position: absolute;
+	bottom: -20px;
+	left: -10px;
+	z-index: 2;
+	height: 2.2em;
+	width: 2.2em;
+	background-repeat: no-repeat;
+	background-size: 50px;
+	background-position-y: 15%;
+	background-position-x: 50%;
+	border: 2px solid #c9c9ab;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .xtxName {
+	position: inherit;
+	display: flex;
+	align-items: flex-start;
+	font-family: shousha;
+	font-size: 16px;
+	color: #eddac3;
+	width: 100px;
+	left: 40px;
+	bottom: 0px;
+	z-index: 2;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .huise {
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	opacity: 0.4;
+	z-index: 1;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .card.fullskin.button[sourcecard="wugu"]>.card-mask {
+	opacity: 0 !important;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog[dialog-name='wugu'] {
+	bottom: calc(23% + 86px);
+	color: #eddac3;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog.scroll1[dialog-name='wugu'],
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog.scroll2[dialog-name='wugu'] {
+	background-position: center;
+	background-image: url("assets/8df61256c7f33f2e98ba93ea.png") !important;
+	background-size: 100% 100% !important;
+	background-repeat: no-repeat;
+	white-space: normal;
+	width: 1000px;
+	left: calc(50% - 510px);
+	top: 10%;
+	height: 310px !important;
+	background-color: transparent !important;
+	box-shadow: none;
+	animation: losewin 1s !important;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog[dialog-name='wugu']>.content-container>.content>.caption {
+	font-size: 24px;
+	left: 8px;
+	bottom: 8px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog[dialog-name='wugu']>.content-container>.content>.buttons {
+	zoom: 0.8 !important;
+	bottom: -5px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog[dialog-name='wugu']>.content-container>.content>.buttons>div {
+	margin: 4px;
+}
+
+/*.jindutiao_wugu {*/
+	/*top: 12vw;*/
+	/*position: absolute;*/
+	/*background-color: rgba(0, 0, 0, 0.4);*/
+	/*width: 620px;*/
+	/*height: 12.3px;*/
+	/*left: calc(50% - 320px);*/
+	/*border-radius: 1000px;*/
+	/*box-shadow: 0px 0px 9px #2e2b27 inset, 0px 0px 2.1px #FFFFD5;*/
+	/*overflow: hidden;*/
+	/*border: 1.2px solid #000000;*/
+	/*z-index: 7;*/
+/*}*/
+/**/
+/*.jindutiaox_wugu {*/
+	/*background-image: linear-gradient(#fccc54 15%, #d01424 30%, #cc6953 90%);*/
+	/*height: 12.8px;*/
+	/*width: 640px;*/
+	/*z-index: 8;*/
+	/*left: calc(50% - 320px);*/
+	/*animation: wugujindu 100s;*/
+/*}*/
+/**/
+/*@keyframes wugujindu {*/
+	/*from {*/
+		/*width: 630px;*/
+	/*}*/
+/**/
+	/*to {*/
+		/*width: 0;*/
+	/*}*/
+/*}*/
+
+
+
+
+
+
+
+
+
+
+@keyframes fadenum {
+    0% {
+    opacity: 0;
+}
+100% {
+    opacity: 1;
+}
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1 {
+    /*新样式框1（魄袭等双框）*/
+    background-image: url("assets/8df61256c7f33f2e98ba93ea.png") !important;
+    background-size: 100% 100%;
+    width: 1200px;
+    height: 420px;
+    left: -50px;
+    top: -20px;
+    display: block !important;
+    /* pointer-events: none;*/
+    z-index: 6;
+    position: absolute;
+    text-align: center;
+    overflow: visible !important;
+    overflow-y: visible !important;
+    animation:fadenum 1s ease;
+}
+/*框标题*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.newTitle1 {
+    left: calc(50% - 90px);
+    right: calc(50% - 70px);
+    overflow: visible !important;
+    width: 200px;
+    top: 14px;
+    height: 50px;
+    text-align: center;
+    letter-spacing: 3px!important;
+    background: linear-gradient(#C8BEB4 1%,#FCF8CC 12%, #F3F0BE,#FEF5A8,#E1D275,#C9B173,#D6CB6F,#A99355,#AC9557,#A38A51,#A38A51,#B29983,#B19786,#B19786,#B19786, #9B8583 ), linear-gradient(to right,#FCF8CC , #AC9557);
+    font-family: 'HYZLSJ';
+    font-size: 42px !important;
+    font-weight: normal;
+    -webkit-background-clip: text;
+    text-shadow: none;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(2px 0 0.5px #2F1809) drop-shadow(-2px 0 1.5px #2F1809) drop-shadow(0 2px 1px #2F1809) drop-shadow(0 -2px 1.5px #2F1809) blur(0.55px) saturate(1.25) contrast(1.25) grayscale(0.08) sepia(0.1);
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.targetname1 {
+    /*目标名*/
+    background-image: url("assets/037782cd39d7910b3f961bd0.png") !important;
+    background-size: 100% 100%;
+    height: 130px;
+    width: 38px;
+    writing-mode: tb-rl;
+    font-size: 20px;
+    left: 16%;
+    top: 17%;
+    color: #eddac3;
+    text-shadow: 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325;
+    font-family: shousha;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.myname1 {
+    /*目标名*/
+    background-image: url("assets/037782cd39d7910b3f961bd0.png") !important;
+    background-size: 100% 100%;
+    height: 130px;
+    width: 38px;
+    writing-mode: tb-rl;
+    font-size: 20px;
+    left: 16%;
+    top: 52%;
+    color: #eddac3;
+    text-shadow: 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325;
+    font-family: shousha;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.targetarea1 {
+    /* background-color: #4e413b;*/
+    background-image: url("assets/273d682512daca3f91d65fab.png") !important;
+    background-size: 100% 100%;
+    width: 876px;
+    height: 125px;
+    left: 19%;
+    top: 16%;
+    display: block;
+    border-radius: 5px;
+    flex-wrap: nowrap;
+    overflow-x: visible !important;
+    flex-direction: row !important;
+    overflow-y: hidden !important;
+    justify-content: flex-start !important;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.myarea1 {
+    /* background-color: #4e413b;*/
+    background-image: url("assets/273d682512daca3f91d65fab.png") !important;
+    background-size: 100% 100%;
+    width: 876px;
+    height: 125px;
+    left: 19%;
+    top: 51%;
+    display: block;
+    border-radius: 5px;
+    flex-wrap: nowrap;
+    overflow-x: visible !important;
+    flex-direction: row !important;
+    overflow-y: hidden !important;
+    justify-content: flex-start !important;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.targetarea1>.buttons {
+    margin-top: -5px;
+    margin-left: -4.5px;
+    width: auto;
+    overflow-x: visible !important;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.myarea1 >.buttons {
+    margin-top: -5px;
+    margin-left: -4.5px;
+    width: auto;
+    overflow-x: visible !important;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.myarea1 >.buttons>.card.selectable.selected:before,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.targetarea1 >.buttons>.card.selectable.selected:before {
+    background-image: url("assets/f28ad6bbd7718ad2f5b18d8a.png");
+    width:120%;
+    left:-10%;
+    top:-7.5%;
+    height:112%;
+    background-size:100% 100%;
+    background-repeat: no-repeat;
+    filter: saturate(1.3);
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.myarea1 >.buttons>div.card,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.targetarea1 >.buttons>div.card {
+    box-shadow:none !important;
+    border:none !important;
+    background-color:transparent !important;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.myarea1>.buttons>div:not(:first-child),
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.targetarea1>.buttons>div:not(:first-child) {
+    margin-left: -1.9px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.myarea1>.buttons>div:last-child,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#newdialog1>.targetarea1>.buttons>div:last-child {
+    margin-right: 100px;
+}
+/*顺手*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog {
+    /*顺手选项框*/
+    background-image: url("assets/8df61256c7f33f2e98ba93ea.png") !important;
+    background-size: 100% 100%;
+    width: 1200px;
+    height: 390px;
+    left: -50px;
+    top: -10px;
+    display: block !important;
+    /* pointer-events: none;*/
+    z-index: 8;
+    position: absolute;
+    text-align: center;
+    overflow: visible !important;
+    overflow-y: visible !important;
+    animation: 0.5s ease 0s 1 normal none running open-dialog;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='e'],
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='j'],
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='ej'],
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='h'] {
+    height: 220px;
+    top: 110px;
+    background-size: cover;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='ej']>.eTitle,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='ej']>.jTitle,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='e']>.eTitle,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='j']>.jTitle,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='h']>.hTitle {
+    top: 65px;
+    bottom:auto;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='ej']>.jArea,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='ej']>.eArea,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='j']>.jArea,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='e']>.eArea,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='h']>.hArea {
+    top: 60px;
+    bottom:auto;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='e']>.eTitle,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='j']>.jTitle {
+    left:25%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='e']>.eArea,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='j']>.jArea {
+    left:27.8%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='hj']>.jTitle{
+    left:16%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #shunshouDialog[data-pst='hj']>.jArea {
+    left:18.8%;
+}
+/*顺手框内部大小，缩放到0.9比较符合原本大小*/
+    /*#shunshouDialog>div {
+    transform: scale(0.9);
+    transition: all 0s;
+}*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#shunshouDialog>.content-container {
+    /*禁止滑动*/
+    overflow: hidden !important;
+    overflow-y: hidden !important;
+    justify-content: flex-start !important;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .dialog#shunshouDialog>.content-container>.content {
+    /*禁止滑动*/
+    overflow: hidden !important;
+    overflow-y: visible !important;
+    justify-content: flex-start !important;
+}
+/*顺拆框的名字*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .shunshouTitle {
+    left: calc(50% - 90px);
+    right: calc(50% - 70px);
+    overflow: visible !important;
+    width: 200px;
+    top: 5px;
+    height: 50px;
+    text-align: center;
+    letter-spacing: 3px!important;
+    background: linear-gradient(#C8BEB4 1%,#FCF8CC 12%, #F3F0BE,#FEF5A8,#E1D275,#C9B173,#D6CB6F,#A99355,#AC9557,#A38A51,#A38A51,#B29983,#B19786,#B19786,#B19786, #9B8583 ), linear-gradient(to right,#FCF8CC , #AC9557);
+    font-family: 'HYZLSJ';
+    font-size: 35px !important;
+    font-weight: normal;
+    -webkit-background-clip: text;
+    text-shadow: none;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(2px 0 0.5px #2F1809) drop-shadow(-2px 0 1.5px #2F1809) drop-shadow(0 2px 1px #2F1809) drop-shadow(0 -2px 1.5px #2F1809) blur(0.55px) saturate(1.25) contrast(1.25) grayscale(0.08) sepia(0.1);
+}
+/*手牌区名字*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .hTitle {
+    background-image: url("assets/037782cd39d7910b3f961bd0.png") !important;
+    background-size: 100% 100%;
+    height: 130px;
+    width: 38px;
+    writing-mode: tb-rl;
+    font-size: 20px;
+    left: 16%;
+    top: 17%;
+    color: #eddac3;
+    text-shadow: 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325;
+    font-family: shousha;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+/*手牌区那个长框*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .hArea {
+  /*  background-color: #4e413b;*/
+    background-size:100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("assets/273d682512daca3f91d65fab.png");
+    width: 830px;
+    height: 130px;
+    left: 19%;
+    top: 16%;
+    display: flex;
+    border-radius: 5px;
+    flex-wrap: nowrap;
+    overflow-x: visible !important;
+    flex-direction: row !important;
+    overflow-y: hidden !important;
+    justify-content: flex-start !important;
+}
+/*手牌区的按钮区整体位置*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .hArea>.buttons {
+    margin-top: -5px;
+    margin-left: -4.5px;
+    width: auto;
+    overflow-x: visible !important;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .hArea>.buttons>.card:not(.selectable) {
+    filter: brightness(50%);
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .eArea>.eAreaCard>.buttons>.card.selectable.selected:before,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .jArea>.jAreaCard>.buttons>.card.selectable.selected:before,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .hArea>.buttons>.card.selectable.selected:before {
+    background-image: url("assets/bc87a1316308a77a18f8ba7d.png");
+    width:120%;
+    left:-10%;
+    top:-10%;
+    height:120%;
+    background-size:100% 100%;
+    background-repeat: no-repeat;
+    filter: saturate(1.3);
+}
+/*手牌区卡牌的间隔*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .hArea>.buttons>div:not(:first-child) {
+    margin-left: -1.9px;
+}
+/*装备区名字*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .eTitle {
+    background-image: url("assets/037782cd39d7910b3f961bd0.png") !important;
+    background-size: 100% 100%;
+    height: 130px;
+    width: 38px;
+    writing-mode: tb-rl;
+    font-size: 20px;
+    left: 16%;
+    bottom: 11%;
+    color: #eddac3;
+    text-shadow: 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325;
+    font-family: shousha;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+/*装备区区域*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .eArea {
+    /* background-color: #4e413b;*/
+    bottom: 6%;
+    left: 18.8%;
+    width: 580px;
+    height: 160px;
+    display: flex;
+}
+/*装备区每一张独立卡*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .eAreaCard {
+    background-color: #4e413b;
+    background-size: 100% 100%;
+    margin-left: 5px;
+    height: 135px;
+    width: 94px;
+    font-size: 20px;
+    top: 5px;
+    position: relative;
+    font-family: shousha;
+    color: #605f5d;
+    text-shadow: 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    opacity: 0.95;
+}
+/*判定区名字*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .jTitle {
+    background-image: url("assets/037782cd39d7910b3f961bd0.png") !important;
+    background-size: 100% 100%;
+    height: 135px;
+    width: 38px;
+    writing-mode: tb-rl;
+    font-size: 20px;
+    left: 60.5%;
+    bottom: 11%;
+    color: #eddac3;
+    text-shadow: 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325;
+    font-family: shousha;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+/*判定区区域*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .jArea {
+    /* background-color: #4e413b;*/
+    bottom: 6%;
+    left: 63.4%;
+    width: 350px;
+    height: 160px;
+    display: flex;
+}
+/*判定区独立小卡*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .jAreaCard {
+    background-color: #4e413b;
+    background-size: 100% 100%;
+    margin-left: 5px;
+    height: 135px;
+    width: 94px;
+    font-size: 20px;
+    top: 5px;
+    border-radius: 5px;
+    position: relative;
+    font-family: shousha;
+    border-radius: 5px;
+    color: #605f5d;
+    text-shadow: 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325, 0 0 2px #453325;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    opacity: 0.95;
+}
+/*装备和判定区的div*/
+    body[data-shousha-parts~="menus"]:not(.shousha-online) .jAreaCard>div,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .eAreaCard>div {
+    margin-top: 10px !important;
+    margin-left: -7.5px !important;
+    bottom: auto;
+    right: auto;
+    position: absolute;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.choose-character.selecting>#dui-controls>.control.combo-control.lbtn-confirm>div.primary.confirmButton {
+    top: -150px !important;
+    left:37%;
+    position:fixed;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #judgeBox.judgeBox {
+    background-image: url("assets/8df61256c7f33f2e98ba93ea.png");
+    background-size: 100% 100%;
+    width: 110%;
+    height: 250px;
+    left: -5%;
+    right:-5%;
+    top: 10%;
+    zoom: 0.98;
+    /* pointer-events: none;*/
+    z-index: 5;
+    animation: 0.5s ease 0s 1 normal none running open-dialog;
+}
+@keyframes moveLine {
+    from {
+    left: 580px;
+}
+to {
+    left: 0px;
+}
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .introduce {
+    width: 100px;
+    height: 50px;
+    font-size: 15px;
+    font-family: shousha;
+    color: #c9c9ab;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .introduce_card {
+    top: 50px;
+    left: 60%;
+    width: 200px;
+    text-align:left;
+    height: 190px;
+    font-size: 20px;
+    font-family: shousha;
+    color: #c9c9ab;
+    text-shadow: 1px 0 5px black, 1px 1px 2px black, -1px 0px 0 black, 0px -1px 0 black;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    /* 取消掉滚动条*/
+    
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .introduce_card[data-type='card'] {
+    right:25%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .introduce_card[data-type='skill'] {
+    right:25%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .introduce_card>span[data-suit-type='red'] {
+    color:red;
+    text-shadow: -1px 0 rgba(255, 255, 255, 1), 0 1px rgba(255, 255, 255, 1), 1px 0 rgba(255, 255, 255, 1), 0 -1px rgba(255, 255, 255, 1);
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .introduce_card>span[data-suit-type='black'] {
+    color:black;
+    text-shadow: -1px 0 rgba(255, 255, 255, 1), 0 1px rgba(255, 255, 255, 1), 1px 0 rgba(255, 255, 255, 1), 0 -1px rgba(255, 255, 255, 1);
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeResultIntroduce {
+    background-image: url("assets/037782cd39d7910b3f961bd0.png");
+    --w: 42px;
+    --h: calc(var(--w) * 161/51);
+    width: var(--w);
+    height: var(--h);
+    background-size: 100% 100%;
+    font-family: shousha;
+    color: #c9c9ab;
+    text-shadow: 1px 0 5px black, 1px 1px 2px black, -1px 0px 0 black, 0px -1px 0 black;
+    top: 24%;
+    font-size: 23px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
+    writing-mode: tb-rl;
+    line-height: 50px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeResultIntroduce[data-type='skill'] {
+    left:43%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeResultIntroduce[data-type='card'] {
+    left:46%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeCardArea {
+    top: 55px;
+    left:auto;
+    width: 108px;
+    height: 140px;
+    background-size: 100% 100%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeCardArea[data-type='card'] {
+    right: 41%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeCardArea[data-type='skill'] {
+    right: 44%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeCardArea>div {
+    top: -10px;
+    right: 0px;
+    left:0px;
+    position: absolute;
+    z-index: 1;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeCardArea > div:first-child {
+    z-index: 2;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeCard {
+    position: absolute;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .title {
+    font-size: 40px;
+    font-family: 'HYZLSJ';
+    background: linear-gradient(#C8BEB4 1%, #FCF8CC 12%, #F3F0BE, #FEF5A8, #E1D275, #C9B173, #D6CB6F, #A99355, #AC9557, #A38A51, #A38A51, #B29983, #B19786, #B19786, #B19786, #9B8583), linear-gradient(to right, #FCF8CC, #AC9557);
+    filter: drop-shadow(2px 0 0.5px #2F1809) drop-shadow(-2px 0 1.5px #2F1809) drop-shadow(0 2px 1px #2F1809) drop-shadow(0 -2px 1.5px #2F1809) blur(0.55px) saturate(1.25) contrast(1.25) grayscale(0.08) sepia(0.1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: absolute;
+    left: 10px;
+    top: 9px;
+    padding-top: 0;
+    width: 100%;
+    height: 36px;
+    line-height: 30px;
+    letter-spacing: 3px !important;
+    text-shadow: none;
+    text-align: center;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeDelayCard {
+    top: 55px;
+    left: 34%;
+    width: 100px;
+    height: 140px;
+    background-size: 100% 100%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeDelayCard>div:not(.smallCharacter):not(.suit-num) {
+    top: -10px;
+    right: 5px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeDelayCard>.suit-num {
+    font-size: 15px;
+    font-weight: 900;
+    color: black;
+    text-align: center;
+    top: 10px;
+    left: -1px;
+    width: 25px;
+    height: auto;
+    line-height: 15px;
+    text-shadow: 0 0 3px #e8dddd, 0 0 3px #f3e6e6;
+    letter-spacing: -1px;
+    transform-origin: 0 0;
+    z-index: 1;
+    -webkit-text-size-adjust: none;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeDelayCard[data-suit='heart']>.suit-num,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeDelayCard[data-suit='diamond']>.suit-num {
+    color: red;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .judgeDelayCard>.suit-num>.suit {
+    font-size: 10px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .smallCharacter {
+    position: absolute;
+    /*bottom: -20px;*/
+    z-index: 2;
+    /*left:10px;*/
+    height: 2.2em;
+    width: 2.2em;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    background-position-y: 15%;
+    background-position-x: 50%;
+    border: 2px solid #ad5949;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .smallCharacter[data-type='card'] {
+    bottom: -20px;
+    z-index: 2;
+    left:10px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .smallCharacter[data-type='skill'] {
+    top: 50px;
+    left: 37%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .smallCharacterName {
+    position: inherit;
+    color: #c9c9ab;
+    font-family: shousha;
+    font-size: 14px;
+    text-shadow: 1px 0 5px black, 1px 1px 2px black, -1px 0px 0 black, 0px -1px 0 black;
+    width: 100px;
+    left: 40px;
+    bottom: 0px;
+    z-index: 2;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .zhuanbj {
+    background-image: url("assets/ac50ad34873d6c7b879d37a3.png");
+    background-size: 100% 100%;
+    width: 25px;
+    height: 25px;
+    top: 7px !important;
+    right: 0px !important;
+    z-index: 1;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.equips-wrap {/*单独装备栏*/
+	left: auto;/*右移*/
+	top: auto;
+	right: 25px;/*左移*/
+	bottom: -3%;/*上移*/
+	min-height: 150px;/*高度*/
+	min-width: 135px;/*宽度*/
+}
+
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena[data-right-layout='on']>.equips-wrap {/*右手布局*/
+	left: 85px;
+	right: auto;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena[data-alone-equip='off']>.equips-wrap {
+	opacity: 0;
+	left: auto;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips-back{
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips {
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips-back>div {
+	left: 3px;
+	right: 3px;
+	height: 24px;
+	width: calc(100% - 6px);
+	position: initial;
+	box-shadow: 0 0 6px rgb(200, 150, 80) inset; /*单独装备栏底层边框*/
+	background: rgba(0, 0, 0, 0.4); /*单独装备栏底层底色*/
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips-back>div:first-child { /*宝物栏显示*/
+	opacity: 1; /*不透明度(0∽1)，越小越透明。*/
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div { /*装备后底层效果*/
+	left: 3px;
+	right: 3px;
+	height: 24px;
+	width: calc(100% - 6px);
+	position: absolute;
+	box-shadow: none;
+	border-radius: 0px;
+	background: rgb(53,38,32) !important;
+	display: flex;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	-webkit-text-size-adjust: none;
+	z-index: 1;
+}
+
+/* .equips-wrap>.equips>div::before { */
+	/* background: */
+		/* linear-gradient(180deg, rgb(250, 230, 150) 2px, transparent 2px, transparent calc(100% - 2px), rgb(250, 230, 150) 2px), */
+		/* linear-gradient(090deg, rgb(250, 230, 150) 2px, transparent 2px, transparent calc(100% - 2px), rgb(250, 230, 150) 2px); */
+	/* opacity: 1; */
+	/* border-radius: 0px; */
+	/* box-shadow: none; */
+	/* z-index: auto; */
+/* } */
+
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div::after {
+	display: block;
+	background: 
+		linear-gradient(to left, yellow, yellow) left top no-repeat, 
+		linear-gradient(to bottom, yellow, yellow) left top no-repeat, 
+		linear-gradient(to left, yellow, yellow) right top no-repeat,
+		linear-gradient(to bottom, yellow, yellow) right top no-repeat, 
+		linear-gradient(to left, yellow, yellow) left bottom no-repeat,
+		linear-gradient(to bottom, yellow, yellow) left bottom no-repeat,
+		linear-gradient(to left, yellow, yellow) right bottom no-repeat,
+		linear-gradient(to left, yellow, yellow) right bottom no-repeat !important;
+	background-size: 1px 4px, 5px 1px, 1px 4px, 5px 1px !important;
+	opacity: 1;
+	border-radius: 0px;
+	box-shadow: none;
+	z-index: auto;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div.selected {
+	box-shadow: 0 0 10px yellow;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div.selectable {
+	cursor: pointer;
+	transform: translateX(-10px);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div.selectable::before {
+	animation: fade-in-out-selectable 1s infinite;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena[data-right-layout='on']>.equips-wrap>.equips>div.selectable {
+	transform: translateX(10px);
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .mobile-phone .equips-wrap>.equips>div.selected {
+	box-shadow: 0 0 2px yellow, 0 0 4px yellow, 0 0 8px yellow;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap .equips>div[data-card-subype='equip5'] .equips-wrap>.equips-back>div.equip0 {
+	opacity: 1;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>.card {
+	top: 0px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips-back>div.equip0,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div.equip5{
+	top: 16px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips-back>div.equip1,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div.equip1{
+	top: 38px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips-back>div.equip2,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div.equip2{
+	top: 62px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips-back>div.equip3,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div.equip3,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div.equip6 {
+	top: 86px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips-back>div.equip4,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div.equip4{
+	top: 110px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips-back>div>.icon,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>div>.icon { /*装备类型标识*/
+	display: block;
+	top: 2px;
+	left: 2px;
+	width: 17px;
+	height: 17px;
+	transition: opacity 0.5s;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>.card>div {
+	text-shadow: none;
+	position: absolute;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>.card>.name2 {
+	display: flex;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	position: static;
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
+	background-color: rgb(228, 207, 166);
+	border: 1px solid rgb(90, 50, 33);
+	border-radius: 0px;
+	box-sizing: border-box;
+	font-weight: bold;
+	font-family: "yuanli" !important;
+	white-space: pre-wrap;
+	pointer-events: none;
+	z-index: 1;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>.card[data-suit='heart']>.name2,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>.card[data-suit='diamond']>.name2 {
+	color: #8B0000;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>.card[data-suit='spade']>.name2,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>.card[data-suit='club']>.name2 {
+	color: #181818;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>.card.feichu>.name2 {
+	background-color: rgb(57, 48, 33);
+	color: white;
+	font-weight: normal;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>.card>.image { /*装备图片效果*/
+/*	display: block;
+	left: 3px;
+	top: 4.5px;
+	bottom: 3px;
+	width: 17px;
+	height: 17px;
+	position: absolute;
+	visibility: visible !important;
+	z-index: 2;*/
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .equips-wrap>.equips>.card:not(.fullskin)>.image {
+	display: block !important;
+}
+
+
+/*其他玩家装备栏*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.player>.equips, 
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena>.player:not(.minskin)>.equips {
+	left: 8%;/*右边距*/
+	right: 13.8%;/*左边距*/
+	width: auto;/*宽度，自动匹配*/
+	height: 80px;/*高度*/
+	bottom: 3%;/*整体上移*/
+	box-shadow: none;
+	background: none;
+	background-image: none;
+	border-radius: 0px;
+	pointer-events: none;
+	z-index: 90;
+	transform: none;
+	transform-origin: center;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena[data-new-decade-style='on']>.player>.equips, 
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena[data-new-decade-style='on']>.player:not(.minskin)>.equips {
+	left: 8%;
+	right: 13.8%;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena[data-new-decade-style='off']>.player>.equips, 
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena[data-new-decade-style='off']>.player:not(.minskin)>.equips {
+	left: 17.5%;
+	right: 0.5%;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena[data-new-decade-style='othersOn']>.player>.equips, 
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena[data-new-decade-style='othersOn']>.player:not(.minskin)>.equips {
+	left: 13.8%;
+	right: 0.4%;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>div,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>.card {
+	position: absolute;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>.card {
+	top: -16px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>div.equip1 {
+	top: 16px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>div.equip2 {
+	top: 32px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>div.equip3,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>div.equip6 {
+	top: 48px;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>div.equip4 {
+	top: auto;
+	bottom: 0;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>div.equip5 {
+	top: 0;
+}
+
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI:not(.long).mobile:not(.oldlayout) .player.unseen:not([data-position="0"]) .equips:not(*:empty),
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI:not(.long):not(.mobile):not(.oldlayout) .player.unseen .equips:not(*:empty),
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI.long.mobile:not(.oldlayout) .player.unseen2:not([data-position="0"]) .equips:not(*:empty),
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI.long:not(.mobile):not(.oldlayout) .player.unseen2 .equips:not(*:empty){
+	background: none;
+	border-radius: 0;
+	overflow: hidden;
+	box-shadow: none;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>.card,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player.unseen>.equips>.card,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player.unseen2>.equips>.card {/*AI装备栏*/
+	display: flex;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	background: rgba(228, 207, 166, 0.8) !important;/*底色*/
+	border: 1px solid rgb(95, 55, 45);/*边框*/
+	border-image: none !important;
+	box-sizing: border-box;
+	border-radius: 1px;/*圆角*/
+	width: 100%;
+	height: 16px;
+	text-shadow: none;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI:not(.long).mobile:not(.oldlayout) .player.unseen:not([data-position="0"]) .equips:not(*:empty)>.card,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI:not(.long):not(.mobile):not(.oldlayout) .player.unseen .equips:not(*:empty)>.card:not(.selected),
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI.long.mobile:not(.oldlayout) .player.unseen2:not([data-position="0"]) .equips:not(*:empty)>.card,
+body[data-shousha-parts~="menus"]:not(.shousha-online) #arena.decadeUI.long:not(.mobile):not(.oldlayout) .player.unseen2 .equips:not(*:empty)>.card:not(.selected){
+	background: rgba(228, 207, 166, 0.8) !important;/*玩家装备栏底色*/
+}
+
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player:not(.selectable)>.equips>.card,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player:not(.selectable)>.equips>.card>div {
+	pointer-events: auto;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>.card>div {
+	position: static;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>.card>.name2 {/*AI装备名*/
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: flex;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	line-height: 15px;
+	color: #181818;/*颜色*/
+	font-size: 13px;/*字体大小*/
+	font-weight: bold;/*加粗*/
+	font-family: yuanli, xinwei, xinkai !important;
+	text-shadow: none;
+	text-align: center;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	pointer-events: none;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>.card[data-suit='heart']>.name2,
+body[data-shousha-parts~="menus"]:not(.shousha-online) .player>.equips>.card[data-suit='diamond']>.name2 {
+	color: #8B0000;
+}
+/* 历史记录栏 */
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .resumedbg {
+	left: 0 !important;
+	top: 0 !important;
+	width: 100%;
+	height: 100%;
+	z-index: 15;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .historybg {
+	transition: all 0.2s linear;
+	display: flex;
+	width: 467px;
+	height: 524px;
+	border-width: 18px 28px 37px 28px;
+	border-style: solid;
+	border-color: transparent;
+	border-image-source: url("assets/d33f2619397c46184e9e1fc5.png");
+	border-image-slice: 18 28 37 28 fill;
+	border-image-repeat: stretch;
+	/*flex-direction: column;
+    align-items: center;
+    justify-content: center;*/
+	position: absolute;
+	top: 0.7%;
+	left: 34.7%;
+	z-index: 16;
+	/*transform: translateY(-50%) scale(1.0);*/
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .identity_btn {
+	z-index: 16;
+	position: absolute;
+	width: 2.7em;
+	height: 2.5em;
+	top: calc(100% - 100px);
+	bottom: calc(100% - 100px);
+	left: calc(100% - 360px);
+	right: calc(100% - 360px);
+	background-image: url("assets/bc456ab3480cffaf73e6f2b4.png");
+	background-size: 100% 100%;
+	background-position: center;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .identity_btn > .identity_cai {
+	left: 5px;
+	top: 3px;
+	width: 2em;
+	height: 2em;
+	background-image: url("assets/92cc050a3e7ee6f8710272da.png");
+	background-size: 100% 100%;
+	background-position: center;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .scrollbar {
+	z-index: 16;
+	position: fixed; /* 固定位置，以便在滚动时保持在视图中 */
+	width: 10px;
+	height: 85%;
+	top: 5%;
+	right: 22%;
+	border-width: 4px 0px 7px 0px;
+	border-style: solid;
+	border-color: transparent;
+	border-image-source: url("assets/2f5d7346c42daa0879e623ff.png");
+	border-image-slice: 4 0 7 0 fill;
+	border-image-repeat: stretch;
+	background: none;
+	overflow: hidden;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .scrollbar > .scrollbutton {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0%;
+	border-width: 4px 0px 7px 0px;
+	border-style: solid;
+	border-color: transparent;
+	border-image-source: url("assets/65535c45132852bf46cf7cce.png");
+	border-image-slice: 4 0 7 0 fill;
+	border-image-repeat: stretch;
+	background: none;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .scrollbar > .scrollbutton.top {
+	top: 0%;
+	transition: top 0.1s ease-in-out;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .scrollbar > .scrollbutton.bottom {
+	bottom: 0%;
+	transition: bottom 0.1s ease-in-out;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > div:first-child {
+	/*font-size: 30px;*/
+	top: 0.7%;
+	left: 34.7%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content {
+	left: 29.2% !important;
+	top: 2.7% !important;
+	overflow: visible;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-content: flex-start;
+	max-width: 88px;
+	z-index: 16;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content > .headbg {
+	width: 88px !important;
+	height: 88px !important;
+	margin: -1px;
+	background-image: url("assets/e84fa92719a53c55fa386694.png");
+	background-size: 100% 100%;
+	background-position: center;
+	zoom: 0.79;
+	opacity: 1;
+	z-index: 16;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content > .headbg > .char {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	background-repeat: no-repeat;
+	/*background-size: 170px;*/
+	background-size: 120% auto;
+	background-position-y: 10%;
+	background-position-x: center;
+	/* background-position-x: 50%; */
+	/* background-size: 100% 100% !important; */
+	/* background-position: center; */
+	margin: 4px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content > .headbg > .char > .namebg {
+	width: 80px;
+	height: 16px;
+	bottom: 0px;
+	left: 0px;
+	line-height: 19px;
+	white-space: nowrap;
+	font-weight: 200;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content > .headbg > .char > .namebg > .name {
+	display: flex;
+	font-size: 20px;
+	font-family: "shousha";
+	top: -10px;
+	color: rgb(217, 194, 153);
+	justify-content: center;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content > .headbg > .headbg_selected {
+	position: absolute;
+	width: 94px;
+	height: 92px;
+	margin: -4px !important;
+	background-image: none;
+	/*background-position-x: 50%;*/
+	background-size: 100% 100% !important;
+	background-position: center;
+	filter: none !important;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content > .headbg > .headbg_selected.light {
+	background-image: url("assets/28fc0c627e7db1c800f4702c.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content > .headbg > .identity {
+	right: auto;
+	top: -20px;
+	left: -25px;
+	width: 50px;
+	height: 50px;
+	line-height: 51px;
+	font-size: 31px;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	border: none;
+	transform: none;
+	transition: none;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan {
+	left: 16.8% !important;
+	top: 1.8% !important;
+	max-width: 222px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg.guozhan {
+	width: 222px !important;
+	height: 93px !important;
+	background-image: url("assets/6d896398e7297ea20dfa857a.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg.guozhan > .char {
+	top: 3%;
+	left: 22.3%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg.guozhan > .char.guozhan {
+	left: 61.3%;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg.guozhan > .char > .char_biaoji {
+	top: 6px;
+	right: 54px;
+	color: rgb(151, 133, 106);
+	font-family: "shousha";
+	font-weight: 900;
+	font-size: 21px;
+	letter-spacing: 1.5px;
+	text-shadow: rgb(43, 31, 25) -1.7px 0px 2.5px, rgb(43, 31, 25) 0px -1.7px 2.5px, rgb(43, 31, 25) 1.7px 0px 2.5px, rgb(43, 31, 25) 0px 1.7px 2.5px;
+	filter: drop-shadow(rgb(43, 31, 25) 0px 0px 0.5px) drop-shadow(rgb(43, 31, 25) 0px 0px 0.5px);
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg.guozhan > .headbg_selected.guozhan {
+	width: 227px;
+	height: 100px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg.guozhan > .identity.guozhan {
+	top: -8px;
+	left: 180px;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg.guozhan > .headbg_selected.guozhan.light {
+	background-image: url("assets/35670d203fa95b0a0edd746a.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg.guozhan > .seat_num {
+	z-index: 11;
+	width: 75px;
+	height: 65px;
+	bottom: 12px;
+	left: -25px;
+	background-image: url("assets/210119061caf7904a153a782.png");
+	background-size: 100% 100%;
+	background-position: center;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg[data-seat-num="1"].guozhan > .seat_num {
+	background-image: url("assets/2a702129d351949638393eac.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg[data-seat-num="2"].guozhan > .seat_num {
+	background-image: url("assets/f502e9bfe361580acae9965c.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg[data-seat-num="3"].guozhan > .seat_num {
+	background-image: url("assets/a5e32b70ca122df6267d909d.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg[data-seat-num="4"].guozhan > .seat_num {
+	background-image: url("assets/6a42bbb9d6b44cee3bb249b7.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg[data-seat-num="5"].guozhan > .seat_num {
+	background-image: url("assets/dcabf6ed4e85314a6899c580.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg[data-seat-num="6"].guozhan > .seat_num {
+	background-image: url("assets/0122df54cd2774bdf4f8bbbe.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg[data-seat-num="7"].guozhan > .seat_num {
+	background-image: url("assets/d5c20e34bf07b9512f187994.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content.guozhan > .headbg[data-seat-num="8"].guozhan > .seat_num {
+	background-image: url("assets/210119061caf7904a153a782.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .identity_btn > .identity_cai.guozhan {
+	background-image: url("assets/1519d17754664a0e450d258b.png");
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #sidebar {
+	left: 0;
+	top: 0;
+	width: 467px;
+	height: calc(100% - 15px);
+	text-align: left;
+	padding: 0px;
+	overflow-y: scroll;
+	z-index: 16;
+	font-size: 18px;
+	color: rgb(217, 194, 153);
+	line-height: 19px;
+	/*display: flex;
+	flex-direction: column-reverse;
+	flex-wrap: wrap;*/
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) #sidebar > div {
+	font-family: "shousha";
+}
+/* 卡牌名称 */
+body[data-shousha-parts~="menus"]:not(.shousha-online) #sidebar > div > .yellowtext {
+	color: rgb(255, 255, 25);
+	letter-spacing: 4px;
+	text-shadow: 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037;
+}
+/* 武将名称 */
+body[data-shousha-parts~="menus"]:not(.shousha-online) #sidebar > div > .bluetext {
+	color: rgb(37, 197, 35);
+}
+/* 技能名称 */
+body[data-shousha-parts~="menus"]:not(.shousha-online) #sidebar > div > .greentext {
+	color: rgb(189, 100, 32);
+	letter-spacing: 4px;
+	text-shadow: 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037;
+}
+/* 弃牌堆卡牌名称 */
+body[data-shousha-parts~="menus"]:not(.shousha-online) #sidebar3 > div {
+	color: rgb(255, 255, 25);
+	letter-spacing: 4px;
+	text-shadow: 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037, 0px 0px 3px #4c4037, 0 0 3px #4c4037, 0 0 3px #4c4037;
+}
+/* #sidebar::-webkit-scrollbar {
+    width: 18px;
+    height: 509px;
+    zoom: 0.7;
+}
+#sidebar::-webkit-scrollbar-track {
+    border-width: 3px 0px 5px 0px;
+    border-style: solid;
+    border-color: transparent;
+    border-image-source: url('../image/pause/pub_scrollbar_bg.png');
+    border-image-slice: 3 0 5 0 fill;
+    border-image-repeat: stretch;
+    background: none;
+}
+#sidebar::-webkit-scrollbar-thumb {
+    border-width: 4px 0px 7px 0px;
+    border-style: solid;
+    border-color: transparent;
+    border-image-source: url('../image/pause/pub_scrollbar_src.png');
+    border-image-slice: 4 0 7 0 fill;
+    border-image-repeat: stretch;
+    background: none;
+} */
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content > .headbg > .identity.guessing {
+	cursor: help;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content > .headbg > .identity-mark-box {
+	display: flex;
+	position: absolute;
+	justify-content: center;
+	flex-wrap: wrap;
+	/* top: 20%; */
+	top: 4%;
+	left: 16%;
+	/* width: 68%; */
+	width: 136%;
+	height: auto;
+	z-index: 199;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content > .headbg > .identity-mark-box > .identity-mark-item {
+	position: static;
+	width: auto;
+	height: auto;
+	min-width: 20px;
+	line-height: 20px;
+	border-style: solid;
+	border-width: 10px;
+	border-image-width: 18px;
+	border-image-slice: 31 31 fill;
+	border-image-source: url("assets/d6d0220b0be6d9cba7cb6f6c.png");
+	cursor: pointer;
+	color: rgb(77, 60, 51);
+	font-family: "shousha";
+	font-weight: bold;
+	font-size: 20px;
+	text-shadow: none;
+	transition: opacity, background, transform 0.3s;
+}
+body[data-shousha-parts~="menus"]:not(.shousha-online) .pausedbg > .content > .headbg > .identity-mark-box > .identity-mark-item:active {
+	transform: scale(0.9);
+}
+
+/*手杀样式*/
+body[data-shousha-parts~="menus"]:not(.shousha-online) .config.config.toggle>div{
+   background-color: rgba(0,0,0,0);
+   background-image: url("assets/caf97e437c553a1426dde056.png");
+   background-position: center center;
+   background-repeat: no-repeat;
+   background-size: 100% 100%;
+   border-radius:0px;
+   box-shadow: none;
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .config.config.toggle.on>div{
+   background-image: url("assets/c70560d01e813c39b8ebea44.png");
+   box-shadow: none;/*去除透明框*/
+
+}
+
+body[data-shousha-parts~="menus"]:not(.shousha-online) .config.config.toggle>div>div{
+      visibility:hidden;  
+}

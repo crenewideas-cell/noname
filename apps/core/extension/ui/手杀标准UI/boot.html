@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <title>手杀标准UI · 加载中</title>
+ <style>
+ @font-face{font-family:shousha;src:url('./original/如真似幻/fonts/shousha.ttf')}
+ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#211a12 url('./original/如真似幻/images/hom.jpg') center/100% 100%;color:#daa520;font-family:shousha,sans-serif}
+ #still{position:absolute;left:50%;top:50%;width:608px;height:382px;transform:translate(-50%,-50%) scale(.8);background:url('./original/如真似幻/spine/loding.png') 0 -12px}
+ #still::after{content:'';position:absolute;left:-26px;top:88px;width:660px;height:244px;background:url('./original/如真似幻/spine/loding.png') -610px -150px}
+ #tip{position:absolute;left:5%;right:5%;top:93%;text-align:center;font-size:clamp(12px,3.3vh,24px);z-index:2}
+ canvas{position:absolute;inset:0;width:100%;height:100%}
+ </style>
+</head>
+<body>
+ <div id="still" aria-label="手杀标准UI正在加载"></div>
+ <div id="tip" role="status">每位角色都有独特的技能和特点，增加了游戏的变化性。</div>
+ <script src="./original/如真似幻/js/pixi6.min.js"></script>
+ <script src="./native/boot.js"></script>
+</body>
+</html>
