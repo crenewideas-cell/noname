@@ -1,0 +1,48 @@
+
+wl.png
+size: 1616,217
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+diban
+  rotate: false
+  xy: 463, 20
+  size: 465, 197
+  orig: 465, 197
+  offset: 0, 0
+  index: -1
+jiesuanshengli_00000
+  rotate: true
+  xy: 930, 10
+  size: 207, 170
+  orig: 207, 170
+  offset: 0, 0
+  index: -1
+jiesuanshengli_00001
+  rotate: true
+  xy: 1102, 10
+  size: 207, 170
+  orig: 207, 170
+  offset: 0, 0
+  index: -1
+jiesuanshengli_00002
+  rotate: true
+  xy: 1274, 10
+  size: 207, 170
+  orig: 207, 170
+  offset: 0, 0
+  index: -1
+jiesuanshengli_00003
+  rotate: true
+  xy: 1446, 10
+  size: 207, 170
+  orig: 207, 170
+  offset: 0, 0
+  index: -1
+jiesuanshibai_00000
+  rotate: false
+  xy: 0, 0
+  size: 461, 217
+  orig: 461, 217
+  offset: 0, 0
+  index: -1

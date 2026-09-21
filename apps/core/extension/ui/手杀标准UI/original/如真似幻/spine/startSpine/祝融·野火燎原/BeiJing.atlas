@@ -1,0 +1,649 @@
+
+BeiJing.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg
+  rotate: false
+  xy: 2, 1293
+  size: 1540, 753
+  orig: 1540, 753
+  offset: 0, 0
+  index: -1
+bghuo2
+  rotate: false
+  xy: 217, 774
+  size: 508, 517
+  orig: 508, 517
+  offset: 0, 0
+  index: -1
+bghuo4
+  rotate: true
+  xy: 1544, 761
+  size: 1036, 492
+  orig: 1036, 495
+  offset: 0, 0
+  index: -1
+bgshitou3
+  rotate: true
+  xy: 1544, 1845
+  size: 201, 495
+  orig: 201, 495
+  offset: 0, 0
+  index: -1
+bgshitou4
+  rotate: false
+  xy: 901, 148
+  size: 505, 611
+  orig: 505, 611
+  offset: 0, 0
+  index: -1
+bgshu1
+  rotate: true
+  xy: 953, 998
+  size: 293, 583
+  orig: 293, 584
+  offset: 0, 0
+  index: -1
+bgshu3
+  rotate: true
+  xy: 607, 144
+  size: 615, 292
+  orig: 615, 292
+  offset: 0, 0
+  index: -1
+bgshu4
+  rotate: true
+  xy: 372, 24
+  size: 73, 248
+  orig: 74, 248
+  offset: 0, 0
+  index: -1
+bgshu5
+  rotate: false
+  xy: 1602, 27
+  size: 237, 66
+  orig: 259, 69
+  offset: 0, 0
+  index: -1
+bgshu6
+  rotate: true
+  xy: 1408, 158
+  size: 55, 155
+  orig: 56, 155
+  offset: 1, 0
+  index: -1
+bgshu7
+  rotate: true
+  xy: 1598, 159
+  size: 375, 160
+  orig: 375, 167
+  offset: 0, 7
+  index: -1
+bgshucong2
+  rotate: false
+  xy: 953, 784
+  size: 583, 212
+  orig: 583, 212
+  offset: 0, 0
+  index: -1
+bgshucong6
+  rotate: true
+  xy: 372, 99
+  size: 660, 233
+  orig: 660, 233
+  offset: 0, 0
+  index: -1
+bgyun1
+  rotate: true
+  xy: 727, 801
+  size: 490, 224
+  orig: 500, 225
+  offset: 8, 0
+  index: -1
+qjzhiwu2
+  rotate: false
+  xy: 1408, 215
+  size: 188, 544
+  orig: 188, 544
+  offset: 0, 0
+  index: -1
+qjzhiwu3
+  rotate: true
+  xy: 1544, 1799
+  size: 44, 494
+  orig: 44, 494
+  offset: 0, 0
+  index: -1
+qjzhiwu4
+  rotate: true
+  xy: 2, 16
+  size: 30, 255
+  orig: 31, 256
+  offset: 1, 0
+  index: -1
+texture/jianhy/jianhy_00006
+  rotate: true
+  xy: 1760, 389
+  size: 145, 286
+  orig: 216, 360
+  offset: 61, 50
+  index: -1
+texture/jianhy/jianhy_00012
+  rotate: true
+  xy: 1760, 95
+  size: 147, 284
+  orig: 216, 360
+  offset: 59, 50
+  index: -1
+texture/jianhy/jianhy_00015
+  rotate: true
+  xy: 1318, 2
+  size: 144, 282
+  orig: 216, 360
+  offset: 61, 51
+  index: -1
+texture/jianhy/jianhy_00043
+  rotate: true
+  xy: 1033, 2
+  size: 144, 283
+  orig: 216, 360
+  offset: 61, 49
+  index: -1
+texture/jianhy/jianhy_00045
+  rotate: true
+  xy: 1760, 244
+  size: 143, 286
+  orig: 216, 360
+  offset: 62, 46
+  index: -1
+yanwu1
+  rotate: false
+  xy: 2, 768
+  size: 213, 523
+  orig: 242, 529
+  offset: 22, 0
+  index: -1
+yanwu10
+  rotate: true
+  xy: 1602, 536
+  size: 223, 437
+  orig: 223, 449
+  offset: 0, 12
+  index: -1
+yanwu4
+  rotate: true
+  xy: 622, 2
+  size: 140, 409
+  orig: 183, 409
+  offset: 0, 0
+  index: -1
+yanwu8
+  rotate: false
+  xy: 2, 48
+  size: 368, 711
+  orig: 377, 712
+  offset: 2, 0
+  index: -1
+
+BeiJing2.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bghuo1
+  rotate: false
+  xy: 2, 1491
+  size: 416, 548
+  orig: 416, 549
+  offset: 0, 0
+  index: -1
+bghuo3
+  rotate: true
+  xy: 786, 1104
+  size: 219, 278
+  orig: 219, 294
+  offset: 0, 0
+  index: -1
+bgshitou1
+  rotate: true
+  xy: 873, 1788
+  size: 251, 483
+  orig: 251, 483
+  offset: 0, 0
+  index: -1
+bgshu2
+  rotate: true
+  xy: 334, 1136
+  size: 353, 116
+  orig: 353, 116
+  offset: 0, 0
+  index: -1
+bgshucong1
+  rotate: true
+  xy: 2, 2
+  size: 195, 287
+  orig: 195, 287
+  offset: 0, 0
+  index: -1
+bgshucong3
+  rotate: true
+  xy: 1358, 1819
+  size: 220, 360
+  orig: 220, 360
+  offset: 0, 0
+  index: -1
+bgshucong4
+  rotate: false
+  xy: 452, 1342
+  size: 338, 217
+  orig: 338, 217
+  offset: 0, 0
+  index: -1
+bgshucong5
+  rotate: true
+  xy: 1082, 1304
+  size: 187, 111
+  orig: 187, 111
+  offset: 0, 0
+  index: -1
+bgshucong7
+  rotate: false
+  xy: 786, 978
+  size: 260, 124
+  orig: 260, 124
+  offset: 0, 0
+  index: -1
+bgshucong8
+  rotate: true
+  xy: 452, 1119
+  size: 221, 332
+  orig: 221, 332
+  offset: 0, 0
+  index: -1
+bgsihtou2
+  rotate: false
+  xy: 420, 1561
+  size: 451, 478
+  orig: 453, 481
+  offset: 0, 3
+  index: -1
+bgyun2
+  rotate: false
+  xy: 792, 1325
+  size: 288, 166
+  orig: 297, 167
+  offset: 6, 0
+  index: -1
+bgyun3
+  rotate: false
+  xy: 1358, 1716
+  size: 301, 101
+  orig: 305, 103
+  offset: 2, 0
+  index: -1
+qjzhiwu1
+  rotate: true
+  xy: 873, 1605
+  size: 181, 464
+  orig: 181, 464
+  offset: 0, 0
+  index: -1
+qjzhiwu5
+  rotate: false
+  xy: 1720, 1796
+  size: 307, 243
+  orig: 307, 243
+  offset: 0, 0
+  index: -1
+texture/jianhy/jianhy_00000
+  rotate: true
+  xy: 504, 829
+  size: 143, 281
+  orig: 216, 360
+  offset: 63, 51
+  index: -1
+texture/jianhy/jianhy_00001
+  rotate: true
+  xy: 1038, 104
+  size: 143, 279
+  orig: 216, 360
+  offset: 62, 54
+  index: -1
+texture/jianhy/jianhy_00002
+  rotate: false
+  xy: 1066, 1023
+  size: 144, 279
+  orig: 216, 360
+  offset: 62, 54
+  index: -1
+texture/jianhy/jianhy_00003
+  rotate: true
+  xy: 790, 534
+  size: 145, 283
+  orig: 216, 360
+  offset: 62, 53
+  index: -1
+texture/jianhy/jianhy_00004
+  rotate: true
+  xy: 468, 392
+  size: 145, 283
+  orig: 216, 360
+  offset: 62, 52
+  index: -1
+texture/jianhy/jianhy_00005
+  rotate: true
+  xy: 468, 248
+  size: 142, 283
+  orig: 216, 360
+  offset: 62, 52
+  index: -1
+texture/jianhy/jianhy_00007
+  rotate: true
+  xy: 1339, 1568
+  size: 146, 288
+  orig: 216, 360
+  offset: 60, 48
+  index: -1
+texture/jianhy/jianhy_00008
+  rotate: false
+  xy: 173, 302
+  size: 145, 288
+  orig: 216, 360
+  offset: 60, 48
+  index: -1
+texture/jianhy/jianhy_00009
+  rotate: true
+  xy: 1661, 1648
+  size: 146, 287
+  orig: 216, 360
+  offset: 58, 49
+  index: -1
+texture/jianhy/jianhy_00010
+  rotate: true
+  xy: 1629, 1499
+  size: 147, 287
+  orig: 216, 360
+  offset: 59, 49
+  index: -1
+texture/jianhy/jianhy_00011
+  rotate: false
+  xy: 355, 830
+  size: 147, 287
+  orig: 216, 360
+  offset: 59, 48
+  index: -1
+texture/jianhy/jianhy_00013
+  rotate: true
+  xy: 504, 681
+  size: 146, 284
+  orig: 216, 360
+  offset: 60, 50
+  index: -1
+texture/jianhy/jianhy_00014
+  rotate: true
+  xy: 790, 681
+  size: 146, 283
+  orig: 216, 360
+  offset: 60, 51
+  index: -1
+texture/jianhy/jianhy_00016
+  rotate: true
+  xy: 1339, 1275
+  size: 143, 282
+  orig: 216, 360
+  offset: 63, 51
+  index: -1
+texture/jianhy/jianhy_00017
+  rotate: true
+  xy: 1623, 1207
+  size: 143, 282
+  orig: 216, 360
+  offset: 63, 51
+  index: -1
+texture/jianhy/jianhy_00018
+  rotate: true
+  xy: 504, 539
+  size: 140, 284
+  orig: 216, 360
+  offset: 63, 50
+  index: -1
+texture/jianhy/jianhy_00019
+  rotate: false
+  xy: 1195, 1321
+  size: 142, 282
+  orig: 216, 360
+  offset: 63, 50
+  index: -1
+texture/jianhy/jianhy_00020
+  rotate: false
+  xy: 1907, 930
+  size: 139, 282
+  orig: 216, 360
+  offset: 62, 52
+  index: -1
+texture/jianhy/jianhy_00021
+  rotate: false
+  xy: 1047, 249
+  size: 137, 283
+  orig: 216, 360
+  offset: 61, 51
+  index: -1
+texture/jianhy/jianhy_00022
+  rotate: true
+  xy: 1496, 919
+  size: 139, 281
+  orig: 216, 360
+  offset: 62, 51
+  index: -1
+texture/jianhy/jianhy_00023
+  rotate: false
+  xy: 1329, 273
+  size: 142, 281
+  orig: 216, 360
+  offset: 62, 51
+  index: -1
+texture/jianhy/jianhy_00024
+  rotate: false
+  xy: 1618, 349
+  size: 141, 280
+  orig: 216, 360
+  offset: 62, 52
+  index: -1
+texture/jianhy/jianhy_00025
+  rotate: true
+  xy: 1212, 987
+  size: 140, 282
+  orig: 216, 360
+  offset: 62, 51
+  index: -1
+texture/jianhy/jianhy_00026
+  rotate: true
+  xy: 753, 107
+  size: 140, 283
+  orig: 216, 360
+  offset: 62, 50
+  index: -1
+texture/jianhy/jianhy_00027
+  rotate: true
+  xy: 1473, 775
+  size: 142, 281
+  orig: 216, 360
+  offset: 62, 52
+  index: -1
+texture/jianhy/jianhy_00028
+  rotate: false
+  xy: 1075, 556
+  size: 143, 282
+  orig: 216, 360
+  offset: 62, 51
+  index: -1
+texture/jianhy/jianhy_00029
+  rotate: true
+  xy: 1212, 1129
+  size: 144, 282
+  orig: 216, 360
+  offset: 62, 50
+  index: -1
+texture/jianhy/jianhy_00030
+  rotate: true
+  xy: 1365, 631
+  size: 142, 281
+  orig: 216, 360
+  offset: 64, 51
+  index: -1
+texture/jianhy/jianhy_00031
+  rotate: true
+  xy: 1473, 208
+  size: 139, 281
+  orig: 216, 360
+  offset: 63, 52
+  index: -1
+texture/jianhy/jianhy_00032
+  rotate: true
+  xy: 504, 974
+  size: 143, 280
+  orig: 216, 360
+  offset: 60, 52
+  index: -1
+texture/jianhy/jianhy_00033
+  rotate: false
+  xy: 1220, 556
+  size: 143, 282
+  orig: 216, 360
+  offset: 61, 51
+  index: -1
+texture/jianhy/jianhy_00034
+  rotate: true
+  xy: 1496, 1060
+  size: 145, 281
+  orig: 216, 360
+  offset: 60, 52
+  index: -1
+texture/jianhy/jianhy_00035
+  rotate: true
+  xy: 1070, 840
+  size: 145, 281
+  orig: 216, 360
+  offset: 60, 53
+  index: -1
+texture/jianhy/jianhy_00036
+  rotate: false
+  xy: 753, 249
+  size: 145, 283
+  orig: 216, 360
+  offset: 60, 53
+  index: -1
+texture/jianhy/jianhy_00037
+  rotate: true
+  xy: 787, 829
+  size: 147, 281
+  orig: 216, 360
+  offset: 60, 54
+  index: -1
+texture/jianhy/jianhy_00038
+  rotate: false
+  xy: 355, 547
+  size: 147, 281
+  orig: 216, 360
+  offset: 60, 53
+  index: -1
+texture/jianhy/jianhy_00039
+  rotate: false
+  xy: 320, 264
+  size: 146, 281
+  orig: 216, 360
+  offset: 60, 54
+  index: -1
+texture/jianhy/jianhy_00040
+  rotate: true
+  xy: 1339, 1420
+  size: 146, 281
+  orig: 216, 360
+  offset: 60, 54
+  index: -1
+texture/jianhy/jianhy_00041
+  rotate: false
+  xy: 900, 249
+  size: 145, 283
+  orig: 216, 360
+  offset: 60, 51
+  index: -1
+texture/jianhy/jianhy_00042
+  rotate: true
+  xy: 1623, 1352
+  size: 145, 282
+  orig: 216, 360
+  offset: 60, 52
+  index: -1
+texture/jianhy/jianhy_00044
+  rotate: false
+  xy: 1473, 349
+  size: 143, 280
+  orig: 216, 360
+  offset: 61, 52
+  index: -1
+texture/jianhy/jianhy_00046
+  rotate: false
+  xy: 1186, 271
+  size: 141, 283
+  orig: 216, 360
+  offset: 64, 49
+  index: -1
+texture/jianhy/jianhy_00047
+  rotate: false
+  xy: 1907, 1214
+  size: 139, 283
+  orig: 216, 360
+  offset: 65, 50
+  index: -1
+texture/jianhy/jianhy_00048
+  rotate: false
+  xy: 1761, 350
+  size: 140, 280
+  orig: 216, 360
+  offset: 64, 52
+  index: -1
+texture/jianhy/jianhy_00049
+  rotate: true
+  xy: 1648, 632
+  size: 141, 280
+  orig: 216, 360
+  offset: 63, 53
+  index: -1
+yanwu2
+  rotate: true
+  xy: 873, 1493
+  size: 110, 312
+  orig: 111, 326
+  offset: 1, 14
+  index: -1
+yanwu3
+  rotate: false
+  xy: 202, 657
+  size: 151, 401
+  orig: 152, 420
+  offset: 1, 13
+  index: -1
+yanwu5
+  rotate: false
+  xy: 2, 199
+  size: 169, 391
+  orig: 170, 391
+  offset: 0, 0
+  index: -1
+yanwu7
+  rotate: false
+  xy: 2, 592
+  size: 198, 466
+  orig: 198, 466
+  offset: 0, 0
+  index: -1
+yanwu9
+  rotate: false
+  xy: 2, 1060
+  size: 330, 429
+  orig: 336, 458
+  offset: 0, 29
+  index: -1

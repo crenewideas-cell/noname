@@ -1,0 +1,181 @@
+
+BeiJing.png
+size: 2029,1209
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg
+  rotate: true
+  xy: 2, 135
+  size: 1072, 759
+  orig: 1072, 759
+  offset: 0, 0
+  index: -1
+dahongbu
+  rotate: true
+  xy: 763, 135
+  size: 1072, 759
+  orig: 1072, 759
+  offset: 0, 0
+  index: -1
+fengsha_00000
+  rotate: true
+  xy: 467, 3
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00001
+  rotate: true
+  xy: 577, 3
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00002
+  rotate: true
+  xy: 687, 3
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00003
+  rotate: true
+  xy: 797, 3
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00004
+  rotate: true
+  xy: 907, 3
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00005
+  rotate: true
+  xy: 1017, 3
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00006
+  rotate: true
+  xy: 1127, 3
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00007
+  rotate: true
+  xy: 1237, 3
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00008
+  rotate: true
+  xy: 1347, 3
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00009
+  rotate: true
+  xy: 1457, 3
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00010
+  rotate: false
+  xy: 1524, 155
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00011
+  rotate: true
+  xy: 1567, 23
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00012
+  rotate: false
+  xy: 1656, 155
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00013
+  rotate: true
+  xy: 1677, 23
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+fengsha_00014
+  rotate: true
+  xy: 1787, 23
+  size: 130, 108
+  orig: 130, 108
+  offset: 0, 0
+  index: -1
+houbu1
+  rotate: true
+  xy: 1524, 855
+  size: 352, 425
+  orig: 352, 425
+  offset: 0, 0
+  index: -1
+houbu2
+  rotate: true
+  xy: 1524, 545
+  size: 308, 459
+  orig: 308, 459
+  offset: 0, 0
+  index: -1
+huoniaomohu
+  rotate: false
+  xy: 1524, 265
+  size: 503, 278
+  orig: 503, 278
+  offset: 0, 0
+  index: -1
+jiaolianyy
+  rotate: false
+  xy: 1788, 164
+  size: 128, 99
+  orig: 128, 99
+  offset: 0, 0
+  index: -1
+liantiao8
+  rotate: true
+  xy: 272, 29
+  size: 104, 193
+  orig: 104, 193
+  offset: 0, 0
+  index: -1
+liantiao9
+  rotate: true
+  xy: 2, 12
+  size: 121, 268
+  orig: 121, 268
+  offset: 0, 0
+  index: -1
+toushi
+  rotate: false
+  xy: 272, 2
+  size: 33, 25
+  orig: 33, 25
+  offset: 0, 0
+  index: -1
+tunbu
+  rotate: true
+  xy: 1951, 1167
+  size: 40, 67
+  orig: 40, 67
+  offset: 0, 0
+  index: -1

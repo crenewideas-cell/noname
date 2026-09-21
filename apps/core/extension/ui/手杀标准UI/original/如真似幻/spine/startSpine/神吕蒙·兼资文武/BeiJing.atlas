@@ -1,0 +1,139 @@
+
+BeiJing.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+beijing
+  rotate: false
+  xy: 2, 1280
+  size: 1081, 766
+  orig: 1081, 766
+  offset: 0, 0
+  index: -1
+beijing_00
+  rotate: false
+  xy: 2, 1019
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_01
+  rotate: false
+  xy: 1085, 1787
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_02
+  rotate: false
+  xy: 2, 758
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_03
+  rotate: false
+  xy: 1085, 1526
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_04
+  rotate: false
+  xy: 2, 497
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_05
+  rotate: true
+  xy: 544, 738
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_06
+  rotate: false
+  xy: 2, 236
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_07
+  rotate: true
+  xy: 805, 738
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_08
+  rotate: false
+  xy: 1085, 1265
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_09
+  rotate: true
+  xy: 1627, 1506
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_10
+  rotate: false
+  xy: 1066, 1004
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_11
+  rotate: false
+  xy: 1066, 743
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_12
+  rotate: false
+  xy: 544, 477
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_13
+  rotate: false
+  xy: 544, 216
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+beijing_14
+  rotate: true
+  xy: 1086, 201
+  size: 540, 259
+  orig: 540, 259
+  offset: 0, 0
+  index: -1
+chuan1
+  rotate: false
+  xy: 1347, 359
+  size: 180, 382
+  orig: 181, 382
+  offset: 0, 0
+  index: -1
+chuan2
+  rotate: true
+  xy: 2, 2
+  size: 232, 319
+  orig: 232, 321
+  offset: 0, 1
+  index: -1
+chuan3
+  rotate: false
+  xy: 323, 2
+  size: 444, 212
+  orig: 444, 212
+  offset: 0, 0
+  index: -1

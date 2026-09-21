@@ -1,0 +1,13 @@
+
+BeiJing.png
+size: 1898,1898
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg
+  rotate: false
+  xy: 2, 1046
+  size: 1894, 850
+  orig: 1894, 850
+  offset: 0, 0
+  index: -1
