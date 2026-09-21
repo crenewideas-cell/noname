@@ -1,0 +1,97 @@
+
+XXpingju.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+guangyun_1
+  rotate: false
+  xy: 824, 242
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+haha001sb
+  rotate: false
+  xy: 824, 242
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+ju
+  rotate: true
+  xy: 264, 282
+  size: 228, 138
+  orig: 228, 138
+  offset: 0, 0
+  index: -1
+pin
+  rotate: true
+  xy: 264, 52
+  size: 228, 138
+  orig: 228, 138
+  offset: 0, 0
+  index: -1
+pjsglow0035_00000
+  rotate: true
+  xy: 404, 282
+  size: 228, 138
+  orig: 228, 138
+  offset: 0, 0
+  index: -1
+pjsglow0035_00002
+  rotate: true
+  xy: 404, 52
+  size: 228, 138
+  orig: 228, 138
+  offset: 0, 0
+  index: -1
+pjsglow0035_00004
+  rotate: false
+  xy: 544, 372
+  size: 228, 138
+  orig: 228, 138
+  offset: 0, 0
+  index: -1
+pjsglow0035_00006
+  rotate: false
+  xy: 774, 372
+  size: 228, 138
+  orig: 228, 138
+  offset: 0, 0
+  index: -1
+pjsglow0035_00008
+  rotate: true
+  xy: 544, 142
+  size: 228, 138
+  orig: 228, 138
+  offset: 0, 0
+  index: -1
+pjsglow0035_00010
+  rotate: false
+  xy: 544, 2
+  size: 228, 138
+  orig: 228, 138
+  offset: 0, 0
+  index: -1
+pjsglow0035_00012
+  rotate: true
+  xy: 684, 142
+  size: 228, 138
+  orig: 228, 138
+  offset: 0, 0
+  index: -1
+pjsglow0035_00014
+  rotate: false
+  xy: 774, 2
+  size: 228, 138
+  orig: 228, 138
+  offset: 0, 0
+  index: -1
+shibai
+  rotate: true
+  xy: 2, 66
+  size: 444, 260
+  orig: 444, 260
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,104 @@
+
+SF_jiesuan_eff_neijianshengli.png
+size: 1615,1615
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+SF_animation_daojuhuode_lizi_001
+  rotate: true
+  xy: 1515, 1607
+  size: 6, 76
+  orig: 45, 90
+  offset: 20, 7
+  index: -1
+glow_tx1
+  rotate: false
+  xy: 1349, 767
+  size: 259, 269
+  orig: 259, 269
+  offset: 0, 0
+  index: -1
+glow_tx2
+  rotate: false
+  xy: 2, 676
+  size: 504, 501
+  orig: 504, 504
+  offset: 0, 2
+  index: -1
+glow_tx3
+  rotate: false
+  xy: 466, 225
+  size: 179, 179
+  orig: 179, 179
+  offset: 0, 0
+  index: -1
+neijian/neijian_1
+  rotate: true
+  xy: 1231, 302
+  size: 463, 382
+  orig: 463, 382
+  offset: 0, 0
+  index: -1
+neijian/neijian_10
+  rotate: false
+  xy: 2, 213
+  size: 462, 461
+  orig: 462, 461
+  offset: 0, 0
+  index: -1
+neijian/neijian_11
+  rotate: false
+  xy: 2, 1179
+  size: 934, 434
+  orig: 934, 525
+  offset: 0, 25
+  index: -1
+neijian/neijian_13
+  rotate: false
+  xy: 1349, 105
+  size: 195, 195
+  orig: 195, 195
+  offset: 0, 0
+  index: -1
+neijian/neijian_14
+  rotate: false
+  xy: 807, 827
+  size: 111, 350
+  orig: 124, 358
+  offset: 7, 0
+  index: -1
+neijian/neijian_5
+  rotate: false
+  xy: 529, 5
+  size: 818, 218
+  orig: 818, 218
+  offset: 0, 0
+  index: -1
+neijian/neijian_7
+  rotate: false
+  xy: 2, 18
+  size: 525, 193
+  orig: 526, 193
+  offset: 1, 0
+  index: -1
+neijian/neijian_8
+  rotate: true
+  xy: 508, 406
+  size: 771, 297
+  orig: 771, 297
+  offset: 0, 0
+  index: -1
+neijian/neijian_9
+  rotate: false
+  xy: 938, 1038
+  size: 575, 575
+  orig: 575, 575
+  offset: 0, 0
+  index: -1
+shengli/shengli_12
+  rotate: true
+  xy: 920, 377
+  size: 659, 309
+  orig: 659, 309
+  offset: 0, 0
+  index: -1

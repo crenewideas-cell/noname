@@ -1,0 +1,187 @@
+
+jiubuff.png
+size: 2013,2017
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/hongkuang_00000
+  rotate: false
+  xy: 1845, 1849
+  size: 166, 166
+  orig: 256, 300
+  offset: 45, 8
+  index: -1
+images/hongzhehzao_00000
+  rotate: true
+  xy: 1845, 1711
+  size: 136, 160
+  orig: 256, 300
+  offset: 60, 23
+  index: -1
+images/xulie_00000
+  rotate: true
+  xy: 1103, 828
+  size: 453, 365
+  orig: 512, 600
+  offset: 33, 0
+  index: -1
+images/xulie_00002
+  rotate: false
+  xy: 1282, 6
+  size: 452, 365
+  orig: 512, 600
+  offset: 33, 0
+  index: -1
+images/xulie_00004
+  rotate: false
+  xy: 369, 1283
+  size: 456, 365
+  orig: 512, 600
+  offset: 28, 0
+  index: -1
+images/xulie_00006
+  rotate: true
+  xy: 2, 731
+  size: 457, 365
+  orig: 512, 600
+  offset: 26, 0
+  index: -1
+images/xulie_00008
+  rotate: false
+  xy: 2, 1650
+  size: 459, 365
+  orig: 512, 600
+  offset: 24, 0
+  index: -1
+images/xulie_00010
+  rotate: false
+  xy: 463, 1650
+  size: 459, 365
+  orig: 512, 600
+  offset: 24, 0
+  index: -1
+images/xulie_00012
+  rotate: false
+  xy: 924, 1650
+  size: 459, 365
+  orig: 512, 600
+  offset: 23, 0
+  index: -1
+images/xulie_00014
+  rotate: false
+  xy: 1385, 1650
+  size: 458, 365
+  orig: 512, 600
+  offset: 24, 0
+  index: -1
+images/xulie_00016
+  rotate: true
+  xy: 2, 272
+  size: 457, 365
+  orig: 512, 600
+  offset: 25, 0
+  index: -1
+images/xulie_00018
+  rotate: false
+  xy: 827, 1283
+  size: 456, 365
+  orig: 512, 600
+  offset: 26, 0
+  index: -1
+images/xulie_00022
+  rotate: true
+  xy: 1103, 373
+  size: 453, 365
+  orig: 512, 600
+  offset: 31, 0
+  index: -1
+images/xulie_00024
+  rotate: true
+  xy: 2, 1190
+  size: 458, 365
+  orig: 512, 600
+  offset: 28, 0
+  index: -1
+images/xulie_00026
+  rotate: false
+  xy: 1285, 1283
+  size: 455, 365
+  orig: 512, 600
+  offset: 31, 0
+  index: -1
+images/xulie_00028
+  rotate: true
+  xy: 369, 826
+  size: 455, 365
+  orig: 512, 600
+  offset: 32, 0
+  index: -1
+images/xulie_00030
+  rotate: true
+  xy: 736, 827
+  size: 454, 365
+  orig: 512, 600
+  offset: 32, 0
+  index: -1
+images/xulie_00032
+  rotate: false
+  xy: 1470, 916
+  size: 452, 365
+  orig: 512, 600
+  offset: 31, 0
+  index: -1
+images/xulie_00034
+  rotate: true
+  xy: 736, 371
+  size: 454, 365
+  orig: 512, 600
+  offset: 31, 0
+  index: -1
+images/xulie_00036
+  rotate: true
+  xy: 369, 369
+  size: 455, 365
+  orig: 512, 600
+  offset: 32, 0
+  index: -1
+images/xulie_00038
+  rotate: false
+  xy: 369, 2
+  size: 455, 365
+  orig: 512, 600
+  offset: 32, 0
+  index: -1
+images/xulie_00040
+  rotate: true
+  xy: 1470, 461
+  size: 453, 363
+  orig: 512, 600
+  offset: 32, 0
+  index: -1
+images/xulie_00044
+  rotate: false
+  xy: 826, 4
+  size: 454, 365
+  orig: 512, 600
+  offset: 32, 0
+  index: -1
+
+jiubuff2.png
+size: 722,458
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/xulie_00020
+  rotate: true
+  xy: 2, 2
+  size: 454, 360
+  orig: 512, 600
+  offset: 29, 0
+  index: -1
+images/xulie_00042
+  rotate: true
+  xy: 364, 2
+  size: 454, 356
+  orig: 512, 600
+  offset: 32, 0
+  index: -1

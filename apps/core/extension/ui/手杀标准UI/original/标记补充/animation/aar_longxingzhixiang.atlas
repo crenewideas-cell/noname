@@ -1,0 +1,27 @@
+
+aar_longxingzhixiang.png
+size: 474,474
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+guangbo_00000
+  rotate: false
+  xy: 252, 216
+  size: 220, 256
+  orig: 256, 256
+  offset: 24, 0
+  index: -1
+guangci_00000
+  rotate: false
+  xy: 2, 223
+  size: 248, 249
+  orig: 256, 256
+  offset: 5, 3
+  index: -1
+longtou_00000
+  rotate: false
+  xy: 2, 8
+  size: 178, 213
+  orig: 178, 213
+  offset: 0, 0
+  index: -1

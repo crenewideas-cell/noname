@@ -1,0 +1,118 @@
+
+SF_jiesuan_eff_fanzeishengli.png
+size: 1612,1612
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+SF_animation_daojuhuode_lizi_001
+  rotate: false
+  xy: 1599, 1534
+  size: 6, 76
+  orig: 45, 90
+  offset: 20, 7
+  index: -1
+fanzei/fanzei_1
+  rotate: false
+  xy: 561, 93
+  size: 482, 385
+  orig: 482, 385
+  offset: 0, 0
+  index: -1
+fanzei/fanzei_10
+  rotate: false
+  xy: 2, 627
+  size: 557, 547
+  orig: 557, 547
+  offset: 0, 0
+  index: -1
+fanzei/fanzei_11
+  rotate: false
+  xy: 2, 1176
+  size: 934, 434
+  orig: 934, 525
+  offset: 0, 4
+  index: -1
+fanzei/fanzei_2
+  rotate: false
+  xy: 1045, 115
+  size: 225, 194
+  orig: 225, 194
+  offset: 0, 0
+  index: -1
+fanzei/fanzei_3
+  rotate: false
+  xy: 1306, 250
+  size: 193, 109
+  orig: 193, 109
+  offset: 0, 0
+  index: -1
+fanzei/fanzei_5
+  rotate: false
+  xy: 938, 1085
+  size: 622, 214
+  orig: 622, 214
+  offset: 0, 0
+  index: -1
+fanzei/fanzei_7
+  rotate: true
+  xy: 1355, 558
+  size: 525, 193
+  orig: 526, 193
+  offset: 1, 0
+  index: -1
+fanzei/fanzei_8
+  rotate: true
+  xy: 561, 480
+  size: 694, 286
+  orig: 694, 286
+  offset: 0, 0
+  index: -1
+fanzei/fanzei_9
+  rotate: false
+  xy: 2, 79
+  size: 557, 546
+  orig: 557, 546
+  offset: 0, 0
+  index: -1
+glow_tx1
+  rotate: false
+  xy: 1045, 311
+  size: 259, 269
+  orig: 259, 269
+  offset: 0, 0
+  index: -1
+glow_tx2
+  rotate: false
+  xy: 849, 582
+  size: 504, 501
+  orig: 504, 504
+  offset: 0, 2
+  index: -1
+glow_tx3
+  rotate: false
+  xy: 1397, 69
+  size: 179, 179
+  orig: 179, 179
+  offset: 0, 0
+  index: -1
+neijian/neijian_13
+  rotate: false
+  xy: 1306, 361
+  size: 195, 195
+  orig: 195, 195
+  offset: 0, 0
+  index: -1
+neijian/neijian_14
+  rotate: true
+  xy: 1045, 2
+  size: 111, 350
+  orig: 124, 358
+  offset: 7, 0
+  index: -1
+shengli/shengli_12
+  rotate: false
+  xy: 938, 1301
+  size: 659, 309
+  orig: 659, 309
+  offset: 0, 0
+  index: -1

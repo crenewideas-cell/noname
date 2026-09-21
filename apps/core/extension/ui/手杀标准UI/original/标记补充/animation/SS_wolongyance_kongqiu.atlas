@@ -1,0 +1,146 @@
+
+SS_wolongyance_kongqiu.png
+size: 854,523
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+kongxin/kongxin_00
+  rotate: false
+  xy: 787, 85
+  size: 65, 78
+  orig: 180, 180
+  offset: 54, 59
+  index: -1
+kongxin/kongxin_01
+  rotate: false
+  xy: 685, 51
+  size: 100, 112
+  orig: 180, 180
+  offset: 43, 38
+  index: -1
+kongxin/kongxin_02
+  rotate: false
+  xy: 2, 6
+  size: 152, 155
+  orig: 180, 180
+  offset: 23, 19
+  index: -1
+kongxin/kongxin_03
+  rotate: false
+  xy: 513, 2
+  size: 170, 161
+  orig: 180, 180
+  offset: 10, 15
+  index: -1
+kongxin/kongxin_04
+  rotate: false
+  xy: 335, 2
+  size: 176, 161
+  orig: 180, 180
+  offset: 4, 15
+  index: -1
+kongxin/kongxin_05
+  rotate: true
+  xy: 2, 343
+  size: 178, 159
+  orig: 180, 180
+  offset: 2, 15
+  index: -1
+kongxin/kongxin_06
+  rotate: true
+  xy: 2, 163
+  size: 178, 129
+  orig: 180, 180
+  offset: 2, 35
+  index: -1
+kongxin/kongxin_07
+  rotate: true
+  xy: 387, 165
+  size: 177, 124
+  orig: 180, 180
+  offset: 2, 35
+  index: -1
+kongxin/kongxin_08
+  rotate: true
+  xy: 133, 164
+  size: 177, 125
+  orig: 180, 180
+  offset: 2, 35
+  index: -1
+kongxin/kongxin_09
+  rotate: true
+  xy: 163, 344
+  size: 177, 125
+  orig: 180, 180
+  offset: 2, 35
+  index: -1
+kongxin/kongxin_10
+  rotate: false
+  xy: 156, 37
+  size: 177, 125
+  orig: 180, 180
+  offset: 2, 35
+  index: -1
+kongxin/kongxin_11
+  rotate: true
+  xy: 260, 165
+  size: 177, 125
+  orig: 180, 180
+  offset: 2, 35
+  index: -1
+kongxin/kongxin_12
+  rotate: true
+  xy: 290, 344
+  size: 177, 125
+  orig: 180, 180
+  offset: 2, 35
+  index: -1
+kongxin/kongxin_13
+  rotate: true
+  xy: 417, 344
+  size: 177, 124
+  orig: 180, 180
+  offset: 2, 36
+  index: -1
+kongxin/kongxin_14
+  rotate: false
+  xy: 543, 404
+  size: 177, 117
+  orig: 180, 180
+  offset: 2, 43
+  index: -1
+kongxin/kongxin_15
+  rotate: true
+  xy: 722, 344
+  size: 177, 117
+  orig: 180, 180
+  offset: 2, 43
+  index: -1
+kongxin/kongxin_16
+  rotate: false
+  xy: 543, 285
+  size: 177, 117
+  orig: 180, 180
+  offset: 2, 43
+  index: -1
+kongxin/kongxin_17
+  rotate: true
+  xy: 722, 165
+  size: 177, 117
+  orig: 180, 180
+  offset: 2, 43
+  index: -1
+kongxin/kongxin_18
+  rotate: false
+  xy: 513, 166
+  size: 177, 117
+  orig: 180, 180
+  offset: 2, 43
+  index: -1
+kongxin/kongxin_19
+  rotate: false
+  xy: 2, 3
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1

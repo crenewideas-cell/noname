@@ -1,0 +1,241 @@
+
+arr_0_gaipan.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+01_00
+  rotate: false
+  xy: 2, 640
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_01
+  rotate: false
+  xy: 2, 338
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_02
+  rotate: false
+  xy: 304, 640
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_03
+  rotate: false
+  xy: 2, 36
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_04
+  rotate: false
+  xy: 304, 338
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_05
+  rotate: false
+  xy: 606, 640
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_06
+  rotate: false
+  xy: 304, 36
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_07
+  rotate: false
+  xy: 606, 338
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_08
+  rotate: false
+  xy: 606, 36
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+tihuanzi
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+
+arr_0_gaipan2.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+01_09
+  rotate: false
+  xy: 2, 606
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_10
+  rotate: false
+  xy: 2, 304
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_11
+  rotate: false
+  xy: 304, 606
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_12
+  rotate: false
+  xy: 2, 2
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_13
+  rotate: false
+  xy: 304, 304
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_14
+  rotate: false
+  xy: 606, 606
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_15
+  rotate: false
+  xy: 304, 2
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_16
+  rotate: false
+  xy: 606, 304
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_17
+  rotate: false
+  xy: 606, 2
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+
+arr_0_gaipan3.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+01_18
+  rotate: false
+  xy: 2, 606
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_19
+  rotate: false
+  xy: 2, 304
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_20
+  rotate: false
+  xy: 304, 606
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_21
+  rotate: false
+  xy: 2, 2
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_22
+  rotate: false
+  xy: 304, 304
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_23
+  rotate: false
+  xy: 606, 606
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_24
+  rotate: false
+  xy: 304, 2
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_25
+  rotate: false
+  xy: 606, 304
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+01_26
+  rotate: false
+  xy: 606, 2
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+
+arr_0_gaipan4.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+01_27
+  rotate: false
+  xy: 2, 197
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+bg_ziweigaipan
+  rotate: false
+  xy: 2, 2
+  size: 189, 193
+  orig: 189, 193
+  offset: 0, 0
+  index: -1
+sword
+  rotate: false
+  xy: 304, 367
+  size: 129, 130
+  orig: 129, 130
+  offset: 0, 0
+  index: -1

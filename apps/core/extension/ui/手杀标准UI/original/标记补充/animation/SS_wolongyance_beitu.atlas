@@ -1,0 +1,41 @@
+
+SS_wolongyance_beitu.png
+size: 1890,1074
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bagua
+  rotate: false
+  xy: 1382, 140
+  size: 432, 429
+  orig: 434, 431
+  offset: 1, 1
+  index: -1
+taiji
+  rotate: true
+  xy: 720, 139
+  size: 262, 259
+  orig: 264, 261
+  offset: 1, 1
+  index: -1
+waiquan
+  rotate: true
+  xy: 2, 2
+  size: 1070, 716
+  orig: 1072, 718
+  offset: 1, 1
+  index: -1
+waiquanxing
+  rotate: true
+  xy: 720, 403
+  size: 669, 660
+  orig: 671, 662
+  offset: 1, 1
+  index: -1
+zhongxin
+  rotate: false
+  xy: 1382, 571
+  size: 506, 501
+  orig: 508, 503
+  offset: 1, 1
+  index: -1

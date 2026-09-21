@@ -1,0 +1,174 @@
+
+SS_wolongyance_shiti.png
+size: 423,1050
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shixin/shixin_00
+  rotate: false
+  xy: 2, 931
+  size: 174, 117
+  orig: 260, 260
+  offset: 44, 73
+  index: -1
+shixin/shixin_01
+  rotate: true
+  xy: 296, 642
+  size: 128, 104
+  orig: 260, 260
+  offset: 63, 82
+  index: -1
+shixin/shixin_02
+  rotate: true
+  xy: 149, 217
+  size: 139, 130
+  orig: 260, 260
+  offset: 60, 67
+  index: -1
+shixin/shixin_03
+  rotate: true
+  xy: 284, 354
+  size: 142, 134
+  orig: 260, 260
+  offset: 58, 66
+  index: -1
+shixin/shixin_04
+  rotate: false
+  xy: 2, 104
+  size: 144, 135
+  orig: 260, 260
+  offset: 57, 66
+  index: -1
+shixin/shixin_05
+  rotate: false
+  xy: 2, 378
+  size: 145, 135
+  orig: 260, 260
+  offset: 57, 66
+  index: -1
+shixin/shixin_06
+  rotate: false
+  xy: 2, 792
+  size: 145, 137
+  orig: 260, 260
+  offset: 57, 65
+  index: -1
+shixin/shixin_07
+  rotate: false
+  xy: 2, 653
+  size: 145, 137
+  orig: 260, 260
+  offset: 57, 65
+  index: -1
+shixin/shixin_08
+  rotate: false
+  xy: 2, 515
+  size: 145, 136
+  orig: 260, 260
+  offset: 57, 66
+  index: -1
+shixin/shixin_09
+  rotate: false
+  xy: 2, 241
+  size: 145, 135
+  orig: 260, 260
+  offset: 57, 66
+  index: -1
+shixin/shixin_10
+  rotate: false
+  xy: 178, 914
+  size: 145, 134
+  orig: 260, 260
+  offset: 57, 66
+  index: -1
+shixin/shixin_11
+  rotate: false
+  xy: 149, 778
+  size: 145, 134
+  orig: 260, 260
+  offset: 57, 66
+  index: -1
+shixin/shixin_12
+  rotate: true
+  xy: 149, 358
+  size: 145, 133
+  orig: 260, 260
+  offset: 57, 66
+  index: -1
+shixin/shixin_13
+  rotate: false
+  xy: 149, 642
+  size: 145, 134
+  orig: 260, 260
+  offset: 57, 66
+  index: -1
+shixin/shixin_14
+  rotate: false
+  xy: 149, 505
+  size: 144, 135
+  orig: 260, 260
+  offset: 57, 66
+  index: -1
+shixin/shixin_15
+  rotate: true
+  xy: 281, 208
+  size: 144, 128
+  orig: 260, 260
+  offset: 57, 67
+  index: -1
+shixin/shixin_16
+  rotate: true
+  xy: 279, 63
+  size: 143, 127
+  orig: 260, 260
+  offset: 57, 67
+  index: -1
+shixin/shixin_17
+  rotate: true
+  xy: 295, 498
+  size: 142, 126
+  orig: 260, 260
+  offset: 58, 68
+  index: -1
+shixin/shixin_18
+  rotate: true
+  xy: 296, 772
+  size: 140, 125
+  orig: 260, 260
+  offset: 58, 68
+  index: -1
+shixin/shixin_19
+  rotate: false
+  xy: 148, 91
+  size: 129, 124
+  orig: 260, 260
+  offset: 64, 68
+  index: -1
+shixin/shixin_20
+  rotate: false
+  xy: 2, 17
+  size: 103, 85
+  orig: 260, 260
+  offset: 82, 88
+  index: -1
+shixin/shixin_21
+  rotate: true
+  xy: 325, 944
+  size: 104, 87
+  orig: 260, 260
+  offset: 81, 88
+  index: -1
+shixin/shixin_22
+  rotate: false
+  xy: 197, 2
+  size: 67, 87
+  orig: 260, 260
+  offset: 80, 90
+  index: -1
+shixin/shixin_23
+  rotate: true
+  xy: 107, 21
+  size: 68, 88
+  orig: 260, 260
+  offset: 79, 90
+  index: -1
