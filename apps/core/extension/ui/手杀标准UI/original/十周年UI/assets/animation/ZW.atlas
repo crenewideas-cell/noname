@@ -1,0 +1,237 @@
+
+ZW.png
+size: 958,958
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+siyouxia/siyouxia_00000
+  rotate: true
+  xy: 564, 179
+  size: 108, 112
+  orig: 147, 147
+  offset: 19, 16
+  index: -1
+siyouxia/siyouxia_00001
+  rotate: false
+  xy: 564, 289
+  size: 110, 112
+  orig: 147, 147
+  offset: 17, 16
+  index: -1
+siyouxia/siyouxia_00002
+  rotate: false
+  xy: 350, 53
+  size: 109, 113
+  orig: 147, 147
+  offset: 18, 16
+  index: -1
+siyouxia/siyouxia_00003
+  rotate: false
+  xy: 449, 387
+  size: 110, 113
+  orig: 147, 147
+  offset: 17, 16
+  index: -1
+siyouxia/siyouxia_00004
+  rotate: false
+  xy: 551, 64
+  size: 109, 113
+  orig: 147, 147
+  offset: 18, 16
+  index: -1
+siyouxia/siyouxia_00005
+  rotate: false
+  xy: 676, 289
+  size: 108, 112
+  orig: 147, 147
+  offset: 19, 16
+  index: -1
+siyouxia/siyouxia_00006
+  rotate: false
+  xy: 678, 176
+  size: 109, 111
+  orig: 147, 147
+  offset: 18, 17
+  index: -1
+siyouxia/siyouxia_00007
+  rotate: true
+  xy: 662, 67
+  size: 107, 111
+  orig: 147, 147
+  offset: 20, 17
+  index: -1
+siyouxia/siyouxia_00008
+  rotate: false
+  xy: 786, 335
+  size: 107, 109
+  orig: 147, 147
+  offset: 20, 18
+  index: -1
+sizaguang/sizaguang_00000
+  rotate: false
+  xy: 233, 11
+  size: 115, 143
+  orig: 251, 251
+  offset: 66, 59
+  index: -1
+sizaguang/sizaguang_00001
+  rotate: false
+  xy: 468, 721
+  size: 229, 235
+  orig: 251, 251
+  offset: 8, 8
+  index: -1
+sizaguang/sizaguang_00002
+  rotate: false
+  xy: 2, 4
+  size: 229, 235
+  orig: 251, 251
+  offset: 12, 8
+  index: -1
+sizaguang/sizaguang_00003
+  rotate: false
+  xy: 237, 719
+  size: 229, 237
+  orig: 251, 251
+  offset: 12, 7
+  index: -1
+sizaguang/sizaguang_00004
+  rotate: false
+  xy: 2, 718
+  size: 233, 238
+  orig: 251, 251
+  offset: 12, 7
+  index: -1
+sizaguang/sizaguang_00005
+  rotate: false
+  xy: 2, 479
+  size: 230, 237
+  orig: 251, 251
+  offset: 11, 8
+  index: -1
+sizaguang/sizaguang_00006
+  rotate: false
+  xy: 2, 241
+  size: 229, 236
+  orig: 251, 251
+  offset: 11, 8
+  index: -1
+sizaguang/sizaguang_00007
+  rotate: false
+  xy: 699, 721
+  size: 220, 235
+  orig: 251, 251
+  offset: 15, 8
+  index: -1
+sizaguang/sizaguang_00008
+  rotate: false
+  xy: 234, 486
+  size: 213, 230
+  orig: 251, 251
+  offset: 19, 10
+  index: -1
+sizaguang/sizaguang_00009
+  rotate: false
+  xy: 567, 505
+  size: 201, 214
+  orig: 251, 251
+  offset: 24, 19
+  index: -1
+sizaguang/sizaguang_00010
+  rotate: true
+  xy: 770, 446
+  size: 178, 184
+  orig: 251, 251
+  offset: 26, 41
+  index: -1
+sizuoshang/sizuoshang_00000
+  rotate: false
+  xy: 895, 320
+  size: 54, 54
+  orig: 125, 251
+  offset: 36, 153
+  index: -1
+sizuoshang/sizuoshang_00001
+  rotate: false
+  xy: 461, 2
+  size: 66, 57
+  orig: 125, 251
+  offset: 30, 150
+  index: -1
+sizuoshang/sizuoshang_00002
+  rotate: true
+  xy: 895, 376
+  size: 68, 59
+  orig: 125, 251
+  offset: 29, 150
+  index: -1
+sizuoshang/sizuoshang_00003
+  rotate: false
+  xy: 789, 188
+  size: 83, 64
+  orig: 125, 251
+  offset: 21, 146
+  index: -1
+sizuoshang/sizuoshang_00004
+  rotate: false
+  xy: 789, 254
+  size: 103, 79
+  orig: 125, 251
+  offset: 11, 131
+  index: -1
+sizuoshang/sizuoshang_00005
+  rotate: false
+  xy: 461, 61
+  size: 88, 127
+  orig: 125, 251
+  offset: 18, 102
+  index: -1
+sizuoshang/sizuoshang_00006
+  rotate: true
+  xy: 770, 626
+  size: 93, 186
+  orig: 125, 251
+  offset: 16, 43
+  index: -1
+sizuoshang/sizuoshang_00007
+  rotate: true
+  xy: 567, 403
+  size: 100, 189
+  orig: 125, 251
+  offset: 12, 40
+  index: -1
+sizuoshang/sizuoshang_00008
+  rotate: false
+  xy: 458, 190
+  size: 104, 195
+  orig: 125, 251
+  offset: 10, 28
+  index: -1
+sizuoshang/sizuoshang_00009
+  rotate: false
+  xy: 347, 168
+  size: 109, 200
+  orig: 125, 251
+  offset: 7, 26
+  index: -1
+sizuoshang/sizuoshang_00010
+  rotate: false
+  xy: 233, 156
+  size: 112, 212
+  orig: 125, 251
+  offset: 6, 26
+  index: -1
+sizuoshang/sizuoshang_00011
+  rotate: true
+  xy: 234, 370
+  size: 114, 213
+  orig: 125, 251
+  offset: 5, 27
+  index: -1
+sizuoshang/sizuoshang_00012
+  rotate: false
+  xy: 449, 502
+  size: 116, 215
+  orig: 125, 251
+  offset: 3, 27
+  index: -1

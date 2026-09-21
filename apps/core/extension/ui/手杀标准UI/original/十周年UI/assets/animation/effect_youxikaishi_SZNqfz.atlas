@@ -1,0 +1,139 @@
+
+effect_youxikaishi_SZNqfz.png
+size: 1610,1610
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+di
+  rotate: false
+  xy: 2, 901
+  size: 960, 707
+  orig: 960, 707
+  offset: 0, 0
+  index: -1
+kaizhan1
+  rotate: true
+  xy: 523, 391
+  size: 508, 420
+  orig: 510, 422
+  offset: 1, 1
+  index: -1
+qianfuzhang3
+  rotate: false
+  xy: 1221, 1269
+  size: 267, 339
+  orig: 267, 339
+  offset: 0, 0
+  index: -1
+qianfuzhang4
+  rotate: false
+  xy: 676, 125
+  size: 262, 264
+  orig: 262, 264
+  offset: 0, 0
+  index: -1
+qianfuzhang5
+  rotate: false
+  xy: 1221, 928
+  size: 267, 339
+  orig: 267, 339
+  offset: 0, 0
+  index: -1
+qianfuzhang6
+  rotate: false
+  xy: 1272, 13
+  size: 262, 264
+  orig: 262, 264
+  offset: 0, 0
+  index: -1
+qianfuzhang7_1
+  rotate: false
+  xy: 964, 878
+  size: 255, 730
+  orig: 285, 735
+  offset: 5, 2
+  index: -1
+qianfuzhang8
+  rotate: false
+  xy: 945, 422
+  size: 423, 454
+  orig: 423, 454
+  offset: 0, 0
+  index: -1
+qianfuzhang9
+  rotate: false
+  xy: 2, 346
+  size: 519, 553
+  orig: 521, 555
+  offset: 1, 1
+  index: -1
+qianfuzhangeff/qianfuzhangeff_00000
+  rotate: false
+  xy: 1370, 595
+  size: 117, 331
+  orig: 138, 356
+  offset: 4, 11
+  index: -1
+qianfuzhangeff/qianfuzhangeff_00001
+  rotate: true
+  xy: 940, 184
+  size: 117, 330
+  orig: 138, 356
+  offset: 4, 11
+  index: -1
+qianfuzhangeff/qianfuzhangeff_00002
+  rotate: false
+  xy: 1490, 942
+  size: 117, 332
+  orig: 138, 356
+  offset: 4, 11
+  index: -1
+qianfuzhangeff/qianfuzhangeff_00003
+  rotate: false
+  xy: 1490, 1276
+  size: 118, 332
+  orig: 138, 356
+  offset: 3, 11
+  index: -1
+qianfuzhangeff/qianfuzhangeff_00004
+  rotate: true
+  xy: 945, 303
+  size: 117, 331
+  orig: 138, 356
+  offset: 4, 12
+  index: -1
+qianfuzhangeff/qianfuzhangeff_00005
+  rotate: true
+  xy: 940, 66
+  size: 116, 327
+  orig: 138, 356
+  offset: 5, 13
+  index: -1
+qianfuzhangeff/qianfuzhangeff_00006
+  rotate: false
+  xy: 1489, 602
+  size: 114, 324
+  orig: 138, 356
+  offset: 7, 14
+  index: -1
+qianfuzhangglow/qianfuzhangglow_00000
+  rotate: false
+  xy: 1370, 279
+  size: 77, 314
+  orig: 138, 356
+  offset: 30, 22
+  index: -1
+ying1
+  rotate: true
+  xy: 2, 44
+  size: 300, 375
+  orig: 300, 375
+  offset: 0, 0
+  index: -1
+ying2
+  rotate: false
+  xy: 379, 43
+  size: 295, 301
+  orig: 295, 301
+  offset: 0, 0
+  index: -1

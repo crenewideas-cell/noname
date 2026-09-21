@@ -1,0 +1,138 @@
+
+SS_pve_YJChuChangKuang.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+yjkuangglow/kuangglow_00045
+  rotate: false
+  xy: 2, 1133
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00046
+  rotate: false
+  xy: 671, 1510
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00047
+  rotate: false
+  xy: 2, 756
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00048
+  rotate: false
+  xy: 671, 1133
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00049
+  rotate: false
+  xy: 1340, 1510
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00050
+  rotate: false
+  xy: 2, 379
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00080
+  rotate: false
+  xy: 671, 756
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00081
+  rotate: false
+  xy: 1340, 1133
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00082
+  rotate: false
+  xy: 2, 2
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00083
+  rotate: false
+  xy: 671, 379
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00084
+  rotate: false
+  xy: 1340, 756
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00085
+  rotate: false
+  xy: 671, 2
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00086
+  rotate: false
+  xy: 1340, 379
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00087
+  rotate: false
+  xy: 1340, 2
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00091
+  rotate: false
+  xy: 2, 1510
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+
+SS_pve_YJChuChangKuang2.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+yjkuangglow/kuangglow_00088
+  rotate: false
+  xy: 2, 2
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00089
+  rotate: false
+  xy: 671, 2
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+yjkuangglow/kuangglow_00090
+  rotate: false
+  xy: 1340, 2
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1

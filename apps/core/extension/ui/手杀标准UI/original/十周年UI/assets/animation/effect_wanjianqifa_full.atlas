@@ -1,0 +1,55 @@
+
+effect_wanjianqifa_full.png
+size: 604,604
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dibiao/dibiao_00
+  rotate: false
+  xy: 68, 228
+  size: 144, 116
+  orig: 150, 120
+  offset: 3, 2
+  index: -1
+dibiao/dibiao_01
+  rotate: true
+  xy: 360, 189
+  size: 124, 86
+  orig: 150, 120
+  offset: 13, 17
+  index: -1
+dibiao/dibiao_02
+  rotate: false
+  xy: 214, 207
+  size: 144, 106
+  orig: 150, 120
+  offset: 3, 7
+  index: -1
+dibiao/dibiao_04
+  rotate: true
+  xy: 68, 76
+  size: 150, 110
+  orig: 150, 120
+  offset: 0, 5
+  index: -1
+dibuwenli/dibuwenli_00
+  rotate: false
+  xy: 2, 346
+  size: 600, 256
+  orig: 600, 256
+  offset: 0, 0
+  index: -1
+wanjianjian
+  rotate: true
+  xy: 214, 315
+  size: 29, 222
+  orig: 29, 222
+  offset: 0, 0
+  index: -1
+wanjianjianeff/wanjianjianeff_00
+  rotate: false
+  xy: 2, 6
+  size: 64, 338
+  orig: 64, 338
+  offset: 0, 0
+  index: -1

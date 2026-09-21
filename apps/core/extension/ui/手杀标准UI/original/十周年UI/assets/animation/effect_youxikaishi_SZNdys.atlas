@@ -1,0 +1,467 @@
+
+effect_youxikaishi_SZNdys.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+01-qianghuaguang/glow_12006
+  rotate: true
+  xy: 530, 868
+  size: 208, 128
+  orig: 256, 256
+  offset: 24, 64
+  index: -1
+01-qianghuaguang/huogong-play_02
+  rotate: false
+  xy: 888, 248
+  size: 229, 266
+  orig: 360, 376
+  offset: 68, 56
+  index: -1
+01-qianghuaguang/huogong-play_03
+  rotate: false
+  xy: 2, 1078
+  size: 228, 259
+  orig: 360, 376
+  offset: 68, 56
+  index: -1
+01-qianghuaguang/huogong-play_04
+  rotate: true
+  xy: 660, 810
+  size: 224, 267
+  orig: 360, 376
+  offset: 78, 56
+  index: -1
+01-qianghuaguang/huogong-play_07
+  rotate: true
+  xy: 888, 3
+  size: 243, 246
+  orig: 360, 376
+  offset: 67, 56
+  index: -1
+01-qianghuaguang/huogong-play_14
+  rotate: true
+  xy: 232, 1078
+  size: 259, 215
+  orig: 360, 376
+  offset: 55, 91
+  index: -1
+01-qianghuaguang/huogong-play_15
+  rotate: true
+  xy: 449, 1078
+  size: 259, 215
+  orig: 360, 376
+  offset: 55, 91
+  index: -1
+01-qianghuaguang/huogong-play_16
+  rotate: false
+  xy: 1394, 7
+  size: 264, 216
+  orig: 360, 376
+  offset: 53, 90
+  index: -1
+01-qianghuaguang/huogong-play_17
+  rotate: false
+  xy: 1394, 7
+  size: 264, 216
+  orig: 360, 376
+  offset: 53, 90
+  index: -1
+dafutoujiji/dafutoujiji_00000
+  rotate: true
+  xy: 1589, 567
+  size: 241, 278
+  orig: 377, 460
+  offset: 68, 91
+  index: -1
+dafutoujiji/dafutoujiji_00001
+  rotate: true
+  xy: 1122, 316
+  size: 241, 274
+  orig: 377, 460
+  offset: 66, 93
+  index: -1
+dafutoujiji/dafutoujiji_00004
+  rotate: false
+  xy: 963, 810
+  size: 243, 264
+  orig: 377, 460
+  offset: 60, 98
+  index: -1
+dafutoujiji/dafutoujiji_00005
+  rotate: true
+  xy: 1136, 78
+  size: 236, 256
+  orig: 377, 460
+  offset: 63, 102
+  index: -1
+dahuansszteff/dahuansszteff_00004
+  rotate: true
+  xy: 1586, 337
+  size: 228, 278
+  orig: 366, 476
+  offset: 70, 99
+  index: -1
+dahuansszteff/dahuansszteff_00005
+  rotate: true
+  xy: 1122, 559
+  size: 236, 286
+  orig: 366, 476
+  offset: 66, 94
+  index: -1
+dahuansszteff/dahuansszteff_00006
+  rotate: false
+  xy: 876, 516
+  size: 244, 292
+  orig: 366, 476
+  offset: 62, 91
+  index: -1
+dahuansszteff/dahuansszteff_00007
+  rotate: false
+  xy: 1208, 797
+  size: 229, 277
+  orig: 366, 476
+  offset: 70, 98
+  index: -1
+dahuansszteff/dahuansszteff_00009
+  rotate: false
+  xy: 1660, 87
+  size: 198, 248
+  orig: 366, 476
+  offset: 85, 114
+  index: -1
+dahuansszteff/dahuansszteff_00010
+  rotate: true
+  xy: 1597, 810
+  size: 323, 416
+  orig: 366, 476
+  offset: 21, 30
+  index: -1
+dayuanshuai6
+  rotate: true
+  xy: 964, 1076
+  size: 366, 476
+  orig: 366, 476
+  offset: 0, 0
+  index: -1
+dayuanshuai7
+  rotate: true
+  xy: 1599, 1645
+  size: 401, 446
+  orig: 403, 448
+  offset: 1, 1
+  index: -1
+dayuanshuai9
+  rotate: false
+  xy: 964, 1444
+  size: 633, 602
+  orig: 635, 604
+  offset: 1, 1
+  index: -1
+di
+  rotate: false
+  xy: 2, 1339
+  size: 960, 707
+  orig: 960, 707
+  offset: 0, 0
+  index: -1
+dunpaiguang/dunpaiguang_00000
+  rotate: true
+  xy: 304, 98
+  size: 346, 313
+  orig: 617, 576
+  offset: 136, 137
+  index: -1
+fangsheguangdundi/fangsheguangdundi_00000
+  rotate: true
+  xy: 269, 446
+  size: 362, 336
+  orig: 617, 576
+  offset: 128, 121
+  index: -1
+fuzituowei/fuzituowei_00000
+  rotate: true
+  xy: 2, 399
+  size: 409, 265
+  orig: 409, 265
+  offset: 0, 0
+  index: -1
+kaizhan1
+  rotate: true
+  xy: 1599, 1135
+  size: 508, 420
+  orig: 510, 422
+  offset: 1, 1
+  index: -1
+lizidiandianeff/lizidiandianeff_00000
+  rotate: true
+  xy: 2021, 1590
+  size: 53, 24
+  orig: 64, 32
+  offset: 6, 4
+  index: -1
+qianfuzhang3
+  rotate: false
+  xy: 607, 469
+  size: 267, 339
+  orig: 267, 339
+  offset: 0, 0
+  index: -1
+qianfuzhang4
+  rotate: false
+  xy: 2, 810
+  size: 262, 264
+  orig: 262, 264
+  offset: 0, 0
+  index: -1
+qianfuzhang5
+  rotate: false
+  xy: 619, 128
+  size: 267, 339
+  orig: 267, 339
+  offset: 0, 0
+  index: -1
+qianfuzhang6
+  rotate: false
+  xy: 266, 810
+  size: 262, 264
+  orig: 262, 264
+  offset: 0, 0
+  index: -1
+yanguang/yanguang_00000
+  rotate: true
+  xy: 2015, 1042
+  size: 91, 27
+  orig: 128, 32
+  offset: 19, 2
+  index: -1
+ying1
+  rotate: false
+  xy: 2, 22
+  size: 300, 375
+  orig: 300, 375
+  offset: 0, 0
+  index: -1
+ying2
+  rotate: false
+  xy: 666, 1036
+  size: 295, 301
+  orig: 295, 301
+  offset: 0, 0
+  index: -1
+zhaizhanzi/qianfuzhang3_00000
+  rotate: false
+  xy: 1410, 364
+  size: 166, 199
+  orig: 267, 339
+  offset: 50, 71
+  index: -1
+zhaizhanzi/qianfuzhang3_00001
+  rotate: false
+  xy: 1410, 565
+  size: 174, 207
+  orig: 267, 339
+  offset: 46, 67
+  index: -1
+zhaizhanzi/qianfuzhang3_00002
+  rotate: false
+  xy: 1869, 618
+  size: 171, 190
+  orig: 267, 339
+  offset: 48, 84
+  index: -1
+zhaizhanzi/qianfuzhang3_00003
+  rotate: false
+  xy: 1439, 774
+  size: 148, 189
+  orig: 267, 339
+  offset: 49, 80
+  index: -1
+zhaizhanzi/qianfuzhang3_00004
+  rotate: true
+  xy: 1866, 308
+  size: 141, 178
+  orig: 267, 339
+  offset: 50, 83
+  index: -1
+zhaizhanzi/qianfuzhang3_00005
+  rotate: true
+  xy: 1398, 225
+  size: 137, 164
+  orig: 267, 339
+  offset: 64, 96
+  index: -1
+zhaizhanzi/qianfuzhang3_00006
+  rotate: false
+  xy: 1860, 143
+  size: 163, 163
+  orig: 267, 339
+  offset: 53, 88
+  index: -1
+zhaizhanzi/qianfuzhang3_00007
+  rotate: true
+  xy: 1869, 451
+  size: 165, 170
+  orig: 267, 339
+  offset: 51, 84
+  index: -1
+zhaizhanzi/qianfuzhang3_00008
+  rotate: false
+  xy: 1442, 1272
+  size: 153, 170
+  orig: 267, 339
+  offset: 52, 84
+  index: -1
+zhaizhanzi/qianfuzhang3_00009
+  rotate: true
+  xy: 1442, 1113
+  size: 157, 153
+  orig: 267, 339
+  offset: 54, 86
+  index: -1
+zhaizhanzi/qianfuzhang3_00010
+  rotate: true
+  xy: 1442, 965
+  size: 146, 149
+  orig: 267, 339
+  offset: 54, 102
+  index: -1
+zhaizhanzi/qianfuzhang3_00011
+  rotate: false
+  xy: 1860, 2
+  size: 146, 139
+  orig: 267, 339
+  offset: 56, 105
+  index: -1
+
+effect_youxikaishi_SZNdys2.png
+size: 1089,1089
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+01-qianghuaguang/glow_1041
+  rotate: false
+  xy: 250, 279
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+01-qianghuaguang/huogong-play_00
+  rotate: false
+  xy: 2, 821
+  size: 255, 266
+  orig: 360, 376
+  offset: 55, 71
+  index: -1
+01-qianghuaguang/huogong-play_01
+  rotate: true
+  xy: 259, 842
+  size: 245, 272
+  orig: 360, 376
+  offset: 60, 60
+  index: -1
+01-qianghuaguang/huogong-play_05
+  rotate: true
+  xy: 807, 851
+  size: 236, 272
+  orig: 360, 376
+  offset: 72, 56
+  index: -1
+01-qianghuaguang/huogong-play_06
+  rotate: true
+  xy: 533, 848
+  size: 239, 272
+  orig: 360, 376
+  offset: 69, 56
+  index: -1
+01-qianghuaguang/huogong-play_08
+  rotate: false
+  xy: 507, 190
+  size: 241, 222
+  orig: 360, 376
+  offset: 66, 83
+  index: -1
+01-qianghuaguang/huogong-play_09
+  rotate: false
+  xy: 750, 9
+  size: 239, 213
+  orig: 360, 376
+  offset: 68, 92
+  index: -1
+01-qianghuaguang/huogong-play_10
+  rotate: false
+  xy: 523, 414
+  size: 246, 216
+  orig: 360, 376
+  offset: 63, 92
+  index: -1
+01-qianghuaguang/huogong-play_11
+  rotate: false
+  xy: 789, 424
+  size: 246, 216
+  orig: 360, 376
+  offset: 63, 92
+  index: -1
+01-qianghuaguang/huogong-play_12
+  rotate: false
+  xy: 251, 409
+  size: 254, 214
+  orig: 360, 376
+  offset: 58, 92
+  index: -1
+01-qianghuaguang/huogong-play_13
+  rotate: false
+  xy: 533, 632
+  size: 254, 214
+  orig: 360, 376
+  offset: 58, 92
+  index: -1
+dafutoujiji/dafutoujiji_00002
+  rotate: false
+  xy: 2, 547
+  size: 247, 272
+  orig: 377, 460
+  offset: 60, 94
+  index: -1
+dafutoujiji/dafutoujiji_00003
+  rotate: false
+  xy: 2, 275
+  size: 246, 270
+  orig: 377, 460
+  offset: 60, 95
+  index: -1
+dahuansszteff/dahuansszteff_00000
+  rotate: true
+  xy: 771, 224
+  size: 198, 243
+  orig: 366, 476
+  offset: 85, 116
+  index: -1
+dahuansszteff/dahuansszteff_00001
+  rotate: true
+  xy: 807, 642
+  size: 207, 250
+  orig: 366, 476
+  offset: 80, 113
+  index: -1
+dahuansszteff/dahuansszteff_00002
+  rotate: true
+  xy: 259, 625
+  size: 215, 262
+  orig: 366, 476
+  offset: 76, 106
+  index: -1
+dahuansszteff/dahuansszteff_00003
+  rotate: false
+  xy: 2, 2
+  size: 223, 271
+  orig: 366, 476
+  offset: 72, 101
+  index: -1
+dahuansszteff/dahuansszteff_00008
+  rotate: false
+  xy: 227, 10
+  size: 215, 263
+  orig: 366, 476
+  offset: 77, 106
+  index: -1

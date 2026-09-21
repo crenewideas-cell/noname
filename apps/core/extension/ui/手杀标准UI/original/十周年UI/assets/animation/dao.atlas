@@ -1,0 +1,97 @@
+
+dao.png
+size: 426,426
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dao_00000
+  rotate: false
+  xy: 307, 52
+  size: 74, 57
+  orig: 221, 192
+  offset: 28, 48
+  index: -1
+dao_00001
+  rotate: false
+  xy: 168, 320
+  size: 126, 104
+  orig: 221, 192
+  offset: 0, 25
+  index: -1
+dao_00002
+  rotate: false
+  xy: 318, 111
+  size: 103, 83
+  orig: 221, 192
+  offset: 20, 9
+  index: -1
+dao_00003
+  rotate: false
+  xy: 2, 286
+  size: 164, 138
+  orig: 221, 192
+  offset: 14, 54
+  index: -1
+dao_00004
+  rotate: false
+  xy: 2, 149
+  size: 99, 135
+  orig: 221, 192
+  offset: 89, 54
+  index: -1
+dao_00005
+  rotate: true
+  xy: 296, 331
+  size: 93, 128
+  orig: 221, 192
+  offset: 102, 54
+  index: -1
+dao_00006
+  rotate: false
+  xy: 2, 18
+  size: 94, 129
+  orig: 221, 192
+  offset: 103, 53
+  index: -1
+dao_00007
+  rotate: false
+  xy: 103, 160
+  size: 89, 124
+  orig: 221, 192
+  offset: 105, 55
+  index: -1
+dao_00008
+  rotate: false
+  xy: 194, 196
+  size: 83, 122
+  orig: 221, 192
+  offset: 111, 57
+  index: -1
+dao_00009
+  rotate: false
+  xy: 279, 196
+  size: 83, 122
+  orig: 221, 192
+  offset: 111, 57
+  index: -1
+dao_00010
+  rotate: true
+  xy: 194, 111
+  size: 83, 122
+  orig: 221, 192
+  offset: 111, 57
+  index: -1
+dao_00011
+  rotate: false
+  xy: 98, 25
+  size: 83, 122
+  orig: 221, 192
+  offset: 111, 57
+  index: -1
+dao_00012
+  rotate: true
+  xy: 183, 26
+  size: 83, 122
+  orig: 221, 192
+  offset: 111, 57
+  index: -1

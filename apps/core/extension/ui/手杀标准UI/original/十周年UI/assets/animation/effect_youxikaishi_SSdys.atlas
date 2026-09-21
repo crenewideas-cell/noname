@@ -1,0 +1,139 @@
+
+effect_youxikaishi_SSdys.png
+size: 1979,1197
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dayuanshuai
+  rotate: true
+  xy: 2, 324
+  size: 374, 354
+  orig: 374, 355
+  offset: 0, 1
+  index: -1
+glow
+  rotate: false
+  xy: 1374, 7
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: -1
+glow1
+  rotate: true
+  xy: 2, 700
+  size: 495, 481
+  orig: 512, 512
+  offset: 17, 28
+  index: -1
+glow2
+  rotate: true
+  xy: 1374, 259
+  size: 248, 256
+  orig: 256, 256
+  offset: 2, 0
+  index: -1
+guangfu
+  rotate: false
+  xy: 1706, 514
+  size: 270, 319
+  orig: 270, 319
+  offset: 0, 0
+  index: -1
+guangxiao
+  rotate: true
+  xy: 1805, 835
+  size: 360, 172
+  orig: 368, 178
+  offset: 4, 0
+  index: -1
+hutou
+  rotate: false
+  xy: 1706, 199
+  size: 252, 313
+  orig: 252, 326
+  offset: 0, 8
+  index: -1
+xingxing_00000
+  rotate: true
+  xy: 2, 13
+  size: 309, 349
+  orig: 343, 363
+  offset: 2, 7
+  index: -1
+xingxing_00001
+  rotate: true
+  xy: 681, 2
+  size: 338, 356
+  orig: 343, 363
+  offset: 3, 7
+  index: -1
+xingxing_00002
+  rotate: false
+  xy: 358, 342
+  size: 339, 356
+  orig: 343, 363
+  offset: 0, 7
+  index: -1
+xingxing_00003
+  rotate: false
+  xy: 485, 839
+  size: 337, 356
+  orig: 343, 363
+  offset: 0, 7
+  index: -1
+xingxing_00004
+  rotate: false
+  xy: 824, 840
+  size: 336, 355
+  orig: 343, 363
+  offset: 0, 8
+  index: -1
+xingxing_00005
+  rotate: false
+  xy: 699, 481
+  size: 336, 356
+  orig: 343, 363
+  offset: 0, 7
+  index: -1
+xingxing_00006
+  rotate: false
+  xy: 1037, 482
+  size: 335, 356
+  orig: 343, 363
+  offset: 0, 7
+  index: -1
+xingxing_00007
+  rotate: false
+  xy: 1162, 840
+  size: 334, 355
+  orig: 343, 363
+  offset: 0, 8
+  index: -1
+xingxing_00008
+  rotate: false
+  xy: 1039, 129
+  size: 333, 351
+  orig: 343, 363
+  offset: 0, 12
+  index: -1
+xingxing_00009
+  rotate: false
+  xy: 1374, 509
+  size: 330, 329
+  orig: 343, 363
+  offset: 0, 34
+  index: -1
+xingxing_00010
+  rotate: false
+  xy: 353, 6
+  size: 326, 316
+  orig: 343, 363
+  offset: 1, 42
+  index: -1
+xingxing_00011
+  rotate: true
+  xy: 1498, 882
+  size: 313, 305
+  orig: 343, 363
+  offset: 8, 44
+  index: -1

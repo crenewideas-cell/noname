@@ -1,0 +1,90 @@
+
+jiubuff.png
+size: 1490,1490
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+jiubuff/jiubuff_00000
+  rotate: true
+  xy: 434, 1121
+  size: 367, 484
+  orig: 400, 512
+  offset: 19, 27
+  index: -1
+jiubuff/jiubuff_00001
+  rotate: true
+  xy: 2, 5
+  size: 372, 410
+  orig: 400, 512
+  offset: 19, 27
+  index: -1
+jiubuff/jiubuff_00002
+  rotate: true
+  xy: 823, 376
+  size: 371, 485
+  orig: 400, 512
+  offset: 19, 27
+  index: -1
+jiubuff/jiubuff_00003
+  rotate: true
+  xy: 414, 2
+  size: 372, 476
+  orig: 400, 512
+  offset: 20, 27
+  index: -1
+jiubuff/jiubuff_00004
+  rotate: true
+  xy: 892, 2
+  size: 372, 409
+  orig: 400, 512
+  offset: 18, 27
+  index: -1
+jiubuff/jiubuff_00005
+  rotate: true
+  xy: 414, 378
+  size: 371, 407
+  orig: 400, 512
+  offset: 19, 27
+  index: -1
+jiubuff/jiubuff_00006
+  rotate: true
+  xy: 847, 749
+  size: 369, 413
+  orig: 400, 512
+  offset: 20, 27
+  index: -1
+jiubuff/jiubuff_00007
+  rotate: true
+  xy: 920, 1120
+  size: 368, 415
+  orig: 400, 512
+  offset: 20, 27
+  index: -1
+jiubuff/jiubuff_00008
+  rotate: true
+  xy: 2, 379
+  size: 370, 410
+  orig: 400, 512
+  offset: 20, 27
+  index: -1
+jiubuff/jiubuff_00009
+  rotate: true
+  xy: 2, 751
+  size: 368, 412
+  orig: 400, 512
+  offset: 20, 27
+  index: -1
+jiubuff/jiubuff_00010
+  rotate: true
+  xy: 416, 751
+  size: 368, 429
+  orig: 400, 512
+  offset: 19, 28
+  index: -1
+jiubuff/jiubuff_00011
+  rotate: true
+  xy: 2, 1121
+  size: 367, 430
+  orig: 400, 512
+  offset: 18, 27
+  index: -1

@@ -1,0 +1,69 @@
+
+Ss_SMS_zhuanchang.png
+size: 2009,1556
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+xing_21
+  rotate: true
+  xy: 2, 379
+  size: 1175, 682
+  orig: 1334, 750
+  offset: 101, 19
+  index: -1
+zc_00
+  rotate: false
+  xy: 686, 802
+  size: 509, 375
+  orig: 667, 375
+  offset: 47, 0
+  index: -1
+zc_03
+  rotate: false
+  xy: 686, 1179
+  size: 582, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+zc_06
+  rotate: false
+  xy: 2, 2
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+zc_09
+  rotate: false
+  xy: 671, 2
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+zc_12
+  rotate: false
+  xy: 1340, 1179
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+zc_15
+  rotate: false
+  xy: 1340, 802
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+zc_18
+  rotate: false
+  xy: 1340, 425
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1
+zc_21
+  rotate: false
+  xy: 1340, 48
+  size: 667, 375
+  orig: 667, 375
+  offset: 0, 0
+  index: -1

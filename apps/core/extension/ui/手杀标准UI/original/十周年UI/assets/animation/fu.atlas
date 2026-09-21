@@ -1,0 +1,153 @@
+
+fu.png
+size: 1054,1054
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fuzi_00000
+  rotate: true
+  xy: 858, 324
+  size: 89, 120
+  orig: 378, 338
+  offset: 56, 127
+  index: -1
+fuzi_00001
+  rotate: false
+  xy: 673, 308
+  size: 183, 187
+  orig: 378, 338
+  offset: 4, 66
+  index: -1
+fuzi_00002
+  rotate: true
+  xy: 862, 566
+  size: 171, 160
+  orig: 378, 338
+  offset: 9, 67
+  index: -1
+fuzi_00003
+  rotate: false
+  xy: 862, 415
+  size: 153, 149
+  orig: 378, 338
+  offset: 18, 74
+  index: -1
+fuzi_00004
+  rotate: true
+  xy: 526, 644
+  size: 202, 284
+  orig: 378, 338
+  offset: 0, 54
+  index: -1
+fuzi_00005
+  rotate: true
+  xy: 526, 848
+  size: 204, 294
+  orig: 378, 338
+  offset: 0, 44
+  index: -1
+fuzi_00006
+  rotate: false
+  xy: 273, 496
+  size: 199, 277
+  orig: 378, 338
+  offset: 28, 57
+  index: -1
+fuzi_00007
+  rotate: false
+  xy: 495, 229
+  size: 176, 266
+  orig: 378, 338
+  offset: 53, 59
+  index: -1
+fuzi_00008
+  rotate: false
+  xy: 268, 11
+  size: 199, 237
+  orig: 378, 338
+  offset: 57, 73
+  index: -1
+fuzi_00009
+  rotate: true
+  xy: 251, 250
+  size: 244, 242
+  orig: 378, 338
+  offset: 62, 71
+  index: -1
+fuzi_00010
+  rotate: false
+  xy: 2, 242
+  size: 247, 252
+  orig: 378, 338
+  offset: 77, 74
+  index: -1
+fuzi_00011
+  rotate: false
+  xy: 2, 496
+  size: 269, 277
+  orig: 378, 338
+  offset: 73, 61
+  index: -1
+fuzi_00012
+  rotate: false
+  xy: 2, 775
+  size: 270, 277
+  orig: 378, 338
+  offset: 72, 61
+  index: -1
+fuzi_00013
+  rotate: false
+  xy: 274, 783
+  size: 250, 269
+  orig: 378, 338
+  offset: 91, 63
+  index: -1
+fuzi_00014
+  rotate: true
+  xy: 2, 9
+  size: 231, 264
+  orig: 378, 338
+  offset: 109, 63
+  index: -1
+fuzi_00015
+  rotate: true
+  xy: 469, 55
+  size: 172, 227
+  orig: 378, 338
+  offset: 124, 78
+  index: -1
+fuzi_00016
+  rotate: true
+  xy: 822, 890
+  size: 162, 230
+  orig: 378, 338
+  offset: 134, 78
+  index: -1
+fuzi_00017
+  rotate: false
+  xy: 698, 109
+  size: 157, 197
+  orig: 378, 338
+  offset: 139, 78
+  index: -1
+fuzi_00018
+  rotate: true
+  xy: 822, 739
+  size: 149, 197
+  orig: 378, 338
+  offset: 147, 78
+  index: -1
+fuzi_00019
+  rotate: true
+  xy: 474, 497
+  size: 145, 192
+  orig: 378, 338
+  offset: 151, 78
+  index: -1
+fuzi_00020
+  rotate: true
+  xy: 668, 497
+  size: 145, 192
+  orig: 378, 338
+  offset: 151, 78
+  index: -1
