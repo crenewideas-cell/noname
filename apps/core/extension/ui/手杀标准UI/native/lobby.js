@@ -61,61 +61,7 @@ window.translateGuanjie=function(name){
           if(name=='shibing') str='士兵';
           return str;
       }
-window.playAudioRZ=function(){
-			//if(_status.video&&arguments[1]!='video') return;
-			var str='';
-			var onerror=null;
-			for(var i=0;i<arguments.length;i++){
-				if(typeof arguments[i]==='string'||typeof arguments[i]=='number'){
-					str+='/'+arguments[i];
-				}
-				else if(typeof arguments[i]=='function'){
-					onerror=arguments[i]
-				}
-				//if(_status.video) break;
-			}
-			/*if(!lib.config.repeat_audio&&_status.skillaudio.contains(str)) return;
-			_status.skillaudio.add(str);
-			game.addVideo('playAudio',null,str);
-			setTimeout(function(){
-				_status.skillaudio.remove(str);
-			},1000);*/
-			//if(!window.tipsAudio||!window.tipsAudioFile||window.tipsAudioFile!=str) {
-			    //window.tipsAudioFile=str;
-			    window.tipsAudio=document.createElement('audio');
-			    window.tipsAudio.autoplay=true;
-			    //window.tipsAudio.volume=lib.config.volumn_audio/8;
-			    window.tipsAudio.volume=(lib.config.volumn_audio/8)*0.7+0.3*(lib.config.volumn_audio>0?1:0);
-			    if(str.split('/').pop().split('.').length>1){
-			    	window.tipsAudio.src=lib.assetURL+'audio'+str;
-			    }
-			    else{
-			    	window.tipsAudio.src=lib.assetURL+'audio'+str+'.mp3';
-			    }
-			    window.tipsAudio.addEventListener('ended',function(){
-				    this.remove();
-			    });
-			    window.tipsAudio.onerror=function(e){
-				    if(this._changed){
-				    	//window.tipsAudioFile=false;
-				    	this.remove();
-				    	if(onerror){
-					    	onerror(e);
-				    	}
-				    }
-				    else{
-					    this.src=lib.assetURL+'audio'+str+'.ogg';
-				    	this._changed=true;
-				    }
-			    };
-			//}
-			//Some browsers do not support "autoplay", so "oncanplay" listening has been added
-			window.tipsAudio.oncanplay=function(){
-				Promise.resolve(this.play()).catch(()=>void 0);
-			};
-			//ui.window.appendChild(audio);
-			return window.tipsAudio;
-		};
+window.playAudioRZ=(...args)=>game.playAudio('audio',...args);
 window.helasisy_getPaiWeiInfo=function(type, zero){
                     var luomaNum=function(num){
                         let list='○ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ';

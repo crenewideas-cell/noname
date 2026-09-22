@@ -3,6 +3,7 @@ import { Player } from "./index.js";
 import ContentCompiler from "./GameEvent/compilers/ContentCompiler.js";
 import { EventCompileable, EventCompiledContent } from "./GameEvent/compilers/IContentCompiler.js";
 import GameEventManager from "./GameEvent/GameEventManager.js";
+import { emitPresentation } from "../../ui/presentationEvents.js";
 export { GameEventManager, ContentCompiler };
 
 type triggerSkillTodo = {
@@ -482,6 +483,7 @@ export class GameEvent implements PromiseLike<void> {
 				ui.commonCardPileButton.style.display = "";
 			}
 			_status.gameStarted = true;
+			emitPresentation("start", () => ({}));
 			game.showHistory();
 		}
 		if (!lib.hookmap[name]) {

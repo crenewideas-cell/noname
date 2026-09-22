@@ -1,5 +1,14 @@
 import { net, type ProtocolRequest, type ProtocolResponse, type Session } from "electron";
 import { onlineAssetResponse, onlineTextResponse } from "./online-assets";
+import {randomUUID} from 'node:crypto';
+
+const skinTransfers = new Map<string, {origin:string; data:string}>();
+export function registerSkinTransfer(origin:string, data:unknown) {
+ if(data===undefined)return;
+ if(typeof data!=='string'||Buffer.byteLength(data,'utf8')>192*1024*1024)throw new Error('联机皮肤数据过大或格式无效');
+ const token=randomUUID();skinTransfers.set(token,{origin,data});
+ return {token,dispose:()=>skinTransfers.delete(token)};
+}
 
 type ReportError = (stage: string, error: unknown) => void;
 
@@ -58,6 +67,13 @@ export function installOnlineProtocol(session: Session, root: string, origin: st
           if (target.origin !== origin) return onlineTextResponse("Forbidden", 403);
           if (target.pathname.startsWith("/api/v1/")) return proxyApi(session, request, reportError);
           if (!["GET", "HEAD"].includes(request.method)) return onlineTextResponse("Method not allowed", 405);
+          if(target.pathname.startsWith('/_ui-skin/')){
+            const entry=skinTransfers.get(target.pathname.slice('/_ui-skin/'.length));
+            if(!entry||entry.origin!==origin)return onlineTextResponse('Skin transfer unavailable',404);
+            const response=onlineTextResponse(request.method==='HEAD'?'':entry.data,200);
+            response.headers={'content-type':'application/json; charset=utf-8','cache-control':'no-store'};
+            return response;
+          }
           const response = await onlineAssetResponse(root, request);
           const stream = response.data as NodeJS.ReadableStream;
           stream.on("error", error => reportError(`联机资源流 ${target.pathname}`, error));

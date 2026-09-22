@@ -15,7 +15,10 @@ export function generateShoushaLobby(root) {
  const returned=factory.body.statements.find(n=>ts.isReturnStatement(n));
  const home=returned.expression.properties.find(n=>n.name?.getText(ast)==='createHome');
  if(!home)throw new Error('Missing lobby scene');
- const helpers=factory.body.statements.filter(n=>n!==returned&&!n.getText(ast).includes('liulikill_rz_codeFix')).map(n=>n.getText(ast)).join('\n');
+ const helpers=factory.body.statements.filter(n=>n!==returned&&!n.getText(ast).includes('liulikill_rz_codeFix')).map(n=>{
+  if(ts.isExpressionStatement(n)&&ts.isBinaryExpression(n.expression)&&n.expression.left.getText(ast)==='window.playAudioRZ')return "window.playAudioRZ=(...args)=>game.playAudio('audio',...args);";
+  return n.getText(ast);
+ }).join('\n');
  let scene=home.getText(ast);
  // Core skin dialogs do not require fake game/arena nodes or old skin modules.
  scene=scene.replaceAll("if( lib.config.extension_皮肤切换_czgEnable)","if(true)")

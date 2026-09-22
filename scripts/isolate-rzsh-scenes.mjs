@@ -15,6 +15,7 @@ export function isolateRzshScenes(source) {
  }
  visit(ast);
  for(const [start,end,text] of edits.sort((a,b)=>b[0]-a[0]))source=source.slice(0,start)+text+source.slice(end);
+ if(!source.includes('const window = lifecycle.window, document = lifecycle.document;'))source=source.replace('const PIXI = lifecycle.pixi;', 'const window = lifecycle.window, document = lifecycle.document;\n    const PIXI = lifecycle.pixi;');
  return source.replace('UI scenes and ranking logic retained; legacy game bootstrap is intentionally excluded.', 'UI scenes only; gameplay and match results belong to the host.').replace('import { lib, game, ui, get, ai, _status } from "noname";',
   'let lib, game, ui, get, ai, _status;\nexport function bindSceneContext(context) { ({lib,game,ui,get,ai,_status}=context); }');
 }

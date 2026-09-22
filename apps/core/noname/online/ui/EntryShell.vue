@@ -34,6 +34,7 @@ import { disconnectPlatform, onlineState, prepareRoomNavigation } from "../clien
 import { openGameNavigation } from "../../ui/gameNavigation.js";
 import { openLobbySettings } from "../../ui/lobbySettings.js";
 import { onlineEntryFragment } from "../appearance.js";
+import { exportOnlineSkin } from '../skinTransfer.js';
 import "./online.css";
 const props = defineProps<{ shousha: boolean; handle: (mode: string) => string; click: (mode: string, node: HTMLElement) => void }>();
 const sessionType = ref(lib.config.sessionType || (lib.config.mode === "connect" ? "online" : "offline"));
@@ -67,7 +68,7 @@ async function choose(mode: string, node: HTMLElement) {
     const nativeEntry = (game as any).openOnlineLobby;
     // Native launchers use their bundled manifest and intercept static requests
     // locally; only API/WebSocket traffic reaches the configured server.
-    if (nativeEntry) { await nativeEntry(onlineEntryFragment(mode)); return; }
+    if (nativeEntry) { await nativeEntry(onlineEntryFragment(mode),await exportOnlineSkin()); return; }
     const target = new URL("/index.html", configuredOrigin || location.origin);
     if (target.origin !== location.origin) throw new Error("请使用下载的完整客户端进入联机。");
   } catch (error: any) { notice.value = error.message; return; }

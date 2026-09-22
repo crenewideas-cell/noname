@@ -157,7 +157,7 @@ export default function nodeReady({ lib, game, get, _status, ui }) {
 	game.open = function (url) {
 		window.open(url);
 	};
-	game.openOnlineLobby = url => window.require("electron").ipcRenderer.invoke("noname:open-online", url);
+	game.openOnlineLobby = (url, skin) => window.require("electron").ipcRenderer.invoke("noname:open-online", url, skin);
 	
 	/**
 	 * 检查指定的路径是否是一个文件

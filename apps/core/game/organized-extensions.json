@@ -7065,14 +7065,14 @@
   },
   {
     "name": "如真似幻",
-    "hash": "ff0e5cea1c3b3a3374b44c006662839cf86fadd0f45a20311bc1e092622be3a3",
+    "hash": "49e570e277d1846ed9424ce80f5a939960bc368de39ab0f94cc28f03f5c6a6ba",
     "characters": [],
     "files": {
-      "extension.js": "ff0e5cea1c3b3a3374b44c006662839cf86fadd0f45a20311bc1e092622be3a3",
+      "extension.js": "49e570e277d1846ed9424ce80f5a939960bc368de39ab0f94cc28f03f5c6a6ba",
       "info.json": "f4c83d0e9e3893e6f77e0c3b099e0c46f7addb5362a8b07df729259f3c6f04bf",
       "ui-workshop.json": "a2348a2b7bc3dced5adcb2eeb7852391c7c61a9850939758a46afd99ae9793f3",
       "scenes.js": "bdd8a83da5228c66145ca743968d5f7eea3ff8676fca93b1b5f547cb1bf651c6",
-      "bridge.js": "5eef5776df33c5c62e8cfe8819829222354d7dfd9907f71161c4a397377efa0a",
+      "bridge.js": "72290daa47f156893f3fba6681012fcd9647e6c07580ba2464de128ae5292d4a",
       "runtime.js": "435edfab760f7933e0ab3b16edeb0a5fd3480af2f73aad1f758c3792278585db",
       "js/dream_corridor.js": "4c8979dd9b7f299c94b8f167ff74177a6bbfd95d89b2cba62251e2d08dcbf7da",
       "js/dynamicCorridor.js": "aae842ac97e1ef70d894e7b22cd5b333c80e79b7a41e7a9a6656103ea53739ae",
@@ -7084,16 +7084,22 @@
   },
   {
     "name": "手杀标准UI",
-    "hash": "bee657adeae7bf457cfef6a4d8d76b29216a9bef1a520d43a72294d06ca2a0a0",
+    "hash": "0eac4e332da113910dde3006a1226704e28b501ec9ed186af0c42b8bfaa773a1",
     "characters": [],
     "files": {
-      "extension.js": "bee657adeae7bf457cfef6a4d8d76b29216a9bef1a520d43a72294d06ca2a0a0",
-      "native-runtime.js": "37c0c2227a7b8179836955b04940b6b053c0e84c3ab164b3d1e32337ed8be8e3",
-      "native.css": "bfb50d1fc71de87e0b124a8f56b1b64eb7b2a9944be6a18a414bf5e0813d4da8",
+      "extension.js": "0eac4e332da113910dde3006a1226704e28b501ec9ed186af0c42b8bfaa773a1",
+      "native-runtime.js": "56809dd3fe0dda59b7dd1b392a506a3033fea3c2c875731a8e85987e065bb8d2",
+      "native.css": "252c8c6af6dbf16f391bb9047c6326f92a2fc77772e1ed408243f0695f540dfc",
       "ui-workshop.json": "91852be21513aa3cab2592221a9b4c90dd4db4fa20127aacdeb8de5b9134ea4b",
       "native/lobby.js": "7a4cf1362cf1f1e2ca3086f7792aac53cc5ad014118ee9d57f139053db3f34c5",
-      "native/presentation.js": "7be580f24f48af206732aa5893d34b10683115bfd0dc9e1c4222e671201decad",
-      "native/presentation.css": "cf558c4268351390455f1caf40097c038b5826c5f22a384dd14cb1f8d2332f44"
+      "native/presentation.js": "c32c700057c9b65e4af4b0690487787f33e1f85ca80c91c97fcbe43278b64b69",
+      "native/presentation.css": "6fd577c8cec1da752a03192d0a78df6433a5a058ec49126a729e4e68b198bb28",
+      "native/layout.js": "666217e41bb794f44bcd5fa99dd8e2b3aae8c66bfa605dbf0dc7409cfb515f2e",
+      "native/portrait-clips.js": "0be189c7ab5b601614173d0926d25dded9f56237eb696f9b1b560a8b7fec7bab",
+      "native/animations.js": "f85c8a9b4c6d6a6f651f2a8d1294858add8ba0f2a915d6d7860a7d0b562f60a4",
+      "native/animation-renderer.js": "c2a25ac1c1a80c35a86981d791dc551f63ef923d8f96752d1ff1e8a7ae46c3e8",
+      "native/animation-assets.json": "b9bab8484e289056a00c1a0cdf6a29c869b57804d3de426f3ca805378470afb4",
+      "files.json": "93a3b4d1708cd6fa6fd425814b3b792511874d8bdb3247684dbc39271d81258b"
     },
     "defaultEnabled": false,
     "source": "local-migration:liuli-5.5"

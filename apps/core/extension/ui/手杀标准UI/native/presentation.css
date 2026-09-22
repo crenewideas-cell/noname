@@ -1,4 +1,7 @@
 /* Stock nodes, stock activation handlers, stock visibility and selection rules. */
+.ss-animation-canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:10002;pointer-events:none}
+.ss-dynamic-portrait{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:inherit}
+body[data-shousha-parts~="cards"] #arena>.card[data-presentation-role^="compare-"]{box-shadow:0 0 0 2px #c9a96e,0 0 22px #e6be6277}
 body[data-shousha-parts~="arena"] #arena{background:transparent}
 body[data-shousha-parts~="arena"]>.background{background-image:url('../original/core/image/background/1.jpg')!important;background-size:cover}
 body[data-shousha-parts~="players"] #arena>.player{border:2px solid #b49a62;border-radius:10px;box-shadow:0 0 0 2px #38291b,0 3px 12px #0009;background-color:#34271d}
@@ -7,8 +10,11 @@ body[data-shousha-parts~="players"] #arena>.player>.name{color:#ffedb5;text-shad
 body[data-shousha-parts~="players"] .ss-character-dialog{background:linear-gradient(135deg,#302820f5,#151310f5);border:2px solid #ad945e;border-radius:12px;color:#f4dfae}
 body[data-shousha-parts~="players"] .ss-character-dialog .button.character{border:1px solid #b49a62;border-radius:6px;box-shadow:0 3px 8px #0008}
 body[data-shousha-parts~="players"] .ss-character-dialog .button.character.selected{box-shadow:0 0 2px 2px #ffe4a0,0 0 14px #d79c2d}
-body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden){background-image:var(--ss-card-art)!important;background-size:100% 100%!important;border-radius:7px}
-body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden)>.image,body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden)>.background{background-image:none!important}
+body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden):not(:empty){background-image:var(--ss-card-art)!important;background-size:100% 100%!important;border-radius:7px}
+body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden):not(:empty)>.image,body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden):not(:empty)>.background{background-image:none!important}
+/* Mask stale canvases synchronously, before any observer/frame callback. */
+#arena>.player:is(.unseen,.unseen_v,.unseen_show,.dead)>.avatar>.ss-dynamic-portrait,
+#arena>.player:is(.unseen2,.unseen2_v,.unseen2_show,.dead)>.avatar2>.ss-dynamic-portrait{display:none!important}
 body[data-shousha-parts~="cardback"] .card.infohidden{background-image:url('../original/十周年UI/assets/image/cardstyle_back.png')!important;background-size:100% 100%}
 body[data-shousha-parts~="buttons"] #control .control{background:linear-gradient(#765532,#34251a);border:1px solid #b99b5c;border-radius:6px;color:#fce6ab;box-shadow:inset 0 0 0 2px #372817,0 2px 6px #0009;text-shadow:0 1px 2px #000}
 body[data-shousha-parts~="buttons"] #control .control>div{font-family:shousha,serif;font-size:20px;padding:6px 16px}
@@ -26,3 +32,62 @@ body[data-shousha-parts~="hp"] .hp>div.lost{background-image:url('../original/co
 .ss-core-settlement{position:fixed;inset:12% 20%;z-index:10000;overflow:auto;padding:24px;background:#241c16f5;color:#f2dfb3;border:2px solid #ad8d53;border-radius:12px;text-align:center;box-shadow:0 0 0 100vmax #0008;font:20px shousha,serif}
 .ss-core-settlement table{position:relative;width:100%;border-collapse:collapse}.ss-core-settlement td{padding:10px;border-bottom:1px solid #ad8d5366}.ss-core-settlement button{position:relative;margin:16px;padding:10px;color:inherit;background:#584327;border:1px solid #ad8d53;font:inherit}
 @media(max-width:700px){.ss-core-settlement{inset:8% 4%}body[data-shousha-parts~="buttons"] #control .control>div{font-size:16px;padding:5px 9px}}
+
+/* The suite's original artwork and geometry, adapted to the engine's live
+   nodes. No duplicate controls, synthetic choices or replacement click flow. */
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin){width:120px;height:180px;border:0!important;background:#352620!important;box-shadow:0 -1px 3px #000,0 3px 8px #000;border-radius:8px!important;overflow:visible}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.avatar{left:22px!important;top:0!important;bottom:0!important;width:calc(100% - 22px)!important;height:100%!important;border-radius:8px!important;background-size:cover!important;background-position:center top!important}
+html body[data-shousha-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar{width:calc(50% - 11px)!important;border-radius:8px 0 0 8px!important}
+html body[data-shousha-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar2{left:calc(50% + 11px)!important;top:0!important;bottom:0!important;width:calc(50% - 11px)!important;height:100%!important;border-radius:0 8px 8px 0!important;background-size:cover!important;background-position:center top!important}
+html body[data-shousha-parts~="players"] #arena>.player>.ss-player-frame{position:absolute;left:-27px;top:-2px;width:183px;height:175px;background-position:center;background-size:contain;background-repeat:no-repeat;pointer-events:none;z-index:4}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.avatar{clip-path:url(#ss-solo-clip)}
+html body[data-shousha-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar{clip-path:url(#ss-left-clip)}
+html body[data-shousha-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar2{clip-path:url(#ss-right-clip)}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.name{left:19px!important;right:auto!important;top:29px!important;width:18px;height:96px;font:16px/14px shousha,serif;color:#ffedb5;z-index:5;text-shadow:0 1px 2px #24170c}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.name2{left:56%!important;top:22px!important;font:16px/15px shousha,serif;background:linear-gradient(transparent,#0006,#0008,#0006,transparent)}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.identity{left:auto!important;right:-8px!important;top:-8px!important;width:35px;height:35px;font:26px/35px shousha,serif;z-index:6;transform:none!important}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.nameol{top:4px;font:15px shousha,serif;z-index:6;background:linear-gradient(90deg,transparent,#0006,transparent)}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.count{right:4px;bottom:4px;z-index:6;border:1px solid #9e8050;background:#20190fce;color:#f5dfa0;font-family:shousha,serif}
+html body[data-shousha-parts~="hp"][data-shousha-parts~="players"] #arena>.player:not(.minskin)>.hp{left:7px!important;right:auto!important;top:auto!important;bottom:11px!important;max-width:15px;font:15px/13px shousha,serif;z-index:6}
+html body[data-shousha-parts~="hp"][data-shousha-parts~="players"] #arena>.player:not(.minskin)>.hp:not(.text):not(.textstyle){display:flex;flex-direction:column;gap:1px}
+html body[data-shousha-parts~="hp"] #arena .hp:not(.text):not(.textstyle)>div{width:13px;height:13px;min-height:13px;margin:0}
+html body.shousha-skinned-arena #arena>#me{left:var(--ss-hand-left,28px)!important;right:var(--ss-hand-right,204px)!important;width:auto!important;background:transparent!important;border:0!important;box-shadow:none!important}
+
+/* Reuse the shipped selection table, preserving the core's candidate nodes,
+   disabled states, selection limits and confirmation controls. */
+html body[data-shousha-parts~="players"] #arena>.ss-character-dialog:not(.popped){position:fixed!important;left:5vw!important;top:6vh!important;bottom:auto!important;width:90vw!important;height:calc(88vh - 145px)!important;max-height:calc(88vh - 145px);box-sizing:border-box;padding:30px 36px 20px;transform:none!important;border:0!important;border-radius:0!important;background: url('../original/选将美化/assets/image/table_jiangchi_label_large.png') center/100% 100% no-repeat!important;color:#feeee1;box-shadow:none!important}
+html body[data-shousha-parts~="players"] #arena>.ss-character-dialog>.content-container{height:100%;overflow:auto}
+html body[data-shousha-parts~="players"] .ss-character-dialog .button.character{width:92px;height:132px;margin:8px;border:1px solid #b49a62!important;border-radius:6px!important;background-size:cover;box-shadow:0 3px 8px #0008}
+html body[data-shousha-parts~="players"] .ss-character-dialog .button.character.selected{border-color:#ffe4a0!important;box-shadow:0 0 2px 2px #ffe4a0,0 0 14px #d79c2d!important}
+html body[data-shousha-parts~="players"] .ss-character-dialog .caption{font:22px shousha,serif;color:#feeee1;letter-spacing:3px;text-shadow:0 1px 2px #3b3127}
+
+html body[data-shousha-parts~="buttons"] #control>.ss-skill-control{background:none!important;border:0!important;box-shadow:none!important;overflow:visible}
+html body[data-shousha-parts~="buttons"] #control>.ss-skill-control>div{position:relative;min-width:74px;min-height:38px;box-sizing:border-box;padding:8px 16px!important;margin:3px;background:url('../original/手杀ui/skill/images/btn0.png') center/100% 100% no-repeat!important;border:0!important;border-radius:0!important;color:#f0d775!important;font:22px/1.15 shousha,serif!important;text-shadow:0 1px 3px #000}
+html body[data-shousha-parts~="buttons"] #control>.ss-skill-control>div:is(.selected,.active){background-image:url('../original/手杀ui/skill/images/btn1.png')!important}
+html body[data-shousha-parts~="buttons"] #control>.ss-skill-control.disabled>div,html body[data-shousha-parts~="buttons"] #control>.ss-skill-control>div.disabled{background-image:url('../original/手杀ui/skill/images/btn2.png')!important}
+body[data-shousha-parts~="buttons"] #system2 .ss-utility-button{--ss-icon:12;position:relative!important;box-sizing:border-box;vertical-align:top;width:80px;height:80px;min-height:0;margin:2px;padding:0!important;border:0!important;border-radius:50%!important;background:url('./menu-medallion.svg') center/contain no-repeat!important;box-shadow:none!important;color:transparent!important;text-shadow:none!important;font-size:0!important;white-space:normal!important;text-align:center;cursor:pointer;transition:filter .15s}
+body[data-shousha-parts~="buttons"] #system2 .ss-utility-button::before{content:''!important;display:block;position:absolute;left:22px;top:10px;width:36px;height:36px;background:url('./menu-icons.svg') calc(var(--ss-icon) * -36px) 0/468px 36px no-repeat!important;border:0;box-shadow:none;pointer-events:none}
+body[data-shousha-parts~="buttons"] #system2 .ss-utility-button::after{content:attr(data-ss-label)!important;display:block;position:absolute;left:3px;right:3px;top:auto;bottom:14px;width:auto;height:auto;background:none!important;box-shadow:none;font:16px/1.05 shousha!important;color:#dfbb6e!important;text-shadow:0 1px 1px #130c03;pointer-events:none}
+body[data-shousha-parts~="buttons"] #system2 [data-ss-icon='identity']{--ss-icon:1}
+body[data-shousha-parts~="buttons"] #system2 [data-ss-icon='record']{--ss-icon:2}
+body[data-shousha-parts~="buttons"] #system2 [data-ss-icon='public']{--ss-icon:3}
+body[data-shousha-parts~="buttons"] #system2 [data-ss-icon='pile']{--ss-icon:5}
+body[data-shousha-parts~="buttons"] #system2 [data-ss-icon='surrender']{--ss-icon:7}
+body[data-shousha-parts~="buttons"] #system2 .ss-utility-button:hover{filter:brightness(1.18)}
+body[data-shousha-parts~="buttons"] #system2 .ss-utility-button:active{filter:brightness(.95)}
+html body[data-shousha-parts~="menus"] #window>.dialog:not(.popped):not(.ss-character-dialog){background-image:url('../original/手杀ui/image/dialog.png');background-size:100% 100%;background-repeat:no-repeat}
+
+/* Original card selection border and player feedback remain visual effects. */
+html body[data-shousha-parts~="cards"] .handcards>.card.selected::before{content:'';position:absolute;inset:-7px;box-sizing:border-box;border:7px solid transparent;border-image:url('../original/十周年UI/assets/image/card_select.png') 8 7 7 8 fill;pointer-events:none;opacity:1}
+html body[data-shousha-parts~="players"] #arena>.player.target{box-shadow:0 0 2px 2px #ffe4a0,0 0 18px #ecb644!important;animation:ss-target-glow .8s ease-in-out infinite alternate}
+html body[data-shousha-parts~="players"] #arena>.player>.damage{font-family:shousha,serif;color:#f5df88;text-shadow:0 1px 3px #361c0b;z-index:8}
+@keyframes ss-target-glow{from{filter:brightness(1)}to{filter:brightness(1.12)}}
+.ss-core-settlement{inset:4% 12%;padding:6vh 7vw;background:url('../original/手杀MVP/image/dialog.png') center/100% 100% no-repeat;border:0;border-radius:0;color:#f0d775}
+.ss-core-settlement h2{position:relative;margin:0 0 18px;font:32px shousha,serif;text-shadow:0 2px 3px #221406}
+.ss-core-settlement td{background:#21180c99;color:#f6dfaf}
+@media(max-width:850px){
+ html body[data-shousha-parts~="players"] #arena>.ss-character-dialog:not(.popped){left:2vw!important;width:96vw!important;padding:20px 16px 12px}
+ html body[data-shousha-parts~="players"] .ss-character-dialog .button.character{width:72px;height:104px;margin:6px}
+ html body[data-shousha-parts~="buttons"] #control>.ss-skill-control>div{min-width:58px;min-height:32px;padding:6px 10px!important;font-size:18px!important}
+ .ss-core-settlement{inset:2%;padding:6vh 7vw}
+}

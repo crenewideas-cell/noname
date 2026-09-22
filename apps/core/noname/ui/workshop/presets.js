@@ -19,7 +19,7 @@ export function builtinPacks() {
 		pack.manifest.components.lines = { name: `${name} · 指示线`, settings: { zhishixian: "default" }, assets: {}, style: { color: line, width: "4px", opacity: "0.9", "box-shadow": `0 0 8px ${line}` } };
 		return pack;
 	});
-	packs.unshift({ manifest: { format: "noname-ui-workshop", version: 1, id: "builtin-rzsh", name: "如真似幻", author: "蒸、某个萌新、非凡欧德内里、文和", description: "动画大厅、模式选择、天梯、梦之回廊与原版设置。交互大厅作为完整部件切换，可搭配其他卡牌、对局外观与指示线。", components: { home: { name: "如真似幻 · 交互大厅", runtime: "rzsh", settings: {}, assets: {}, style: {} } } }, assets: {} });
+	packs.unshift({ manifest: { format: "noname-ui-workshop", version: 1, id: "builtin-rzsh", name: "如真似幻", author: "蒸、某个萌新、非凡欧德内里、文和", description: "如真似幻动画大厅、模式选择与武将图鉴；皮肤、设置和联机接入本体，可混搭卡牌与对局外观。所有玩法规则由本体处理。", components: { home: { name: "如真似幻 · 交互大厅", runtime: "rzsh", settings: {}, assets: {}, style: {} } } }, assets: {} });
 	packs.unshift({manifest: JSON.parse(JSON.stringify(shoushaManifest)), assets:{}});
 	return packs;
 }

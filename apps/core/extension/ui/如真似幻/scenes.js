@@ -109,6 +109,7 @@ rzshi[rzshB(0xc4, "!@F9")] = rzshe, rzshi["周瑜小乔"] = rzsha, rzshi["吕布
         } }, "author": "某个萌新" };
 // Match results and ranking belong to the host, not the lobby.
 export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
+    const window = lifecycle.window, document = lifecycle.document;
     const PIXI = lifecycle.pixi;
     let spinelo, homeskel_fg, homeskel_lb;
     const gsap = lifecycle.animation, setTimeout = lifecycle.timeout.bind(lifecycle), setInterval = lifecycle.interval.bind(lifecycle), requestAnimationFrame = lifecycle.frame.bind(lifecycle);

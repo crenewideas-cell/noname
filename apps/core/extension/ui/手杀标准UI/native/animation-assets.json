@@ -1,0 +1,165 @@
+{
+  "effects": {
+    "skill": {
+      "bagua_skill": {
+        "skill": "bagua_skill",
+        "name": "effect_baguazhen",
+        "scale": 0.6
+      },
+      "baiyin_skill": {
+        "skill": "baiyin_skill",
+        "name": "effect_baiyinshizi",
+        "scale": 0.5
+      },
+      "bazhen_bagua": {
+        "skill": "bazhen_bagua",
+        "name": "effect_baguazhen",
+        "scale": 0.6
+      },
+      "cixiong_skill": {
+        "skill": "cixiong_skill",
+        "name": "effect_cixiongshuanggujian",
+        "scale": 0.5
+      },
+      "fangtian_skill": {
+        "skill": "fangtian_skill",
+        "name": "effect_fangtianhuaji",
+        "scale": 0.7
+      },
+      "guanshi_skill": {
+        "skill": "guanshi_skill",
+        "name": "effect_guanshifu",
+        "scale": 0.7
+      },
+      "guding_skill": {
+        "skill": "guding_skill",
+        "name": "effect_gudingdao",
+        "scale": 0.6,
+        "x": [
+          0,
+          0.4
+        ],
+        "y": [
+          0,
+          -0.75
+        ]
+      },
+      "hanbing_skill": {
+        "skill": "hanbing_skill",
+        "name": "effect_hanbingjian",
+        "scale": 0.5
+      },
+      "linglong_bagua": {
+        "skill": "linglong_bagua",
+        "name": "effect_baguazhen",
+        "scale": 0.5
+      },
+      "qilin_skill": {
+        "skill": "qilin_skill",
+        "name": "effect_qilingong",
+        "scale": 0.5
+      },
+      "qinggang_skill": {
+        "skill": "qinggang_skill",
+        "name": "effect_qinggangjian",
+        "scale": 0.7
+      },
+      "qinglong_skill": {
+        "skill": "qinglong_skill",
+        "name": "effect_qinglongyanyuedao",
+        "scale": 0.6
+      },
+      "renwang_skill": {
+        "skill": "renwang_skill",
+        "name": "effect_renwangdun",
+        "scale": 0.5
+      },
+      "tengjia1": {
+        "skill": "tengjia1",
+        "name": "effect_tengjiafangyu",
+        "scale": 0.6
+      },
+      "tengjia2": {
+        "skill": "tengjia2",
+        "name": "effect_tengjiaranshao",
+        "scale": 0.6
+      },
+      "tengjia3": {
+        "skill": "tengjia3",
+        "name": "effect_tengjiafangyu",
+        "scale": 0.6
+      },
+      "zhangba_skill": {
+        "skill": "zhangba_skill",
+        "name": "effect_zhangbashemao",
+        "scale": 0.7
+      },
+      "zhuge_skill": {
+        "skill": "zhuge_skill",
+        "name": "effect_zhugeliannu",
+        "scale": 0.5
+      },
+      "zhuque_skill": {
+        "skill": "zhuque_skill",
+        "name": "effect_zhuqueyushan",
+        "scale": 0.6
+      },
+      "jinhe_lose": {
+        "skill": "jinhe_lose",
+        "name": "effect_jinhe",
+        "scale": 0.4
+      },
+      "numa": {
+        "skill": "numa",
+        "name": "effect_numa",
+        "scale": 0.4
+      },
+      "nvzhuang": {
+        "skill": "nvzhuang",
+        "name": "effect_nvzhuang",
+        "scale": 0.5
+      },
+      "wufengjian_skill": {
+        "skill": "wufengjian_skill",
+        "name": "effect_wufengjian",
+        "scale": 0.4
+      },
+      "yajiaoqiang_skill": {
+        "skill": "yajiaoqiang_skill",
+        "name": "effect_yajiaoqiang",
+        "scale": 0.5
+      },
+      "yinfengjia_skill": {
+        "skill": "yinfengjia_skill",
+        "name": "effect_yinfengjia",
+        "scale": 0.5
+      },
+      "zheji": {
+        "skill": "zheji",
+        "name": "effect_zheji",
+        "scale": 0.35
+      },
+      "lebu": {
+        "skill": "lebu",
+        "name": "SZN_lebusishu",
+        "scale": 0.7
+      },
+      "bingliang": {
+        "skill": "bingliang",
+        "name": "SZN_bingliangcunduan",
+        "scale": 0.8,
+        "y": [
+          0,
+          0.3
+        ]
+      },
+      "shandian": {
+        "skill": "shandian",
+        "name": "effect_shandian",
+        "scale": 0.7
+      }
+    },
+    "card": {}
+  },
+  "skins": {}
+}

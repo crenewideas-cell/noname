@@ -1,9 +1,10 @@
 import { createHash } from "node:crypto";
 import { cp, lstat, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { extname, join, relative, resolve } from "node:path";
+import {copyOnlineSkins} from './online-ui-assets.ts';
 
 const runtimeExtensions = new Set([".js", ".mjs", ".cjs", ".json", ".css", ".html", ".wasm"]);
-const excluded = new Set(["src", "extension", "image", "audio", "font"]);
+const excluded = new Set(["src", "extension", "ui-skins", "image", "audio", "font"]);
 
 export function isHostRuntimeFile(path: string) {
   const parts = path.replaceAll("\\", "/").split("/");
@@ -33,7 +34,13 @@ export async function onlineBuildId(root: string) {
     "apps/core/extension/packs/红楼幻境/theme/catalog.js", "apps/core/extension/packs/红楼幻境/voice/runtime.js",
     "apps/core/extension/packs/红楼幻境/voice/daiyu.js", "apps/core/extension/packs/红楼幻境/voice/panel.js", "apps/core/extension/packs/红楼幻境/voice/catalogs",
     "apps/core/package.json", "apps/core/pnpm-lock.yaml", "apps/core/vite.config.ts", "packages/online-protocol/src",
-    "scripts/build-online.ts", "scripts/online-artifacts.ts", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"]) await walk(path);
+    "scripts/build-online.ts", "scripts/online-artifacts.ts", "scripts/online-ui-assets.ts",
+    "apps/core/extension/ui/手杀标准UI/extension.js", "apps/core/extension/ui/手杀标准UI/native-runtime.js", "apps/core/extension/ui/手杀标准UI/native",
+    "apps/core/extension/ui/手杀标准UI/native.css", "apps/core/extension/ui/手杀标准UI/boot.html", "apps/core/extension/ui/手杀标准UI/preview.html",
+    "apps/core/extension/ui/手杀标准UI/files.json", "apps/core/extension/ui/手杀标准UI/ui-workshop.json",
+    "apps/core/extension/ui/如真似幻/extension.js", "apps/core/extension/ui/如真似幻/bridge.js", "apps/core/extension/ui/如真似幻/runtime.js", "apps/core/extension/ui/如真似幻/scenes.js",
+    "apps/core/extension/ui/如真似幻/css", "apps/core/extension/ui/如真似幻/files.json", "apps/core/extension/ui/如真似幻/ui-workshop.json",
+    "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"]) await walk(path);
   return `online-${hash.digest("hex").slice(0, 20)}`;
 }
 
@@ -53,6 +60,7 @@ export async function assembleOnline(root: string, client: boolean, build: strin
     return client || (stat.isDirectory() ? !excluded.has(top) : isHostRuntimeFile(name));
   } });
   if (client) {
+    await copyOnlineSkins(root,output);
     await cp(resolve(root, "apps/core/image"), join(output, "image"), { recursive: true, filter: path => !path.split(/[\\/]/).some(part => part === "动态资源" || part.endsWith("_配音")) });
     await cp(resolve(root, "apps/core/audio"), join(output, "audio"), { recursive: true });
     // Reviewed extension art is shipped as ordinary media. The trusted host

@@ -4,6 +4,7 @@ import { catalog, activeId, captureCurrent, savePack, readPack, deletePack, useP
 import { readArchive, writeArchive } from "./archive.js";
 import { mountAppearance } from "./runtime.js";
 import { builtinPacks } from "./presets.js";
+import { providerDirectory } from './provider.js';
 import css from "./manager.css?inline";
 
 let current;
@@ -51,6 +52,7 @@ export async function openWorkshop() {
 		finally { busy = false; panel.removeAttribute("aria-busy"); workspace.inert = false; toolbar.inert = false; }
 	}
 	function cleanup() {
+		previewGeneration++;
 		previewDispose?.(); [...previewURLs, ...thumbnailURLs].forEach(url => URL.revokeObjectURL(url));
 		previousInert.forEach(([node, inert]) => { node.inert = inert; });
 		host.remove(); current = undefined; priorFocus?.focus?.();
@@ -130,7 +132,7 @@ export async function openWorkshop() {
 	function renderSidebar() {
 		sidebar.replaceChildren(); el("h2", sidebar, "套装库");
 		const values = { "": "选择已保存的套装" };
-		for (const item of available()) values[item.id] = `${item.name}${item.id === activeId() ? " · 使用中" : ""}`;
+		for (const item of available()) values[item.id] = `${item.name}${item.id === activeId() ? lib.uiWorkshop?.failedId === item.id ? " · 已选择（加载失败）" : " · 使用中" : ""}`;
 		select(sidebar, "套装", values, selectedLibrary, value => { selectedLibrary = value; });
 		const commands = el("div", sidebar, undefined, "library-actions");
 		action(commands, "一键使用所选套装", async () => {
@@ -268,12 +270,12 @@ export async function openWorkshop() {
 		const frame = el("iframe", preview); frame.title = "UI 素材预览"; frame.setAttribute("sandbox", shousha ? "allow-same-origin allow-scripts" : "allow-same-origin");
 		frame.srcdoc = `<!doctype html><html><head><style>body{margin:0;color:#eddfc5;font:14px sans-serif;background:#18283a}#splash{padding:16px;background:#283748}h2{font-size:18px}.lobby-modes{display:flex;gap:10px}.lobby-mode{width:95px;height:106px;background:#596573;border:1px solid #bbab82;border-radius:8px;color:#fff}.lobby-art{width:65px;height:65px;object-fit:cover}.online-lobby{padding:12px;background:#34434c}#window{padding:16px}.cards{display:flex;gap:10px}.card{width:65px;height:88px;padding:8px;border-radius:6px;background:#d4c7a6;color:#1b2a3a}.infohidden{background:#786754}.control{display:inline-block;margin-top:12px;padding:7px 14px;background:#557085;border-radius:6px}.player{padding:6px;margin:12px 0;background:#3c5167}.hp>div{display:inline-block;background:#67b88f;width:15px;height:18px}.linexy{height:48px;width:3px;background:white;margin:8px auto}.menu{padding:9px;background:#334658}</style></head><body><section id="splash"><h2>主界面 · 选择模式</h2><main class="lobby-modes"><button class="lobby-mode" data-ui-mode="identity"><img class="lobby-art" alt="身份"><br>身份</button><button class="lobby-mode" data-ui-mode="guozhan"><img class="lobby-art" alt="国战"><br>国战</button></main></section><main class="online-lobby">联机大厅 · 房间列表</main><section id="window"><div class="cards"><div class="card" data-card-name="sha">杀</div><div class="card" data-card-name="shan">闪</div><div class="card infohidden"></div></div><div class="player">武将框 <div class="hp" data-condition="high"><div></div><div></div><div class="lost"></div></div></div><div class="control">确认出牌</div><div class="linexy"></div><div class="menu">菜单与弹窗</div></section></body></html>`;
 		frame.onload = async () => {
-			if (!frame.isConnected) return;
+			if (generation !== previewGeneration || !frame.isConnected) return;
 			try {
 				const valid = validateRecord(draft); const lookup = {};
 				let runtimeDispose;
 				if (shousha) {
-					const provider = await import(/* @vite-ignore */ new URL(`${lib.assetURL}extension/手杀标准UI/extension.js`, document.baseURI).href);
+					const provider = await import(/* @vite-ignore */ new URL(providerDirectory('手杀标准UI')+'extension.js', document.baseURI).href);
 					if (generation !== previewGeneration || !frame.isConnected) return;
 					const body = frame.contentDocument.body;
 					if (previewScreen !== "arena") body.replaceChildren();

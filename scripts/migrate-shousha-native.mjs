@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
 import {generateShoushaLobby} from './generate-ui-lobby.mjs';
+import {generateUiRenderer} from './generate-ui-renderer.mjs';
 import crypto from 'node:crypto';
 import {optionalScriptDefaults} from '../apps/core/extension/ui/手杀标准UI/native/script-policy.mjs';
 const sourceArgument=process.argv.find(arg=>arg.startsWith('--source='))?.slice('--source='.length);
@@ -318,6 +319,7 @@ for(const name of names.filter(n=>n!=='如真似幻')){
  write('native/login-backgrounds.js',backgrounds.getText(ast));
 }
 generateShoushaLobby(target);
+generateUiRenderer(target);
 const inventory=()=>{const files=[];function visit(dir){for(const e of fs.readdirSync(path.join(target,dir),{withFileTypes:true})){const p=dir?dir+'/'+e.name:e.name;if(e.isDirectory()){if(!['assets','spine','vendor'].includes(p))visit(p);}else if(!['home.js','home.css','visuals.js','resources.json','SOURCE.json','players.css','cards.css','buttons.css','menus.css','fonts.css'].includes(p))files.push(p);}}visit('');write('files.json',JSON.stringify(files.sort(),null,2));};
 // The source distribution generates this only after editing a skin. Ship an
 // empty initializer for fresh installs, while preserving existing user edits.
@@ -335,7 +337,7 @@ const registrations=JSON.parse(fs.readFileSync(registrationFile,'utf8'));
 const registration=registrations.find(item=>item.name==='手杀标准UI');
 if(registration){
  registration.files={};
- for(const file of ['extension.js','native-runtime.js','native.css','ui-workshop.json','native/lobby.js','native/presentation.js','native/presentation.css'])registration.files[file]=crypto.createHash('sha256').update(fs.readFileSync(path.join(target,file))).digest('hex');
+ for(const file of ['extension.js','native-runtime.js','native.css','ui-workshop.json','native/lobby.js','native/presentation.js','native/presentation.css','native/layout.js','native/portrait-clips.js','native/animations.js','native/animation-renderer.js','native/animation-assets.json'])registration.files[file]=crypto.createHash('sha256').update(fs.readFileSync(path.join(target,file))).digest('hex');
  registration.hash=registration.files['extension.js'];
  const text=JSON.stringify(registrations,null,2)+'\n';
  if(fs.readFileSync(registrationFile,'utf8').replace(/\r\n/g,'\n')!==text)fs.writeFileSync(registrationFile,text);

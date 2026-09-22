@@ -2,13 +2,14 @@ import { createApp, h, ref } from "vue";
 import { game, lib } from "noname";
 import { disconnectPlatform, prepareRoomNavigation } from "./client";
 import { onlineEntryFragment } from "./appearance.js";
+import { exportOnlineSkin } from './skinTransfer.js';
 import "./ui/online.css";
 
 // Shared room entry for canvas-based lobbies. The server still owns real
 // matchmaking; the themed lobby's local matching animation is not used here.
 export async function openOnlineRooms(mode = "identity") {
  if (game.openOnlineLobby) {
-  await game.openOnlineLobby(onlineEntryFragment(mode));
+  await game.openOnlineLobby(onlineEntryFragment(mode),await exportOnlineSkin());
   return {close() {}, closed:Promise.resolve()};
  }
  const origin = import.meta.env.DEV ? location.origin : import.meta.env.VITE_ONLINE_ORIGIN;

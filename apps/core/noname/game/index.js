@@ -26,6 +26,7 @@ import { perfBegin, perfEnd } from "../util/performance.js";
 import { applyPresentation } from "../ui/presentation.js";
 import { clearSelectionGuide, updateSelectionGuide } from "../ui/selectionGuide.js";
 import { confirmExtensionRemoval } from "../ui/extensionManagement.js";
+import { emitPresentation, playerPresentation } from "../ui/presentationEvents.js";
 
 export class Game {
 	documentZoom;
@@ -6750,6 +6751,9 @@ ${e instanceof Error ? e.stack : String(e)}`);
 					game.players[i].setIdentity();
 				}
 			}
+			// The server's result is authoritative. Client statistics may be partial;
+			// retain the host's result table instead of inventing a local ranking.
+			emitPresentation("result", () => ({ result: typeof result2 === "boolean" ? result2 : null, rows: [] }));
 			return;
 		}
 		if (lib.config.background_audio) {
@@ -7350,6 +7354,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 			ui.swap.close();
 			delete ui.swap;
 		}
+		emitPresentation("result", () => ({ result: typeof resultbool === "boolean" ? resultbool : null, rows: [...new Set([...game.players, ...game.dead])].map(player => ({ name: playerPresentation(player)?.name || "未知武将", damage: (player.stat || []).reduce((sum, stat) => sum + (stat.damage || 0), 0), kills: (player.stat || []).reduce((sum, stat) => sum + (stat.kill || 0), 0) })) }));
 		for (let i = 0; i < lib.onover.length; i++) {
 			lib.onover[i](resultbool);
 		}

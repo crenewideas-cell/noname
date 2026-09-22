@@ -2,14 +2,29 @@ import { lib, game } from "noname";
 import { PARTS, SETTING_KEYS, MIME, clone, newId, emptyPack, validateManifest, validateRecord, referencedAssets } from "./schema.js";
 import { mountAppearance } from "./runtime.js";
 import { builtinPacks } from "./presets.js";
+import { providerDirectory } from "./provider.js";
 
 const PREFIX = "ui-workshop:";
-/** @typedef {{version: number, registerExtension: typeof registerExtension, use: typeof usePack, ownsSetting: (key: string) => boolean, open: () => Promise<void>, openRooms?: (mode: string) => Promise<unknown>, openSkins?: (id?: string) => Promise<unknown>, openSettings?: (page: string) => Promise<void>, openSuiteSettings?: () => void, prepareCharacters?: () => Promise<void>, error?: string}} WorkshopAPI */
+/** @typedef {{version: number, registerExtension: typeof registerExtension, use: typeof usePack, ownsSetting: (key: string) => boolean, open: () => Promise<void>, openRooms?: (mode: string) => Promise<unknown>, openSkins?: (id?: string) => Promise<unknown>, openSettings?: (page: string) => Promise<void>, openSuiteSettings?: () => void, prepareCharacters?: () => Promise<void>, error?: string, failedId?: string}} WorkshopAPI */
 let dispose;
 let urls = [];
 let baseline;
 let loaded;
-let disposeProvider;
+let initialization, generation = 0;
+const appliedSettings = new Map();
+function workshopShortcut(event) {
+	if (!event.ctrlKey || !event.shiftKey || event.code !== "KeyU") return;
+	event.preventDefault(); event.stopImmediatePropagation();
+	void lib.uiWorkshop.open().catch(error => alert(`无法打开 UI 工坊：${error.message || error}`));
+}
+// Native windows must receive the user's underlying preferences. Copying the
+// projected skin settings here would persist them as the next window's defaults.
+export function underlyingAppearance() {
+	const config = { ...lib.config };
+	for (const [key, value] of appliedSettings) if (config[key] === value) config[key] = baseline[key];
+	return config;
+}
+const providerDisposers = [];
 let mutation = Promise.resolve();
 const serial = action => { const result = mutation.then(action); mutation = result.catch(() => {}); return result; };
 export const catalog = () => Array.isArray(lib.config.ui_workshop_catalog) ? lib.config.ui_workshop_catalog : [];
@@ -59,6 +74,22 @@ export function deletePack(id) {
 		await commit({ ui_workshop_catalog: catalog().filter(item => item.id !== id) }, [[id, undefined]]);
 	});
 }
+/** Native-window appearance handoff. The record still passes the same data-only schema. */
+export function receiveOnlinePack(input, settings) {
+	return serial(async () => {
+		if (!input) {
+			await commit({ui_workshop_active: "", ui_workshop_shousha_settings: settings});
+			cacheBootAppearance(); return;
+		}
+		const pack = validateRecord(input);
+		checkNativeSettings(pack.manifest);
+		const id = "builtin-online-transfer";
+		pack.manifest.id = id;
+		const entry = { id, name: pack.manifest.name, author: pack.manifest.author || "", parts: Object.keys(pack.manifest.components), updated: Date.now(), bytes: Object.values(pack.assets).reduce((sum, blob) => sum + blob.size, 0) };
+		await commit({ ui_workshop_active: id, ui_workshop_shousha_settings: settings, ui_workshop_catalog: [...catalog().filter(item => item.id !== id), entry] }, [[id, pack]]);
+		cacheBootAppearance(pack);
+	});
+}
 export function usePack(id) {
 	return serial(async () => {
 		const pack = id ? await readPack(id) : undefined;
@@ -81,19 +112,31 @@ export async function undoPack() {
 	const previous = lib.config.ui_workshop_previous || "";
 	await usePack(previous);
 }
-export function releaseAppearance() {
-	disposeProvider?.(); disposeProvider = undefined;
-	dispose?.(); dispose = undefined;
-	urls.forEach(url => URL.revokeObjectURL(url)); urls = [];
+export function releaseAppearance(reset = true) {
+	if (reset) { generation++; initialization = undefined; }
+	for (const release of providerDisposers.splice(0).reverse()) {
+		try { release?.(); } catch (error) { console.warn("UI 资源释放失败", error); }
+	}
+	try { dispose?.(); } catch (error) { console.warn("UI 样式释放失败", error); }
+	dispose = undefined;
+	for (const url of urls) URL.revokeObjectURL(url);
+	urls = [];
+	for (const [key, value] of appliedSettings) if (lib.config[key] === value) {
+		if (baseline[key] === undefined) delete lib.config[key]; else lib.config[key] = baseline[key];
+	}
+	appliedSettings.clear(); loaded = undefined;
 }
 function render(pack) {
-	releaseAppearance();
 	const lookup = {};
 	for (const [path, blob] of Object.entries(pack.assets)) { lookup[path] = URL.createObjectURL(blob); urls.push(lookup[path]); }
 	dispose = mountAppearance(pack.manifest, path => lookup[path], document.head);
 }
 /** Called before layout/CSS initialization; managed settings never overwrite originals. */
-export async function initializeWorkshop() {
+export function initializeWorkshop() {
+	return initialization ||= initializeAppearance();
+}
+async function initializeAppearance() {
+	const current = generation;
 	baseline = Object.fromEntries(SETTING_KEYS.map(key => [key, lib.config[key]]));
 	lib.uiWorkshop = { version: 1, registerExtension, use: usePack, ownsSetting: key => !!loaded && Object.values(loaded.manifest.components).some(part => Object.hasOwn(part.settings || {}, key)), open: async () => (await import("./manager.js")).openWorkshop() };
 	lib.uiWorkshop.openRooms = async mode => (await import("../../online/entry.js")).openOnlineRooms(mode);
@@ -110,34 +153,69 @@ export async function initializeWorkshop() {
 		console.warn("UI 套装重复记录暂未整理，下次启动会重试", error);
 		lib.uiWorkshop.error = "旧套装重复记录暂未整理，请检查本地存储空间；仍可正常选择和使用套装。";
 	});
-	window.addEventListener("keydown", event => {
-		if (!event.ctrlKey || !event.shiftKey || event.code !== "KeyU") return;
-		event.preventDefault(); event.stopImmediatePropagation();
-		void lib.uiWorkshop.open().catch(error => alert(`无法打开 UI 工坊：${error.message || error}`));
-	}, { capture: true });
+	if (current !== generation) return;
+	window.addEventListener("keydown", workshopShortcut, { capture: true });
 	if (new URLSearchParams(location.search).has("uiSafe")) return;
 	if (!activeId()) { cacheBootAppearance(); return; }
 	try {
-		loaded = await readPack(activeId());
+		const pack = await readPack(activeId());
+		if (current !== generation) return;
+		loaded = pack;
 		cacheBootAppearance(loaded);
 		checkNativeSettings(loaded.manifest);
-		for (const part of Object.values(loaded.manifest.components)) Object.assign(lib.config, part.settings || {});
+		for (const part of Object.values(loaded.manifest.components)) for (const [key, value] of Object.entries(part.settings || {})) {
+			lib.config[key] = value; appliedSettings.set(key, value);
+		}
 		render(loaded);
 		if (loaded.manifest.components.home?.runtime === "rzsh") {
-			const provider = await import(/* @vite-ignore */ new URL(`${lib.assetURL}extension/如真似幻/extension.js`, document.baseURI).href);
-			disposeProvider = await provider.activate();
+			const provider = await import(/* @vite-ignore */ new URL(providerDirectory('如真似幻')+'extension.js', document.baseURI).href);
+			if (current !== generation) return;
+			const release = await provider.activate(loaded.manifest);
+			if (current !== generation) { release?.(); return; }
+			providerDisposers.push(release);
+			appliedSettings.set("splash_style", lib.config.splash_style);
 		}
 		if (Object.values(loaded.manifest.components).some(part => part.runtime === "shousha")) {
-			const provider = await import(/* @vite-ignore */ new URL(`${lib.assetURL}extension/手杀标准UI/extension.js`, document.baseURI).href);
-			disposeProvider = await provider.activate(loaded.manifest);
+			const provider = await import(/* @vite-ignore */ new URL(providerDirectory('手杀标准UI')+'extension.js', document.baseURI).href);
+			if (current !== generation) return;
+			const release = await provider.activate(loaded.manifest);
+			if (current !== generation) { release?.(); return; }
+			providerDisposers.push(release);
+			appliedSettings.set("splash_style", lib.config.splash_style);
 		}
 	} catch (error) {
+		if (current !== generation) return;
+		const failedName = loaded?.manifest.name || catalog().find(pack => pack.id === activeId())?.name || "所选 UI";
 		loaded = undefined;
-		cacheBootAppearance();
-		Object.assign(lib.config, baseline);
-		releaseAppearance();
-		console.error("UI 套装加载失败，已回退原有外观", error);
-		lib.uiWorkshop.error = `UI 套装加载失败，已使用原有外观：${error.message || error}`;
+		lib.uiWorkshop.failedId = activeId();
+		releaseAppearance(false);
+		console.error("UI 套装加载失败", error);
+		lib.uiWorkshop.error = `${failedName}加载失败：${error.message || error}`;
+		// Keep the selection visible even if its provider import failed. Never
+		// silently present the stock lobby as a successfully applied skin.
+		const failure = {
+			id: "ui-workshop-failed", name: failedName,
+			init(node) {
+				const panel = document.createElement("section");
+				panel.style.cssText = "position:absolute;inset:15%;padding:30px;overflow:auto;background:#172431;color:#f2dfb3;border:1px solid #ad8d53;font:20px sans-serif";
+				const heading = document.createElement("h2"), message = document.createElement("p");
+				heading.textContent = failedName; message.textContent = lib.uiWorkshop.error;
+				panel.append(heading, message);
+				for (const [label, action] of [["重新加载", () => game.reload()], ["打开 UI 工坊", () => lib.uiWorkshop.open()]]) {
+					const button = document.createElement("button"); button.textContent = label;
+					button.onclick = () => Promise.resolve().then(action).catch(error => { message.textContent = error.message; });
+					panel.append(button);
+				}
+				node.append(panel);
+			},
+			async dispose(node) { node?.remove(); return true; },
+			preview() {},
+		};
+		lib.onloadSplashes ||= [];
+		lib.onloadSplashes.push(failure);
+		lib.config.splash_style = failure.id;
+		appliedSettings.set("splash_style", failure.id);
+		providerDisposers.push(() => { lib.onloadSplashes = lib.onloadSplashes.filter(item => item !== failure); });
 	}
 }
 

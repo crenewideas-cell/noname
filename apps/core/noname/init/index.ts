@@ -602,8 +602,15 @@ export async function boot() {
 		perfMark("mode.selected");
 
 		if (!settingsOnly) {
-			let splashInRemoing = await splash.dispose(node);
-			if (!splashInRemoing) node.remove();
+			try {
+				const splashInRemoving = await splash.dispose(node);
+				if (!splashInRemoving) node.remove();
+			} catch (error) {
+				// The selected mode is already committed. A presentation cleanup
+				// failure must not prevent the core from starting that game.
+				console.warn("大厅展示资源释放失败", error);
+				node.remove();
+			}
 			delete window.inSplash;
 			game.saveConfig("mode", result);
 		} else {

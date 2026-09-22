@@ -1,5 +1,8 @@
 /** Self-contained: this exact renderer is included in exported Noname extensions. */
-export function mountAppearance(manifest, resolveAsset, root = document.head, scope = "") {
+export function mountAppearance(manifest, resolveAsset, root = document.head, scope = ":is(#ui-workshop-custom, :root) ") {
+	// One extra ID worth of specificity makes explicit workshop overrides win
+	// over a provider's default skin, including styles loaded after this sheet.
+	// :root is the matching branch; no synthetic gameplay node is created.
 	const areas = {
 		home: ["#splash"], modes: ["#splash .lobby-modes", "#splash .session-entry > div[link]"],
 		lobby: [".online-lobby", ".online-dialog"], arena: ["#window", "body > .background"],
@@ -48,6 +51,22 @@ export function mountAppearance(manifest, resolveAsset, root = document.head, sc
 			add(selectors.flatMap(selector => [selector, `${selector} *`]), { "font-family": `"${family}",sans-serif` });
 		}
 	}
+	// User-authored descendant styles must not override the core's information
+	// masks. Keep the stock self/replay dimming and unknown-general placeholder.
+	const privacyScope = ":is(#ui-workshop-private#ui-workshop-private#ui-workshop-private, :root) ";
+	const protect = (selectors, values) => rules.push(`${selectors.map(selector => privacyScope + selector).join(",")}{${values}}`);
+	protect([".card.infohidden > div"], "visibility:hidden!important");
+	protect([".unseen > .avatar", ".unseen > .name:not(.name2)", ".unseen2 > .avatar2", ".unseen2 > .name2"], "opacity:0!important");
+	protect([
+		'#arena:not(.observe) .player[data-position="0"].unseen > .avatar',
+		'#arena:not(.observe) .player[data-position="0"].unseen2 > .avatar2',
+		'#arena:not(.observe) .player[data-position="0"].unseen > .name:not(.name2):not(.name_seat)',
+		'#arena:not(.observe) .player[data-position="0"].unseen2 > .name2',
+		'#arena:not(.observe) .unseen_v > .avatar', '#arena:not(.observe) .unseen2_v > .avatar2',
+		'#arena:not(.observe) .unseen_v > .name:not(.name2):not(.name_seat)', '#arena:not(.observe) .unseen2_v > .name2',
+	], "opacity:.2!important");
+	const unknown = new URL("image/character/hidden_image.jpg", root.ownerDocument.baseURI).href;
+	protect(['#arena:not(.observe) .player:not([data-position="0"]).unseen_show > .avatar', '#arena:not(.observe) .player:not([data-position="0"]).unseen2_show > .avatar2'], `opacity:1!important;background-image:url(${JSON.stringify(unknown)})!important`);
 	style.textContent = rules.join("\n");
 	root.appendChild(style);
 	const htmlStyle = root.ownerDocument.documentElement.style;

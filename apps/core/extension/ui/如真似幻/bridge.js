@@ -1,6 +1,6 @@
 import { lib, game, get } from "noname";
 
-export const baseURL = () => `${lib.assetURL}extension/如真似幻/`;
+export const baseURL = () => import.meta.url.slice(0, import.meta.url.lastIndexOf('/') + 1);
 export function plainText(value) {
  const document = new DOMParser().parseFromString(String(value ?? ""), "text/html");
  return document.body.textContent.trim();
@@ -15,8 +15,7 @@ export function packLabel(name, translations) {
  const pack = lib.imported.character?.[name];
  return plainText(translations[name+"_character_config"] || pack?.translate?.[name] || lib.translate[name] || name);
 }
-const portraitJobs = new Map();
-function portrait(name) {
+function portrait(name, portraitJobs) {
  if (portraitJobs.has(name)) return portraitJobs.get(name);
  const job = (async () => {
   const info = get.character(name);
@@ -44,8 +43,18 @@ function portrait(name) {
  portraitJobs.set(name, job); return job;
 }
 export function createPortraitLoader(lifecycle) {
- const queue = [], pending = new WeakSet(), textures = new Map(), waiting = new Set();
+ const queue = [], pending = new WeakSet(), textures = new Map(), waiting = new Set(), portraitJobs = new Map(), ownedTextures = new Set(), cancelLoads = new Set();
+ const graphics = PIXI;
  let active = 0, disposed = false;
+ function textureFromURL(url) {
+  return new Promise((resolve,reject)=>{
+   const image=new Image();image.crossOrigin='anonymous';
+   const finish=error=>{clearTimeout(timer);cancelLoads.delete(cancel);image.onload=image.onerror=null;if(error){image.src='';reject(error);}else resolve(new graphics.Texture(new graphics.BaseTexture(image)));};
+   const cancel=()=>finish(new Error('武将立绘加载已取消'));
+   const timer=setTimeout(cancel,15000);cancelLoads.add(cancel);
+   image.onload=()=>finish();image.onerror=()=>finish(new Error('武将立绘加载失败'));image.src=url;
+  });
+ }
  const fit = sprite => {
   const box = sprite.workshopPortraitBox;
   if (!box) return;
@@ -64,10 +73,13 @@ export function createPortraitLoader(lifecycle) {
    if (sprite.destroyed || sprite.workshopPortraitLoaded || !attached(sprite)) { pending.delete(sprite); continue; }
    const name = sprite.workshopCharacter;
    active++;
-   const job = textures.get(name) || portrait(name).then(url => PIXI.Texture.fromURL(url));
+   const job = textures.get(name) || portrait(name, portraitJobs).then(url => {
+    if(disposed)return null;
+    return textureFromURL(url).then(texture=>{if(disposed){texture.destroy(true);return null;}ownedTextures.add(texture);return texture;});
+   });
    textures.set(name, job);
    job.then(texture => {
-    if (!disposed && !sprite.destroyed) { sprite.texture = texture; fit(sprite); sprite.workshopPortraitLoaded = true; }
+    if (!disposed && !sprite.destroyed && texture) { sprite.texture = texture; fit(sprite); sprite.workshopPortraitLoaded = true; }
     waiting.delete(sprite);
    }).catch(() => { textures.delete(name); waiting.delete(sprite); }).finally(() => { active--; pending.delete(sprite); pump(); });
   }
@@ -98,11 +110,13 @@ export function createPortraitLoader(lifecycle) {
    clip.beginFill(0xffffff).drawRoundedRect(box.x,box.y,box.width,box.height,3).endFill();
    card.addChild(clip); sprite.mask = clip; sprite.workshopPortraitBox = box; fit(sprite);
   },
-  dispose() { disposed = true; queue.length = 0; textures.clear(); waiting.clear(); }
+  dispose() { disposed = true; queue.length = 0; for(const cancel of [...cancelLoads])cancel();for(const texture of ownedTextures)texture.destroy(true);ownedTextures.clear();textures.clear();portraitJobs.clear();waiting.clear(); }
  };
 }
 export function createSceneGame(files, sceneGame) {
+ const sounds=new Set();
  return new Proxy(sceneGame, { get(target, key) {
+  if(key==='stopSceneAudio')return()=>{for(const audio of sounds){audio.pause();audio.removeAttribute('src');}sounds.clear();};
   if (key === "getFileList") return (directory, callback) => {
    const prefix = directory.replace(/^.*extension\/如真似幻\//, "").replace(/\/$/, "") + "/";
    const children = files.filter(path => path.startsWith(prefix)).map(path => path.slice(prefix.length));
@@ -110,7 +124,9 @@ export function createSceneGame(files, sceneGame) {
   };
   if (key === "playAudio") return (...args) => {
    const path = args.filter(arg => typeof arg === "string").join("/");
-   return game.playAudio({ path: /^audio\//.test(path) ? `ext:如真似幻/${path}` : path, addVideo: false });
+   if(!/^audio\//.test(path))return game.playAudio({path,addVideo:false});
+   const audio=new Audio(new URL(path, new URL(baseURL(),location.href)).href);audio.volume=Math.max(0,Math.min(1,(lib.config.volumn_audio||0)/8));sounds.add(audio);
+   const release=()=>{audio.pause();audio.removeAttribute('src');sounds.delete(audio);};audio.onended=release;audio.onerror=release;void audio.play().catch(release);return audio;
   };
   return Reflect.get(target, key);
  } });

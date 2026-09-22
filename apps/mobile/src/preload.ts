@@ -34,7 +34,7 @@ interface SafFsPlugin {
 }
 
 const SafFs = registerPlugin<SafFsPlugin>("SafFs");
-const OnlineLobby = registerPlugin<{ open(options: { url: string }): Promise<void> }>("OnlineLobby");
+const OnlineLobby = registerPlugin<{ open(options: { url: string; skin?: string }): Promise<void> }>("OnlineLobby");
 
 function sanitizeExportName(name?: string) {
 	return (name || "noname").replace(/\\|\/|:|\?|"|\*|<|>|\|/g, "-");
@@ -126,7 +126,7 @@ export default async function preload({ lib, game }) {
 	game.open = function (url: string) {
 		window.open(url);
 	};
-	game.openOnlineLobby = (url: string) => OnlineLobby.open({ url });
+	game.openOnlineLobby = (url: string, skin?: string) => OnlineLobby.open({ url, skin });
 
 	game.checkFile = function checkFile(
 		fileName: string,

@@ -27,7 +27,8 @@ export function copySceneData(value, seen = new Map()) {
 export function createSceneContext(host, { settingsKey, defaults = {}, actions = {} }) {
 	const { lib, game, ui, get } = host;
 	const settings = copySceneData(lib.config[settingsKey] || {});
-	const config = Object.assign(copySceneData(lib.config), defaults, settings);
+	const config = Object.assign(copySceneData(lib.config), copySceneData(defaults), copySceneData(settings));
+	let disposed = false, committing;
 	config.mode_config ||= {};
 	// The current engine owns game options, even when an old UI saved a copy.
 	config.mode = lib.config.mode;
@@ -75,6 +76,7 @@ export function createSceneContext(host, { settingsKey, defaults = {}, actions =
 		playAudio: (...args) => game.playAudio(...args),
 		log: (...args) => console.info(...args),
 		saveConfig(key, value, mode, callback) {
+			if (disposed) return;
 			if (typeof mode === "string") {
 				(config.mode_config[mode] ||= {})[key] = copySceneData(value);
 				if (!pendingMode.has(mode)) pendingMode.set(mode, {});
@@ -90,7 +92,7 @@ export function createSceneContext(host, { settingsKey, defaults = {}, actions =
 					game.saveConfig(key, value);callback?.();return;
 				}
 				settings[key] = copySceneData(value);
-				game.saveConfig(settingsKey, settings);
+				game.saveConfig(settingsKey, copySceneData(settings));
 			}
 			callback?.();
 		},
@@ -98,13 +100,21 @@ export function createSceneContext(host, { settingsKey, defaults = {}, actions =
 	};
 	sceneLib.game = sceneGame;
 	return { lib: sceneLib, game: sceneGame, ui: sceneUi, get: sceneGet, ai: {}, _status: {}, config,
+		dispose() { disposed = true; pendingMode.clear(); },
 		refreshCharacters() {
 			for (const key of ["character", "characterPack", "characterSort", "translate"]) sceneLib[key] = copySceneData(lib[key] || {});
 			sceneLib.imported = importedMetadata();
 			refreshSort();
 		},
 		/** Only stock mode options chosen on the lobby's mode page may cross. */
-		async commitMode(mode) {
+		commitMode(mode) {
+			if (disposed) return Promise.reject(new Error("大厅已关闭"));
+			if (committing) return committing;
+			committing = commit(mode).finally(() => { committing = undefined; });
+			return committing;
+		},
+	};
+	async function commit(mode) {
 			if (!lib.config.all.mode.includes(mode) || mode === "connect") throw new Error("当前玩法不可用");
 			const options = pendingMode.get(mode) || {};
 			const accepted = [];
@@ -118,8 +128,11 @@ export function createSceneContext(host, { settingsKey, defaults = {}, actions =
 				accepted.push([key, options[key]]);
 			}
 			// Validate the complete draft before changing any host preference.
-			for (const [key, value] of accepted) await game.promises.saveConfig(key, value, mode);
+			for (const [key, value] of accepted) {
+				if (disposed) throw new Error("大厅已关闭");
+				await game.promises.saveConfig(key, value, mode);
+			}
+			if (disposed) throw new Error("大厅已关闭");
 			await game.promises.saveConfig("mode", mode);
-		},
-	};
+	}
 }

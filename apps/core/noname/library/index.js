@@ -13,6 +13,7 @@ import { refreshCharacterSkins } from "../skin/index.js";
 import { openSkinGallery } from "../ui/skinGallery.js";
 import { openConnectionRecovery } from "../ui/gameNavigation.js";
 import { applyPresentation } from "../ui/presentation.js";
+import { emitPresentation } from "../ui/presentationEvents.js";
 import { LibInit } from "./init/index.js";
 import { Announce } from "./announce/index.js";
 import { experimental } from "./experimental/index.js";
@@ -13874,6 +13875,7 @@ export class Library {
 					ui.commonCardPileButton.style.display = "";
 				}
 				_status.gameStarted = true;
+				emitPresentation("start", () => ({}));
 				game.showHistory();
 			},
 			updateWaiting: function (map) {

@@ -2,7 +2,7 @@
 import { app, BrowserWindow, WebContentsView, crashReporter, dialog, ipcMain, Menu, shell, session } from "electron";
 import { createHash } from "node:crypto";
 import { onlineEntry } from "./online-assets";
-import { installOnlineProtocol } from "./online-protocol";
+import { installOnlineProtocol, registerSkinTransfer } from "./online-protocol";
 import fs from "fs";
 import path from "path";
 import remote from "@electron/remote/main/index.js";
@@ -29,18 +29,19 @@ let quitting = false;
 let relaunchRequested = false;
 let serviceReady = false;
 let mainWindow: BrowserWindow | undefined;
-ipcMain.handle("noname:open-online", (event, address: unknown) => {
+ipcMain.handle("noname:open-online", (event, address: unknown, skin: unknown) => {
   if (quitting) throw new Error("程序正在退出，请重新打开后进入联机。");
   const caller = new URL(event.sender.getURL());
   const owner = mainWindow;
   if (!owner || event.sender !== owner.webContents || event.senderFrame !== event.sender.mainFrame ||
     !["http://localhost:8081", "http://localhost:8089"].includes(caller.origin) || typeof address !== "string") throw new Error("Invalid online entry");
   // Rapid repeated clicks share one transition and one embedded view.
-  pendingOnlineEntry ??= openOnlineView(owner, address).finally(() => { pendingOnlineEntry = undefined; });
+  pendingOnlineEntry ??= openOnlineView(owner, address, skin).finally(() => { pendingOnlineEntry = undefined; });
   return pendingOnlineEntry;
 });
 
-async function openOnlineView(owner: BrowserWindow, address: string): Promise<string | undefined> {
+async function openOnlineView(owner: BrowserWindow, address: string, skin?: unknown): Promise<string | undefined> {
+  if(skin!==undefined&&(typeof skin!=='string'||Buffer.byteLength(skin,'utf8')>192*1024*1024))throw new Error('联机皮肤数据过大或格式无效');
   const assetRoot = path.join(dirname, "online-client");
   const url = await onlineEntry(assetRoot, address);
   const partition = "persist:noname-online-" + createHash("sha256").update(url.origin).digest("hex").slice(0, 16);
@@ -63,6 +64,8 @@ async function openOnlineView(owner: BrowserWindow, address: string): Promise<st
     },
   });
   const contents = view.webContents;
+  const skinTransfer=registerSkinTransfer(url.origin,skin);
+  if(skinTransfer)url.hash += `&skin=${skinTransfer.token}`;
   const contentsId = contents.id;
   const wasMuted = owner.webContents.isAudioMuted();
   let disposed = false;
@@ -76,6 +79,7 @@ async function openOnlineView(owner: BrowserWindow, address: string): Promise<st
   const dispose = () => {
     if (disposed) return;
     disposed = true;
+    skinTransfer?.dispose();
     onlineViews.delete(contentsId);
     const backMenu = Menu.getApplicationMenu()?.getMenuItemById("return-local-lobby");
     if (backMenu) backMenu.enabled = false;

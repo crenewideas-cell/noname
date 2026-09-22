@@ -6,6 +6,7 @@ import { ContentCompiler } from "./gameEvent.js";
 import { AsyncFunction } from "@/util/index.js";
 import dedent from "dedent";
 import { listenForActivation } from "../../ui/activation.js";
+import { emitPresentation, playerPresentation } from "../../ui/presentationEvents.js";
 
 export class Player extends HTMLDivElement {
 	/**
@@ -2930,6 +2931,7 @@ export class Player extends HTMLDivElement {
 	 * @param { boolean } bool
 	 */
 	tryJudgeAnimate(bool) {
+		emitPresentation("judge", () => ({ player: playerPresentation(this), effective: !!bool }));
 		game.broadcast(
 			function (player, bool) {
 				player.tryJudgeAnimate(bool);
@@ -2950,6 +2952,7 @@ export class Player extends HTMLDivElement {
 	 */
 	trySkillAnimate(name, popname, checkShow) {
 		game.callHook("checkSkillAnimate", [this, name, popname]);
+		emitPresentation("skill", () => ({ player: playerPresentation(this), skill: String(name), label: get.skillTranslation(name, this), limited: !!lib.skill[name]?.limited, awakening: !!lib.skill[name]?.juexingji, mission: !!lib.skill[name]?.dutySkill }));
 		if (!game.online && lib.config.skill_animation_type != "off" && lib.skill[name] && lib.skill[name].skillAnimation) {
 			if (lib.config.skill_animation_type == "default") {
 				checkShow = checkShow || "main";
@@ -2988,6 +2991,7 @@ export class Player extends HTMLDivElement {
 	 * @param { string } [popname]
 	 */
 	tryCardAnimate(card, name, nature, popname) {
+		emitPresentation("card", () => ({ player: playerPresentation(this), card: String(card.name), nature: String(card.nature || nature || ""), label: String(name || "") }));
 		game.broadcast(
 			function (player, card, name, nature, popname) {
 				player.tryCardAnimate(card, name, nature, popname);
@@ -14557,6 +14561,7 @@ export class Player extends HTMLDivElement {
 		game.addVideo("compare", this, [get.cardInfo(card1), target.dataset.position, get.cardInfo(card2)]);
 		var player = this;
 		var node1 = player.$throwxy2(card1, "calc(50% - 114px)", "calc(50% - 52px)", "perspective(600px) rotateY(180deg)", true);
+		node1.dataset.presentationRole = "compare-left";
 		if (lib.config.cardback_style != "default") {
 			node1.style.transitionProperty = "none";
 			ui.refresh(node1);
@@ -14600,6 +14605,7 @@ export class Player extends HTMLDivElement {
 		node1.listenTransition(onEnd01);
 		setTimeout(function () {
 			var node2 = target.$throwxy2(card2, "calc(50% + 10px)", "calc(50% - 52px)", "perspective(600px) rotateY(180deg)", true);
+			node2.dataset.presentationRole = "compare-right";
 			if (lib.config.cardback_style != "default") {
 				node2.style.transitionProperty = "none";
 				ui.refresh(node2);
@@ -16303,6 +16309,7 @@ export class Player extends HTMLDivElement {
 	 * @param { false } [broadcast]
 	 */
 	$fullscreenpop(str, nature, avatar, broadcast) {
+		emitPresentation("fullscreen", () => ({ player: playerPresentation(this), label: String(str), nature: String(nature || "") }));
 		if (broadcast !== false) {
 			game.broadcast(
 				function (player, str, nature, avatar) {
@@ -16386,6 +16393,7 @@ export class Player extends HTMLDivElement {
 	 */
 	$damagepop(num, nature = "soil", font, nobroadcast) {
 		if (typeof num == "number" || typeof num == "string") {
+			emitPresentation("number", () => ({ player: playerPresentation(this), value: num, nature: String(nature), text: !!font }));
 			game.addVideo("damagepop", this, [num, nature, font]);
 			if (nobroadcast !== false) {
 				game.broadcast(
@@ -16507,6 +16515,7 @@ export class Player extends HTMLDivElement {
 		this.queue();
 	}
 	$die() {
+		emitPresentation("death", () => ({ player: playerPresentation(this) }));
 		game.addVideo("die", this);
 		game.broadcast(function (player) {
 			player.$die();

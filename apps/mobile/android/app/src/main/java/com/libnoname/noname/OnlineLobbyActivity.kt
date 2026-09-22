@@ -17,22 +17,26 @@ import android.widget.LinearLayout
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
 import java.io.IOException
+import java.io.File
 
 /** Local bundled game files share the API origin, without a native JS bridge. */
 class OnlineLobbyActivity : Activity() {
     private var page: WebView? = null
+    private var skinFile: File? = null
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val fragment = intent.getStringExtra("url") ?: run { finish(); return }
         if (!Regex("^#online=[a-z0-9_-]+(?:&appearance=[A-Za-z0-9_-]{1,8192})?$").matches(fragment)) { finish(); return }
+        val skinToken = intent.getStringExtra("skinToken")?.takeIf { Regex("^[a-f0-9-]{36}$").matches(it) }
+        skinFile = skinToken?.let { File(cacheDir, "online-skin-$it.json") }
         val manifest = try { assets.open("public/online-client/deployment.json").bufferedReader().use { JSONObject(it.readText()) } }
             catch (_: Exception) { finish(); return }
         if (manifest.optString("kind") != "client") { finish(); return }
         val origin = Uri.parse(manifest.optString("origin"))
         if (origin.scheme !in listOf("http", "https") || origin.host.isNullOrBlank() || origin.userInfo != null) { finish(); return }
-        val address = origin.buildUpon().path("/index.html").clearQuery().encodedFragment(fragment.removePrefix("#")).build().toString()
+        val address = origin.buildUpon().path("/index.html").clearQuery().encodedFragment(fragment.removePrefix("#") + (skinToken?.let { "&skin=$it" } ?: "")).build().toString()
         val layout = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         val back = Button(this).apply {
             text = "关闭联机窗口，返回本地首页"
@@ -58,6 +62,11 @@ class OnlineLobbyActivity : Activity() {
                 val path = target.path ?: return missing()
                 if (path.startsWith("/api/v1/") || path == "/ws/v1") return null
                 if (request.method != "GET") return missing(405)
+                if (path.startsWith("/_ui-skin/")) {
+                    if (skinToken == null || path != "/_ui-skin/$skinToken") return missing(404)
+                    return try { WebResourceResponse("application/json", "UTF-8", 200, "OK", mapOf("Cache-Control" to "no-store"), skinFile!!.inputStream()) }
+                    catch (_: Exception) { missing(404) }
+                }
                 val name = if (path == "/") "index.html" else path.removePrefix("/")
                 if (name.contains('\\') || name.contains('\u0000') || name.contains(':')) return missing(403)
                 val parts = name.split('/')
@@ -99,6 +108,7 @@ class OnlineLobbyActivity : Activity() {
     override fun onDestroy() {
         page?.let { web -> web.stopLoading(); (web.parent as? LinearLayout)?.removeView(web); web.destroy() }
         page = null
+        if (!isChangingConfigurations) skinFile?.delete()
         super.onDestroy()
     }
 }
