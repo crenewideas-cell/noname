@@ -1,0 +1,42 @@
+{
+  "name": "太虚幻境",
+  "version": "2.0.3.4",
+  "reference": "三国杀·琉璃版5.5",
+  "author": "太虚幻境攻坚小分队",
+  "license": "GPL-3.0",
+  "seasons": [
+    "ChongYingChuLin",
+    "GFHuangJinZhiLuan",
+    "GFQiQinMengHuo",
+    "HaiWaiFengHe",
+    "HeJinZhuHuan",
+    "HuangTianZhiNu",
+    "LiGuoZhiLuan",
+    "MGBaWangZhengCheng"
+  ],
+  "sourceHashes": {
+    "extension.js": "87b36b99f9bcd2a001569ad8f6521592014f766bfa4b4527b4dcaba6199896c9",
+    "extension_framework.js": "0cfe77651df5ff23ac93d8fd0ca3d8f4ab1b98f014f9cfd29b490b4cf7902cbc",
+    "extension_character.js": "6273a84016f3b262ef7bb48d24151f75d48e812d144b777d63d84c87d599d013",
+    "extension_card.js": "ec31733e90435a666d4b91c17918893c6be5368bc4981e9032ca17be597f09fd",
+    "extension_skill.js": "0d3245cabf7cb28b3d0ef5075d8a19a4fc7e51c758e5bbd62469af4481bb34a7",
+    "extension_servant.js": "60f9353821b6b44b94a4f139cdef05f107ebadb7cfd2b3568d9496b8226a63ee",
+    "event/event_universal.js": "9c96ab349b4c4577124c332ef160844c3d7e5a83150a32a96c6cad615e5352bb",
+    "extension_buff.js": "17879b298ed23885ade47d57a50d6904db3a3bc60edf2b784700809f5123ebe1",
+    "extension_collect.js": "debff9aafecc37526a50783daf5598bef03e74039e980071a053c850ec598eea",
+    "extension_csrank.js": "793cd02e26735a82a0c53ffcefe8d8a97f2130a2a59c120e2d8107b1eeb9cb42",
+    "dlc/ChongYingChuLin/extension_season.js": "09958a2fc0e83d5eb4bb690e3b4c5d46df3ba654cb4fed7523fba954c710e829",
+    "dlc/GFHuangJinZhiLuan/extension_season.js": "5ab048c844ba02f67f41296d0e01ba9a3154f4c959177275b64194567f0efd7e",
+    "dlc/GFQiQinMengHuo/extension_season.js": "2a8689a7b4cbe2b6863c76582ed8fe635da80c63de9dc43115d070ba247763eb",
+    "dlc/HaiWaiFengHe/extension_season.js": "f7cdb416694e3a648d42ac97f01348f4c6e59931ebe7a1eb0c64ede02090d2ad",
+    "dlc/HeJinZhuHuan/extension_season.js": "1adf75c2d9972613500165b614d01f5b78bf47ce65396abf069b34003b2c6f45",
+    "dlc/HuangTianZhiNu/extension_season.js": "c197b97b3978362492e74076ea08516a36706fc04d0e73ef587d97f07c232e22",
+    "dlc/LiGuoZhiLuan/extension_season.js": "a232829468721c141b94ee7daa1fefd1cfa29d7204113074986b2d1cd98b9df3",
+    "dlc/MGBaWangZhengCheng/extension_season.js": "a6bbfcdbfcf9fa16a5fd40258875878a80630c10ebd3879c4fef79d13334d81b",
+    "extension_MobileStyle.css": "5e8af6d9c35512147f7662f902c6b433b23bd328c7b4736fe26ea5f40d6d5235",
+    "extension_PcStyle.css": "c6f984e96f41e06b9dd9858f2ba6e63c1519fcbc2d873747f5bcaffba0674f4e",
+    "extension_servant.css": "df677135423d10b9829d1a21a6acf40183359e00f3b1e445e57f3d4f8dc5f188",
+    "extension_style.css": "79cc5d7d6682b6fe16b6dc9aee44ac4138a17adca1879504b88d90b3cf81cf96"
+  },
+  "assets": 1831
+}

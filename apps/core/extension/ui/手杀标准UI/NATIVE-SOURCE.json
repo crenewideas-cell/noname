@@ -11,8 +11,8 @@
     "标记补充",
     "电脑适配"
   ],
-  "files": 15178,
-  "bytes": 2785755889,
+  "inventory": "files.json",
+  "programs": "migrated-presentation-only",
   "onlineRooms": "host",
   "registration": "one-private-ui-provider",
   "personalData": false

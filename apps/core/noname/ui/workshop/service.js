@@ -3,9 +3,10 @@ import { PARTS, SETTING_KEYS, MIME, clone, newId, emptyPack, validateManifest, v
 import { mountAppearance } from "./runtime.js";
 import { builtinPacks } from "./presets.js";
 import { providerDirectory } from "./provider.js";
+import { completeRzshIngame } from "./ingame.js";
 
 const PREFIX = "ui-workshop:";
-/** @typedef {{version: number, registerExtension: typeof registerExtension, use: typeof usePack, ownsSetting: (key: string) => boolean, open: () => Promise<void>, openRooms?: (mode: string) => Promise<unknown>, openSkins?: (id?: string) => Promise<unknown>, openSettings?: (page: string) => Promise<void>, openSuiteSettings?: () => void, prepareCharacters?: () => Promise<void>, error?: string, failedId?: string}} WorkshopAPI */
+/** @typedef {{version: number, registerExtension: typeof registerExtension, use: typeof usePack, ownsSetting: (key: string) => boolean, open: () => Promise<void>, openRooms?: (mode: string) => Promise<unknown>, openSkins?: (id?: string) => Promise<unknown>, openSettings?: (page: string) => Promise<void>, openSuiteSettings?: () => void, error?: string, failedId?: string}} WorkshopAPI */
 let dispose;
 let urls = [];
 let baseline;
@@ -32,10 +33,10 @@ export const activeId = () => lib.config.ui_workshop_active || "";
 export async function readPack(id) {
 	if (!/^[a-zA-Z0-9_-]{1,100}$/.test(id)) throw new Error("套装 ID 无效");
 	const preset = builtinPacks().find(pack => pack.manifest.id === id);
-	if (preset) return validateRecord(preset);
+	if (preset) return completeRzshIngame(validateRecord(preset));
 	const data = await game.getDB("data", PREFIX + id);
 	if (!data) throw new Error("套装素材不存在，请重新导入");
-	return validateRecord(data);
+	return completeRzshIngame(validateRecord(data));
 }
 function requireStorage() {
 	if (!lib.db) throw new Error("当前环境的 IndexedDB 不可用，无法保存 UI 素材。请允许本地存储后重试。");
@@ -59,7 +60,7 @@ function commit(config, data = []) {
 export function savePack(input, copy = false) {
 	return serial(async () => {
 		requireStorage();
-		const record = validateRecord(input);
+		const record = completeRzshIngame(validateRecord(input));
 		if (copy || record.manifest.id.startsWith("builtin-") || record.manifest.id === activeId() || record.manifest.id === lib.config.ui_workshop_previous) record.manifest.id = newId();
 		const id = record.manifest.id;
 		const entry = { id, name: record.manifest.name, author: record.manifest.author || "", parts: Object.keys(record.manifest.components), updated: Date.now(), bytes: Object.values(record.assets).reduce((n, blob) => n + blob.size, 0) };
@@ -75,10 +76,21 @@ export function deletePack(id) {
 	});
 }
 /** Native-window appearance handoff. The record still passes the same data-only schema. */
-export function receiveOnlinePack(input, settings) {
+function onlineAppearance(input) {
+	const keys = new Set(["phonelayout", "image_background_blur", "image_background_random", "hide_card_image", "theme", "layout", "presentation_style", "player_style", "border_style", "player_border", "card_style", "cardback_style", "hp_style", "control_style", "menu_style", "radius_size", "cardshape", "player_height", "player_height_nova", "ui_zoom"]);
+	return Object.fromEntries(Object.entries(input).map(([key, value]) => {
+		if (!keys.has(key) || !["string", "boolean"].includes(typeof value)) throw new Error("联机外观配置无效：" + key);
+		return [key, value];
+	}));
+}
+export function receiveOnlineAppearance(appearance) {
+	return serial(() => commit(onlineAppearance(appearance)));
+}
+export function receiveOnlinePack(input, settings, appearance = {}) {
 	return serial(async () => {
+		appearance = onlineAppearance(appearance);
 		if (!input) {
-			await commit({ui_workshop_active: "", ui_workshop_shousha_settings: settings});
+			await commit({...appearance, ui_workshop_active: "", ui_workshop_shousha_settings: settings});
 			cacheBootAppearance(); return;
 		}
 		const pack = validateRecord(input);
@@ -86,7 +98,7 @@ export function receiveOnlinePack(input, settings) {
 		const id = "builtin-online-transfer";
 		pack.manifest.id = id;
 		const entry = { id, name: pack.manifest.name, author: pack.manifest.author || "", parts: Object.keys(pack.manifest.components), updated: Date.now(), bytes: Object.values(pack.assets).reduce((sum, blob) => sum + blob.size, 0) };
-		await commit({ ui_workshop_active: id, ui_workshop_shousha_settings: settings, ui_workshop_catalog: [...catalog().filter(item => item.id !== id), entry] }, [[id, pack]]);
+		await commit({ ...appearance, ui_workshop_active: id, ui_workshop_shousha_settings: settings, ui_workshop_catalog: [...catalog().filter(item => item.id !== id), entry] }, [[id, pack]]);
 		cacheBootAppearance(pack);
 	});
 }
@@ -113,7 +125,7 @@ export async function undoPack() {
 	await usePack(previous);
 }
 export function releaseAppearance(reset = true) {
-	if (reset) { generation++; initialization = undefined; }
+	if (reset) { generation++; initialization = undefined; window.removeEventListener("keydown", workshopShortcut, { capture: true }); }
 	for (const release of providerDisposers.splice(0).reverse()) {
 		try { release?.(); } catch (error) { console.warn("UI 资源释放失败", error); }
 	}
@@ -142,13 +154,6 @@ async function initializeAppearance() {
 	lib.uiWorkshop.openRooms = async mode => (await import("../../online/entry.js")).openOnlineRooms(mode);
 	lib.uiWorkshop.openSkins = async id => (await import("../skinGallery.js")).openSkinGallery(id);
 	lib.uiWorkshop.openSettings = async page => (await import("../lobbySettings.js")).openLobbySettings(page);
-	lib.uiWorkshop.prepareCharacters = async () => {
-		for (const [name, pack] of Object.entries(lib.imported.character || {})) {
-			if (pack.character) lib.characterPack[name] = pack.character;
-			Object.assign(lib.translate, pack.translate || {});
-			lib.translate[name + "_character_config"] ||= pack.translate?.[name] || lib.translate[name] || name;
-		}
-	};
 	await repairBuiltinCopies().catch(error => {
 		console.warn("UI 套装重复记录暂未整理，下次启动会重试", error);
 		lib.uiWorkshop.error = "旧套装重复记录暂未整理，请检查本地存储空间；仍可正常选择和使用套装。";
@@ -167,6 +172,13 @@ async function initializeAppearance() {
 			lib.config[key] = value; appliedSettings.set(key, value);
 		}
 		render(loaded);
+		if (Object.values(loaded.manifest.components).some(part => part.runtime === "decade")) {
+			const provider = await import(/* @vite-ignore */ new URL(providerDirectory('十周年局内UI')+'extension.js', document.baseURI).href);
+			if (current !== generation) return;
+			const release = await provider.activate(loaded.manifest);
+			if (current !== generation) { release?.(); return; }
+			providerDisposers.push(release);
+		}
 		if (loaded.manifest.components.home?.runtime === "rzsh") {
 			const provider = await import(/* @vite-ignore */ new URL(providerDirectory('如真似幻')+'extension.js', document.baseURI).href);
 			if (current !== generation) return;

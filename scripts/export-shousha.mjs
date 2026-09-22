@@ -3,14 +3,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {ZipFile} from 'yazl';
 import {pipeline} from 'node:stream/promises';
+import {isProviderFile} from '../apps/core/noname/ui/workshop/providerFiles.js';
 const base=path.resolve('apps/core/extension/ui/手杀标准UI');
-const files=JSON.parse(fs.readFileSync(path.join(base,'files.json'),'utf8'));
+const files=JSON.parse(fs.readFileSync(path.join(base,'files.json'),'utf8')).filter(file=>isProviderFile('手杀标准UI',file));
 const destination=path.resolve('dist/ui/手杀标准UI-UI套装.zip');
 fs.mkdirSync(path.dirname(destination),{recursive:true});
 const zip=new ZipFile();
 const writing=pipeline(zip.outputStream,fs.createWriteStream(destination+'.partial'));
 let bytes=0;
 for(const file of [...new Set([...files,'files.json'])]){
+ if(file==='files.json'){zip.addBuffer(Buffer.from(JSON.stringify(files,null,2)+'\n'),file,{compress:false});continue;}
  const source=path.resolve(base,file);
  if(!source.startsWith(base+path.sep))throw new Error('Invalid provider resource path');
  bytes+=fs.statSync(source).size;zip.addFile(source,file,{compress:false});

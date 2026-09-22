@@ -1,5 +1,6 @@
 import { emptyPack } from "./schema.js";
 import { shoushaManifest } from "./shoushaPreset.js";
+import { decadeManifest, completeRzshIngame } from './ingame.js';
 
 export function builtinPacks() {
 	const packs = [
@@ -21,5 +22,6 @@ export function builtinPacks() {
 	});
 	packs.unshift({ manifest: { format: "noname-ui-workshop", version: 1, id: "builtin-rzsh", name: "如真似幻", author: "蒸、某个萌新、非凡欧德内里、文和", description: "如真似幻动画大厅、模式选择与武将图鉴；皮肤、设置和联机接入本体，可混搭卡牌与对局外观。所有玩法规则由本体处理。", components: { home: { name: "如真似幻 · 交互大厅", runtime: "rzsh", settings: {}, assets: {}, style: {} } } }, assets: {} });
 	packs.unshift({manifest: JSON.parse(JSON.stringify(shoushaManifest)), assets:{}});
-	return packs;
+	packs.push({manifest: JSON.parse(JSON.stringify(decadeManifest)), assets:{}});
+	return packs.map(completeRzshIngame);
 }

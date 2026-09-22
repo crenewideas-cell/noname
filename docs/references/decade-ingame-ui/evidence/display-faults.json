@@ -1,0 +1,155 @@
+{
+  "at": "2026-09-22T07:12:45.168Z",
+  "errors": [],
+  "warnings": [
+    "无法检查 noname.config.txt，使用已保存的配置: FileSystemError: IO_ERROR: noname.config.txt: Backend returned invalid JSON (HTTP 500, Content-Type: text/plain)\n    at createFileSystemError (http://127.0.0.1:8182/noname/init/browser.js:374:9)\n    at requestBackend (http://127.0.0.1:8182/noname/init/browser.js:324:9)\n    at async BrowserAdapter.stat (http://127.0.0.1:8182/noname/init/browser.js:156:16)",
+    "无法检查 noname.config.txt，使用已保存的配置: FileSystemError: IO_ERROR: noname.config.txt: Backend returned invalid JSON (HTTP 500, Content-Type: text/plain)\n    at createFileSystemError (http://127.0.0.1:8182/noname/init/browser.js:374:9)\n    at requestBackend (http://127.0.0.1:8182/noname/init/browser.js:324:9)\n    at async BrowserAdapter.stat (http://127.0.0.1:8182/noname/init/browser.js:156:16)"
+  ],
+  "media": [
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/ui/assets/lbtn/shousha/button.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/ui/assets/lbtn/shousha/tuoguan.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/background.jpg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/image/ui/dialog/dialog5.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/image/ui/mark/player_mark.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/image/ui/misc/control_button.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/hp/1.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/image/styles/xinsha/new_border_hp.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/image/styles/xinsha/new_border_camp.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/image/styles/shousha/identity2_zhu.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/image/styles/shousha/identity2_guessing.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/image/styles/shousha/identity2_zhong.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/ui/assets/fonts/HYZLSJ.woff2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/animation/effect_youxikaishi_shousha.skel",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/animation/effect_youxikaishi_shousha.atlas",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/image/ui/card/kuang1.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/cards/muniu.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/cards/tao.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/cards/tiesuo.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/cards/shan.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/audio/game_start_shousha.mp3",
+      "status": 206
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/animation/effect_youxikaishi_shousha.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/ui/assets/fonts/HYZLSJ.woff2",
+      "status": 304
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/image/ui/card/kb3.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/ui/assets/fonts/HYZLSJ.woff2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/十周年局内UI/assets/audio/game_start_shousha.mp3",
+      "status": 206
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/background.jpg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/image/styles/xinsha/new_border_camp.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8182/extension/ui/十周年局内UI/assets/ui/assets/fonts/HYZLSJ.woff2",
+      "status": 200
+    }
+  ],
+  "privacy": {
+    "hiddenPortraits": 0,
+    "group": "",
+    "cardArt": "",
+    "cardBackground": "url(\"http://127.0.0.1:8182/extension/ui/%E5%8D%81%E5%91%A8%E5%B9%B4%E5%B1%80%E5%86%85UI/assets/image/ui/card/kb3.png\")",
+    "cardNameVisibility": "visible"
+  },
+  "failure": {
+    "returned": 0.19999998807907104,
+    "canvas": 0
+  },
+  "disabled": {
+    "canvases": 0
+  },
+  "handoff": {
+    "id": "builtin-online-transfer",
+    "runtime": "decade",
+    "options": {
+      "effects": true,
+      "sound": true
+    },
+    "tokenRemoved": true
+  },
+  "continuation": {
+    "round": 1,
+    "event": "phase",
+    "over": false
+  },
+  "passed": true
+}

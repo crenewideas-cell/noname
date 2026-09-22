@@ -14,14 +14,34 @@ export function mountAppearance(manifest, resolveAsset, root = document.head, sc
 	const style = document.createElement("style");
 	style.dataset.uiWorkshop = manifest.id;
 	const rules = [];
+	// Exclude host-owned visibility states in every authored selector. A fixed
+	// specificity mask alone can be defeated by a rule with repeated IDs.
+	const protectedNodes = [".hidden", ".hidden *", ".removing", ".removing *", ".card.infohidden > *", ".card.infohidden > * *"];
+	for (const [states, children] of [
+		[".unseen,.unseen_v,.unseen_show", ".avatar,.name:not(.name2)"],
+		[".unseen2,.unseen2_v,.unseen2_show", ".avatar2,.name2"],
+	]) {
+		const node = `:is(${states}) > :is(${children})`;
+		protectedNodes.push(node, `${node} *`);
+	}
+	const guard = `:not(:is(${protectedNodes.join(",")}))`;
+	const guarded = selector => {
+		const pseudo = selector.search(/::|:(?:before|after|first-line|first-letter)\b/);
+		return pseudo < 0 ? selector + guard : selector.slice(0, pseudo) + guard + selector.slice(pseudo);
+	};
 	const add = (selectors, properties) => {
 		if (!selectors.length || !properties) return;
 		const values = Object.entries(properties).map(([key, value]) => `${key}:${value} !important`).join(";");
-		if (values) rules.push(`${selectors.map(selector => `${scope}${selector}`).join(",")}{${values}}`);
+		if (values) rules.push(`${selectors.map(selector => `${scope}${guarded(selector)}`).join(",")}{${values}}`);
 	};
 	const image = path => `url(${JSON.stringify(resolveAsset(path))})`;
 	for (const [id, part] of Object.entries(manifest.components)) {
-		const selectors = areas[id];
+		let selectors = areas[id];
+		// An in-game provider's explicit overrides must not recolor its lobby.
+		if (part.runtime === 'decade') {
+			const ingame = {arena:['#arena'],buttons:['#arena .control','#control .control','#system > div > div'],menus:['body[data-decade-parts] .menu','#arena > .dialog'],fonts:['#arena','#control','#system']};
+			selectors = ingame[id] || selectors;
+		}
 		if (!selectors) continue;
 		add(selectors, part.style);
 		for (const rule of part.rules || []) add(selectors.map(selector => `${selector} ${rule.selector}`), rule.style);

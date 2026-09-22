@@ -18,6 +18,7 @@ import { perfAwait, perfBegin, perfEnd, perfMark } from "../util/performance.js"
 import { isLobbySettings, showLobbySettings, configureLobbySettings } from "../ui/lobbySettings.js";
 import { initializeWorkshop } from "../ui/workshop/service.js";
 import { importOnlineAppearance } from "../online/appearance.js";
+import { createModeConfig as createTaixuhuanjingConfig } from "../../mode/taixuhuanjing/config.js";
 
 // 无名杀，启动！
 export async function boot() {
@@ -133,6 +134,8 @@ export async function boot() {
 
 	await trackLoad(lib.init.promises.js("game", "package"));
 	const pack = window.noname_package;
+	// Mode settings belong to the engine and are shared by every lobby skin.
+	lib.mode.taixuhuanjing = { name: "太虚幻境", config: createTaixuhuanjingConfig(game) };
 	delete window.noname_package;
 	for (const name in pack.character) {
 		if (config.get("all").sgscharacters.includes(name) || config.get("hiddenCharacterPack").indexOf(name) == -1) {
@@ -558,6 +561,13 @@ export async function boot() {
 		}),
 	];
 
+	// Prepare public catalogue metadata before any lobby/skin gallery opens.
+	// Providers only receive copies; registering packs is owned by the host.
+	for (const [name, pack] of Object.entries(lib.imported.character || {})) {
+		if (pack.character) lib.characterPack[name] = pack.character;
+		Object.assign(lib.translate, pack.translate || {});
+		lib.translate[name + "_character_config"] ||= pack.translate?.[name] || lib.translate[name] || name;
+	}
 	lib.onloadSplashes.forEach(splash => {
 		lib.configMenu.appearence.config.splash_style.item[splash.id] = splash.name;
 	});

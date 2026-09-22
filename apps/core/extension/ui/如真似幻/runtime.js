@@ -36,6 +36,7 @@ export function createLobbyAudio(node) {
 
 // Only visible rows (plus one row on either side) create cards or request portraits.
 export function createCharacterGrid(lifecycle) {
+ const PIXI = lifecycle.graphics;
  const grids = new Map();
  return {
   show(cards, container, scrollbox, scaleX, scaleY) {
@@ -94,6 +95,7 @@ export function createCharacterGrid(lifecycle) {
 }
 
 export function addSessionButtons(lifecycle, parent, x, y, scale) {
+ const PIXI = lifecycle.graphics;
  const group = lifecycle.container();
  group.position.set(x, y); group.scale.set(scale);
  const add = (label, offset, action) => {

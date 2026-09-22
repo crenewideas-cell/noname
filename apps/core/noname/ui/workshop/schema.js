@@ -40,8 +40,12 @@ export function validateManifest(input) {
 	assert(Object.keys(input.components).length <= Object.keys(PARTS).length, "部件数量无效");
 	for (const [id, part] of Object.entries(input.components)) {
 		assert(Object.hasOwn(PARTS, id) && record(part), `不支持的 UI 部件：${id}`);
-		assert(Object.keys(part).every(key => ["name", "settings", "assets", "style", "rules", "runtime"].includes(key)), `部件 ${id} 含有不支持的字段`);
-		assert(part.runtime === undefined || (id === "home" && part.runtime === "rzsh") || (id !== "lobby" && part.runtime === "shousha"), "不支持的交互界面组件");
+		assert(Object.keys(part).every(key => ["name", "settings", "assets", "style", "rules", "runtime", "options"].includes(key)), `部件 ${id} 含有不支持的字段`);
+		assert(part.runtime === undefined || (id === "home" && part.runtime === "rzsh") || (id !== "lobby" && part.runtime === "shousha") || (!["home","modes","lobby"].includes(id) && part.runtime === "decade"), "不支持的交互界面组件");
+		if (part.options !== undefined) {
+			assert(id === "arena" && part.runtime === "decade" && record(part.options), "此部件不支持展示偏好");
+			assert(Object.entries(part.options).every(([key,value]) => ["effects","sound","dynamic"].includes(key) && typeof value === "boolean"), "展示偏好无效");
+		}
 		assert(text(part.name || "", 100), "部件名称无效");
 		assert(record(part.settings || {}) && record(part.assets || {}) && record(part.style || {}), `部件 ${id} 格式无效`);
 		for (const [key, value] of Object.entries(part.settings || {})) {

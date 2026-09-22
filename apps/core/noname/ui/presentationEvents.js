@@ -1,9 +1,11 @@
 /** One-way visual notifications. Providers receive frozen data, never an event,
  * player, card, rule registry or continuation. Results cannot affect gameplay. */
 const listeners = new Set();
-function freeze(value) {
+function freeze(value, seen = new WeakSet()) {
 	if (value && typeof value === "object") {
-		for (const item of Object.values(value)) freeze(item);
+		if (seen.has(value)) return value;
+		seen.add(value);
+		for (const item of Object.values(value)) freeze(item, seen);
 		Object.freeze(value);
 	}
 	return value;

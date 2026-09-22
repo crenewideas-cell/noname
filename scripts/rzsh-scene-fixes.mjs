@@ -67,6 +67,7 @@ export function gateViews(source) {
 }
 
 export function repairLobbyAndPortraits(source) {
+ source = source.replace("if (Yi[w7(0x2b9)](YT))", "if (Yi && Object.hasOwn(Yi, YT))");
  source = source.replace(/        function U9\(Uw, Uc\) \{[^\n]*\}/, `        function U9(Uw, Uc) {
             const targetX = rzshUs[Uw.name] ? rzshUs[Uw.name].x * G7 : (Uw.workshopHomeX ??= Uw.x);
             gsap.fromTo(Uw, {x:i.screen.width + Uw.width}, {x:targetX, duration:Uc, ease:"power2.out", overwrite:true});

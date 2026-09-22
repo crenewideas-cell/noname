@@ -5,6 +5,7 @@
  * This is an API boundary for bundled providers, not a sandbox for arbitrary JS.
  */
 export function copySceneData(value, seen = new Map()) {
+	if (typeof value === "function") return undefined;
 	if (!value || typeof value !== "object") return value;
 	if (seen.has(value)) return seen.get(value);
 	if (value instanceof Map) {
@@ -18,9 +19,15 @@ export function copySceneData(value, seen = new Map()) {
 		return copy;
 	}
 	if (value instanceof Date) return new Date(value);
-	const copy = Array.isArray(value) ? [] : Object.create(Object.getPrototypeOf(value));
+	// Never pass an engine prototype (or its callable methods) to a scene.
+	const copy = Array.isArray(value) ? [] : Object.create(null);
 	seen.set(value, copy);
 	for (const key of Object.keys(value)) copy[key] = copySceneData(value[key], seen);
+	// Character's legacy indices are prototype getters. Materialize their data
+	// for the old portrait layouts without retaining Character's setters/proxy.
+	if (!Array.isArray(value) && typeof value.sex === "string" && Array.isArray(value.skills)) {
+		for (let index = 0; index <= 5; index++) copy[index] = copySceneData(value[index], seen);
+	}
 	return copy;
 }
 
@@ -104,6 +111,11 @@ export function createSceneContext(host, { settingsKey, defaults = {}, actions =
 		refreshCharacters() {
 			for (const key of ["character", "characterPack", "characterSort", "translate"]) sceneLib[key] = copySceneData(lib[key] || {});
 			sceneLib.imported = importedMetadata();
+			for (const [name, pack] of Object.entries(sceneLib.imported.character)) {
+				sceneLib.characterPack[name] = pack.character;
+				Object.assign(sceneLib.translate, pack.translate);
+				sceneLib.translate[name + "_character_config"] ||= pack.translate[name] || sceneLib.translate[name] || name;
+			}
 			refreshSort();
 		},
 		/** Only stock mode options chosen on the lobby's mode page may cross. */

@@ -1,6 +1,6 @@
-import { game, lib } from "noname";
+import { lib } from "noname";
 import { importOnlineSkin } from './skinTransfer.js';
-import { underlyingAppearance } from '../ui/workshop/service.js';
+import { underlyingAppearance, receiveOnlineAppearance } from '../ui/workshop/service.js';
 
 // Native online views have separate storage. Carry only portable appearance
 // preferences in the URL fragment, never accounts or rule settings. Custom UI
@@ -39,7 +39,13 @@ export async function importOnlineAppearance() {
 	if (!params.has("online")) return;
 	// Keep transfer failure visible: silently losing a selected skin looks like
 	// a successful switch to the stock UI. A fresh native entry can retry it.
-	try { await importOnlineSkin(params); }
+	try {
+		const appearance = encoded ? portableAppearance(JSON.parse(decodeURIComponent(atob(encoded.replaceAll("-", "+").replaceAll("_", "/"))))) : {};
+		// Native handoff commits the selected pack, assets and underlying settings
+		// in one transaction. Reconnect must never persist a half-applied mix.
+		const transferred = await importOnlineSkin(params, appearance);
+		if (!transferred && Object.keys(appearance).length) await receiveOnlineAppearance(appearance);
+	}
 	catch (error) {
 		// Appearance transfer must not prevent the core from booting/reconnecting.
 		// Keep the credential for an explicit retry and clearly report that the
@@ -52,13 +58,6 @@ export async function importOnlineAppearance() {
 		const close = document.createElement("button");close.textContent = "知道了";close.onclick = () => notice.remove();
 		notice.append(message, close);document.body.append(notice);
 		return;
-	}
-	if (!encoded) { history.replaceState(null, "", location.pathname + location.search + "#" + params); return; }
-	try {
-		const source = JSON.parse(decodeURIComponent(atob(encoded.replaceAll("-", "+").replaceAll("_", "/"))));
-		await Promise.all(Object.entries(portableAppearance(source)).map(([key, value]) => game.promises.saveConfig(key, value)));
-	} catch (error) {
-		console.warn("无法同步联机外观设置，继续使用本地设置", error);
 	}
 	params.delete("appearance");
 	history.replaceState(null, "", location.pathname + location.search + "#" + params);

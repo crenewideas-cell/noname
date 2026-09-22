@@ -1,1 +1,0 @@
-pixi,pixi-spine,pixi-filters,pixi-sound,pixi-viewport,gsap，pixi-scrollbox

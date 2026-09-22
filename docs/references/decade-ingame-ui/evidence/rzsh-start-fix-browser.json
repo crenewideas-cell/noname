@@ -1,0 +1,11 @@
+{
+  "at": "2026-09-22T11:45:04.480Z",
+  "errors": [],
+  "state": {
+    "active": "builtin-rzsh",
+    "parts": "arena cards cardback players hp buttons menus lines fonts",
+    "background": "url(\"http://127.0.0.1:8181/extension/ui/%E5%8D%81%E5%91%A8%E5%B9%B4%E5%B1%80%E5%86%85UI/assets/background.jpg\")",
+    "frames": 5
+  },
+  "passed": true
+}

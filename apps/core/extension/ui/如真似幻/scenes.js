@@ -1,7 +1,7 @@
 // Migrated from 如真似幻 2.0.2. Original authors: 蒸、某个萌新、非凡欧德内里、文和.
 // UI scenes only; gameplay and match results belong to the host.
-let lib, game, ui, get, ai, _status;
-export function bindSceneContext(context) { ({lib,game,ui,get,ai,_status}=context); }
+const sceneGlobals = Object.create(null);
+export function createSceneMetadata() { return structuredClone(sceneGlobals.rzsh); }
 var rzshB = rzshU;
 (function (G, y) {
     var rzshn = { G: 0xc8 }, g = rzshU, T = rzshy, U = G();
@@ -100,16 +100,11 @@ function rzshy(G, y) {
 var rzshI = {};
 rzshI["uihomeskel"] = rzsho, rzshI["uihomeskelbg"] = rzshj, rzshI["uihomeskelfg"] = rzshD, rzshI["uihomeskellb"] = rzshJ;
 var rzshi = {};
-rzshi[rzshB(0xc4, "!@F9")] = rzshe, rzshi["周瑜小乔"] = rzsha, rzshi["吕布貂蝉"] = rzshI, window["rzsh"] = { "imgPath": rzshu, "spineData": rzshi, "function": { "alert": function (G) {
-            var q = rzshB;
-            if (_status["rzsh_alerting"])
-                return;
-            var y = ui["create"]["div"](".huanpaiwenzi", document["body"]);
-            y["innerHTML"] = G, y["style"]["zIndex"] = "1001", game["playAudio"]("audio/sgs/Notice02.mp3"), _status[q(0xc3, "z&oX")] = !![], setTimeout(() => { y["remove"](), void 0, _status["rzsh_alerting"] = ![], delete _status["rzsh_alerting"]; }, 0xbb8);
-        } }, "author": "某个萌新" };
+rzshi[rzshB(0xc4, "!@F9")] = rzshe, rzshi["周瑜小乔"] = rzsha, rzshi["吕布貂蝉"] = rzshI, sceneGlobals["rzsh"] = { "imgPath": rzshu, "spineData": rzshi, "function": {}, "author": "某个萌新" };
 // Match results and ranking belong to the host, not the lobby.
 export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
     const window = lifecycle.window, document = lifecycle.document;
+    const rzsh = window.rzsh;
     const PIXI = lifecycle.pixi;
     let spinelo, homeskel_fg, homeskel_lb;
     const gsap = lifecycle.animation, setTimeout = lifecycle.timeout.bind(lifecycle), setInterval = lifecycle.interval.bind(lifecycle), requestAnimationFrame = lifecycle.frame.bind(lifecycle);
@@ -2050,7 +2045,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
             console["timeEnd"]("m加载完毕");
             function Uw(Yi, YT, Yg) {
                 const w7 = rzshy;
-                if (Yi[w7(0x2b9)](YT))
+                if (Yi && Object.hasOwn(Yi, YT))
                     return Yg !== undefined ? Yi[YT] === Yg : !![];
                 return ![];
             }

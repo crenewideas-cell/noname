@@ -4,8 +4,85 @@
   "id": "rzsh-modern",
   "name": "如真似幻",
   "author": "蒸、某个萌新、非凡欧德内里、文和",
-  "description": "新式如真似幻交互大厅，由 UI 工坊统一切换。",
+  "description": "如真似幻动画大厅、模式选择与武将图鉴；皮肤、设置和联机接入本体，可混搭卡牌与对局外观。所有玩法规则由本体处理。",
   "components": {
-    "home": { "name": "如真似幻 · 交互大厅", "runtime": "rzsh", "settings": {}, "assets": {}, "style": {} }
+    "home": {
+      "name": "如真似幻 · 交互大厅",
+      "runtime": "rzsh",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "arena": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {
+        "layout": "mobile",
+        "image_background_random": false,
+        "image_background_blur": false
+      },
+      "assets": {},
+      "style": {},
+      "options": {
+        "effects": true,
+        "sound": true
+      }
+    },
+    "cards": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "cardback": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "players": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "hp": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "buttons": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "menus": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "lines": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "fonts": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    }
   }
 }

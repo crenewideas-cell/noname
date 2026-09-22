@@ -139,6 +139,11 @@ async function main() {
 
 			copies.push({ src: `${type}/${file}`, dest: "" });
 		}
+		// The compiled mode and its resource directory share a name. The generic
+		// skip above excludes that directory, so retain its owned media explicitly.
+		if (type === "mode" && input.taixuhuanjing) {
+			copies.push({ src: "mode/taixuhuanjing/assets", dest: "taixuhuanjing" });
+		}
 
 		await buildIndividual(type, target, input, importMap, copies);
 	}

@@ -13,7 +13,7 @@ function loadVendor(file) {
  if(vendors.has(file))return vendors.get(file);
  const promise=new Promise((resolve,reject)=>{
   const node=document.createElement('script');node.src=base+file;node.async=false;
-  node.onload=resolve;node.onerror=()=>{node.remove();reject(new Error('界面资源加载失败：'+file));};
+  node.onload=()=>resolve({PIXI:window.PIXI,gsap:window.gsap});node.onerror=()=>{node.remove();reject(new Error('界面资源加载失败：'+file));};
   document.head.append(node);
  });
  vendors.set(file,promise);promise.catch(()=>vendors.delete(file));return promise;
@@ -32,7 +32,7 @@ export async function createNativeRuntime(manifest) {
  if(!inventory.ok)throw new Error('手杀界面素材清单加载失败：'+inventory.status);
  const files=await inventory.json();
  const storage=scopedStorage(localStorage),session=scopedStorage(sessionStorage),styles=new Set(),dialogs=new Set(),sounds=new Set(),controller=new AbortController();
- let scene,portraits,portraitTimer,prepared,homeFactory,disposeGame,installingGame,animations,disposed=false,onlineEntry=false,entering=false,homeGeneration=0,onlineController;
+ let scene,portraits,portraitTimer,prepared,homeFactory,disposeGame,installingGame,animations,graphics,motion,disposed=false,onlineEntry=false,entering=false,homeGeneration=0,onlineController;
  const visiblePortraits=new Set(),sceneNodes=new Set(),backgrounds=new Map();
  function setSceneBackground(path){
   if(disposed||!ui.background)return;
@@ -65,7 +65,7 @@ export async function createNativeRuntime(manifest) {
  function reloadLobby(){sessionStorage.setItem(lib.configprefix+'return_to_lobby','true');session.setItem('returnHome',scene?.isHome?'true':'false');localStorage.removeItem(lib.configprefix+'directstart');game.reload();}
  const context=createSceneContext({lib,game,ui,get},{settingsKey:'ui_workshop_shousha_settings',defaults,actions:{
   reload:reloadLobby,reload3:reloadLobby,getFileList(path,callback,onerror){const current=scene;return resources.list(path,(...args)=>{if(!disposed&&scene===current)callback?.(...args);},error=>{if(!disposed&&scene===current)onerror?.(error);});},
-  createCss(text){const node=document.createElement('style');node.textContent=text;document.head.append(node);styles.add(node);return node;},
+  createCss(text){const node=ownNode(document.createElement('style'));node.textContent=text;document.head.append(node);return node;},
   storyBackground(){setSceneBackground(base+'original/core/image/background/1.jpg');},
   updateBackground(){},
   playAudio(...args){
@@ -87,17 +87,17 @@ export async function createNativeRuntime(manifest) {
  }
  storage.setItem('hideModesA','true');storage.setItem('liuli_tenUIfix','fix');storage.setItem('firstSTBG','on');
  storage.setItem('loggedIn',lib.config.connect_nickname||'无名玩家');session.setItem('Network','online');session.setItem('rzshk','true');
- function portraitStore(){return portraits ||= createPortraitTextures({PIXI:window.PIXI,character:name=>context.lib.character[name]||Object.values(context.lib.characterPack).map(pack=>pack[name]).find(Boolean),assetURL:lib.assetURL,defaultPath:lib.characterDefaultPicturePath,readImage:key=>game.getDB('image',key),url});}
+ function portraitStore(){return portraits ||= createPortraitTextures({PIXI:graphics,character:name=>context.lib.character[name]||Object.values(context.lib.characterPack).map(pack=>pack[name]).find(Boolean),assetURL:lib.assetURL,defaultPath:lib.characterDefaultPicturePath,readImage:key=>game.getDB('image',key),url});}
  const bridge={storage,session,url,
   timeout:(fn,ms,...args)=>scene?.timeout(fn,ms,...args)||0,
   interval:(fn,ms,...args)=>scene?.interval(fn,ms,...args)||0,
   frame:fn=>scene?.frame(fn)||0,
   own(resource){
-   const current=scene;
-   if(resource instanceof window.PIXI.Loader){const load=resource.load.bind(resource);resource.load=callback=>load((...args)=>{if(!disposed&&scene===current)try{callback?.(...args);}catch(error){bridge.notice('大厅素材显示失败：'+error.message);}});}
+   const current=scene,token=homeGeneration;
+   if(resource instanceof graphics.Loader){const load=resource.load.bind(resource);resource.load=callback=>load((...args)=>{if(!disposed&&scene===current&&token===homeGeneration)try{Promise.resolve(callback?.(...args)).catch(error=>{if(!disposed&&scene===current&&token===homeGeneration)bridge.notice('大厅素材显示失败：'+error.message);});}catch(error){bridge.notice('大厅素材显示失败：'+error.message);}});}
    return current?.own(resource)||resource;
   },
-  tween(method,...args){const tween=window.gsap[method](...args);scene?.ownTween(tween);return tween;},
+  tween(method,...args){const tween=motion[method](...args);scene?.ownTween(tween);return tween;},
   get screen(){return scene?.screen||{width:1103,height:514};},
   mount(app){scene.mount(app);},ready(){scene?.ready();},login(){scene?.login();},
   async finish(mode){if(disposed||entering)return;if(mode==='connect')return bridge.openOnlineLobby();entering=true;const current=scene;try{await context.commitMode(mode);if(disposed||scene!==current)return;portraits?.pause();await current?.finish(mode);}catch(error){console.error(error);bridge.notice(error.message);}finally{entering=false;}},
@@ -108,7 +108,7 @@ export async function createNativeRuntime(manifest) {
     const bounds=entry.sprite.getBounds();if(bounds.x+bounds.width<0||bounds.y+bounds.height<0||bounds.x>bridge.screen.width||bounds.y>bridge.screen.height)continue;
     entry.sprite.texture=portraitStore().get(entry.name,entry.options);entry.sprite.width=entry.options.width;entry.sprite.height=entry.options.height;visiblePortraits.delete(entry);if(++started===12)break;
    }},200);},
-  framePortrait(player,portrait,labels){const frame=new window.PIXI.Graphics();frame.lineStyle(7,0x251b13,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(2,0xbda36b,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(1,0xead6a0,.8).drawRoundedRect(-81,-134,162,188,3);player.addChildAt(frame,player.getChildIndex(labels));},
+  framePortrait(player,portrait,labels){const frame=new graphics.Graphics();frame.lineStyle(7,0x251b13,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(2,0xbda36b,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(1,0xead6a0,.8).drawRoundedRect(-81,-134,162,188,3);player.addChildAt(frame,player.getChildIndex(labels));},
   notice(message){if(disposed)return;const node=document.createElement('div');node.className='shousha-native-notice';node.textContent=message;document.body.append(node);const close=()=>{clearTimeout(timer);node.remove();dialogs.delete(close);};const timer=setTimeout(close,4500);dialogs.add(close);},
   character:name=>skinGallery(name),collection:()=>skinGallery(Object.keys(lib.character)[0]),
   characterTexture:(name,options)=>portraitStore().get(name,options),
@@ -137,17 +137,19 @@ export async function createNativeRuntime(manifest) {
  async function prepareScene(){
   if(disposed)throw new Error('手杀界面已退出');
   if(prepared)return prepared;
-  prepared=(async()=>{
+  const owner=scene,token=homeGeneration;
+  const ensureActive=()=>{if(disposed||scene!==owner||token!==homeGeneration)throw new Error('手杀大厅已退出');};
+  const job=(async()=>{
    css(base+'original/如真似幻/css/font.css');
-   await loadVendor('original/如真似幻/js/gsap.min.js');
-   if(disposed)throw new Error('手杀界面已退出');
-   await loadVendor('original/如真似幻/js/pixi6.min.js');
+   ({gsap:motion}=await loadVendor('original/如真似幻/js/gsap.min.js'));
+   ensureActive();
+   ({PIXI:graphics}=await loadVendor('original/如真似幻/js/pixi6.min.js'));
    const response=await fetch(base+'native/lobby.js',{signal:controller.signal});if(!response.ok)throw new Error('手杀大厅程序缺失');
    const source=await response.text();
-   if(disposed)throw new Error('手杀界面已退出');
-   new Function('lib','game','ui','get','ai','_status','bridge','navigator','confirms','window','document','setTimeout','setInterval','requestAnimationFrame',source)(context.lib,context.game,context.ui,context.get,context.ai,context._status,bridge,sceneNavigator,confirms,sceneWindow,sceneDocument,bridge.timeout,bridge.interval,bridge.frame);
+   ensureActive();
+   new Function('lib','game','ui','get','ai','_status','bridge','navigator','confirms','window','document','setTimeout','setInterval','requestAnimationFrame','PIXI','gsap',source)(context.lib,context.game,context.ui,context.get,context.ai,context._status,bridge,sceneNavigator,confirms,sceneWindow,sceneDocument,bridge.timeout,bridge.interval,bridge.frame,graphics,motion);
    homeFactory=sceneWindow.shoushaLobbyFactory(context.lib,context.game,context.ui,context.get,context.ai,context._status,bridge);
-  })().catch(error=>{prepared=undefined;throw error;});return prepared;
+  })().catch(error=>{if(prepared===job)prepared=undefined;throw error;});prepared=job;return job;
  }
  return {base,bridge,config,reloadLobby,
   ownDialog(node){const release=()=>{node.remove();dialogs.delete(release);};dialogs.add(release);return release;},
@@ -160,7 +162,6 @@ export async function createNativeRuntime(manifest) {
    const token=++homeGeneration;scene=current;
    const valid=()=>!disposed&&scene===current&&token===homeGeneration;
    await prepareScene();if(!valid())return;
-   await lib.uiWorkshop?.prepareCharacters?.();if(!valid())return;
    context.refreshCharacters();sceneWindow.playerNickName ||= {};sceneWindow.noname_character_rank=structuredClone(window.noname_character_rank||context.lib.rank);await portraitStore().prepare();if(!valid())return;
    homeFactory.createHome();
   },

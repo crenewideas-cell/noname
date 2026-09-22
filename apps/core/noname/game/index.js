@@ -26,6 +26,7 @@ import { perfBegin, perfEnd } from "../util/performance.js";
 import { applyPresentation } from "../ui/presentation.js";
 import { clearSelectionGuide, updateSelectionGuide } from "../ui/selectionGuide.js";
 import { confirmExtensionRemoval } from "../ui/extensionManagement.js";
+import { displayRandom, displayChoice } from "../util/displayRandom.js";
 import { emitPresentation, playerPresentation } from "../ui/presentationEvents.js";
 
 export class Game {
@@ -2635,7 +2636,7 @@ export class Game {
 			// @ts-expect-error ignore
 			if (!check()) return;
 			// @ts-expect-error ignore
-			audio = random ? list.randomRemove() : list.shift();
+			audio = random ? list.splice(Math.floor(displayRandom() * list.length), 1)[0] : list.shift();
 			return game.playAudio({
 				path: audio,
 				addVideo,
@@ -2771,7 +2772,7 @@ export class Game {
 			this.remove();
 		});
 		if (typeof index != "number") {
-			index = Math.ceil(Math.random() * 2);
+			index = Math.ceil(displayRandom() * 2);
 		}
 		audio._changed = 1;
 		audio.onerror = function () {
@@ -2860,10 +2861,10 @@ export class Game {
 			}
 			let aozhan = _status.tempAozhan || aozhanBGMConfiguration;
 			if (Array.isArray(aozhan)) {
-				aozhan = aozhan.randomGet("disabled", _status.currentAozhan) || aozhanBGMConfiguration;
+				aozhan = displayChoice(aozhan, "disabled", _status.currentAozhan) || aozhanBGMConfiguration;
 			}
 			if (aozhan == "random") {
-				aozhan = Object.keys(lib.mode.guozhan.config.aozhan_bgm.item).randomGet("disabled", "random", _status.currentAozhan);
+				aozhan = displayChoice(Object.keys(lib.mode.guozhan.config.aozhan_bgm.item), "disabled", "random", _status.currentAozhan);
 			}
 			_status.currentAozhan = aozhan;
 			if (["blob:", "data:"].some(prefix => aozhan.startsWith(prefix))) {
@@ -2879,10 +2880,10 @@ export class Game {
 		}
 		let music = _status.tempMusic || lib.config.background_music;
 		if (Array.isArray(music)) {
-			music = music.randomGet("music_off", _status.currentMusic) || lib.config.background_music;
+			music = displayChoice(music, "music_off", _status.currentMusic) || lib.config.background_music;
 		}
 		if (music == "music_random") {
-			music = lib.config.all.background_music.randomGet("music_off", "music_random", _status.currentMusic);
+			music = displayChoice(lib.config.all.background_music, "music_off", "music_random", _status.currentMusic);
 		}
 		_status.currentMusic = music;
 		if (music == "music_custom") {
@@ -5298,10 +5299,10 @@ ${e instanceof Error ? e.stack : String(e)}`);
 				particles.push(new particle());
 			}
 			function particle() {
-				this.speed = { x: -1 + Math.random() * 2, y: -5 + Math.random() * 5 };
+				this.speed = { x: -1 + displayRandom() * 2, y: -5 + displayRandom() * 5 };
 				if (type == "thunder" || type == "coin" || type == "dust") {
-					this.speed.y = -3 + Math.random() * 5;
-					this.speed.x = -2 + Math.random() * 4;
+					this.speed.y = -3 + displayRandom() * 5;
+					this.speed.x = -2 + displayRandom() * 4;
 				}
 				if (type == "legend" || type == "rare" || type == "epic") {
 					this.speed.x *= 3;
@@ -5309,33 +5310,33 @@ ${e instanceof Error ? e.stack : String(e)}`);
 				}
 				this.location = { x: x, y: y };
 
-				this.radius = 0.5 + Math.random() * 1;
+				this.radius = 0.5 + displayRandom() * 1;
 
-				this.life = 10 + Math.random() * 10;
+				this.life = 10 + displayRandom() * 10;
 				this.death = this.life;
 
 				switch (type) {
 					case "thunder": {
 						this.b = 255;
-						this.r = Math.round(Math.random() * 255);
-						this.g = Math.round(Math.random() * 255);
-						this.x += Math.random() * 20 - 10;
-						this.y += Math.random() * 20 - 10;
+						this.r = Math.round(displayRandom() * 255);
+						this.g = Math.round(displayRandom() * 255);
+						this.x += displayRandom() * 20 - 10;
+						this.y += displayRandom() * 20 - 10;
 
 						break;
 					}
 					case "fire": {
 						this.r = 255;
-						this.g = Math.round(Math.random() * 155);
+						this.g = Math.round(displayRandom() * 155);
 						this.b = 0;
 						break;
 					}
 					case "coin": {
 						this.r = 255;
-						this.g = Math.round(Math.random() * 25 + 230);
-						this.b = Math.round(Math.random() * 100 + 50);
-						this.location.x += Math.round(Math.random() * 60) - 30;
-						this.location.y += Math.round(Math.random() * 40) - 20;
+						this.g = Math.round(displayRandom() * 25 + 230);
+						this.b = Math.round(displayRandom() * 100 + 50);
+						this.location.x += Math.round(displayRandom() * 60) - 30;
+						this.location.y += Math.round(displayRandom() * 40) - 20;
 						if (this.location.x < x) {
 							this.speed.x = -Math.abs(this.speed.x);
 						} else if (this.location.x > x) {
@@ -5346,11 +5347,11 @@ ${e instanceof Error ? e.stack : String(e)}`);
 						break;
 					}
 					case "dust": {
-						this.r = Math.round(Math.random() * 55) + 105;
-						this.g = Math.round(Math.random() * 55) + 150;
+						this.r = Math.round(displayRandom() * 55) + 105;
+						this.g = Math.round(displayRandom() * 55) + 150;
 						this.b = 255;
-						this.location.x += Math.round(Math.random() * 60) - 30;
-						this.location.y += Math.round(Math.random() * 40) - 20;
+						this.location.x += Math.round(displayRandom() * 60) - 30;
+						this.location.y += Math.round(displayRandom() * 40) - 20;
 						if (this.location.x < x) {
 							this.speed.x = -Math.abs(this.speed.x);
 						} else if (this.location.x > x) {
@@ -5362,10 +5363,10 @@ ${e instanceof Error ? e.stack : String(e)}`);
 					}
 					case "legend": {
 						this.r = 255;
-						this.g = Math.round(Math.random() * 100 + 155);
-						this.b = Math.round(Math.random() * 100 + 50);
-						this.location.x += Math.round(Math.random() * 60) - 30;
-						this.location.y += Math.round(Math.random() * 40) - 20;
+						this.g = Math.round(displayRandom() * 100 + 155);
+						this.b = Math.round(displayRandom() * 100 + 50);
+						this.location.x += Math.round(displayRandom() * 60) - 30;
+						this.location.y += Math.round(displayRandom() * 40) - 20;
 						if (this.location.x < x) {
 							this.speed.x = -Math.abs(this.speed.x);
 						} else if (this.location.x > x) {
@@ -5378,11 +5379,11 @@ ${e instanceof Error ? e.stack : String(e)}`);
 						break;
 					}
 					case "epic": {
-						this.r = Math.round(Math.random() * 55) + 200;
-						this.g = Math.round(Math.random() * 100) + 55;
+						this.r = Math.round(displayRandom() * 55) + 200;
+						this.g = Math.round(displayRandom() * 100) + 55;
 						this.b = 255;
-						this.location.x += Math.round(Math.random() * 60) - 30;
-						this.location.y += Math.round(Math.random() * 40) - 20;
+						this.location.x += Math.round(displayRandom() * 60) - 30;
+						this.location.y += Math.round(displayRandom() * 40) - 20;
 						if (this.location.x < x) {
 							this.speed.x = -Math.abs(this.speed.x);
 						} else if (this.location.x > x) {
@@ -5395,11 +5396,11 @@ ${e instanceof Error ? e.stack : String(e)}`);
 						break;
 					}
 					case "rare": {
-						this.r = Math.round(Math.random() * 55) + 105;
-						this.g = Math.round(Math.random() * 55) + 150;
+						this.r = Math.round(displayRandom() * 55) + 105;
+						this.g = Math.round(displayRandom() * 55) + 150;
 						this.b = 255;
-						this.location.x += Math.round(Math.random() * 60) - 30;
-						this.location.y += Math.round(Math.random() * 40) - 20;
+						this.location.x += Math.round(displayRandom() * 60) - 30;
+						this.location.y += Math.round(displayRandom() * 40) - 20;
 						if (this.location.x < x) {
 							this.speed.x = -Math.abs(this.speed.x);
 						} else if (this.location.x > x) {
@@ -5413,10 +5414,10 @@ ${e instanceof Error ? e.stack : String(e)}`);
 					}
 					case "recover": {
 						this.g = 255;
-						this.r = Math.round(Math.random() * 200 + 55);
-						this.b = Math.round(Math.random() * 155 + 55);
-						this.location.x += Math.round(Math.random() * 60) - 30;
-						this.location.y += Math.round(Math.random() * 40) - 20;
+						this.r = Math.round(displayRandom() * 200 + 55);
+						this.b = Math.round(displayRandom() * 155 + 55);
+						this.location.x += Math.round(displayRandom() * 60) - 30;
+						this.location.y += Math.round(displayRandom() * 40) - 20;
 						if (this.location.x < x) {
 							this.speed.x = -Math.abs(this.speed.x);
 						} else if (this.location.x > x) {
@@ -5430,7 +5431,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 					}
 					default: {
 						this.r = 255;
-						this.g = Math.round(Math.random() * 155);
+						this.g = Math.round(displayRandom() * 155);
 						this.b = 0;
 					}
 				}

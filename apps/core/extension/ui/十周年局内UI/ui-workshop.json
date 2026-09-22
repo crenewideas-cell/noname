@@ -1,0 +1,81 @@
+{
+  "format": "noname-ui-workshop",
+  "version": 1,
+  "id": "decade-ingame-pack",
+  "name": "十周年局内 UI",
+  "author": "短歌、萌新、橙续缘、小依；本工程展示适配",
+  "description": "子琪包移动版外观：铜纹背景、金色卡面及原素材动画。规则与全部操作由当前本体处理。",
+  "components": {
+    "arena": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {
+        "layout": "mobile",
+        "image_background_random": false,
+        "image_background_blur": false
+      },
+      "assets": {},
+      "style": {},
+      "options": {
+        "effects": true,
+        "sound": true
+      }
+    },
+    "cards": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "cardback": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "players": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "hp": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "buttons": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "menus": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "lines": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    },
+    "fonts": {
+      "name": "十周年局内 UI",
+      "runtime": "decade",
+      "settings": {},
+      "assets": {},
+      "style": {}
+    }
+  }
+}

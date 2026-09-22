@@ -35,6 +35,31 @@ test("quick switching builtins is idempotent and does not save copies",async()=>
  assert.equal(lib.config.ui_workshop_active,"builtin-shousha-standard");assert.equal(lib.config.ui_workshop_previous,"builtin-blue");
  await api.undoPack();assert.equal(lib.config.ui_workshop_active,"builtin-blue");
 });
+
+test('RZSH builtin and saved lobby-only records resolve the decade plan without replacing explicit mixes',async()=>{
+ const {api,lib,records,local}=await serviceFixture();
+ const builtin=await api.readPack('builtin-rzsh');
+ const ingame=['arena','cards','cardback','players','hp','buttons','menus','lines','fonts'];
+ assert.equal(builtin.manifest.components.home.runtime,'rzsh');
+ assert.ok(ingame.every(id=>builtin.manifest.components[id].runtime==='decade'));
+ const old=local(builtin);old.manifest.id='rzsh-modern';
+ old.manifest.components=local({home:old.manifest.components.home});
+ records.set('ui-workshop:rzsh-modern',old);
+ await api.usePack('rzsh-modern');
+ const read=await api.readPack(lib.config.ui_workshop_active);
+ assert.ok(ingame.every(id=>read.manifest.components[id].runtime==='decade'));
+ assert.deepEqual(Object.keys(old.manifest.components),['home'],'reading must not overwrite stored user data');
+ assert.equal(records.size,1);
+ const saved=await api.savePack(old);
+ assert.ok(ingame.every(id=>saved.manifest.components[id].runtime==='decade'));
+ for(const explicit of [{}, {runtime:'shousha'}, {style:{color:'#ffeeaa'}}]){
+  const custom=local(old);custom.manifest.id='explicit-mix';custom.manifest.components.cards=local(explicit);
+  records.set('ui-workshop:explicit-mix',custom);
+  const result=await api.readPack('explicit-mix');
+  assert.equal(result.manifest.components.arena,undefined,'an explicit in-game choice must not be overridden');
+  assert.equal(JSON.stringify(result.manifest.components.cards),JSON.stringify((await api.savePack(custom)).manifest.components.cards));
+ }
+});
 test("saved packs apply without copies; editing active or undo packs preserves snapshots",async()=>{
  const {api,lib,local}=await serviceFixture();
  const input=local(builtinPacks()[2]);input.manifest.id="personal";
@@ -79,8 +104,9 @@ test("migrated file inventory and every copied resource are self-contained",asyn
  assert.ok(files.length<=MAX_PROVIDER_FILES);assert.equal(new Set(files).size,files.length);let bytes=0;
  for(const file of files){assert.ok(!/(^\/|\\|:|\0|(^|\/)\.\.?($|\/))/.test(file));bytes+=(await fs.stat(path.join(base,file))).size;}
  assert.ok(bytes<=MAX_PROVIDER_BYTES);
- // The full provider replaced the old surface-only resources.json index.
- for(const file of ['native-runtime.js','native/core-ui.js','original/皮肤切换/style/adjustBox.css','original/皮肤切换/saveSkinParams.js','original/千幻聆音/skinEdit.js','original/千幻聆音/skinChange.js','original/十周年UI/player_new.css'])assert.ok(files.includes(file),file);
+ // Only the migrated presentation runtime is shipped, not archived rule code.
+ for(const file of ['native-runtime.js','native/lobby.js','native/presentation.js','native/animations.js','native/animation-renderer.js','native/animation-assets.json'])assert.ok(files.includes(file),file);
+ for(const file of ['native/core-ui.js','native/selection.js','native/compatibility.js','original/十周年UI/skill.js','original/十周年UI/junba.js'])assert.ok(!files.includes(file),file);
  for(const file of ['extension.js','native-runtime.js','native/resources.js','native/portraits.js'])assert.doesNotMatch(await fs.readFile(path.join(base,file),'utf8'),/(?:\.\.\/|\/|\\)temp(?:\/|\\)/);
 });
 

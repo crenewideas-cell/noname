@@ -48,18 +48,23 @@ function createScene(runtime,node,resolve){
    try{await runtime.prepareGame();if(closed)return;await game.promises.saveConfig('sessionType','offline');if(!closed)resolve(mode);}
    catch(error){finishing=false;console.error(error);runtime.bridge.notice('开始对局失败：'+error.message);}
   },
-  login(){if(iframe)return;iframe=document.createElement('iframe');iframe.title='手杀标准UI登录';iframe.style.visibility='hidden';const login=new URL('original/如真似幻/html/rzsh.html',base);login.searchParams.set('nickname',lib.config.connect_nickname||'无名玩家');login.searchParams.set('volume',String((lib.config.volumn_background||0)/8));iframe.src=login.href;node.append(loading,iframe);},
+  login(){if(closed||iframe)return;if(app)releaseHome();iframe=document.createElement('iframe');iframe.title='手杀标准UI登录';iframe.style.visibility='hidden';const login=new URL('original/如真似幻/html/rzsh.html',base);login.searchParams.set('nickname',lib.config.connect_nickname||'无名玩家');login.searchParams.set('volume',String((lib.config.volumn_background||0)/8));iframe.src=login.href;node.append(loading,iframe);},
   dispose(){
    if(closed)return;closed=true;observer?.disconnect();window.removeEventListener('message',onMessage);
-   timers.forEach(clearTimeout);intervals.forEach(clearInterval);frames.forEach(cancelAnimationFrame);
-   const releases=[...Array.from(tweens,tween=>()=>tween.kill()),...Array.from(resources,resource=>()=>resource.destroy?.()),...Array.from(apps,application=>()=>{if(application.renderer)application.destroy(true,{children:true});}),()=>runtime.bridge.releaseScene(scene)];
-   for(const release of releases)try{release();}catch(error){console.warn('手杀大厅资源释放失败',error);}
-   tweens.clear();resources.clear();apps.clear();iframe?.remove();toolbar.remove();loading.remove();
+   releaseHome();iframe?.remove();toolbar.remove();loading.remove();
   },
   timeout(fn,ms,...args){if(closed)return 0;const id=setTimeout(()=>{timers.delete(id);runVisual(fn,...args);},ms);timers.add(id);return id;},
   interval(fn,ms,...args){if(closed)return 0;const id=setInterval(()=>runVisual(fn,...args),ms);intervals.add(id);return id;},
   frame(fn){if(closed)return 0;const id=requestAnimationFrame(t=>{frames.delete(id);runVisual(fn,t);});frames.add(id);return id;},
  };
+ function releaseHome(){
+  observer?.disconnect();observer=undefined;
+  timers.forEach(clearTimeout);intervals.forEach(clearInterval);frames.forEach(cancelAnimationFrame);
+  timers.clear();intervals.clear();frames.clear();
+  const releases=[...Array.from(tweens,tween=>()=>tween.kill()),...Array.from(resources,resource=>()=>resource.destroy?.()),...Array.from(apps,application=>()=>{if(application.renderer)application.destroy(true,{children:true});}),()=>runtime.bridge.releaseScene(scene)];
+  for(const release of releases)try{release();}catch(error){console.warn('手杀大厅资源释放失败',error);}
+  tweens.clear();resources.clear();apps.clear();app=undefined;
+ }
  const loading=document.createElement('div');loading.className='shousha-native-loading';const boot=document.createElement('iframe');boot.title='手杀标准UI · 加载中';boot.src=base+'boot.html';loading.append(boot);
  function showLoadError(error){
   if(closed)return;loading.classList.add('shousha-native-load-error');loading.textContent='界面加载失败：'+(error.message||error);node.append(loading);
@@ -104,20 +109,23 @@ export async function activate(manifest){
  }
  const openSettings=async()=>openNativeSettings(await prepare());
  if(lib.uiWorkshop)lib.uiWorkshop.openSuiteSettings=openSettings;
+ let splashGeneration=0;
  const splash={id:'shousha-standard',name:'手杀标准UI',scene:null,
   async init(node,resolve){
+   const token=++splashGeneration;
+   this.scene?.dispose();this.scene=null;
    node.classList.add('shousha-native-splash');
    const loading=document.createElement('div');loading.className='shousha-native-loading';loading.textContent='正在载入手杀界面…';node.append(loading);
-   try{const value=await prepare();if(disposed||!node.isConnected)return;loading.remove();this.scene=createScene(value,node,resolve);}
+   try{const value=await prepare();if(disposed||token!==splashGeneration||!node.isConnected){loading.remove();return;}loading.remove();this.scene=createScene(value,node,resolve);}
    catch(error){
-    if(disposed||!node.isConnected)return;
+    if(disposed||token!==splashGeneration||!node.isConnected){loading.remove();return;}
     console.error('手杀大厅加载失败',error);loading.classList.add('shousha-native-load-error');loading.textContent='手杀界面加载失败：'+error.message;
     if(lib.uiWorkshop){lib.uiWorkshop.failedId=manifest.id;lib.uiWorkshop.error=loading.textContent;}
     const retry=document.createElement('button');retry.textContent='重新加载手杀界面';retry.onclick=()=>{loading.remove();void splash.init(node,resolve);};
     const workshop=document.createElement('button');workshop.textContent='打开 UI 工坊';workshop.onclick=()=>lib.uiWorkshop?.open();loading.append(retry,workshop);
    }
   },
-  async dispose(node){this.scene?.dispose();this.scene=null;node?.remove();return true;},
+  async dispose(node){splashGeneration++;this.scene?.dispose();this.scene=null;node?.remove();return true;},
   preview(node){node.style.backgroundImage=`url("${base}original/如真似幻/images/uiStyles/经典主题/bg.jpg")`;},
  };
  lib.onloadSplashes ||= [];
@@ -139,6 +147,7 @@ export async function activate(manifest){
    const retry=document.createElement('button');retry.textContent='重试皮肤加载';retry.onclick=mountArena;arenaError.append(retry);document.body.append(arenaError);
   });
  };
+
  if(hasGameSkin){if(ui.arena)mountArena();else lib.arenaReady.push(mountArena);}
  installed=()=>{if(disposed)return;disposed=true;runtime?.dispose();void splash.dispose();arenaError?.remove();style.remove();const at=lib.arenaReady?.indexOf(mountArena);if(at>=0)lib.arenaReady.splice(at,1);lib.onloadSplashes=lib.onloadSplashes.filter(item=>item!==splash);if(lib.uiWorkshop?.openSuiteSettings===openSettings)delete lib.uiWorkshop.openSuiteSettings;activeRuntime=null;installed=null;};return installed;
 }

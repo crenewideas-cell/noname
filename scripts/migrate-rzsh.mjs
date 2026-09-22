@@ -4,19 +4,22 @@ import fs from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 import { fixScenes } from "./rzsh-scene-fixes.mjs";
-const source = path.resolve("temp/UI界面美化扩展_如真似幻");
+import { isProviderFile } from "../apps/core/noname/ui/workshop/providerFiles.js";
+const sourceArgument=process.argv.find(arg=>arg.startsWith('--source='))?.slice('--source='.length);
+if(!sourceArgument)throw new Error('Use --source=<external 如真似幻 directory>; normal builds read only formal provider files.');
+const source = path.resolve(sourceArgument);
 const target = path.resolve("apps/core/extension/ui/如真似幻");
 fs.mkdirSync(target, { recursive: true });
 function copy(from, to) {
  fs.mkdirSync(to, { recursive: true });
  for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
   const src = path.join(from, entry.name), dest = path.join(to, entry.name);
-  if (entry.isDirectory()) copy(src, dest); else if (!entry.name.endsWith(".bak")) fs.copyFileSync(src, dest);
+  if (entry.isDirectory()) copy(src, dest); else if (isProviderFile("如真似幻", path.relative(target,dest).split(path.sep).join("/"))) fs.copyFileSync(src, dest);
  }
 }
 for (const dir of ["audio", "css", "fonts", "images", "spine"]) copy(path.join(source, dir), path.join(target, dir));
 fs.mkdirSync(path.join(target, "js"), { recursive: true });
-for (const file of ["pixi6.min.js", "gsap.min.js", "dream_corridor.js", "dynamicCorridor.js", "dynamicSkin.js", "character.js", "setting.js"]) fs.copyFileSync(path.join(source, "js", file), path.join(target, "js", file));
+for (const file of ["pixi6.min.js", "gsap.min.js"]) fs.copyFileSync(path.join(source, "js", file), path.join(target, "js", file));
 const parse = text => ts.createSourceFile("community.js", text, ts.ScriptTarget.Latest, true, ts.ScriptKind.JS);
 const original = parse(fs.readFileSync(path.join(source, "extension.js"), "utf8"));
 const strings = ts.transform(original, [context => node => {
@@ -84,17 +87,13 @@ function modernize(code) {
  return printer.printFile(result.transformed[0]);
 }
 fs.writeFileSync(path.join(target, "scenes.js"), banner + isolateRzshScenes(fixScenes(modernize('import { lib, game, ui, get, ai, _status } from "noname";\n' + tree.statements.slice(0,-1).map(text).join("\n") + '\nexport const rankingContent = ' + text(prop("content")) + ';\nexport function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {\n' + scene + '\n}\n'))));
-for (const file of ["dream_corridor.js", "dynamicCorridor.js", "setting.js"]) {
- const original = fs.readFileSync(path.join(source, "js", file), "utf8");
- fs.writeFileSync(path.join(target,"js",file), banner + modernize('export default function(lib, game, ui, get, ai, _status, PIXI = globalThis.PIXI) { const register = callback => callback(lib, game, ui, get, ai, _status);\n'+original+'\n}'));
-}
 const font = path.join(target, "css/font.css");
 fs.writeFileSync(font, fs.readFileSync(font,"utf8").replaceAll("shoushas.ttf", "shousha.ttf"));
 const files = [];
 function inventory(dir, prefix = "") {
  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
   const name = prefix + entry.name;
-  if (entry.isDirectory()) inventory(path.join(dir,entry.name), name+"/"); else if (name !== "files.json" && !name.endsWith(".bak")) files.push(name);
+  if (entry.isDirectory()) inventory(path.join(dir,entry.name), name+"/"); else if (name !== "files.json" && isProviderFile("如真似幻", name)) files.push(name);
  }
 }
 inventory(target);

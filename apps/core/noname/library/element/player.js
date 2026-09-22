@@ -6,6 +6,7 @@ import { ContentCompiler } from "./gameEvent.js";
 import { AsyncFunction } from "@/util/index.js";
 import dedent from "dedent";
 import { listenForActivation } from "../../ui/activation.js";
+import { displayRandom } from "../../util/displayRandom.js";
 import { emitPresentation, playerPresentation } from "../../ui/presentationEvents.js";
 
 export class Player extends HTMLDivElement {
@@ -2903,8 +2904,8 @@ export class Player extends HTMLDivElement {
 		var left2 = getLeft(target) - width;
 		var top2 = target.getTop() + target.offsetHeight / 3 - height;
 		if (["egg", "flower", "shoe"].includes(name) || rotate) {
-			var num1 = 0.95 + Math.random() * (1.1 - 0.95);
-			var num2 = 1 + Math.random() * (3 - 1);
+			var num1 = 0.95 + displayRandom() * (1.1 - 0.95);
+			var num2 = 1 + displayRandom() * (3 - 1);
 			var left2 = getLeft(target) / num1 - width;
 			var top2 = target.getTop() + target.offsetHeight / num2 - height;
 		} else {
@@ -2991,7 +2992,7 @@ export class Player extends HTMLDivElement {
 	 * @param { string } [popname]
 	 */
 	tryCardAnimate(card, name, nature, popname) {
-		emitPresentation("card", () => ({ player: playerPresentation(this), card: String(card.name), nature: String(card.nature || nature || ""), label: String(name || "") }));
+		emitPresentation("card", () => ({ player: playerPresentation(this), card: String(card.name), color: String(get.color(card) || ""), nature: String(card.nature || nature || ""), label: String(name || "") }));
 		game.broadcast(
 			function (player, card, name, nature, popname) {
 				player.tryCardAnimate(card, name, nature, popname);
@@ -16057,8 +16058,8 @@ export class Player extends HTMLDivElement {
 					}
 				}
 				node.fixed = true;
-				node.style.left = "calc(50% - 52px " + (Math.random() - 0.5 < 0 ? "+" : "-") + " " + Math.random() * 100 + "px)";
-				node.style.top = "calc(50% - 52px " + (Math.random() - 0.5 < 0 ? "+" : "-") + " " + Math.random() * 100 + "px)";
+				node.style.left = "calc(50% - 52px " + (displayRandom() - 0.5 < 0 ? "+" : "-") + " " + displayRandom() * 100 + "px)";
+				node.style.top = "calc(50% - 52px " + (displayRandom() - 0.5 < 0 ? "+" : "-") + " " + displayRandom() * 100 + "px)";
 				node.style.transform = "scale(0)";
 				node.hide();
 				ui.arena.appendChild(node);
@@ -16540,19 +16541,19 @@ export class Player extends HTMLDivElement {
 			top = -top;
 		}
 		if (get.is.mobileMe(this)) {
-			left = -Math.random() * 5 - 10;
-			top = Math.random() * 5 + 10;
+			left = -displayRandom() * 5 - 10;
+			top = displayRandom() * 5 + 10;
 		}
 		if (this._chesstransform) {
 			left += this._chesstransform[0];
 			top += this._chesstransform[1];
 		}
-		var transform = "translate(" + left + "px," + top + "px) " + "rotate(" + (Math.random() * 20 - 10) + "deg) ";
+		var transform = "translate(" + left + "px," + top + "px) " + "rotate(" + (displayRandom() * 20 - 10) + "deg) ";
 		if (type == "flip") {
 			if (game.layout == "long" || game.layout == "long2") {
 				transform += "rotateY(180deg)";
 			} else {
-				transform += Math.random() - 0.5 < 0 ? "rotateX(180deg)" : "rotateY(180deg)";
+				transform += displayRandom() - 0.5 < 0 ? "rotateX(180deg)" : "rotateY(180deg)";
 			}
 		}
 		if (get.is.mobileMe(this)) {

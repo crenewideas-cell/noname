@@ -53,6 +53,7 @@ window.noname_package = {
 		coin: "富甲天下",
 	},
 	mode: {
+		taixuhuanjing: "太虚幻境",
 		identity: "身份",
 		guozhan: "国战",
 		versus: "对决",

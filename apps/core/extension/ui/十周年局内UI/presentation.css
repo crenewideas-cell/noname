@@ -1,0 +1,94 @@
+/* Only core-owned visible nodes are decorated; no visibility/eligibility overrides. */
+@font-face{font-family:decade-ingame;src:url('./assets/ui/assets/fonts/HYZLSJ.woff2') format('woff2');font-display:swap}
+html body[data-decade-parts~="arena"] #arena{background:url('./assets/background.jpg') center/cover no-repeat!important}
+html body[data-decade-parts~="fonts"] :is(#arena,#control,#system){font-family:decade-ingame,serif}
+body.decade-layout #arena{inset:0!important;width:100%!important;height:100%!important}
+html body[data-decade-parts~="players"] #arena>.player:not(.minskin){width:130px!important;height:180px!important;border:1px solid #352820!important;border-radius:8px!important;background:#52423999!important;box-shadow:0 1px 2px #0008;overflow:visible}
+html body[data-decade-parts~="players"] #arena>.player:not(.minskin)>.avatar{left:19px!important;top:0!important;width:calc(100% - 19px)!important;height:100%!important;border-radius:6px!important;background-position:center top!important;background-size:cover!important}
+html body[data-decade-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar{width:calc(50% - 10px)!important;border-radius:6px 0 0 6px!important}
+html body[data-decade-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar2{left:calc(50% + 9px)!important;top:0!important;width:calc(50% - 9px)!important;height:100%!important;border-radius:0 6px 6px 0!important;background-position:center top!important;background-size:cover!important}
+html body[data-decade-parts~="players"] #arena>.player>.decade-frame{position:absolute;left:-13px;top:-16px;width:48px;height:198px;background:url('./assets/image/styles/xinsha/new_border_camp.png') center/100% 100% no-repeat;pointer-events:none;z-index:5;color:#fff0ac;text-shadow:0 0 3px #392b05;text-align:center;box-sizing:border-box;padding-top:26px;font:21px decade-ingame,serif}
+.decade-frame::before{content:'';position:absolute;left:10px;top:55px;bottom:8px;width:22px;background:linear-gradient(#6d6a54,#96846e);z-index:-1}
+.decade-frame[data-group="wei"]::before{background:linear-gradient(#34698a,#204460)}
+.decade-frame[data-group="shu"]::before{background:linear-gradient(#933b2e,#642921)}
+.decade-frame[data-group="wu"]::before{background:linear-gradient(#387b29,#205817)}
+html body[data-decade-parts~="players"] #arena>.player:not(.minskin)>.name{left:0!important;right:auto!important;top:51px!important;width:18px;font:15px/16px decade-ingame,serif!important;color:#fffbe0;z-index:6;text-shadow:0 1px 2px #151108}
+html body[data-decade-parts~="players"] #arena>.player:not(.minskin)>.name2{left:53%!important;top:35px!important;background:#0005}
+html body[data-decade-parts~="players"] #arena>.player:not(.minskin)>.identity{left:auto!important;right:0!important;top:0!important;width:29px;height:29px;font:23px/29px decade-ingame,serif!important;z-index:7;transform:none!important;background:radial-gradient(#faf5dc 50%,#a79d7c 65%,transparent 70%);border-radius:50%}
+html body[data-decade-parts~="players"] #arena>.player>.count{left:0!important;right:auto!important;bottom:4px!important;top:auto!important;z-index:7;min-width:19px;background:linear-gradient(#d47559,#edbd8e);border:0;border-radius:0;color:#fff;font:18px serif;text-shadow:1px 1px #000}
+html body[data-decade-parts~="players"] #arena>.player>.marks{z-index:8}
+html body[data-decade-parts~="players"] #arena>.player>.marks>.mark{background-color:#453727;border:1px solid #b69258;color:#f5deab}
+html body[data-decade-parts~="hp"] #arena>.player>.hp{left:auto!important;right:-2px!important;top:auto!important;bottom:6px!important;max-width:14px;z-index:7;background:#79450b;border-radius:5px 0 5px 0;padding:4px 2px}
+html body[data-decade-parts~="hp"] #arena>.player>.hp:not(.text):not(.textstyle){display:flex;flex-direction:column;gap:1px}
+html body[data-decade-parts~="hp"] #arena .hp:not(.text):not(.textstyle)>div{width:13px;height:13px;min-height:13px;margin:0;border:0;box-shadow:none;background:url('./assets/hp/1.png') center/100% 100% no-repeat!important}
+html body[data-decade-parts~="hp"] #arena .hp[data-condition="mid"]>div{background-image:url('./assets/hp/2.png')!important}
+html body[data-decade-parts~="hp"] #arena .hp[data-condition="low"]>div{background-image:url('./assets/hp/3.png')!important}
+html body[data-decade-parts~="hp"] #arena .hp>div.lost{background-image:url('./assets/hp/4.png')!important}
+body.decade-layout #arena>#me{left:var(--ss-hand-left,9%)!important;right:var(--ss-hand-right,220px)!important;width:auto!important;background:transparent!important;border:0!important;box-shadow:none!important}
+html body[data-decade-parts~="cards"] #window .card.decade-card:not(.infohidden):not(:empty){background-image:var(--decade-card)!important;background-size:100% 100%!important;border-radius:5px}
+html body[data-decade-parts~="cards"] #window .card.decade-card:not(.infohidden):not(:empty)>:is(.image,.background){background-image:none!important}
+html body[data-decade-parts~="cards"] #window .card.decade-card:not(.infohidden)>.name{opacity:0}
+html body[data-decade-parts~="cards"] #window .card.selected{box-shadow:0 0 1px 3px #fff46a,0 0 15px #e5bb3c!important}
+html body[data-decade-parts~="cardback"] #window .card:is(.infohidden,:empty){background-image:url('./assets/image/ui/card/kb3.png')!important;background-size:100% 100%!important}
+html body[data-decade-parts~="menus"] #arena>.dialog:not(.popped){background:url('./assets/image/ui/dialog/dialog5.png') center/100% 100% no-repeat!important;border:0;border-radius:0;box-shadow:none;color:#fff9e9;padding:20px 12px;box-sizing:border-box}
+html body[data-decade-parts~="players"] #arena>.decade-characters:not(.popped){position:absolute!important;left:15%!important;top:auto!important;bottom:12%!important;width:70%!important;height:auto!important;max-height:43%!important;transform:none!important;padding:24px 14px 12px;box-sizing:border-box;background:url('./assets/image/ui/dialog/dialog5.png') center/100% 100% no-repeat!important;border:0;border-radius:0;box-shadow:none;color:#fff9e9}
+html body[data-decade-parts~="players"] .decade-characters .content-container{position:relative!important;display:block!important;height:auto!important;max-height:35vh;overflow:auto}
+html body[data-decade-parts~="players"] .decade-characters .content{position:relative!important;height:auto!important}
+html body[data-decade-parts~="players"] .decade-characters .button.character{width:82px;height:112px;margin:6px;border:1px solid #5d492d;border-radius:4px;background-position:center top;background-size:cover}
+html body[data-decade-parts~="players"] .decade-characters .button.character.selected{box-shadow:0 0 2px 2px #ffe990,0 0 10px #f5c038}
+html body[data-decade-parts~="buttons"] #arena #control .control{background:none!important;box-shadow:none!important;border:0!important;overflow:visible}
+html body[data-decade-parts~="buttons"] #arena #control .control>div{min-width:95px;box-sizing:border-box;padding:10px 24px!important;margin:2px;background:url('./assets/image/ui/misc/control_button.png') center/100% 100% no-repeat!important;border:0;border-radius:0;font:22px/24px decade-ingame,serif!important;color:#f4e4ba;text-shadow:0 1px 2px #382c16}
+html body[data-decade-parts~="buttons"] #arena #control .control.disabled>div,html body[data-decade-parts~="buttons"] #arena #control .control>div.disabled{background-image:url('./assets/image/ui/misc/control_button_disable.png')!important;color:#ddd}
+html body[data-decade-parts~="buttons"] #arena #control .control>div:active{background-image:url('./assets/image/ui/misc/control_button_dwon.png')!important}
+html body[data-decade-parts~="buttons"] #arena #control .decade-skills>div{min-width:65px;padding:5px 14px!important;margin:2px;background-image:url('./assets/ui/assets/skill/shousha/btn0.png')!important;font-size:17px!important;color:#f9db84}
+html body[data-decade-parts~="buttons"] #arena #control .decade-skills>div:is(.selected,.active){background-image:url('./assets/ui/assets/skill/shousha/btn1.png')!important}
+html body[data-decade-parts~="buttons"] #arena #control .decade-skills.disabled>div{background-image:url('./assets/ui/assets/skill/shousha/btn2.png')!important}
+html body[data-decade-parts~="buttons"] #system2{display:flex;flex-direction:column;align-items:flex-end;right:3%;top:2%;width:64px}
+html body[data-decade-parts~="buttons"] #system2>div{position:relative;background:#2c1e12dd;border:1px solid #715638;border-radius:2px;color:#ccb188;font:16px decade-ingame,serif;box-shadow:none;min-width:44px;padding:8px 4px}
+html body[data-decade-parts~="buttons"] #system1>div{background:#332518d9;color:#d4ba8b;border-color:#735c3e;font-family:decade-ingame,serif}
+html body[data-decade-parts~="players"] #arena>.player.selectable{box-shadow:0 0 2px 2px #32c9ff,0 0 9px 4px #227dff!important}
+html body[data-decade-parts~="players"] #arena>.player.selected,html body[data-decade-parts~="players"] #arena>.player.target{box-shadow:0 0 3px 3px #62d5ff,0 0 14px 5px #276dff!important}
+html body[data-decade-parts~="lines"] .linexy{background:linear-gradient(transparent,#d8be76)!important;box-shadow:0 0 3px #f2d78f}
+html body[data-decade-parts~="arena"] #arena .timer{background:#332a1d;border:1px solid #c4ac79;box-shadow:0 1px 3px #000}
+html body[data-decade-parts~="arena"] #arena .timer>div{background:linear-gradient(#f7c876,#d79249)}
+.decade-animation{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:10002}
+.decade-portrait{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:inherit}
+#arena>.player:is(.unseen,.unseen_v,.unseen_show,.dead)>.avatar>.decade-portrait,#arena>.player:is(.unseen2,.unseen2_v,.unseen2_show,.dead)>.avatar2>.decade-portrait{display:none!important}
+.decade-result{position:fixed;top:10%;left:30%;width:40%;text-align:center;color:#ffe6a4;font:48px decade-ingame,serif;text-shadow:0 2px 5px #3e1a03;pointer-events:none;z-index:10003;animation:decade-result-in .8s ease-out}
+.decade-error{position:fixed;top:4px;left:20%;z-index:10010;padding:12px;background:#39271a;color:#ffe2ac}
+@keyframes decade-result-in{from{transform:scale(1.4);opacity:0}to{transform:scale(1);opacity:1}}
+@media(max-width:850px){html body[data-decade-parts~="players"] #arena>.decade-characters:not(.popped){left:9%!important;width:82%!important}html body[data-decade-parts~="players"] .decade-characters .button.character{width:64px;height:90px;margin:4px}html body[data-decade-parts~="buttons"] #arena #control .control>div{min-width:75px;padding:8px 15px!important;font-size:18px!important}}
+@media(prefers-reduced-motion:reduce){.decade-result{animation:none}}
+
+html body[data-decade-parts~="cards"] #window .card.decade-card{border:1px solid transparent!important;border-image:url('./assets/image/ui/card/kuang1.png') 17 / 18px!important}
+html body[data-decade-parts~="cards"] #window .card.selected::before{content:"";display:block;position:absolute;inset:-7px;border:7px solid;border-image:url('./assets/image/ui/card/card_select.png') 8 7 7 8 / 8px 7px 7px 8px;pointer-events:none;opacity:1}
+html body[data-decade-parts~="players"] #arena>.player.turnedover::after{background:url('./assets/image/ui/mask/turn_over_mask_shousha.png') center/100% 100% no-repeat!important;pointer-events:none}
+html body[data-decade-parts~="players"] #arena>.player>.identity>div{width:100%!important;height:100%!important;position:static!important;transform:none!important;line-height:29px!important;font-size:23px!important;writing-mode:horizontal-tb!important}
+html body[data-decade-parts~="menus"] #arena .dialog .text{color:#fff0ca;text-shadow:0 1px 2px #21180d}
+html body[data-decade-parts~="menus"] #arena .dialog table{background:#2c211ac9;border:1px solid #b49761;border-collapse:collapse}
+html body[data-decade-parts~="menus"] #arena .dialog td{border-bottom:1px solid #b4976155;padding:7px 14px;color:#fff0ca}
+html body[data-decade-parts~="menus"] :is(.menu-container,.menubg,.dialog.popped){background-color:#33291ef5!important;color:#f6dfae;border-color:#af925c}
+html body[data-decade-parts~="buttons"] #system1{display:flex;flex-direction:column;align-items:flex-end;left:auto!important;right:12px!important;top:10px!important;width:78px!important;height:auto!important}
+html body[data-decade-parts~="buttons"] #system1>div{margin:3px 0;min-height:28px;box-sizing:border-box;padding:5px 8px;background:url('./assets/ui/assets/lbtn/shousha/button.png') center/100% 100% no-repeat!important;border:0!important;border-radius:0!important;text-shadow:0 1px 2px #000}
+html body[data-decade-parts~="buttons"] #system2{right:95px!important;top:10px!important}
+html body[data-decade-parts~="buttons"] #system1>.decade-settings{background-image:url('./assets/ui/assets/lbtn/shousha/shezhi.png')!important;background-size:auto 100%!important;width:48px;color:transparent}
+html body[data-decade-parts~="buttons"] #system1>#autobutton{background-image:url('./assets/ui/assets/lbtn/shousha/tuoguan.png')!important;background-size:auto 100%!important;width:48px;color:transparent}
+html body[data-decade-parts~="buttons"] #system1>.decade-sort{background-image:url('./assets/ui/assets/lbtn/shousha/btn-paixu.png')!important;background-size:auto 100%!important;width:48px;color:transparent}
+
+html body[data-decade-parts~="cards"].decade-layout #arena>#me{height:170px!important;top:auto!important;bottom:12px!important}
+html body[data-decade-parts~="cards"].decade-layout #arena #handcards1{height:155px!important;top:auto!important;bottom:0!important;left:0!important;width:100%!important}
+html body[data-decade-parts~="cards"] #arena .handcards>.card{width:108px!important;height:150px!important}
+html body[data-decade-parts~="buttons"] #arena #control [data-action="cancel"]{background-image:url('./assets/image/ui/misc/control_button_disable.png')!important}
+html body[data-decade-parts~="players"] #arena>.player>.hujia{background:url('./assets/image/styles/decade/shield.png') center/contain no-repeat;color:white;text-shadow:0 1px #000}
+
+html body[data-decade-parts~="players"] #arena>.player>.identity.decade-identity{background:var(--decade-icon) center/contain no-repeat!important;color:transparent!important;box-shadow:none!important;opacity:1}
+html body[data-decade-parts~="players"] #arena>.player>.identity.decade-identity>div{color:transparent!important;text-shadow:none!important;background:none!important}
+html body[data-decade-parts~="players"] #arena .judges>.card.decade-judge{background:var(--decade-icon) center/contain no-repeat!important;width:28px!important;height:28px!important;border:0!important;box-shadow:none}
+html body[data-decade-parts~="players"] #arena .judges>.card.decade-judge>div{opacity:0}
+html body[data-decade-parts~="players"] #arena>.player>.marks>.mark{background-image:url('./assets/image/ui/mark/player_mark.png');background-size:100% 100%;border:0}
+html body[data-decade-parts~="hp"] #arena>.player>.hp{background:url('./assets/image/styles/xinsha/new_border_hp.png') center/100% 100% no-repeat}
+html body[data-decade-parts~="players"] #arena>.player>.equips{z-index:7}
+html body[data-decade-parts~="players"] #arena>.player>.equips>.card{background-color:#382a18e6!important;border:1px solid #aa854e!important;color:#ffe6ac;box-shadow:0 1px 2px #0008}
+
+html body[data-decade-parts~="players"] #arena>.player>.decade-death{position:absolute;inset:22% 8%;background:var(--decade-icon) center/contain no-repeat;z-index:10;pointer-events:none}
+html body[data-decade-parts~="buttons"] #system .decade-exit{background:url('./assets/ui/assets/lbtn/shousha/tuichu.png') center/100% 100% no-repeat!important;color:transparent!important;border:0!important}

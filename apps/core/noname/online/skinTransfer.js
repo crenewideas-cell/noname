@@ -22,8 +22,8 @@ export async function exportOnlineSkin(){
  if(pack)for(const [path,blob] of Object.entries(pack.assets))assets[path]=await dataURL(new Blob([blob],{type:MIME[path.split('.').pop()]}));
  return JSON.stringify({version:1,manifest:pack?.manifest||null,assets,settings:preferences(lib.config.ui_workshop_shousha_settings)});
 }
-export async function importOnlineSkin(params){
- const token=params.get('skin');if(!token)return;
+export async function importOnlineSkin(params,appearance={}){
+ const token=params.get('skin');if(!token)return false;
  if(!/^[a-f0-9-]{36}$/.test(token))throw new Error('联机皮肤凭据无效');
  const response=await fetch(`/_ui-skin/${token}`,{cache:'no-store'});
  if(!response.ok)throw new Error('本地皮肤传递失败，请关闭联机窗口后重新进入');
@@ -46,6 +46,7 @@ export async function importOnlineSkin(params){
   pack.manifest.id='builtin-online-transfer';
  }
  // The default selection and provider settings also commit together.
- await receiveOnlinePack(pack,preferences(source.settings));
+ await receiveOnlinePack(pack,preferences(source.settings),appearance);
  params.delete('skin');
+ return true;
 }

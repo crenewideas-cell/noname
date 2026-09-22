@@ -5,12 +5,6 @@ export function plainText(value) {
  const document = new DOMParser().parseFromString(String(value ?? ""), "text/html");
  return document.body.textContent.trim();
 }
-export function prepareCharacters() {
- // Register portrait metadata only; the core still owns loading skills and rules.
- for (const [name, pack] of Object.entries(lib.imported.character || {})) {
-  if (pack.character) lib.characterPack[name] = pack.character;
- }
-}
 export function packLabel(name, translations) {
  const pack = lib.imported.character?.[name];
  return plainText(translations[name+"_character_config"] || pack?.translate?.[name] || lib.translate[name] || name);
@@ -44,7 +38,7 @@ function portrait(name, portraitJobs) {
 }
 export function createPortraitLoader(lifecycle) {
  const queue = [], pending = new WeakSet(), textures = new Map(), waiting = new Set(), portraitJobs = new Map(), ownedTextures = new Set(), cancelLoads = new Set();
- const graphics = PIXI;
+ const graphics = lifecycle.graphics, PIXI = graphics;
  let active = 0, disposed = false;
  function textureFromURL(url) {
   return new Promise((resolve,reject)=>{
@@ -143,7 +137,7 @@ export function openTools(onSettings, onOriginal) {
  };
  add("UI 工坊", () => lib.uiWorkshop.open());
  add("游戏设置", onSettings);
- add("如真似幻设置", () => window.我们敬爱你呀丞相?.());
+ add("如真似幻设置", onSettings);
  if (onOriginal) add("原版功能菜单", onOriginal);
  add("返回大厅", () => {});
  overlay.onclick = event => { if (event.target === overlay) overlay.remove(); };

@@ -7070,13 +7070,10 @@
     "files": {
       "extension.js": "49e570e277d1846ed9424ce80f5a939960bc368de39ab0f94cc28f03f5c6a6ba",
       "info.json": "f4c83d0e9e3893e6f77e0c3b099e0c46f7addb5362a8b07df729259f3c6f04bf",
-      "ui-workshop.json": "a2348a2b7bc3dced5adcb2eeb7852391c7c61a9850939758a46afd99ae9793f3",
-      "scenes.js": "bdd8a83da5228c66145ca743968d5f7eea3ff8676fca93b1b5f547cb1bf651c6",
+      "ui-workshop.json": "d0e2fb1b1df6307a8cc45ac9aa049ef54c286fdb2b111123fc93051f8fd194c2",
+      "scenes.js": "43cf1ad33a954a4bd993b153b6df9be00ef92e4fe09728281a1614755d26d61c",
       "bridge.js": "72290daa47f156893f3fba6681012fcd9647e6c07580ba2464de128ae5292d4a",
       "runtime.js": "435edfab760f7933e0ab3b16edeb0a5fd3480af2f73aad1f758c3792278585db",
-      "js/dream_corridor.js": "4c8979dd9b7f299c94b8f167ff74177a6bbfd95d89b2cba62251e2d08dcbf7da",
-      "js/dynamicCorridor.js": "aae842ac97e1ef70d894e7b22cd5b333c80e79b7a41e7a9a6656103ea53739ae",
-      "js/setting.js": "0ea53f15a8421bf7690699ab326b3fdd8e07edbfe3a0a782214814039df668f3",
       "css/modern.css": "4421f495afaba3cb1ab1b4eba7b04160890360b3de5f2d9a49b613166d60681f"
     },
     "defaultEnabled": false,
@@ -7084,16 +7081,16 @@
   },
   {
     "name": "手杀标准UI",
-    "hash": "0eac4e332da113910dde3006a1226704e28b501ec9ed186af0c42b8bfaa773a1",
+    "hash": "4de35888cf5bdeeef9bb7ffa3e1ed8f20b88435e9b851a8cb1cfe8c250cdbe65",
     "characters": [],
     "files": {
-      "extension.js": "0eac4e332da113910dde3006a1226704e28b501ec9ed186af0c42b8bfaa773a1",
+      "extension.js": "4de35888cf5bdeeef9bb7ffa3e1ed8f20b88435e9b851a8cb1cfe8c250cdbe65",
       "native-runtime.js": "56809dd3fe0dda59b7dd1b392a506a3033fea3c2c875731a8e85987e065bb8d2",
       "native.css": "252c8c6af6dbf16f391bb9047c6326f92a2fc77772e1ed408243f0695f540dfc",
       "ui-workshop.json": "91852be21513aa3cab2592221a9b4c90dd4db4fa20127aacdeb8de5b9134ea4b",
       "native/lobby.js": "7a4cf1362cf1f1e2ca3086f7792aac53cc5ad014118ee9d57f139053db3f34c5",
       "native/presentation.js": "c32c700057c9b65e4af4b0690487787f33e1f85ca80c91c97fcbe43278b64b69",
-      "native/presentation.css": "6fd577c8cec1da752a03192d0a78df6433a5a058ec49126a729e4e68b198bb28",
+      "native/presentation.css": "c57f7d7f35987088e047c82cc4100b2d423c7cedcad1ad2e382edb5f233baecf",
       "native/layout.js": "666217e41bb794f44bcd5fa99dd8e2b3aae8c66bfa605dbf0dc7409cfb515f2e",
       "native/portrait-clips.js": "0be189c7ab5b601614173d0926d25dded9f56237eb696f9b1b560a8b7fec7bab",
       "native/animations.js": "f85c8a9b4c6d6a6f651f2a8d1294858add8ba0f2a915d6d7860a7d0b562f60a4",
@@ -11104,5 +11101,27 @@
         "nysgs_jie_liuqi"
       ]
     }
+  },
+  {
+    "name": "十周年局内UI",
+    "characters": [],
+    "defaultEnabled": false,
+    "source": "local-migration:ziqi-decade-1.3.1",
+    "files": {
+      "SOURCE.json": "4eab82c37248eb756bace13982e0d4dd792f31d1edb550327202cb44028bef72",
+      "animation-assets.json": "5dbc273bd7d6c02e261256e8960e8f59fd1fb89dcc5cda2657a06c81a774d503",
+      "animation-renderer.js": "49a4ac426b8f3d04eaee2a0ab22e819980c501088dd2f3da1f77aedf2c736555",
+      "animations.js": "a31ab26987b42e55ce8e481e4489f91da7acfcbf67f5255acd39a48a9e83e0fc",
+      "extension.js": "3b72082297169a5a3d8cfa1886a2b1631eca5f97dce6f5c5843f0a30b20bec2b",
+      "info.json": "f1bb2983784bfeba329157a2e9d6a8c7f994c2af8199ea49ceb562828c2508da",
+      "layout.js": "3265c254d6b1b8c51ee82536be675eaada291aac71ce1ff967b8b01c8fbb76c5",
+      "portraits.js": "f312af162a77352bbea6f4c6eafbc8fce9ff4f3222bb7abd319eadb89f56e95e",
+      "presentation.css": "a7d48fb1f551d7cdc15f5e828698e5b86ced859c503decf3516090d37a1a7600",
+      "presentation.js": "b138512a56144493adfb0ea314352ef312ec036316bae17386ca5e55c1dab88e",
+      "ui-workshop.json": "cf271f639d7791afa3bc3f8b6f6fa6cf95485bbb60f86754137932b227d4d878",
+      "vendor/spine.js": "30230a430db6205ca8b5153064b125a8108b928f8821b903db09785ec363e95a",
+      "files.json": "b56a428987617ff9ccc294ad4d9c26bf56f23b196eb2bbaa60ed7344a382b0af"
+    },
+    "hash": "3b72082297169a5a3d8cfa1886a2b1631eca5f97dce6f5c5843f0a30b20bec2b"
   }
 ]

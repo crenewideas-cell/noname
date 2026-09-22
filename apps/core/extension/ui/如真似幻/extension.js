@@ -1,5 +1,5 @@
 import { lib, game, ui, get, createSceneContext } from "noname";
-import { createSceneGame, prepareCharacters, createPortraitLoader, packLabel, openTools } from "./bridge.js";
+import { createSceneGame, createPortraitLoader, packLabel, openTools } from "./bridge.js";
 import { createLobbyAudio, createCharacterGrid, addSessionButtons } from "./runtime.js";
 
 export const type = "extension";
@@ -17,26 +17,25 @@ function script(file) {
  if (scripts.has(file)) return scripts.get(file);
  const job = new Promise((resolve, reject) => {
   const node = document.createElement("script"); node.src = base() + file;
-  node.onload = resolve; node.onerror = () => { node.remove(); reject(new Error(`如真似幻资源加载失败：${file}`)); };
+  node.onload = () => resolve({PIXI:globalThis.PIXI,gsap:globalThis.gsap}); node.onerror = () => { node.remove(); reject(new Error(`如真似幻资源加载失败：${file}`)); };
   document.head.append(node);
  });
  scripts.set(file, job); job.catch(() => scripts.delete(file)); return job;
 }
 async function prepare() {
  if (!prepared) prepared = (async () => {
-  await script("js/gsap.min.js");
-  await script("js/pixi6.min.js");
+  const {gsap} = await script("js/gsap.min.js");
+  const {PIXI} = await script("js/pixi6.min.js");
   const response = await fetch(base()+"files.json"); if (!response.ok) throw new Error("如真似幻文件清单缺失"); fileList = await response.json();
-  return import("./scenes.js");
+  return {scene:await import("./scenes.js"),PIXI,gsap};
  })().catch(error => { prepared = undefined; throw error; });
  return prepared;
 }
 export async function activate(manifest) {
  if (installed) return installed;
- let disposed = false, sceneGame, activeScene, previousAlert;
+ let disposed = false, sceneGame, activeScene;
  const sceneContext = createSceneContext({lib,game,ui,get}, {settingsKey:"ui_workshop_rzsh_settings", actions:{reload:()=>game.reload()}});
- const draftGame = sceneContext.game, draftCreate = {...sceneContext.ui.create}, previousSettings = window.我们敬爱你呀丞相;
- const openSettings = () => lib.uiWorkshop.openSettings("options");
+ const draftGame = sceneContext.game, draftCreate = {...sceneContext.ui.create};
  const alertScene = message => {
   if (disposed || !activeScene || sceneContext._status.rzsh_alerting) return;
   sceneContext._status.rzsh_alerting = true;
@@ -71,20 +70,21 @@ export async function activate(manifest) {
    const views = new Map();
    let pendingView = restore.view || "home", activeView = restore.view || "home", resizing, finishing = false, homeReady = false;
    let observer, onlineController, onlineOpen = false, resizeScene;
-   let done = false;
+   let done = false, graphics, motion;
    const lifecycle = this.lifecycle = {
     window:sceneWindow, document:sceneDocument,
     app: null,
     sound: createLobbyAudio(node),
-    get pixi() { return new Proxy(globalThis.PIXI, {get(target,key) { return key === "sound" ? lifecycle.sound : Reflect.get(target,key); }}); },
+    get graphics() { return graphics; },
+    get pixi() { return new Proxy(graphics, {get(target,key) { return key === "sound" ? lifecycle.sound : Reflect.get(target,key); }}); },
     get animation() {
-     return new Proxy(globalThis.gsap, { get(target,key) {
+     return new Proxy(motion, { get(target,key) {
       if (!["to", "from", "fromTo", "timeline", "delayedCall"].includes(key)) return Reflect.get(target,key);
       return (...args) => { const tween = target[key](...args); animations.add(tween); return tween; };
      } });
     },
     application(options) {
-     const app = new PIXI.Application({...options, width:screen.width, height:screen.height});
+     const app = new graphics.Application({...options, width:screen.width, height:screen.height});
      const update=app.ticker.update.bind(app.ticker);app.ticker.update=(...args)=>runVisual(update,...args);
      return new Proxy(app, {get(target,key) { return key === "screen" ? screen : Reflect.get(target,key); }});
     },
@@ -121,12 +121,12 @@ export async function activate(manifest) {
      if (first) queueMicrotask(() => { if (pendingView) lifecycle.showView(pendingView); });
     },
     loader() {
-     const loader = new PIXI.Loader(), load = loader.load.bind(loader);
+     const loader = new graphics.Loader(), load = loader.load.bind(loader);
      loader.load = callback => load((...args) => { if (!done) runVisual(callback,...args); });
      loaders.add(loader); return loader;
     },
-    ticker() { const ticker = new PIXI.Ticker(), update=ticker.update.bind(ticker);ticker.update=(...args)=>runVisual(update,...args);tickers.add(ticker); return ticker; },
-    container() { const container = new PIXI.Container(); containers.add(container); return container; },
+    ticker() { const ticker = new graphics.Ticker(), update=ticker.update.bind(ticker);ticker.update=(...args)=>runVisual(update,...args);tickers.add(ticker); return ticker; },
+    container() { const container = new graphics.Container(); containers.add(container); return container; },
     packLabel,
     sessionButtons(parent, x, y, scale) { addSessionButtons(lifecycle, parent, x, y, scale); },
     offline() { game.saveConfig("sessionType", "offline"); sceneWindow.moode = "shenfen"; lifecycle.showView("mode"); },
@@ -139,7 +139,7 @@ export async function activate(manifest) {
       onlineController = await game.openOnlineRooms(mode);
       if (done) { onlineController.close(); return; }
       await onlineController.closed;
-     } catch (error) { if (!done) window.rzsh.function.alert(error.message || "无法进入联机大厅"); }
+     } catch (error) { if (!done) alertScene(error.message || "无法进入联机大厅"); }
      finally { onlineController = null; onlineOpen = false; if (!done) resizeScene?.(); }
     },
     startGame(mode, matching = false) {
@@ -216,17 +216,16 @@ export async function activate(manifest) {
     console.warn('如真似幻展示失败',error);
    }
    try {
-    const scene = await prepare();
+    const libraries = await prepare();
     if (done || disposed) return;
+    const scene = libraries.scene; graphics = libraries.PIXI; motion = libraries.gsap;
     sceneGame = createSceneGame(fileList, draftGame); sceneContext.game = sceneGame;
-    scene.bindSceneContext(sceneContext);
-    if(window.rzsh.function.alert !== alertScene)previousAlert=window.rzsh.function.alert;
-    window.rzsh.function.alert=alertScene; window.我们敬爱你呀丞相=openSettings;
-    sceneWindow.rzsh=window.rzsh;
+    sceneWindow.rzsh=scene.createSceneMetadata();
+    sceneWindow.rzsh.function.alert=alertScene;
     sceneWindow.noname_character_rank=structuredClone(window.noname_character_rank||sceneContext.lib.rank);
     lifecycle.portraits = createPortraitLoader(lifecycle);
     lifecycle.grid = createCharacterGrid(lifecycle);
-    prepareCharacters(); status.remove();
+    status.remove();
      sceneContext.refreshCharacters();
      sceneContext.config.extension_如真似幻_menuInit ??= "0";
      scene.createScene(sceneContext.lib, sceneGame, sceneContext.ui, sceneContext.get, sceneContext.ai, sceneContext._status, node, lifecycle);
@@ -243,8 +242,6 @@ export async function activate(manifest) {
  lib.config.splash_style = splash.id;
  installed = () => {
   if(disposed)return;disposed=true;activeScene?.dispose();sceneContext.dispose();
-  if(window.rzsh?.function?.alert===alertScene)window.rzsh.function.alert=previousAlert;
-  if(window.我们敬爱你呀丞相===openSettings){if(previousSettings===undefined)delete window.我们敬爱你呀丞相;else window.我们敬爱你呀丞相=previousSettings;}
   lib.onloadSplashes = lib.onloadSplashes.filter(item=>item!==splash); installed=undefined;
  };return installed;
 }

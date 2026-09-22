@@ -39,7 +39,10 @@ html body[data-shousha-parts~="players"] #arena>.player:not(.minskin){width:120p
 html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.avatar{left:22px!important;top:0!important;bottom:0!important;width:calc(100% - 22px)!important;height:100%!important;border-radius:8px!important;background-size:cover!important;background-position:center top!important}
 html body[data-shousha-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar{width:calc(50% - 11px)!important;border-radius:8px 0 0 8px!important}
 html body[data-shousha-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar2{left:calc(50% + 11px)!important;top:0!important;bottom:0!important;width:calc(50% - 11px)!important;height:100%!important;border-radius:0 8px 8px 0!important;background-size:cover!important;background-position:center top!important}
-html body[data-shousha-parts~="players"] #arena>.player>.ss-player-frame{position:absolute;left:-27px;top:-2px;width:183px;height:175px;background-position:center;background-size:contain;background-repeat:no-repeat;pointer-events:none;z-index:4}
+/* These source frames include an opaque portrait placeholder. Keep it behind
+   the engine's avatars; name/HP/identity decorations retain their own layers. */
+html body[data-shousha-parts~="players"] #arena>.player>.ss-player-frame{position:absolute;left:-27px;top:-2px;width:183px;height:175px;background-position:center;background-size:contain;background-repeat:no-repeat;pointer-events:none;z-index:0}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>:is(.avatar,.avatar2){z-index:1}
 html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.avatar{clip-path:url(#ss-solo-clip)}
 html body[data-shousha-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar{clip-path:url(#ss-left-clip)}
 html body[data-shousha-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar2{clip-path:url(#ss-right-clip)}

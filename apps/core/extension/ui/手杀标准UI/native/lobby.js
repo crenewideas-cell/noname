@@ -111,40 +111,6 @@ window.helasisy_getPaiWeiInfo=function(type, zero){
                         return [rankduanname, rankduannum, rankduanlim, ranklevel];
                     }
                 }
-window.rzPaiweiNext=function() {
-		    var tianti_versus_two=lib.config['tianti_versus_two'];
-            var tianti_copy=JSON.parse(JSON.stringify(lib.config['tianti_versus_two']));
-            if(tianti_versus_two) {
-                var xxingnum0 = tianti_versus_two.xxingnum;
-                if(!xxingnum0) var xxingnum0=0;
-            }else {
-                var xxingnum0=0;
-            }
-            var zeroStarNum=[0,2,4,6,10,14,18,23,28,33,38,43,48,53,58,63,68,73,78,83,88,98];
-            game.storyBgMode='paiwei';
-            //game.storyBackground();
-            game.saveConfig('rz_paiWeiError',tianti_copy);
-            game.saveConfig('rz_isPaiWei',true);
-            game.saveConfig('rz_paiWeiTip',true);
-            if(window.helasisy_getPaiWeiInfo('level')>1) {
-                game.saveConfig('rz_paiWeiCount',tianti_versus_two.count);
-                game.rz_paiWeiDec=1;
-                tianti_versus_two.count=0;//Math.floor(tianti_versus_two.count/3);
-                tianti_versus_two.xxingnum--;
-                game.saveConfig('tianti_versus_two',tianti_versus_two);
-                /*if(zeroStarNum.contains(tianti_versus_two.xxingnum)) {
-                    game.saveConfig('tianti_0星', true);
-                }else {
-                    game.saveConfig('tianti_0星', false);
-                }*/
-            }else {
-                game.rz_paiWeiDec=0;
-            }
-		};
-if(lib.config.rz_nextIsPaiwei) {
-		    game.saveConfig('rz_nextIsPaiwei',false);
-		    window.rzPaiweiNext();
-		}
 window.jjGradeConfig = {
           "jj_grade_chuanshuo": {
             "frame": {"x":325,"y":932,"w":290,"h":304},
@@ -184,7 +150,7 @@ window.jjGradeConfig = {
           }
         };
 window.createJJGradeElement = function(xxx, scale = 1) {
-          const config = jjGradeConfig[`jj_grade_${xxx}`];
+          const config = window.jjGradeConfig[`jj_grade_${xxx}`];
           if (!config) return ui.create.div();
         
           // 雪碧图实际尺寸
@@ -6272,25 +6238,6 @@ let openCharactersWhenReady=false;
  break;
 
                                         case "versustwobtn":
-                                            game.storyBgMode='paiwei';
-                                            game.rzPaiweiType=4;
-                                            game.saveConfig('rz_paiWeiError',tianti_copy);
-                                            game.saveConfig('rz_isPaiWei',true);
-                                            game.saveConfig('rz_paiWeiTip',true);
-                                            if(window.helasisy_getPaiWeiInfo('level')>1) {
-                                                game.saveConfig('rz_paiWeiCount',tianti_versus_two.count);
-                                                game.rz_paiWeiDec=1;
-                                                tianti_versus_two.count=0;//Math.floor(tianti_versus_two.count/3);
-                                                tianti_versus_two.xxingnum--;
-                                                game.saveConfig('tianti_versus_two',tianti_versus_two);
-                                                /*if(zeroStarNum.contains(tianti_versus_two.xxingnum)) {
-                                                    game.saveConfig('tianti_0星', true);
-                                                }else {
-                                                    game.saveConfig('tianti_0星', false);
-                                                }*/
-                                            }else {
-                                                game.rz_paiWeiDec=0;
-                                            }
                                             entermodegame('versus', 'two');
                                             //if (window.isOnhide == false) rzshkz();
                                             //修复：一触即发

@@ -5,6 +5,7 @@ import { readArchive, writeArchive } from "./archive.js";
 import { mountAppearance } from "./runtime.js";
 import { builtinPacks } from "./presets.js";
 import { providerDirectory } from './provider.js';
+import { decadeManifest, mixIngame, INGAME_PARTS } from './ingame.js';
 import css from "./manager.css?inline";
 
 let current;
@@ -168,6 +169,17 @@ export async function openWorkshop() {
 		field(metadata, "套装名称", draft.manifest.name, value => { draft.manifest.name = value; });
 		field(metadata, "作者", draft.manifest.author, value => { draft.manifest.author = value; });
 		field(editor, "套装说明", draft.manifest.description, value => { draft.manifest.description = value; });
+		select(editor, "局内 UI 方案", {"":"保留当前搭配",decade:"十周年局内 UI"}, INGAME_PARTS.every(id=>draft.manifest.components[id]?.runtime==="decade")?"decade":"", value => {
+			if(value!=="decade"||INGAME_PARTS.every(id=>draft.manifest.components[id]?.runtime==="decade"))return;
+			mixIngame(draft,{manifest:decadeManifest,assets:{}});changed();renderEditor();
+			message("已切换十周年局内 UI；大厅保留。可保存、另存或应用。");
+		});
+		if(draft.manifest.components.arena?.runtime==='decade') {
+			for(const [key,label] of [['effects','局内展示动画'],['sound','局内展示音效'],['dynamic','动态武将立绘']]) {
+				const options=draft.manifest.components.arena.options ||= {};
+				select(editor,label,{true:'开启',false:'关闭'},String(options[key]!==false),value=>{options[key]=value==='true';changed();});
+			}
+		}
 		el("h2", editor, PARTS[partId].name);
 		const sources = { "": "当前搭配 / 手动编辑" };
 		for (const item of available()) if (item.parts.includes(partId)) sources[item.id] = item.name;
@@ -194,7 +206,7 @@ export async function openWorkshop() {
 			});
 		}
 		el("h3", editor, "素材");
-		if (part.runtime) el("p", editor, `此部件使用${part.runtime === "shousha" ? "手杀标准UI" : "如真似幻"}内置素材与界面程序，导出时会一并打包。下方可添加自己的覆盖素材。`, "muted");
+		if (part.runtime) el("p", editor, `此部件使用${({shousha:"手杀标准UI",rzsh:"如真似幻",decade:"十周年局内 UI"})[part.runtime]}内置素材与界面程序，导出时会一并打包。下方可添加自己的覆盖素材。`, "muted");
 		el("p", editor, "图片支持 PNG / JPG / WebP / GIF / AVIF；字体支持 WOFF / WOFF2 / TTF / OTF。素材会复制到套装中。", "muted");
 		for (const slot of PARTS[partId].slots) assetRow(part, slot);
 		if (PARTS[partId].map) {

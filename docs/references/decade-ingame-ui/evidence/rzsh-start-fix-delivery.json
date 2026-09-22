@@ -1,0 +1,56 @@
+{
+  "at": "2026-09-22T11:49:17.637530+00:00",
+  "files": {
+    "apps/core/noname/ui/workshop/ingame.js": "f2fb20d9223b06e09b372d93b958d206d6e76c4a2cf1ae6a5a5ce259ac15c668",
+    "apps/core/noname/ui/workshop/presets.js": "e9323fa27ff755ae8220d803580c6235f5b499a2ccb43f2ad213c88c2bc158cc",
+    "apps/core/noname/ui/workshop/service.js": "e5921d9d31f7484a45ce47d2bd2bc7f89a83b5293289ed9cc4eab5c35a5928ad",
+    "apps/core/extension/ui/如真似幻/ui-workshop.json": "d0e2fb1b1df6307a8cc45ac9aa049ef54c286fdb2b111123fc93051f8fd194c2",
+    "apps/core/game/organized-extensions.json": "edbf2f3c5a992d5dc4fcecb7038399467c45fd65cb8768d15176f22ff3e20fe6",
+    "scripts/decade-inventory.mjs": "294ebc3714f6c330289482ee285f8e49a8889bbe7165c6a2583aea1b69bce2bc",
+    "scripts/ui-workshop.test.mjs": "d579495a88900808c80a0d0e3af854938233ff5b1bedb4a503c4ae450a7496d3",
+    "scripts/decade-rzsh-start-regression.mjs": "62944bd0927a1e458c5f481ac4c506822ba5434241be3840ff1a8120cee7ebb1"
+  },
+  "archives": {
+    "at": "2026-09-22T11:48:00.053Z",
+    "report": [
+      {
+        "file": "C:\\pxlngu\\projects\\noname\\dist\\ui\\十周年局内 UI-UI套装.zip",
+        "bytes": 72993794,
+        "sha256": "ac69d61c2b331e6a2f6d0cf01836cd179f076c59d58acc55c29704269491dd58",
+        "roundtrip": true,
+        "components": [
+          "arena",
+          "cards",
+          "cardback",
+          "players",
+          "hp",
+          "buttons",
+          "menus",
+          "lines",
+          "fonts"
+        ]
+      },
+      {
+        "file": "C:\\pxlngu\\projects\\noname\\dist\\ui\\如真似幻＋十周年局内-UI套装.zip",
+        "bytes": 364149261,
+        "sha256": "94f20082422e7efaf1f958c1bd66c2ba34c4e782ee512990180157fd492d62f9",
+        "roundtrip": true,
+        "components": [
+          "home",
+          "arena",
+          "cards",
+          "cardback",
+          "players",
+          "hp",
+          "buttons",
+          "menus",
+          "lines",
+          "fonts"
+        ]
+      }
+    ]
+  },
+  "tests": "13/13",
+  "browserEvidence": "rzsh-start-fix-browser.json",
+  "scope": "RZSH builtin and legacy lobby-only saved records; explicit in-game mixes retained"
+}

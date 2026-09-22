@@ -101,12 +101,15 @@ export async function mountGamePresentation({lib,game,ui,get,manifest,files,base
  });
  schedule();
  return()=>{
-  disposed=true;cancelAnimationFrame(frame);observer.disconnect();disposeMenu?.();disposeLayout?.();disposeClips();settlement?.remove();style.remove();
-  unsubscribe();
-  for(const card of cards.keys()){card.classList.remove('ss-card-art');card.style.removeProperty('--ss-card-art');}
-  for(const node of decorated)node.classList.remove('ss-character-dialog');
-  for(const ornament of playerFrames.values())ornament.remove();
-  for(const node of skillControls)node.classList.remove('ss-skill-control');
-  if(previous===null)document.body.removeAttribute('data-shousha-parts');else document.body.setAttribute('data-shousha-parts',previous);
+  if(disposed)return;disposed=true;
+  const releases=[unsubscribe,()=>cancelAnimationFrame(frame),()=>observer.disconnect(),()=>disposeMenu?.(),()=>disposeLayout?.(),disposeClips,()=>settlement?.remove(),()=>style.remove(),
+   ...Array.from(cards.keys(),card=>()=>{card.classList.remove('ss-card-art');card.style.removeProperty('--ss-card-art');}),
+   ...Array.from(decorated,node=>()=>node.classList.remove('ss-character-dialog')),
+   ...Array.from(playerFrames.values(),ornament=>()=>ornament.remove()),
+   ...Array.from(skillControls,node=>()=>node.classList.remove('ss-skill-control')),
+   ()=>{if(document.body.dataset.shoushaParts!==[...parts].join(' '))return;if(previous===null)document.body.removeAttribute('data-shousha-parts');else document.body.setAttribute('data-shousha-parts',previous);},
+  ];
+  for(const release of releases)try{release();}catch(error){console.warn('手杀对局展示释放失败',error);}
+  cards.clear();decorated.clear();playerFrames.clear();skillControls.clear();
  };
 }

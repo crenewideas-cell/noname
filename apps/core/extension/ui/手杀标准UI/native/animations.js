@@ -29,7 +29,9 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
   if(disposed||!renderers.has(renderer))return;
   try{draw.call(this,time);}catch(error){
    for(const [avatar,entry] of portraits)if(entry.renderer===renderer){failedPortraits.set(avatar,entry.character+':'+entry.label);removePortrait(avatar,entry);}
-   destroy(renderer);effects=undefined;portraitRenderer=undefined;
+   destroy(renderer);
+   if(renderer.canvas.classList.contains('ss-animation-canvas'))effects=undefined;
+   else portraitRenderer=undefined;
    console.warn('手杀动画绘制失败，可重新开启动画重试',error);
   }
  };}
@@ -64,7 +66,7 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
   effects ||= makeRenderer(effectsRoot);
   let renderer;
   try{renderer=await effects;}catch(error){effects=undefined;throw error;}
-  if(!renderer||!await load(renderer,effectsRoot,def.name)||disposed||!active()||!enabled()||config.ss_effects===false||performance.now()-time>2500)return;
+  if(!renderer||!await load(renderer,effectsRoot,def.name)||disposed||!renderers.has(renderer)||!active()||!enabled()||config.ss_effects===false||performance.now()-time>2500)return;
   // Snapshot coordinates, never the player or a game event object.
   const rect=player?.rect;
   const axis=(value,size)=>Array.isArray(value)?value[0]+value[1]*size:typeof value==='number'?value:size/2;
@@ -99,8 +101,9 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
  }
  function removePortrait(avatar,expected){
   const entry=portraits.get(avatar);if(!entry||(expected&&entry!==expected))return;
-  entry.disposed=true;for(const sprite of entry.sprites)entry.renderer?.stopSpine(sprite);
-  entry.canvas.remove();portraits.delete(avatar);
+  entry.disposed=true;portraits.delete(avatar);entry.canvas.remove();
+  for(const sprite of entry.sprites)try{entry.renderer?.stopSpine(sprite);}catch(error){console.warn('动态立绘资源释放失败',error);}
+  entry.sprites.length=0;
  }
  function skinOptions(character){
   const source=metadata?.skins[character]||{};
@@ -116,7 +119,7 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
     if(disposed)return;
     for(const [avatar,entry] of portraits){
      const rect=avatar.getBoundingClientRect();entry.rect=rect;
-     const shown=visible(avatar)&&avatar.dataset.skinCharacter===entry.character&&active()&&enabled()&&config.ss_dynamic!==false;
+   const shown=visible(avatar)&&avatar.dataset.skinCharacter===entry.character&&active()&&enabled()&&config.ss_dynamic!==false&&config.extension_十周年UI_dynamicSkin!==false;
      for(const sprite of entry.sprites){sprite.opacity=shown?1:0;sprite.clip={x:rect.left,y:innerHeight-rect.bottom,width:rect.width,height:rect.height};}
      if(!shown)entry.context.clearRect(0,0,entry.canvas.width,entry.canvas.height);
     }
@@ -145,7 +148,7 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
    const layers=[skin.beijing,skin].filter(layer=>layer?.name&&assetType(skinsRoot,layer.name));
    for(const layer of layers){
     const loaded=await load(renderer,skinsRoot,layer.name);
-    if(!loaded||disposed||entry.disposed||!visible(avatar)||avatar.dataset.skinCharacter!==character||config.ss_dynamic===false){removePortrait(avatar,entry);return;}
+    if(!loaded||disposed||entry.disposed||!renderers.has(renderer)||!active()||!enabled()||!visible(avatar)||avatar.dataset.skinCharacter!==character||config.ss_dynamic===false||config.extension_十周年UI_dynamicSkin===false){removePortrait(avatar,entry);return;}
     const sprite=renderer.playSpine({...layer,loop:true},{parent:avatar,follow:true,x:layer.x,y:layer.y,scale:layer.scale||1,angle:layer.angle});
     if(sprite)entry.sprites.push(sprite);
    }

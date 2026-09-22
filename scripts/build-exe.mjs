@@ -3,10 +3,11 @@ import { createRequire } from "node:module";
 import { cp, mkdir, readdir, readFile, rm, stat, writeFile, access } from "node:fs/promises";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { PROVIDER_PROGRAMS, isProviderFile } from "../apps/core/noname/ui/workshop/providerFiles.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const require = createRequire(import.meta.url);
-const runtimeDirectories = new Set(["audio", "image", "extension", "card", "character", "mode", "font", "game", "layout", "theme", "thumbnail", "noname", "vendor", "online-client"]);
+const runtimeDirectories = new Set(["audio", "image", "extension", "ui-skins", "card", "character", "mode", "font", "game", "layout", "theme", "thumbnail", "noname", "vendor", "online-client"]);
 const ignoredDirectories = new Set([".git", ".github", ".cache", ".vite", "__pycache__", "Home"]);
 
 // Scope exclusions to known non-runtime content. In particular, extension/src,
@@ -18,6 +19,15 @@ export function includeRuntimeFile(name, isDirectory = false) {
   if (parts.some(part => part === "动态资源" || part.endsWith("_配音"))) return false;
   if (parts[0] === "extension" && parts[1] === "红楼幻境" && parts[2] === "voice" && parts[3] === "import") return false;
   if (parts.length > 1 && !runtimeDirectories.has(parts[0])) return false;
+  // Shared by Electron and Android collection. Source leftovers and an old
+  // dist directory must not reintroduce legacy UI programs into a new package.
+  const providerIndex = ["extension", "ui-skins"].includes(parts[0]) ? 1 : parts[0] === "online-client" && parts[1] === "ui-skins" ? 2 : -1;
+  const provider = parts[providerIndex];
+  if (Object.hasOwn(PROVIDER_PROGRAMS, provider)) {
+    const file = parts.slice(providerIndex + 1).join("/");
+    if (provider === "手杀标准UI" && /^(?:assets|spine|vendor)(?:\/|$)/.test(file)) return false;
+    if (!isDirectory && !isProviderFile(provider, file)) return false;
+  }
   if (isDirectory) return parts.length > 1 || runtimeDirectories.has(base);
   if (/license|copying|notice/i.test(base)) return true;
   if (/\.(?:map|md|log|tmp|bak|orig|rej|zip|7z|rar|psd|aep|blend)$/i.test(base)) return false;
