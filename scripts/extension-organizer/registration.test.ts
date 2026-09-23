@@ -4,7 +4,12 @@ import installed from "../../apps/core/game/organized-extensions.json";
 import validation from "../../apps/core/game/organized-extension-status.json";
 import bundled from "../../apps/core/game/bundled-extensions.json";
 import fs from "node:fs/promises";
+import {fileURLToPath, pathToFileURL} from "node:url";
+import path from "node:path";
+import {resolveExtensionPath} from "../../packages/fs/src/extensionLayout.mjs";
 import { registerOrganizedExtensions } from "../../apps/core/noname/init/organizedExtensions.js";
+
+const coreRoot=fileURLToPath(new URL('../../apps/core/',import.meta.url));
 
 function fixture(initial: Record<string, unknown> = {}) {
 	const values = new Map(Object.entries(initial));
@@ -142,7 +147,7 @@ test("original extension manifest includes 名将杀 and 活动武将 and resolv
 	const names = [...bundled, ...installed.map(p => p.name)];
 	assert.equal(new Set(names).size, names.length);
 	for (const name of bundled) {
-		const root = new URL(`../../apps/core/extension/${name}/`, import.meta.url);
+		const root = pathToFileURL(resolveExtensionPath(coreRoot,`extension/${name}`)+path.sep);
 		const info = JSON.parse(await fs.readFile(new URL("info.json", root), "utf8"));
 		assert.equal(info.name, name);
 		const source = await fs.readFile(new URL("extension.js", root), "utf8");
@@ -199,7 +204,7 @@ test("Honglou runtime identity and default assets resolve to the installed direc
 	const card = pack.package.card.card.hlhj_qingsi.image.replace(/^ext:/, "extension/");
 	for (const file of [portrait, card]) {
 		assert.ok(file.startsWith("extension/红楼幻境/"));
-		await fs.access(new URL(`../../apps/core/${file}`, import.meta.url));
+		await fs.access(resolveExtensionPath(coreRoot,file));
 	}
 });
 

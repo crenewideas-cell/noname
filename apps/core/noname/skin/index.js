@@ -3,7 +3,6 @@ import { createSkinService } from "./service.js";
 import { skinCatalog } from "./catalog.js";
 import { save } from "../util/config.js";
 import { skinStorageKey } from "./portrait.js";
-import { qianhuanSkins } from "./qianhuan/catalog.js";
 
 let service;
 const skinListeners = new Set();
@@ -68,7 +67,6 @@ export function getSkinService() {
 			refresh: refreshCharacterSkins,
 		});
 		service.register("core", name => skinCatalog[skinStorageKey(name)] || []);
-		service.register("qianhuan", name => qianhuanSkins(skinStorageKey(name), import.meta.env?.VITE_PUBLIC_ONLINE === "1" ? "ui-skins" : "extension"));
 	}
 	return service;
 }

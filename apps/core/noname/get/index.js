@@ -5164,7 +5164,7 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 			button.textContent = get.translation(nameskin) + " · 换肤";
 			button.addEventListener("click", event => {
 				event.stopPropagation();
-				openCharacterSkins(nameskin);
+				openCharacterSkins(nameskin, get.itemtype(node) === "player" ? node : undefined);
 			});
 			uiintro.content.appendChild(button);
 		};

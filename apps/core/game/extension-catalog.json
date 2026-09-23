@@ -283,5 +283,10 @@
     "name": "怒焰三国",
     "category": "packs",
     "path": "extension/packs/怒焰三国"
+  },
+  {
+    "name": "千幻聆音",
+    "category": "ui",
+    "path": "extension/ui/千幻聆音"
   }
 ]

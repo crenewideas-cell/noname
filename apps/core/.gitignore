@@ -161,3 +161,7 @@ app.html
 Home
 noname.ico
 # localStorage.json
+
+# Installed Qianhuan 4.16.1.11 from the user-provided ZIP.
+!extension/ui/千幻聆音/
+!extension/ui/千幻聆音/**
