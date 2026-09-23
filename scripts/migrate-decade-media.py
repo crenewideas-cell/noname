@@ -1,7 +1,7 @@
 """Explicit, optional source import. Normal builds/exports only read formal assets.
 Never execute APK programs or extract legacy registration/overrides.
 """
-import argparse, hashlib, io, json, pathlib, zipfile, subprocess
+import argparse, hashlib, io, json, pathlib, zipfile, subprocess, re, posixpath
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--source', required=True)
@@ -9,15 +9,48 @@ args = parser.parse_args()
 root = pathlib.Path(__file__).resolve().parents[1]
 out = root / 'apps/core/extension/ui/十周年局内UI'
 prefix = 'extension/十周年UI/'
+def write_changed(target, data):
+    """Avoid rewriting unchanged media while a local preview is reading it."""
+    if isinstance(data, str): data = data.encode('utf8')
+    if target.exists() and target.read_bytes() == data: return
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with target.open('r+b' if target.exists() else 'wb') as stream:
+        stream.write(data)
+        stream.truncate()
 effects = ['effect_youxikaishi_shousha','effect_heisha','effect_hongsha','effect_huosha','effect_leisha','effect_bingsha','effect_shan','effect_tao','effect_jiu','effect_wuxiekeji','effect_wuzhongshengyou','effect_guohechaiqiao','effect_shunshouqianyang','effect_nanmanruqin','effect_wanjianqifa','effect_taoyuanjieyi','effect_wugufengdeng','effect_huogong','effect_tiesuolianhuan','effect_lebusishu','effect_bingliangcunduan','effect_shandian','effect_loseHp','effect_zhenwang','effect_panding','jineng','card/juedou','juexingji/juexingji1/juexingji','juexingji/juexingji1/xiandingji','juexingji/juexingji1/shimingji']
 fixed = ['image/ui/mark/player_mark.png','image/ui/card/kuang1.png','image/ui/card/card_select.png','image/ui/mask/turn_over_mask_shousha.png','image/styles/xinsha/new_border_camp.png','image/styles/xinsha/new_border_hp.png','image/ui/dialog/dialog5.png','image/ui/misc/control_button.png','image/ui/misc/control_button_disable.png','image/ui/misc/control_button_dwon.png','image/ui/card/kb3.png','image/styles/decade/shield.png','ui/assets/fonts/HYZLSJ.woff2','ui/assets/skill/shousha/btn0.png','ui/assets/skill/shousha/btn1.png','ui/assets/skill/shousha/btn2.png','ui/assets/lbtn/shousha/shezhi.png','ui/assets/lbtn/shousha/tuoguan.png','ui/assets/lbtn/shousha/tuichu.png','ui/assets/lbtn/shousha/btn-paixu.png','ui/assets/lbtn/shousha/button.png']
 sounds = ['game_start_shousha','hpLossSund','ss_dead','SkillBtn','BtnSure','card_click','xianding','juexing','shiming','guohechaiqiao','shunshouqianyang','huogong','juedou','nanmanruqin','wanjianqifa','wuxiekeji','taoyuanjieyi','shandian']
+fixed += ['image/ui/effects/sprites_glow_blue.png','image/ui/effects/sprites_glow_orange.png','image/ui/effects/sprites_glow_red.png','image/ui/chain/tie_suo1.png','ui/assets/fonts/FZLBJW.woff2']
+# The reference screenshots use xinsha's red frame and brown vertical toolbar.
+fixed += ['ui/assets/lbtn/uibutton/'+name+'.png' for name in ['button_sz','button_tg','button_tc','new_zhengli','new_cardback3','new_btnn']]
+fixed += ['ui/assets/fonts/BKJT.ttf']
+effects += ['globaltexiao/huifushuzi/shuzi2','globaltexiao/xunishuzi/SS_PaiJu_xunishanghai','globaltexiao/shanghaishuzi/SZN_shuzi']
+effects += ['effect_shoujidonghua','effect_zhiliao','effect_shesha']
+fixed += ['image/styles/xinsha/glass'+str(i)+'.png' for i in range(1,5)]
+fixed += ['image/styles/xinsha/new_card_count6.png','image/ui/chain/tie_suo.png','image/ui/mask/turn_over_mask.png','image/ui/mark/new_player_mark.png','image/ui/player-bg/bj1.png','image/ui/player-bg/bj2.png']
+fixed += ['ui/assets/lbtn/CD/new_button3.png']
+fixed += ['ui/assets/skill/yijiang/'+name+'.png' for name in ['new_btnn1','new_btnn2','new_btnn4']]
 with zipfile.ZipFile(args.source) as apk, zipfile.ZipFile(io.BytesIO(apk.read('assets/www/app/noname.zip'))) as source:
     names = set(source.namelist())
-    sources={name:source.read(prefix+name).decode('utf8') for name in ['src/animation/configs/skillAnimations.js','src/skins/dynamicSkin.js']}
+    sources={name:source.read(prefix+name).decode('utf8') for name in ['src/animation/configs/skillAnimations.js','src/animation/configs/assetList.js','src/skins/dynamicSkin.js','src/ui/card-utils.js','src/ui/prefixMark.js']}
     metadata=json.loads(subprocess.run(['node',str(root/'scripts/decade-source-data.mjs')],input=json.dumps(sources),text=True,encoding='utf8',capture_output=True,check=True).stdout)
+    card_definitions = {label: {'name': value['key'], **value.get('opts', {})} for label, value in metadata['cardEffectMap'].items()}
+    card_definitions.update(metadata['cardDefines'])
+    metadata['cardDefines'] = card_definitions
     effects=list(dict.fromkeys(effects+[v['name'] for key in ['skillDefines','cardDefines','chupaiAnimations'] for v in metadata[key].values()]))
     mapping = {prefix + f:'assets/' + f for f in fixed}
+    # Preserve alternate preload definitions explicitly. Shipping a definition
+    # does not claim its source trigger/feature has been ported.
+    effects=list(dict.fromkeys(effects+[v['name'] for v in metadata['assetList']]))
+    style_missing=[]
+    for style in ['src/styles/player3.css','ui/styles/lbtn/xinsha.css','ui/styles/skill/xinsha.css','src/styles/effect.css']:
+        for url in sorted(set(re.findall(r'url\([\"\']?([^\)\"\']+)',source.read(prefix+style).decode('utf8')))):
+            if url.startswith(('#','data:')): continue
+            original=posixpath.normpath(posixpath.join(prefix,posixpath.dirname(style),url))
+            if original in names:
+                mapping[original]='assets/'+(original[len(prefix):] if original.startswith(prefix) else original)
+            else: style_missing.append({'style':style,'source':original})
+    sounds=sorted(n[len(prefix+'audio/'):-4] for n in names if n.startswith(prefix+'audio/') and n.endswith('.mp3'))
     mapping.update({prefix+'audio/'+f+'.mp3':'assets/audio/'+f+'.mp3' for f in sounds})
     mapping[prefix+'LICENSE']='LICENSE'
     for n in names:
@@ -54,7 +87,7 @@ with zipfile.ZipFile(args.source) as apk, zipfile.ZipFile(io.BytesIO(apk.read('a
             bg=skin.get('beijing')
             if isinstance(bg,dict) and bg.get('name') and skeleton('dynamic',bg['name']):clean['beijing']={key:bg[key] for key in keys if key in bg}
             skins.setdefault(character,{})[label]=clean
-    (out/'animation-assets.json').write_text(json.dumps({'effects':{'skill':metadata['skillDefines'],'card':metadata['cardDefines']},'indicators':metadata['chupaiAnimations'],'skins':skins,'missingSourceSkeletons':sorted(set(missing))},ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+    write_changed(out/'animation-assets.json', json.dumps({'effects':{'skill':metadata['skillDefines'],'card':metadata['cardDefines']},'indicators':metadata['chupaiAnimations'],'skins':skins,'prefixMarks':metadata['PREFIX_CONFIGS'],'sourcePreloads':metadata['assetList'],'audio':sounds,'missingSourceStyles':style_missing,'missingSourceSkeletons':sorted(set(missing))},ensure_ascii=False,indent=2)+'\n')
     mapping[prefix+'src/libs/spine.js']='vendor/spine.js'
     entries=[]
     for src,dest in sorted(mapping.items()):
@@ -68,7 +101,7 @@ with zipfile.ZipFile(args.source) as apk, zipfile.ZipFile(io.BytesIO(apk.read('a
         if dest=='vendor/spine.js':
             if data.count(b'var u = Math.random();')!=1:raise ValueError('Unexpected Spine random call')
             data=b'// Rendering jitter owns its random stream; never consume gameplay randomness.\nlet visualSeed=0x6d2b79f5;\nfunction visualRandom(){visualSeed^=visualSeed<<13;visualSeed^=visualSeed>>>17;visualSeed^=visualSeed<<5;return (visualSeed>>>0)/4294967296;}\n'+data.replace(b'var u = Math.random();',b'var u = visualRandom();')+b'\nexport { spine };\n'
-        target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data)
+        write_changed(target,data)
         entries.append({'source':src,'file':dest,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()})
-    (out/'SOURCE.json').write_text(json.dumps({'source':pathlib.Path(args.source).name,'archiveMember':'assets/www/app/noname.zip','sourceVersion':'1.3.1','authors':['短歌','萌新','橙续缘','小依（子琪懒人包版）'],'note':'Media attribution is retained; bundled game artwork has no separate redistribution grant in the extension. The extension LICENSE is preserved. The bundled Spine file has no license header; no additional media or runtime grant is inferred. No source gameplay code is used.','resources':entries},ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+    write_changed(out/'SOURCE.json',json.dumps({'source':pathlib.Path(args.source).name,'archiveMember':'assets/www/app/noname.zip','sourceVersion':'1.3.1','authors':['短歌','萌新','橙续缘','小依（子琪懒人包版）'],'note':'Media attribution is retained; bundled game artwork has no separate redistribution grant in the extension. The extension LICENSE is preserved. The bundled Spine file has no license header; no additional media or runtime grant is inferred. No source gameplay code is used.','resources':entries},ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'files':len(entries),'bytes':sum(e['bytes'] for e in entries)}))

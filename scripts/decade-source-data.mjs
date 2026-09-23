@@ -13,7 +13,7 @@ function literal(node){
 for(const [file,text] of Object.entries(sources)){
  const ast=ts.createSourceFile(file,text,ts.ScriptTarget.Latest,true);
  function walk(n){
-  if(ts.isVariableDeclaration(n)&&['skillDefines','cardDefines','chupaiAnimations','dynamicSkinConfig'].includes(n.name.getText(ast)))result[n.name.getText(ast)]=literal(n.initializer);
+  if(ts.isVariableDeclaration(n)&&['skillDefines','cardDefines','chupaiAnimations','dynamicSkinConfig','assetList','cardEffectMap','PREFIX_CONFIGS'].includes(n.name.getText(ast)))result[n.name.getText(ast)]=literal(n.initializer);
   if(ts.isBinaryExpression(n)&&n.left.getText(ast).endsWith('.dynamicSkin'))result.dynamicSkin=literal(n.right);
   ts.forEachChild(n,walk);
  }

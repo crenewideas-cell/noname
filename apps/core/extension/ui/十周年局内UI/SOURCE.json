@@ -251,6 +251,24 @@
       "sha256": "c39a09253d040ca720ddc0d4a1ff997c9611aad4df4c2ffe3799ee9df60d4353"
     },
     {
+      "source": "extension/十周年UI/assets/animation/SS_jiuwo.atlas",
+      "file": "assets/animation/SS_jiuwo.atlas",
+      "bytes": 277,
+      "sha256": "daac746d3b5eb922bd6231e674b71abfaa8b1a55800a3e48f5c48c682dbe181a"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/SS_jiuwo.png",
+      "file": "assets/animation/SS_jiuwo.png",
+      "bytes": 19574,
+      "sha256": "b8ab85b9f50e7ec7b84872d34ddd086f73dfc77bd7a2ec15ee8e4197356c01a9"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/SS_jiuwo.skel",
+      "file": "assets/animation/SS_jiuwo.skel",
+      "bytes": 355,
+      "sha256": "7105fcd7d33622b47370dbcb4aab19c10882fb982c8b508f5f60a717e4f41131"
+    },
+    {
       "source": "extension/十周年UI/assets/animation/Ss_Gz_SanJianLiangRenDao.atlas",
       "file": "assets/animation/Ss_Gz_SanJianLiangRenDao.atlas",
       "bytes": 1766,
@@ -285,6 +303,24 @@
       "file": "assets/animation/Ss_Gz_WuLiuJian.skel",
       "bytes": 4776,
       "sha256": "40d828c1a8ec64dbaff3846155327cb4671d8103c7dd30efaac016adafe5d9e8"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/Ss_PaiJu_wushang.atlas",
+      "file": "assets/animation/Ss_PaiJu_wushang.atlas",
+      "bytes": 3556,
+      "sha256": "4accd8705503bac3cd153ef06861caf9adf1b8b800fd7bb5ca0ac69a951fa6bc"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/Ss_PaiJu_wushang.png",
+      "file": "assets/animation/Ss_PaiJu_wushang.png",
+      "bytes": 456867,
+      "sha256": "35d2f96416b16c3ab785f5428969b56dc50a7458719abaf7a1c770e32386d04f"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/Ss_PaiJu_wushang.skel",
+      "file": "assets/animation/Ss_PaiJu_wushang.skel",
+      "bytes": 2175,
+      "sha256": "d2497bc2335d4930e252d3e0197d1833ccd91fdf549d2f69566ca383dd7ddd7a"
     },
     {
       "source": "extension/十周年UI/assets/animation/Ss_ZB_NvZhuang.atlas",
@@ -485,6 +521,42 @@
       "sha256": "ab819e9a5c82aca224c57079baa6da5b74a0a143c7221647b70bb44a2c3f50bb"
     },
     {
+      "source": "extension/十周年UI/assets/animation/Xdiankuangtulu.atlas",
+      "file": "assets/animation/Xdiankuangtulu.atlas",
+      "bytes": 2392,
+      "sha256": "fb2e82113fd7ec5f63d9b22d969374e1a369abedff265e2ee8825953c6246d03"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/Xdiankuangtulu.png",
+      "file": "assets/animation/Xdiankuangtulu.png",
+      "bytes": 1578422,
+      "sha256": "c406147744c06f0501eba6e166a80044c1557b5b41fa648bc57772d67644e4e7"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/Xdiankuangtulu.skel",
+      "file": "assets/animation/Xdiankuangtulu.skel",
+      "bytes": 2532,
+      "sha256": "5c997883976e71e75cfd57b4dda1c15242f6b41aca5db69fac8f615bfb3b9411"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/Xwushuangwanjunqushou.atlas",
+      "file": "assets/animation/Xwushuangwanjunqushou.atlas",
+      "bytes": 4082,
+      "sha256": "1da234e4377c63fb13ce3bf0229986bf40a4207d52d5cd2702d516dfd465b3eb"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/Xwushuangwanjunqushou.png",
+      "file": "assets/animation/Xwushuangwanjunqushou.png",
+      "bytes": 765642,
+      "sha256": "6a403d07a38f9cca1ca73a2e44fea033e849a47bb58d7aa3a9fec58f3dc1c3ac"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/Xwushuangwanjunqushou.skel",
+      "file": "assets/animation/Xwushuangwanjunqushou.skel",
+      "bytes": 5741,
+      "sha256": "4a3b3904668047e9dd6a3de94a9d96be4ecd196207c2a055dd4a7ab1ef62f2c2"
+    },
+    {
       "source": "extension/十周年UI/assets/animation/ZYSZK_xiao.atlas",
       "file": "assets/animation/ZYSZK_xiao.atlas",
       "bytes": 270,
@@ -539,6 +611,144 @@
       "sha256": "5eb4d38df9c718f6a8276f95d6bc19864324821950329355c2ad7c3f05657679"
     },
     {
+      "source": "extension/十周年UI/assets/animation/baikuang.atlas",
+      "file": "assets/animation/baikuang.atlas",
+      "bytes": 168,
+      "sha256": "2c9208c1eff894387530d90c99697588ab242ae001468b870012f6e6ee021997"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/baikuang.png",
+      "file": "assets/animation/baikuang.png",
+      "bytes": 1153,
+      "sha256": "219a3b7e1a8b0b9cc6c9686df3322116e51b9e59e1a81dad831e00a11f05bf0b"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/baikuang.skel",
+      "file": "assets/animation/baikuang.skel",
+      "bytes": 529,
+      "sha256": "6f69d650381e40f8f9b1986f400c4ec57aab6df1626f4d0df68c6dd9db118f1b"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_guguoanbang.atlas",
+      "file": "assets/animation/card/effect_guguoanbang.atlas",
+      "bytes": 6271,
+      "sha256": "552db76c94a586093a053c988e7fc4ce08469b96cd7f4500566b84a7a0a9c422"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_guguoanbang.png",
+      "file": "assets/animation/card/effect_guguoanbang.png",
+      "bytes": 400799,
+      "sha256": "ad98e436ef2d323572f15e286066c674f84cf75f6f2b48f243607bf6dc2d84dc"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_guguoanbang.skel",
+      "file": "assets/animation/card/effect_guguoanbang.skel",
+      "bytes": 17731,
+      "sha256": "c3a5c6f0bfeaff263be21ed73fcaf53519f96cf606ac2fe601f3685cb594e9a4"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_haolingtianxia.atlas",
+      "file": "assets/animation/card/effect_haolingtianxia.atlas",
+      "bytes": 1728,
+      "sha256": "eb2abd74a681a217f7994c14572694cf380775769518bace7612bd9b52b5766d"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_haolingtianxia.png",
+      "file": "assets/animation/card/effect_haolingtianxia.png",
+      "bytes": 148575,
+      "sha256": "e2b62f6099d51aa25ba7049dce369a2e9f22bf479c5650164241c87925aa632f"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_haolingtianxia.skel",
+      "file": "assets/animation/card/effect_haolingtianxia.skel",
+      "bytes": 41246,
+      "sha256": "788b28621f0b342209e36e3f2bd0f959020889d3a65d5901a4283eb0df811aa3"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_kefuzhongyuan.atlas",
+      "file": "assets/animation/card/effect_kefuzhongyuan.atlas",
+      "bytes": 13000,
+      "sha256": "be54a78740a1ab7c9646b71e70a61c3117ddb9c7ed44a5382b066139c61c5f23"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_kefuzhongyuan.png",
+      "file": "assets/animation/card/effect_kefuzhongyuan.png",
+      "bytes": 3524814,
+      "sha256": "7330704bd0ee8bb54696e3bc4816bfba3818f29285edb3db770964f74eec3093"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_kefuzhongyuan.skel",
+      "file": "assets/animation/card/effect_kefuzhongyuan.skel",
+      "bytes": 102167,
+      "sha256": "7fb9e9a8a8628f7781c20bef368ee41830a7fb65ad65d988721ddfe28a6c0709"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_kefuzhongyuan2.png",
+      "file": "assets/animation/card/effect_kefuzhongyuan2.png",
+      "bytes": 548525,
+      "sha256": "087c1d3c5187ed0de3d30c096df60f7aad9b7b8b09cb6034cb89adbf8f2f5240"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_wenheluanwu.atlas",
+      "file": "assets/animation/card/effect_wenheluanwu.atlas",
+      "bytes": 20617,
+      "sha256": "317c1c800a1fd9b5db1aa2d82e9d86ccabdf730ca492061bfafe9788167c90bd"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_wenheluanwu.png",
+      "file": "assets/animation/card/effect_wenheluanwu.png",
+      "bytes": 2029627,
+      "sha256": "d1f8ab5296da4eb5c2c1e475cb92445e751109e47b0d63eac5f8c77176b003ef"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_wenheluanwu.skel",
+      "file": "assets/animation/card/effect_wenheluanwu.skel",
+      "bytes": 207612,
+      "sha256": "7bac013e956a49e822d29b1219b719673e614c115eb124fa3aab2a27f5b2ca9d"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/effect_wenheluanwu2.png",
+      "file": "assets/animation/card/effect_wenheluanwu2.png",
+      "bytes": 1202110,
+      "sha256": "8d63d5ce49e84e631627d7edb3f3b83d74d4a4ecfdd0ac39bb4df20cf89807e0"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/huogong.atlas",
+      "file": "assets/animation/card/huogong.atlas",
+      "bytes": 3347,
+      "sha256": "38f4883c718fd616c9ef4263181a3918cdfbe2f95352aedcafde7e566e4432c3"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/huogong.png",
+      "file": "assets/animation/card/huogong.png",
+      "bytes": 267839,
+      "sha256": "c25c6c632200b0751b94ba6ccf3e3fdd37c2d5e32c8c637b8b429ca9ac4726bf"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/huogong.skel",
+      "file": "assets/animation/card/huogong.skel",
+      "bytes": 88518,
+      "sha256": "af1d601e9ef3a6118330e3c514bfbbe24400b08a49f9613e52ca2bef5813d394"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/jiu.atlas",
+      "file": "assets/animation/card/jiu.atlas",
+      "bytes": 554,
+      "sha256": "df18bb7515ed81ad799c261760cd208b222781c872ec2696c5ba08939815cd8f"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/jiu.png",
+      "file": "assets/animation/card/jiu.png",
+      "bytes": 131137,
+      "sha256": "26fc81d6522caa9ec3a89442b41a960420d1fb78a94608f58f8a9bc60dbc1d24"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/jiu.skel",
+      "file": "assets/animation/card/jiu.skel",
+      "bytes": 715,
+      "sha256": "c5a4ee5bce880cffd328e61693a60ae32c3859e57c98a7048fa8ef9261686519"
+    },
+    {
       "source": "extension/十周年UI/assets/animation/card/juedou.atlas",
       "file": "assets/animation/card/juedou.atlas",
       "bytes": 6249,
@@ -555,6 +765,96 @@
       "file": "assets/animation/card/juedou.skel",
       "bytes": 19076,
       "sha256": "c09c650bd1e6ed9a9c9e883500a3872c8fb2822e158e7c9549f47b72523074ff"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/sha.atlas",
+      "file": "assets/animation/card/sha.atlas",
+      "bytes": 165,
+      "sha256": "24bd70f42a8830210f2736ede0dd6e4e9b2cd95e3c3da62bb4585897a2d45827"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/sha.png",
+      "file": "assets/animation/card/sha.png",
+      "bytes": 11334,
+      "sha256": "bbc7ba5586e514d753f114c9ebfec931918b2128890fed1932ffc07c6839edcf"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/sha.skel",
+      "file": "assets/animation/card/sha.skel",
+      "bytes": 420,
+      "sha256": "f09a00b6910534872e41d03d87820764cdb9b9895146e9a5d56dee2b0e1ef846"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/shan.atlas",
+      "file": "assets/animation/card/shan.atlas",
+      "bytes": 164,
+      "sha256": "73513dbb684510f493a2efa8e54c66a1a86b05b64c28aa22a7691db0baa9c988"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/shan.png",
+      "file": "assets/animation/card/shan.png",
+      "bytes": 6883,
+      "sha256": "61d7aeeda0c47ec078344b3a3708ad7d90f227f168e740e9b6349eb4b0ac88a2"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/shan.skel",
+      "file": "assets/animation/card/shan.skel",
+      "bytes": 425,
+      "sha256": "3ae9b0eb84b3eae2ce67e056799a8a72b04ef883bd2641b215b9e4d8cf161003"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/tao.atlas",
+      "file": "assets/animation/card/tao.atlas",
+      "bytes": 554,
+      "sha256": "3b48cf81442ce70757f3e9f0b774934f65e5bc10ee69e46931247860846414a9"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/tao.png",
+      "file": "assets/animation/card/tao.png",
+      "bytes": 139211,
+      "sha256": "5d8af1655acfa81211f647c1c704cba1e3b8cc479388d172a2960f0babc1f443"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/tao.skel",
+      "file": "assets/animation/card/tao.skel",
+      "bytes": 734,
+      "sha256": "06e55af7ed8a4d45fad88ab76d5dc8335df4b8d402dba80e62ecb0bfad89ed55"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/wuxiekeji.atlas",
+      "file": "assets/animation/card/wuxiekeji.atlas",
+      "bytes": 2378,
+      "sha256": "864527c04fbc45c11e5a7735a98005a9bd8a684135ab0916a78e4dc1970735a3"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/wuxiekeji.png",
+      "file": "assets/animation/card/wuxiekeji.png",
+      "bytes": 479492,
+      "sha256": "6c99526ce8a2846959411c87f4de0cb624b07855e6cba0d21b5dfbccdf6994c4"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/wuxiekeji.skel",
+      "file": "assets/animation/card/wuxiekeji.skel",
+      "bytes": 7693,
+      "sha256": "110b8286b67fa676a583426dbb6bff79862e3c43cb68d63e03908a347f525085"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/wuzhongshengyou.atlas",
+      "file": "assets/animation/card/wuzhongshengyou.atlas",
+      "bytes": 1274,
+      "sha256": "fed27c940be4e5b4b4182388b533b7f158e904f1b7142d5516d0d98c050a0a0c"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/wuzhongshengyou.png",
+      "file": "assets/animation/card/wuzhongshengyou.png",
+      "bytes": 466586,
+      "sha256": "c041c13e2e75e730752db5a93d0668661c3a680541f550bc629c20ac9a993dab"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/card/wuzhongshengyou.skel",
+      "file": "assets/animation/card/wuzhongshengyou.skel",
+      "bytes": 3400,
+      "sha256": "a35d7faed32b2cefb5243acc09e491952bb767862927b296b2350ad639ec3512"
     },
     {
       "source": "extension/十周年UI/assets/animation/effect_baguazhen.atlas",
@@ -627,6 +927,24 @@
       "file": "assets/animation/effect_bingsha.skel",
       "bytes": 2359,
       "sha256": "d759dcfdd6546ee8c0a69cd7946fefaad8321de5e9b7361b03747317efa7f90e"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_caochuanjiejian.atlas",
+      "file": "assets/animation/effect_caochuanjiejian.atlas",
+      "bytes": 2338,
+      "sha256": "992d0ada2df7e954e9c7e890eab411e92825c01ff36a91e7689f30994ba9a382"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_caochuanjiejian.png",
+      "file": "assets/animation/effect_caochuanjiejian.png",
+      "bytes": 116430,
+      "sha256": "82b4b99c5344fb7d90e4d1196a324375888ac2a947e80c18101f1077e4368b47"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_caochuanjiejian.skel",
+      "file": "assets/animation/effect_caochuanjiejian.skel",
+      "bytes": 1749,
+      "sha256": "f0fba34d09e55d7ead989f74cd56ba41c592e935f11a3033e4a01f96059aaed1"
     },
     {
       "source": "extension/十周年UI/assets/animation/effect_cixiongshuanggujian.atlas",
@@ -825,6 +1143,24 @@
       "file": "assets/animation/effect_jinhe.skel",
       "bytes": 4733,
       "sha256": "c82a14ef16c40171f918c1d0d346d250102933c80a5f75d5ee05eee145b8b4ce"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_jisha1.atlas",
+      "file": "assets/animation/effect_jisha1.atlas",
+      "bytes": 1356,
+      "sha256": "94e5807d6ef237b8a78ed7f66c4f9e99fc20ab78a64f4888100d5fac3a292568"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_jisha1.png",
+      "file": "assets/animation/effect_jisha1.png",
+      "bytes": 61219,
+      "sha256": "f400f3e6193cfe9f059361971829d0c26bbf5c617b651cb4bb9df1aee1612918"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_jisha1.skel",
+      "file": "assets/animation/effect_jisha1.skel",
+      "bytes": 6467,
+      "sha256": "3d0f9f8dfe2b8b13eb8b7d5b174e4e0cbc3b7e365d71746c61437149f34adcb8"
     },
     {
       "source": "extension/十周年UI/assets/animation/effect_jiu.atlas",
@@ -1079,6 +1415,42 @@
       "sha256": "7faba09ed4db5bc1fa67ac5abf678b61589fec4250436526aa3feb0209721eaf"
     },
     {
+      "source": "extension/十周年UI/assets/animation/effect_shesha.atlas",
+      "file": "assets/animation/effect_shesha.atlas",
+      "bytes": 1196,
+      "sha256": "93d23eca5fdcfde1d39149b77a97f855885a7ca19fa885fcfd1558c06f64b1ee"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_shesha.png",
+      "file": "assets/animation/effect_shesha.png",
+      "bytes": 172394,
+      "sha256": "4d3e42dab24fd6adce127413ff8c6798e68d70252f10fd92f77563ce405b3f3c"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_shesha.skel",
+      "file": "assets/animation/effect_shesha.skel",
+      "bytes": 1209,
+      "sha256": "e43360a6d1841ff4f1b22e0762710bb0a42f5740baaa33b10d01c28447209490"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_shoujidonghua.atlas",
+      "file": "assets/animation/effect_shoujidonghua.atlas",
+      "bytes": 4600,
+      "sha256": "17ad163b8b8a421658078e94a17c5ba9726dc0cacf74727c071a88f352453468"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_shoujidonghua.png",
+      "file": "assets/animation/effect_shoujidonghua.png",
+      "bytes": 511365,
+      "sha256": "593e5dad1406b525fcdc133413450c1f39e9103cf737d06576fcb4a48cfa5889"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_shoujidonghua.skel",
+      "file": "assets/animation/effect_shoujidonghua.skel",
+      "bytes": 4658,
+      "sha256": "67d1cd546373d96bc9e9560948ae7b3acd9f4055a8644003f54c19a221d9d117"
+    },
+    {
       "source": "extension/十周年UI/assets/animation/effect_shunshouqianyang.atlas",
       "file": "assets/animation/effect_shunshouqianyang.atlas",
       "bytes": 673,
@@ -1095,6 +1467,24 @@
       "file": "assets/animation/effect_shunshouqianyang.skel",
       "bytes": 28105,
       "sha256": "3b3109e8648a1a97a455af34a10a37a0abcb049d8e53ae1e6c3fec7a807c9805"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_shushangkaihua.atlas",
+      "file": "assets/animation/effect_shushangkaihua.atlas",
+      "bytes": 2507,
+      "sha256": "e624d462a64249ae8d1a3ce1d15daff8e559efad4c568c6598f1ee9156a777fc"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_shushangkaihua.png",
+      "file": "assets/animation/effect_shushangkaihua.png",
+      "bytes": 38739,
+      "sha256": "c69fcf1ad84cf1e2ea3ee858684e0deaeeb5f662354bf09afc81a71dd06ef38d"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_shushangkaihua.skel",
+      "file": "assets/animation/effect_shushangkaihua.skel",
+      "bytes": 9043,
+      "sha256": "780fc6d5b121bb3236d3eceb7ebc889e1b55ee6d98f51e41e86eba7da0f8bc95"
     },
     {
       "source": "extension/十周年UI/assets/animation/effect_taipingyaoshu_xiexia.atlas",
@@ -1313,6 +1703,24 @@
       "sha256": "4f862f1ad58b72fff5babdd28d28eef67db19f1d029139916e19e71dc608c57d"
     },
     {
+      "source": "extension/十周年UI/assets/animation/effect_xianding.atlas",
+      "file": "assets/animation/effect_xianding.atlas",
+      "bytes": 1577,
+      "sha256": "66e8d7cbcfa3f5c480a974f424b43c323a70f73927dfe159207d35bacd9a4f99"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_xianding.json",
+      "file": "assets/animation/effect_xianding.json",
+      "bytes": 9312,
+      "sha256": "9047582f47f41ef35b115766e07a6acd947556b1c0df5014dfe7c5c75836913f"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_xianding.png",
+      "file": "assets/animation/effect_xianding.png",
+      "bytes": 224831,
+      "sha256": "294193cd02e2f12bd12c030ce5304d145274742c1a1e67f9c5c61ed780c55a7e"
+    },
+    {
       "source": "extension/十周年UI/assets/animation/effect_yajiaoqiang.atlas",
       "file": "assets/animation/effect_yajiaoqiang.atlas",
       "bytes": 5004,
@@ -1349,6 +1757,24 @@
       "sha256": "34e3d2990dfb059feb32f77b003380df5044e2fa44bae211560476c76df45551"
     },
     {
+      "source": "extension/十周年UI/assets/animation/effect_youxikaishi.atlas",
+      "file": "assets/animation/effect_youxikaishi.atlas",
+      "bytes": 4762,
+      "sha256": "3d4558ef21dc379bb0db67656356dbe7fba481a4ced348f3d29278f3f50ef2bf"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_youxikaishi.png",
+      "file": "assets/animation/effect_youxikaishi.png",
+      "bytes": 315401,
+      "sha256": "778675a968221e1b748faf2d50e37f6be526e4f93a24ef4cd35bd516128147df"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_youxikaishi.skel",
+      "file": "assets/animation/effect_youxikaishi.skel",
+      "bytes": 4570,
+      "sha256": "c0bea0e7ca487088fad98b68d30fb2cd36923a07cd9c9ba8570cda1d57a55603"
+    },
+    {
       "source": "extension/十周年UI/assets/animation/effect_youxikaishi_shousha.atlas",
       "file": "assets/animation/effect_youxikaishi_shousha.atlas",
       "bytes": 3599,
@@ -1365,6 +1791,24 @@
       "file": "assets/animation/effect_youxikaishi_shousha.skel",
       "bytes": 7668,
       "sha256": "7d69a0b99c81b4823e159b270438f8b85dbdc382883ebfe06d0054655a54e2f2"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_yuanjiaojingong.atlas",
+      "file": "assets/animation/effect_yuanjiaojingong.atlas",
+      "bytes": 2535,
+      "sha256": "0c995694b7fc530647ff1b7dddc58bcc0d1b7445668a9c85be0ecf4866f81c34"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_yuanjiaojingong.png",
+      "file": "assets/animation/effect_yuanjiaojingong.png",
+      "bytes": 17092,
+      "sha256": "7d49a9e007bc9bd6076c90a61756901bb47347a69002e1cf5c2da94c5be4ae15"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_yuanjiaojingong.skel",
+      "file": "assets/animation/effect_yuanjiaojingong.skel",
+      "bytes": 3838,
+      "sha256": "10cb06f49cc286ff43fe92cb7a08d7a859cfc87b6348eaccbd1c066a8c1c9be5"
     },
     {
       "source": "extension/十周年UI/assets/animation/effect_zhangbashemao.atlas",
@@ -1421,6 +1865,42 @@
       "sha256": "487df36a2cf8d97a5ef865e35889203e2f128ec6fd7a9bf934a523333b8d2c73"
     },
     {
+      "source": "extension/十周年UI/assets/animation/effect_zhijizhibi.atlas",
+      "file": "assets/animation/effect_zhijizhibi.atlas",
+      "bytes": 843,
+      "sha256": "0811b9e6c430a9e5ac9a24e5347c970b31988565a72943b832348fb7e8d8ba13"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_zhijizhibi.png",
+      "file": "assets/animation/effect_zhijizhibi.png",
+      "bytes": 13250,
+      "sha256": "ead4b2ed7818a47d908390a2e04244814fe09a649098747584d12caab7298101"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_zhijizhibi.skel",
+      "file": "assets/animation/effect_zhijizhibi.skel",
+      "bytes": 1447,
+      "sha256": "5d2b96a565c6a3384005417eb4a93116c41a9b3ac8d578b2da3d3fde078071d3"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_zhiliao.atlas",
+      "file": "assets/animation/effect_zhiliao.atlas",
+      "bytes": 2200,
+      "sha256": "565c121cdafd1094c7900ac26b05fa23b8f1c07634c03245698088470cbe83be"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_zhiliao.png",
+      "file": "assets/animation/effect_zhiliao.png",
+      "bytes": 137139,
+      "sha256": "adb024647df6186574c59579f0b5f268e2ec5d05a1a5701fe4aa41ec5d30f001"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_zhiliao.skel",
+      "file": "assets/animation/effect_zhiliao.skel",
+      "bytes": 1642,
+      "sha256": "59aea6c7ecaa23686594497b6e1c44648be8866d928529a22f686e094239a81f"
+    },
+    {
       "source": "extension/十周年UI/assets/animation/effect_zhugeliannu.atlas",
       "file": "assets/animation/effect_zhugeliannu.atlas",
       "bytes": 1480,
@@ -1437,6 +1917,24 @@
       "file": "assets/animation/effect_zhugeliannu.skel",
       "bytes": 1784,
       "sha256": "c4a7314142df28cc1d02fa37976668bc93ee084edc55ed4804a83de1bb92419f"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_zhulutianxia.atlas",
+      "file": "assets/animation/effect_zhulutianxia.atlas",
+      "bytes": 1219,
+      "sha256": "587baa9de162e3625ea3a92ee569d011b0a4e975c3892c5f0b3441f012026cf5"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_zhulutianxia.png",
+      "file": "assets/animation/effect_zhulutianxia.png",
+      "bytes": 5235,
+      "sha256": "41d8edff9db3e289d69b7514ed72a7f83863f24f4de9f23737e01167bd114a86"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/effect_zhulutianxia.skel",
+      "file": "assets/animation/effect_zhulutianxia.skel",
+      "bytes": 20998,
+      "sha256": "c37dc2364d21813f165db8076a49cda3db99f3cc77cd21cfc2e6f98dbe76fe96"
     },
     {
       "source": "extension/十周年UI/assets/animation/effect_zhuqueyushan.atlas",
@@ -1475,6 +1973,96 @@
       "sha256": "b39dd8bbdb6a679e6d1689e1bce8519adc3f32cdc6f586c940e518f76a7e0232"
     },
     {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/huifushuzi/shuzi2.atlas",
+      "file": "assets/animation/globaltexiao/huifushuzi/shuzi2.atlas",
+      "bytes": 1066,
+      "sha256": "ff8add9d6add594f4b6b1b1d4a961344c64c6a2f584353a7a25ec1f7e59b49b4"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/huifushuzi/shuzi2.png",
+      "file": "assets/animation/globaltexiao/huifushuzi/shuzi2.png",
+      "bytes": 29047,
+      "sha256": "01eabd0ba547832763538b54e8fb7a1429b099f2aea76257d7f6be421d69acfa"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/huifushuzi/shuzi2.skel",
+      "file": "assets/animation/globaltexiao/huifushuzi/shuzi2.skel",
+      "bytes": 1234,
+      "sha256": "5b0677b3ba0e2ced71815cdadc522d896a8eb616025a7bce778649301423b58d"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/shanghaishuzi/SZN_shuzi.atlas",
+      "file": "assets/animation/globaltexiao/shanghaishuzi/SZN_shuzi.atlas",
+      "bytes": 970,
+      "sha256": "24f2596e4263075c20cf976ba4a5cb9b8658694be2ec684f912a8327397df954"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/shanghaishuzi/SZN_shuzi.png",
+      "file": "assets/animation/globaltexiao/shanghaishuzi/SZN_shuzi.png",
+      "bytes": 26228,
+      "sha256": "553ff1fd8a6324f8189e9d35c1f2cc7f4ab3c05c96ca4885678550144a162324"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/shanghaishuzi/SZN_shuzi.skel",
+      "file": "assets/animation/globaltexiao/shanghaishuzi/SZN_shuzi.skel",
+      "bytes": 1131,
+      "sha256": "c30a74f25d2cc3ba151644cdd0943a36683671de6dd1d54c2a5d9050d263f02f"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/shanghaishuzi/shuzi.atlas",
+      "file": "assets/animation/globaltexiao/shanghaishuzi/shuzi.atlas",
+      "bytes": 971,
+      "sha256": "757a00980f7d74a4fc26a3c55f81eef7b465531812180dfe22e027f8f9f83ed5"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/shanghaishuzi/shuzi.png",
+      "file": "assets/animation/globaltexiao/shanghaishuzi/shuzi.png",
+      "bytes": 16904,
+      "sha256": "2e8e6a65ae53b05035e6588bed6f2df4e1aa19c74b31588cd3fb8905848a92bc"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/shanghaishuzi/shuzi.skel",
+      "file": "assets/animation/globaltexiao/shanghaishuzi/shuzi.skel",
+      "bytes": 1417,
+      "sha256": "de1538b9d103e31d4cc971cec49c8cba10f8ce464221d8be08930fe6316dbb13"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/xunishuzi/SS_PaiJu_xunishanghai.atlas",
+      "file": "assets/animation/globaltexiao/xunishuzi/SS_PaiJu_xunishanghai.atlas",
+      "bytes": 4234,
+      "sha256": "fc8cdec45a8e7ff83b7b7d458aef5b23af2d9fb96315150465fc8efbd7735fb1"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/xunishuzi/SS_PaiJu_xunishanghai.png",
+      "file": "assets/animation/globaltexiao/xunishuzi/SS_PaiJu_xunishanghai.png",
+      "bytes": 145436,
+      "sha256": "780308a25098fc7df5e37dd1da7afbd5367fe8ad6e9e3235a2e7d4a3c0fa3324"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/globaltexiao/xunishuzi/SS_PaiJu_xunishanghai.skel",
+      "file": "assets/animation/globaltexiao/xunishuzi/SS_PaiJu_xunishanghai.skel",
+      "bytes": 22207,
+      "sha256": "a52254ca8b4f097e8a9f55a924a5ae0c177b7a19fa7af762b35e5fdaad61b6d6"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/guohechaiqiao.atlas",
+      "file": "assets/animation/guohechaiqiao.atlas",
+      "bytes": 3713,
+      "sha256": "034a0cce7d11fbaf69b84307c9ed6c7a65341644884825757f0226204f0e9186"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/guohechaiqiao.png",
+      "file": "assets/animation/guohechaiqiao.png",
+      "bytes": 1148602,
+      "sha256": "20067b381eb967420891c3e73648f439a42ff94580cda998b36531556a83b1d1"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/guohechaiqiao.skel",
+      "file": "assets/animation/guohechaiqiao.skel",
+      "bytes": 2667,
+      "sha256": "4d41159a43ebebd49813f70b2b51cb03ef545226bd8268594a1dc6e1d5841f2f"
+    },
+    {
       "source": "extension/十周年UI/assets/animation/jineng.atlas",
       "file": "assets/animation/jineng.atlas",
       "bytes": 181,
@@ -1491,6 +2079,42 @@
       "file": "assets/animation/jineng.skel",
       "bytes": 323,
       "sha256": "851404075301bdbd351b053d710862ad2471d753c9481391f70e15fdb502b313"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/jinengX.atlas",
+      "file": "assets/animation/jinengX.atlas",
+      "bytes": 3255,
+      "sha256": "ff9f5dc91933fdfc311ced6a08a9cb55648df3970ad9fd2867137fb5bfd5b72b"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/jinengX.png",
+      "file": "assets/animation/jinengX.png",
+      "bytes": 328091,
+      "sha256": "5300fe689e256ebdd44e9064a72ec3e8729e711acd364eb4604f4900e2580a71"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/jinengX.skel",
+      "file": "assets/animation/jinengX.skel",
+      "bytes": 1722,
+      "sha256": "077605a525db5a924b800bf92b8157f5dd5a56a7e49138334d8f5026dc4f41b2"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/jinengXX.atlas",
+      "file": "assets/animation/jinengXX.atlas",
+      "bytes": 2433,
+      "sha256": "5887cb9b980fa2c87f33f0b1c91b1ba408e8cadce1849113f88b2ef47fe45a97"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/jinengXX.png",
+      "file": "assets/animation/jinengXX.png",
+      "bytes": 66739,
+      "sha256": "a8bf70bbb96278c9e9221227d3d672e11f1353f8227763cdaf4bc05a652b34ab"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/jinengXX.skel",
+      "file": "assets/animation/jinengXX.skel",
+      "bytes": 1717,
+      "sha256": "9d83d90635a070824d063007f0e877b69598f576a2e3e2dbdceda5757b50187a"
     },
     {
       "source": "extension/十周年UI/assets/animation/juexingji/juexingji1/juexingji.atlas",
@@ -1547,6 +2171,162 @@
       "sha256": "b54d36dac2ba3656922cc34bae0f1cc223083eb1fa190acfe8b5c43ef6de6e7a"
     },
     {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji2/jxxd.atlas",
+      "file": "assets/animation/juexingji/juexingji2/jxxd.atlas",
+      "bytes": 2388,
+      "sha256": "de723bceb0622afc4a3d9f062547f4d996bab2485528ab1a421854c0fefd24b0"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji2/jxxd.png",
+      "file": "assets/animation/juexingji/juexingji2/jxxd.png",
+      "bytes": 275007,
+      "sha256": "251c906dcda051e6c4d9a722f305bfa85c739d48736723c26a88b71247475cb4"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji2/jxxd.skel",
+      "file": "assets/animation/juexingji/juexingji2/jxxd.skel",
+      "bytes": 9107,
+      "sha256": "2a2aec75e476b9441f138ec05332e9d71452366f6cbb7d44f3cad4243954f6bc"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji2/jxxd2.png",
+      "file": "assets/animation/juexingji/juexingji2/jxxd2.png",
+      "bytes": 314052,
+      "sha256": "44e67c11565bc8d3236cce221d073ddcdcc5515b5e6cfc3f8394fc940e20d670"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji3/oljuexingji.atlas",
+      "file": "assets/animation/juexingji/juexingji3/oljuexingji.atlas",
+      "bytes": 5318,
+      "sha256": "ad540644774a152f965763d350fd0bb0c0efafaf52605b58c65af0a035fbc0c5"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji3/oljuexingji.png",
+      "file": "assets/animation/juexingji/juexingji3/oljuexingji.png",
+      "bytes": 895016,
+      "sha256": "fab35f09b507ee2a4f4e7b98098f5f64afa78e6e43af261408af69b99660890f"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji3/oljuexingji.skel",
+      "file": "assets/animation/juexingji/juexingji3/oljuexingji.skel",
+      "bytes": 13726,
+      "sha256": "acd95470bb5f5b4f29977f67535822df1ca3444f931b50a873908548b2ab8456"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji3/olshimingji.atlas",
+      "file": "assets/animation/juexingji/juexingji3/olshimingji.atlas",
+      "bytes": 5318,
+      "sha256": "1f63256e60b0dc21f184db3069e7e8ddac2bc2a25e9efaf65ce55d3a054bad2a"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji3/olshimingji.png",
+      "file": "assets/animation/juexingji/juexingji3/olshimingji.png",
+      "bytes": 895016,
+      "sha256": "fab35f09b507ee2a4f4e7b98098f5f64afa78e6e43af261408af69b99660890f"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji3/olshimingji.skel",
+      "file": "assets/animation/juexingji/juexingji3/olshimingji.skel",
+      "bytes": 13726,
+      "sha256": "acd95470bb5f5b4f29977f67535822df1ca3444f931b50a873908548b2ab8456"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji3/olxiandingji.atlas",
+      "file": "assets/animation/juexingji/juexingji3/olxiandingji.atlas",
+      "bytes": 5319,
+      "sha256": "c910d6e0bb016f22d9f185bd45c0d5524bf68f783f19e545ce85ca376467dfaa"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji3/olxiandingji.png",
+      "file": "assets/animation/juexingji/juexingji3/olxiandingji.png",
+      "bytes": 895016,
+      "sha256": "fab35f09b507ee2a4f4e7b98098f5f64afa78e6e43af261408af69b99660890f"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/juexingji/juexingji3/olxiandingji.skel",
+      "file": "assets/animation/juexingji/juexingji3/olxiandingji.skel",
+      "bytes": 13726,
+      "sha256": "acd95470bb5f5b4f29977f67535822df1ca3444f931b50a873908548b2ab8456"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/lianpo.atlas",
+      "file": "assets/animation/lianpo.atlas",
+      "bytes": 14533,
+      "sha256": "ed0aaa13d448179c5f2103d4df0e61f5b573c081b86c5101d2f593c39f670751"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/lianpo.png",
+      "file": "assets/animation/lianpo.png",
+      "bytes": 2558410,
+      "sha256": "80a10396f788a6e90206d392c27a3aacd5135d4a7a5e6cd64d02947bac1ccc05"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/lianpo.skel",
+      "file": "assets/animation/lianpo.skel",
+      "bytes": 16274,
+      "sha256": "511f63bc12c56b8f86d72d1d13d3ee4567747ff99e16279d8b3b121adc5f3169"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/lianpo2.png",
+      "file": "assets/animation/lianpo2.png",
+      "bytes": 2874609,
+      "sha256": "272d0165ca87e6bb95f739d99c73c57356f69fa0ef730a9a72dc890a0d81766c"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/lianpo3.png",
+      "file": "assets/animation/lianpo3.png",
+      "bytes": 2163353,
+      "sha256": "8ba10497b5685e60a2f1e8bb8a1d11009357e0cf7ea6ef7b9617c954788478e4"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/liupo.atlas",
+      "file": "assets/animation/liupo.atlas",
+      "bytes": 38006,
+      "sha256": "35a0a47ae6f870f78576a2fef302374724dde4b5a02a577585a9bf2715a7155c"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/liupo.png",
+      "file": "assets/animation/liupo.png",
+      "bytes": 2257072,
+      "sha256": "454896a403695deaf234bdd0b1fddf97976b455e802ed7633862e4f432c3a0a3"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/liupo.skel",
+      "file": "assets/animation/liupo.skel",
+      "bytes": 40989,
+      "sha256": "011ad2d3961f6b420ac2c8cdb2106f1b59ba78589b473c20152c0c3e04282002"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/liupo2.png",
+      "file": "assets/animation/liupo2.png",
+      "bytes": 1470194,
+      "sha256": "230b4f6c73a7e6cf6d2b3c636664039f68142d0ef8bae57755bbdd5ebe65e79b"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/liupo3.png",
+      "file": "assets/animation/liupo3.png",
+      "bytes": 2849683,
+      "sha256": "2157f1baebd514b73c604157768a8548d64b71de2e15b28571b15595bf80d378"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/liupo4.png",
+      "file": "assets/animation/liupo4.png",
+      "bytes": 1888615,
+      "sha256": "55fdf1da95d05f7f89c4922890d0bd1ad00fc4c22a8e2948ae760c0290633ad9"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/liupo5.png",
+      "file": "assets/animation/liupo5.png",
+      "bytes": 3160413,
+      "sha256": "7b5568707f50d56a43faf689b42ff2d7281581ad5757b658f2aea6afef292081"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/liupo6.png",
+      "file": "assets/animation/liupo6.png",
+      "bytes": 2951136,
+      "sha256": "c5cf08fb0ac33d763f7f33cee5ebaf172d98ce552f215d99b233a3043baaf714"
+    },
+    {
       "source": "extension/十周年UI/assets/animation/qibaodao2.atlas",
       "file": "assets/animation/qibaodao2.atlas",
       "bytes": 1783,
@@ -1565,6 +2345,438 @@
       "sha256": "641cad04d6ded647a396801535a8db7e47ace61feb242c4d29e51fd8d5f5637c"
     },
     {
+      "source": "extension/十周年UI/assets/animation/qingnangjishi.atlas",
+      "file": "assets/animation/qingnangjishi.atlas",
+      "bytes": 13342,
+      "sha256": "400b408e697e4390b8cf0b4a91319702a638124d6199410ad57a7396837018d4"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qingnangjishi.png",
+      "file": "assets/animation/qingnangjishi.png",
+      "bytes": 2208751,
+      "sha256": "becffbad9d851f9e28325562afa9f8028504a32670357e964de28e4643cb5bef"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qingnangjishi.skel",
+      "file": "assets/animation/qingnangjishi.skel",
+      "bytes": 54687,
+      "sha256": "0f5feb84ae6cafd85cd278344051007bf7c7bf2144d7988c1122c030f71e021d"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qingnangjishi2.png",
+      "file": "assets/animation/qingnangjishi2.png",
+      "bytes": 1946060,
+      "sha256": "d22229e95463834f43156d40e622fcf022ff81796f8577f1bde6f7d436e38a07"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qingnangjishi3.png",
+      "file": "assets/animation/qingnangjishi3.png",
+      "bytes": 1475080,
+      "sha256": "ea98bee0942528728c71c9864a1bec97e442d60871435328aac62e114202d1b8"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qingnangjishi4.png",
+      "file": "assets/animation/qingnangjishi4.png",
+      "bytes": 195296,
+      "sha256": "01cb941a6453a60087a154aa0d18d4e4aa34ff47d4c8de6a829352083a62b7cc"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qipo.atlas",
+      "file": "assets/animation/qipo.atlas",
+      "bytes": 41121,
+      "sha256": "6dc290e1ff3bc9384fe94967ab1c1a794e8b4aef58b5427f4a31585cea89bb3c"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qipo.png",
+      "file": "assets/animation/qipo.png",
+      "bytes": 1421900,
+      "sha256": "e719f335c5dc10bc59c693c36dd1acdee91708f879d024308757697619ac7635"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qipo.skel",
+      "file": "assets/animation/qipo.skel",
+      "bytes": 42701,
+      "sha256": "e0f72189c41ed5a72b80efa5c458139bf350c09e71a867dedb2474649fa2b5d8"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qipo2.png",
+      "file": "assets/animation/qipo2.png",
+      "bytes": 1301644,
+      "sha256": "f8976eb1d317ab72bcd64ad605aba528624aed81390426c949f8cdaea38a9518"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qipo3.png",
+      "file": "assets/animation/qipo3.png",
+      "bytes": 2496512,
+      "sha256": "ca4ac59d1f67dfc5f6a6484d53809e62d0768862c12200aa99fb8959331ac782"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qipo4.png",
+      "file": "assets/animation/qipo4.png",
+      "bytes": 2666442,
+      "sha256": "b19327e930929178d84accf3695e71c6ad552c63514448ad2c95b126056702e5"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qipo5.png",
+      "file": "assets/animation/qipo5.png",
+      "bytes": 2960758,
+      "sha256": "0209f3ae896e59c0558a87d378fa245c29fedf14e1fb78c91655f9d787682f15"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qipo6.png",
+      "file": "assets/animation/qipo6.png",
+      "bytes": 2669882,
+      "sha256": "425ad928289c61418c87dd8cd675eae0581d029427c75f65d7e11ac204d3f861"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv2_zi.atlas",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv2_zi.atlas",
+      "bytes": 318,
+      "sha256": "af549b2ba68d587f6a75ba712d239c4e5c68953262e4a49bd1071eadcec7d3a2"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv2_zi.png",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv2_zi.png",
+      "bytes": 15988,
+      "sha256": "c28a6f94fc1a0a3f7bf820ad4374885421bb8bd3c9bc6de511282c452b1c3fb0"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv2_zi.skel",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv2_zi.skel",
+      "bytes": 522,
+      "sha256": "208bbf9748736dc6259c2bb1e38ddd8b4c2386ace9db593e382b23459b74d7a3"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv3_zi.atlas",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv3_zi.atlas",
+      "bytes": 318,
+      "sha256": "208017648566afb23fc52972cb9ef5d59f1d577d2b0970674c1d792c2f5e61e8"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv3_zi.png",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv3_zi.png",
+      "bytes": 16115,
+      "sha256": "7cfc613661ed62c982e5021ff904dd92399bb30ce52ed4c82e66ef834e14653f"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv3_zi.skel",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv3_zi.skel",
+      "bytes": 522,
+      "sha256": "05afd408d4f1ce4f78787309f4da8a7dcad8aa923a13a93f3a7e07fa2d96df74"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv4_zi.atlas",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv4_zi.atlas",
+      "bytes": 318,
+      "sha256": "bbcb870431c36d67e527c954acf96a7a01024fb3fea43f5ecfa0ef7be5db59c3"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv4_zi.png",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv4_zi.png",
+      "bytes": 16058,
+      "sha256": "69ad1b36cdf1f91c5a775d5a016fff942ad6cc028f974e79e28ffdf09ff1e9c4"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv4_zi.skel",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv4_zi.skel",
+      "bytes": 480,
+      "sha256": "d8da49622780e0ad08cabe120498d3f055a9a4694507b6be6a207aa29978e191"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv5_zi.atlas",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv5_zi.atlas",
+      "bytes": 318,
+      "sha256": "53228e1c16bee9a78c9297efffea508d2065278d0a6259c1b61d4bf3d5e45f49"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv5_zi.png",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv5_zi.png",
+      "bytes": 16190,
+      "sha256": "caf904c3158c39e7c3d7e3825a31feae96c2b65aa071f0428a557d797a724153"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv5_zi.skel",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv5_zi.skel",
+      "bytes": 480,
+      "sha256": "4ee3d20dccda7b1314a0c801ae3b4a1eaa3bd705e58e9f259b741c8455c161e3"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv6_zi.atlas",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv6_zi.atlas",
+      "bytes": 318,
+      "sha256": "d527c261c90d9a37d719f75a5cbec7e5db3c2b7119fc4af5875d61662982eacb"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv6_zi.png",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv6_zi.png",
+      "bytes": 16364,
+      "sha256": "149bee329882e2946b3d78f2b1a9d5af477cc4c2d913813585c0c21f93213088"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv6_zi.skel",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv6_zi.skel",
+      "bytes": 480,
+      "sha256": "9022627715f8b0c2e77c3b2401444f40e697b243f15f1444bd424a3152b3cadc"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv7_zi.atlas",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv7_zi.atlas",
+      "bytes": 318,
+      "sha256": "d7c1ab8eb81cd10d3b92c79e4bb0621a31d1249e1e41d702945aecffb4a876ed"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv7_zi.png",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv7_zi.png",
+      "bytes": 16297,
+      "sha256": "0a6574e5c2f85287a0749be99231e97a73e5b907078f24acd066aec079c72c8b"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/qy_SF_eff_lianzhan_lv7_zi.skel",
+      "file": "assets/animation/qy_SF_eff_lianzhan_lv7_zi.skel",
+      "bytes": 480,
+      "sha256": "2a99b1d25197bf88036a2dee224e81b367cc9b291ecf3262e55d740e1e1d45fb"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/sanpo.atlas",
+      "file": "assets/animation/sanpo.atlas",
+      "bytes": 16752,
+      "sha256": "6048e0e8c186c9af9c48fb7292e28d212a58b995a01206afdf67705b46ea6bfa"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/sanpo.png",
+      "file": "assets/animation/sanpo.png",
+      "bytes": 2131215,
+      "sha256": "a6b0e7dd2867519397eea2ec54cf7c88c671e2de34f4089c2dbd90f5d14569ef"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/sanpo.skel",
+      "file": "assets/animation/sanpo.skel",
+      "bytes": 19742,
+      "sha256": "ae47d77107927ffd8fa2d6df79d80f60924699be04a9ba8a91749350037d0e48"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/sanpo2.png",
+      "file": "assets/animation/sanpo2.png",
+      "bytes": 2412360,
+      "sha256": "abd816974950936309067c188f37c8759a342ec1698bf4c85a53c02e53a1cc35"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/sanpo3.png",
+      "file": "assets/animation/sanpo3.png",
+      "bytes": 2201116,
+      "sha256": "6e156e579a2915fa79f17a0ef7088729389d6b382c9f5bc1dfe527408c85e303"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenweizhengqiankun.atlas",
+      "file": "assets/animation/shenweizhengqiankun.atlas",
+      "bytes": 20892,
+      "sha256": "55d4c74b00a122e2d5ed1938ed5d4af823a271ba54106c55a78675e9cbda7b7d"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenweizhengqiankun.png",
+      "file": "assets/animation/shenweizhengqiankun.png",
+      "bytes": 2335466,
+      "sha256": "499c9004f313156c1e698837f58fee13ff50557d72d16e8a5861d94eed6302d8"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenweizhengqiankun.skel",
+      "file": "assets/animation/shenweizhengqiankun.skel",
+      "bytes": 73253,
+      "sha256": "89e22b30a0f4f0b6b972ca0d393a7bb8e2d27c409f6440bca8496b4b4ffc2b55"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenweizhengqiankun2.png",
+      "file": "assets/animation/shenweizhengqiankun2.png",
+      "bytes": 3046863,
+      "sha256": "1ef30f92321ecc99e1c312d04a9f4abbb91a789bd753791560aaf55050fe0c13"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenweizhengqiankun3.png",
+      "file": "assets/animation/shenweizhengqiankun3.png",
+      "bytes": 2365126,
+      "sha256": "1deb4c6e483c4da44bb5ff1163bb4fdb28d5608180e0ed3d9b5c80220e50202d"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenweizhengqiankun4.png",
+      "file": "assets/animation/shenweizhengqiankun4.png",
+      "bytes": 2291375,
+      "sha256": "79f7f1dfac56f9daf907ccc2b7f865b85779a4684840350d9bc70f51ac2a4568"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenweizhengqiankun5.png",
+      "file": "assets/animation/shenweizhengqiankun5.png",
+      "bytes": 2281002,
+      "sha256": "8040a510011d31052df4784ecb4dd6ef7d8bca50512b0af7de440498b8b22f6f"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenyimiaoshou.atlas",
+      "file": "assets/animation/shenyimiaoshou.atlas",
+      "bytes": 31192,
+      "sha256": "755817a3c9c26827d616127ad96c46b845b2f614b15e7f9999914391577e9213"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenyimiaoshou.png",
+      "file": "assets/animation/shenyimiaoshou.png",
+      "bytes": 1464622,
+      "sha256": "5120e3f5196b3d55ddee076d8787fab090d81bebd39355b2d5117dfad5989b8a"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenyimiaoshou.skel",
+      "file": "assets/animation/shenyimiaoshou.skel",
+      "bytes": 66832,
+      "sha256": "2bf4aca381632f0062878e3583f5bbc3debfa6bd6fb066c11b931c52532ba80a"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenyimiaoshou2.png",
+      "file": "assets/animation/shenyimiaoshou2.png",
+      "bytes": 1425807,
+      "sha256": "37edf33a6d9c79ba69c864c7bcd9d0c04dfdd25bd5ef93d0f66344551c7a6244"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shenyimiaoshou3.png",
+      "file": "assets/animation/shenyimiaoshou3.png",
+      "bytes": 1126509,
+      "sha256": "473e316f4b5a150f1793402ca3209ecf96c4961a886805ce1e4a4c4d3ee28b54"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shoupo.atlas",
+      "file": "assets/animation/shoupo.atlas",
+      "bytes": 14581,
+      "sha256": "735555d4cc3cdc1f5846417d976173f1528d3c3fc363239449fab1c4477deb0c"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shoupo.png",
+      "file": "assets/animation/shoupo.png",
+      "bytes": 2046364,
+      "sha256": "4df9cde39835a53220762b69134d8d535dc1594dda4af0a950a9eede4e90b117"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shoupo.skel",
+      "file": "assets/animation/shoupo.skel",
+      "bytes": 15266,
+      "sha256": "48a05798a31f3a50dc5e1440c6c40e0e4cf4f2c61094fdcac2577f26f9811ce9"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shoupo2.png",
+      "file": "assets/animation/shoupo2.png",
+      "bytes": 3044812,
+      "sha256": "b645303d09e0a038ecb1e336f831739b166336fc0bdde17390b7bfd3a32005b9"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shoupo3.png",
+      "file": "assets/animation/shoupo3.png",
+      "bytes": 2369480,
+      "sha256": "42ef602f80b958c607a693ff25a1b8445a1beae6aa3fd681788fadb3f0a8d24a"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shoushajisha.atlas",
+      "file": "assets/animation/shoushajisha.atlas",
+      "bytes": 12445,
+      "sha256": "9acdd2ce34dc14ab0c73660ef3eb11a9a00fa09a04845f2ab3f2666e992811f2"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shoushajisha.png",
+      "file": "assets/animation/shoushajisha.png",
+      "bytes": 1956791,
+      "sha256": "6e7110c68e1836c630f6cd8dc7ca37422d483a1f35bdc17d78e750d9e2459ec8"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shoushajisha.skel",
+      "file": "assets/animation/shoushajisha.skel",
+      "bytes": 22681,
+      "sha256": "485960d92fa56ef00d51491ecb7294f78c506e2ca23cafd13af30919e16ad6f5"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shoushajisha2.png",
+      "file": "assets/animation/shoushajisha2.png",
+      "bytes": 1766414,
+      "sha256": "4a18f736ad6405950e3fd344c6df7274bad46d29b14210de8f073e087f3a0206"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shunshouqianyang.atlas",
+      "file": "assets/animation/shunshouqianyang.atlas",
+      "bytes": 1524,
+      "sha256": "edec271ceefd9d3bdb9db2b9a35673917024e02fa4a716538b7d6cbc132b9ac3"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shunshouqianyang.png",
+      "file": "assets/animation/shunshouqianyang.png",
+      "bytes": 234542,
+      "sha256": "09cfc2279670feac404e4f518986c2a15339867050b950bd33970340a29d8691"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/shunshouqianyang.skel",
+      "file": "assets/animation/shunshouqianyang.skel",
+      "bytes": 1578,
+      "sha256": "502cf148d274402b4393b3aed4b6254230cb67576fa4ea557369e0ca320cf32a"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/sipo.atlas",
+      "file": "assets/animation/sipo.atlas",
+      "bytes": 17701,
+      "sha256": "9bd0e2872451af591b41b20b37bfcd3e37a9771baf6dbcc64965801b13765c19"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/sipo.png",
+      "file": "assets/animation/sipo.png",
+      "bytes": 2138713,
+      "sha256": "0c0b0af495ad6a463a2ccfdb3501295949ef15fc75da92d70a51bd12e9f1c227"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/sipo.skel",
+      "file": "assets/animation/sipo.skel",
+      "bytes": 20184,
+      "sha256": "828ba7f6507802c1af11502d02a6e1bb843db60b7cb50a9fe6d0ea9e2ab3b071"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/sipo2.png",
+      "file": "assets/animation/sipo2.png",
+      "bytes": 2918317,
+      "sha256": "4181b027fe9e5d1927735e5dc164933a5f2e0dc0319f3c7f1c4d79d39e41c07a"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/sipo3.png",
+      "file": "assets/animation/sipo3.png",
+      "bytes": 2024748,
+      "sha256": "a0f301069a8a58ec7d7af0d813dc6b0eb1db8ed1edae7c3ad1125fa4dfab5403"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/ss_miaoshouhuichun.atlas",
+      "file": "assets/animation/ss_miaoshouhuichun.atlas",
+      "bytes": 5893,
+      "sha256": "ee67624c536d2ccb8e374db2fb373fb959a7f56cf3ab27f403a665a1b4595a9b"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/ss_miaoshouhuichun.png",
+      "file": "assets/animation/ss_miaoshouhuichun.png",
+      "bytes": 735716,
+      "sha256": "eeaaa30fd64605437b44dfe942b4b141fbd176a46b50f9b0db3aea5cb5a95135"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/ss_miaoshouhuichun.skel",
+      "file": "assets/animation/ss_miaoshouhuichun.skel",
+      "bytes": 26682,
+      "sha256": "7f018e0b4c41afb275b3e25a4a2e892b12144e2ee4af96739bb15b03aed86324"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/ss_yishugaochao.atlas",
+      "file": "assets/animation/ss_yishugaochao.atlas",
+      "bytes": 12844,
+      "sha256": "b7f81fd237e7bbc83a86a93c5ede92def285e0c94ff3ce2e87adba6c5a8464ad"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/ss_yishugaochao.png",
+      "file": "assets/animation/ss_yishugaochao.png",
+      "bytes": 1032682,
+      "sha256": "1b2cb2a265eaccd81203b5b63b1bf95c90651cd4f970f187b57036b0dbeaa415"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/ss_yishugaochao.skel",
+      "file": "assets/animation/ss_yishugaochao.skel",
+      "bytes": 35463,
+      "sha256": "4504ff2330fd8217bb41e6271bebdec3006b0c4850ee1bd901b5fa6ebedb8e6b"
+    },
+    {
       "source": "extension/十周年UI/assets/animation/taipingyaoshu.atlas",
       "file": "assets/animation/taipingyaoshu.atlas",
       "bytes": 4897,
@@ -1581,6 +2793,84 @@
       "file": "assets/animation/taipingyaoshu.skel",
       "bytes": 4050,
       "sha256": "43c3adc743363bee986f79fb999b0acc97b7f83c0b81222a75f48788782d5b55"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/wanfumodi.atlas",
+      "file": "assets/animation/wanfumodi.atlas",
+      "bytes": 13835,
+      "sha256": "16f623cb91bb6d0357167249535bd640f87a21fec37a3c2c3a74c8119d6b136b"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/wanfumodi.png",
+      "file": "assets/animation/wanfumodi.png",
+      "bytes": 2515212,
+      "sha256": "74eda78cff55b20ecdd9d566fbe840fa23900c2bac0b1fb35c943cbc1283a991"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/wanfumodi.skel",
+      "file": "assets/animation/wanfumodi.skel",
+      "bytes": 40077,
+      "sha256": "5ed8e8fbb99b7388f842177e1093f153fecd278e9b2ceb0eb732f89f4972bbf4"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/wupo.atlas",
+      "file": "assets/animation/wupo.atlas",
+      "bytes": 29418,
+      "sha256": "0e6bffdc0eea0b9b4f2cbd3f4042cf4944297f893e461abba0bd5a276e9fcefb"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/wupo.png",
+      "file": "assets/animation/wupo.png",
+      "bytes": 2449831,
+      "sha256": "ea70019c4741084f22c5e589937e24c91e2c0637af2c226b0d6cb38b811aba69"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/wupo.skel",
+      "file": "assets/animation/wupo.skel",
+      "bytes": 24656,
+      "sha256": "a84ff4db518cc39c55515319bfd193032036445bd9a8017c7753215809a6049d"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/wupo2.png",
+      "file": "assets/animation/wupo2.png",
+      "bytes": 2395470,
+      "sha256": "35e2a8ea6dc3ab4421d957c1c4e9c772d98c4c37762f2a866d9cfa35f79cbb0a"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/wupo3.png",
+      "file": "assets/animation/wupo3.png",
+      "bytes": 3477021,
+      "sha256": "3b2036a8b018175a04299502f259a63cc527b7d31525e4db1b20812bdfd5db23"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/wupo4.png",
+      "file": "assets/animation/wupo4.png",
+      "bytes": 3119192,
+      "sha256": "2de7c0dbb272594e6d37a08827d85fe5989d719ef8dcd1f66bdc86f669c290b7"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/wupo5.png",
+      "file": "assets/animation/wupo5.png",
+      "bytes": 3346387,
+      "sha256": "6b3e06ddbcbca9807a912dd94219d540996e0f03c6b028f28c37984543c855e8"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/zhuanhuanji.atlas",
+      "file": "assets/animation/zhuanhuanji.atlas",
+      "bytes": 1798,
+      "sha256": "f6d332b1b6fe1921e43f500925088ed836e34439e4323e5dc7ab617069a7ff27"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/zhuanhuanji.png",
+      "file": "assets/animation/zhuanhuanji.png",
+      "bytes": 107685,
+      "sha256": "362ebd6141e932e27f1cd0b8ee49c7386a0787dcb25b0ce24b1b35315f375959"
+    },
+    {
+      "source": "extension/十周年UI/assets/animation/zhuanhuanji.skel",
+      "file": "assets/animation/zhuanhuanji.skel",
+      "bytes": 2581,
+      "sha256": "a1cdf50eb4ccedbbcefd98d0a8ed4d215394e6780a7c7f1a4e8dbf2306bc8a87"
     },
     {
       "source": "extension/十周年UI/assets/dynamic/刘禅/虚拟天团/beijing.atlas",
@@ -1913,16 +3203,1426 @@
       "sha256": "fcef3008c1971ecdf6c19849f02b8beffd7bf1f30806b4f604fbf87ed17d282e"
     },
     {
+      "source": "extension/十周年UI/audio/Ciallo.mp3",
+      "file": "assets/audio/Ciallo.mp3",
+      "bytes": 38444,
+      "sha256": "f6096fe1f17f05393b2b9cd36c12b1ebcc76080bc291e4e307df6d44dc12d79d"
+    },
+    {
+      "source": "extension/十周年UI/audio/GameShowCard.mp3",
+      "file": "assets/audio/GameShowCard.mp3",
+      "bytes": 10560,
+      "sha256": "23acedaecb304e35e11c08e284493ea47c99d21986f48f478ee5be828bb56b54"
+    },
+    {
+      "source": "extension/十周年UI/audio/Gamepress.mp3",
+      "file": "assets/audio/Gamepress.mp3",
+      "bytes": 14419,
+      "sha256": "4dd685a7988120962d7ebe4badeeceb3d1052bfc90286dbf4e5fffdc56d96dfe"
+    },
+    {
       "source": "extension/十周年UI/audio/SkillBtn.mp3",
       "file": "assets/audio/SkillBtn.mp3",
       "bytes": 8640,
       "sha256": "1264bedc3d18c8c33373a1caf78c59b3aa1a2be8123f9efe80cdaaccaff25652"
     },
     {
+      "source": "extension/十周年UI/audio/XianxianEnter.mp3",
+      "file": "assets/audio/XianxianEnter.mp3",
+      "bytes": 28800,
+      "sha256": "a9465fa87881e761b5f9449907a4571419877fffc41bd70c3a334efc41d16ff0"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caiwenji1.mp3",
+      "file": "assets/audio/caidan/caiwenji1.mp3",
+      "bytes": 474229,
+      "sha256": "3f79e5928a03997a575975aac7c5cc4bd96e32d97ae03bf87afeaa3e34ba6537"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao1.mp3",
+      "file": "assets/audio/caidan/caocao1.mp3",
+      "bytes": 17256,
+      "sha256": "0340191a499149b0b6ab3b11d3e199ee65be25609b62219c5de7ed2aecefad4e"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao10.mp3",
+      "file": "assets/audio/caidan/caocao10.mp3",
+      "bytes": 33637,
+      "sha256": "6c1c70a1cfd49e4be92249df77fb6e33d88a4c27473abdaf1f54054e056fa968"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao11.mp3",
+      "file": "assets/audio/caidan/caocao11.mp3",
+      "bytes": 57923,
+      "sha256": "be6e7c72a61f14f6d57a2b7b22a10bb659fe298144b42165b26fcb84cc465bb1"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao12.mp3",
+      "file": "assets/audio/caidan/caocao12.mp3",
+      "bytes": 40559,
+      "sha256": "94733a2e825b179d1888a5f69f2d0d540e718ce40ce9a80e51c51512cc29a821"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao13.mp3",
+      "file": "assets/audio/caidan/caocao13.mp3",
+      "bytes": 73959,
+      "sha256": "785569a72c6c71d1e1e750dfa6b765fa989d851e31fdc0cdf05a7b0cde7eb819"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao14.mp3",
+      "file": "assets/audio/caidan/caocao14.mp3",
+      "bytes": 83118,
+      "sha256": "589b91ec1a14e6d4a16db462291eaea40acadd76da5e905ba1552317f72710a9"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao15.mp3",
+      "file": "assets/audio/caidan/caocao15.mp3",
+      "bytes": 22826,
+      "sha256": "03db4fb50e0ffaf511ef6aad20f9a6aaec5c23d32667b31ae9ae9b763d65ddae"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao16.mp3",
+      "file": "assets/audio/caidan/caocao16.mp3",
+      "bytes": 14877,
+      "sha256": "5e744d374d797171536d3b2757bbca4fd8070ba13b3c5fd7d6efe805dcca7771"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao17.mp3",
+      "file": "assets/audio/caidan/caocao17.mp3",
+      "bytes": 38402,
+      "sha256": "c68363c8a6cc4426aab0e78cd8206736120bb44920db6c0e692490fed7335dd0"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao18.mp3",
+      "file": "assets/audio/caidan/caocao18.mp3",
+      "bytes": 47780,
+      "sha256": "d5e2f83de52a663edb43782df41de53c2f5182ffa76a11d37cd73521b73b7d55"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao19.mp3",
+      "file": "assets/audio/caidan/caocao19.mp3",
+      "bytes": 47035,
+      "sha256": "1780c56832f815cbad93a90fbfde79bd4a3b761b0194438c4cf2e20b3461a131"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao2.mp3",
+      "file": "assets/audio/caidan/caocao2.mp3",
+      "bytes": 18236,
+      "sha256": "55f466f063a0a3360122678663ffb7373d622919c946dfa8163669d79cfcf003"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao20.mp3",
+      "file": "assets/audio/caidan/caocao20.mp3",
+      "bytes": 31816,
+      "sha256": "2cf15fe46a52233533183f71045c44ac78d0be174f1334c4cfb0950d97d74741"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao21.mp3",
+      "file": "assets/audio/caidan/caocao21.mp3",
+      "bytes": 36526,
+      "sha256": "b628ab03168f90f556b1407cff2189b4944e23311f98dfc7491f93328bb30053"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao22.mp3",
+      "file": "assets/audio/caidan/caocao22.mp3",
+      "bytes": 30369,
+      "sha256": "4680496fc47211733820d47a7090c878788c9d06bed4c729947956911286c43e"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao23.mp3",
+      "file": "assets/audio/caidan/caocao23.mp3",
+      "bytes": 24073,
+      "sha256": "ae58f64d7400761e594277d9c005293cdba6a6c864718179af62e201d78fec35"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao24.mp3",
+      "file": "assets/audio/caidan/caocao24.mp3",
+      "bytes": 26409,
+      "sha256": "316a02f6ffcdc1c94526f749912f3247ba70addb44829660e5577d091b755bec"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao3.mp3",
+      "file": "assets/audio/caidan/caocao3.mp3",
+      "bytes": 21697,
+      "sha256": "57029fd13aecbc4accbd9b0ba52cc0e244890c37d7dfe02c567ebeada201b316"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao4.mp3",
+      "file": "assets/audio/caidan/caocao4.mp3",
+      "bytes": 37043,
+      "sha256": "237314b2d8add4f00535fc02442b20101e009c13a7f9f69ed70d40c08a3e7186"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao5.mp3",
+      "file": "assets/audio/caidan/caocao5.mp3",
+      "bytes": 34119,
+      "sha256": "bcf3a8ed7bbd789bdae77636fe51130d00148cfece00eb12bc0db4c32018d203"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao6.mp3",
+      "file": "assets/audio/caidan/caocao6.mp3",
+      "bytes": 32654,
+      "sha256": "0b72facd0138d7412e600e98ff30ea55aebd5140e808a7f8b9f49278f18e3a80"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao7.mp3",
+      "file": "assets/audio/caidan/caocao7.mp3",
+      "bytes": 41750,
+      "sha256": "c686fc5bfa2b8e5bf09f7b3371c683976912b9d3a79ab06d7f655446678a4af5"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao8.mp3",
+      "file": "assets/audio/caidan/caocao8.mp3",
+      "bytes": 24819,
+      "sha256": "122379babaff871f4dd010e612ac71a7599aa2fc3db40fff4dc12eadf52bf344"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caocao9.mp3",
+      "file": "assets/audio/caidan/caocao9.mp3",
+      "bytes": 15007,
+      "sha256": "826b4cb22e34c68dca93fc6013e2d24cf0a9029f9e08344374650dc3fd7691ba"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caochun1.mp3",
+      "file": "assets/audio/caidan/caochun1.mp3",
+      "bytes": 52927,
+      "sha256": "d067ca909c7b29ab2ff662d7871dd3b6794d6e779c5669b589836a394c59c63b"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caojinyu1.mp3",
+      "file": "assets/audio/caidan/caojinyu1.mp3",
+      "bytes": 45956,
+      "sha256": "7938a3025ba75cc760e69950f65a8fccb3291a205b4cebd5a06af19a56fe6b1b"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caopi1.mp3",
+      "file": "assets/audio/caidan/caopi1.mp3",
+      "bytes": 26874,
+      "sha256": "96818159e4685ed039365bf73607fdb907f7585e6cf9cc44255ae26dc92a2c60"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caopi2.mp3",
+      "file": "assets/audio/caidan/caopi2.mp3",
+      "bytes": 16259,
+      "sha256": "7ae38a132fee9fb1d455b7c96dabcc8c75361336a42f87267a32f335fadb4a44"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caoshuang1.mp3",
+      "file": "assets/audio/caidan/caoshuang1.mp3",
+      "bytes": 35354,
+      "sha256": "a5fe35f858417aedb0158d2f6ae7b2450eed57c4ebdfe8b707823f783a8e24dc"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/caoying1.mp3",
+      "file": "assets/audio/caidan/caoying1.mp3",
+      "bytes": 36116,
+      "sha256": "dbc25b516721f53f36e7767dad0f94a4bcba313ff6350de537c58643a4b3144c"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/chendao1.mp3",
+      "file": "assets/audio/caidan/chendao1.mp3",
+      "bytes": 13636,
+      "sha256": "0fcf14bfda69efd38a97cd0ed106dfa9caeec46c57096e0688221b3697d6812f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/chengong1.mp3",
+      "file": "assets/audio/caidan/chengong1.mp3",
+      "bytes": 29540,
+      "sha256": "a9d1c1b824f9b6f3d2920a0adc774f214365638adf26caff9a858857b078bb78"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/chengong2.mp3",
+      "file": "assets/audio/caidan/chengong2.mp3",
+      "bytes": 59000,
+      "sha256": "31e6c3cb3b7f3e86cc466eefae55a618f70e7c55f63c868553f42e9cc5d9f295"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/chenshi1.mp3",
+      "file": "assets/audio/caidan/chenshi1.mp3",
+      "bytes": 53420,
+      "sha256": "b85d18763b4a54e7f8a577b9aafde47226803de6c586d7fa1bd108a4db771876"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/chunyuqiong1.mp3",
+      "file": "assets/audio/caidan/chunyuqiong1.mp3",
+      "bytes": 54671,
+      "sha256": "50a7a93a3a99a96d2df790fd231ed96de729ee7fe77090543637ed0339937297"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/chunyuqiong2.mp3",
+      "file": "assets/audio/caidan/chunyuqiong2.mp3",
+      "bytes": 48092,
+      "sha256": "bd19716cf0781f06d62e69669ad60e55844bdfa7fb0f8cd4cd2ecbe5a7dd7081"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/dengai1.mp3",
+      "file": "assets/audio/caidan/dengai1.mp3",
+      "bytes": 26114,
+      "sha256": "a8e7e09ddbc8c6f1fa30ff5bb5e9653a14a8baf42668e80b3172f205d0f79c42"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/dianwei1.mp3",
+      "file": "assets/audio/caidan/dianwei1.mp3",
+      "bytes": 23516,
+      "sha256": "e80662ece54ce7e5f0c8888700e875c2fbbc18bdf96800773aef21cec8522cf2"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/dianwei2.mp3",
+      "file": "assets/audio/caidan/dianwei2.mp3",
+      "bytes": 30519,
+      "sha256": "d5a0ec8aa58259902c559385563d785f9c9798f00e9367e07964ccc97640bc45"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/diaochan1.mp3",
+      "file": "assets/audio/caidan/diaochan1.mp3",
+      "bytes": 21120,
+      "sha256": "d05c9c66eaf3cdc06069dd483e8a65eb8d0d9f91436df4fb34d693286d36ec40"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/diaochan2.mp3",
+      "file": "assets/audio/caidan/diaochan2.mp3",
+      "bytes": 46464,
+      "sha256": "31aae2358d96c7990c8eecc892e2aded676a0a5f4e6129ef26628ec0403f088d"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/diaochan3.mp3",
+      "file": "assets/audio/caidan/diaochan3.mp3",
+      "bytes": 39726,
+      "sha256": "743f290c67520f230035d174f3fea5a0a63ecd9271b8434227f8625470592528"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/diaochan4.mp3",
+      "file": "assets/audio/caidan/diaochan4.mp3",
+      "bytes": 30531,
+      "sha256": "7128a7aa9d6c843cb62910fe757e16e4852fa75596c37f2f63fd4d568b35291b"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/diaochan5.mp3",
+      "file": "assets/audio/caidan/diaochan5.mp3",
+      "bytes": 28945,
+      "sha256": "9cddf208c1a6b467803e121a3d47c179555f1c18e018ef9715982ef9f5666531"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/dingshangwan1.mp3",
+      "file": "assets/audio/caidan/dingshangwan1.mp3",
+      "bytes": 34846,
+      "sha256": "e1e14cce85ca2ae9f078d0094efef9f6a7fcbc57a139cd6d425b37751585b95c"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/dingshangwan2.mp3",
+      "file": "assets/audio/caidan/dingshangwan2.mp3",
+      "bytes": 41159,
+      "sha256": "39d08c629cb9a60fdccc52d683249bb560ff97725bba3a03b886c76882d63701"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/dongzhuo1.mp3",
+      "file": "assets/audio/caidan/dongzhuo1.mp3",
+      "bytes": 45226,
+      "sha256": "a38571f57241d02a5e858ea4467f1ed12211a014efe552f6b9dd4cbc1d56e7f7"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/dongzhuo2.mp3",
+      "file": "assets/audio/caidan/dongzhuo2.mp3",
+      "bytes": 35634,
+      "sha256": "3ae7fedb71106ff72e603c338857e8b8c295063f17f2e59608fb383cc02c6db9"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/dongzhuo3.mp3",
+      "file": "assets/audio/caidan/dongzhuo3.mp3",
+      "bytes": 40433,
+      "sha256": "d413ba2cc11c2b5ac73f697754ebe55fc2349ca8c4fb746f2024867d1213598d"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/dongzhuo4.mp3",
+      "file": "assets/audio/caidan/dongzhuo4.mp3",
+      "bytes": 30498,
+      "sha256": "526d898ce0c608714d95eaf1bc3914f1a36eac1897bfaf9dc6da5d3d662aeaf0"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/dongzhuo5.mp3",
+      "file": "assets/audio/caidan/dongzhuo5.mp3",
+      "bytes": 57601,
+      "sha256": "6290aafe82af79035bd34a881afd5b7cc605b91649adb9b0299928fcdcfa1e6b"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/feiyi1.mp3",
+      "file": "assets/audio/caidan/feiyi1.mp3",
+      "bytes": 26584,
+      "sha256": "45664b2ff943000796eef3a9eab1fc43a8dd100b1744bc36b3ea95e2d0ef2439"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/ganning1.mp3",
+      "file": "assets/audio/caidan/ganning1.mp3",
+      "bytes": 25554,
+      "sha256": "9b327de38cb828fbd7bcbefcff28241a3fd21d22efd0c9e950ca2d6086a521c1"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guansuo1.mp3",
+      "file": "assets/audio/caidan/guansuo1.mp3",
+      "bytes": 33528,
+      "sha256": "606fcb4c38aee546488f4ace84d994104d0a8a88233f5c594ba02892865f9a99"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guanyu1.mp3",
+      "file": "assets/audio/caidan/guanyu1.mp3",
+      "bytes": 68909,
+      "sha256": "4ab53d219356f3f83e42683eea85a769e3955c7879348e8b27bc7a37ba340867"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guanyu10.mp3",
+      "file": "assets/audio/caidan/guanyu10.mp3",
+      "bytes": 13683,
+      "sha256": "c510481c9075420e707ebc35f8f12ed1b05436f8bd08bfcc59918102a3007fb2"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guanyu11.mp3",
+      "file": "assets/audio/caidan/guanyu11.mp3",
+      "bytes": 24275,
+      "sha256": "77ce389b966c544899586efcd3595857cb8dda9290283cb0421c6e7825e9f3a7"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guanyu2.mp3",
+      "file": "assets/audio/caidan/guanyu2.mp3",
+      "bytes": 77889,
+      "sha256": "75f2137ae6d405b056a6bbc22b326de7154c9283c42a5c259c714605c3ee37d3"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guanyu3.mp3",
+      "file": "assets/audio/caidan/guanyu3.mp3",
+      "bytes": 57285,
+      "sha256": "0a0d3cfb08ed8dab3c0dabb6ff4ba809fae48cf3059dd85bad0588c581665870"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guanyu4.mp3",
+      "file": "assets/audio/caidan/guanyu4.mp3",
+      "bytes": 66692,
+      "sha256": "76ca844706bd8928e76580a5c7a26e2160e916e53cfb68950e4c128867695ec9"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guanyu5.mp3",
+      "file": "assets/audio/caidan/guanyu5.mp3",
+      "bytes": 23920,
+      "sha256": "b2169018b3ebd999f7fca005d81d7a245d8053b1bf41f6ede66e95db33446b97"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guanyu6.mp3",
+      "file": "assets/audio/caidan/guanyu6.mp3",
+      "bytes": 47630,
+      "sha256": "b08c9fce034bd9d94155995a801e5632ce426dce5cccb111cf932aeb6ccc4906"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guanyu7.mp3",
+      "file": "assets/audio/caidan/guanyu7.mp3",
+      "bytes": 20525,
+      "sha256": "3dc0cf2f6c162c2462c7fe79eaf7751da2bd079f7589484210c8239648cee20e"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guanyu8.mp3",
+      "file": "assets/audio/caidan/guanyu8.mp3",
+      "bytes": 27690,
+      "sha256": "de69857599a7721f742e2b03579196754a0347ad54faf8687bfc64613595ceea"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guanyu9.mp3",
+      "file": "assets/audio/caidan/guanyu9.mp3",
+      "bytes": 26407,
+      "sha256": "a7684f0b345beee65d61e71b8d908d372716a996f16b746eb397ea0a7d56e9d4"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guojia1.mp3",
+      "file": "assets/audio/caidan/guojia1.mp3",
+      "bytes": 43147,
+      "sha256": "5e35b12a877859dc242ed6a6e5a13639171218b7da5ad399aadef2f113ba5f8e"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guotu1.mp3",
+      "file": "assets/audio/caidan/guotu1.mp3",
+      "bytes": 58639,
+      "sha256": "3791fe4ae0c39b6adcb8e3029115ef94fcb56574faa0c7bd8d34ea5a20d47b4f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guotu2.mp3",
+      "file": "assets/audio/caidan/guotu2.mp3",
+      "bytes": 35945,
+      "sha256": "eba387a1ddb16bb9f1954f020aa561ed83ef6ce76377aac7d2ed50e38c260a8d"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/guozhao1.mp3",
+      "file": "assets/audio/caidan/guozhao1.mp3",
+      "bytes": 45775,
+      "sha256": "f4c083ea20117aefb02b03ff70755da93d160f024916eb6ee7cd2eac8aa1e7de"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/hetaihou1.mp3",
+      "file": "assets/audio/caidan/hetaihou1.mp3",
+      "bytes": 59610,
+      "sha256": "b43a36ce7c5f5591e75a4d3746f39e5c8910a763eccab422b7522c6cf556aad3"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/huanggai1.mp3",
+      "file": "assets/audio/caidan/huanggai1.mp3",
+      "bytes": 11396,
+      "sha256": "40dd63a446f52c20248a5ea18a8cb0d0881177c0acf9be51f0ef6b3831b7fea5"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/huangzhong1.mp3",
+      "file": "assets/audio/caidan/huangzhong1.mp3",
+      "bytes": 53455,
+      "sha256": "71d79a57fed2716e95255e977a64d9806b2bcd27ef42df397c2e2f1126fd018f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/huangzhong2.mp3",
+      "file": "assets/audio/caidan/huangzhong2.mp3",
+      "bytes": 17247,
+      "sha256": "5099df829313dcb8502a3be1c3c83cf63e6286f8c63625925952a5a3828305fd"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/huatuo1.mp3",
+      "file": "assets/audio/caidan/huatuo1.mp3",
+      "bytes": 95156,
+      "sha256": "a2f9fcc6cbfb5172378c5395e57c46596e926412a36c124088420f66a381bcb8"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/huatuo2.mp3",
+      "file": "assets/audio/caidan/huatuo2.mp3",
+      "bytes": 69068,
+      "sha256": "5b99acdf86fb4a318cefee33b14305858de678488a8c9189000b2141acef065a"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/huaxin1.mp3",
+      "file": "assets/audio/caidan/huaxin1.mp3",
+      "bytes": 40583,
+      "sha256": "99d864ac520d09b1a5245a6c703bf1877160a7000b5e448d031a6fa9d3ac3dcf"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/huaxiong1.mp3",
+      "file": "assets/audio/caidan/huaxiong1.mp3",
+      "bytes": 35972,
+      "sha256": "f1902036b09704fa5dec887b7bd00cd1c4c91baaa8cf19bb10318c0a789721d7"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/jiachong1.mp3",
+      "file": "assets/audio/caidan/jiachong1.mp3",
+      "bytes": 48716,
+      "sha256": "f90e7b17fa722102530ee0e5b932a691c1798a87efde7174374e113377fd46ab"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/jianggan1.mp3",
+      "file": "assets/audio/caidan/jianggan1.mp3",
+      "bytes": 56586,
+      "sha256": "9fe5857d08d5c5a48d8a53939e6732ffa4d2c4ac0d6b33ac0c0fe28f05359bf5"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/jiangwei1.mp3",
+      "file": "assets/audio/caidan/jiangwei1.mp3",
+      "bytes": 44664,
+      "sha256": "0fa8247831293dc425cf6162d8cba33e608a56a7b19bf36ee2810ac465c90482"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/jiangwei2.mp3",
+      "file": "assets/audio/caidan/jiangwei2.mp3",
+      "bytes": 83190,
+      "sha256": "2cba37a47f0820d823cc09799f57acf8f947c91d29b57920f36f82f0de0e947e"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/jiangwei3.mp3",
+      "file": "assets/audio/caidan/jiangwei3.mp3",
+      "bytes": 61916,
+      "sha256": "7eb9759f47c3083c80c48748dc870fe82ae6379105dfe58b7f36dee952a99216"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/jiangwei4.mp3",
+      "file": "assets/audio/caidan/jiangwei4.mp3",
+      "bytes": 82484,
+      "sha256": "2472ceb928aa6dbe0b97ffca89a2cf89807228a1cdc43cc6a956b6e440d4c3e4"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/jiangwei5.mp3",
+      "file": "assets/audio/caidan/jiangwei5.mp3",
+      "bytes": 38112,
+      "sha256": "11de1301bd954b327799c1ddc6b4d9fd1b196feb50b46abc0ed5a79fb48c824b"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/jiaxu1.mp3",
+      "file": "assets/audio/caidan/jiaxu1.mp3",
+      "bytes": 87980,
+      "sha256": "873d8b8c51c3c4635043f5124ef48252fefe354ce9edaff8a9d52eb25d18cad9"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/jiaxu2.mp3",
+      "file": "assets/audio/caidan/jiaxu2.mp3",
+      "bytes": 114764,
+      "sha256": "5f271270f88d701ee33c5f4749af69248ed4a6af29fb314d33532f20452eaf18"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/jiaxu3.mp3",
+      "file": "assets/audio/caidan/jiaxu3.mp3",
+      "bytes": 27152,
+      "sha256": "16c7d84beb8d5ac889273fd3ba449a25df701413b3b37d03b8af0a65bfea84fb"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/jushou1.mp3",
+      "file": "assets/audio/caidan/jushou1.mp3",
+      "bytes": 54000,
+      "sha256": "0510b72e31c29e736ed459be83c6137025388c90467a3e4bbdedd1ae5761eaa3"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/kebineng1.mp3",
+      "file": "assets/audio/caidan/kebineng1.mp3",
+      "bytes": 50564,
+      "sha256": "48c9d75dd04a71134c62f73c280b55bf0960470376b738b98ffac73378c8c8f8"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liangxing1.mp3",
+      "file": "assets/audio/caidan/liangxing1.mp3",
+      "bytes": 25538,
+      "sha256": "630f9cde8f8f8906a32ac20928c4b7ab69855f63d6625be0191ac306eef0ec5c"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/lijue1.mp3",
+      "file": "assets/audio/caidan/lijue1.mp3",
+      "bytes": 92975,
+      "sha256": "9d624746a6b578aba44dcd7bf64a30f9337a7dca4955f1e13c677a2f6130d5ff"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liru1.mp3",
+      "file": "assets/audio/caidan/liru1.mp3",
+      "bytes": 49955,
+      "sha256": "c58298218cc0fcd313fd0ffd3000cf3c9f85de006dd8f692aa940ef58960f716"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liubei1.mp3",
+      "file": "assets/audio/caidan/liubei1.mp3",
+      "bytes": 63170,
+      "sha256": "2ae6dff1ab6e1a6a57337b36461727943a0203f3ff5deebe66059723e10a359e"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liubei10.mp3",
+      "file": "assets/audio/caidan/liubei10.mp3",
+      "bytes": 26687,
+      "sha256": "69a93cf84d7b00efcf47d15c4e17011df80a7b2339a4c6c0c2db574f59de4d9b"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liubei2.mp3",
+      "file": "assets/audio/caidan/liubei2.mp3",
+      "bytes": 103605,
+      "sha256": "42bffb7e74ab06ab97c10e4102342f1032ec8e3723072c145040f5a124fd149a"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liubei3.mp3",
+      "file": "assets/audio/caidan/liubei3.mp3",
+      "bytes": 93186,
+      "sha256": "c4577e8e730a410997e3ef2660bf61ac72fe37b843a3ba7816a8bd851c479bd7"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liubei4.mp3",
+      "file": "assets/audio/caidan/liubei4.mp3",
+      "bytes": 105860,
+      "sha256": "7171d62294cb685d458fcfca3158de42d66483a96929c153b1afdee6d93ceb9a"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liubei5.mp3",
+      "file": "assets/audio/caidan/liubei5.mp3",
+      "bytes": 87572,
+      "sha256": "9f042b173940fa848f0a56c61f96373f8eff7120480ce0ab3c6c183fc7906afd"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liubei6.mp3",
+      "file": "assets/audio/caidan/liubei6.mp3",
+      "bytes": 40366,
+      "sha256": "53920a8320da6ad7d0562c04b08ba405b6981175313d1e874eb686ec92bcf8e0"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liubei7.mp3",
+      "file": "assets/audio/caidan/liubei7.mp3",
+      "bytes": 26380,
+      "sha256": "3f122238d6599e88168bc5884c2582fc38ee1f44fba85253274df8ceda061a11"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liubei8.mp3",
+      "file": "assets/audio/caidan/liubei8.mp3",
+      "bytes": 29689,
+      "sha256": "51753a9e18ba8939c2226a99d967307a7f735bc54266216852f518a6fccbd4e5"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liubei9.mp3",
+      "file": "assets/audio/caidan/liubei9.mp3",
+      "bytes": 17923,
+      "sha256": "72f42aac6847943b023d189511f15faa11f6163b6c749c815457edab92b76b0c"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liuchen1.mp3",
+      "file": "assets/audio/caidan/liuchen1.mp3",
+      "bytes": 49940,
+      "sha256": "3e46c8b398cda7935d23416fdc90bd7a312c9c8feba8c0b693555a1d6c279b80"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liuhong1.mp3",
+      "file": "assets/audio/caidan/liuhong1.mp3",
+      "bytes": 42052,
+      "sha256": "f082674225aef2353b595b36293d9e655ac75977e7be0c0d93d41010d8f33b20"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liuhong2.mp3",
+      "file": "assets/audio/caidan/liuhong2.mp3",
+      "bytes": 73593,
+      "sha256": "c5f655514bd9f428ea3e1e75c83d23ed6d27001c28802a2c21eda1164fd8cb44"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liushan1.mp3",
+      "file": "assets/audio/caidan/liushan1.mp3",
+      "bytes": 53053,
+      "sha256": "66e45e1f60ad1d3a1bb454d54fa50399581124d897c2002d3029ee4c2032d82f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liushan2.mp3",
+      "file": "assets/audio/caidan/liushan2.mp3",
+      "bytes": 42654,
+      "sha256": "0420e1b4487c12d47e29e00b3d9718b756a017906216a62496ea574268fa817d"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liushan3.mp3",
+      "file": "assets/audio/caidan/liushan3.mp3",
+      "bytes": 23095,
+      "sha256": "e7f135260c67ce4e1b319c925394cd9872f879d0c51eab1ff8bc611a31efecf5"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liuyan1.mp3",
+      "file": "assets/audio/caidan/liuyan1.mp3",
+      "bytes": 35050,
+      "sha256": "bc4fe8179b9b9b73b8d0bb5fa67a3ae1cb6572a40a2c0f2fdbe4c026fd404a96"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liuyan2.mp3",
+      "file": "assets/audio/caidan/liuyan2.mp3",
+      "bytes": 35428,
+      "sha256": "a81e8fbea20caf41fcf30e0a811c69cd4860a4102a4eaee346a34de4387c1524"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liuyan3.mp3",
+      "file": "assets/audio/caidan/liuyan3.mp3",
+      "bytes": 23021,
+      "sha256": "b2f46f5d157491637819035ccd19012fee9d9a86523edce3f500dc35c1e96bb3"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liuyan4.mp3",
+      "file": "assets/audio/caidan/liuyan4.mp3",
+      "bytes": 35507,
+      "sha256": "c2c3b9ad77ba4a348ce410990e0c2a4507484aa3baed626ba2e31394bb905f19"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liuyan5.mp3",
+      "file": "assets/audio/caidan/liuyan5.mp3",
+      "bytes": 23647,
+      "sha256": "a976da75053f5616b590d8b5972f55dd446db1aa1fc3ba4dad2ec9e2f793ec7e"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liuyan6.mp3",
+      "file": "assets/audio/caidan/liuyan6.mp3",
+      "bytes": 20950,
+      "sha256": "162270b7fec8125504a4c162d1c3b9ec7d3f2e9f0e89afbaec5e61c6c160fa0f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/liuyong1.mp3",
+      "file": "assets/audio/caidan/liuyong1.mp3",
+      "bytes": 50286,
+      "sha256": "ea2c91b1a19ee4dae75b99d87181726b8418ba666e5f476e5a1015b9f85a5956"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/lukang1.mp3",
+      "file": "assets/audio/caidan/lukang1.mp3",
+      "bytes": 26780,
+      "sha256": "7b2ff5f363e1d11949274499c0ec6b765504d843d44f59d39d405be968fb2bf7"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/lusu1.mp3",
+      "file": "assets/audio/caidan/lusu1.mp3",
+      "bytes": 34229,
+      "sha256": "7032a7738ecb66461bb07ad9d88362dab65b8b083970b8fdda9e8dba27c0f403"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/luxun1.mp3",
+      "file": "assets/audio/caidan/luxun1.mp3",
+      "bytes": 58990,
+      "sha256": "1aff935f172d73f1a2b93885ed30875300bf8dfd7016d0dbe15b8f604e35576d"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/luxun2.mp3",
+      "file": "assets/audio/caidan/luxun2.mp3",
+      "bytes": 37735,
+      "sha256": "be94122b5026350f42bd285553bf830d0de4886482aea591008eaac95efe8100"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/luzhi1.mp3",
+      "file": "assets/audio/caidan/luzhi1.mp3",
+      "bytes": 36842,
+      "sha256": "456e352a6c00139b45b208ba91f03035d791cafe51d1e1a5c98e92c772e6b488"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/lvbu1.mp3",
+      "file": "assets/audio/caidan/lvbu1.mp3",
+      "bytes": 38496,
+      "sha256": "faa2abfcfb566ec0be23d5b47743fb729bacc9bc13588bbc95bcb50cbe1da49d"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/lvbu2.mp3",
+      "file": "assets/audio/caidan/lvbu2.mp3",
+      "bytes": 34979,
+      "sha256": "a6c3444782517f6c9a4134f22f81cb56966f48088e526a7a74e6f780a77adcaf"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/lvbu3.mp3",
+      "file": "assets/audio/caidan/lvbu3.mp3",
+      "bytes": 69879,
+      "sha256": "6e16df262ea4f5cc4c4eb0b8e27e681e11a32acf5c761a44c4a665fc8df160b3"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/lvbu4.mp3",
+      "file": "assets/audio/caidan/lvbu4.mp3",
+      "bytes": 48753,
+      "sha256": "235a20897382e262d146ea7acdb3402bef7b744936caf257670077c0f54cb400"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/lvbu5.mp3",
+      "file": "assets/audio/caidan/lvbu5.mp3",
+      "bytes": 60605,
+      "sha256": "743328443a46fe217f8ee6e033613463a3cc6686372955c61c73f6f56f0ba673"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/lvbu6.mp3",
+      "file": "assets/audio/caidan/lvbu6.mp3",
+      "bytes": 45118,
+      "sha256": "1077a0a9b4f16c9e3384425fc88bec2e0289f7a7cf73485dfb89e8f0b8011660"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/lvmeng1.mp3",
+      "file": "assets/audio/caidan/lvmeng1.mp3",
+      "bytes": 32932,
+      "sha256": "2f6adfb5bcdedb83a6c9726b9d4ba119a84669ec95262fe50c691cfa303e8c76"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/machao1.mp3",
+      "file": "assets/audio/caidan/machao1.mp3",
+      "bytes": 25460,
+      "sha256": "cf7396cd48fdf20fcb4bda61da32073f6f2b268ec02baee32465f4fc16cbf37c"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/machao2.mp3",
+      "file": "assets/audio/caidan/machao2.mp3",
+      "bytes": 24476,
+      "sha256": "6b181154131e128373d47c8ca41715d40e390b8660bae4ffb17e20bc1e2d2ad4"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/machao3.mp3",
+      "file": "assets/audio/caidan/machao3.mp3",
+      "bytes": 22100,
+      "sha256": "ceaf8ba79bafc99d9f936b3ac8a8adefb94cd5de684c3747f722af7ffe8b466e"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/machao4.mp3",
+      "file": "assets/audio/caidan/machao4.mp3",
+      "bytes": 31843,
+      "sha256": "6de15d2e965728f19b0d59a0bb8ddd40b26746782e113a36b0bf1c0bc74acbe0"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/madai1.mp3",
+      "file": "assets/audio/caidan/madai1.mp3",
+      "bytes": 55786,
+      "sha256": "ad9bee4315e9622bf7feb29b36a90a512b36fbf0b0f953f22347e939b11aed00"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/menghuo1.mp3",
+      "file": "assets/audio/caidan/menghuo1.mp3",
+      "bytes": 37821,
+      "sha256": "2bf6a63a8d565e50b6280a3a9e217be236f199f437294bd36b057c16bd9c1ea5"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/menghuo2.mp3",
+      "file": "assets/audio/caidan/menghuo2.mp3",
+      "bytes": 30335,
+      "sha256": "3c3dbc58ae14890b70e6bfe8aa380f33e21a84d8fbbcfddd3845f60f3bac5246"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/miheng1.mp3",
+      "file": "assets/audio/caidan/miheng1.mp3",
+      "bytes": 32064,
+      "sha256": "bb518ef034be1b4d8203f48a2411c5de98854a5d8c2015af0b05a3e007146915"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/miheng2.mp3",
+      "file": "assets/audio/caidan/miheng2.mp3",
+      "bytes": 42651,
+      "sha256": "4921d6bf1c05efaee8d078e0804ded169a3441e2580e4bccde8fc9a08c6be34c"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/miheng3.mp3",
+      "file": "assets/audio/caidan/miheng3.mp3",
+      "bytes": 32435,
+      "sha256": "0d13c260560b67ac2c8eef4987222f4313c2f0dca1b87236bba7e45a6c84bd1f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/miheng4.mp3",
+      "file": "assets/audio/caidan/miheng4.mp3",
+      "bytes": 30801,
+      "sha256": "11e5cb75a7f640aa7d8f5f104c84bbb9778d0c87d73dc0ab32bbe2d62830c135"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/pangde1.mp3",
+      "file": "assets/audio/caidan/pangde1.mp3",
+      "bytes": 46082,
+      "sha256": "fd8fdda298621f99f827e2394eda60dfea7105790e6b1a5944f4aa261f88aa24"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/quyi1.mp3",
+      "file": "assets/audio/caidan/quyi1.mp3",
+      "bytes": 42230,
+      "sha256": "f9128bbc8f5cc5457d949402e44fb168bd75252125fc558795c5c80df85657f9"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/shamoke1.mp3",
+      "file": "assets/audio/caidan/shamoke1.mp3",
+      "bytes": 78676,
+      "sha256": "d23984ab08ac7be24defa22127b54020eebff0716dac2d390deac85b85bbe45f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/simahui1.mp3",
+      "file": "assets/audio/caidan/simahui1.mp3",
+      "bytes": 39721,
+      "sha256": "9db7f4128154ea3e26cf769e41c60d5585ce40464ceb1c1a86a08b0e81793924"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/simahui2.mp3",
+      "file": "assets/audio/caidan/simahui2.mp3",
+      "bytes": 91515,
+      "sha256": "e897a3a241b04f28345563321bb563078a20d6f41812c057f674c2d496b766e1"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/simashi1.mp3",
+      "file": "assets/audio/caidan/simashi1.mp3",
+      "bytes": 28486,
+      "sha256": "d085e9cc5e0ecce777e06babc30202a590cdf24273fd958ade84e7c6695410f6"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/simayi1.mp3",
+      "file": "assets/audio/caidan/simayi1.mp3",
+      "bytes": 50435,
+      "sha256": "1b4291400ad12a0b490ed13f96653af180955fd16eca3c139ac34dfa8be057ed"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/simayi2.mp3",
+      "file": "assets/audio/caidan/simayi2.mp3",
+      "bytes": 53294,
+      "sha256": "2708b8c27e8cbc5bbb4ca777b54a1acd7b6fffe5314d29b555ecf29b2353fe01"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/simayi3.mp3",
+      "file": "assets/audio/caidan/simayi3.mp3",
+      "bytes": 34931,
+      "sha256": "8723741e637ea473d8ea72c78091232ea8da922f397f473697f10f6a5a268c03"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/simayi4.mp3",
+      "file": "assets/audio/caidan/simayi4.mp3",
+      "bytes": 34496,
+      "sha256": "ee605375181cde000416c325c8d3aa0bfe45f733ffa9cc95b4aebe805520ecc5"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/simazhao1.mp3",
+      "file": "assets/audio/caidan/simazhao1.mp3",
+      "bytes": 73849,
+      "sha256": "735b6f08e27606609e6845b3b61bc61bb665ffeb3f680e9f004f4a9e35d1476f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunce1.mp3",
+      "file": "assets/audio/caidan/sunce1.mp3",
+      "bytes": 29679,
+      "sha256": "4338e77d53b41b916bd28e85a361534bd657760da797948995f027fd1d3f3886"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunce2.mp3",
+      "file": "assets/audio/caidan/sunce2.mp3",
+      "bytes": 35852,
+      "sha256": "49c11a80cf35d0f538b30354de711a62ba5d94d934734fa1cc91692f8cc85f75"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunce3.mp3",
+      "file": "assets/audio/caidan/sunce3.mp3",
+      "bytes": 25070,
+      "sha256": "08221b634e17595bca22e7c5fcfc8a239a041a554c74333ef7b1a8cedddf290b"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunce4.mp3",
+      "file": "assets/audio/caidan/sunce4.mp3",
+      "bytes": 16522,
+      "sha256": "b200d15f99611f8c619870132ade362ec19e91ece2fc753f98313b91c81be72f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunce5.mp3",
+      "file": "assets/audio/caidan/sunce5.mp3",
+      "bytes": 30262,
+      "sha256": "a9b2b54142d65c0b6d1b6bbe24f7c0a2c4a2aa32492b977e3b38ca3bfa6a861c"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunchen1.mp3",
+      "file": "assets/audio/caidan/sunchen1.mp3",
+      "bytes": 44564,
+      "sha256": "b9bec194ccbf548c9e4492a973cd3ad8f7a5b6ae04bbb8b13d979ef21a4074f6"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunhao1.mp3",
+      "file": "assets/audio/caidan/sunhao1.mp3",
+      "bytes": 39646,
+      "sha256": "d70f3d5f3fc2b95faf165752933dca787fe0fb126ee79a9b2484f63dbc277939"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunhao2.mp3",
+      "file": "assets/audio/caidan/sunhao2.mp3",
+      "bytes": 58519,
+      "sha256": "13e3bfd26707d0efcb763711b840b6bc597671f1d5d0fab739b41ae6d31aa71a"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunhao3.mp3",
+      "file": "assets/audio/caidan/sunhao3.mp3",
+      "bytes": 60087,
+      "sha256": "2dae60a2d80d48dc0fd5e064197775e90ee4ebd733a5f67ae7a4f0e5bca64625"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunhao4.mp3",
+      "file": "assets/audio/caidan/sunhao4.mp3",
+      "bytes": 47411,
+      "sha256": "c2808620dbd7baec3f7981e66f0690740f435be6740459a4741cecba7b7a3199"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunjian1.mp3",
+      "file": "assets/audio/caidan/sunjian1.mp3",
+      "bytes": 35985,
+      "sha256": "3cb4e7b72ec773a2b0055f7547c1760b6359a91ed0dba54b59f6409e51065db6"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunjian2.mp3",
+      "file": "assets/audio/caidan/sunjian2.mp3",
+      "bytes": 20819,
+      "sha256": "70332172703e40119253b459402991fc2c538de3304a34636f79233620c77a1d"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunjian3.mp3",
+      "file": "assets/audio/caidan/sunjian3.mp3",
+      "bytes": 17432,
+      "sha256": "31820648da0322f780c8236f158df844cf36ed9ad5239cfee0bbd6acc78af244"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunlingluan1.mp3",
+      "file": "assets/audio/caidan/sunlingluan1.mp3",
+      "bytes": 28172,
+      "sha256": "5cdf460047f8635b449e96288e621c53df2b74e6b90b096df917fb8ae7502425"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunquan1.mp3",
+      "file": "assets/audio/caidan/sunquan1.mp3",
+      "bytes": 51167,
+      "sha256": "b60d1ca6b2aac8061f18c44b9f573aa1a6b79611414e6b3f73e85c74be38f0a2"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunquan2.mp3",
+      "file": "assets/audio/caidan/sunquan2.mp3",
+      "bytes": 55508,
+      "sha256": "4824e40cf8ddb178b49517bff367d4f9cecc7573e4a00d301b4e883d08c84aa9"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunquan3.mp3",
+      "file": "assets/audio/caidan/sunquan3.mp3",
+      "bytes": 49124,
+      "sha256": "cdc0b437791bffb4db8f54828dcbb90eefb89a6038bf7edfe0908f03e6cb9e4f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunquan4.mp3",
+      "file": "assets/audio/caidan/sunquan4.mp3",
+      "bytes": 43335,
+      "sha256": "d719fda6a53f7fd0b55fe0d2187e8977bdcfb4155d9f39b0da49a2197a600828"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunquan5.mp3",
+      "file": "assets/audio/caidan/sunquan5.mp3",
+      "bytes": 37830,
+      "sha256": "93758529b9b3d7247ff3202ac86888c0f6f25490fc99f40c7678bbe4972f4229"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunshangxiang1.mp3",
+      "file": "assets/audio/caidan/sunshangxiang1.mp3",
+      "bytes": 17848,
+      "sha256": "0f925292aeeb2c73a8ec6c10f70108c828cda9101b1f33db9a629de666d8e70c"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/sunshangxiang2.mp3",
+      "file": "assets/audio/caidan/sunshangxiang2.mp3",
+      "bytes": 25237,
+      "sha256": "9596d1a1461a0bbfd3bf8eff766f6e20306cf2283876f8a5898f0e7c7fa69980"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/wanglang1.mp3",
+      "file": "assets/audio/caidan/wanglang1.mp3",
+      "bytes": 36496,
+      "sha256": "bc2591305fd9c5303adbcecfd69411eb5763234f857aa94ef963673fc8753521"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/weiyan1.mp3",
+      "file": "assets/audio/caidan/weiyan1.mp3",
+      "bytes": 32056,
+      "sha256": "6c25f7f086dc4a8ea01597212dc58a33820dbb29730e31438d169107095e9ba6"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/weiyan2.mp3",
+      "file": "assets/audio/caidan/weiyan2.mp3",
+      "bytes": 81417,
+      "sha256": "f4a80b6427e78ce12cd36e7b03f881f5c9c5149c5eed330172220f0eeecc154f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/xiahoujie1.mp3",
+      "file": "assets/audio/caidan/xiahoujie1.mp3",
+      "bytes": 33081,
+      "sha256": "9137def5299d504abefdbebaa262aba833acac3d4c089f3bf8ea55104e3a7252"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/xiahoujie2.mp3",
+      "file": "assets/audio/caidan/xiahoujie2.mp3",
+      "bytes": 36124,
+      "sha256": "5fd99e6584c9d95e717dbcf28c98c3d226bc14ef68f5beef5c87a0853f42dc13"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/xiahouyuan1.mp3",
+      "file": "assets/audio/caidan/xiahouyuan1.mp3",
+      "bytes": 28934,
+      "sha256": "ef358df0b2738e621d3b7c65c59f8d68fd539d3aa378e3bb16a14b555cae3643"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/xuchu1.mp3",
+      "file": "assets/audio/caidan/xuchu1.mp3",
+      "bytes": 12034,
+      "sha256": "96cb67e9db1bebdf2ff48891f4b2d57f4bb4beac3fccb79cf4e7f99f666840f8"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/xunyu1.mp3",
+      "file": "assets/audio/caidan/xunyu1.mp3",
+      "bytes": 72346,
+      "sha256": "fbd945e80fff15f66352bdd8cdfa706dfb31eb962cee083997ebcdca3a3b4752"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/xurong1.mp3",
+      "file": "assets/audio/caidan/xurong1.mp3",
+      "bytes": 61599,
+      "sha256": "4385385cf65a13339c9fb12fdef0c1f8761813a7cbc4c004b3ca76bd8783cb3f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/xusheng1.mp3",
+      "file": "assets/audio/caidan/xusheng1.mp3",
+      "bytes": 53165,
+      "sha256": "ed069d860a06c9f77553f0189761ec9d4d3443e13b4b64d257414531aebd949f"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/xusheng2.mp3",
+      "file": "assets/audio/caidan/xusheng2.mp3",
+      "bytes": 63234,
+      "sha256": "80e8c89b05523087622c41ff1da9a8f37f873518e712bf5df7be36ad3c4f1e82"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/xusheng3.mp3",
+      "file": "assets/audio/caidan/xusheng3.mp3",
+      "bytes": 9386,
+      "sha256": "774681bdf1d00d33f64657a08a4ed3c091ee562cd4ae2f802e3189eba0e8cb29"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/yangwan1.mp3",
+      "file": "assets/audio/caidan/yangwan1.mp3",
+      "bytes": 52466,
+      "sha256": "54d15cbf5e053d2866ca408a24a5f16d732e4f8b3a07d6c59847384030a6fa0b"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/yangxiu1.mp3",
+      "file": "assets/audio/caidan/yangxiu1.mp3",
+      "bytes": 32350,
+      "sha256": "4df7b76c6921fdf057260a08bcc93b946f0395ce486cc9a3d3ec5f0ed3ee45ef"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/yuanshao1.mp3",
+      "file": "assets/audio/caidan/yuanshao1.mp3",
+      "bytes": 8691,
+      "sha256": "791efaacf6a1fa51d1e134e6341088be896c72e8dce0bf32f2f8ecfba82f060e"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/yuanshao2.mp3",
+      "file": "assets/audio/caidan/yuanshao2.mp3",
+      "bytes": 52273,
+      "sha256": "882c15a24aca683a504faf3485346a1128937c6b9d5e13abcc84a05b1e906366"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/yuanshu1.mp3",
+      "file": "assets/audio/caidan/yuanshu1.mp3",
+      "bytes": 62747,
+      "sha256": "bbbd8cee802c742a33612b5ef08d6d3ddd81558b65dc50698b451d4a48bc417a"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/yuanshu2.mp3",
+      "file": "assets/audio/caidan/yuanshu2.mp3",
+      "bytes": 54205,
+      "sha256": "63babf9f5cbf594d9fce6b08ee0446348a80b73a44bed922e2d20bfd505b0607"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/yuanshu3.mp3",
+      "file": "assets/audio/caidan/yuanshu3.mp3",
+      "bytes": 50948,
+      "sha256": "71717436abc9875882bc9df6fafcdee638136e8686b38c3b456cb35b1a3a8707"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/yufan1.mp3",
+      "file": "assets/audio/caidan/yufan1.mp3",
+      "bytes": 52580,
+      "sha256": "48e3a345c2ae0fc5ca651cc0dad2a478c9b31a4ceb8c2a6026f52c9c0fca247a"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zerong1.mp3",
+      "file": "assets/audio/caidan/zerong1.mp3",
+      "bytes": 55967,
+      "sha256": "0ba49b278c2e4cdc7a155f4449cbeb865e9fac582188408b2c260825d809c4d4"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangchangpu1.mp3",
+      "file": "assets/audio/caidan/zhangchangpu1.mp3",
+      "bytes": 42673,
+      "sha256": "d2697be577bdac74a4f234c1c45a9456ef36213999eb9b06c4437656dca2547e"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangchangpu2.mp3",
+      "file": "assets/audio/caidan/zhangchangpu2.mp3",
+      "bytes": 30236,
+      "sha256": "bffb6184bedef2437c4325163c61a288c3e69210172cc40a2f065f91e2465cc7"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangfei1.mp3",
+      "file": "assets/audio/caidan/zhangfei1.mp3",
+      "bytes": 7437,
+      "sha256": "39f0cdc5951568b5e6003866bbeae1fb2607b02dcedd4a6bd0b6baf86e560e29"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangfei2.mp3",
+      "file": "assets/audio/caidan/zhangfei2.mp3",
+      "bytes": 31796,
+      "sha256": "2c8bdd1b0c78321fd5c7c31d604514d318e4b8fddb102b0a9aff21d5755fe6d6"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangfei3.mp3",
+      "file": "assets/audio/caidan/zhangfei3.mp3",
+      "bytes": 29126,
+      "sha256": "1da2c9ba89e7dd8932c8151b2252ab6d7c83d228776f9ca577077ec7e22233b6"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangfei4.mp3",
+      "file": "assets/audio/caidan/zhangfei4.mp3",
+      "bytes": 73287,
+      "sha256": "8156aa88c73aab54f5b434d77065f1aa4349a6c06a90528a162d357d7ea634c3"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangfei5.mp3",
+      "file": "assets/audio/caidan/zhangfei5.mp3",
+      "bytes": 27648,
+      "sha256": "2b88d66975d443f703246e088426717e3fcf133ea270de04cef7a59f0af8c7f1"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangfei6.mp3",
+      "file": "assets/audio/caidan/zhangfei6.mp3",
+      "bytes": 19584,
+      "sha256": "e9647d28c3f53482957242b45809e8374ffc36b5f4d5d6289d54edc011528081"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangfei7.mp3",
+      "file": "assets/audio/caidan/zhangfei7.mp3",
+      "bytes": 69752,
+      "sha256": "f60b39d7f9b8b50322466171883763e2080f83d78bd6c54a57afdbf5703cc1bd"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangfei8.mp3",
+      "file": "assets/audio/caidan/zhangfei8.mp3",
+      "bytes": 45644,
+      "sha256": "276db11e8036178efec0e178d6b11aa8eedab475e9f003e8787dfc604ba5e7fb"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhanghu1.mp3",
+      "file": "assets/audio/caidan/zhanghu1.mp3",
+      "bytes": 23444,
+      "sha256": "1a30cfd850617a33df8e742c5492e35bca8f9d6118b4cf1b398947c0a23abc68"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangjiao1.mp3",
+      "file": "assets/audio/caidan/zhangjiao1.mp3",
+      "bytes": 80924,
+      "sha256": "733057498d14a11021419a9b1c2c60c0363c6e27ee28381f5bb3d6f56bb700a7"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangjiao2.mp3",
+      "file": "assets/audio/caidan/zhangjiao2.mp3",
+      "bytes": 34020,
+      "sha256": "23826da6b20683061c30c430b183f5ce8635b0d88f129cca32dbf98a035207e5"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangkai1.mp3",
+      "file": "assets/audio/caidan/zhangkai1.mp3",
+      "bytes": 46748,
+      "sha256": "124517de753835cf4798c4efd58a82f469be8ca9d68d676cec4df464ca863b38"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangliao1.mp3",
+      "file": "assets/audio/caidan/zhangliao1.mp3",
+      "bytes": 17442,
+      "sha256": "8d1d7508543d6447a2c6795663faad45c251eef63b8ac8ef53b3cea583a632b2"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangxiu1.mp3",
+      "file": "assets/audio/caidan/zhangxiu1.mp3",
+      "bytes": 15297,
+      "sha256": "c148ab980cb52a06b27c4067ff5afc9ea59298e313b55136499eb230b5ca9d4d"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangxiu2.mp3",
+      "file": "assets/audio/caidan/zhangxiu2.mp3",
+      "bytes": 33152,
+      "sha256": "bff10d2a9d8e1f839eba26223c4b41bf965c40397166f750f93892b76e619ba6"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangxiu3.mp3",
+      "file": "assets/audio/caidan/zhangxiu3.mp3",
+      "bytes": 29555,
+      "sha256": "0f4d6afdacf00108002ef0d90b1f8c473da4edd475ce1921c2d7d42d3e161db1"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhangxiu4.mp3",
+      "file": "assets/audio/caidan/zhangxiu4.mp3",
+      "bytes": 32462,
+      "sha256": "4ebe01e0f5ae43856edca4f363b96e82574b7d0b210658a459e99878402aeb91"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhaoyun1.mp3",
+      "file": "assets/audio/caidan/zhaoyun1.mp3",
+      "bytes": 14209,
+      "sha256": "9296deacc334a9f909c88dd5b4378424119573021f37a89d028602d4a93e27fd"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhaoyun2.mp3",
+      "file": "assets/audio/caidan/zhaoyun2.mp3",
+      "bytes": 37250,
+      "sha256": "1f998e13875d657dc4c95ede0e9c90b91093cf6833550ce51a2bd9fa8a37f99e"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhonghui1.mp3",
+      "file": "assets/audio/caidan/zhonghui1.mp3",
+      "bytes": 48829,
+      "sha256": "bdbc7398ca2c8d03fa93472782d0d976ba92fe1714e5939f6a5f192e74d3af28"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhonghui2.mp3",
+      "file": "assets/audio/caidan/zhonghui2.mp3",
+      "bytes": 28100,
+      "sha256": "b555a8870013c2bdf6cb6050a4353ce9d4aa1270e6047fa72b9a0121757cddd7"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhonghui3.mp3",
+      "file": "assets/audio/caidan/zhonghui3.mp3",
+      "bytes": 29753,
+      "sha256": "cd15509a56bd05b168f36a2fd99e29bd68f1fd90cf889ab5397f639ec0528acf"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhonghui4.mp3",
+      "file": "assets/audio/caidan/zhonghui4.mp3",
+      "bytes": 33248,
+      "sha256": "86361f5ce681d069781356bda9f63eacaf1c237b1d68c0c1ac87a9e12f135994"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhoushan1.mp3",
+      "file": "assets/audio/caidan/zhoushan1.mp3",
+      "bytes": 44612,
+      "sha256": "23084b0963038178f401a65012c3464a86724212bc2bf4fbe29be08cbeba9c17"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhouxuan1.mp3",
+      "file": "assets/audio/caidan/zhouxuan1.mp3",
+      "bytes": 45133,
+      "sha256": "7ec3efe14ecb22735bdf4c425e2faea37cb25145efd4c6286541ceda438505a9"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhouyu1.mp3",
+      "file": "assets/audio/caidan/zhouyu1.mp3",
+      "bytes": 49134,
+      "sha256": "681bca7fd01da7b301b6adc47c721977000f24c8defcd1a87faf4c05cffc7241"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhugeliang1.mp3",
+      "file": "assets/audio/caidan/zhugeliang1.mp3",
+      "bytes": 46474,
+      "sha256": "03474a61011f21fd9456d7c3347f8f5aec34027e2620b88eceb950267d416b17"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhugeliang2.mp3",
+      "file": "assets/audio/caidan/zhugeliang2.mp3",
+      "bytes": 42904,
+      "sha256": "fc114d68ffe5da88cfd0f5314c225662a65d7231a9eebb88a0c5859ec51a37da"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhugeliang3.mp3",
+      "file": "assets/audio/caidan/zhugeliang3.mp3",
+      "bytes": 25959,
+      "sha256": "83cd3fc6775eceb6149028e66221015dd816c3f7fda0424c3c9602febdb3607a"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhugeliang4.mp3",
+      "file": "assets/audio/caidan/zhugeliang4.mp3",
+      "bytes": 37405,
+      "sha256": "6cbf2803672e0009ebb04bfe90cd37b0df73f1523c9f058829f7538824ee89f9"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhugeliang5.mp3",
+      "file": "assets/audio/caidan/zhugeliang5.mp3",
+      "bytes": 70964,
+      "sha256": "022458657359bf09f40273a216ab18463ab9c9d4282689c9ac9af7ed6aa5e534"
+    },
+    {
+      "source": "extension/十周年UI/audio/caidan/zhugeliang6.mp3",
+      "file": "assets/audio/caidan/zhugeliang6.mp3",
+      "bytes": 81524,
+      "sha256": "151052f10cb27a6b836a3873c106ed3bae81112ceaf76be05fda5df85da74802"
+    },
+    {
       "source": "extension/十周年UI/audio/card_click.mp3",
       "file": "assets/audio/card_click.mp3",
       "bytes": 14400,
       "sha256": "913dad0cac8d9c618740ee9428f6b2a88e733f4bb0e43a0a3b908cbb4c226a41"
+    },
+    {
+      "source": "extension/十周年UI/audio/effect_guguoanbang.mp3",
+      "file": "assets/audio/effect_guguoanbang.mp3",
+      "bytes": 84406,
+      "sha256": "b4ceb1d2ae8d7fc8361a5f55a385d6f05fe0d222de9a6fcf1b3b379aa14582b0"
+    },
+    {
+      "source": "extension/十周年UI/audio/effect_haolingtianxia.mp3",
+      "file": "assets/audio/effect_haolingtianxia.mp3",
+      "bytes": 33436,
+      "sha256": "4243315c5404a2629ba9489d9c3f196bfc797e55d8bdeb9c15da2d59d2c3bc77"
+    },
+    {
+      "source": "extension/十周年UI/audio/effect_kefuzhongyuan.mp3",
+      "file": "assets/audio/effect_kefuzhongyuan.mp3",
+      "bytes": 32535,
+      "sha256": "ec3831293473873d5cb0d3bd2ca6f92c2e4ff95d248ab8c4e82030c1ae822f84"
+    },
+    {
+      "source": "extension/十周年UI/audio/effect_wenheluanwu.mp3",
+      "file": "assets/audio/effect_wenheluanwu.mp3",
+      "bytes": 58449,
+      "sha256": "df64ccc0fe97c225814a8e70372165f724417c3fedabbc307e9fb49808afcca5"
+    },
+    {
+      "source": "extension/十周年UI/audio/game_start.mp3",
+      "file": "assets/audio/game_start.mp3",
+      "bytes": 37306,
+      "sha256": "303da63c91e77646012d0fff970e2d1056ded7b9ee3118a7a5518c6ae649a0cf"
     },
     {
       "source": "extension/十周年UI/audio/game_start_shousha.mp3",
@@ -1937,6 +4637,12 @@
       "sha256": "3c0862803b0e1a5b4a4076ff0684d8e8ad520d1dae76c2bdba1c474159e50fa5"
     },
     {
+      "source": "extension/十周年UI/audio/gxbtn.mp3",
+      "file": "assets/audio/gxbtn.mp3",
+      "bytes": 14419,
+      "sha256": "4dd685a7988120962d7ebe4badeeceb3d1052bfc90286dbf4e5fffdc56d96dfe"
+    },
+    {
       "source": "extension/十周年UI/audio/hpLossSund.mp3",
       "file": "assets/audio/hpLossSund.mp3",
       "bytes": 17579,
@@ -1947,6 +4653,48 @@
       "file": "assets/audio/huogong.mp3",
       "bytes": 144495,
       "sha256": "e5a2a9fc3d6f81d69eb8897ea6292c2079f715b64af6b946d9a99575286b249d"
+    },
+    {
+      "source": "extension/十周年UI/audio/jisha_1.mp3",
+      "file": "assets/audio/jisha_1.mp3",
+      "bytes": 38078,
+      "sha256": "3535ac4748d06869b94076fdc8c27eb34f674593478406770ab48c4514fa8e2a"
+    },
+    {
+      "source": "extension/十周年UI/audio/jisha_2.mp3",
+      "file": "assets/audio/jisha_2.mp3",
+      "bytes": 34107,
+      "sha256": "9ba70183a8a87a1e479f1597842605b09969a233dbdbb22637a85c184cde17c0"
+    },
+    {
+      "source": "extension/十周年UI/audio/jisha_3.mp3",
+      "file": "assets/audio/jisha_3.mp3",
+      "bytes": 37242,
+      "sha256": "37fee2b5ed305beaae65cf9dc448000b0ba47456b256d4d00dd889270e98bf72"
+    },
+    {
+      "source": "extension/十周年UI/audio/jisha_4.mp3",
+      "file": "assets/audio/jisha_4.mp3",
+      "bytes": 37242,
+      "sha256": "619c2ea029df8646e59bc39ca1850b596469ac2734a58ede2700e52e03b78d3f"
+    },
+    {
+      "source": "extension/十周年UI/audio/jisha_5.mp3",
+      "file": "assets/audio/jisha_5.mp3",
+      "bytes": 37451,
+      "sha256": "2a4f05b374e796b6ea2f124cc596f18ea92cd8219eaafdd9ba7faced358c05aa"
+    },
+    {
+      "source": "extension/十周年UI/audio/jisha_6.mp3",
+      "file": "assets/audio/jisha_6.mp3",
+      "bytes": 36197,
+      "sha256": "d8597271b9914616cfec287efb51705ed61539809484bf7463c77ca56e333137"
+    },
+    {
+      "source": "extension/十周年UI/audio/jisha_7.mp3",
+      "file": "assets/audio/jisha_7.mp3",
+      "bytes": 37869,
+      "sha256": "b6d3ec289f87020a3dced0ae769a875973b6a4b46874a30f2c986840a225b95c"
     },
     {
       "source": "extension/十周年UI/audio/juedou.mp3",
@@ -1961,10 +4709,64 @@
       "sha256": "cee0cbbc1863482a9c05b8c69b3dd65dfb63a36e13e7df9043f1fc59cb6e73ac"
     },
     {
+      "source": "extension/十周年UI/audio/kill_effect_sound.mp3",
+      "file": "assets/audio/kill_effect_sound.mp3",
+      "bytes": 59559,
+      "sha256": "67bc4a8ee03f835b123e68164a5d67c79e9aa1ba8d10604048747d227d75db9a"
+    },
+    {
+      "source": "extension/十周年UI/audio/liansha_1.mp3",
+      "file": "assets/audio/liansha_1.mp3",
+      "bytes": 27484,
+      "sha256": "1f2e4d083bc1367399aeaf8d8af140349161316303f06d546b5235b7e5cd93c0"
+    },
+    {
+      "source": "extension/十周年UI/audio/liansha_2.mp3",
+      "file": "assets/audio/liansha_2.mp3",
+      "bytes": 24976,
+      "sha256": "beac316e4c2e433886d6d371d2d83eff90d082310960c36c6202184584cd244a"
+    },
+    {
+      "source": "extension/十周年UI/audio/liansha_3.mp3",
+      "file": "assets/audio/liansha_3.mp3",
+      "bytes": 26439,
+      "sha256": "0e4a94e04c749d719345738bc86e985c37efccef536d8b30b838158984d3380f"
+    },
+    {
+      "source": "extension/十周年UI/audio/liansha_4.mp3",
+      "file": "assets/audio/liansha_4.mp3",
+      "bytes": 42112,
+      "sha256": "a38739545ac1caf606df65e58bf9939deeb0de7e113d56b1cc287efe6c8fbbc9"
+    },
+    {
+      "source": "extension/十周年UI/audio/liansha_5.mp3",
+      "file": "assets/audio/liansha_5.mp3",
+      "bytes": 35007,
+      "sha256": "a744d17f5f3ab524336cd571ed886661ac9aec8ee24d5bd1296ee3eff09faaab"
+    },
+    {
+      "source": "extension/十周年UI/audio/liansha_6.mp3",
+      "file": "assets/audio/liansha_6.mp3",
+      "bytes": 37515,
+      "sha256": "f1e5229bff3213cd3af6eaa6a5bc48d3a2a527b53c106269668b6df8a01fec37"
+    },
+    {
+      "source": "extension/十周年UI/audio/liansha_7.mp3",
+      "file": "assets/audio/liansha_7.mp3",
+      "bytes": 41068,
+      "sha256": "f151188e3b47c01eb96f954cca376b90efd2eb1185ded8f81fd782631bba72f7"
+    },
+    {
       "source": "extension/十周年UI/audio/nanmanruqin.mp3",
       "file": "assets/audio/nanmanruqin.mp3",
       "bytes": 93274,
       "sha256": "fe989f7b97c423e8e9e4952317012091025b96b7965d1547520bc4af6c9c8eb9"
+    },
+    {
+      "source": "extension/十周年UI/audio/seatRoundState_start.mp3",
+      "file": "assets/audio/seatRoundState_start.mp3",
+      "bytes": 24450,
+      "sha256": "ef40efc21aa964bb08878e3b2ccbdc28418ca782d24823f8b524794cf314dacc"
     },
     {
       "source": "extension/十周年UI/audio/shandian.mp3",
@@ -1989,6 +4791,60 @@
       "file": "assets/audio/ss_dead.mp3",
       "bytes": 22914,
       "sha256": "abcaf13ea5f1ae5ef2199710b0b7ca27745dde9cba13f4ee56eb3b91cf648d69"
+    },
+    {
+      "source": "extension/十周年UI/audio/ss_diankuangtulu.mp3",
+      "file": "assets/audio/ss_diankuangtulu.mp3",
+      "bytes": 23867,
+      "sha256": "d8b14b36ad1f756ae884aec479a47ddf54d221a0cddd291ad1d465a96cb3e539"
+    },
+    {
+      "source": "extension/十周年UI/audio/ss_jisha.mp3",
+      "file": "assets/audio/ss_jisha.mp3",
+      "bytes": 49920,
+      "sha256": "f3eb0140f71f7d8fa6afb79c0dc23eafbeb6b22e2a12f9e9c3501d9e846cb3d0"
+    },
+    {
+      "source": "extension/十周年UI/audio/ss_miaoshouhuichun.mp3",
+      "file": "assets/audio/ss_miaoshouhuichun.mp3",
+      "bytes": 26877,
+      "sha256": "8d3af36b7a9451dc8ebe3b9b9f4f202582fbeafde808d1907efc1b29f05b3b17"
+    },
+    {
+      "source": "extension/十周年UI/audio/ss_qingnangjishi.mp3",
+      "file": "assets/audio/ss_qingnangjishi.mp3",
+      "bytes": 138368,
+      "sha256": "f062daea3b1bdb36ca019b09aad5e499d571d95276f429c9936a728f4fe0a36d"
+    },
+    {
+      "source": "extension/十周年UI/audio/ss_shenweizhengqiankun.mp3",
+      "file": "assets/audio/ss_shenweizhengqiankun.mp3",
+      "bytes": 113408,
+      "sha256": "c6e962e52c22890698e023896bf823967a6e07edf2bc44d4341304a4628dcab5"
+    },
+    {
+      "source": "extension/十周年UI/audio/ss_shenyimiaoshou.mp3",
+      "file": "assets/audio/ss_shenyimiaoshou.mp3",
+      "bytes": 142208,
+      "sha256": "4118bafbe4698a399ac8cb4c1da371a474d1a652a7f520e502d62e3331716866"
+    },
+    {
+      "source": "extension/十周年UI/audio/ss_wanfumodi.mp3",
+      "file": "assets/audio/ss_wanfumodi.mp3",
+      "bytes": 128768,
+      "sha256": "900d5087f32d98f60cd6d7f128ea5e44ed302958a7d3ffe66ef733e096d4d8d3"
+    },
+    {
+      "source": "extension/十周年UI/audio/ss_wanjunqushou.mp3",
+      "file": "assets/audio/ss_wanjunqushou.mp3",
+      "bytes": 37326,
+      "sha256": "99645b18241ffd56d1836046e90885ba5b9a48c9232e8f6b4caf3502f52c3cbb"
+    },
+    {
+      "source": "extension/十周年UI/audio/ss_yishugaochao.mp3",
+      "file": "assets/audio/ss_yishugaochao.mp3",
+      "bytes": 26250,
+      "sha256": "9b65875d52a51ece10087e89439f8794989936dd7a866b46741cc2b9ab99bd25"
     },
     {
       "source": "extension/十周年UI/audio/taoyuanjieyi.mp3",
@@ -5555,16 +8411,64 @@
       "sha256": "5107f5fe1fb5e95f3073fbc11470f475c534dd2302095a873c8548b54151cca0"
     },
     {
+      "source": "extension/十周年UI/image/styles/xinsha/glass1.png",
+      "file": "assets/image/styles/xinsha/glass1.png",
+      "bytes": 4063,
+      "sha256": "575fa762aad36c72ca3174d88ad363f54874039d84159cc52416a044234ad45d"
+    },
+    {
+      "source": "extension/十周年UI/image/styles/xinsha/glass2.png",
+      "file": "assets/image/styles/xinsha/glass2.png",
+      "bytes": 4075,
+      "sha256": "4dc4f52c948cc701f65259902fa13d71207f92316e186fcd4d319824a2a35213"
+    },
+    {
+      "source": "extension/十周年UI/image/styles/xinsha/glass3.png",
+      "file": "assets/image/styles/xinsha/glass3.png",
+      "bytes": 3781,
+      "sha256": "548fca637f32a34ada4636988159432e4c2972f3c418536f1a64ae3d7e6b5cce"
+    },
+    {
+      "source": "extension/十周年UI/image/styles/xinsha/glass4.png",
+      "file": "assets/image/styles/xinsha/glass4.png",
+      "bytes": 3750,
+      "sha256": "2fc86e3f17f715bb20543cde89744f9039a255f6d532ee7f10eba3f034528def"
+    },
+    {
       "source": "extension/十周年UI/image/styles/xinsha/new_border_camp.png",
       "file": "assets/image/styles/xinsha/new_border_camp.png",
       "bytes": 36167,
       "sha256": "e1e1e2cc1643592cd06e7564646bdc90e56cf106aa0415746d0dc0b67507a074"
     },
     {
+      "source": "extension/十周年UI/image/styles/xinsha/new_border_camp2.png",
+      "file": "assets/image/styles/xinsha/new_border_camp2.png",
+      "bytes": 24464,
+      "sha256": "120ed9fa1dde439870cbfbd757d904eca4255472572af03d5f059c480a3b9b2f"
+    },
+    {
+      "source": "extension/十周年UI/image/styles/xinsha/new_border_camp3.png",
+      "file": "assets/image/styles/xinsha/new_border_camp3.png",
+      "bytes": 29864,
+      "sha256": "419a0266924923370aae52fc91527aaeb73326740570b7715b440033dcf2ed67"
+    },
+    {
+      "source": "extension/十周年UI/image/styles/xinsha/new_border_camp4.png",
+      "file": "assets/image/styles/xinsha/new_border_camp4.png",
+      "bytes": 30779,
+      "sha256": "328bbfc7845e7124ff9ecde79f3f8929d6dd8f163edd70ddf647997b3047d36b"
+    },
+    {
       "source": "extension/十周年UI/image/styles/xinsha/new_border_hp.png",
       "file": "assets/image/styles/xinsha/new_border_hp.png",
       "bytes": 489,
       "sha256": "4f84ad53eb28d5fc0a2ed1261144e8d8b0f3c7a2db6e34edc632c5276169f25f"
+    },
+    {
+      "source": "extension/十周年UI/image/styles/xinsha/new_card_count6.png",
+      "file": "assets/image/styles/xinsha/new_card_count6.png",
+      "bytes": 2913,
+      "sha256": "c20fffdc27a081f65da4bf1bd46483dd2b365aada775c739c26805ac1ef9b071"
     },
     {
       "source": "extension/十周年UI/image/ui/card/card_select.png",
@@ -5585,10 +8489,46 @@
       "sha256": "e58220a151fa554c9e17af8ff427c2c84fb6825feb9e5318aea302056e419b2a"
     },
     {
+      "source": "extension/十周年UI/image/ui/chain/tie_suo.png",
+      "file": "assets/image/ui/chain/tie_suo.png",
+      "bytes": 4111,
+      "sha256": "6baaf2718a003b9007366b601fd27314bb468fbffc1ed8167b1bb24149922862"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/chain/tie_suo1.png",
+      "file": "assets/image/ui/chain/tie_suo1.png",
+      "bytes": 10204,
+      "sha256": "dfa7c7f004d1a31cddad4b7ec05a8dc07693393bb2aaf61ab3d115b4310e9d0a"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/dialog/chat_bubble.png",
+      "file": "assets/image/ui/dialog/chat_bubble.png",
+      "bytes": 1978,
+      "sha256": "4e24babd3db67d4f7c6e7f561db27e9527fc01a222bb98c7b1355e464272d0f3"
+    },
+    {
       "source": "extension/十周年UI/image/ui/dialog/dialog5.png",
       "file": "assets/image/ui/dialog/dialog5.png",
       "bytes": 155194,
       "sha256": "017ea42efe616fc08f85951c7ca5a75b6eebf13a4e2e0b93064dae214f60242a"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/effects/sprites_glow_blue.png",
+      "file": "assets/image/ui/effects/sprites_glow_blue.png",
+      "bytes": 103290,
+      "sha256": "34c0d45da804e6cb51b9df916ebd8122ed6812de00960f72d814d90350f100f9"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/effects/sprites_glow_orange.png",
+      "file": "assets/image/ui/effects/sprites_glow_orange.png",
+      "bytes": 101641,
+      "sha256": "3e7f357d1b9780f30e3f6d0cd502d3de72f2681af27f7fc95caaf6c557f50521"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/effects/sprites_glow_red.png",
+      "file": "assets/image/ui/effects/sprites_glow_red.png",
+      "bytes": 105389,
+      "sha256": "a3d533aef910594c6eea7ddcfb641182f7931191785aa541fa72ec446679e9d0"
     },
     {
       "source": "extension/十周年UI/image/ui/judge-mark/bingliang.png",
@@ -5729,10 +8669,46 @@
       "sha256": "e74cdfbe72f1d9f7797fb1c8c47bee146a7f775dd63a89d1ed70c377c0a9fa46"
     },
     {
+      "source": "extension/十周年UI/image/ui/mark/mark_jie.png",
+      "file": "assets/image/ui/mark/mark_jie.png",
+      "bytes": 1896,
+      "sha256": "01224fc258edc71e64dacde6fad60eb268eda898924a40317100f0633725d37c"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/mark/mark_shen.png",
+      "file": "assets/image/ui/mark/mark_shen.png",
+      "bytes": 2048,
+      "sha256": "c21081881a93ffeb48b4c26110b5689478326fd2b868a30dd3dd28a5b3b2f40f"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/mark/mark_sp.png",
+      "file": "assets/image/ui/mark/mark_sp.png",
+      "bytes": 1954,
+      "sha256": "2febc2589930ca497f53e45fb9ee2af1dac42d2d2adcb6a31f03cd8b274a0759"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/mark/mark_tw.png",
+      "file": "assets/image/ui/mark/mark_tw.png",
+      "bytes": 1832,
+      "sha256": "f993c1ef4145f71c0c71c34563fadf87f72395315eedc7caac24e511c2f4f23d"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/mark/new_player_mark.png",
+      "file": "assets/image/ui/mark/new_player_mark.png",
+      "bytes": 6511,
+      "sha256": "1ca3916516acca5ee9a3442429bd1b3197777729ea9bc427ceba873831eb6ffa"
+    },
+    {
       "source": "extension/十周年UI/image/ui/mark/player_mark.png",
       "file": "assets/image/ui/mark/player_mark.png",
       "bytes": 2605,
       "sha256": "003159448b5797bff455b91ff40c306b0a3d2037652fed2205e2ad721ae2ba02"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/mask/turn_over_mask.png",
+      "file": "assets/image/ui/mask/turn_over_mask.png",
+      "bytes": 32852,
+      "sha256": "6fac1eb01f2cc3348ec564fada01c84bda838645dc6a968e3b06774f08c6b6e0"
     },
     {
       "source": "extension/十周年UI/image/ui/mask/turn_over_mask_shousha.png",
@@ -5759,16 +8735,166 @@
       "sha256": "2543608ca0d133494a03770debc0fb49d012e207046b7bed559932c839a81fa2"
     },
     {
+      "source": "extension/十周年UI/image/ui/misc/item_bg.png",
+      "file": "assets/image/ui/misc/item_bg.png",
+      "bytes": 840,
+      "sha256": "d6d0220b0be6d9cba7cb6f6cd33fb2536fdc9be9d81b25e2c99cf9ccc727d235"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/misc/shine.png",
+      "file": "assets/image/ui/misc/shine.png",
+      "bytes": 15898,
+      "sha256": "8fe894d1350a0edce214e50b90d01df49d35fd5271abba0ec33339ac7d770a3b"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/player-bg/bj1.png",
+      "file": "assets/image/ui/player-bg/bj1.png",
+      "bytes": 54753,
+      "sha256": "5623088e8e54ef3fd21ebd904a41af62e378257d0030d300d6c50d0abf5c335e"
+    },
+    {
+      "source": "extension/十周年UI/image/ui/player-bg/bj2.png",
+      "file": "assets/image/ui/player-bg/bj2.png",
+      "bytes": 16125,
+      "sha256": "b18e7e904feb92cfa9ac4706c76dc4bef75cab2279bdbf807a9df6af9a91ce78"
+    },
+    {
       "source": "extension/十周年UI/src/libs/spine.js",
       "file": "vendor/spine.js",
       "bytes": 387147,
       "sha256": "30230a430db6205ca8b5153064b125a8108b928f8821b903db09785ec363e95a"
     },
     {
+      "source": "extension/十周年UI/ui/assets/fonts/BKJT.ttf",
+      "file": "assets/ui/assets/fonts/BKJT.ttf",
+      "bytes": 5789120,
+      "sha256": "7d803d55481194fc45029b608ea9d9229b1f69b62878ef10c999f0e3ec233979"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/fonts/FZLBJW.woff2",
+      "file": "assets/ui/assets/fonts/FZLBJW.woff2",
+      "bytes": 1633144,
+      "sha256": "5d5dbf366fcaf6f4358ea60dafd0b86fdd7592a8256d299cf1d8db2a92abb725"
+    },
+    {
       "source": "extension/十周年UI/ui/assets/fonts/HYZLSJ.woff2",
       "file": "assets/ui/assets/fonts/HYZLSJ.woff2",
       "bytes": 4322928,
       "sha256": "e4b915de2efb3ee83cd24fe2b3181630766fb188c8cff4bdddada5351957d44c"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/CD/new_button3.png",
+      "file": "assets/ui/assets/lbtn/CD/new_button3.png",
+      "bytes": 6498,
+      "sha256": "1b128388c6443487184ba4cc9843e373f0e5daa777499dc02dc1b62ca2d59ff0"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/CD/tuoguan2.png",
+      "file": "assets/ui/assets/lbtn/CD/tuoguan2.png",
+      "bytes": 51838,
+      "sha256": "8a59f8fe66c566b2eced75037e23f64acf7e9806469d9c7bd412887ac20ae954"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/OL_line/bg/bgdialog.png",
+      "file": "assets/ui/assets/lbtn/OL_line/bg/bgdialog.png",
+      "bytes": 122758,
+      "sha256": "a3d1a54b610c8f08210477c66cf61171f7fa8f71893946d66d23fe50d4fe45b3"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/OL_line/bg/gou.png",
+      "file": "assets/ui/assets/lbtn/OL_line/bg/gou.png",
+      "bytes": 7374,
+      "sha256": "08d1e1e4ff303de53d84bf6df3ea956c6409ca503431425ad18477d209b37cf5"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/OL_line/uibutton/back.png",
+      "file": "assets/ui/assets/lbtn/OL_line/uibutton/back.png",
+      "bytes": 14485,
+      "sha256": "bc7078aebb035ce35ad217587c3a26cd02a458cccee7acdd11a809dc5b4f52de"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipdizhu.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipdizhu.png",
+      "bytes": 16971,
+      "sha256": "13fa9012ccf8c96a7169778270b4bb87eb977af891d2dc96da8867645aa5f128"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipfanzei.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipfanzei.png",
+      "bytes": 20297,
+      "sha256": "f78818a0eb509db3f434553600996e40b78d50d008f024fd0b8dbbed6eda85a5"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipjinguo.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipjinguo.png",
+      "bytes": 19276,
+      "sha256": "79805dab837cacec1ec24ffe118de8f30ea1fc6a477c82fe1cd8fac107d79585"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipneijian.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipneijian.png",
+      "bytes": 20732,
+      "sha256": "8d1ecd01587ba0614282e2ee3313718b4d42d24c955afc6326eb665544fc5d2e"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipnongmin.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipnongmin.png",
+      "bytes": 15987,
+      "sha256": "eacd33152500cd86e9643c8b596f2f284ed2438a748fb81f4939b6ed5359d6bd"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipqunxiong.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipqunxiong.png",
+      "bytes": 19713,
+      "sha256": "57e2aecdc50181960000607411e0fa4cf3adfbe6119f0e8c51809f9b4d8026e7"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipshuguo.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipshuguo.png",
+      "bytes": 19971,
+      "sha256": "3dc84009b533ad9637d2370c3b49cc608567d8a6a8e5396fc3fcb915d846148c"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipweiguo.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipweiguo.png",
+      "bytes": 21827,
+      "sha256": "bb4b4c0eeec94bc0a21a1f5fc949af74d4caab430c4ea4634ef52290864b5ec8"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipweizhi.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipweizhi.png",
+      "bytes": 4185,
+      "sha256": "f38ec320384c08a6f92561fb10e9422881455b5790fd23bf489c40d889ceb197"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipwuguo.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipwuguo.png",
+      "bytes": 18954,
+      "sha256": "51bf678957210cb08605dc89c598a7a76e3e6168f429bc73355c94c3f4b1758e"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipye.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipye.png",
+      "bytes": 19805,
+      "sha256": "1c2eee0a7d627c6fb20f9c7b68929028157a33491080ba26c8242f215d4ed84d"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipyinbi.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipyinbi.png",
+      "bytes": 15198,
+      "sha256": "04f405f7b09da90bbea749681672f2a859327e7f97c0ed2788d8ff3fed15a767"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipzhongchen.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipzhongchen.png",
+      "bytes": 21291,
+      "sha256": "4c9027261aeb09d1fc075976655616aa368fb78f65b2f7b6f30ed4011797410f"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipzhugong.png",
+      "file": "assets/ui/assets/lbtn/SFTS/Tipzhugong.png",
+      "bytes": 20127,
+      "sha256": "fb643db9537e64a991033cfc78d3914035ea93759cb2311f7abd0adef27c4076"
     },
     {
       "source": "extension/十周年UI/ui/assets/lbtn/shousha/btn-paixu.png",
@@ -5801,6 +8927,72 @@
       "sha256": "8399c63e9ca6379c1088c6da4fdb8efd3d1ac9ae2f597108de2dd30a2125f824"
     },
     {
+      "source": "extension/十周年UI/ui/assets/lbtn/uibutton/button_sz.png",
+      "file": "assets/ui/assets/lbtn/uibutton/button_sz.png",
+      "bytes": 3539,
+      "sha256": "762bec87080ddf9be5f5e19d0084142efc372d28f6c39686678e19247bb6998a"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/uibutton/button_tc.png",
+      "file": "assets/ui/assets/lbtn/uibutton/button_tc.png",
+      "bytes": 2690,
+      "sha256": "4dd0921a40a543134aa0c5ac4102ff8c6af9b2f3d6265597e524d8c4598dc92a"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/uibutton/button_tg.png",
+      "file": "assets/ui/assets/lbtn/uibutton/button_tg.png",
+      "bytes": 2969,
+      "sha256": "915f376341ab95ec3a722f2b0871a2fb5ee06f2d62b000be03bb2a2d57328f59"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/uibutton/new_btnn.png",
+      "file": "assets/ui/assets/lbtn/uibutton/new_btnn.png",
+      "bytes": 4079,
+      "sha256": "ccc702eeaf03cb11768419e04dee989868c0e61d12a967af78eb8d30c5a5c84e"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/uibutton/new_cardback3.png",
+      "file": "assets/ui/assets/lbtn/uibutton/new_cardback3.png",
+      "bytes": 1619,
+      "sha256": "30526a28e29c011c7a5168423dce9d8608d9f00563b8206361814a80d73ee6b2"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/uibutton/new_count5.png",
+      "file": "assets/ui/assets/lbtn/uibutton/new_count5.png",
+      "bytes": 5115,
+      "sha256": "7dd1a53cbd077a8e1ef84533ae58161de3ef51685a54dfd0f0bed2a548a470f6"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/uibutton/new_huanfu_new.png",
+      "file": "assets/ui/assets/lbtn/uibutton/new_huanfu_new.png",
+      "bytes": 75432,
+      "sha256": "0d3380c8f130d5e31da37a8fca93168fdc99317f3246a9460f598d88bb66d068"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/uibutton/new_jilu_new.png",
+      "file": "assets/ui/assets/lbtn/uibutton/new_jilu_new.png",
+      "bytes": 61037,
+      "sha256": "e893ce99b247ae9ab929827805c8ec0e1827621bbb7359a7565e9a29100666f7"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/uibutton/new_xiaolian_new.png",
+      "file": "assets/ui/assets/lbtn/uibutton/new_xiaolian_new.png",
+      "bytes": 57897,
+      "sha256": "8eb5deaab226a88bd8be3cd258b1a8ad462ba45832160495d4ef43695347807a"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/lbtn/uibutton/new_zhengli.png",
+      "file": "assets/ui/assets/lbtn/uibutton/new_zhengli.png",
+      "bytes": 13851,
+      "sha256": "b80920a7e79eb7f6d70592f5e4b65167b192de24f78c25e5b57b69f85c4dfcd4"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/online/skillitem_xianding_active.png",
+      "file": "assets/ui/assets/skill/online/skillitem_xianding_active.png",
+      "bytes": 1057,
+      "sha256": "10af80fa9385508dbe4bedb085d438bef43f2f58ca9c9c8b8048a0401cbd5ea5"
+    },
+    {
       "source": "extension/十周年UI/ui/assets/skill/shousha/btn0.png",
       "file": "assets/ui/assets/skill/shousha/btn0.png",
       "bytes": 35890,
@@ -5819,10 +9011,124 @@
       "sha256": "ba3dd9f0246f3eb48ae33f35a326cfef8a7dc779c4d265b736a20db35589f30d"
     },
     {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/falu_club.png",
+      "file": "assets/ui/assets/skill/yijiang/falu_club.png",
+      "bytes": 2306,
+      "sha256": "67f27196663381da98b68010551bdcfa74e87ed28a6216713cfded0814f98136"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/falu_diamond.png",
+      "file": "assets/ui/assets/skill/yijiang/falu_diamond.png",
+      "bytes": 2520,
+      "sha256": "5bd244f9a45370f83cce08fa0519c42c181f841cf8f4e7e05e037cf5461b3a40"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/falu_heart.png",
+      "file": "assets/ui/assets/skill/yijiang/falu_heart.png",
+      "bytes": 2967,
+      "sha256": "f1bb78856f1723f544a6d108f1be7875be5ac9b90d8279cb14311674d3372499"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/falu_spade.png",
+      "file": "assets/ui/assets/skill/yijiang/falu_spade.png",
+      "bytes": 2687,
+      "sha256": "29bf54120df9c9e1e8f064c232f2ebb68cccbf6bd4080b919f88eaf96cafe8f2"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/new_btnn1.png",
+      "file": "assets/ui/assets/skill/yijiang/new_btnn1.png",
+      "bytes": 1661,
+      "sha256": "2ee2e3c86a7c67d735adc2fda563cfcc187b4d106da71f70c1922f63be1082ae"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/new_btnn2.png",
+      "file": "assets/ui/assets/skill/yijiang/new_btnn2.png",
+      "bytes": 1104,
+      "sha256": "d47113dbbe514765a1750634625e46290e51583be0846733571e22ada6c3df31"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/new_btnn4.png",
+      "file": "assets/ui/assets/skill/yijiang/new_btnn4.png",
+      "bytes": 1845,
+      "sha256": "2b7c20146975d0857f511f62b6e7c93a154a4d1e65f51a08d712663dd534da58"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/new_juexingji.png",
+      "file": "assets/ui/assets/skill/yijiang/new_juexingji.png",
+      "bytes": 2730,
+      "sha256": "a0f7cf3d99a1466f9747a1375c9266c03ea7792dfc39f5899dd7c2c1adb864a5"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/new_mark_duty.png",
+      "file": "assets/ui/assets/skill/yijiang/new_mark_duty.png",
+      "bytes": 2170,
+      "sha256": "4c1bf26ab1331b83897567f779eb3f9db8705bd93dcf8ce0dcba4c979b0ddc9d"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/new_mark_yang.png",
+      "file": "assets/ui/assets/skill/yijiang/new_mark_yang.png",
+      "bytes": 2972,
+      "sha256": "d0a77a3333333ae9ad75c88e720b82ff29210aaf02fee4c79588572c7fea2a08"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/new_mark_ying.png",
+      "file": "assets/ui/assets/skill/yijiang/new_mark_ying.png",
+      "bytes": 3214,
+      "sha256": "413427eeafd4b8ea6f8a43bcfdc8c61b8db951f901560aaff28f700b5be20893"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/new_xiandingji.png",
+      "file": "assets/ui/assets/skill/yijiang/new_xiandingji.png",
+      "bytes": 2832,
+      "sha256": "24453f2562c7d2240d1e6e8c5c1b42d43e92dc480b835ec2758882e4f12c8eb3"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_jin.png",
+      "file": "assets/ui/assets/skill/yijiang/starcanxi_jin.png",
+      "bytes": 2630,
+      "sha256": "2ad2a66a6e56e8ea3f5bd3ea7fbf02eedaf1f4edd039a652da9bca60b0cc4f41"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_qun.png",
+      "file": "assets/ui/assets/skill/yijiang/starcanxi_qun.png",
+      "bytes": 2827,
+      "sha256": "c1c6da126dfd9959909d23cc621393802689ba774a1ff56ea90b960074ec4f43"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_shen.png",
+      "file": "assets/ui/assets/skill/yijiang/starcanxi_shen.png",
+      "bytes": 2688,
+      "sha256": "c45a9b889bc371d0d06d663fffcac20dc0c26772438094a3cead210818871950"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_shu.png",
+      "file": "assets/ui/assets/skill/yijiang/starcanxi_shu.png",
+      "bytes": 2717,
+      "sha256": "f2e7a9e2138847bf6550b532d7c830caf1544ca2c6b3a847c641ea79a4bdf52e"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_wei.png",
+      "file": "assets/ui/assets/skill/yijiang/starcanxi_wei.png",
+      "bytes": 2541,
+      "sha256": "6a3da37d71347f0dbda09a487529b6cd9fcc394a58626c7ee21256f125ac9909"
+    },
+    {
+      "source": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_wu.png",
+      "file": "assets/ui/assets/skill/yijiang/starcanxi_wu.png",
+      "bytes": 2869,
+      "sha256": "02b1028ff40fb9bf14b3138876e78006e6f4d7f877d25603db45d73ad79675b6"
+    },
+    {
       "source": "image/background/ol_bg.jpg",
       "file": "assets/background.jpg",
       "bytes": 95213,
       "sha256": "93ee17da3114f3c4a7572dcd49adb713cd7340ac7db757208ca389e4e0aadf7b"
+    },
+    {
+      "source": "image/character/hidden_image.jpg",
+      "file": "assets/image/character/hidden_image.jpg",
+      "bytes": 248023,
+      "sha256": "ab4a6bf830cacf5533fa771c5cb9cf66a726bfe4e6c140aa0c252ec43c32fba7"
     },
     {
       "source": "theme/style/hp/image/ol1.png",

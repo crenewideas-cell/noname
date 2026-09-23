@@ -4490,10 +4490,19 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		},
 		damagepop: function (player, content) {
 			if (player && content) {
-				player.$damagepop(content[0], content[1], content[2]);
+				player.$damagepop(content[0], content[1], content[2], undefined, content[3]);
 			} else {
 				console.log(player);
 			}
+		},
+		dyingPresentation: function (player, content) {
+			if (player && typeof content === "boolean") player.$dyingPresentation(content);
+		},
+		cardTargetPresentation: function (player, content) {
+			if (player && content) player.$cardTargetPresentation(content.card, game.playerMap[content.target]);
+		},
+		recoveryAchievement: function (player, content) {
+			if (player && Array.isArray(content)) player.$recoveryAchievement(content);
 		},
 		damage: function (player, source) {
 			if (player && player.$damage) {
@@ -4561,12 +4570,12 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		addChessPlayer: function (content) {
 			game.addChessPlayer.apply(this, content);
 		},
-		die: function (player) {
+		die: function (player, content) {
 			if (!player) {
 				console.log("die");
 				return;
 			}
-			player.$die();
+			player.$die(content?.source == null ? undefined : game.playerMap[content.source], content);
 			if (game.chess) {
 				delete lib.posmap[player.dataset.position];
 				setTimeout(function () {

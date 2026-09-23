@@ -7,7 +7,7 @@ import { AsyncFunction } from "@/util/index.js";
 import dedent from "dedent";
 import { listenForActivation } from "../../ui/activation.js";
 import { displayRandom } from "../../util/displayRandom.js";
-import { emitPresentation, playerPresentation } from "../../ui/presentationEvents.js";
+import { emitPresentation, playerPresentation, rememberHandLimit, rememberDying, clearPlayerPresentation } from "../../ui/presentationEvents.js";
 
 export class Player extends HTMLDivElement {
 	/**
@@ -2385,6 +2385,7 @@ export class Player extends HTMLDivElement {
 	 * @param { string } skill
 	 */
 	$changeZhuanhuanji(skill) {
+		emitPresentation("conversion", () => ({ player: playerPresentation(this), skill: String(skill) }));
 		var mark = this.marks[skill];
 		if (mark) {
 			if (lib.skill[skill].$zhuanhuanji) {
@@ -4106,6 +4107,7 @@ export class Player extends HTMLDivElement {
 		}
 	}
 	uninit() {
+		clearPlayerPresentation(this);
 		delete this.name;
 		delete this.name1;
 		delete this.tempname;
@@ -9371,6 +9373,7 @@ export class Player extends HTMLDivElement {
 		next.setContent("dying");
 		next.filterStop = function () {
 			if (this.player.hp > 0 || this.nodying) {
+				this.player.$dyingPresentation(false);
 				delete this.filterStop;
 				return true;
 			}
@@ -12787,7 +12790,9 @@ export class Player extends HTMLDivElement {
 		num = game.checkMod(this, num, "maxHandcardBase", this);
 		num = game.checkMod(this, num, "maxHandcard", this);
 		num = game.checkMod(this, num, "maxHandcardFinal", this);
-		return Math.max(0, num);
+		const result = Math.max(0, num);
+		rememberHandLimit(this, result);
+		return result;
 	}
 	getEnemies(func, includeDie) {
 		var player = this;
@@ -16391,20 +16396,22 @@ export class Player extends HTMLDivElement {
 	 * @param { string } [nature]
 	 * @param { boolean } [font]
 	 * @param { boolean } [nobroadcast]
+	 * @param {{kind: string, value: number, unreal?: boolean, sourced?: boolean}} [presentation] Public visual metadata only.
 	 */
-	$damagepop(num, nature = "soil", font, nobroadcast) {
+	$damagepop(num, nature = "soil", font, nobroadcast, presentation) {
 		if (typeof num == "number" || typeof num == "string") {
-			emitPresentation("number", () => ({ player: playerPresentation(this), value: num, nature: String(nature), text: !!font }));
-			game.addVideo("damagepop", this, [num, nature, font]);
+			emitPresentation("number", () => ({ player: playerPresentation(this), value: num, nature: String(nature), text: !!font, health: presentation ? { kind: String(presentation.kind), value: Number(presentation.value), unreal: !!presentation.unreal, sourced: !!presentation.sourced } : null }));
+			game.addVideo("damagepop", this, [num, nature, font, presentation]);
 			if (nobroadcast !== false) {
 				game.broadcast(
-					function (player, num, nature, font) {
-						player.$damagepop(num, nature, font);
+					function (player, num, nature, font, presentation) {
+						player.$damagepop(num, nature, font, undefined, presentation);
 					},
 					this,
 					num,
 					nature,
-					font
+					font,
+					presentation
 				);
 			}
 			var node = ui.create.div(".damage");
@@ -16515,12 +16522,34 @@ export class Player extends HTMLDivElement {
 		}
 		this.queue();
 	}
-	$die() {
-		emitPresentation("death", () => ({ player: playerPresentation(this) }));
-		game.addVideo("die", this);
-		game.broadcast(function (player) {
-			player.$die();
-		}, this);
+	$dyingPresentation(active) {
+		rememberDying(this, active);
+		game.addVideo("dyingPresentation", this, active === true);
+		game.broadcast((player, active) => player.$dyingPresentation(active), this, active === true);
+	}
+	$cardTargetPresentation(card, target) {
+		if (!target || !["guohe", "shunshou"].includes(card)) return;
+		emitPresentation("cardTarget", () => ({ player: playerPresentation(this), target: playerPresentation(target), card }));
+		game.addVideo("cardTargetPresentation", this, { card, target: target.dataset.position });
+		game.broadcast((player, card, target) => player.$cardTargetPresentation(card, target), this, card, target);
+	}
+	$recoveryAchievement(milestones) {
+		const achievements = milestones.filter(value => value === "recovery" || value === "rescue");
+		emitPresentation("recoveryAchievement", () => ({ player: playerPresentation(this), achievements }));
+		game.addVideo("recoveryAchievement", this, achievements);
+		game.broadcast((player, achievements) => player.$recoveryAchievement(achievements), this, achievements);
+	}
+	$die(source, presentation) {
+		// Read the existing death statistics; never install a skin-specific
+		// counter, skill, event, delay or continuation in the game engine.
+		const visual = presentation ?? (source && source !== this ? {
+			kills: source.stat.reduce((sum, stat) => sum + (stat.kill || 0), 0),
+		} : null);
+		emitPresentation("death", () => ({ player: playerPresentation(this), source: source !== this ? playerPresentation(source) : null, kills: visual?.kills || 0 }));
+		game.addVideo("die", this, source ? { source: source.dataset.position, ...visual } : undefined);
+		game.broadcast(function (player, source, visual) {
+			player.$die(source, visual);
+		}, this, source, visual);
 		if (lib.config.die_move != "off") {
 			this.$dieflip(lib.config.die_move);
 		}

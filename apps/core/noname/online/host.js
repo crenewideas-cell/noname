@@ -394,12 +394,12 @@ export function installHost() {
 						if (Array.isArray(value) ? value.length > 0 : Number(value) > 0) target.markSkill(name, null, null, true);
 						else if (target.marks[name]) target.unmarkSkill(name, true);
 					}
-					for (const [name, key] of [["hlhj_book", "hlhj_book_pages"], ["hlhj_dream", "hlhj_dream_target"]]) {
+					for (const [name, key] of [["hlhj_book", "hlhj_book_pages"], ["hlhj_dream", "hlhj_dream_owners"]]) {
 						if (target.storage[key]?.length) target.markSkill(name, null, null, true);
 						else if (target.marks[name]) target.unmarkSkill(name, true);
 					}
 					for (const memorial of target.storage.hlhj_furonglei || []) {
-						lib.skill.hlhj_furonglei?.showMemorial(memorial.dead, target, memorial.name);
+						lib.skill.hlhj_furonglei?.showMemorial(memorial.dead, target, memorial.names);
 					}
 				}
 				game.phaseNumber = number; game.roundNumber = round; game.zhu = zhu;
@@ -761,11 +761,13 @@ function visibleModeState(accountId) {
 function visibleArena(accountId) {
 	const state = get.arenaState();
 	for (const [id, info] of Object.entries(state.players)) {
+		// Dreams live on the protected seat, but only their contributor knows
+		// unrevealed faces, including after either player reconnects.
+		info.expansions = info.expansions.map(card => card.hasGaintag("hlhj_dream") && !card.hasGaintag("hlhj_dream_" + accountId)
+			? "_noname_card:" + JSON.stringify([card.cardid, null, null, null, null]) : card);
 		if (id === accountId) continue;
 		info.handcards = info.handcards.map(card => "_noname_card:" + JSON.stringify([card.cardid, null, null, null, null]));
 		info.gaintag = info.handcards.map(() => []); info.specials = [];
-		info.expansions = info.expansions.map(card => card.hasGaintag("hlhj_dream")
-			? "_noname_card:" + JSON.stringify([card.cardid, null, null, null, null]) : card);
 		if (lib.configOL.mode === "identity" && !info.identityShown) { info.identity = "cai"; info.identityNode = ["猜", "unknown"]; delete info.side; }
 	}
 	return state;

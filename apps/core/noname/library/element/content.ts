@@ -6,6 +6,7 @@ import type { GainAnimate } from "./Player/type";
 
 import { delay } from "@/util/index.js";
 import { createCharacterBrowser } from "../../ui/characterBrowser.js";
+import { recoveryPresentation } from "../../ui/presentationEvents.js";
 
 // 未来再改
 export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
@@ -10275,6 +10276,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 				await next;
 				return;
 			}
+			player.$cardTargetPresentation(event.card.name, targets[num]);
 			const next = game.createEvent(event.card.name);
 			next.setContent(info.content);
 			next.targets = targets;
@@ -12073,7 +12075,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 					player
 				);
 				const numx = player.hasSkillTag("nohujia") ? num : Math.max(0, num - player.hujia);
-				player.$damagepop(-numx, natures[0]);
+				player.$damagepop(-numx, natures[0], undefined, undefined, { kind: "damage", value: num, unreal: !!event.unreal, sourced: !!source });
 			}
 			if (event.unreal) {
 				event.goto(6);
@@ -12182,10 +12184,15 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 					player.$recover();
 				}
 			}, player);
-			player.$damagepop(num, "wood");
+			player.$damagepop(num, "wood", undefined, undefined, { kind: "recover", value: num });
 			game.log(player, `回复了${get.cnNumber(num)}点体力`);
 
+			const previousHp = player.hp, wasDying = _status.dying.includes(player);
 			await player.changeHp(num, false);
+			// Observe the completed result only. Cosmetic counters never affect
+			// recovery, dying resolution, source attribution or skill triggers.
+			const milestones = recoveryPresentation(player, event.source, { amount: player.hp - previousHp, phase: game.phaseNumber, rescued: wasDying && player.hp > 0 });
+			if (milestones.length) player.$recoveryAchievement(milestones);
 		} else {
 			event._triggered = null;
 		}
@@ -12286,7 +12293,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 		event.changedHp = player.getHp() - Math.max(0, originalHp);
 
 		if (event.popup !== false) {
-			player.$damagepop(num, "water");
+			player.$damagepop(num, "water", undefined, undefined, event.getParent().name === "loseHp" ? { kind: "loseHp", value: -num } : undefined);
 		}
 		if (_status.dying.includes(player) && player.hp > 0) {
 			_status.dying.remove(player);
@@ -12338,6 +12345,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 				return;
 			}
 			_status.dying.unshift(player);
+			player.$dyingPresentation(true);
 			game.broadcast(list => {
 				_status.dying = list;
 			}, _status.dying);
@@ -12347,6 +12355,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 		async (event, trigger, player) => {
 			delete event.filterStop;
 			if (player.hp > 0 || event.nodying) {
+				player.$dyingPresentation(false);
 				_status.dying.remove(player);
 				game.broadcast(list => {
 					_status.dying = list;
@@ -12382,6 +12391,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 			game.broadcast(list => {
 				_status.dying = list;
 			}, _status.dying);
+			player.$dyingPresentation(false);
 			if (player.hp <= 0 && !event.nodying && !player.nodying) {
 				await player.die(event.reason);
 			}

@@ -879,7 +879,7 @@ let duilib={};
 				if (!nodes[i].completed) {
 					nodes[i].update(ea);
 				} else {
-					nodes.remove(nodes[i]);i--;
+					nodes.splice(i, 1);i--;
 				}
 			}
 			

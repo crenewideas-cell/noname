@@ -19,7 +19,9 @@
       "settings": {
         "layout": "mobile",
         "image_background_random": false,
-        "image_background_blur": false
+        "image_background_blur": false,
+        "show_cardpile_number": true,
+        "show_time3": true
       },
       "assets": {},
       "style": {},

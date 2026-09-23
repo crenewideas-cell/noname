@@ -5788,6 +5788,8 @@ let openCharactersWhenReady=false;
                                 };
                                 let pipeihome = new PIXI.Container();
                                 pipeihome.on('added', () => {
+                                    bridge.matching(lib.config.mode);
+                                    findpipei.state.setAnimation(0, 'action2', false);
                                     uibg.texture = ploader.resources.zhuanpanBG.texture;
                                     let timeScale = 4;//3.6
 
@@ -5806,10 +5808,12 @@ let openCharactersWhenReady=false;
                                     if(game.storyBgMode=='paiwei'&&game.rzPaiweiType) {
                                         plength=game.rzPaiweiType+1;
                                     }
+                                    // Four portraits plus the middle VS animation; display slots only.
+                                    if(lib.config.mode==='versus'&&get.config('versus_mode')==='two')plength=game.storyBgMode==='paiwei'?5:4;
                                     window.playerNickName['rzsh']=[];
                                     window.rzsh_djj={};
                                     window.rzsh_lv={};
-                                    findpipei.state.tracks[0].onComplete = function() {
+                                    findpipei.state.tracks[0].listener = {complete: function() {
                                         if (renderProcess != null) {
                                             cancelAnimationFrame(renderProcess);
                                             renderProcess = null;
@@ -5880,9 +5884,9 @@ let openCharactersWhenReady=false;
                                             let guanjieenter1 = new PIXI.spine.Spine(yuanshuai);
                                             guanjieenter1.state.setAnimation(0, 'play1', false);
                                             guanjieenter1.scale.set(1.8);
-                                            if (i == plength - 1) guanjieenter1.state.tracks[0].onComplete = function() {
+                                            if (i == plength - 1) guanjieenter1.state.tracks[0].listener = {complete: function() {
                                                 setTimeout(rzshkz, 100)
-                                            };
+                                            }};
                                             //var jbgs = ploader.resources.jbg2.texture;
                                             var jbgs = ploader.resources['jj_'+guanjie].texture;
                                             let playerB = new PIXI.Sprite(jbgs);
@@ -5972,7 +5976,7 @@ let openCharactersWhenReady=false;
                                                 });
                                             }, 200 * i);
                                         }
-                                    }
+                                    }};
                                     //匹配转轮声
                                 //setTimeout(function() {
                                     window.tipsClick('PiPei');

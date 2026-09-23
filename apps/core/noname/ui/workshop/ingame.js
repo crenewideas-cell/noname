@@ -8,7 +8,7 @@ export const decadeManifest = {
  description:'子琪包移动版外观：铜纹背景、金色卡面及原素材动画。规则与全部操作由当前本体处理。',
  components:Object.fromEntries(INGAME_PARTS.map(id=>[id,{name:'十周年局内 UI',runtime:'decade',settings:{},assets:{},style:{}}])),
 };
-decadeManifest.components.arena.settings={layout:'mobile',image_background_random:false,image_background_blur:false};
+decadeManifest.components.arena.settings={layout:'mobile',image_background_random:false,image_background_blur:false,show_cardpile_number:true,show_time3:true};
 decadeManifest.components.arena.options={effects:true,sound:true};
 
 export function mixIngame(target, source) {

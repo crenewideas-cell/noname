@@ -1,4 +1,5 @@
 // Applied to the printed migration output and the checked-in scene source.
+import {fixMatchingScenes} from './fix-matching-scenes.mjs';
 // Keep adaptations here so regenerating community scenes preserves the fixes.
 export function fixScenes(source) {
  const replace = (from, to) => {
@@ -79,5 +80,5 @@ export function repairLobbyAndPortraits(source) {
  source = source.replace('ku["addChild"](kM);', 'ku["addChild"](kM); lifecycle.portraits.fit(kM, ku);');
  source = source.replace('function U7() { lifecycle.showView("matching"); }', 'function U7() { lifecycle.startGame(lib.config.mode, true); }');
  source = source.replace('function U8() { lifecycle.finish(lib.config.mode); }', 'function U8() { lifecycle.startGame(lib.config.mode); }');
- return source;
+ return fixMatchingScenes(source,'rzsh');
 }

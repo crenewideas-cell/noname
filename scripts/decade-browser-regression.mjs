@@ -4,7 +4,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 const require=createRequire(import.meta.url),{chromium}=require(process.env.NONAME_PLAYWRIGHT_MODULE||'C:/Users/1/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const evidence=path.resolve('docs/references/decade-ingame-ui/evidence'),origin=process.env.NONAME_UI_TEST_ORIGIN||'http://127.0.0.1:8181';
+const evidence=path.resolve(process.env.NONAME_TEST_OUTPUT||'output/decade-audit/browser'),origin=process.env.NONAME_UI_TEST_ORIGIN||'http://127.0.0.1:8181';
+await fs.mkdir(evidence,{recursive:true});
 const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||'C:/Program Files/Google/Chrome/Application/chrome.exe',args:['--enable-unsafe-swiftshader']});
 const results=[];
 async function ready(page){await page.waitForFunction(async()=>{try{const {lib}=await import('/noname.js');return !!(lib.config?.extensions&&lib.uiWorkshop&&lib.db);}catch{return false;}},null,{timeout:120000});await page.waitForTimeout(2000);}
@@ -17,7 +18,7 @@ try{for(const [name,zip] of [['single','十周年局内 UI-UI套装.zip'],['comb
  try{
   await page.goto(origin,{waitUntil:'domcontentloaded',timeout:90000});await ready(page);
   await page.evaluate(async()=>{const{lib,game}=await import('/noname.js');for(const n of lib.config.extensions)await game.promises.saveConfig('extension_'+n+'_enable',false);for(const[k,v]of Object.entries({extension_auto_import:false,new_tutorial:true,show_splash:'off',mode:'identity'}))await game.promises.saveConfig(k,v);await game.promises.saveConfig('player_number','5','identity');await lib.uiWorkshop.open();});
-  const picker=page.waitForEvent('filechooser');await page.getByRole('button',{name:'导入套装 ZIP',exact:true}).click();await(await picker).setFiles(path.resolve('dist/ui',zip));
+  const picker=page.waitForEvent('filechooser');await page.getByRole('button',{name:'导入套装 ZIP',exact:true}).click();await(await picker).setFiles(path.resolve(process.env.NONAME_PACKAGE_DIR||'dist/ui',zip));
   await page.waitForFunction(()=>document.querySelector('noname-ui-workshop')?.shadowRoot.querySelector('[role=status]')?.textContent.startsWith('已导入'),null,{timeout:120000});
   result.importMessage=await page.locator('noname-ui-workshop').locator('[role=status]').textContent();
   result.saved=await page.evaluate(async()=>{const{lib}=await import('/noname.js');const{readPack}=await import('/noname/ui/workshop/service.js');const id=lib.config.ui_workshop_catalog.at(-1).id;const pack=await readPack(id);await lib.uiWorkshop.use(id);return {id,manifest:pack.manifest};});
@@ -43,7 +44,7 @@ try{for(const [name,zip] of [['single','十周年局内 UI-UI套装.zip'],['comb
    const remaining=document.querySelectorAll('.decade-frame,.decade-animation,.decade-portrait,.decade-result,link[href*="十周年局内UI/presentation.css"]').length;
    game.resume2();return {unchanged,sameState:before===state(),remaining,arenaReady:(lib.arenaReady?.length||0)-count,body:document.body.dataset.decadeParts||''};
   });assert.deepEqual(result.boundary,{unchanged:true,sameState:true,remaining:0,arenaReady:0,body:''});
-  assert.equal(result.sourceRequests.length,0);assert.equal(result.failedResources.length,0);result.passed=true;
+  assert.equal(result.sourceRequests.length,0);assert.equal(result.failedResources.length,0);assert.deepEqual(result.errors,[]);result.passed=true;
  }catch(error){result.failure=error.stack;result.diagnostics=await page.evaluate(async()=>{const{lib,game,ui,_status}=await import('/noname.js');return {body:document.body.innerHTML.slice(-2500),splash:window.inSplash,active:lib.config.ui_workshop_active,error:lib.uiWorkshop?.error,scripts:[...document.scripts].map(s=>s.src),event:_status.event?.name,arena:!!ui.arena,ready:lib.arenaReady?.length};}).catch(()=>null);console.error(name,error);await page.screenshot({path:path.join(evidence,name+'-failure.png')}).catch(()=>{});}finally{await context.close();await fs.writeFile(path.join(evidence,'browser-regression.json'),JSON.stringify({at:new Date().toISOString(),results},null,2));}
 }}
 finally{await browser.close();}console.log(JSON.stringify(results,null,2));if(results.some(r=>!r.passed))process.exitCode=1;

@@ -22,10 +22,14 @@ export function copySceneData(value, seen = new Map()) {
 	// Never pass an engine prototype (or its callable methods) to a scene.
 	const copy = Array.isArray(value) ? [] : Object.create(null);
 	seen.set(value, copy);
-	for (const key of Object.keys(value)) copy[key] = copySceneData(value[key], seen);
+	// Metadata accessors can execute rules or consume gameplay RNG (for example
+	// the qingsuan translation). Rendering a scene may copy stored data only.
+	for (const [key, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(value))) {
+		if (descriptor.enumerable && Object.hasOwn(descriptor, "value")) copy[key] = copySceneData(descriptor.value, seen);
+	}
 	// Character's legacy indices are prototype getters. Materialize their data
 	// for the old portrait layouts without retaining Character's setters/proxy.
-	if (!Array.isArray(value) && typeof value.sex === "string" && Array.isArray(value.skills)) {
+	if (!Array.isArray(value) && typeof copy.sex === "string" && Array.isArray(copy.skills)) {
 		for (let index = 0; index <= 5; index++) copy[index] = copySceneData(value[index], seen);
 	}
 	return copy;

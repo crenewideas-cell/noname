@@ -14,5 +14,5 @@ export { getSkinService } from "./noname/skin/index.js";
 export { openSkinGallery } from "./noname/ui/skinGallery.js";
 export { suspendSelectionGuide } from "./noname/ui/selectionGuide.js";
 export { createSceneContext } from "./noname/ui/workshop/sceneContext.js";
-export { subscribePresentation } from "./noname/ui/presentationEvents.js";
+export { subscribePresentation, skillPresentation, handLimitPresentation, dyingPresentation } from "./noname/ui/presentationEvents.js";
 export { CacheContext } from "./noname/library/cache/cacheContext.js";

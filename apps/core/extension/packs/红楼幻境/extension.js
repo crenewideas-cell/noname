@@ -21,7 +21,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
         if (get.mode() !== "identity") return;
         // Identity is drafted before characters. Finalize the restriction after
         // both generals are known, before role skills, starting cards and replay.
-        const restricted = player => [player.name, player.name1, player.name2].includes("hlhj_daiyu");
+        const restricted = player => [player.name, player.name1, player.name2].some(name => ["hlhj_daiyu", "hlhj_baoyu"].includes(name));
         for (const player of game.players) {
             if (!restricted(player) || !["nei", "rNei", "bNei"].includes(player.identity)) continue;
             const previous = player.identity;
@@ -54,7 +54,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
     const ordinary = (card, player) => get.position(card) === "h" &&
         get.owner(card) === player &&
         card.name !== "hlhj_qingsi" && (lib.card[card.name]?.type === "basic" ||
-            lib.card[card.name]?.subtype === "equip1");
+            lib.card[card.name]?.subtype === "equip1" || !!get.tag({ name: card.name, nature: card.nature }, "damage"));
     const sync = (player, key, value) => {
         player.storage[key] = value;
         player.syncStorage(key);
@@ -79,6 +79,8 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
         const sources = cards.map(card => ({
             face: [card.suit, card.number, card.name, card.nature],
             temporary: !!card.storage?.hlhj_temporary || card.destroyed === "discardPile",
+            previousSource: card.storage?.hlhj_qingsi_source,
+            previousDestroyed: card.storage?.hlhj_qingsi_destroyed,
         }));
         const change = function (cards, sources) {
             for (let index = 0; index < cards.length; index++) {
@@ -109,6 +111,8 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
         const previousDestroy = card.storage.hlhj_qingsi_destroyed;
         delete card.storage.hlhj_qingsi_source;
         delete card.storage.hlhj_qingsi_destroyed;
+        if (source.previousSource) card.storage.hlhj_qingsi_source = source.previousSource;
+        if (source.previousDestroyed !== undefined) card.storage.hlhj_qingsi_destroyed = source.previousDestroyed;
         delete card.destroyed;
         card.init(source.face); card.cardid = id; card.addGaintag(tags);
         if (previousDestroy !== undefined) card.destroyed = previousDestroy;
@@ -619,7 +623,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
     for (const info of Object.values(skill)) info.audio = false;
     const translate = {
         hlhj_jiangzhu: "绛珠仙子",
-        hlhj_jiangzhu_info: "锁定技，你的身份不能分配为内奸。你获得的手牌中的基本牌和武器牌均转化为【情思】，保留花色和点数。【情思】不计入手牌上限，且不因手牌上限而弃置。转化牌进入牌堆或弃牌堆时恢复原牌；额外生成的牌则销毁。",
+        hlhj_jiangzhu_info: "锁定技，你的身份不能分配为内奸。基本牌、伤害牌和武器牌进入你的手牌后，转化为【情思】，保留花色和点数。【情思】不计入手牌上限，且不因手牌上限而弃置。转化牌进入牌堆或弃牌堆时恢复原牌；额外生成的牌则销毁。",
         hlhj_qingsi_redirect: "情思",
         hlhj_mushi: "木石前缘",
         hlhj_mushi_info: "①游戏开始时，你选择一名角色成为你的“木石缘”。②回合开始时，你可以弃置一张【情思】，令另一名角色成为你的“木石缘”。③当你获得“泪”时，你可以令你或存活的“木石缘”摸等量的牌。若你以此法摸牌，你须弃置一张【情思】（无可弃置的【情思】则不弃置；此弃牌结算期间获得的“泪”不触发此项效果）。",
@@ -654,6 +658,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
         content() {},
         precontent() {
             game.addGroup("hlhj_ming", "命", "命", { color: "#b88caa" });
+            game.addGroup("hlhj_qing", "情", "情", { color: "#c97989" });
             game.hlhjResolveIdentity = resolveIdentity;
             const voices = installVoiceRuntime(lib, game, ui, get, _status);
             voices.register(voiceSpec);
@@ -671,7 +676,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 onclick() { game.hlhjAppearance?.open(); },
             },
         },
-        help: { "红楼幻梦": "命系 · 绛珠仙子、绛洞花主。规则细节及安装说明见扩展内 README.md。" },
+        help: { "红楼幻梦": "命运系 · 绛珠仙子；情缘系 · 绛洞花主。规则细节及安装说明见扩展内 README.md。" },
         package: {
             character: {
                 connect: true,
@@ -682,17 +687,17 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                         img: appearancePaths.theme + "daiyu-bamboo.png", dieAudios: [],
                     },
                     hlhj_baoyu: {
-                        sex: "male", group: "hlhj_ming", hp: 4,
-                        skills: ["hlhj_xianyu", "hlhj_gongdu", "hlhj_mengyou", "hlhj_qingyu", "hlhj_duzhuan"],
+                        sex: "male", group: "hlhj_qing", hp: 4, maxHp: 4,
+                        skills: ["hlhj_baoyu_jiangzhu", "hlhj_xianyu", "hlhj_gongdu", "hlhj_mengyou", "hlhj_qingyu", "hlhj_duzhuan"],
                         // No invented portrait or audio path; reserve a blank image.
                         img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='420'/%3E", dieAudios: [],
                     },
                 },
-                translate: { hlhj_daiyu: "绛珠仙子", hlhj_baoyu: "绛洞花主", hlhj_mingyun: "命运" },
-                characterSort: { "红楼幻境": { hlhj_mingyun: ["hlhj_daiyu", "hlhj_baoyu"] } },
+                translate: { hlhj_daiyu: "绛珠仙子", hlhj_baoyu: "绛洞花主", hlhj_mingyun: "命运", hlhj_qingyuan: "情缘" },
+                characterSort: { "红楼幻境": { hlhj_mingyun: ["hlhj_daiyu"], hlhj_qingyuan: ["hlhj_baoyu"] } },
                 characterIntro: {
                     hlhj_daiyu: "命运体系 · 情感辅助。以情生泪，以泪渡情，最终以自身命运成全知己。",
-                    hlhj_baoyu: "命系 · 贾宝玉。衔玉入尘，借笺问情；梦中见命，花前留诔。以通灵宝玉护身，以西厢共读相知，以芙蓉诔悼念亡友。原画、配音等素材待补。",
+                    hlhj_baoyu: "情缘系 · 贾宝玉。衔玉入尘，借笺问情；梦中见命，花前留诔。以通灵宝玉护身，以西厢共读相知，以芙蓉诔悼念亡友。原画、配音等素材待补。",
                 },
             },
             card: {
@@ -711,7 +716,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 list: [],
             },
             skill: { skill, translate },
-            intro: "命系 · 绛珠仙子、绛洞花主。以情生泪，以玉护花，以书结缘。",
+            intro: "命运系 · 绛珠仙子；情缘系 · 绛洞花主。以情生泪，以玉护花，以书结缘。",
             author: "红楼幻梦", version: "1.3.4", diskURL: "", forumURL: "",
         },
         files: {

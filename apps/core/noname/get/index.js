@@ -5146,7 +5146,8 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 			const related = [];
 			if (skills.includes("hlhj_guimeng") && !skills.includes("hlhj_yiyuan")) related.push("hlhj_yiyuan");
 			if (skills.includes("hlhj_jiangzhu")) related.push("hlhj_qingsi");
-			if (skills.includes("hlhj_xianyu")) related.push("hlhj_tonglingbaoyu", "hlhj_qingjian");
+			if (skills.includes("hlhj_baoyu_jiangzhu")) related.push("hlhj_qingjian");
+			if (skills.includes("hlhj_xianyu")) related.push("hlhj_tonglingbaoyu");
 			if (skills.includes("hlhj_duzhuan")) related.push("hlhj_furonglei");
 			for (const name of related) {
 				const description = lib.card[name] ? lib.translate[name + "_info"] : get.skillInfoTranslation(name, player, false);

@@ -3082,6 +3082,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
         Array["prototype"]["randomGetremove"] = function () { var Uw = this["randomGet"](); return this["remove"](Uw), Uw; };
         let U1 = lifecycle.container();
         U1["on"]("added", () => {
+ G4.state.setAnimation(0, "action4", false);
             const rzshMq = { G: "UEd7" }, wi = K0, wI = K1;
             G2["texture"] = yx["resources"][wI(0x1f3, "FbmE")]["texture"], lifecycle.cover(G2), PIXI["sound"]["play"]("PiPei1");
             let Uw = 3.6;
@@ -3090,7 +3091,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
             let Ud = lib["config"]["player_number"];
             if (lib["config"]["mode"] == "versus" && get["config"]("versus_mode") == "two")
                 Ud = 0x4;
-            G4[wi(0x2c1)]["tracks"][0x0]["onComplete"] = function () {
+            G4[wi(0x2c1)]["tracks"][0x0].listener = {complete: function () {
                 const rzshMB = { G: 0x2f6 }, wg = wi, wT = wI;
                 G6 != null && (cancelAnimationFrame(G6), G6 = null);
                 for (let Ut = 0x0; Ut < Ud; Ut++) {
@@ -3105,7 +3106,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                     let Ua = new PIXI["spine"]["Spine"](yx["resources"]["dayuanshuai"]["spineData"]);
                     Ua["state"]["setAnimation"](0x0, "play1", ![]), Ua["scale"]["set"](1.8);
                     if (Ut == Ud - 0x1)
-                        Ua[wT(0x1c0, rzshMq.G)]["tracks"][0x0]["onComplete"] = function () { setTimeout(U8, 0x64); };
+                        Ua[wT(0x1c0, rzshMq.G)]["tracks"][0x0].listener = {complete: function () { setTimeout(U8, 0x64); }};
                     let Uo = lifecycle.container(), Uj = new PIXI["Sprite"](Gb["resources"]["uivip"]["textures"]["dj_vip_mark"]), UD = new PIXI["Sprite"](Gb["resources"]["uivip"]["textures"]["dj_vip" + [0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7]["randomGet"]()]);
                     if (Ut == 0x0)
                         UD["texture"] = Gb["resources"]["uivip"]["textures"]["dj_vip7"];
@@ -3166,7 +3167,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                         }
                     }, 0xc8 * Ut);
                 }
-            };
+            }};
             let Up = ["寻找对手中,不要着急哦~", "回合结束时,能保留的手牌数不能超过当前体力值", "忠臣以保护主公为己任，击杀所有的反贼和内奸，即可获得胜利", "主公与忠臣搭档，击杀所有的反贼和内奸，即可获得胜利", "反贼孤注一掷，全力推翻主公，即可获得胜利", wi(0x2f4), "游戏过程中，需要攻击敌人，保卫自己以获得最后的胜利", "每个回合开始后，都会获得两张新的卡牌", "回合结束时，能保留的手牌数不能超过当前的体力值", "一般情况下，每个自己的回合内只能使用一张【杀】", "【万箭齐发】:   ( 锦囊 ) 所有人,展现你灵巧的身姿吧", "【无懈可击】:   ( 锦囊 ) 休想得逞"];
             Up["push"]("【桃园结义】:   ( 锦囊 ) 大家来一起喝一杯", "【铁索连环】:   ( 锦囊 ) 我觉得你们应该有难同当", "【无中生有】:   ( 锦囊 ) 我需要更多的牌", "【借刀杀人】:   ( 锦囊 ) 你的武器归我了", "【酒】:  喝完酒我似乎更勇猛了，我不能倒下", "【兵粮寸断】:   ( 延时锦囊 ) 结果不是梅花，你已经没有补给了", "【乐不思蜀】:   ( 延时锦囊 ) 结果不是红桃，你就安逸的待着吧", "【闪电】:   ( 延时锦囊 ) 结果不是黑桃2～9，准备迎接闪电吧", "【决斗】:   ( 锦囊 ) 我【杀】多，来单挑吧", "【顺手牵羊】:   ( 锦囊 ) 你的就是我的，呵呵", "【过河拆桥】:   ( 锦囊 ) 我要扔掉你的牌", "【五谷丰登】:   ( 锦囊 )大家都来选张牌吧", "【诸葛连弩】:   ( 装备 ) 接下来我要疯狂的杀戮了", "【丈八蛇矛】:   ( 装备 ) 用这两张牌去换张【杀】吧", "【方天画戟】:   ( 装备 ) 我可以同时砍更多人了", "【古锭刀】:   ( 装备 ) 你没有牌的话，我就不客气了", "【麒麟弓】:   ( 装备 ) 怎么样，落马了吧", "【仁王盾】:   ( 装备 ) 黑色的【杀】在我面前毫无用处", "【贯石斧】:   ( 装备 ) 你的【闪】也挡不住我的攻击", "【青龙偃月刀】:   ( 装备 ) 我会杀到你不能闪为止", "【火攻】:   ( 锦囊 ) 出示你的牌，然后我会燃烧你", "【雌雄双股剑】:   ( 装备 )你是弃一张牌呢还是让我多一张牌呢", "【青釭剑】:   ( 装备 ) 你的防具对我来说毫无用处，哈哈哈", "【南蛮入侵】:   ( 锦囊 ) 所有人,亮出你的兵器吧", "【白银狮子】:   ( 装备 ) 我不会受到更多的伤害", "【寒冰剑】:   ( 装备 ) 我改变主意了，我要扔掉你的牌", "【八卦阵】:   ( 装备 ) 只要出现红色牌，我就不惧你的攻击");
             function Ur() { return Up[Math["round"](Math["random"]() * Up["length"])]; }

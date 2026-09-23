@@ -5,35 +5,42 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
     const pages = owner => owner.getStorage("hlhj_book_pages");
     const jade = owner => owner.getStorage("hlhj_jade")[0];
     const memorials = owner => owner.getStorage("hlhj_furonglei");
+    const dreamTag = owner => "hlhj_dream_" + owner.playerid;
+    const dreams = (owner, target) => target.getExpansions(dreamTag(owner));
     const owners = player => game.filterPlayer(owner => owner.hasSkill("hlhj_gongdu") &&
         partner(owner)?.isIn() && (owner === player || partner(owner) === player));
     const availablePages = owner => pages(owner).filter(page => owner.getExpansions("hlhj_book").includes(page.card));
     const isLetter = card => card.name === "hlhj_qingjian";
-    const isDamageHand = (card, player) => get.owner(card) === player && get.position(card) === "h" &&
-        !isLetter(card) && !!get.tag({ name: card.name, nature: card.nature }, "damage");
+    const isConvertibleHand = (card, player) => get.owner(card) === player && get.position(card) === "h" &&
+        !isLetter(card) && (lib.card[card.name]?.type === "basic" || lib.card[card.name]?.subtype === "equip1" ||
+            !!get.tag({ name: card.name, nature: card.nature }, "damage"));
     const basicNames = () => lib.inpile.filter(name => lib.card[name]?.type === "basic" &&
         !["hlhj_qingsi", "hlhj_qingjian"].includes(name));
     const epitaphNames = () => lib.inpile.filter(name => ["basic", "trick"].includes(lib.card[name]?.type) &&
         !get.tag({ name }, "damage") && !["hlhj_qingsi", "hlhj_qingjian"].includes(name));
 
     function convertHand(player) {
-        const cards = player.getCards("h", card => isDamageHand(card, player));
+        const cards = player.getCards("h", card => isConvertibleHand(card, player));
         if (!cards.length) return;
-        const change = function (cards) {
-            for (const card of cards) {
+        const sources = cards.map(card => ({
+            face: [card.suit, card.number, card.name, card.nature],
+            temporary: !!card.storage.hlhj_temporary || card.destroyed === "discardPile",
+            previousSource: card.storage.hlhj_qingjian_source,
+            previousDestroyed: card.storage.hlhj_qingjian_destroyed,
+        }));
+        const change = function (cards, sources) {
+            for (let index = 0; index < cards.length; index++) {
+                const card = cards[index];
                 const id = card.cardid, tags = card.gaintag.slice();
-                card.storage.hlhj_qingjian_source = {
-                    face: [card.suit, card.number, card.name, card.nature],
-                    temporary: !!card.storage.hlhj_temporary,
-                };
-                card.storage.hlhj_qingjian_destroyed = card.destroyed;
+                if (card.name !== "hlhj_qingjian") card.storage.hlhj_qingjian_destroyed = card.destroyed;
+                card.storage.hlhj_qingjian_source = sources[index];
                 card.init([card.suit, card.number, "hlhj_qingjian"]);
                 card.cardid = id;
                 card.addGaintag(tags);
             }
         };
-        change(cards);
-        player.send(change, cards);
+        change(cards, sources);
+        player.send(change, cards, sources);
     }
     function letterReturn(card, position, player, event) {
         if (!["discardPile", "cardPile"].includes(position)) return false;
@@ -43,6 +50,8 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
         const previous = card.storage.hlhj_qingjian_destroyed;
         delete card.storage.hlhj_qingjian_source;
         delete card.storage.hlhj_qingjian_destroyed;
+        if (source.previousSource) card.storage.hlhj_qingjian_source = source.previousSource;
+        if (source.previousDestroyed !== undefined) card.storage.hlhj_qingjian_destroyed = source.previousDestroyed;
         delete card.destroyed;
         card.init(source.face);
         card.cardid = id;
@@ -78,13 +87,15 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
                 target: holder, card, name: card?.name,
             });
     }
-    function guardedJade(owner, source, card) {
+    function guardedJade(owner, target, source, card) {
         const item = jade(owner), holder = item && get.owner(item);
         return item && holder && get.position(item) === "e" && holder.getCards("e").includes(item) &&
-            jadeWorks(holder, source, card) && lib.filter.cardDiscardable(item, holder, "hlhj_mengyou") ? item : null;
+            target?.isIn() && !target.getCards("e").some(card => card.name === "hlhj_tonglingbaoyu") &&
+            target.canEquip(item, true) && jadeWorks(holder, source, card) ? item : null;
     }
     async function endReading(owner, recipient) {
         const book = availablePages(owner), other = partner(owner);
+        recipient ||= !owner.isIn() ? other : other && !other.isIn() ? owner : null;
         sync(owner, "hlhj_gongdu", []);
         sync(owner, "hlhj_book_pages", []);
         sync(owner, "hlhj_book_session", (owner.storage.hlhj_book_session || 0) + 1);
@@ -142,11 +153,13 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
                     list.push(bookLink([get.type(page.card), "", card.name, card.nature], meta));
                 }
             }
-            if (owner.hasSkill("hlhj_duzhuan") && owner.storage.hlhj_epitaph_round !== game.roundNumber) {
+            if (owner.hasSkill("hlhj_duzhuan")) {
                 memorials(owner).forEach((memorial, index) => {
-                    const card = get.autoViewAs({ name: memorial.name }, [page.card]);
-                    if (event.filterCard(card, player, event)) {
-                        list.push(bookLink([get.type(card), "", memorial.name, undefined], { ...meta, epitaph: index }));
+                    for (const name of memorial.names || []) {
+                        const card = get.autoViewAs({ name }, [page.card]);
+                        if (!epitaphUsed(player, name) && event.filterCard(card, player, event)) {
+                            list.push(bookLink([get.type(card), "", name, undefined], { ...meta, epitaph: index }));
+                        }
                     }
                 });
             }
@@ -159,7 +172,9 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
         if (!owner.isIn() || !partner(owner)?.isIn() ||
             ![owner, partner(owner)].includes(player) || owner.storage.hlhj_book_session !== meta.session ||
             !availablePages(owner).some(page => page.card === meta.card) ||
-            (meta.epitaph !== undefined && owner.storage.hlhj_epitaph_round === game.roundNumber)) {
+            (meta.epitaph !== undefined && (!owner.hasSkill("hlhj_duzhuan") ||
+                !memorials(owner)[meta.epitaph]?.names?.includes(event.result.card.name) ||
+                epitaphUsed(player, event.result.card.name)))) {
             event.result.bool = false;
             return;
         }
@@ -167,7 +182,11 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
         event.result.cards = [meta.card];
         event.result.card.cards = [meta.card];
         sync(owner, "hlhj_book_pages", pages(owner).filter(page => page.card !== meta.card));
-        if (meta.epitaph !== undefined) sync(owner, "hlhj_epitaph_round", game.roundNumber);
+        if (meta.epitaph !== undefined) {
+            const used = player.storage.hlhj_epitaph_used;
+            sync(player, "hlhj_epitaph_used", { round: game.roundNumber,
+                names: [...(used?.round === game.roundNumber ? used.names : []), event.result.card.name] });
+        }
         // useCard/respond already move material from its real owner to ordering.
         // Moving it here would let precontent's ordering cleanup discard it early.
     }
@@ -187,7 +206,11 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
     }
     // Tombs remain attached to the dead seat, and the owner's mark holds the
     // same public record for modes which hide dead player nodes.
-    function showMemorial(dead, owner, name) {
+    function epitaphUsed(player, name) {
+        const used = player.storage.hlhj_epitaph_used;
+        return used?.round === game.roundNumber && used.names.includes(name);
+    }
+    function showMemorial(dead, owner, names) {
         if (!dead?.node || typeof document === "undefined") return;
         dead._hlhjMemorials ||= new Map();
         let node = dead._hlhjMemorials.get(owner.playerid);
@@ -198,7 +221,7 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
             dead.appendChild(node);
             dead._hlhjMemorials.set(owner.playerid, node);
         }
-        node.textContent = "芙蓉诔 · " + get.translation(name);
+        node.textContent = "芙蓉诔 · " + (names?.length ? names.map(name => get.translation(name)).join("、") : "待撰诔文");
         node.title = get.translation(owner) + "悼" + get.translation(dead);
     }
     function updateMemorial(owner, dead, name) {
@@ -207,46 +230,57 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
             lib.skill.hlhj_furonglei.showMemorial(dead, owner, name);
         }, dead, owner, name);
     }
-    async function chooseEpitaph(player, prompt, forced = false) {
-        const names = epitaphNames();
+    async function chooseEpitaph(player, prompt, written) {
+        const names = epitaphNames().filter(name => !written.includes(name));
         if (!names.length) return null;
-        const result = await player.chooseButton([prompt, [names.map(name => [get.type(name), "", name]), "vcard"]], forced)
+        const result = await player.chooseButton([prompt, [names.map(name => [get.type(name), "", name]), "vcard"]])
             .set("ai", button => ["tao", "wuzhong", "wuxie", "shan"].includes(button.link[2]) ? 2 : 1).forResult();
         return result.bool ? result.links[0][2] : null;
     }
-    async function clearDream(owner) {
-        const cards = owner.getExpansions("hlhj_dream");
-        sync(owner, "hlhj_dream_target", []);
-        if (cards.length) await owner.loseToDiscardpile(cards);
-        owner.unmarkSkill("hlhj_dream");
+    async function clearDream(owner, target) {
+        const targets = owner.getStorage("hlhj_dream_target").filter(current => !target || current === target);
+        sync(owner, "hlhj_dream_target", owner.getStorage("hlhj_dream_target").filter(current => !targets.includes(current)));
+        for (const current of targets) {
+            const cards = dreams(owner, current);
+            sync(current, "hlhj_dream_owners", current.getStorage("hlhj_dream_owners").filter(item => item !== owner));
+            if (!current.getStorage("hlhj_dream_owners").length) current.unmarkSkill("hlhj_dream");
+            if (cards.length) await current.loseToDiscardpile(cards);
+        }
     }
-    async function placeDream(player, card) {
+    async function placeDream(player, target, card) {
         // The generic expansion animation broadcasts card faces. Move the real
         // card privately and send only an opaque ID to the other seats instead.
         await player.lose([card], ui.special).set("type", "loseToExpansion").set("getlx", false);
-        if (!player.isIn() || get.position(card, true) !== "s") {
+        if (!player.isIn() || !target.isIn() || get.position(card, true) !== "s") {
             if (get.position(card, true) === "s") await game.cardsDiscard([card]);
             return false;
         }
-        player.$addToExpansion([card], false, ["hlhj_dream"]);
-        game.broadcast(function (player, card) {
-            player.$addToExpansion([card], false, ["hlhj_dream"]);
-        }, player, "_noname_card:" + JSON.stringify([card.cardid, null, null, null, null]));
-        player.send(function (player, cards) {
-            player.$addToExpansion(cards, false, ["hlhj_dream"], false);
-        }, player, [card]);
+        const tags = ["hlhj_dream", dreamTag(player)];
+        target.$addToExpansion([card], false, tags);
+        game.broadcast(function (target, card, tags) {
+            target.$addToExpansion([card], false, tags);
+        }, target, "_noname_card:" + JSON.stringify([card.cardid, null, null, null, null]), tags);
+        player.send(function (target, cards, tags) {
+            target.$addToExpansion(cards, false, tags, false);
+        }, target, [card], tags);
+        sync(player, "hlhj_dream_target", [...new Set([...player.getStorage("hlhj_dream_target"), target])]);
+        sync(target, "hlhj_dream_owners", [...new Set([...target.getStorage("hlhj_dream_owners"), player])]);
+        target.markSkill("hlhj_dream");
         return true;
     }
     const skills = {
-        hlhj_xianyu: {
+        hlhj_baoyu_jiangzhu: {
             locked: true,
             init: convertHand,
             mod: {
                 handcardGain: convertHand,
-                cardname(card, player) { if (isDamageHand(card, player)) return "hlhj_qingjian"; },
-                cardnature(card, player) { if (isDamageHand(card, player)) return false; },
+                cardname(card, player) { if (isConvertibleHand(card, player)) return "hlhj_qingjian"; },
+                cardnature(card, player) { if (isConvertibleHand(card, player)) return false; },
             },
-            group: ["hlhj_xianyu_start", "hlhj_xianyu_convert", "hlhj_xianyu_recall", "hlhj_qingjian_use"],
+            group: ["hlhj_xianyu_convert", "hlhj_qingjian_use"],
+        },
+        hlhj_xianyu: {
+            group: ["hlhj_xianyu_start", "hlhj_xianyu_recall"],
         },
         hlhj_xianyu_start: {
             trigger: { global: "phaseBefore", player: "enterGame" },
@@ -265,7 +299,7 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
         hlhj_xianyu_convert: {
             trigger: { player: ["gainAfter", "enterGame"], global: ["gameDrawAfter", "loseAsyncAfter", "phaseBefore"] },
             forced: true, silent: true, firstDo: true, priority: 49,
-            filter(event, player) { return player.hasCard(card => isDamageHand(card, player), "h"); },
+            filter(event, player) { return player.hasCard(card => isConvertibleHand(card, player), "h"); },
             async content(event, trigger, player) { convertHand(player); },
         },
         hlhj_xianyu_recall: {
@@ -332,7 +366,7 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
             ai: { effect: { target(card, player, target) { if (get.tag(card, "damage") && jadeWorks(target, player, card)) return 0.5; } } },
         },
         hlhj_gongdu: {
-            enable: "phaseUse", usable: 1, position: "h", selectCard: [1, Infinity],
+            enable: "phaseUse", position: "h", selectCard: [1, Infinity],
             filter(event, player) { return player.countCards("h") > 0 && game.hasPlayer(current => current !== player); },
             filterCard: true, filterTarget(card, player, target) { return target !== player; },
             discard: false, lose: false, delay: false,
@@ -380,7 +414,7 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
                     for (const link of bookOptions(event, player)) {
                         const meta = bookMeta(link);
                         dialog.addText(get.translation(meta.owner) + "的书 · " + get.translation(meta.contributor) + "放入【" +
-                            get.translation(meta.card) + "】" + (meta.epitaph !== undefined ? " · 诔文（每轮共限一次）" : ""));
+                            get.translation(meta.card) + "】" + (meta.epitaph !== undefined ? " · 诔文（每人每种每轮限一次）" : ""));
                         dialog.add([[link], "vcard"]);
                     }
                     return dialog;
@@ -405,7 +439,7 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
             hiddenCard(player, name) {
                 return owners(player).some(owner => availablePages(owner).some(page => page.card.name === name ||
                     (isLetter(page.card) && basicNames().includes(name)) ||
-                    (owner.hasSkill("hlhj_duzhuan") && owner.storage.hlhj_epitaph_round !== game.roundNumber && memorials(owner).some(item => item.name === name))));
+                    (owner.hasSkill("hlhj_duzhuan") && !epitaphUsed(player, name) && memorials(owner).some(item => item.names?.includes(name)))));
             },
             ai: { order: 4, respondSha: true, respondShan: true, save: true,
                 skillTagFilter(player, tag) { return skills.hlhj_read.hiddenCard(player, tag === "respondSha" ? "sha" : tag === "respondShan" ? "shan" : "tao"); },
@@ -418,36 +452,29 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
             content: finishBook,
         },
         hlhj_read_cleanup: {
-            charlotte: true, trigger: { global: ["dieBegin", "dieAfter", "removePlayerAfter"] },
+            charlotte: true, trigger: { global: ["die", "dieAfter", "removePlayerAfter"] },
             forced: true, silent: true, forceDie: true, priority: -20,
             filter(event, player) {
                 return partner(player) && (event.player === player || event.player === partner(player));
             },
             async content(event, trigger, player) {
-                // Partner's dieBegin is reserved for 杜撰芙蓉, before death discards.
-                if (trigger.name === "die" && event.triggername === "dieBegin" &&
-                    trigger.player === partner(player) && player.hasSkill("hlhj_duzhuan")) return;
-                await endReading(player);
+                await endReading(player, trigger.player === player ? partner(player) : player);
             },
         },
         hlhj_mengyou: {
-            trigger: { player: "phaseJieshuBegin" }, direct: true,
+            trigger: { player: "phaseEnd" }, direct: true,
             filter(event, player) { return player.hasCard(isLetter, "h"); },
             async content(event, trigger, player) {
                 const result = await player.chooseCardTarget({
-                    prompt: "梦游太虚：将一张情笺置为梦，守护你或当前共读者（替换旧梦）",
+                    prompt: "梦游太虚：将一张情笺背面朝上置于你或当前共读者的特殊栏位，可累积",
                     position: "h", filterCard: isLetter,
-                    filterTarget(card, player, target) { return target === player || target === player.getStorage("hlhj_gongdu")[0]; },
+                    filterTarget(card, player, target) { return target.isIn() && (target === player || target === player.getStorage("hlhj_gongdu")[0]); },
                     ai1: card => 5 - get.value(card), ai2: target => get.attitude(_status.event.player, target),
                 }).forResult();
                 if (!result.bool) return;
                 player.logSkill("hlhj_mengyou", result.targets);
-                await clearDream(player);
                 if (!player.isIn() || !result.targets[0].isIn()) return;
-                if (await placeDream(player, result.cards[0])) {
-                    sync(player, "hlhj_dream_target", result.targets);
-                    player.markSkill("hlhj_dream");
-                }
+                await placeDream(player, result.targets[0], result.cards[0]);
             },
             group: ["hlhj_mengyou_reveal", "hlhj_dream_clear"],
             onremove(player) {
@@ -461,50 +488,53 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
             intro: {
                 name: "太虚之梦",
                 mark(dialog, storage, player) {
-                    dialog.addText("守护：" + get.translation(player.getStorage("hlhj_dream_target")));
-                    if (player.isUnderControl(true)) dialog.add(player.getExpansions("hlhj_dream"));
-                    else dialog.addText("一张背面朝上的情笺");
+                    for (const owner of player.getStorage("hlhj_dream_owners")) {
+                        const cards = dreams(owner, player);
+                        dialog.addText(get.translation(owner) + "所置的梦：" + cards.length + "张");
+                        if (owner.isUnderControl(true)) dialog.add(cards);
+                        else dialog.addText("背面朝上的情笺");
+                    }
                 },
                 markcount(storage, player) { return player.getExpansions("hlhj_dream").length; },
             },
         },
         hlhj_mengyou_reveal: {
-            trigger: { global: "useCardToTargeted" }, forced: true,
+            trigger: { global: "useCardToTargeted" }, direct: true,
             filter(event, player) {
-                return event.target === player.getStorage("hlhj_dream_target")[0] && event.player !== event.target &&
-                    get.tag(event.card, "damage") && player.getExpansions("hlhj_dream").length > 0;
+                return player.getStorage("hlhj_dream_target").includes(event.target) && event.player !== event.target &&
+                    get.tag(event.card, "damage") && dreams(player, event.target).length > 0 &&
+                    !!guardedJade(player, event.target, event.player, event.card);
             },
             async content(event, trigger, player) {
-                const card = player.getExpansions("hlhj_dream")[0];
-                const color = get.color(card, false);
-                sync(player, "hlhj_dream_target", []);
-                await player.showCards([card], "梦游太虚：展示梦");
+                const target = trigger.target;
+                const result = await player.chooseBool("梦游太虚：将通灵宝玉赠与" + get.translation(target) + "并展示一张梦？同色则此牌对其无效")
+                    .set("choice", get.effect(target, trigger.card, trigger.player, player) < 0).forResult();
+                const item = guardedJade(player, target, trigger.player, trigger.card);
+                if (!result.bool || !item || !dreams(player, target).length) return;
+                player.logSkill("hlhj_mengyou", target);
+                await target.equip(item);
+                if (!target.isIn() || get.owner(item) !== target || get.position(item) !== "e") return;
+                const cards = dreams(player, target);
+                if (!cards.length) return;
+                const selected = cards.length === 1 ? cards[0] : (await player.chooseButton(["梦游太虚：选择一张梦展示", cards], true)
+                    .set("ai", button => get.color(button.link, false) === get.color(_status.event.damageCard) ? 1 : 0)
+                    .set("damageCard", trigger.card).forResult()).links?.[0];
+                if (!selected || !dreams(player, target).includes(selected)) return;
+                const color = get.color(selected, false);
+                await player.showCards([selected], "梦游太虚：展示梦");
                 if (["red", "black"].includes(color) && color === get.color(trigger.card, trigger.player) &&
-                    guardedJade(player, trigger.player, trigger.card)) {
-                    const result = await player.chooseBool("梦游太虚：弃置关联的通灵宝玉，令此牌对" + get.translation(trigger.target) + "无效？")
-                        .set("choice", get.effect(trigger.target, trigger.card, trigger.player, player) < 0).forResult();
-                    const item = guardedJade(player, trigger.player, trigger.card);
-                    if (result.bool && item) {
-                        const holder = get.owner(item);
-                        const loss = holder.discard(item);
-                        await loss;
-                        // A discard-trigger skill may immediately gain the jade.
-                        // The paid cost remains valid after such a transfer.
-                        if (holder.getHistory("lose").some(entry => entry.getParent() === loss && entry.cards2?.includes(item))) {
-                            trigger.getParent().excluded.add(trigger.target);
-                        }
-                    }
+                    get.owner(item) === target && get.position(item) === "e" && jadeWorks(target, trigger.player, trigger.card)) {
+                    trigger.getParent().excluded.add(target);
                 }
-                await clearDream(player);
             },
         },
         hlhj_dream_clear: {
-            charlotte: true, trigger: { global: ["dieBegin", "removePlayerAfter"] },
+            charlotte: true, trigger: { global: ["die", "removePlayerAfter"] },
             forced: true, silent: true, forceDie: true,
             filter(event, player) {
-                return event.player === player || event.player === player.getStorage("hlhj_dream_target")[0];
+                return event.player === player || player.getStorage("hlhj_dream_target").includes(event.player);
             },
-            async content(event, trigger, player) { await clearDream(player); },
+            async content(event, trigger, player) { await clearDream(player, trigger.player === player ? null : trigger.player); },
         },
         hlhj_qingyu: {
             trigger: { global: "damageBegin4" }, direct: true, priority: -1,
@@ -523,35 +553,34 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
             },
         },
         hlhj_duzhuan: {
-            trigger: { global: "dieBegin" }, forced: true, priority: 10,
+            trigger: { global: "die" }, forced: true, priority: 10,
             filter(event, player) { return player.isIn() && event.player === partner(player); },
             async content(event, trigger, player) {
                 const dead = trigger.player;
-                const name = await chooseEpitaph(player, "杜撰芙蓉：为共读者声明一种非伤害基本牌或普通锦囊牌", true);
-                if (name) {
-                    sync(player, "hlhj_furonglei", [...memorials(player), { dead, seat: dead.getSeatNum(), name }]);
-                    player.markSkill("hlhj_furonglei");
-                    updateMemorial(player, dead, name);
-                }
-                await endReading(player);
+                sync(player, "hlhj_furonglei", [...memorials(player), { dead, seat: dead.getSeatNum(), names: [] }]);
+                player.markSkill("hlhj_furonglei");
+                updateMemorial(player, dead, []);
+                await endReading(player, player);
             },
             group: ["hlhj_duzhuan_rewrite"],
         },
         hlhj_duzhuan_rewrite: {
             trigger: { global: "phaseBegin" }, direct: true,
-            filter(event, player) { return memorials(player).length > 0 && [player, partner(player)].includes(event.player); },
+            filter(event, player) { return memorials(player).length > 0 && owners(event.player).includes(player); },
             async content(event, trigger, player) {
                 // The character whose turn begins writes the epitaph.
                 const writer = trigger.player;
                 for (let index = 0; index < memorials(player).length; index++) {
                     const memorial = memorials(player)[index];
-                    const name = await chooseEpitaph(writer, "芙蓉诔（" + get.translation(memorial.dead) + "）：可重写诔文，当前为【" + get.translation(memorial.name) + "】");
-                    if (!name || !player.isIn()) continue;
+                    if (!owners(writer).includes(player)) break;
+                    const written = memorials(player).flatMap(item => item.names || []);
+                    const name = await chooseEpitaph(writer, "芙蓉诔（" + get.translation(memorial.dead) + "）：可新增一篇不重复的诔文", written);
+                    if (!name || !owners(writer).includes(player)) continue;
                     const list = memorials(player).slice();
-                    list[index] = { ...memorial, name };
+                    list[index] = { ...memorial, names: [...(memorial.names || []), name] };
                     sync(player, "hlhj_furonglei", list);
                     player.markSkill("hlhj_furonglei");
-                    updateMemorial(player, memorial.dead, name);
+                    updateMemorial(player, memorial.dead, list[index].names);
                 }
             },
         },
@@ -560,8 +589,9 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
             intro: {
                 name: "芙蓉诔",
                 content(storage, player) {
-                    return memorials(player).map(item => "第" + item.seat + "席 · " + get.translation(item.dead) + "：诔文【" + get.translation(item.name) + "】").join("<br>") +
-                        "<br>本轮诔文" + (player.storage.hlhj_epitaph_round === game.roundNumber ? "已使用" : "未使用") + "；你与共读者共享一次。";
+                    return memorials(player).map(item => "第" + item.seat + "席 · " + get.translation(item.dead) + "：" +
+                        (item.names?.length ? item.names.map(name => "【" + get.translation(name) + "】").join("、") : "待撰诔文")).join("<br>") +
+                        "<br>每轮每名共读角色每种诔文各限一次。";
                 },
             },
         },
@@ -585,8 +615,10 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
         hlhj_furonglei: { type: "hlhj_memorial", enable: false, fullskin: false, derivation: "hlhj_baoyu" },
     };
     const translate = {
+        hlhj_baoyu_jiangzhu: "绛珠仙子",
+        hlhj_baoyu_jiangzhu_info: "锁定技，你的身份不能分配为内奸。基本牌、伤害牌和武器牌进入你的手牌后，转化为【情笺】，保留花色和点数。玉离身不影响此效果。",
         hlhj_xianyu: "衔玉而生",
-        hlhj_xianyu_info: "①游戏开始时，生成唯一一张与你关联的【通灵宝玉】，装备之（宝物栏不可用时改为获得）。每名角色的回合开始前，若此玉未装备在你身上，你可以收回并装备它。②锁定技，你的伤害手牌转化为【情笺】，保留花色、点数；玉离身不影响此效果。",
+        hlhj_xianyu_info: "游戏开始时，生成唯一一张与你关联的【通灵宝玉】，装备之（宝物栏不可用时改为获得）。每名角色的回合开始前，若此玉未装备在你身上，你可以收回并装备它。",
         hlhj_xianyu_recall: "衔玉·归玉", hlhj_jade: "通灵宝玉",
         hlhj_qingjian: "情笺", hlhj_qingjian_use: "情笺",
         hlhj_qingjian_info: "专属基本牌。可当作任意基本牌对自己使用或打出，遵循该牌的使用、响应条件，不能以其他角色为使用目标。不计入手牌上限，且不因手牌上限而弃置；仍是实际手牌。保留原牌花色、点数；实体转化牌进入牌堆或弃牌堆时恢复原牌，生成的复制牌则销毁。",
@@ -594,17 +626,17 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
         hlhj_tonglingbaoyu_info: "专属宝物·红桃A。每名绛洞花主仅关联一张实体，可正常获得、弃置、转移或替换，召回权属于关联者。装备技能〖莫失莫忘〗：当装备者即将受到伤害时，令此次伤害减少1点。仅在装备区且装备效果有效时可减伤或用于梦游太虚；仅持于手中不生效。",
         hlhj_moshi: "莫失莫忘", hlhj_moshi_info: "锁定技，当你即将受到伤害时，若此装备效果有效，令此次伤害减少1点。",
         hlhj_gongdu: "共读西厢",
-        hlhj_gongdu_info: "出牌阶段限一次，你可以将任意张手牌正面朝上置为“书”，选择一名其他角色与你共读，同时只能与一人共读。双方均可按牌的规则使用或打出书页。结算后，若使用者不是该页的放入者，放入者摸一张牌；然后使用者可以将一张手牌置为新书，否则结束共读。共读结束时，未用的书归还放入者；更换共读者先结束原共读。",
+        hlhj_gongdu_info: "出牌阶段，你可以将任意张手牌（至少一张）正面朝上置为“书”，选择一名其他角色与你共读，同时只能与一人共读。双方均可按牌的规则使用或打出书页。结算后，若使用者不是该页的放入者，放入者摸一张牌；然后使用者可以将一张手牌置为新书，否则结束共读。共读结束时，若双方均未死亡，未用的书归还放入者，否则归还存活者；更换共读者先结束原共读。",
         hlhj_book: "书", hlhj_read: "共读·用书", hlhj_readers: "共读者", hlhj_read_after: "共读·续页",
         hlhj_mengyou: "梦游太虚",
-        hlhj_mengyou_info: "结束阶段开始时，你可以将一张【情笺】背面朝上置为“梦”（替换旧梦），选定你或当前存活的共读者。其下一次成为其他角色使用的伤害牌的目标时，展示梦；若二者颜色相同，你可以弃置处于装备区且装备效果有效的关联【通灵宝玉】，令此牌对其无效。此后弃置梦。",
+        hlhj_mengyou_info: "你的回合结束时，你可以将一张【情笺】背面朝上置于你或当前存活共读者的特殊栏位，称为“梦”，可累积。当有你所置的梦且未装备通灵宝玉的角色成为其他角色使用的伤害牌的目标时，你可以将处于装备区且装备效果有效的关联【通灵宝玉】赠与该角色（移动至其宝物栏），然后选择一张梦展示；若二者颜色相同且玉的装备效果有效，此牌对该角色无效。展示后保留梦。",
         hlhj_dream: "梦", hlhj_mengyou_reveal: "梦游·护梦",
         hlhj_qingyu: "情与不情",
         hlhj_qingyu_info: "当你或共读者即将受到伤害时，若有书，你可以将全部书交给其中未受此次伤害的一方，令此次伤害减少1点，然后结束共读。",
         hlhj_duzhuan: "杜撰芙蓉",
-        hlhj_duzhuan_info: "当共读者死亡时，在其死亡位置留下与你和其关联的“芙蓉诔”，并结束共读。你为其声明一种非伤害基本牌或普通锦囊牌名，称为“诔文”。你或当前共读者的回合开始时，当前回合角色可以重写诔文。每轮限一次（双方及各座芙蓉诔共享次数），你或当前共读者可以将一页书当作诔文使用或打出，结算后仍按共读西厢处理。",
-        hlhj_duzhuan_rewrite: "芙蓉·重书", hlhj_furonglei: "芙蓉诔", hlhj_memorial: "纪念物",
-        hlhj_furonglei_info: "专属场上纪念物，不进入牌堆，也不占装备栏。记录绛洞花主、亡故共读者、死亡座次与诔文。诔文须为非伤害基本牌或普通锦囊牌。绛洞花主与当前共读者可用一页书代之，每轮共享一次，并照常结算摸牌、续页或结束共读。",
+        hlhj_duzhuan_info: "当共读者死亡时，在其死亡位置生成一座“芙蓉诔”，并结束共读。共读角色的回合开始时，可为芙蓉诔新增一篇不重复的非伤害基本牌或非伤害普通锦囊牌牌名，称为“诔文”，已有诔文保留。共读角色可以将一页书当作诔文使用或打出，每轮每名角色每种诔文限一次，结算后仍按共读西厢处理。",
+        hlhj_duzhuan_rewrite: "芙蓉·撰文", hlhj_furonglei: "芙蓉诔", hlhj_memorial: "纪念物",
+        hlhj_furonglei_info: "专属场上纪念物，不进入牌堆，也不占装备栏。记录绛洞花主、亡故共读者、死亡座次及逐篇新增的诔文。同一宝玉的诔文牌名不重复，须为非伤害基本牌或非伤害普通锦囊牌。绛洞花主与当前共读者可用一页书代之，每轮每名角色每种诔文各限一次，并照常结算摸牌、续页或结束共读。",
     };
     return { skills, cards, translate };
 }

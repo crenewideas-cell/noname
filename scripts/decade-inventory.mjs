@@ -22,12 +22,15 @@ if(!entry){entry={name:'十周年局内UI',characters:[],defaultEnabled:false,so
 entry.files=Object.fromEntries(files.filter(f=>/\.(js|css|json)$/.test(f)&&!f.startsWith('assets/')).map(f=>[f,createHash('sha256').update(fs.readFileSync(path.join(root,f))).digest('hex')]));
 entry.files['files.json']=createHash('sha256').update(fs.readFileSync(path.join(root,'files.json'))).digest('hex');entry.hash=entry.files['extension.js'];
 const hand=registry.find(item=>item.name==='手杀标准UI');
-if(hand){hand.files['extension.js']=createHash('sha256').update(fs.readFileSync(path.resolve('apps/core/extension/ui/手杀标准UI/extension.js'))).digest('hex');hand.hash=hand.files['extension.js'];}
+if(hand){
+ for(const file of new Set([...Object.keys(hand.files),'native/menu.js']))hand.files[file]=createHash('sha256').update(fs.readFileSync(path.resolve('apps/core/extension/ui/手杀标准UI',file))).digest('hex');
+ hand.hash=hand.files['extension.js'];
+}
 const lobby=registry.find(item=>item.name==='如真似幻');
 const lobbyRoot=path.resolve('apps/core/extension/ui/如真似幻');
 const lobbyManifest={...builtinPacks().find(pack=>pack.manifest.id==='builtin-rzsh').manifest,id:'rzsh-modern'};
 writeChanged(path.join(lobbyRoot,'ui-workshop.json'),JSON.stringify(lobbyManifest,null,2)+'\n');
-if(lobby)for(const file of ['scenes.js','ui-workshop.json'])lobby.files[file]=createHash('sha256').update(fs.readFileSync(path.join(lobbyRoot,file))).digest('hex');
+if(lobby){for(const file of Object.keys(lobby.files))lobby.files[file]=createHash('sha256').update(fs.readFileSync(path.join(lobbyRoot,file))).digest('hex');lobby.hash=lobby.files['extension.js'];}
 if(fs.readFileSync(registryFile,'utf8')!==registrySource)throw new Error('Extension registry changed concurrently; rerun the inventory generator');
 const registryText=JSON.stringify(registry,null,2)+'\n';if(registrySource.replaceAll('\r\n','\n')!==registryText)writeChanged(registryFile,registryText);
 console.log(JSON.stringify({files:files.length,bytes:files.reduce((n,f)=>n+fs.statSync(path.join(root,f)).size,0)}));

@@ -1,0 +1,514 @@
+{
+  "scope": "The unresolved entries from the prior audit, not the entire source package.",
+  "complete": false,
+  "animations": [
+    {
+      "name": "effect_youxikaishi",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "globaltexiao/shanghaishuzi/shuzi",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "effect_jisha1",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "effect_xianding",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "Xdiankuangtulu",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "wanfumodi",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "Xwushuangwanjunqushou",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "shenweizhengqiankun",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "shoushajisha",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "ss_yishugaochao",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "qingnangjishi",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "ss_miaoshouhuichun",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "shenyimiaoshou",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "shoupo",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "lianpo",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "sanpo",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "sipo",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "wupo",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "liupo",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "qipo",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "qy_SF_eff_lianzhan_lv2_zi",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "qy_SF_eff_lianzhan_lv3_zi",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "qy_SF_eff_lianzhan_lv4_zi",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "qy_SF_eff_lianzhan_lv5_zi",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "qy_SF_eff_lianzhan_lv6_zi",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "qy_SF_eff_lianzhan_lv7_zi",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "baikuang",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "jinengX",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "jinengXX",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "zhuanhuanji",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "juexingji/juexingji2/jxxd",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "juexingji/juexingji3/oljuexingji",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "juexingji/juexingji3/olxiandingji",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "juexingji/juexingji3/olshimingji",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "Ss_PaiJu_wushang",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "guohechaiqiao",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "shunshouqianyang",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "SS_jiuwo",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "card/sha",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "card/shan",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "card/jiu",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "card/tao",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "card/wuzhongshengyou",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "card/wuxiekeji",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "card/huogong",
+      "status": "preserved-alternate",
+      "reason": "Alternate style/preload preserved; not selected by the current reference-style provider."
+    },
+    {
+      "name": "card/effect_guguoanbang",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "card/effect_haolingtianxia",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "card/effect_kefuzhongyuan",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    },
+    {
+      "name": "card/effect_wenheluanwu",
+      "status": "wired-needs-full-scenario-acceptance",
+      "reason": "Uses public host presentation messages; no source skills or delays imported."
+    }
+  ],
+  "styles": [
+    {
+      "resource": "image/character/hidden_image.jpg",
+      "style": "src/styles/player3.css",
+      "status": "preserved-feature-pending"
+    },
+    {
+      "resource": "extension/十周年UI/image/styles/xinsha/new_border_camp1.png",
+      "style": "src/styles/player3.css",
+      "status": "missing-in-source"
+    },
+    {
+      "resource": "extension/十周年UI/image/styles/xinsha/new_border_camp2.png",
+      "style": "src/styles/player3.css",
+      "status": "preserved-feature-pending"
+    },
+    {
+      "resource": "extension/十周年UI/image/styles/xinsha/new_border_camp3.png",
+      "style": "src/styles/player3.css",
+      "status": "preserved-feature-pending"
+    },
+    {
+      "resource": "extension/十周年UI/image/styles/xinsha/new_border_camp4.png",
+      "style": "src/styles/player3.css",
+      "status": "preserved-feature-pending"
+    },
+    {
+      "resource": "extension/十周年UI/image/ui/dialog/chat_bubble.png",
+      "style": "src/styles/player3.css",
+      "status": "preserved-feature-pending"
+    },
+    {
+      "resource": "extension/十周年UI/image/ui/mark/mark_jie.png",
+      "style": "src/styles/player3.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/image/ui/mark/mark_shen.png",
+      "style": "src/styles/player3.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/image/ui/mark/mark_sp.png",
+      "style": "src/styles/player3.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/image/ui/mark/mark_tw.png",
+      "style": "src/styles/player3.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/image/ui/misc/item_bg.png",
+      "style": "src/styles/player3.css",
+      "status": "preserved-feature-pending"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/CD/tuoguan2.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "preserved-feature-pending"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/OL_line/bg/bgdialog.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "preserved-feature-pending"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/OL_line/bg/gou.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "preserved-feature-pending"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/OL_line/uibutton/back.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "preserved-feature-pending"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipdizhu.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipfanzei.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipjinguo.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipneijian.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipnongmin.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipqunxiong.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipshuguo.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipweiguo.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipweizhi.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipwuguo.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipye.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipyinbi.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipzhongchen.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/SFTS/Tipzhugong.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/uibutton/new_count5.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/uibutton/new_huanfu_new.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/uibutton/new_jilu_new.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/lbtn/uibutton/new_xiaolian_new.png",
+      "style": "ui/styles/lbtn/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/online/skillitem_xianding_active.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "preserved-feature-pending"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/falu_club.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/falu_diamond.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/falu_heart.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/falu_spade.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/new_juexingji.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/new_mark_duty.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/new_mark_yang.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/new_mark_ying.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/new_xiandingji.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_jin.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_qun.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_shen.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_shu.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_wei.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    },
+    {
+      "resource": "extension/十周年UI/ui/assets/skill/yijiang/starcanxi_wu.png",
+      "style": "ui/styles/skill/xinsha.css",
+      "status": "wired-needs-full-scenario-acceptance"
+    }
+  ],
+  "requestedSubset": {
+    "implemented": true,
+    "scope": [
+      "host-captured hand-limit counter",
+      "falu/canxi marks",
+      "visible jie/shen/SP/TW prefix marks",
+      "guohe/shunshou target effects",
+      "dying loop"
+    ],
+    "handLimitPolicy": "Shows the last value returned by an existing core getHandcardLimit call; shows — before first calculation. Does not poll modifiers. Reset when player is uninitialized; retained through UI switches.",
+    "evidence": "output/decade-extras/"
+  },
+  "unresolved": [
+    "Alternate appearance selection, complete card-target/equipment scenarios, replay/online/spectator and device acceptance remain open.",
+    "Reference screenshots differ from the current cards, toolbar and some dialog details. Pixel parity is not accepted."
+  ]
+}

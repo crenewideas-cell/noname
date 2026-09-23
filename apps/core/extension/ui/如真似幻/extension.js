@@ -144,7 +144,12 @@ export async function activate(manifest) {
     },
     startGame(mode, matching = false) {
      if (lib.config.sessionType === "online") return lifecycle.online(mode);
-     if (matching) lifecycle.showView("matching"); else lifecycle.finish(mode);
+     if (matching) {
+      lifecycle.showView("matching");
+      // A visual timeline is never the sole gate to the core mode. The owned
+      // timer is cancelled on release, including a return to another scene.
+      lifecycle.timeout(()=>{if(activeView==='matching'||pendingView==='matching')void lifecycle.finish(mode);},20000);
+     } else lifecycle.finish(mode);
     },
     own(sprite) { owned.add(sprite); return sprite; },
     get isHome() { return activeView === "home"; },
@@ -159,7 +164,7 @@ export async function activate(manifest) {
      if (done) return;
      pendingView = name;
      const view = views.get(name);
-     if (!view || !homeReady || !backgrounds.size) { status.textContent = "正在准备界面…"; node.append(status); return; }
+     if (!view || !homeReady || !backgrounds.size) return;
      pendingView = null; status.remove();
      if (restore.mode) { sceneWindow.moode = restore.mode; delete restore.mode; }
      if (view.container.parent !== lifecycle.app?.stage) view.enter();
@@ -199,7 +204,9 @@ export async function activate(manifest) {
     }
    };
    activeScene = lifecycle;
-   const status = document.createElement("div"); status.className = "rzsh-loading"; status.textContent = "正在准备如真似幻…"; node.append(status);
+   // The source scene already supplies the loading artwork. Keep this node
+   // detached during normal loading; real errors still show recovery controls.
+   const status = document.createElement("div"); status.className = "rzsh-loading";
    function runVisual(fn,...args){
     if(done||disposed||typeof fn!=='function')return;
     try{Promise.resolve(fn(...args)).catch(fail);}catch(error){fail(error);}
