@@ -15,7 +15,7 @@ async function loadLibrary(base){
 }
 const cardEffects={sha:'heisha',shan:'shan',tao:'tao',jiu:'jiu',wuxie:'wuxiekeji',wuzhong:'wuzhongshengyou',guohe:'guohechaiqiao',shunshou:'shunshouqianyang',juedou:'juedou',nanman:'nanmanruqin',wanjian:'wanjianqifa',taoyuan:'taoyuanjieyi',wugu:'wugufengdeng',huogong:'huogong',tiesuo:'tiesuolianhuan',lebu:'lebusishu',bingliang:'bingliangcunduan',shandian:'shandian'};
 
-export function mountSkinAnimations({base,files,config,active=()=>true,enabled=()=>true,label=name=>name,saveSetting,parts}){
+export function mountSkinAnimations({base,files,config,active=()=>true,enabled=()=>true,staticSelected=()=>false,label=name=>name,saveSetting,parts}){
  const inventory=new Set(files),portraits=new Map(),renderers=new Set(),pending=new WeakMap(),specialSkills=new Map(),failedPortraits=new WeakMap();
  let disposed=false,effects,portraitRenderer,metadata,ready,scanFrame=0,gallery;
  const assetType=(root,name)=>['skel','json'].find(type=>inventory.has(root+name+'.'+type));
@@ -119,13 +119,13 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
     if(disposed)return;
     for(const [avatar,entry] of portraits){
      const rect=avatar.getBoundingClientRect();entry.rect=rect;
-   const shown=visible(avatar)&&avatar.dataset.skinCharacter===entry.character&&active()&&enabled()&&config.ss_dynamic!==false&&config.extension_十周年UI_dynamicSkin!==false;
+   const shown=!staticSelected(entry.character)&&visible(avatar)&&avatar.dataset.skinCharacter===entry.character&&active()&&enabled()&&config.ss_dynamic!==false&&config.extension_十周年UI_dynamicSkin!==false;
      for(const sprite of entry.sprites){sprite.opacity=shown?1:0;sprite.clip={x:rect.left,y:innerHeight-rect.bottom,width:rect.width,height:rect.height};}
      if(!shown)entry.context.clearRect(0,0,entry.canvas.width,entry.canvas.height);
     }
     render.call(this,time);
     for(const [avatar,entry] of portraits){
-     if(entry.disposed||!entry.sprites.length||!visible(avatar)||avatar.dataset.skinCharacter!==entry.character||!active()||!enabled()||config.ss_dynamic===false)continue;
+     if(staticSelected(entry.character)||entry.disposed||!entry.sprites.length||!visible(avatar)||avatar.dataset.skinCharacter!==entry.character||!active()||!enabled()||config.ss_dynamic===false)continue;
      const rect=entry.rect;if(!rect.width||!rect.height)continue;
      const width=Math.ceil(rect.width),height=Math.ceil(rect.height);
      if(entry.canvas.width!==width)entry.canvas.width=width;
@@ -148,7 +148,7 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
    const layers=[skin.beijing,skin].filter(layer=>layer?.name&&assetType(skinsRoot,layer.name));
    for(const layer of layers){
     const loaded=await load(renderer,skinsRoot,layer.name);
-    if(!loaded||disposed||entry.disposed||!renderers.has(renderer)||!active()||!enabled()||!visible(avatar)||avatar.dataset.skinCharacter!==character||config.ss_dynamic===false||config.extension_十周年UI_dynamicSkin===false){removePortrait(avatar,entry);return;}
+    if(!loaded||staticSelected(character)||disposed||entry.disposed||!renderers.has(renderer)||!active()||!enabled()||!visible(avatar)||avatar.dataset.skinCharacter!==character||config.ss_dynamic===false||config.extension_十周年UI_dynamicSkin===false){removePortrait(avatar,entry);return;}
     const sprite=renderer.playSpine({...layer,loop:true},{parent:avatar,follow:true,x:layer.x,y:layer.y,scale:layer.scale||1,angle:layer.angle});
     if(sprite)entry.sprites.push(sprite);
    }
@@ -158,10 +158,10 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
  function scan(){
   scanFrame=0;if(disposed||!metadata)return;
   const allowed=active()&&enabled()&&parts.has('players')&&config.ss_dynamic!==false&&config.extension_十周年UI_dynamicSkin!==false;
-  for(const avatar of portraits.keys())if(!allowed||!visible(avatar))removePortrait(avatar);
+  for(const avatar of portraits.keys())if(!allowed||staticSelected(avatar.dataset.skinCharacter)||!visible(avatar))removePortrait(avatar);
   if(!allowed)return;
   for(const avatar of document.querySelectorAll('#arena>.player>.avatar,#arena>.player>.avatar2')){
-   if(!visible(avatar))continue;
+   if(!visible(avatar)||staticSelected(avatar.dataset.skinCharacter))continue;
    const character=avatar.dataset.skinCharacter;if(!character){removePortrait(avatar);continue;}
    const choices=skinOptions(character),selected=config.ss_dynamic_skins?.[character];
    const selectedSkin=selected==='off'?null:choices.find(([label])=>label===selected)||choices[0];

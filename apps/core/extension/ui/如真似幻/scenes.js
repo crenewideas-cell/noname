@@ -1843,25 +1843,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
             }), Uv["on"]("pointermove", () => { clearTimeout(UV); });
             let Ul = yW("clt_menu_read");
             GF(Ul), Ul["position"]["set"](Us["width"] * 0.55, Us["height"] * 0.75), Ul[KH(0x173)]["set"](0.5), Ul["interactive"] = !![], Ul["on"]("pointerup", () => {
-                const KV = KX;
-                if (!lib["config"]["extension_千幻聆音_enable"] && !lib["config"]["extension_假装无敌_enable"])
-                    return;
-                else {
-                    if (lib["config"]["extension_千幻聆音_enable"]) {
-                        if (!lib["config"]["rzshxqhly"])
-                            confirm("是否开启千幻适配大界面？") && game["saveConfig"]("rzshxqhly", !![]);
-                        else
-                            lib["config"]["rzshxqhly"] && (confirm("是否关闭千幻适配大页面？") && game["saveConfig"]("rzshxqhly", ![]));
-                    }
-                    else {
-                        if (lib["config"]["extension_假装无敌_enable"]) {
-                            if (!lib["config"]["rzshxjzwd"])
-                                confirm("是否开启假装无敌适配大界面？") && game["saveConfig"](KV(0x1e6, "2^^M"), !![]);
-                            else
-                                lib["config"]["rzshxjzwd"] && (confirm("是否关闭假装无敌适配大页面？") && game["saveConfig"]("rzshxjzwd", ![]));
-                        }
-                    }
-                }
+                lifecycle.skins();
             });
             let UE = yW("clt_menu_ban");
             GF(UE), UE["position"]["set"](Us["width"] * 1.25, Us["height"] * 0.75), UE["anchor"]["set"](0.5), UE["interactive"] = !![], UE["on"]("pointerup", () => {

@@ -2,7 +2,7 @@ import { installAdaptiveLayout } from './layout.js';
 import { mountAnimations } from './animations.js';
 import { mountPortraits } from './portraits.js';
 import { mountExtras } from './extras.js';
-import { skillPresentation, subscribePresentation, openSkinGallery } from 'noname';
+import { skillPresentation, subscribePresentation, openCharacterSkins, getSkinService, subscribeCharacterSkins } from 'noname';
 
 export function cardArtwork(card,{lib,get,inventory,base}) {
  if(!card.name||!card.childNodes.length||card.classList.contains('infohidden')||lib.config.hide_card_image)return;
@@ -44,11 +44,11 @@ export async function mountPresentation({base,manifest,ui,lib,get,game,signal}) 
  const layout=parts.has('arena')&&parts.has('players')&&!game.chess?installAdaptiveLayout({game:{get me(){return !!game.me;}},ui,className:'decade-layout',refreshHand:()=>ui.updatehl()}):()=>{};
  const options=manifest.components.arena?.options||{},enabled=()=>lib.config.animation!==false&&!lib.config.low_performance;
  const animations=mountAnimations({base,parts,options,metadata,enabled,volume:()=>Math.max(0,Math.min(1,(lib.config.volumn_audio||0)/8))});
- const portraits=mountPortraits({base,metadata,enabled:()=>parts.has('players')&&options.dynamic!==false&&enabled()});
+ const portraits=mountPortraits({base,metadata,enabled:()=>parts.has('players')&&options.dynamic!==false&&enabled(),staticSelected:name=>lib.config.change_skin!==false&&!!getSkinService().current(name),subscribe:subscribeCharacterSkins});
  const extras=mountExtras({base,parts,ui,game,lib,inventory,metadata,animations});
  if(parts.has('buttons')){
   skinButton=document.createElement('button');skinButton.type='button';skinButton.className='decade-skin-button';skinButton.title='换肤';skinButton.setAttribute('aria-label','换肤');
-  skinButton.addEventListener('click',()=>{gallery=openSkinGallery();});document.body.append(skinButton);
+  skinButton.addEventListener('click',()=>{gallery=openCharacterSkins();});document.body.append(skinButton);
  }
  if(parts.has('arena')){
   identityTip=document.createElement('details');identityTip.className='decade-identity-tip';

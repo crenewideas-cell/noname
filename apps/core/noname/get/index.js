@@ -1,4 +1,4 @@
-import { openSkinGallery } from "../ui/skinGallery.js";
+import { openCharacterSkins } from "../skin/qianhuan/index.js";
 import { normalizeSkinPath } from "../skin/service.js";
 import { Is } from "./is.js";
 import { Promises } from "./promises";
@@ -5160,11 +5160,11 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 		const createButtons = function (nameskin) {
 			const button = document.createElement("button");
 			button.type = "button";
-			button.className = "skin-gallery-entry";
-			button.textContent = get.translation(nameskin) + " · 衣橱";
+			button.className = "qhly-skin-entry";
+			button.textContent = get.translation(nameskin) + " · 换肤";
 			button.addEventListener("click", event => {
 				event.stopPropagation();
-				openSkinGallery(nameskin);
+				openCharacterSkins(nameskin);
 			});
 			uiintro.content.appendChild(button);
 		};

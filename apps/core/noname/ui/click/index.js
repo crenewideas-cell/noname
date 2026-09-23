@@ -1,5 +1,5 @@
 import { getSkinService } from "../../skin/index.js";
-import { openSkinGallery } from "../skinGallery.js";
+import { openCharacterSkins } from "../../skin/qianhuan/index.js";
 import { openGameNavigation } from "../gameNavigation.js";
 import { usesModernPresentation } from "../presentation.js";
 import { styleDragLine } from "../workshop/runtime.js";
@@ -3269,13 +3269,13 @@ export class Click {
 		var changeskinfunc = null;
 		let refreshSkin = null;
 		if (lib.config.change_skin !== false) {
-			changeskinfunc = () => openSkinGallery(name);
-			const wardrobe = document.createElement("button");
-			wardrobe.type = "button";
-			wardrobe.className = "skin-card-entry";
-			wardrobe.textContent = "武将衣橱";
-			wardrobe.addEventListener("click", event => { event.stopPropagation(); changeskinfunc(); });
-			playerbg.appendChild(wardrobe);
+			changeskinfunc = () => openCharacterSkins(name);
+			const skinEntry = document.createElement("button");
+			skinEntry.type = "button";
+			skinEntry.className = "qhly-card-entry";
+			skinEntry.textContent = "千幻皮肤";
+			skinEntry.addEventListener("click", event => { event.stopPropagation(); changeskinfunc(); });
+			playerbg.appendChild(skinEntry);
 		}
 		var ban = ui.create.div(".menubutton.large.ban.character", uiintro, "禁用", function (e) {
 			if (this.classList.contains("unselectable")) {

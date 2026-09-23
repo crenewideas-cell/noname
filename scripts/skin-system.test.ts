@@ -140,7 +140,7 @@ test("disabling skins cancels a pending apply without deleting saved preferences
 	assert.equal(config.skin.hero[1], "image/old.jpg");
 });
 
-test("all built-in wardrobe entries reference existing core artwork", () => {
+test("all built-in skin entries reference existing core artwork", () => {
 	for (const skins of Object.values(skinCatalog))
 		for (const skin of skins) {
 			assert.ok(existsSync(new URL(`../apps/core/${skin.path}`, import.meta.url)), skin.path);

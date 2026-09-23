@@ -2423,6 +2423,9 @@ let openCharactersWhenReady=false;
                                                     else uibg.showfunc(0,10);
                                                 //rzshkz();
                                                 break;
+                                            case "under5":
+                                                bridge.collection();
+                                                break;
                                             case "under6":
  if(game.isUnlockDialogs.g) {
                                                 game.cls_wjbg=true;
@@ -3603,7 +3606,7 @@ let openCharactersWhenReady=false;
                                     uiinit(under5);
                                     const under6 = rzshcreatex('under6');
                                     uiinit(under6);
-                                    if(!lib.config.rzLock_nod) [under1,shop,under3,under4,under5].forEach(node=>node.alpha=0.6);
+                                    if(!lib.config.rzLock_nod) [under1,shop,under3,under4].forEach(node=>node.alpha=0.6);
                                     //右下角的十字按键
                                     const menu1 = rzshcreate('menu1')
                                     uiinit(menu1, true);
@@ -5290,30 +5293,7 @@ let openCharactersWhenReady=false;
                                     wujiangmenupifu.scale.set(0.25);
                                     wujiangmenupifu.x = 37;
                                     wujiangmenupifu.interactive = true;
-                                    wujiangmenupifu.on('pointerup', () => {
-                                        if(lib.config.rzLock_set) return;
-                                        if (!lib.config.extension_千幻聆音_enable) return;
-                                        window.tipsClick('TinyButton');//切换
-                                        confirms(lib.config.rzshxqhly?"是否关闭武将查看页面？":"是否开启武将查看页面？",false,function(){
-                                            if (!lib.config.rzshxqhly) {
-                                                game.saveConfig('rzshxqhly', true)
-                                            }else {
-                                                game.saveConfig('rzshxqhly', false)
-                                            }
-                                            window.tipsClick('Enter');//确定
-                                        },function(){
-                                            window.tipsClick('Report01');//离开
-                                        });
-                                        /*if (!lib.config.rzshxqhly) {
-                                            if (confirm("是否开启千幻适配大界面？")) {
-                                                game.saveConfig('rzshxqhly', true)
-                                            }
-                                        } else if (lib.config.rzshxqhly) {
-                                            if (confirm("是否关闭千幻适配大页面？")) {
-                                                game.saveConfig('rzshxqhly', false)
-                                            }
-                                        }*/
-                                    });
+                                    wujiangmenupifu.on('pointerup', () => { bridge.collection(); });
                                     //右下角按钮加
                                     let wujiangmenubtn2 = new PIXI.Sprite(gloader.resources.spritesui.textures['menu1']);
                                     wujiangmenubtn2.scale.set(0.75 * ppw, 0.75 * ppw);//0.7:0.7

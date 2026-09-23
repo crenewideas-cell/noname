@@ -1,4 +1,4 @@
-import {lib, game, ui, get, createSceneContext, openSkinGallery} from 'noname';
+import {lib, game, ui, get, createSceneContext, openCharacterSkins, getSkinService, subscribeCharacterSkins} from 'noname';
 import {createPortraitTextures} from './native/portraits.js';
 import {createResourceAccess} from './native/resources.js';
 import {mountGamePresentation} from './native/presentation.js';
@@ -34,6 +34,7 @@ export async function createNativeRuntime(manifest) {
  const storage=scopedStorage(localStorage),session=scopedStorage(sessionStorage),styles=new Set(),dialogs=new Set(),sounds=new Set(),controller=new AbortController();
  let scene,portraits,portraitTimer,prepared,homeFactory,disposeGame,installingGame,animations,graphics,motion,disposed=false,onlineEntry=false,entering=false,homeGeneration=0,onlineController;
  const visiblePortraits=new Set(),sceneNodes=new Set(),backgrounds=new Map();
+ const unsubscribeSkins=subscribeCharacterSkins(()=>{portraits?.refresh();animations?.refresh();});
  function setSceneBackground(path){
   if(disposed||!ui.background)return;
   const node=ui.background;
@@ -83,11 +84,11 @@ export async function createNativeRuntime(manifest) {
  const parts=new Set(Object.entries(manifest.components).filter(([,part])=>part.runtime==='shousha').map(([id])=>id));
  function saveSetting(key,value){context.game.saveConfig(key,value);animations?.refresh();}
  function animationService(){
-  return animations ||= mountSkinAnimations({base,files,config,parts,saveSetting,label:name=>get.translation(name),active:()=>!!ui.arena,enabled:()=>lib.config.animation!==false&&!lib.config.low_performance});
+  return animations ||= mountSkinAnimations({base,files,config,parts,saveSetting,label:name=>get.translation(name),staticSelected:name=>lib.config.change_skin!==false&&!!getSkinService().current(name),active:()=>!!ui.arena,enabled:()=>lib.config.animation!==false&&!lib.config.low_performance});
  }
  storage.setItem('hideModesA','true');storage.setItem('liuli_tenUIfix','fix');storage.setItem('firstSTBG','on');
  storage.setItem('loggedIn',lib.config.connect_nickname||'无名玩家');session.setItem('Network','online');session.setItem('rzshk','true');
- function portraitStore(){return portraits ||= createPortraitTextures({PIXI:graphics,character:name=>context.lib.character[name]||Object.values(context.lib.characterPack).map(pack=>pack[name]).find(Boolean),assetURL:lib.assetURL,defaultPath:lib.characterDefaultPicturePath,readImage:key=>game.getDB('image',key),url});}
+ function portraitStore(){return portraits ||= createPortraitTextures({PIXI:graphics,character:name=>context.lib.character[name]||Object.values(context.lib.characterPack).map(pack=>pack[name]).find(Boolean),assetURL:lib.assetURL,defaultPath:lib.characterDefaultPicturePath,readImage:key=>game.getDB('image',key),url,skin:name=>lib.config.change_skin!==false?getSkinService().current(name):null});}
  const bridge={storage,session,url,
   timeout:(fn,ms,...args)=>scene?.timeout(fn,ms,...args)||0,
   interval:(fn,ms,...args)=>scene?.interval(fn,ms,...args)||0,
@@ -111,11 +112,11 @@ export async function createNativeRuntime(manifest) {
    }},200);},
   framePortrait(player,portrait,labels){const frame=new graphics.Graphics();frame.lineStyle(7,0x251b13,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(2,0xbda36b,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(1,0xead6a0,.8).drawRoundedRect(-81,-134,162,188,3);player.addChildAt(frame,player.getChildIndex(labels));},
   notice(message){if(disposed)return;const node=document.createElement('div');node.className='shousha-native-notice';node.textContent=message;document.body.append(node);const close=()=>{clearTimeout(timer);node.remove();dialogs.delete(close);};const timer=setTimeout(close,4500);dialogs.add(close);},
-  character:name=>skinGallery(name),collection:()=>skinGallery(Object.keys(lib.character)[0]),
+  character:name=>characterSkins(name),collection:()=>characterSkins(),
   characterTexture:(name,options)=>portraitStore().get(name,options),
  };
- function skinGallery(name){
-  const gallery=openSkinGallery(name);gallery.classList.add('ss-skin-gallery');
+ function characterSkins(name){
+  const gallery=openCharacterSkins(name);
   const close=()=>{gallery.close();dialogs.delete(close);};dialogs.add(close);
   gallery.addEventListener('close',()=>dialogs.delete(close),{once:true});return gallery;
  }
@@ -173,7 +174,7 @@ export async function createNativeRuntime(manifest) {
    return installingGame;
   },
   dispose(){
-   if(disposed)return;disposed=true;homeGeneration++;controller.abort();context.dispose();
+   if(disposed)return;disposed=true;homeGeneration++;controller.abort();context.dispose();unsubscribeSkins();
    const releases=[()=>onlineController?.close(),()=>disposeGame?.(),()=>animations?.dispose(),()=>scene?.dispose(),()=>portraits?.dispose(),clearSceneNodes,...Array.from(sounds,audio=>()=>{audio.pause();audio.removeAttribute('src');}),...dialogs,...Array.from(styles,node=>()=>node.remove())];
    for(const release of releases)try{release();}catch(error){console.warn('手杀资源释放失败',error);}
    sounds.clear();dialogs.clear();styles.clear();clearInterval(portraitTimer);visiblePortraits.clear();

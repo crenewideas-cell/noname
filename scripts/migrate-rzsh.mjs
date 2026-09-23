@@ -69,6 +69,8 @@ scene = scene.replace('ym["load"](yu), yL["load"](yC)', 'ym["load"](() => { yu()
 scene = scene.replace(/G2\["width"\] = i\["screen"\]\["width"\], G2\["height"\] = i\["screen"\]\["width"\] \/ 0x536 \* 0x[0-9a-f]+/g, 'lifecycle.cover(G2)');
 // The plus menu owns workshop/settings access, keeping the original top bar unobstructed.
 scene = scene.replace('case "bottom_plus":\n', 'case "bottom_plus": lifecycle.openTools(() => GK.addChild(yU)); break;\ncase "legacy_bottom_plus":\n');
+// The skin-page toolbar opens the core-backed Qianhuan page without legacy extensions.
+scene = scene.replace(/const KV = KX;\s*if \(!lib\["config"\]\["extension_千幻聆音_enable"\][\s\S]*?(?=\n            \}\);)/, 'lifecycle.skins();');
 scene = scene.replace('case "wujiangbutton":', 'case "pifubutton": lifecycle.skins(); break;\ncase "wujiangbutton":');
 for (const type of ["Loader", "Ticker", "Container"]) scene = scene.replaceAll(`new PIXI["${type}"]()`, `lifecycle.${type.toLowerCase()}()`);
 scene = scene.replace('new PIXI["Application"](I)', 'lifecycle.application(I)');

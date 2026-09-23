@@ -1,6 +1,6 @@
 // Keep failed optional portraits out of PIXI ImageResource's unhandled promise
 // path. A stable canvas texture lets existing sprites receive the loaded image.
-export function createPortraitTextures({PIXI,character,assetURL,defaultPath,readImage,url}) {
+export function createPortraitTextures({PIXI,character,assetURL,defaultPath,readImage,url,skin=()=>null}) {
  const cache=new Map(),queue=[],urgent=[],cancelLoads=new Set(),images=new Map(),fallbacks=new Map();
  let active=0,urgentActive=0,disposed=false,paused=false;
  const resolvePath=path=>url(/^(?:[a-z][a-z\d+.-]*:|\/)/i.test(path)?path:assetURL+path);
@@ -40,7 +40,8 @@ export function createPortraitTextures({PIXI,character,assetURL,defaultPath,read
   context.drawImage(image,(canvas.width-width)/2,(canvas.height-height)/2,width,height);
   texture.baseTexture.update();
  }
- async function paint({name,canvas,texture}) {
+ async function paint(entry) {
+  const {name,canvas,texture}=entry,version=entry.version=(entry.version||0)+1;
   const source=sourceFor(name),sex=fallbackFor(name);
   const fallback=resolvePath(defaultPath+sex+'.jpg');
   let src;
@@ -48,13 +49,16 @@ export function createPortraitTextures({PIXI,character,assetURL,defaultPath,read
    try{src=await readImage(source.database);}catch(error){console.warn('手杀标准UI：读取武将头像失败',name,error);}
   }else src=resolvePath(source.path);
   if(disposed)return;
-  let image=typeof src==='string'?await loadImage(src):null;
-  if(disposed)return;
+  const selected=skin(name);
+  let image=selected?await loadImage(resolvePath(selected)):null;
+  if(disposed||entry.version!==version)return;
+  if(!image)image=typeof src==='string'?await loadImage(src):null;
+  if(disposed||entry.version!==version)return;
   if(!image){
    console.warn('手杀标准UI：武将头像不可用，使用默认头像',name,src||source.database);
    image=fallbacks.get(sex)||(src!==fallback?await loadImage(fallback):null);
   }
-  if(disposed||!image)return;
+  if(disposed||entry.version!==version||!image)return;
   // Keep frame dimensions fixed: sprites already sized their placeholder.
   // Resizing the texture after loading would unexpectedly enlarge every card.
   draw({canvas,texture},image);
@@ -71,6 +75,7 @@ export function createPortraitTextures({PIXI,character,assetURL,defaultPath,read
   while(!disposed&&!paused&&active<2&&queue.length)start(queue.shift(),false);
  }
  return {
+  refresh(){for(const entry of cache.values()){entry.version=(entry.version||0)+1;if(!queue.includes(entry)&&!urgent.includes(entry))queue.push(entry);}pump();},
   pause(){paused=true;queue.length=0;},
   async prepare(){
    await Promise.all(['male','female'].map(async sex=>{const image=await loadImage(resolvePath(defaultPath+sex+'.jpg'));if(!disposed&&image)fallbacks.set(sex,image);}));

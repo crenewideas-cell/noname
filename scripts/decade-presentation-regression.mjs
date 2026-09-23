@@ -55,9 +55,9 @@ try{
  assert.ok(report.geometry.prompt.every(p=>p.height>=p.content&&p.content>0));
  await shot('game');report.checks.push('real selection/deal: source cards, controls, visible prompt, public round/pile/clock and seat bounds');
  await checkpoint('deal');
- await page.locator('.decade-skin-button').click();await page.waitForSelector('.noname-skin-gallery[open]');await page.locator('.noname-skin-gallery .skin-close').click();await page.waitForSelector('.noname-skin-gallery',{state:'detached'});
+ await page.locator('.decade-skin-button').click();await page.waitForSelector('.qhly-character-skins[open]');await page.locator('.qhly-character-skins .qhly-close').click();await page.waitForSelector('.qhly-character-skins',{state:'detached'});
  if(await page.locator('.decade-identity-tip').isVisible()){await page.locator('.decade-identity-tip>summary').click();assert.equal(await page.locator('.decade-identity-tip>img').isVisible(),true);await page.locator('.decade-identity-tip>summary').click();}
- report.checks.push('skin entry opens/closes the core wardrobe and standard identity task image toggles');
+ report.checks.push('skin entry opens/closes the Qianhuan skin page and standard identity task image toggles');
  report.fixtures=await page.evaluate(async()=>{
   const{ui,game}=window.auditHost;const p=game.me.cloneNode(true);p.className='player';p.dataset.position='5';
   p.node={identity:p.querySelector('.identity'),avatar:p.querySelector('.avatar'),name:p.querySelector('.name')};

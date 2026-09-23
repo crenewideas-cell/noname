@@ -1,0 +1,25 @@
+{
+  "name": "千幻聆音",
+  "author": "玄武江湖工作室 & 雷",
+  "version": "4.13.8.1",
+  "source": "temp/三国杀·琉璃版5.5/resources/app/extension/千幻聆音",
+  "hashes": {
+    "extension.js": "34cf474c9e48b6dc59581ba11a2a85c97b83df4fb207a8f93a1789976faeb5c2",
+    "theme/shousha/code/shousha.js": "d3b9ac409665f4f343ca6b8147d0eb140283873020b49d3f2f7ebc95a289258f",
+    "skinShare.js": "a54e738ca2a960673fee84b7398de7af267c9d6b7c3d2316b7303cb31da8e384"
+  },
+  "credits": "原作者说明保留在素材目录 readme.md；遵循项目 GPL-3.0-only，素材归属原作者。",
+  "migration": {
+    "model": "shousha.js skin.getCurrentSkin / refreshAfterGot / refresh skin list; extension.js qhly_getSkinName",
+    "view": "Adapted shousha big portrait, horizontal skin cards, classic first and explicit apply; core adapter replaces global qhly calls.",
+    "excluded": [
+      "prototype overrides",
+      "player initialization",
+      "plugins",
+      "dynamic rendering",
+      "audio replacement"
+    ]
+  },
+  "characters": 525,
+  "images": 728
+}

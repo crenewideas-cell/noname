@@ -152,7 +152,7 @@ async function initializeAppearance() {
 	baseline = Object.fromEntries(SETTING_KEYS.map(key => [key, lib.config[key]]));
 	lib.uiWorkshop = { version: 1, registerExtension, use: usePack, ownsSetting: key => !!loaded && Object.values(loaded.manifest.components).some(part => Object.hasOwn(part.settings || {}, key)), open: async () => (await import("./manager.js")).openWorkshop() };
 	lib.uiWorkshop.openRooms = async mode => (await import("../../online/entry.js")).openOnlineRooms(mode);
-	lib.uiWorkshop.openSkins = async id => (await import("../skinGallery.js")).openSkinGallery(id);
+	lib.uiWorkshop.openSkins = async id => (await import("../../skin/qianhuan/index.js")).openCharacterSkins(id);
 	lib.uiWorkshop.openSettings = async page => (await import("../lobbySettings.js")).openLobbySettings(page);
 	await repairBuiltinCopies().catch(error => {
 		console.warn("UI 套装重复记录暂未整理，下次启动会重试", error);

@@ -93,10 +93,6 @@ body.shousha-native-game .skill-control>.enable>.select{box-shadow:0 0 7px #efc8
 body.shousha-native-game .skill-control>.enable>div:not(.usable):not(.select),
 body.shousha-native-game .skill-control .lockedSkill{opacity:.58}
 
-.noname-skin-gallery.ss-skin-gallery{background:#241c16f5;color:#f2dfb3;border:2px solid #ad8d53;font-family:shousha,serif}
-.ss-skin-gallery :is(.skin-sidebar,.skin-footer,.skin-header){background:#38291be8;border-color:#ad8d53}
-.ss-skin-gallery :is(button,input){color:#f2dfb3;border-color:#ad8d53;background:#584327}
-.ss-skin-gallery :is(.skin-preview,.skin-choice[aria-pressed="true"]){border-color:#edc87b;box-shadow:0 0 12px #d7ac4855}
 .ss-dynamic-gallery{position:fixed;inset:12% 15%;z-index:10050;overflow:auto;padding:24px;background:#241c16fa;color:#f2dfb3;border:2px solid #ad8d53;border-radius:12px;box-shadow:0 0 0 100vmax #0009;font:18px shousha,serif}
 .ss-dynamic-gallery :is(h2,select,button,.ss-dynamic-choices){position:relative}
 .ss-dynamic-gallery :is(select,button){margin:8px;padding:10px;color:inherit;background:#584327;border:1px solid #ad8d53;font:inherit;cursor:pointer}

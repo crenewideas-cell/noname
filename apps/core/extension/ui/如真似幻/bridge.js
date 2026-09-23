@@ -1,4 +1,4 @@
-import { lib, game, get } from "noname";
+import { lib, game, get, subscribeCharacterSkins } from "noname";
 
 export const baseURL = () => import.meta.url.slice(0, import.meta.url.lastIndexOf('/') + 1);
 export function plainText(value) {
@@ -39,7 +39,8 @@ function portrait(name, portraitJobs) {
 export function createPortraitLoader(lifecycle) {
  const queue = [], pending = new WeakSet(), textures = new Map(), waiting = new Set(), portraitJobs = new Map(), ownedTextures = new Set(), cancelLoads = new Set();
  const graphics = lifecycle.graphics, PIXI = graphics;
- let active = 0, disposed = false;
+ let active = 0, disposed = false, generation = 0;
+ const sprites = new Set(), retiredTextures = new Set();
  function textureFromURL(url) {
   return new Promise((resolve,reject)=>{
    const image=new Image();image.crossOrigin='anonymous';
@@ -66,16 +67,18 @@ export function createPortraitLoader(lifecycle) {
    const sprite = queue.shift();
    if (sprite.destroyed || sprite.workshopPortraitLoaded || !attached(sprite)) { pending.delete(sprite); continue; }
    const name = sprite.workshopCharacter;
+   const version = generation;
    active++;
    const job = textures.get(name) || portrait(name, portraitJobs).then(url => {
     if(disposed)return null;
-    return textureFromURL(url).then(texture=>{if(disposed){texture.destroy(true);return null;}ownedTextures.add(texture);return texture;});
+    return textureFromURL(url).then(texture=>{if(disposed){texture.destroy(true);return null;}ownedTextures.add(texture);if(version!==generation)retiredTextures.add(texture);return texture;});
    });
    textures.set(name, job);
    job.then(texture => {
+    if (version !== generation) return;
     if (!disposed && !sprite.destroyed && texture) { sprite.texture = texture; fit(sprite); sprite.workshopPortraitLoaded = true; }
     waiting.delete(sprite);
-   }).catch(() => { textures.delete(name); waiting.delete(sprite); }).finally(() => { active--; pending.delete(sprite); pump(); });
+   }).catch(() => { if(version===generation){textures.delete(name); waiting.delete(sprite);} }).finally(() => { active--; pending.delete(sprite); if(version!==generation)request(sprite);pump(); });
   }
  };
  const request = sprite => {
@@ -84,16 +87,28 @@ export function createPortraitLoader(lifecycle) {
   if (!attached(sprite)) return;
   pending.add(sprite); queue.push(sprite); queueMicrotask(pump);
  };
+ // Retire old textures only after sprites have switched to the new generation.
+ const collectTextures=()=>{
+  const used=new Set([...sprites].filter(sprite=>!sprite.destroyed).map(sprite=>sprite.texture));
+  for(const texture of retiredTextures)if(!used.has(texture)){texture.destroy(true);ownedTextures.delete(texture);retiredTextures.delete(texture);}
+ };
  lifecycle.interval(() => {
   for (const sprite of waiting) {
    if (sprite.destroyed || sprite.workshopPortraitLoaded) waiting.delete(sprite);
    else request(sprite);
   }
+  if(active===0&&queue.length===0)collectTextures();
  }, 100);
+ const unsubscribeSkins=subscribeCharacterSkins(()=>{
+  for(const texture of ownedTextures)retiredTextures.add(texture);
+  generation++;textures.clear();portraitJobs.clear();
+  for(const sprite of sprites){if(sprite.destroyed){sprites.delete(sprite);continue;}sprite.workshopPortraitLoaded=false;request(sprite);}
+ });
  return {
   sprite(name) {
    const sprite = new PIXI.Sprite(PIXI.Texture.EMPTY);
    sprite.workshopCharacter = name;
+   sprites.add(sprite);
    request(sprite);
    return sprite;
   },
@@ -104,7 +119,7 @@ export function createPortraitLoader(lifecycle) {
    clip.beginFill(0xffffff).drawRoundedRect(box.x,box.y,box.width,box.height,3).endFill();
    card.addChild(clip); sprite.mask = clip; sprite.workshopPortraitBox = box; fit(sprite);
   },
-  dispose() { disposed = true; queue.length = 0; for(const cancel of [...cancelLoads])cancel();for(const texture of ownedTextures)texture.destroy(true);ownedTextures.clear();textures.clear();portraitJobs.clear();waiting.clear(); }
+  dispose() { disposed = true; unsubscribeSkins();sprites.clear();retiredTextures.clear();queue.length = 0; for(const cancel of [...cancelLoads])cancel();for(const texture of ownedTextures)texture.destroy(true);ownedTextures.clear();textures.clear();portraitJobs.clear();waiting.clear(); }
  };
 }
 export function createSceneGame(files, sceneGame) {

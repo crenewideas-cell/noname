@@ -3,8 +3,14 @@ import { createSkinService } from "./service.js";
 import { skinCatalog } from "./catalog.js";
 import { save } from "../util/config.js";
 import { skinStorageKey } from "./portrait.js";
+import { qianhuanSkins } from "./qianhuan/catalog.js";
 
 let service;
+const skinListeners = new Set();
+export function subscribeCharacterSkins(listener) {
+	skinListeners.add(listener);
+	return () => skinListeners.delete(listener);
+}
 export function refreshCharacterSkins() {
 	for (const node of document.querySelectorAll("[data-skin-character]")) {
 		try {
@@ -12,6 +18,9 @@ export function refreshCharacterSkins() {
 		} catch (error) {
 			console.warn("武将立绘刷新失败", node.dataset.skinCharacter, error);
 		}
+	}
+	for (const listener of skinListeners) {
+		try { listener(); } catch (error) { console.warn("皮肤界面刷新失败", error); }
 	}
 }
 export function getSkinService() {
@@ -59,6 +68,7 @@ export function getSkinService() {
 			refresh: refreshCharacterSkins,
 		});
 		service.register("core", name => skinCatalog[skinStorageKey(name)] || []);
+		service.register("qianhuan", name => qianhuanSkins(skinStorageKey(name), import.meta.env?.VITE_PUBLIC_ONLINE === "1" ? "ui-skins" : "extension"));
 	}
 	return service;
 }
