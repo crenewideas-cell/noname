@@ -64,6 +64,21 @@ export function classifiedExtensionsPlugin(core) {
           const pathname = url.pathname.replace(/%(?![\da-f]{2})/gi, "%25");
           const name = decodeURIComponent(pathname);
           if (pathname !== url.pathname) req.url = pathname + url.search;
+          // Imported players are already browser-ready. Their tree is excluded
+          // from HMR watching, so Vite's transform cache would otherwise retain
+          // old rendering code even after an import and a full page refresh.
+          if (/^\/extension\/(?:imports\/)?本地动态皮肤包\/[^/]+\/runtime\/.+\.js$/.test(name)) {
+            const file = resolveExtensionPath(core, name);
+            const local = path.relative(path.join(core, 'extension/imports/本地动态皮肤包'), file);
+            if (!local.startsWith('..') && !path.isAbsolute(local)) {
+              void fs.readFile(file).then(content => {
+                res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+                res.setHeader('Cache-Control', 'no-store');
+                res.end(req.method === 'HEAD' ? undefined : content);
+              }, next);
+              return;
+            }
+          }
           if (name.startsWith("/extension/") && !/\.(?:js|ts|css)$/.test(name) && !(name.endsWith(".json") && url.searchParams.has("import"))) {
             const file = resolveExtensionPath(core, name);
             req.url = "/" + path.relative(core, file).split(path.sep).map(encodeURIComponent).join("/") + url.search;

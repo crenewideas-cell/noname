@@ -1,4 +1,5 @@
-import {subscribePresentation} from 'noname';
+import {dyingPresentation,subscribePresentation} from 'noname';
+import {mountBattleEffects} from './effects.js';
 import {createAnimationRenderer} from './animation-renderer.js';
 
 let library;
@@ -13,10 +14,9 @@ async function loadLibrary(base){
  })().catch(error=>{library=undefined;throw error;});
  return library;
 }
-const cardEffects={sha:'heisha',shan:'shan',tao:'tao',jiu:'jiu',wuxie:'wuxiekeji',wuzhong:'wuzhongshengyou',guohe:'guohechaiqiao',shunshou:'shunshouqianyang',juedou:'juedou',nanman:'nanmanruqin',wanjian:'wanjianqifa',taoyuan:'taoyuanjieyi',wugu:'wugufengdeng',huogong:'huogong',tiesuo:'tiesuolianhuan',lebu:'lebusishu',bingliang:'bingliangcunduan',shandian:'shandian'};
 
 export function mountSkinAnimations({base,files,config,active=()=>true,enabled=()=>true,staticSelected=()=>false,label=name=>name,saveSetting,parts}){
- const inventory=new Set(files),portraits=new Map(),renderers=new Set(),pending=new WeakMap(),specialSkills=new Map(),failedPortraits=new WeakMap();
+ const inventory=new Set(files),portraits=new Map(),renderers=new Set(),pending=new WeakMap(),failedPortraits=new WeakMap();
  let disposed=false,effects,portraitRenderer,metadata,ready,scanFrame=0,gallery;
  const assetType=(root,name)=>['skel','json'].find(type=>inventory.has(root+name+'.'+type));
  const effectsRoot='original/十周年UI/assets/animation/',skinsRoot='original/十周年UI/assets/dynamic/';
@@ -42,7 +42,7 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
  async function makeRenderer(root,offscreen=false){
   const classes=await prepare();if(disposed)return;
   const canvas=document.createElement('canvas');
-  const renderer=new classes.AnimationPlayer(base+root,offscreen?'offscreen':document.body,offscreen?canvas:undefined);
+  const renderer=new classes.AnimationPlayer(base+root,offscreen?'offscreen':document.documentElement,offscreen?canvas:undefined);
   if(!renderer.gl){renderer.canvas.remove();throw new Error('当前设备无法创建动画画布');}
   renderer.canvas.className=offscreen?'ss-dynamic-source':'ss-animation-canvas';
   if(!offscreen)renderer.canvas.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;z-index:10002;pointer-events:none';
@@ -73,27 +73,18 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
   const position=rect?{x:rect.left+axis(def.x,rect.width),y:innerHeight-rect.top-rect.height+axis(def.y,rect.height),scale:def.scale||.6}:{x:def.x,y:def.y,scale:def.scale||1};
   renderer.playSpine({...def,loop:false},position);
  }
- const unsubscribe=subscribePresentation(async message=>{
-  if(!active()||!parts.has('arena')||!enabled()||config.ss_effects===false||disposed)return;
-  const specialSkill=message.type==='skill'&&(message.awakening||message.mission||message.limited);
-  if(specialSkill)specialSkills.set(message.player?.seat,message.time);
-  if(message.type==='fullscreen'&&message.time-(specialSkills.get(message.player?.seat)??-Infinity)<300)return;
-  await prepare();if(disposed)return;
-  if(message.type==='skill'){
-   const def=metadata.effects.skill?.[message.skill];
-   const special=message.awakening?'juexingji':message.mission?'shimingji':message.limited?'xiandingji':null;
-   await play(special?{name:special,scale:.8}:def||{name:'effect_jineng_SS_1',scale:.6},special?null:message.player,message.time);
-  }else if(message.type==='card'){
-   let name=cardEffects[message.card]||message.card;
-   if(message.card==='sha'){if(message.nature.includes('fire'))name='huosha';else if(message.nature.includes('thunder'))name='leisha';}
-   await play({name:'effect_'+name,scale:.65},message.player,message.time);
-  }else if(message.type==='number'&&typeof message.value==='number'&&message.value<0){
-   await play({name:'SZN_loseHp',scale:.6},message.player,message.time);
-  }else if(message.type==='death')await play({name:'SZN_zhenwang',scale:.6},message.player,message.time);
-  else if(message.type==='judge')await play({name:'effect_panding_SS',scale:.6},message.player,message.time);
-  else if(message.type==='start')await play('shoushakaizhan',null,message.time);
-  else if(message.type==='fullscreen')await play({name:'effect_xianding',scale:.8},null,message.time);
- });
+ const battle=mountBattleEffects({base,parts,config,inventory,active,enabled,
+  prepare:async()=>({classes:await prepare(),data:metadata}),
+  volume:()=>Math.max(0,Math.min(1,(config.volumn_audio??8)/8))});
+ function syncBattle(){
+  const players=[...document.querySelectorAll('#arena>.player:not(.minskin)')];
+  battle.syncTargets(players.filter(player=>player.matches('.selectable,.selected,.target')));
+  battle.syncDying(players.filter(dyingPresentation));
+  battle.syncDrinking(players.filter(player=>player.querySelector('.playerjiu')&&!player.classList.contains('dead')));
+  battle.syncCards();
+ }
+
+ const unsubscribeState=subscribePresentation(message=>{if(['dying','playerReset','result'].includes(message.type))schedule();});
  function visible(avatar){
   const player=avatar.parentElement;
   const hidden=avatar.classList.contains('avatar2')?'unseen2':'unseen';
@@ -156,7 +147,7 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
   }catch(error){if(portraits.get(avatar)===entry)failedPortraits.set(avatar,character+':'+label);removePortrait(avatar,entry);console.warn('手杀动态立绘加载失败，保留静态立绘',error);}
  }
  function scan(){
-  scanFrame=0;if(disposed||!metadata)return;
+  scanFrame=0;if(disposed||!metadata)return;syncBattle();
   const allowed=active()&&enabled()&&parts.has('players')&&config.ss_dynamic!==false&&config.extension_十周年UI_dynamicSkin!==false;
   for(const avatar of portraits.keys())if(!allowed||staticSelected(avatar.dataset.skinCharacter)||!visible(avatar))removePortrait(avatar);
   if(!allowed)return;
@@ -205,6 +196,6 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
    if(!metadata)void prepare().then(schedule).catch(error=>console.warn('手杀动画资源重试失败',error));else schedule();
   },
   result(win){if(typeof win==='boolean')return play(win?'Xshengli':'Xnoshengli',null);},
-  dispose(){disposed=true;unsubscribe();observer.disconnect();cancelAnimationFrame(scanFrame);window.removeEventListener('resize',resize);gallery?.remove();for(const avatar of portraits.keys())removePortrait(avatar);for(const renderer of [...renderers])destroy(renderer);},
+  dispose(){disposed=true;unsubscribeState();battle.dispose();observer.disconnect();cancelAnimationFrame(scanFrame);window.removeEventListener('resize',resize);gallery?.remove();for(const avatar of portraits.keys())removePortrait(avatar);for(const renderer of [...renderers])destroy(renderer);},
  };
 }

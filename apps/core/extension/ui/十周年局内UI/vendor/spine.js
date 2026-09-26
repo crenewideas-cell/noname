@@ -4994,7 +4994,7 @@ var spine;
 			var chars = "";
 			var charCount = 0;
 			for (var i = 0; i < byteCount; ) {
-				var b = this.readByte();
+				var b = this.readByte() & 0xff;
 				switch (b >> 4) {
 					case 12:
 					case 13:

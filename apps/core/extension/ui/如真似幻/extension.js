@@ -1,4 +1,4 @@
-import { lib, game, ui, get, createSceneContext } from "noname";
+import { lib, game, ui, get, createSceneContext, openTreasure } from "noname";
 import { createSceneGame, createPortraitLoader, packLabel, openTools } from "./bridge.js";
 import { createLobbyAudio, createCharacterGrid, addSessionButtons } from "./runtime.js";
 
@@ -70,7 +70,7 @@ export async function activate(manifest) {
    const views = new Map();
    let pendingView = restore.view || "home", activeView = restore.view || "home", resizing, finishing = false, homeReady = false;
    let observer, onlineController, onlineOpen = false, resizeScene;
-   let done = false, graphics, motion;
+   let done = false, adventureEntering = false, graphics, motion;
    const lifecycle = this.lifecycle = {
     window:sceneWindow, document:sceneDocument,
     app: null,
@@ -151,6 +151,14 @@ export async function activate(manifest) {
       lifecycle.timeout(()=>{if(activeView==='matching'||pendingView==='matching')void lifecycle.finish(mode);},20000);
      } else lifecycle.finish(mode);
     },
+    // Adventure modes are local campaigns, even when the lobby last showed rooms.
+    async adventure(mode) {
+     if(done||finishing||adventureEntering)return;
+     adventureEntering=true;
+     try{await game.promises.saveConfig("sessionType", "offline");if(!done)await lifecycle.finish(mode);}
+     catch(error){if(!done)alertScene(error.message);}
+     finally{adventureEntering=false;}
+    },
     own(sprite) { owned.add(sprite); return sprite; },
     get isHome() { return activeView === "home"; },
     initialHome(enter) { if (activeView === "home") enter(); },
@@ -178,9 +186,11 @@ export async function activate(manifest) {
     openTools(onOriginal) { openTools(() => lifecycle.settings(), onOriginal); },
     settings() { return lib.uiWorkshop.openSettings("options"); },
     restart() { game.reload(); },
-    async character(name) { const view = await lib.uiWorkshop.openSkins(name); if(done){view.close();return view;} const resource={destroy:()=>view.close()};lifecycle.own(resource);view.addEventListener('close',()=>owned.delete(resource),{once:true});return view; },
-    skins() { return lifecycle.character(); },
-    corridor() { return lifecycle.skins(); },
+    async character(name, page = lifecycle.characterPage || lib.config.qhly_listdefaultpage || "introduce") { const favoritesBefore=JSON.stringify(lib.config.favouriteCharacter||[]); const view = await lib.uiWorkshop.openSkins(name,page); if(done){view.close();return view;} const resource={destroy:()=>view.close()};lifecycle.own(resource);view.addEventListener('close',()=>{owned.delete(resource);if(done)return;sceneContext.config.favouriteCharacter=[...(lib.config.favouriteCharacter||[])];if(favoritesBefore!==JSON.stringify(lib.config.favouriteCharacter||[]))lifecycle.refreshFavorites?.();},{once:true});return view; },
+    characters() { lifecycle.characterPage = undefined; lifecycle.showView("characters"); },
+    skins() { lifecycle.characterPage = "skin"; lifecycle.showView("characters"); return lifecycle.character(undefined, "skin"); },
+    treasure() { const view=openTreasure({PIXI:graphics});const resource={destroy:()=>view.close()};lifecycle.own(resource);view.addEventListener("close",()=>owned.delete(resource),{once:true});return view; },
+    corridor() { return alertScene("梦之回廊所需的扩展尚未安装。"); },
     timeout(fn, ms, ...args) { if(done)return 0;const id = setTimeout(() => { timers.delete(id); if (!done) runVisual(fn,...args); }, ms); timers.add(id); return id; },
     interval(fn, ms, ...args) { if(done)return 0;const id = setInterval(() => { if (!done) runVisual(fn,...args); }, ms); intervals.add(id); return id; },
     frame(fn) { if(done)return 0;const id = requestAnimationFrame(t => { frames.delete(id); if (!done) runVisual(fn,t); }); frames.add(id); return id; },
@@ -190,10 +200,23 @@ export async function activate(manifest) {
      const release = action => { try { action(); } catch(error) { console.warn("如真似幻资源释放失败",error); } };
      release(() => onlineController?.close());
      if (activeScene === lifecycle) activeScene = null;
-     clearTimeout(resizing); release(()=>lifecycle.sound.dispose()); release(()=>sceneGame?.stopSceneAudio()); release(()=>lifecycle.portraits?.dispose()); release(()=>lifecycle.grid?.dispose());
+     clearTimeout(resizing);
+     // Stop producers before destroying PIXI transforms. Source "removed"
+     // listeners animate neighbouring panels; firing them during teardown can
+     // create a GSAP tween targeting a panel already destroyed earlier.
+     release(()=>lifecycle.app?.stop());
+     tickers.forEach(ticker=>release(()=>ticker.stop()));
+     const detached=new Set();
+     const silence=object=>{
+      if(!object||detached.has(object)||object.destroyed)return;
+      detached.add(object);object.removeAllListeners?.();
+      for(const child of object.children||[])silence(child);
+     };
+     silence(lifecycle.app?.stage);containers.forEach(silence);owned.forEach(silence);
+     animations.forEach(animation => release(()=>animation.kill()));animations.clear();
+     release(()=>lifecycle.sound.dispose()); release(()=>sceneGame?.stopSceneAudio()); release(()=>lifecycle.portraits?.dispose()); release(()=>lifecycle.grid?.dispose());
      timers.forEach(clearTimeout); intervals.forEach(clearInterval); frames.forEach(cancelAnimationFrame);
      observer?.disconnect(); loaders.forEach(loader => release(()=>loader.destroy())); tickers.forEach(ticker => release(()=>ticker.destroy()));
-     animations.forEach(animation => release(()=>animation.kill()));
      containers.forEach(container => release(()=>{ if (!container.destroyed) container.destroy({children:true}); }));
      owned.forEach(sprite => release(()=>{ if (!sprite.destroyed) sprite.destroy({children:true}); }));
      // PIXI caches atlas textures globally; another active provider may share them.

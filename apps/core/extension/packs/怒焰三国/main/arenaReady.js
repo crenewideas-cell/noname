@@ -98,15 +98,21 @@ export function arenaReady() {
     if (lib.config["extension_怒焰三国_addFuryTip"]) {
         lib.hooks.checkEnd.push(function nysgsFuryTip(event) {
             if (event.name != "chooseToUse" || event.skill != "nysgsFury_use") return;
-            const dialog = event.skillDialog;
-            if (dialog?.content?.lastChild) {
-                if (ui.selected.cards.length) {
-                    const card = ui.selected.cards[0];
-                    dialog.content.lastChild.innerHTML = `<div><div style="width:100%;text-align:center">你可以失去1点怒气强化使用【${get.translation(card.name)}】，令此牌${get.info("_nysgsFury_buff").getBuff.get(card.name).description}</div></div>`;
-                } else {
-                    dialog.content.lastChild.innerHTML = `<div><div style="width:100%;text-align:center">${get.info("nysgsFury_use").prompt}</div></div>`;
-                }
-            }
+            const promptNode = event.skillDialog?.content?.lastElementChild;
+            if (!promptNode) return;
+            const card = ui.selected.cards[0];
+            // Match filterCard's effective name: e.g. 酾酒壮军 turns hand cards
+            // into 杀, including cards whose printed name has no fury entry.
+            const name = card ? get.name(card, event.player) : null;
+            const description = name ? get.info("_nysgsFury_buff")?.getBuff?.get(name)?.description : null;
+            const prompt = typeof description === "string"
+                ? `你可以失去1点怒气强化使用【${get.translation(name)}】，令此牌${description}`
+                : get.info("nysgsFury_use")?.prompt || "你可以强化使用一张牌";
+            if (promptNode.textContent === prompt) return;
+            const text = document.createElement("div");
+            text.style.cssText = "width:100%;text-align:center";
+            text.textContent = prompt;
+            promptNode.replaceChildren(text);
         });
     }
 

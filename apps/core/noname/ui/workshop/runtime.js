@@ -114,3 +114,23 @@ export function styleDragLine(ctx) {
 	if (/^\d+(\.\d+)?px$/.test(width)) ctx.lineWidth = Math.max(1, Math.min(30, parseFloat(width)));
 	if (opacity && Number.isFinite(parseFloat(opacity))) ctx.globalAlpha = Math.max(0, Math.min(1, parseFloat(opacity)));
 }
+
+/** Source 十周年UI/splash.js: solid gold drag arrows. Geometry is supplied by
+ * the host's existing selection path; this renderer never selects a target. */
+export function drawThemedDragLine(ctx, {start, pointer, selected, multitarget, full}) {
+	if (![document.body.dataset.decadeParts,document.body.dataset.shoushaParts].some(parts=>parts?.split(' ').includes('lines'))) return false;
+	ctx.save();
+	ctx.setLineDash([]);ctx.lineWidth=3;ctx.shadowBlur=5;ctx.shadowColor='rgba(255,215,0,.3)';
+	const segment=(from,to)=>{
+		if (!from||!to||from[0]===to[0]&&from[1]===to[1]) return;
+		const gradient=ctx.createLinearGradient(...from,...to);gradient.addColorStop(0,'transparent');gradient.addColorStop(1,'yellow');ctx.strokeStyle=gradient;
+		const angle=Math.atan2(to[1]-from[1],to[0]-from[0]),length=8;
+		ctx.beginPath();ctx.moveTo(...from);ctx.lineTo(...to);
+		ctx.moveTo(to[0]-length*Math.cos(angle+Math.PI/6),to[1]-length*Math.sin(angle+Math.PI/6));ctx.lineTo(...to);
+		ctx.lineTo(to[0]-length*Math.cos(angle-Math.PI/6),to[1]-length*Math.sin(angle-Math.PI/6));ctx.stroke();
+	};
+	let from=start;
+	for (const point of selected) {segment(multitarget?from:start,point);if(point)from=point;}
+	if (!full) segment(multitarget?from:start,pointer);
+	ctx.restore();return true;
+}

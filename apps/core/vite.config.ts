@@ -50,6 +50,9 @@ export default defineConfig({
 		port: port.client,
 		// Do not silently switch ports: a different origin has a different save DB.
 		strictPort: true,
+		// Imported model/texture libraries are static data, not HMR sources. Watching
+		// tens of thousands of these files delays startup and consumes gigabytes.
+		watch: { ignored: ["**/extension/imports/本地动态皮肤包/**"] },
 		warmup: { clientFiles: ["./noname/entry.ts", "./noname/init/index.ts", "./noname/online/ui/EntryShell.vue"] },
 		fs: {
 			allow: ["../.."],

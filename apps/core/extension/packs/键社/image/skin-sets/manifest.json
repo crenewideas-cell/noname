@@ -1,0 +1,530 @@
+{
+  "version": 1,
+  "pack": "键社",
+  "packId": "key",
+  "sourceDirectory": "temp/静态皮肤_KEY社",
+  "characters": {
+    "key_rumi": {
+      "name": "七濑留美",
+      "sex": "female",
+      "form": false,
+      "displayName": "七濑留美"
+    },
+    "key_yuri": {
+      "name": "仲村由理",
+      "sex": "female",
+      "form": false,
+      "displayName": "仲村由理"
+    },
+    "key_tomoya": {
+      "name": "冈崎朋也",
+      "sex": "male",
+      "form": false,
+      "displayName": "冈崎朋也"
+    },
+    "key_umi": {
+      "name": "加藤羽未",
+      "sex": "female",
+      "form": false,
+      "displayName": "加藤羽未"
+    },
+    "key_nagisa": {
+      "name": "古河渚",
+      "sex": "female",
+      "form": false,
+      "displayName": "古河渚"
+    },
+    "key_yukito": {
+      "name": "国崎往人",
+      "sex": "male",
+      "form": false,
+      "displayName": "国崎往人"
+    },
+    "key_yukine": {
+      "name": "宫泽有纪宁",
+      "sex": "female",
+      "form": false,
+      "displayName": "宫泽有纪宁"
+    },
+    "key_sunohara": {
+      "name": "春原阳平&春原芽衣",
+      "sex": "double",
+      "form": false,
+      "displayName": "春原阳平&春原芽衣"
+    },
+    "key_kyousuke": {
+      "name": "枣恭介",
+      "sex": "male",
+      "form": false,
+      "displayName": "枣恭介"
+    },
+    "key_lucia": {
+      "name": "此花露西娅",
+      "sex": "female",
+      "form": false,
+      "displayName": "此花露西娅"
+    },
+    "key_akiko": {
+      "name": "水濑秋子",
+      "sex": "female",
+      "form": false,
+      "displayName": "水濑秋子"
+    },
+    "key_haruko": {
+      "name": "神尾晴子",
+      "sex": "female",
+      "form": false,
+      "displayName": "神尾晴子"
+    },
+    "key_misuzu": {
+      "name": "神尾观铃",
+      "sex": "female",
+      "form": false,
+      "displayName": "神尾观铃"
+    },
+    "key_shiori": {
+      "name": "美坂栞",
+      "sex": "female",
+      "form": false,
+      "displayName": "美坂栞"
+    },
+    "key_kaori": {
+      "name": "美坂香里",
+      "sex": "female",
+      "form": false,
+      "displayName": "美坂香里"
+    },
+    "key_michiru": {
+      "name": "远野小满",
+      "sex": "female",
+      "form": false,
+      "displayName": "远野小满"
+    },
+    "key_minagi": {
+      "name": "远野美凪",
+      "sex": "female",
+      "form": false,
+      "displayName": "远野美凪"
+    },
+    "key_kano": {
+      "name": "雾岛佳乃",
+      "sex": "female",
+      "form": false,
+      "displayName": "雾岛佳乃"
+    },
+    "key_umi2": {
+      "name": "鹰原羽未",
+      "sex": "female",
+      "form": true,
+      "displayName": "鹰原羽未"
+    }
+  },
+  "allocations": [
+    {
+      "source": "七瀬留美.jpg",
+      "sourceName": "七瀬留美",
+      "character": "key_rumi",
+      "characterName": "七濑留美",
+      "destination": "new/key_rumi.jpg",
+      "sha256": "550bb16beb6106c4ddff44679616985f759ed2597fe002c5fb574616890d9c7a",
+      "match": "瀬／濑字形归一",
+      "originalId": "key_rumi",
+      "originalDestination": "original/key_rumi.jpg",
+      "originalSha256": "8d31de6c8fd7b5ba0f6b0f4a746a95be04a47821ec2b65b2dd8ae23e47dff958"
+    },
+    {
+      "source": "仲村由理.jpg",
+      "sourceName": "仲村由理",
+      "character": "key_yuri",
+      "characterName": "仲村由理",
+      "destination": "new/key_yuri.jpg",
+      "sha256": "dc329c728bad9c35f63f4db1539683d4979e49f627b8b4ffa3ac06063a116744",
+      "match": "exact",
+      "originalId": "key_yuri",
+      "originalDestination": "original/key_yuri.jpg",
+      "originalSha256": "353230ed7cbc8fdab5589f2490ca147be225d0aa158a1224a7100ba76d4040ec"
+    },
+    {
+      "source": "冈崎朋也.jpg",
+      "sourceName": "冈崎朋也",
+      "character": "key_tomoya",
+      "characterName": "冈崎朋也",
+      "destination": "new/key_tomoya.jpg",
+      "sha256": "bd7a6d80a57bcf371ac2b176ce93b1c3eccf5f367d27be77a39e83d1d4889868",
+      "match": "exact",
+      "originalId": "key_tomoya",
+      "originalDestination": "original/key_tomoya.jpg",
+      "originalSha256": "0a62dcd3c85cebd27d0d683a29d7fccf622b5eb4ddcd0a833c0f58eb9ce6e865"
+    },
+    {
+      "source": "加藤うみ.jpg",
+      "sourceName": "加藤うみ",
+      "character": "key_umi",
+      "characterName": "加藤羽未",
+      "destination": "new/key_umi.jpg",
+      "sha256": "fc3ea7cfffdc388de3769bfa55faf4259ba2c8d41448502b6298789077e70783",
+      "match": "exact",
+      "originalId": "key_umi",
+      "originalDestination": "original/key_umi.jpg",
+      "originalSha256": "93a90c11c767efdc6b919d2bc491a3e72d52a505585901a3d710295d7f9c37ea"
+    },
+    {
+      "source": "古河渚.jpg",
+      "sourceName": "古河渚",
+      "character": "key_nagisa",
+      "characterName": "古河渚",
+      "destination": "new/key_nagisa.jpg",
+      "sha256": "378e76978d61d56714a18940972fb6551e302841412d4260589f94b8f702ac23",
+      "match": "exact",
+      "originalId": "key_nagisa",
+      "originalDestination": "original/key_nagisa.jpg",
+      "originalSha256": "783aeb3b90cb877a846891a0a41a8031e9b1db87af24aaf9142651cb9fdd5111"
+    },
+    {
+      "source": "国崎往人.jpg",
+      "sourceName": "国崎往人",
+      "character": "key_yukito",
+      "characterName": "国崎往人",
+      "destination": "new/key_yukito.jpg",
+      "sha256": "e7ff3a60937935d2d421ae335d3cb6eefc9de5f3157dce71e207e25526c24f50",
+      "match": "exact",
+      "originalId": "key_yukito",
+      "originalDestination": "original/key_yukito.jpg",
+      "originalSha256": "ad71f339d84b94c5c85be8798ecf371d426c32c4f01ba6341d4ff530d86081e1"
+    },
+    {
+      "source": "宫泽有纪宁.jpg",
+      "sourceName": "宫泽有纪宁",
+      "character": "key_yukine",
+      "characterName": "宫泽有纪宁",
+      "destination": "new/key_yukine.jpg",
+      "sha256": "c7efcd29c4f82edccfa0ce25c6a2edf85867037dfb3fae3a7490b4c08415f23b",
+      "match": "exact",
+      "originalId": "key_yukine",
+      "originalDestination": "original/key_yukine.jpg",
+      "originalSha256": "ae89399a2b915f425402d4f673a727bdd9bd01d77f69f4a5f7e51ed90c191fae"
+    },
+    {
+      "source": "春原阳平&春原芽衣.jpg",
+      "sourceName": "春原阳平&春原芽衣",
+      "character": "key_sunohara",
+      "characterName": "春原阳平&春原芽衣",
+      "destination": "new/key_sunohara.jpg",
+      "sha256": "09c929856a4f9b4f81d110c4c4ae54bd5792c65df94a7235dc629a2d108f6dc1",
+      "match": "exact",
+      "originalId": "key_sunohara",
+      "originalDestination": "original/key_sunohara.jpg",
+      "originalSha256": "2c058ae3bbba322d65e23044699996dfcd6c8bc5566e009adec8cfa3d217fd75"
+    },
+    {
+      "source": "枣恭介.jpg",
+      "sourceName": "枣恭介",
+      "character": "key_kyousuke",
+      "characterName": "枣恭介",
+      "destination": "new/key_kyousuke.jpg",
+      "sha256": "0ba8824ab76472f34271b668fa0d90b6f617ff9f0ec829ef0e2a8748ae952706",
+      "match": "exact",
+      "originalId": "key_kyousuke",
+      "originalDestination": "original/key_kyousuke.jpg",
+      "originalSha256": "a6d5995ef425f74d8abb3fe841fe8efb2f8fcff345de17a32a935f6b63537a45"
+    },
+    {
+      "source": "此花露西娅.jpg",
+      "sourceName": "此花露西娅",
+      "character": "key_lucia",
+      "characterName": "此花露西娅",
+      "destination": "new/key_lucia.jpg",
+      "sha256": "d5ae49e82eda0c616eff8395844570f649b40112829875cd0ef7cef59c11efe6",
+      "match": "exact",
+      "originalId": "key_lucia",
+      "originalDestination": "original/key_lucia.jpg",
+      "originalSha256": "403c151277418254969e74a04fe5c4759271c018ce66476964d6f34029dff789"
+    },
+    {
+      "source": "水瀬秋子.jpg",
+      "sourceName": "水瀬秋子",
+      "character": "key_akiko",
+      "characterName": "水濑秋子",
+      "destination": "new/key_akiko.jpg",
+      "sha256": "514e9f2925c1466d3ceca6fe3dc8f9a5351fe037cc5bd0dad8fb13daa205d2fb",
+      "match": "瀬／濑字形归一",
+      "originalId": "key_akiko",
+      "originalDestination": "original/key_akiko.jpg",
+      "originalSha256": "fc47e9ad27ad7102bf6911f412f79db756a4e341cf383acf2fa128a4ec657d92"
+    },
+    {
+      "source": "神尾晴子.jpg",
+      "sourceName": "神尾晴子",
+      "character": "key_haruko",
+      "characterName": "神尾晴子",
+      "destination": "new/key_haruko.jpg",
+      "sha256": "4a7d31a42f828bcb978e17df9c5d4db89057f2fd5930d07657428aa5f25531d4",
+      "match": "exact",
+      "originalId": "key_haruko",
+      "originalDestination": "original/key_haruko.jpg",
+      "originalSha256": "8faca44296e3e11f63bb765bc3c0b512f01c3f4182f5dd8bb2c4ae96466a11fd"
+    },
+    {
+      "source": "神尾观铃.jpg",
+      "sourceName": "神尾观铃",
+      "character": "key_misuzu",
+      "characterName": "神尾观铃",
+      "destination": "new/key_misuzu.jpg",
+      "sha256": "36af07cdf14f5ef416b39d82d3636981041edbea24c7d71f63257182b410e052",
+      "match": "exact",
+      "originalId": "key_misuzu",
+      "originalDestination": "original/key_misuzu.jpg",
+      "originalSha256": "31ac8cb8345bcac38e1fb110db7999bfba1f5de923465aee983bcaf57e7e4a3b"
+    },
+    {
+      "source": "美坂栞.jpg",
+      "sourceName": "美坂栞",
+      "character": "key_shiori",
+      "characterName": "美坂栞",
+      "destination": "new/key_shiori.jpg",
+      "sha256": "ffd4dcb145a1dfb9387127498040f8489bd6061477978e443b9d3c33253774e1",
+      "match": "exact",
+      "originalId": "key_shiori",
+      "originalDestination": "original/key_shiori.jpg",
+      "originalSha256": "1530c2aaa381c665c60c8d39b2929237e6bcf9165b0a5bafaf4f6b26f2161117"
+    },
+    {
+      "source": "美坂香里.jpg",
+      "sourceName": "美坂香里",
+      "character": "key_kaori",
+      "characterName": "美坂香里",
+      "destination": "new/key_kaori.jpg",
+      "sha256": "6890f36ae86fe173af4c40aefa92d7f266263985b65a0759282601e1a7a59690",
+      "match": "exact",
+      "originalId": "key_kaori",
+      "originalDestination": "original/key_kaori.jpg",
+      "originalSha256": "7c49601462265de80adcb7655c8182800d06e21dc922d0434e333e18e934df67"
+    },
+    {
+      "source": "远野小满.jpg",
+      "sourceName": "远野小满",
+      "character": "key_michiru",
+      "characterName": "远野小满",
+      "destination": "new/key_michiru.jpg",
+      "sha256": "14ac658f458bd60131423c1b6427c0116be9521d5ba3220583056f59ef7e9ce8",
+      "match": "exact",
+      "originalId": "key_michiru",
+      "originalDestination": "original/key_michiru.jpg",
+      "originalSha256": "139557daa393e5eba82977ea34bbf2d7ba64273c1f9488066d909501b783024e"
+    },
+    {
+      "source": "远野美凪.jpg",
+      "sourceName": "远野美凪",
+      "character": "key_minagi",
+      "characterName": "远野美凪",
+      "destination": "new/key_minagi.jpg",
+      "sha256": "8d7a14c6a78eab9e63505c360831e954513c945b3ff1ee96602309009df240c4",
+      "match": "exact",
+      "originalId": "key_minagi",
+      "originalDestination": "original/key_minagi.jpg",
+      "originalSha256": "9d63f5ac9109a9e85cf74aebe05fdbfc22f168caf4aa279cc9011e25c07ee1fe"
+    },
+    {
+      "source": "雾岛佳乃.jpg",
+      "sourceName": "雾岛佳乃",
+      "character": "key_kano",
+      "characterName": "雾岛佳乃",
+      "destination": "new/key_kano.jpg",
+      "sha256": "a817a104acb3d5fe3b4f4b3729044642e2346e4ca03da568aaef114bd5693502",
+      "match": "exact",
+      "originalId": "key_kano",
+      "originalDestination": "original/key_kano.jpg",
+      "originalSha256": "48b6aae2069e412849406b60e823b6bfc3acf8b2af7312bb6b684db57f8baa66"
+    },
+    {
+      "source": "鹰原羽未.jpg",
+      "sourceName": "鹰原羽未",
+      "character": "key_umi2",
+      "characterName": "鹰原羽未",
+      "destination": "new/key_umi2.jpg",
+      "sha256": "13b85240730f268837459352040085443b59995ecd623ec5b0418ba91112e67f",
+      "match": "exact",
+      "originalId": "key_umi",
+      "originalDestination": "original/key_umi2.jpg",
+      "originalSha256": "93a90c11c767efdc6b919d2bc491a3e72d52a505585901a3d710295d7f9c37ea"
+    }
+  ],
+  "sets": [
+    {
+      "id": "key-original",
+      "name": "键社 · 旧版皮肤",
+      "pack": "键社",
+      "packId": "key",
+      "entries": {
+        "key_rumi": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_rumi.jpg"
+        },
+        "key_yuri": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_yuri.jpg"
+        },
+        "key_tomoya": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_tomoya.jpg"
+        },
+        "key_umi": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_umi.jpg",
+          "variants": {
+            "key_umi2": "extension/键社/image/skin-sets/original/key_umi2.jpg"
+          }
+        },
+        "key_nagisa": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_nagisa.jpg"
+        },
+        "key_yukito": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_yukito.jpg"
+        },
+        "key_yukine": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_yukine.jpg"
+        },
+        "key_sunohara": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_sunohara.jpg"
+        },
+        "key_kyousuke": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_kyousuke.jpg"
+        },
+        "key_lucia": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_lucia.jpg"
+        },
+        "key_akiko": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_akiko.jpg"
+        },
+        "key_haruko": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_haruko.jpg"
+        },
+        "key_misuzu": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_misuzu.jpg"
+        },
+        "key_shiori": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_shiori.jpg"
+        },
+        "key_kaori": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_kaori.jpg"
+        },
+        "key_michiru": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_michiru.jpg"
+        },
+        "key_minagi": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_minagi.jpg"
+        },
+        "key_kano": {
+          "name": "经典原画",
+          "path": "extension/键社/image/skin-sets/original/key_kano.jpg"
+        },
+        "key_umi2": {
+          "name": "经典原画（共用羽未原画）",
+          "path": "extension/键社/image/skin-sets/original/key_umi2.jpg"
+        }
+      }
+    },
+    {
+      "id": "key-key-studio",
+      "name": "键社 · 键社新装",
+      "pack": "键社",
+      "packId": "key",
+      "entries": {
+        "key_rumi": {
+          "name": "七濑留美 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_rumi.jpg"
+        },
+        "key_yuri": {
+          "name": "仲村由理 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_yuri.jpg"
+        },
+        "key_tomoya": {
+          "name": "冈崎朋也 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_tomoya.jpg"
+        },
+        "key_umi": {
+          "name": "加藤羽未 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_umi.jpg",
+          "variants": {
+            "key_umi2": "extension/键社/image/skin-sets/new/key_umi2.jpg"
+          }
+        },
+        "key_nagisa": {
+          "name": "古河渚 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_nagisa.jpg"
+        },
+        "key_yukito": {
+          "name": "国崎往人 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_yukito.jpg"
+        },
+        "key_yukine": {
+          "name": "宫泽有纪宁 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_yukine.jpg"
+        },
+        "key_sunohara": {
+          "name": "春原阳平&春原芽衣 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_sunohara.jpg"
+        },
+        "key_kyousuke": {
+          "name": "枣恭介 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_kyousuke.jpg"
+        },
+        "key_lucia": {
+          "name": "此花露西娅 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_lucia.jpg"
+        },
+        "key_akiko": {
+          "name": "水濑秋子 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_akiko.jpg"
+        },
+        "key_haruko": {
+          "name": "神尾晴子 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_haruko.jpg"
+        },
+        "key_misuzu": {
+          "name": "神尾观铃 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_misuzu.jpg"
+        },
+        "key_shiori": {
+          "name": "美坂栞 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_shiori.jpg"
+        },
+        "key_kaori": {
+          "name": "美坂香里 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_kaori.jpg"
+        },
+        "key_michiru": {
+          "name": "远野小满 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_michiru.jpg"
+        },
+        "key_minagi": {
+          "name": "远野美凪 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_minagi.jpg"
+        },
+        "key_kano": {
+          "name": "雾岛佳乃 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_kano.jpg"
+        },
+        "key_umi2": {
+          "name": "鹰原羽未 · 键社新装",
+          "path": "extension/键社/image/skin-sets/new/key_umi2.jpg"
+        }
+      }
+    }
+  ],
+  "initialSourceCount": 19,
+  "resourceRoot": "extension/键社/image/skin-sets/"
+}

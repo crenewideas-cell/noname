@@ -8,6 +8,19 @@ import { validateManifest } from "../apps/core/noname/ui/workshop/schema.js";
 import {MAX_PROVIDER_BYTES,MAX_PROVIDER_FILES} from "../apps/core/noname/ui/workshop/largeArchive.js";
 import {classifiedExtensionsPlugin} from './extension-layout.mjs';
 
+test('native restoration selects existing engine assets and desktop layout without authored UI',()=>{
+ const pack=builtinPacks().find(p=>p.manifest.id==='builtin-native');
+ validateManifest(pack.manifest);
+ assert.equal(pack.manifest.components.arena.settings.layout,'long2');
+ assert.equal(pack.manifest.components.arena.settings.phonelayout,false);
+ assert.equal(pack.manifest.components.buttons.settings.show_sortcard,true);
+ assert.equal(pack.manifest.components.buttons.settings.show_commonCardpile,true);
+ assert.deepEqual(pack.assets,{});
+ for(const part of Object.values(pack.manifest.components)){
+  assert.equal(part.runtime,undefined);assert.deepEqual(part.style,{});assert.deepEqual(part.assets,{});
+ }
+});
+
 async function serviceFixture() {
  const config={ui_workshop_catalog:[]}, records=new Map();
  const lib={config,configMenu:{appearence:{config:{}}},db:{transaction(){

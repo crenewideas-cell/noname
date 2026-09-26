@@ -859,6 +859,9 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                     case "right_adventure":
                         Gl(Ge);
                         break;
+                    case "activity_taixu":
+                        lifecycle.adventure("taixuhuanjing");
+                        break;
                     case "modesecoff1":
                         Um["texture"] = kZ["modesecon"], Ub["texture"] = kZ[KU(0x190)], UK[Kk(0x2d5, "P9FJ")] = kZ["modesecoff"];
                         window["moode"] == "shenfen" && (UU["texture"] = ym["resources"]["shenfen"]["texture"], UY[KU(0x23f)] = kZ["5pjz"], U6("identity", "normal", 0x5));
@@ -892,7 +895,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                         lifecycle.skins();
                         break;
                     case "wujiangbutton":
-                        lifecycle.showView("characters");
+                        lifecycle.characters();
                         break;
                     case KU(0x15f):
                         if (confirm(lib["config"]["zhuanzhuan"] == !![] ? "是否关闭转盘效果" : "是否打开转盘效果")) {
@@ -1328,7 +1331,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                 let fY = new PIXI["Sprite"](Gb["resources"]["ui_lottery_entrance"]["textures"]["全天开放"]);
                 GF(fY), fY["position"]["set"](-0.125 * f9["width"], 0.63 * f9["height"]), f9["addChild"](fy, fk, fU, ff, fY);
                 let fm = new PIXI["Sprite"](Gb["resources"]["ui_lottery_entrance"]["textures"]["lobby_czg_bg"]);
-                fm["name"] = "lobby_czg", GF(fm), fm["anchor"]["set"](0.5), fm["scale"]["set"](0.72), fm["position"]["set"](0.65 * i["screen"]["width"], 0.5 * i["screen"]["height"]), fm["interactive"] = !![], fm.on("pointerup", () => { lifecycle.skins(); GK.removeChild(kT); }), fm["on"]("pointerdown", fr);
+                fm["name"] = "lobby_czg", GF(fm), fm["anchor"]["set"](0.5), fm["scale"]["set"](0.72), fm["position"]["set"](0.65 * i["screen"]["width"], 0.5 * i["screen"]["height"]), fm["interactive"] = !![], fm.on("pointerup", () => { lifecycle.treasure(); GK.removeChild(kT); }), fm["on"]("pointerdown", fr);
                 let fb = new PIXI["Graphics"]();
                 fb["beginFill"](0xffffff), fb["drawRect"](fm["x"] - 0.5 * fm["width"], fm["y"] - 0.5 * fm["height"], fm["width"], fm["height"]), fb["endFill"]();
                 let fK = new PIXI["spine"]["Spine"](Gb["resources"]["czganim"]["spineData"]);
@@ -1880,6 +1883,13 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
             const k5 = [UC, k0, k2, k4], k6 = (kJ, kI) => { const KP = KX, ki = document["createElement"]("input"); return ki["setAttribute"]("type", kJ["type"]), ki["setAttribute"](KP(0x260, "JHx]"), kJ["placeholder"]), ki["style"]["position"] = "fixed", ki["style"]["width"] = "10%", ki["style"]["height"] = "10%", ki["style"]["zIndex"] = "100", ki["value"] = (ye[0]?.getChildByName("avatar")?.[kJ.propertyName] ?? lib.config.sprite_avatar[({width:"w",height:"h"})[kJ.propertyName] || kJ.propertyName]), Object["assign"](ki["style"], kJ["position"]), ki["addEventListener"]("input", kT => { kI(kJ["propertyName"], kT["target"]["value"]); }), ki; }, k7 = (kJ, kI) => { ye["forEach"](ki => { const kT = ki["getChildByName"]("avatar"); kT && (kT[kJ] = kI); }); }, k8 = k5["map"](kJ => { return k6(kJ, k7); });
             Us["addChild"](Ul, Uv, UE), Uh["addChild"](UL, Us);
             let k9 = null, kG = new Map(), ky = [], kU = null;
+            lifecycle.refreshFavorites = () => {
+                for (const card of ye) card.fav = lib.config.favouriteCharacter.includes(card.name);
+                if (k9 === "btn_lvl1_1a") {
+                    if (G6 != null) cancelAnimationFrame(G6);
+                    yZ.removeChildren(); ky = ye.filter(card => card.fav); kb(ky.slice(), yZ);
+                }
+            };
             yA["on"]("added", () => {
                 const KE = KX, Kl = KH;
                 G2["texture"] = yt["resources"]["wujiangBG"]["texture"], G2["width"] = i["screen"]["width"], G2["height"] = i["screen"]["width"] / 0x5fe * 0x2ee, kK(), i["stage"]["removeChild"](GK);
@@ -3082,9 +3092,10 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                     let Ue = new PIXI["Sprite"](yx["resources"][wg(0x230)]["texture"]);
                     Ue["y"] = 0.37 * UW["height"], Ue["anchor"]["set"](0.5);
                     let UA = lifecycle.portraits.sprite(yB["randomGet"]());
-                    UA["width"] = 0x8a, UA["height"] = 0xfd, UA["anchor"]["set"](0.5), UA["y"] = -0x1b;
                     if (Ut == 0x0)
                         { UA["texture"] = yx["resources"]["avatar_1"]["texture"]; UA.workshopPortraitLoaded = true; }
+                    // Retain a fixed frame and refit asynchronously loaded portraits uniformly.
+                    lifecycle.portraits.fit(UA, UW, {x:-69, y:-153.5, width:138, height:253});
                     let Ua = new PIXI["spine"]["Spine"](yx["resources"]["dayuanshuai"]["spineData"]);
                     Ua["state"]["setAnimation"](0x0, "play1", ![]), Ua["scale"]["set"](1.8);
                     if (Ut == Ud - 0x1)

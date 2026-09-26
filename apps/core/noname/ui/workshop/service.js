@@ -1,12 +1,12 @@
 import { lib, game } from "noname";
 import { PARTS, SETTING_KEYS, MIME, clone, newId, emptyPack, validateManifest, validateRecord, referencedAssets } from "./schema.js";
 import { mountAppearance } from "./runtime.js";
-import { builtinPacks } from "./presets.js";
+import { builtinPacks, completeBuiltinPalette } from "./presets.js";
 import { providerDirectory } from "./provider.js";
 import { completeRzshIngame } from "./ingame.js";
 
 const PREFIX = "ui-workshop:";
-/** @typedef {{version: number, registerExtension: typeof registerExtension, use: typeof usePack, ownsSetting: (key: string) => boolean, open: () => Promise<void>, openRooms?: (mode: string) => Promise<unknown>, openSkins?: (id?: string) => Promise<unknown>, openSettings?: (page: string) => Promise<void>, openSuiteSettings?: () => void, error?: string, failedId?: string}} WorkshopAPI */
+/** @typedef {{version: number, registerExtension: typeof registerExtension, use: typeof usePack, ownsSetting: (key: string) => boolean, open: () => Promise<void>, openRooms?: (mode: string) => Promise<unknown>, openSkins?: (id?: string, page?: string) => Promise<unknown>, openSettings?: (page: string) => Promise<void>, openSuiteSettings?: () => void, error?: string, failedId?: string}} WorkshopAPI */
 let dispose;
 let urls = [];
 let baseline;
@@ -36,7 +36,7 @@ export async function readPack(id) {
 	if (preset) return completeRzshIngame(validateRecord(preset));
 	const data = await game.getDB("data", PREFIX + id);
 	if (!data) throw new Error("套装素材不存在，请重新导入");
-	return completeRzshIngame(validateRecord(data));
+	return completeRzshIngame(completeBuiltinPalette(validateRecord(data)));
 }
 function requireStorage() {
 	if (!lib.db) throw new Error("当前环境的 IndexedDB 不可用，无法保存 UI 素材。请允许本地存储后重试。");
@@ -125,6 +125,7 @@ export async function undoPack() {
 	await usePack(previous);
 }
 export function releaseAppearance(reset = true) {
+	game.clearAttackLines?.();
 	if (reset) { generation++; initialization = undefined; window.removeEventListener("keydown", workshopShortcut, { capture: true }); }
 	for (const release of providerDisposers.splice(0).reverse()) {
 		try { release?.(); } catch (error) { console.warn("UI 资源释放失败", error); }
@@ -152,7 +153,7 @@ async function initializeAppearance() {
 	baseline = Object.fromEntries(SETTING_KEYS.map(key => [key, lib.config[key]]));
 	lib.uiWorkshop = { version: 1, registerExtension, use: usePack, ownsSetting: key => !!loaded && Object.values(loaded.manifest.components).some(part => Object.hasOwn(part.settings || {}, key)), open: async () => (await import("./manager.js")).openWorkshop() };
 	lib.uiWorkshop.openRooms = async mode => (await import("../../online/entry.js")).openOnlineRooms(mode);
-	lib.uiWorkshop.openSkins = async id => (await import("../../skin/qianhuan/index.js")).openCharacterSkins(id);
+	lib.uiWorkshop.openSkins = async (id, page = "skin") => (await import("../../skin/qianhuan/index.js")).openCharacterSkins(id, undefined, page);
 	lib.uiWorkshop.openSettings = async page => (await import("../lobbySettings.js")).openLobbySettings(page);
 	await repairBuiltinCopies().catch(error => {
 		console.warn("UI 套装重复记录暂未整理，下次启动会重试", error);

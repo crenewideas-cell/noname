@@ -1,4 +1,4 @@
-import {lib, game, ui, get, createSceneContext, openCharacterSkins, getSkinService, subscribeCharacterSkins} from 'noname';
+import {lib, game, ui, get, createSceneContext, openCharacterSkins, openTreasure, getSkinService, subscribeCharacterSkins} from 'noname';
 import {createPortraitTextures} from './native/portraits.js';
 import {createResourceAccess} from './native/resources.js';
 import {mountGamePresentation} from './native/presentation.js';
@@ -28,7 +28,10 @@ const defaults={uiStyles:'经典主题',rzEpicSpine:false,rzsh_head:'3.png',rzsh
  tianti_versus_two:{count:0,top:40,win:0,fail:0,num:0,top_win:0,win_Cty:0,xxingnum:0}};
 
 export async function createNativeRuntime(manifest) {
- const inventory=await fetch(base+'files.json',{signal:AbortSignal.timeout(20000)});
+ const inventory=await fetch(base+'files.json',{signal:AbortSignal.timeout(20000)}).catch(error=>{
+  if(error.name==='TimeoutError')throw new Error('界面素材清单读取超时，请重试');
+  throw error;
+ });
  if(!inventory.ok)throw new Error('手杀界面素材清单加载失败：'+inventory.status);
  const files=await inventory.json();
  const storage=scopedStorage(localStorage),session=scopedStorage(sessionStorage),styles=new Set(),dialogs=new Set(),sounds=new Set(),controller=new AbortController();
@@ -78,13 +81,15 @@ export async function createNativeRuntime(manifest) {
   },
  }});
  const {config}=context;
+ config.favouriteCharacter=[...(lib.config.favouriteCharacter||[])];
+ config.recentCharacter=[...(lib.config.recentCharacter||[])];
  context.ui.background={setBackgroundImage:setSceneBackground};
  const draftGameKeys=new Set(Object.keys(context.game));
  for(const key of ['div','node']){const create=context.ui.create[key];context.ui.create[key]=(...args)=>ownNode(create(...args));}
  const parts=new Set(Object.entries(manifest.components).filter(([,part])=>part.runtime==='shousha').map(([id])=>id));
  function saveSetting(key,value){context.game.saveConfig(key,value);animations?.refresh();}
  function animationService(){
-  return animations ||= mountSkinAnimations({base,files,config,parts,saveSetting,label:name=>get.translation(name),staticSelected:name=>lib.config.change_skin!==false&&!!getSkinService().current(name),active:()=>!!ui.arena,enabled:()=>lib.config.animation!==false&&!lib.config.low_performance});
+  return animations ||= mountSkinAnimations({base,files,config,parts,saveSetting,label:name=>get.translation(name),staticSelected:name=>game.qhly_dynamicOwns?.(name)||(lib.config.change_skin!==false&&!!getSkinService().current(name)),active:()=>!!ui.arena,enabled:()=>lib.config.animation!==false&&!lib.config.low_performance});
  }
  storage.setItem('hideModesA','true');storage.setItem('liuli_tenUIfix','fix');storage.setItem('firstSTBG','on');
  storage.setItem('loggedIn',lib.config.connect_nickname||'无名玩家');session.setItem('Network','online');session.setItem('rzshk','true');
@@ -112,13 +117,17 @@ export async function createNativeRuntime(manifest) {
    }},200);},
   framePortrait(player,portrait,labels){const frame=new graphics.Graphics();frame.lineStyle(7,0x251b13,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(2,0xbda36b,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(1,0xead6a0,.8).drawRoundedRect(-81,-134,162,188,3);player.addChildAt(frame,player.getChildIndex(labels));},
   notice(message){if(disposed)return;const node=document.createElement('div');node.className='shousha-native-notice';node.textContent=message;document.body.append(node);const close=()=>{clearTimeout(timer);node.remove();dialogs.delete(close);};const timer=setTimeout(close,4500);dialogs.add(close);},
-  character:name=>characterSkins(name),collection:()=>characterSkins(),
+  characterPage:undefined,
+  character:name=>characterSkins(name,bridge.characterPage||lib.config.qhly_listdefaultpage||"introduce"),
+  skins(){bridge.characterPage="skin";sceneWindow.qhlyOpenCharacters?.();return characterSkins(undefined,"skin");},
+  treasure(){const view=openTreasure({PIXI:graphics});const close=()=>{view.close();dialogs.delete(close);};dialogs.add(close);view.addEventListener("close",()=>dialogs.delete(close),{once:true});return view;},
   characterTexture:(name,options)=>portraitStore().get(name,options),
  };
- function characterSkins(name){
-  const gallery=openCharacterSkins(name);
+ function characterSkins(name,page){
+  const favoritesBefore=JSON.stringify(lib.config.favouriteCharacter||[]);
+  const gallery=openCharacterSkins(name,undefined,page);
   const close=()=>{gallery.close();dialogs.delete(close);};dialogs.add(close);
-  gallery.addEventListener('close',()=>dialogs.delete(close),{once:true});return gallery;
+  gallery.addEventListener('close',()=>{dialogs.delete(close);if(disposed)return;config.favouriteCharacter=[...(lib.config.favouriteCharacter||[])];if(favoritesBefore!==JSON.stringify(lib.config.favouriteCharacter||[]))sceneWindow.qhlyRefreshFavorites?.();},{once:true});return gallery;
  }
  function confirmDialog(message,callback,title,buttons=['确定','取消']) {
   const backdrop=document.createElement('div');backdrop.className='shousha-native-confirm';

@@ -15,6 +15,7 @@ const canonicalExtensionName = (name: string) => name === "红楼幻梦" ? "红�
 // inferred them from *_enable keys and persisted them in both extension lists.
 const privateOptionNames = new Set(["mjs", "mjsold", "mjsnew"].map(pack => `名将杀_characterPack_${pack}`));
 const retiredExtensions = new Set([
+	"动态皮肤验证扩展",
 	...apkCleanup.removed,
 	...apkCleanup.merged.map(item => item.name),
 	...restructure.removed,

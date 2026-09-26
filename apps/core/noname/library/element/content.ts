@@ -4789,6 +4789,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 				event.currentPhase = phase[0];
 			}
 			const next = player[event.currentPhase]();
+			game.broadcastAll((player, phase) => player.$phaseEffect(phase), player, event.currentPhase);
 			next.phaseIndex = num;
 			if (list.length > 1) {
 				next._extraPhaseReason = list[1];
@@ -4835,6 +4836,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 		},
 		async (event, trigger, player) => {
 			await event.trigger("phaseAfter");
+			game.broadcastAll(player => player.$phaseEffect(""), player);
 		},
 		async (event, trigger, player) => {
 			//删除当前回合角色 此时处于“不属于任何角色的回合”的阶段
@@ -9730,6 +9732,10 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 				}
 			};
 			event._playThrowAnimation = () => {
+				if (!event._cardEffectPresented) {
+					event._cardEffectPresented = true;
+					game.broadcastAll((player, card, id) => player.$cardEffect(card, id), player, event.card, event.id);
+				}
 				player.useCardAnimateBefore?.(event, trigger, player);
 				if (event.animate == false || event.throw === false) {
 					return;
@@ -11046,6 +11052,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 					}, throw_cards);
 				}
 			}
+			game.broadcastAll((player, card, id) => player.$cardEffect(card, id, "respond"), player, card, event.id);
 			if (cards.length) {
 				const ownerCards = cards.filter(card => get.owner(card));
 				const directDiscard = cards.filter(card => !get.owner(card));

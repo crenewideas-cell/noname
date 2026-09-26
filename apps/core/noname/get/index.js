@@ -5164,7 +5164,10 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 			button.textContent = get.translation(nameskin) + " · 换肤";
 			button.addEventListener("click", event => {
 				event.stopPropagation();
-				openCharacterSkins(nameskin, get.itemtype(node) === "player" ? node : undefined);
+				const player = get.itemtype(node) === "player" ? node : undefined;
+				if (player && lib.config.qhly_smallwiningame && game.qhly_coreReady && game.qhly_open_small) {
+					game.qhly_open_small(nameskin, player, player);
+				} else openCharacterSkins(nameskin, player);
 			});
 			uiintro.content.appendChild(button);
 		};

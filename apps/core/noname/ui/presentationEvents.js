@@ -69,11 +69,13 @@ export function playerPresentation(player) {
 	const rect = player.getBoundingClientRect();
 	const hidden = ["unseen", "unseen_v", "unseen_show"].some(name => player.classList.contains(name));
 	const hidden2 = ["unseen2", "unseen2_v", "unseen2_show"].some(name => player.classList.contains(name));
+	const portrait = node => node ? node.style.backgroundImage || getComputedStyle(node).backgroundImage : "";
 	return {
 		seat: String(player.dataset.position || ""),
+		group: hidden || hidden2 ? "" : String(player.group || ""),
 		name: hidden ? "未知武将" : player.node.name?.textContent || "",
-		avatar: hidden ? "" : player.node.avatar?.style.backgroundImage || "",
-		avatar2: hidden2 ? "" : player.node.avatar2?.style.backgroundImage || "",
+		avatar: hidden ? "" : portrait(player.node.avatar),
+		avatar2: hidden2 ? "" : portrait(player.node.avatar2),
 		rect: { left: rect.left, top: rect.top, width: rect.width, height: rect.height },
 	};
 }

@@ -328,7 +328,7 @@ export let PRECONTENT = async function(config) {
 	// @ts-ignore
 	await loadScript(lib.qhly_path + 'skinShare.js');
 	// @ts-ignore
-	lib.init.js(lib.qhly_path + 'skinEdit.js');
+	await loadScript(lib.qhly_path + 'skinEdit.js');
 	// @ts-ignore
 	lib.init.js(lib.qhly_path + '/data/dom-to-image.js');
 	// @ts-ignore

@@ -3,6 +3,7 @@ import { createSkinService } from "./service.js";
 import { skinCatalog } from "./catalog.js";
 import { save } from "../util/config.js";
 import { skinStorageKey } from "./portrait.js";
+import { managedPortrait } from "./management.js";
 
 let service;
 const skinListeners = new Set();
@@ -67,6 +68,8 @@ export function getSkinService() {
 			refresh: refreshCharacterSkins,
 		});
 		service.register("core", name => skinCatalog[skinStorageKey(name)] || []);
+		// PIXI portrait consumers use this getter rather than the DOM resolver.
+		service.current = name => managedPortrait(lib.config, skinStorageKey(name));
 	}
 	return service;
 }

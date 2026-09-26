@@ -2,20 +2,25 @@ import { installAdaptiveLayout } from './layout.js';
 import { mountAnimations } from './animations.js';
 import { mountPortraits } from './portraits.js';
 import { mountExtras } from './extras.js';
-import { skillPresentation, subscribePresentation, openCharacterSkins, getSkinService, subscribeCharacterSkins } from 'noname';
+import { mountIndicators } from './indicators.js';
+import { skillPresentation, subscribePresentation, suspendSelectionGuide, openCharacterSkins, getSkinService, subscribeCharacterSkins } from 'noname';
 
 export function cardArtwork(card,{lib,get,inventory,base}) {
  if(!card.name||!card.childNodes.length||card.classList.contains('infohidden')||lib.config.hide_card_image)return;
+ // Equipment and marks use compact host labels, not a stretched full card.
+ if(card.parentElement?.matches('.equips,.marks,.judges'))return;
  const info=lib.card[card.name];if(!info||info.image||info.cardimage)return;
  const nature=get.natureList(card);if(nature.length>1)return;
  const aliases={fire:'huosha',thunder:'leisha',ice:'bingsha',stab:'cisha'};
  const name=card.name==='sha'&&aliases[nature[0]]?aliases[nature[0]]:card.name;
+ const original='assets/cards/decade/'+name+'.jpg';
+ if(inventory.has(original))return base+original;
  for(const suffix of ['webp','png','jpg']){const path='assets/cards/'+name+'.'+suffix;if(inventory.has(path))return base+path;}
 }
 
-// Retain the actual core nodes and handlers. This adapter never selects a
-// candidate, changes a rule, evaluates a skill or supplies an event result.
-export async function mountPresentation({base,manifest,ui,lib,get,game,signal}) {
+// Load before arena creation; arenaReady does not wait for asynchronous work.
+// No arena nodes or layout measurements are needed for this preparation.
+export async function preparePresentation({base,signal}) {
  const response=await fetch(base+'files.json',{signal});if(!response.ok)throw new Error('资源清单缺失');
  const inventory=new Set(await response.json());
  const metadataResponse=await fetch(base+'animation-assets.json',{signal});if(!metadataResponse.ok)throw new Error('动画清单缺失');
@@ -28,23 +33,40 @@ export async function mountPresentation({base,manifest,ui,lib,get,game,signal}) 
   style.onload=()=>finish();style.onerror=()=>finish(new Error('样式加载失败'));signal.addEventListener('abort',abort,{once:true});
   if(signal.aborted)abort();else document.head.append(style);
  });
+ if(signal.aborted){style.remove();throw new Error('展示已退出');}
+ return {inventory,metadata,style};
+}
+
+// Retain the actual core nodes and handlers. With prepared resources this
+// installs synchronously, before arenaReady returns and selection starts.
+export async function mountPresentation({base,manifest,ui,lib,get,game,signal,prepared}) {
+ const {inventory,metadata,style}=prepared||await preparePresentation({base,signal});
  if(signal.aborted){style.remove();return()=>{};}
  const parts=new Set(Object.entries(manifest.components).filter(([,p])=>p.runtime==='decade').map(([id])=>id));
  const previous=document.body.getAttribute('data-decade-parts');document.body.dataset.decadeParts=[...parts].join(' ');
+ const releaseGuide=parts.has('arena')?suspendSelectionGuide():()=>{};
  const cards=new Map(),frames=new Map(),dialogs=new Set(),skills=new Set(),menus=new Map(),icons=new Map(),deaths=new Map();let disposed=false,raf=0;
  const skillPanels=new Map(),skillButtons=new Set();let passivePanel,skinButton,gallery,identityTip,tipImage;
  // A presentation-only drawer retains all core button nodes and callbacks.
  // It never pauses, changes auto-play, saves settings or invokes game actions.
  const menuButton=parts.has('buttons')?document.createElement('button'):null;
  const previousMenu=document.body.getAttribute('data-decade-menu');
+ const previousMode=document.body.getAttribute('data-decade-mode');
+ document.body.dataset.decadeMode=lib.config.mode||'';
  const setMenu=open=>{document.body.dataset.decadeMenu=open?'open':'closed';menuButton?.setAttribute('aria-expanded',String(open));};
  if(menuButton){menuButton.type='button';menuButton.className='decade-menu-toggle';menuButton.textContent='菜单';menuButton.setAttribute('aria-label','局内菜单');menuButton.setAttribute('aria-controls','system1 system2 game-navigation-button');menuButton.addEventListener('click',()=>setMenu(document.body.dataset.decadeMenu!=='open'));document.body.append(menuButton);setMenu(false);}
- const closeMenu=event=>{if(menuButton&&document.body.dataset.decadeMenu==='open'&&!event.target.closest?.('#system,.decade-menu-toggle'))setMenu(false);};
- if(menuButton)document.addEventListener('click',closeMenu,{passive:true});
+ const closeMenu=event=>{
+  if(!menuButton||document.body.dataset.decadeMenu!=='open'||event.target.closest?.('.decade-menu-toggle'))return;
+  // Let the core button finish its action before folding the drawer. Capture
+  // also handles buttons whose original handler stops event propagation.
+  queueMicrotask(()=>{if(!disposed)setMenu(false);});
+ };
+ if(menuButton)for(const type of ['click','touchend'])document.addEventListener(type,closeMenu,{capture:true,passive:true});
  const layout=parts.has('arena')&&parts.has('players')&&!game.chess?installAdaptiveLayout({game:{get me(){return !!game.me;}},ui,className:'decade-layout',refreshHand:()=>ui.updatehl()}):()=>{};
  const options=manifest.components.arena?.options||{},enabled=()=>lib.config.animation!==false&&!lib.config.low_performance;
  const animations=mountAnimations({base,parts,options,metadata,enabled,volume:()=>Math.max(0,Math.min(1,(lib.config.volumn_audio||0)/8))});
- const portraits=mountPortraits({base,metadata,enabled:()=>parts.has('players')&&options.dynamic!==false&&enabled(),staticSelected:name=>lib.config.change_skin!==false&&!!getSkinService().current(name),subscribe:subscribeCharacterSkins});
+ const releaseIndicators=mountIndicators({ui,game,parts,enabled:()=>enabled()&&options.effects!==false});
+ const portraits=mountPortraits({base,metadata,enabled:()=>parts.has('players')&&options.dynamic!==false&&enabled(),staticSelected:name=>game.qhly_dynamicOwns?.(name)||(lib.config.change_skin!==false&&!!getSkinService().current(name)),subscribe:subscribeCharacterSkins});
  const extras=mountExtras({base,parts,ui,game,lib,inventory,metadata,animations});
  if(parts.has('buttons')){
   skinButton=document.createElement('button');skinButton.type='button';skinButton.className='decade-skin-button';skinButton.title='换肤';skinButton.setAttribute('aria-label','换肤');
@@ -136,8 +158,9 @@ export async function mountPresentation({base,manifest,ui,lib,get,game,signal}) 
    else if(cards.delete(card)){card.classList.remove('decade-card');card.style.removeProperty('--decade-card');card.querySelector(':scope>.info')?.removeAttribute('data-decade-point');}
   }
   if(parts.has('players'))for(const dialog of document.querySelectorAll('#window .dialog')) {
-   const characters=Array.from(dialog.buttons||[]).some(b=>b.classList.contains('character'));
-   if(characters){dialog.classList.add('decade-characters');dialogs.add(dialog);}
+   // The paged browser's buttons getter materializes the whole directory.
+   const characters=dialog.matches('.character-browser,.choose-character')||dialog.querySelector('.button.character');
+   if(characters){if(!dialogs.has(dialog))dialog.classList.add('decade-characters');dialogs.add(dialog);}
    else if(dialogs.delete(dialog))dialog.classList.remove('decade-characters');
   }
   if(parts.has('buttons'))for(const node of [ui.skills,ui.skills2,ui.skills3])if(node&&!skills.has(node)){skills.add(node);node.classList.add('decade-skills');}
@@ -163,14 +186,15 @@ export async function mountPresentation({base,manifest,ui,lib,get,game,signal}) 
  const schedule=()=>{if(!disposed&&!raf)raf=requestAnimationFrame(()=>{try{decorate();}catch(error){console.warn('十周年节点装饰失败',error);}});};
  const unsubscribe=subscribePresentation(schedule);
  const observer=new MutationObserver(records=>{if(records.some(r=>r.type==='childList'||r.attributeName!=='class'||r.target.matches('.card,.player')))schedule();});
- observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','data-card-name','data-nature','data-color']});schedule();
+ observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','data-card-name','data-nature','data-color']});
+ try{decorate();}catch(error){console.warn('十周年节点装饰失败',error);schedule();}
  const click=event=>{if(!parts.has('buttons'))return;const node=event.target.closest?.('#control .control:not(.disabled),#arena .card.selectable,#arena .button.selectable');if(node)animations.sound(node.matches('.card')?'card_click':'BtnSure');};
  document.addEventListener('click',click,{passive:true});
  return()=> {
   if(disposed)return;disposed=true;
-  const releases=[unsubscribe,()=>observer.disconnect(),()=>cancelAnimationFrame(raf),layout,portraits,()=>extras.dispose(),()=>animations.dispose(),()=>document.removeEventListener('click',click),()=>style.remove(),
+  const releases=[unsubscribe,releaseGuide,releaseIndicators,()=>observer.disconnect(),()=>cancelAnimationFrame(raf),layout,portraits,()=>extras.dispose(),()=>animations.dispose(),()=>document.removeEventListener('click',click),()=>style.remove(),
    ()=>{skinButton?.remove();gallery?.close();identityTip?.remove();passivePanel?.remove();for(const panel of skillPanels.values())panel.remove();skillPanels.clear();for(const button of skillButtons){button.querySelectorAll(':scope>.decade-skill-badge').forEach(n=>n.remove());button.removeAttribute('data-decade-skill');button.removeAttribute('data-decade-kind');}skillButtons.clear();},
-   ()=>{document.removeEventListener('click',closeMenu);menuButton?.remove();if(previousMenu===null)document.body.removeAttribute('data-decade-menu');else document.body.setAttribute('data-decade-menu',previousMenu);},
+   ()=>{for(const type of ['click','touchend'])document.removeEventListener(type,closeMenu,true);menuButton?.remove();if(previousMenu===null)document.body.removeAttribute('data-decade-menu');else document.body.setAttribute('data-decade-menu',previousMenu);if(previousMode===null)document.body.removeAttribute('data-decade-mode');else document.body.setAttribute('data-decade-mode',previousMode);},
    ...[...frames.values()].map(node=>()=>node.remove()),
    ...[...cards.keys()].map(node=>()=>{node.classList.remove('decade-card');node.style.removeProperty('--decade-card');node.querySelector(':scope>.info')?.removeAttribute('data-decade-point');}),
    ...[...dialogs].map(node=>()=>node.classList.remove('decade-characters')),

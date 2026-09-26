@@ -1,5 +1,5 @@
 import { skillInfo } from '../metadata.js';
-import { checkFile, resourceRoot, fitView, observeViewport } from '../compat.js';
+import { checkFile, resourceRoot, fitView, observeViewport, hydrateProfileMetadata } from '../compat.js';
 import {
 	lib,
 	get,
@@ -339,7 +339,7 @@ export let CONTENT = function(config, pack) {
 					if (showDynamic && _status.mode != null) {
 						var skins;
 						// @ts-ignore
-						var dskins = decadeUI.dynamicSkin;
+						var dskins = game.qhly_dynamicSkin;
 						var avatars = player.doubleAvatar ? [character, character2] : [character];
 						var increased;
 						for (var i = 0; i < avatars.length; i++) {
@@ -1303,20 +1303,20 @@ export let CONTENT = function(config, pack) {
 				if (avatars[i] && avatars[i].indexOf('gz_') == 0) {
 					// @ts-ignore
 					let extend = {
-						[avatars[i]]: decadeUI.dynamicSkin[avatars[i].slice(3)]
+						[avatars[i]]: game.qhly_dynamicSkin[avatars[i].slice(3)]
 					};
 					// @ts-ignore
-					decadeUI.get.extend(decadeUI.dynamicSkin, extend);
+					decadeUI.get.extend(game.qhly_dynamicSkin, extend);
 				}
 			}
 			// @ts-ignore
 			if (lib.qhly_skinShare[avatars[i]] && lib.qhly_skinShare[avatars[i]].name) {
 				// @ts-ignore
 				let extend = {
-					[avatars[i]]: decadeUI.dynamicSkin[lib.qhly_skinShare[avatars[i]].name]
+					[avatars[i]]: game.qhly_dynamicSkin[lib.qhly_skinShare[avatars[i]].name]
 				};
 				// @ts-ignore
-				decadeUI.get.extend(decadeUI.dynamicSkin, extend);
+				decadeUI.get.extend(game.qhly_dynamicSkin, extend);
 			}
 		}
 		// @ts-ignore
@@ -1358,7 +1358,7 @@ export let CONTENT = function(config, pack) {
 			if (showDynamic && _status.mode != null) {
 				var skins;
 				// @ts-ignore
-				var dskins = decadeUI.dynamicSkin;
+				var dskins = game.qhly_dynamicSkin;
 				var increased;
 				for (var i = 0; i < avatars.length; i++) {
 					let hide = [];
@@ -1710,20 +1710,20 @@ export let CONTENT = function(config, pack) {
 			if (to.indexOf('gz_') == 0) {
 				// @ts-ignore
 				let extend = {
-					[to]: decadeUI.dynamicSkin[to.slice(3)]
+					[to]: game.qhly_dynamicSkin[to.slice(3)]
 				};
 				// @ts-ignore
-				decadeUI.get.extend(decadeUI.dynamicSkin, extend);
+				decadeUI.get.extend(game.qhly_dynamicSkin, extend);
 			}
 		}
 		// @ts-ignore
 		if (lib.qhly_skinShare[to] && lib.qhly_skinShare[to].name) {
 			// @ts-ignore
 			let extend = {
-				[to]: decadeUI.dynamicSkin[lib.qhly_skinShare[to].name]
+				[to]: game.qhly_dynamicSkin[lib.qhly_skinShare[to].name]
 			};
 			// @ts-ignore
-			decadeUI.get.extend(decadeUI.dynamicSkin, extend);
+			decadeUI.get.extend(game.qhly_dynamicSkin, extend);
 		}
 		// @ts-ignore
 		if (window.qhly_newDynamicExt) {
@@ -2392,13 +2392,13 @@ export let CONTENT = function(config, pack) {
 			list[i] = [mvpplayers[i]];
 			var score = 0;
 			// @ts-ignore
-			for (j = 0; j < mvpplayers[i].stat.length; j++) {
+			for (let j = 0; j < mvpplayers[i].stat.length; j++) {
 				if (mvpplayers[i].stat[j].damage != undefined) score += mvpplayers[i].stat[j].damage;
 				if (mvpplayers[i].stat[j].damaged != undefined) score += mvpplayers[i].stat[j].damaged;
 				if (mvpplayers[i].stat[j].gain != undefined) score += mvpplayers[i].stat[j].gain;
 				if (JSON.stringify(mvpplayers[i].stat[j].skill) != '{}') score += Object.keys(mvpplayers[i]
 					.stat[j].skill).length;
-				for (k in mvpplayers[i].stat[j].card) {
+				for (const k in mvpplayers[i].stat[j].card) {
 					score += mvpplayers[i].stat[j].card[k];
 				}
 				if (mvpplayers[i].stat[j].kill != undefined) score += mvpplayers[i].stat[j].kill * 2;
@@ -2410,7 +2410,7 @@ export let CONTENT = function(config, pack) {
 			// @ts-ignore
 			return b[1] - a[1];
 		})
-		while (result == !list[0][0].isFriendsOf(game.me) && list.length) list.shift();
+		while (list.length && result == !list[0][0].isFriendsOf(game.me)) list.shift();
 		// @ts-ignore
 		if (list.length && list[0][1]) window.qhly_playVictoryAudio(list[0][0].name1);
 	}
@@ -2462,7 +2462,7 @@ export let CONTENT = function(config, pack) {
 		// @ts-ignore
 		if (!window.decadeUI) return false;
 		// @ts-ignore
-		var dskins = decadeUI.dynamicSkin;
+		var dskins = game.qhly_dynamicSkin;
 		var skins = dskins[character];
 		if (skins == undefined) return false;
 		var keys = Object.keys(skins);
@@ -2482,7 +2482,7 @@ export let CONTENT = function(config, pack) {
 			if (skin && skin.indexOf('绝版') != -1) return 'jueban';
 			var skinkey = skin.substring(0, skin.lastIndexOf('.'));
 			// @ts-ignore
-			if (window.decadeUI && decadeUI.dynamicSkin[name] && decadeUI.dynamicSkin[name][skinkey])
+			if (game.qhly_dynamicSkin[name] && game.qhly_dynamicSkin[name][skinkey])
 			return 'dongtai';
 			return dongtai ? 'dongtai' : 'yuanhua';
 		}
@@ -2554,7 +2554,7 @@ export let CONTENT = function(config, pack) {
 			if (_status.mode != null) {
 				var skins;
 				// @ts-ignore
-				var dskins = decadeUI.dynamicSkin;
+				var dskins = game.qhly_dynamicSkin;
 				skins = dskins[character];
 				if (skins == undefined)
 					return;
@@ -3842,63 +3842,78 @@ export let CONTENT = function(config, pack) {
 		// @ts-ignore
 		if (window.qhly_forbidPlayerWindow) return; //给其他扩展一个变量接口，方便临时禁用单击武将弹出菜单功能（记得执行完你的功能后设为false哦）
 		const player = node.parentNode;
-		const playerName = node.className == 'primary-avatar' ? player.name1 : player.name2;
+		const secondary = node === player.node?.avatar2;
+		const playerName = secondary ? player.name2 : player.name1 || player.name;
+		if (!playerName || player.isUnseen(secondary ? 1 : 0)) return false;
 		// @ts-ignore
 		if (_status.qhly_open || _status.bigEditing || _status.qhly_playerWindowing) return;
 		// @ts-ignore
 		_status.qhly_playerWindowing = true;
+		const previousZIndex = player.style.zIndex;
+		const previousZPriority = player.style.getPropertyPriority('z-index');
+		const previousTransition = player.style.getPropertyValue('transition-property');
+		const previousTransitionPriority = player.style.getPropertyPriority('transition-property');
+		// A z-index transition otherwise leaves the menu below its backdrop during a tap.
+		player.style.setProperty('transition-property', 'none', 'important');
+		player.style.setProperty('z-index', '4', 'important');
 		function exit(e) {
-			if (e) e.stopPropagation();
+			if (e) { e.stopPropagation(); if (e.type === 'touchend') e.preventDefault(); }
 			var touch = document.getElementById('qhly_bigBackground');
 			var black = document.getElementById('qhly_playerwindowbg');
 			// @ts-ignore
 			_status.qhly_playerWindowing = false;
 			if (touch) touch.remove();
 			if (black) black.remove();
+			if (previousZIndex) player.style.setProperty('z-index', previousZIndex, previousZPriority);
+			else player.style.removeProperty('z-index');
+			if (previousTransition) player.style.setProperty('transition-property', previousTransition, previousTransitionPriority);
+			else player.style.removeProperty('transition-property');
+			if (game.qhly_closePlayerWindow === exit) delete game.qhly_closePlayerWindow;
 		}
-		var touchbg = ui.create.div('.qhly_bigBackground', document.body);
+		game.qhly_closePlayerWindow = exit;
+		var touchbg = ui.create.div('.qhly_bigBackground', player.parentNode);
 		touchbg.id = 'qhly_bigBackground';
-		touchbg.addEventListener(lib.config.touchscreen ? 'touchstart' : 'mousedown', exit);
-		var blackbg = ui.create.div('.qhly-playerwindowbg', player);
+		touchbg.listen(exit);
+		var blackbg = ui.create.div('.qhly-playerwindowbg.qhly-interaction-menu', player);
 		// if (ui.arena.dataset.newDecadeStyle != 'on' && player.dynamic && (player.dynamic.primary != null || player.dynamic.deputy != null)) blackbg.style.cssText += 'top:-12%;width:101%;height:113%;border-radius: 300px 182px 20px 20px/80px 65px 20px 20px;'
 		blackbg.id = 'qhly_playerwindowbg';
-		blackbg.addEventListener(lib.config.touchscreen ? 'touchstart' : 'mousedown', exit);
+		blackbg.listen(exit);
+		// Menu presses must not start arena dragging or player long-press handlers.
+		for (const type of ['mousedown', 'touchstart', 'pointerdown', 'contextmenu']) {
+			blackbg.addEventListener(type, event => event.stopPropagation());
+		}
 		var buttons = new Array(3);
 		for (var i = 0; i < 3; i++) {
-			if (player.doubleAvatar || !player.dynamic || player.dynamic && player.dynamic.primary == null) {
-				if (i == 2) continue;
-			}
 			buttons[i] = ui.create.div('.qhly-playerwindowbtn' + i, blackbg);
 			buttons[i].id = 'qhly_playerwindowbtn' + i;
-			buttons[i].addEventListener(lib.config.touchscreen ? 'touchstart' : 'mousedown', function(e) {
+			buttons[i].setAttribute('role', 'button');
+			buttons[i].setAttribute('aria-label', ['武将信息', '换肤', '交互'][i]);
+			buttons[i].title = ['武将信息', '换肤', '交互'][i];
+			buttons[i].listen(function(e) {
 				e.stopPropagation();
+				if (e.type === 'touchend') e.preventDefault();
 				exit();
 				// @ts-ignore
 				game.qhly_playQhlyAudio('qhly_voc_dec_press', null, true);
 				switch (this.id) {
 					case 'qhly_playerwindowbtn0': { //武将信息
 						// @ts-ignore
-						game.qhly_open_new(playerName, lib.config.qhly_doubledefaultpage ? lib.config
-							.qhly_doubledefaultpage : 'skill', node);
+						game.qhly_open_new(playerName, 'skill', node);
 					}
 					break;
 					case 'qhly_playerwindowbtn1': { //换肤小窗
 						// @ts-ignore
-						game.qhly_open_small(playerName, null, node);
+						game.qhly_open_small(playerName, player, node);
 					}
 					break;
-					case 'qhly_playerwindowbtn2': { //调整动皮
-						if (player.doubleAvatar) {
-							alert('双将暂不支持编辑动皮');
-							return;
-						}
-						// @ts-ignore
-						game.qhly_bigEdit(player);
+					case 'qhly_playerwindowbtn2': { //复用现有大图与皮肤列表进行互动
+						game.qhly_open_new(playerName, 'interaction', node);
 					}
 					break;
 				}
 			});
 		}
+		return true;
 	}
 	// @ts-ignore
 	game.qhly_formatDS = function(obj, namex) {
@@ -3957,12 +3972,12 @@ export let CONTENT = function(config, pack) {
 					if (Array.isArray(str)) str = str[0];
 					let To = obj.special[str].name ? obj.special[str].name : obj.name.slice(0, obj.name
 						.lastIndexOf('/'));
-					To = 'decadeUI.dynamicSkin.' + To.replace('/', '.');
+					To = 'game.qhly_dynamicSkin.' + To.replace('/', '.');
 					// @ts-ignore
 					let currentSkin = game.qhly_getSkin(namex);
 					// @ts-ignore
 					if (currentSkin) currentSkin = game.qhly_earse_ext(currentSkin);
-					let From = 'decadeUI.dynamicSkin.' + namex + '.' + currentSkin;
+					let From = 'game.qhly_dynamicSkin.' + namex + '.' + currentSkin;
 					obj.transform = {
 						low: To,
 						high: From,
@@ -3972,7 +3987,7 @@ export let CONTENT = function(config, pack) {
 					if (Array.isArray(str)) str = str[0];
 					let To = obj.special[str].name ? obj.special[str].name : obj.name.slice(0, obj.name
 						.lastIndexOf('/'));
-					To = 'decadeUI.dynamicSkin.' + To.replace('/', '.');
+					To = 'game.qhly_dynamicSkin.' + To.replace('/', '.');
 					obj.transform = {
 						juexingji: To,
 					}
@@ -5203,7 +5218,7 @@ export let CONTENT = function(config, pack) {
 		const editObject = get.itemtype(state) == 'player' ? 'player' : 'bigAvatar';
 		// @ts-ignore
 		var name = game.qhly_getRealName(state.name);
-		const themeType = ui.arena.dataset.newDecadeStyle == 'on' ? 'decade' : 'shousha';
+		const themeType = ui.arena?.dataset.newDecadeStyle == 'on' ? 'decade' : 'shousha';
 		const theme = editObject == 'player' ? themeType : lib.config.qhly_currentViewSkin;
 		// @ts-ignore
 		var skin = game.qhly_getSkin(state.name);
@@ -5225,6 +5240,7 @@ export let CONTENT = function(config, pack) {
 		if (editObject != 'player') focus.style.setProperty('--w', (1 / game.documentZoom) + 'vw'); //适配屏幕缩放
 		var originPostion = focus.style.getPropertyValue('--p');
 		var blackbg = ui.create.div('.qhly_blackbg', bg || document.body);
+		blackbg.style.zIndex='100030';
 		blackbg.setAttribute('theme', themeType);
 		var touchTimer = null;
 		var tempPosition = originPostion;
@@ -5624,7 +5640,7 @@ export let CONTENT = function(config, pack) {
 							lib.qhly_skinEdit[name][skin][editObject].dynamic[theme].y = dynamicY;
 							// @ts-ignore
 							lib.qhly_skinEdit[name][skin][editObject].dynamic[theme].scale = dynamicS /
-								focus.offsetHeight / (1 / game.me.offsetHeight);
+								focus.offsetHeight / (1 / (game.qhly_coreDynamic ? 180 : game.me?.offsetHeight || 180));
 							// @ts-ignore
 							lib.qhly_skinEdit[name][skin][editObject].dynamic[theme].angle = dynamicA;
 							focus.dynamic.primary.x = dynamicX;
@@ -5654,7 +5670,7 @@ export let CONTENT = function(config, pack) {
 								lib.qhly_skinEdit[name][skin][editObject].beijing[theme].y = beijingY;
 								// @ts-ignore
 								lib.qhly_skinEdit[name][skin][editObject].beijing[theme].scale =
-									beijingS / focus.offsetHeight / (1 / game.me.offsetHeight);
+									beijingS / focus.offsetHeight / (1 / (game.qhly_coreDynamic ? 180 : game.me?.offsetHeight || 180));
 								// @ts-ignore
 								lib.qhly_skinEdit[name][skin][editObject].beijing[theme].angle =
 									beijingA;
@@ -6222,7 +6238,7 @@ export let CONTENT = function(config, pack) {
 				options.path = replacedPath;
 				if (lib.config.qhly_audioPlus) {
 					// @ts-ignore
-					game.qhly_playAudioPlus.call(this, options);
+					return game.qhly_playAudioPlus.call(this, options);
 				} else {
 					// @ts-ignore
 					return game.qhly_originPlayAudio.call(this, options);
@@ -6231,7 +6247,7 @@ export let CONTENT = function(config, pack) {
 		}
 		if (lib.config.qhly_audioPlus) {
 			// @ts-ignore
-			game.qhly_playAudioPlus.apply(this, arguments);
+			return game.qhly_playAudioPlus.apply(this, arguments);
 		} else {
 			// @ts-ignore
 			return game.qhly_originPlayAudio.apply(this, arguments);
@@ -7171,10 +7187,10 @@ export let CONTENT = function(config, pack) {
 			});
 			let dynamicSkinList = [];
 			// @ts-ignore
-			if (window.decadeUI) {
+			if (game.qhly_dynamicSkin) {
 				// @ts-ignore
-				if (decadeUI.dynamicSkin && decadeUI.dynamicSkin[name]) dynamicSkinList = Object.keys(
-					decadeUI.dynamicSkin[name]);
+				if (game.qhly_dynamicSkin && game.qhly_dynamicSkin[name]) dynamicSkinList = Object.keys(
+					game.qhly_dynamicSkin[name]);
 				for (var i of skinList) {
 					if (i.skinId) {
 						// @ts-ignore
@@ -7446,6 +7462,7 @@ export let CONTENT = function(config, pack) {
 	};
 	// @ts-ignore
 	game.qhly_dom2image = function(from, name, node, path, state) {
+		const originalZoom=game.documentZoom;
 		var zoom;
 		switch (lib.config.ui_zoom) {
 			case 'esmall':
@@ -7476,6 +7493,7 @@ export let CONTENT = function(config, pack) {
 		// @ts-ignore
 		const realName = game.qhly_getRealName(name);
 		const bg = ui.create.div('.qh-domtoimagebg', document.body);
+		bg.style.zIndex='100030';
 		const text = ui.create.div('.qh-domtoimagenode', bg, );
 		text.innerHTML = '观察左边动皮运行到满意状态时<br>点击下方“生成”按钮<br>黑框内为最终静皮采样范围<br>';
 		text.innerHTML +=
@@ -7534,9 +7552,10 @@ export let CONTENT = function(config, pack) {
 		btn1.onclick = function() {
 			text.innerHTML = '正在生成静皮，请稍后。。。<br>请勿进行其他操作！！！<br>（依据机器性能不同，<br>此过程可能耗费较长时间）';
 			// @ts-ignore
-			window.qhly_d2i.toBlob(bg4).then(function(url) {
+			(game.qhly_captureDynamic ? game.qhly_captureDynamic(bg4) : window.qhly_d2i.toBlob(bg4)).then(function(url) {
 				// @ts-ignore
-				game.qhly_writeImageFile(url, path + realName + '/', fileName + '.jpg', function() {
+				game.qhly_writeImageFile(url, path + realName + '/', fileName + '.jpg', function(error) {
+					if(error){alert('生成静皮失败：'+(error.message||error));exit();return;}
 					//parent.insertBefore(that, sibling);
 					parent.toImageBtn.setAttribute('single', false);
 					// @ts-ignore
@@ -7583,7 +7602,7 @@ export let CONTENT = function(config, pack) {
 				bg4.dynamic.renderer.capacity--;
 			}
 			// @ts-ignore
-			game.documentZoom = game.deviceZoom * zoom;
+			game.documentZoom = originalZoom;
 			ui.updatez();
 			bg.remove();
 		}
@@ -7625,6 +7644,7 @@ export let CONTENT = function(config, pack) {
 	}
 	//设置当前的皮肤。
 	// @ts-ignore
+	const skinSelectionRevisions = new Map();
 	game.qhly_setCurrentSkin = function(name, skin, callback, save) {
 		if (name.indexOf('gz_') == 0) { //国战兼容
 			// @ts-ignore
@@ -7637,6 +7657,9 @@ export let CONTENT = function(config, pack) {
 			}
 		}
 		// @ts-ignore
+		const revision = (skinSelectionRevisions.get(name) || 0) + 1;
+		skinSelectionRevisions.set(name, revision);
+		const isCurrent = () => skinSelectionRevisions.get(name) === revision;
 		const realName = game.qhly_getRealName(name); //添加皮肤共享
 		// @ts-ignore
 		const [skinPackage, skinPackage2] = [game.qhly_foundPackage(realName), game.qhly_foundPackage(name)];
@@ -7658,16 +7681,18 @@ export let CONTENT = function(config, pack) {
 				}
 				// @ts-ignore
 				game.qhly_checkFileExist(path, function(success) {
+					if (!isCurrent()) return;
 					if (success) {
 						// @ts-ignore
 						// @ts-ignore
 						// @ts-ignore
 						game.getFileList(path, function(folders, files) {
+							if (!isCurrent()) return;
 							if (files.includes('audio-redirect.js')) {
 								lib.init.js(lib.assetURL + path + '/audio-redirect.js', null,
 									function() {
 										// @ts-ignore
-										game.qhly_setCurrentSkin(name, skin, callback);
+										if (isCurrent()) game.qhly_setCurrentSkin(name, skin, callback, save);
 									});
 								return;
 							}
@@ -9175,7 +9200,7 @@ export let CONTENT = function(config, pack) {
 					// @ts-ignore
 					if (_status.qhly_changeSkinFunc) {
 						// @ts-ignore
-						clearTimeout(_status.qhly_changeSkinFunc);
+						clearTimeout(_status.qhly_changeSkinTimer);
 					}
 				}
 			})
@@ -9681,9 +9706,9 @@ export let CONTENT = function(config, pack) {
 					bothSkin = [],
 					singleDynamic = []; //2
 				// @ts-ignore
-				if (window.decadeUI) {
+				if (game.qhly_dynamicSkin) {
 					// @ts-ignore
-					if (decadeUI.dynamicSkin[namex]) dynamicSkinList = Object.keys(decadeUI.dynamicSkin[
+					if (game.qhly_dynamicSkin[namex]) dynamicSkinList = Object.keys(game.qhly_dynamicSkin[
 						namex]);
 					singleDynamic = [...dynamicSkinList]; //单形态
 					for (var i of skinList) {
@@ -9839,8 +9864,8 @@ export let CONTENT = function(config, pack) {
 						if ((!lib.config.qhly_skinset.djtoggle[namex] || lib.config.qhly_skinset
 								.djtoggle[namex] && !lib.config.qhly_skinset.djtoggle[namex][skin
 									.substring(0, skin.lastIndexOf('.'))
-								]) && window.decadeUI && decadeUI.dynamicSkin && decadeUI.dynamicSkin[
-								namex] && Object.keys(decadeUI.dynamicSkin[namex]).includes(info
+								]) && game.qhly_dynamicSkin && game.qhly_dynamicSkin[
+								namex] && Object.keys(game.qhly_dynamicSkin[namex]).includes(info
 								.translation)) {
 							// @ts-ignore
 							if (playZhuDynamic) game.qhly_changeDynamicSkin(skinView, info.translation,
@@ -10024,10 +10049,9 @@ export let CONTENT = function(config, pack) {
 						bothSkin = [],
 						singleDynamic = [];
 					// @ts-ignore
-					if (window.decadeUI) {
+					if (game.qhly_dynamicSkin) {
 						// @ts-ignore
-						if (decadeUI.dynamicSkin[namey]) dynamicSkinList = Object.keys(decadeUI
-							.dynamicSkin[namey]);
+						if (game.qhly_dynamicSkin[namey]) dynamicSkinList = Object.keys(game.qhly_dynamicSkin[namey]);
 						singleDynamic = [...dynamicSkinList]; //单形态
 						for (var i of skinList) {
 							if (i) {
@@ -10189,8 +10213,7 @@ export let CONTENT = function(config, pack) {
 							if ((!lib.config.qhly_skinset.djtoggle[namey] || lib.config.qhly_skinset
 									.djtoggle[namey] && !lib.config.qhly_skinset.djtoggle[namey][skin
 										.substring(0, skin.lastIndexOf('.'))
-									]) && window.decadeUI && decadeUI.dynamicSkin && decadeUI
-								.dynamicSkin[namey] && Object.keys(decadeUI.dynamicSkin[namey])
+									]) && game.qhly_dynamicSkin && game.qhly_dynamicSkin[namey] && Object.keys(game.qhly_dynamicSkin[namey])
 								.includes(info.translation)) {
 								// @ts-ignore
 								if (playFuDynamic) game.qhly_changeDynamicSkin(skinView, info
@@ -10426,7 +10449,7 @@ export let CONTENT = function(config, pack) {
 					// @ts-ignore
 					if (_status.qhly_changeSkinFunc) {
 						// @ts-ignore
-						clearTimeout(_status.qhly_changeSkinFunc);
+						clearTimeout(_status.qhly_changeSkinTimer);
 					}
 				}
 			})
@@ -10768,58 +10791,36 @@ export let CONTENT = function(config, pack) {
 				lTimer1 = null,
 				rTimer2 = null,
 				lTimer2 = null;
-			rArrow1.addEventListener(lib.config.touchscreen ? 'touchstart' : 'mousedown', function() {
-				rTimer1 = setInterval(function() {
-					viewState1.offset -= 20;
-					if (viewState1.offset < 665 - viewState1.skinTotalWidth) {
-						viewState1.offset = 665 - viewState1.skinTotalWidth;
-						clearInterval(rTimer1);
-					}
-					viewState1.refresh();
-				}, 50)
-			});
-			rArrow1.addEventListener(lib.config.touchscreen ? 'touchend' : 'mouseup', function() {
-				clearInterval(rTimer1);
-			});
-			lArrow1.addEventListener(lib.config.touchscreen ? 'touchstart' : 'mousedown', function() {
-				lTimer1 = setInterval(function() {
-					viewState1.offset += 20;
-					if (viewState1.offset > 0) {
-						clearInterval(lTimer1);
-						viewState1.offset = 0;
-					}
-					viewState1.refresh();
-				}, 50)
-			});
-			lArrow1.addEventListener(lib.config.touchscreen ? 'touchend' : 'mouseup', function() {
-				clearInterval(lTimer1);
-			});
-			rArrow2.addEventListener(lib.config.touchscreen ? 'touchstart' : 'mousedown', function() {
-				rTimer2 = setInterval(function() {
-					viewState2.offset -= 20;
-					if (viewState2.offset < 665 - viewState2.skinTotalWidth) {
-						viewState2.offset = 665 - viewState2.skinTotalWidth;
-						clearInterval(rTimer2);
-					}
-					viewState2.refresh();
-				}, 50)
-			});
-			rArrow2.addEventListener(lib.config.touchscreen ? 'touchend' : 'mouseup', function() {
-				clearInterval(rTimer2);
-			});
-			lArrow2.addEventListener(lib.config.touchscreen ? 'touchstart' : 'mousedown', function() {
-				lTimer2 = setInterval(function() {
-					viewState2.offset += 20;
-					if (viewState2.offset > 0) {
-						clearInterval(lTimer2);
-						viewState2.offset = 0;
-					}
-					viewState2.refresh();
-				}, 50)
-			});
-			lArrow2.addEventListener(lib.config.touchscreen ? 'touchend' : 'mouseup', function() {
-				clearInterval(lTimer2);
-			});
+            // A tap selects one skin; pointer duration never changes the step.
+            function bindAdjacentSkinArrows(list, side) {
+                const selected = () => list.skinViews.findIndex(card => card.defaultskin?.getAttribute('data-sel') === 'true');
+                list.visibleWidth = () => cover.clientWidth;
+                const refresh = list.refresh;
+                list.refresh = function () {
+                    refresh.call(this);
+                    const index = selected(), visible = cover.getAttribute('data-visible') === side;
+                    this.lArrow.setAttribute('data-visiable', visible && index > 0);
+                    this.rArrow.setAttribute('data-visiable', visible && index >= 0 && index < this.skinViews.length - 1);
+                };
+                const refreshSkins = list.refreshSkins;
+                list.refreshSkins = function () { refreshSkins.call(this); this.refresh(); };
+                const choose = direction => {
+                    const index = selected() + direction, card = list.skinViews[index];
+                    if (!card) return;
+                    list.cancelClick = false;
+                    for (const item of list.skinViews) item.defaultskin?.setAttribute('data-sel', item === card);
+                    card.dispatchEvent(new Event(lib.config.touchscreen ? 'touchend' : 'click'));
+                    if (card.offsetLeft + list.offset < 0) list.offset = -card.offsetLeft;
+                    else if (card.offsetLeft + card.offsetWidth + list.offset > list.visibleWidth()) list.offset = list.visibleWidth() - card.offsetLeft - card.offsetWidth;
+                    list.offset = Math.max(Math.min(0, list.visibleWidth() - list.skinTotalWidth), Math.min(0, list.offset));
+                    list.tempoffset = list.offset;
+                    list.refresh();
+                };
+                list.lArrow.listen(() => choose(-1));
+                list.rArrow.listen(() => choose(1));
+            }
+            bindAdjacentSkinArrows(viewState1, '1');
+            if (viewState2) bindAdjacentSkinArrows(viewState2, '2');
 			if (lib.config.touchscreen) {
 				content1.addEventListener('touchstart', function(event) {
 					if (event.touches && event.touches.length) {
@@ -10949,9 +10950,9 @@ export let CONTENT = function(config, pack) {
 					bothSkin = [],
 					singleDynamic = []; //2
 				// @ts-ignore
-				if (window.decadeUI) {
+				if (game.qhly_dynamicSkin) {
 					// @ts-ignore
-					if (decadeUI.dynamicSkin[namex]) dynamicSkinList = Object.keys(decadeUI.dynamicSkin[
+					if (game.qhly_dynamicSkin[namex]) dynamicSkinList = Object.keys(game.qhly_dynamicSkin[
 						namex]);
 					singleDynamic = [...dynamicSkinList]; //单形态
 					for (var i of skinList) {
@@ -11088,8 +11089,8 @@ export let CONTENT = function(config, pack) {
 						if ((!lib.config.qhly_skinset.djtoggle[namex] || lib.config.qhly_skinset
 								.djtoggle[namex] && !lib.config.qhly_skinset.djtoggle[namex][skin
 									.substring(0, skin.lastIndexOf('.'))
-								]) && window.decadeUI && decadeUI.dynamicSkin && decadeUI.dynamicSkin[
-								namex] && Object.keys(decadeUI.dynamicSkin[namex]).includes(info
+								]) && game.qhly_dynamicSkin && game.qhly_dynamicSkin[
+								namex] && Object.keys(game.qhly_dynamicSkin[namex]).includes(info
 								.translation)) {
 							// @ts-ignore
 							if (playZhuDynamic) game.qhly_changeDynamicSkin(skinView, info.translation,
@@ -11272,10 +11273,9 @@ export let CONTENT = function(config, pack) {
 						bothSkin = [],
 						singleDynamic = []; //2
 					// @ts-ignore
-					if (window.decadeUI) {
+					if (game.qhly_dynamicSkin) {
 						// @ts-ignore
-						if (decadeUI.dynamicSkin[namey]) dynamicSkinList = Object.keys(decadeUI
-							.dynamicSkin[namey]);
+						if (game.qhly_dynamicSkin[namey]) dynamicSkinList = Object.keys(game.qhly_dynamicSkin[namey]);
 						singleDynamic = [...dynamicSkinList]; //单形态
 						for (var i of skinList) {
 							if (i) {
@@ -11414,8 +11414,7 @@ export let CONTENT = function(config, pack) {
 							if ((!lib.config.qhly_skinset.djtoggle[namey] || lib.config.qhly_skinset
 									.djtoggle[namey] && !lib.config.qhly_skinset.djtoggle[namey][skin
 										.substring(0, skin.lastIndexOf('.'))
-									]) && window.decadeUI && decadeUI.dynamicSkin && decadeUI
-								.dynamicSkin[namey] && Object.keys(decadeUI.dynamicSkin[namey])
+									]) && game.qhly_dynamicSkin && game.qhly_dynamicSkin[namey] && Object.keys(game.qhly_dynamicSkin[namey])
 								.includes(info.translation)) {
 								// @ts-ignore
 								if (playFuDynamic) game.qhly_changeDynamicSkin(skinView, info
@@ -11844,6 +11843,9 @@ export let CONTENT = function(config, pack) {
 	//打开选择皮肤界面。
 	// @ts-ignore
 	game.qhly_open_new = function(name, page, ingame) {
+		const interactionView = page === 'interaction';
+		if (interactionView) page = 'skin';
+		hydrateProfileMetadata();
 		//try {
 		// @ts-ignore
 		if (game.qhly_open_new_replace) {
@@ -11880,6 +11882,7 @@ export let CONTENT = function(config, pack) {
 		var closed = false;
 		var gback = ui.create.div('.qh-background');
 		var background = ui.create.div('.qh-window', gback);
+		if (interactionView) background.classList.add('qh-interaction');
 		var backButton = ui.create.div('.qh-back', background);
 		if (lib.config.qhly_currentViewSkin == 'shousha') var dibuhuo = ui.create.div('.qh-dibuhuo',
 		background);
@@ -11891,7 +11894,13 @@ export let CONTENT = function(config, pack) {
 		lib.onresize.push(resize);
 		window.addEventListener("resize",resize);
 		const stopWatching=observeViewport(setSize);
-		gback.close = function() {
+		gback.close = function(event) {
+			// Programmatic navigation must run the theme's own back-button cleanup
+			// (swipe settings, animation timers, dynamic avatar) before reopening.
+			if (!event && backButton.isConnected && !closed) {
+				backButton.dispatchEvent(new Event(lib.config.touchscreen ? 'touchend' : 'click', {bubbles:true}));
+				if (closed) return;
+			}
 			if (closed) return;
 			closed = true;
 			// @ts-ignore
@@ -13131,10 +13140,9 @@ export let CONTENT = function(config, pack) {
 							else if (subView.avatarImage.stopDynamic) subView.avatarImage
 								.stopDynamic();
 							// @ts-ignore
-						} else if (originSkin == null && window.decadeUI && decadeUI
-							.dynamicSkin[name]) {
+						} else if (originSkin == null && game.qhly_dynamicSkin[name]) {
 							// @ts-ignore
-							var dyList = Object.keys(decadeUI.dynamicSkin[name]);
+							var dyList = Object.keys(game.qhly_dynamicSkin[name]);
 							if (dyList && dyList.includes('经典形象') && (!lib.config.qhly_skinset
 									.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] &&
 									!lib.config.qhly_skinset.djtoggle[name]['经典形象']))
@@ -13450,8 +13458,7 @@ export let CONTENT = function(config, pack) {
 								if ((!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset
 										.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name][skin
 											.substring(0, skin.lastIndexOf('.'))
-										]) && window.decadeUI && decadeUI.dynamicSkin && decadeUI
-									.dynamicSkin[name] && Object.keys(decadeUI.dynamicSkin[name])
+										]) && game.qhly_dynamicSkin && game.qhly_dynamicSkin[name] && Object.keys(game.qhly_dynamicSkin[name])
 									.includes(info.translation)) {
 									// @ts-ignore
 									if (playBigDynamic) game.qhly_changeDynamicSkin(skinView, info
@@ -14114,10 +14121,9 @@ export let CONTENT = function(config, pack) {
 					}
 					let dynamicSkinList = [];
 					// @ts-ignore
-					if (window.decadeUI && window.decadeUI.dynamicSkin) {
+					if (game.qhly_dynamicSkin) {
 						// @ts-ignore
-						if (decadeUI.dynamicSkin[name]) dynamicSkinList = Object.keys(decadeUI
-							.dynamicSkin[name]);
+						if (game.qhly_dynamicSkin[name]) dynamicSkinList = Object.keys(game.qhly_dynamicSkin[name]);
 						for (var i of this.skinList) {
 							// @ts-ignore
 							if (i.skinId) {
@@ -14206,7 +14212,7 @@ export let CONTENT = function(config, pack) {
 							// @ts-ignore
 							if (_status.qhly_changeSkinFunc) {
 								// @ts-ignore
-								clearTimeout(_status.qhly_changeSkinFunc);
+								clearTimeout(_status.qhly_changeSkinTimer);
 							}
 						}
 					})
@@ -14823,9 +14829,9 @@ export let CONTENT = function(config, pack) {
 						.currentTexiao = subView.avatarImage.dynamic.primary.name;
 				}
 				// @ts-ignore
-			} else if (window.decadeUI && decadeUI.dynamicSkin && decadeUI.dynamicSkin[name]) {
+			} else if (game.qhly_dynamicSkin && game.qhly_dynamicSkin[name]) {
 				// @ts-ignore
-				var dyList = Object.keys(decadeUI.dynamicSkin[name]);
+				var dyList = Object.keys(game.qhly_dynamicSkin[name]);
 				if (dyList && dyList.includes('经典形象') && (!lib.config.qhly_skinset.djtoggle[name] || lib
 						.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name][
 							'经典形象'
@@ -17484,8 +17490,7 @@ export let CONTENT = function(config, pack) {
 		}
 		if (lib.config.qhly_newui !== false && (lib.config.qhly_currentViewSkin != 'jingdian')) {
 			// @ts-ignore
-			game.qhly_open_new(name, page ? page : 'skin', ingame);
-			return;
+			return game.qhly_open_new(name, page ? page : 'skin', ingame);
 		}
 		//game.pause();
 		if (!lib.config.qhly_huaijiu_mentioned) {
@@ -17493,6 +17498,13 @@ export let CONTENT = function(config, pack) {
 			game.saveConfig('qhly_huaijiu_mentioned', true);
 		}
 		var background = ui.create.div('.qhly-chgskin-background', document.body);
+		let closed = false;
+		background.style.zIndex = '100020';
+		background.close = function() {
+			if (closed) return;
+			closed = true;
+			background.delete(500, () => background.dispatchEvent(new Event('close')));
+		};
 		// @ts-ignore
 		background.animate('start');
 		var avatar = ui.create.div('.qhly-skin', background);
@@ -17520,9 +17532,10 @@ export let CONTENT = function(config, pack) {
 			// @ts-ignore
 			game.qhly_setCurrentSkin(name, viewAbstract.skin, undefined, true);
 			//game.resume();
-			background.delete();
+			background.close();
 		});
 		var refreshView = function(name, viewAbstract) {
+			if (closed) return;
 			avatar.show();
 			// @ts-ignore
 			_status.qhly_viewRefreshing = true;
@@ -17660,7 +17673,7 @@ export let CONTENT = function(config, pack) {
 				refreshView(name, viewAbstract);
 			});
 			levelText.listen(function() {
-				background.delete();
+				background.close();
 				var string = "请输入皮肤的等级";
 				if (levelText.innerHTML) {
 					string = "###" + string + "###" + levelText.innerHTML;
@@ -17701,6 +17714,7 @@ export let CONTENT = function(config, pack) {
 				finishView(name, viewAbstract);
 			}
 		}, false, true);
+		return background;
 	};
 	//修改人物卡片界面，显示换肤按钮。
 	var originCharacterCardFunciton = ui.click.charactercard;
@@ -17816,9 +17830,14 @@ export let CONTENT = function(config, pack) {
 	//自动换肤逻辑。
 	// @ts-ignore
 	game.qhly_autoChangeSkin = function() {
+		clearTimeout(_status.qhly_changeSkinTimer);
+		delete _status.qhly_changeSkinTimer;
 		if (lib.config.qhly_autoChangeSkin && lib.config.qhly_autoChangeSkin != 'close') {
 			// @ts-ignore
 			_status.qhly_changeSkinFunc = function() {
+				if (_status.over || !lib.config.qhly_autoChangeSkin || lib.config.qhly_autoChangeSkin === 'close') return;
+				// Keep one timer alive even when no eligible skin is currently available.
+				game.qhly_autoChangeSkin();
 				if (game && game.players && game.players.length) {
 					var pls = game.players.slice(0);
 					var names = [];
@@ -17881,7 +17900,6 @@ export let CONTENT = function(config, pack) {
 											.name2 && player.name2 == n);
 									}, true);
 								// @ts-ignore
-								game.qhly_autoChangeSkin();
 							} else {
 								f(arr, f);
 							}
@@ -17891,9 +17909,10 @@ export let CONTENT = function(config, pack) {
 				}
 			};
 			// @ts-ignore
-			setTimeout(_status.qhly_changeSkinFunc, parseInt(lib.config.qhly_autoChangeSkin) * 1000);
+			_status.qhly_changeSkinTimer = setTimeout(_status.qhly_changeSkinFunc, Math.max(1, parseInt(lib.config.qhly_autoChangeSkin) || 30) * 1000);
 		}
 	};
+	lib.onover.push(() => { clearTimeout(_status.qhly_changeSkinTimer); delete _status.qhly_changeSkinTimer; });
 	// @ts-ignore
 	game.qhly_createSilder = function(min, max, value) {
 		//此方法代码来自十周年UI。
@@ -17954,13 +17973,13 @@ export let CONTENT = function(config, pack) {
 			document.body.append(dialog);
 			var sliderP = document.getElementById('qh_editdialog_slider');
 			var vol = lib.config.volumn_audio;
-			if (lib.config.qhly_volumnAudio && lib.config.qhly_volumnAudio[key]) {
+			if (lib.config.qhly_volumnAudio && lib.config.qhly_volumnAudio[key] !== undefined) {
 				vol = lib.config.qhly_volumnAudio[key];
 			}
 			if (typeof vol != 'number') {
 				vol = parseInt(vol);
 			}
-			if (!isNaN(vol)) {
+			if (isNaN(vol)) {
 				vol = 4;
 			}
 			// @ts-ignore

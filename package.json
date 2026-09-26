@@ -8,6 +8,8 @@
     },
     "scripts": {
         "dev": "tsx scripts/dev.ts",
+        "skins:import": "node scripts/import-dynamic-skins.mjs",
+        "skins:test": "node --test scripts/dynamic-import.test.mjs scripts/dynamic-lazy.test.mjs scripts/dynamic-composition.test.mjs scripts/dynamic-performance.test.mjs scripts/dynamic-samples-events.test.mjs scripts/dynamic-samples-framing.test.mjs",
         "build": "tsx scripts/build.ts",
 		"build:exe": "node scripts/build-exe.mjs",
 		"test:exe": "node --test scripts/build-exe.test.mjs",

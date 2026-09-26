@@ -9,6 +9,8 @@ import { listenForActivation } from "../../ui/activation.js";
 import { displayRandom } from "../../util/displayRandom.js";
 import { emitPresentation, playerPresentation, rememberHandLimit, rememberDying, clearPlayerPresentation } from "../../ui/presentationEvents.js";
 
+let fullscreenPresentationId = 0;
+
 export class Player extends HTMLDivElement {
 	/**
 	 * @param {HTMLDivElement|DocumentFragment} [position]
@@ -2882,6 +2884,7 @@ export class Player extends HTMLDivElement {
 	 * @param {*} rotate
 	 */
 	$throwEmotion(target, name, rotate) {
+		emitPresentation("emotion", () => ({ player: playerPresentation(this), target: playerPresentation(target), emotion: String(name) }));
 		game.addVideo("throwEmotion", this, [target.dataset.position, name]);
 		var getLeft = function (player) {
 			if (player == game.me && !ui.fakeme && !ui.chess) {
@@ -2954,8 +2957,9 @@ export class Player extends HTMLDivElement {
 	 */
 	trySkillAnimate(name, popname, checkShow) {
 		game.callHook("checkSkillAnimate", [this, name, popname]);
-		emitPresentation("skill", () => ({ player: playerPresentation(this), skill: String(name), label: get.skillTranslation(name, this), limited: !!lib.skill[name]?.limited, awakening: !!lib.skill[name]?.juexingji, mission: !!lib.skill[name]?.dutySkill }));
-		if (!game.online && lib.config.skill_animation_type != "off" && lib.skill[name] && lib.skill[name].skillAnimation) {
+		const fullscreen = !!(!game.online && lib.config.skill_animation_type != "off" && lib.skill[name]?.skillAnimation);
+		emitPresentation("skill", () => ({ player: playerPresentation(this), skill: String(name), label: get.skillTranslation(name, this), animationLabel: String(lib.skill[name]?.animationStr || lib.translate[name] || ""), avatarSide: checkShow === "vice" ? "vice" : "main", fullscreen, limited: !!lib.skill[name]?.limited, awakening: !!lib.skill[name]?.juexingji, mission: !!lib.skill[name]?.dutySkill }));
+		if (fullscreen) {
 			if (lib.config.skill_animation_type == "default") {
 				checkShow = checkShow || "main";
 			} else {
@@ -2993,7 +2997,6 @@ export class Player extends HTMLDivElement {
 	 * @param { string } [popname]
 	 */
 	tryCardAnimate(card, name, nature, popname) {
-		emitPresentation("card", () => ({ player: playerPresentation(this), card: String(card.name), color: String(get.color(card) || ""), nature: String(card.nature || nature || ""), label: String(name || "") }));
 		game.broadcast(
 			function (player, card, name, nature, popname) {
 				player.tryCardAnimate(card, name, nature, popname);
@@ -5005,6 +5008,13 @@ export class Player extends HTMLDivElement {
 		max = game.checkMod(this, max, "maxCharge", this);
 		return typeof max == "number" ? Math.max(0, max) : Infinity;
 	}
+	$cardEffect(card, actionId, action = "use") {
+		// Called by actual use/respond actions, including view-as cards without a popup.
+		emitPresentation("card", () => ({ player: playerPresentation(this), card: String(card.name), color: String(get.color(card) || ""), nature: String(card.nature || ""), label: get.translation(card.name), actionId: actionId == null ? "" : String(actionId), action, damage: !!get.tag(card, "damage"), cardType: String(get.type(card) || ""), subtype: String(get.subtype(card) || "") }));
+	}
+	$phaseEffect(phase) {
+		emitPresentation("phase", () => ({ player: playerPresentation(this), phase: String(phase) }));
+	}
 	line(target, config) {
 		if (get.itemtype(target) == "players") {
 			for (var i = 0; i < target.length; i++) {
@@ -5023,7 +5033,9 @@ export class Player extends HTMLDivElement {
 				config
 			);
 			game.addVideo("line", this, [target.dataset.position, config]);
-			game.linexy([this.getLeft() + this.offsetWidth / 2, this.getTop() + this.offsetHeight / 2, target.getLeft() + target.offsetWidth / 2, target.getTop() + target.offsetHeight / 2], config, true);
+			emitPresentation("line", () => ({ player: playerPresentation(this), target: playerPresentation(target) }));
+			const line = game.linexy([this.getLeft() + this.offsetWidth / 2, this.getTop() + this.offsetHeight / 2, target.getLeft() + target.offsetWidth / 2, target.getTop() + target.offsetHeight / 2], config, true);
+			if (line?.dataset) line.dataset.presentationLine = "player";
 		}
 	}
 	line2(targets, config) {
@@ -16315,7 +16327,10 @@ export class Player extends HTMLDivElement {
 	 * @param { false } [broadcast]
 	 */
 	$fullscreenpop(str, nature, avatar, broadcast) {
-		emitPresentation("fullscreen", () => ({ player: playerPresentation(this), label: String(str), nature: String(nature || "") }));
+		// Identify only this cosmetic node so a ready skin can replace its visual
+		// without changing the broadcast, replay, timing or another popup.
+		const presentationId = String(++fullscreenPresentationId);
+		emitPresentation("fullscreen", () => ({ player: playerPresentation(this), label: String(str), nature: String(nature || ""), avatarSide: avatar === "vice" ? "vice" : "main", presentationId }));
 		if (broadcast !== false) {
 			game.broadcast(
 				function (player, str, nature, avatar) {
@@ -16329,6 +16344,7 @@ export class Player extends HTMLDivElement {
 		}
 		game.addVideo("fullscreenpop", this, [str, nature, avatar]);
 		var node = ui.create.div(".damage");
+		node.dataset.presentationFullscreen = presentationId;
 		if (avatar && this.node) {
 			if (avatar == "vice") {
 				if (lib.character[this.name2]) {

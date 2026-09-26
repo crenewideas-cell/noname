@@ -1,0 +1,1322 @@
+{
+  "version": 1,
+  "pack": "怒焰三国",
+  "femaleCharacters": 56,
+  "initialSourceCount": 220,
+  "allocations": [
+    {
+      "characters": [
+        "nysgs_shen_zhenji"
+      ],
+      "source": "nysgs_shen_zhenji.jpg",
+      "random": false,
+      "destination": "qingshan/nysgs_shen_zhenji.jpg",
+      "sha256": "0b28cb32446f72544e2f78c3bf035cd75f890ec509cb3e780c11bfe466f592c6"
+    },
+    {
+      "characters": [
+        "nysgs_zhenji_canghaiyizhu"
+      ],
+      "source": "canghaiyizhu.jpg",
+      "random": false,
+      "destination": "qingshan/canghaiyizhu.jpg",
+      "sha256": "0d4a6938aa2ebfa0498b2aa93cb8f8ffd796bb7b3abb097452fcea307f0a75a8"
+    },
+    {
+      "characters": [
+        "nysgs_zhenji"
+      ],
+      "source": "nysgs_ZhenJi.jpg",
+      "random": false,
+      "destination": "qingshan/nysgs_zhenji.jpg",
+      "sha256": "a28b06538ab2e69c44c03f2cd38e49ca90ae74a6922494700e4a224049cdbff6"
+    },
+    {
+      "characters": [
+        "nysgs_zhenji_shadow"
+      ],
+      "source": "nysgs_ZhenJi_shadow.jpg",
+      "random": false,
+      "destination": "qingshan/nysgs_zhenji_shadow.jpg",
+      "sha256": "9f4f414846c3c1caffdb2d42f4771e003f067603cf58bce675c52dd4e5ea2cf6"
+    },
+    {
+      "characters": [
+        "nysgs_xinxianying"
+      ],
+      "source": "nysgs_XinXianYing.jpg",
+      "random": false,
+      "destination": "qingshan/nysgs_xinxianying.jpg",
+      "sha256": "fc0e7b7bd7524cec15f0f8623fea1010b930d93668172939fb792a4a04ae783d"
+    },
+    {
+      "characters": [
+        "nysgs_guozhao"
+      ],
+      "source": "静态替换皮肤_S1/91.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_guozhao.jpg",
+      "sha256": "367a48822bf25b4e8342329e382e3538b89e043cea63efd51c061ef73356d880"
+    },
+    {
+      "characters": [
+        "nysgs_caoying"
+      ],
+      "source": "静态替换皮肤_S2/187.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_caoying.jpg",
+      "sha256": "d800cf9f8136c7e60a1021d54b17376e58d9b88f424c6901ccd2c3f3e273b6a3"
+    },
+    {
+      "characters": [
+        "nysgs_bianfuren"
+      ],
+      "source": "静态替换皮肤_S1/42.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_bianfuren.jpg",
+      "sha256": "3292e4986b104b81b4ed3025089b28c078e73e4cbebd8bee59fd4ed36f3c8d8a"
+    },
+    {
+      "characters": [
+        "nysgs_yanghuiyu"
+      ],
+      "source": "静态替换皮肤_S2/111.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_yanghuiyu.jpg",
+      "sha256": "5eb3bb07d68e11f50e760be229b549af903b0b32478132ead0091769d5fcb628"
+    },
+    {
+      "characters": [
+        "nysgs_wangyuanji"
+      ],
+      "source": "静态替换皮肤_S1/27.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_wangyuanji.jpg",
+      "sha256": "54b777df7ec232344a8c2efe946c1849cda76154c79040a9507e752d6c12d80a"
+    },
+    {
+      "characters": [
+        "nysgs_caizhenji"
+      ],
+      "source": "静态替换皮肤_S2/175.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_caizhenji.jpg",
+      "sha256": "f7ba3f1a2ffa300a123e4261042dcb89e99a8dcca0d700486bd0b5380d8b4320"
+    },
+    {
+      "characters": [
+        "nysgs_huan_caiwenji"
+      ],
+      "source": "静态替换皮肤_S1/77.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_huan_caiwenji.jpg",
+      "sha256": "0f04638a767ca9d844743d45dbe1a2b6043d3f55aa6a60d4da155f03e46d0bc0"
+    },
+    {
+      "characters": [
+        "nysgs_zhangchunhua",
+        "nysgs_jie_zhangchunhua"
+      ],
+      "source": "静态替换皮肤_S2/173.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_zhangchunhua.jpg",
+      "sha256": "4c988b076cdf9ae174e67c9a481eed6b5311e43a1388f75cfef635f3509610cf"
+    },
+    {
+      "characters": [
+        "nysgs_wangyi",
+        "nysgs_jie_wangyi"
+      ],
+      "source": "静态替换皮肤_S1/36.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_wangyi.jpg",
+      "sha256": "677a17db6f9977a7c3ec6304d3d8054d9a79b5976da4650f962c028f37f96979"
+    },
+    {
+      "characters": [
+        "nysgs_caojinyu",
+        "nysgs_jie_caojinyu"
+      ],
+      "source": "静态替换皮肤_S1/65.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_caojinyu.jpg",
+      "sha256": "c9bc78739ee9145527e3fbe9a9cf7938a91e245f0d641bb5c3c3465da2c14852"
+    },
+    {
+      "characters": [
+        "nysgs_zhangchangpu",
+        "nysgs_jie_zhangchangpu"
+      ],
+      "source": "静态替换皮肤_S2/165.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_zhangchangpu.jpg",
+      "sha256": "c65847d5940da89c72675a11906913ad9d8fc3db1969d4b2b6bb73c856c808f9"
+    },
+    {
+      "characters": [
+        "nysgs_mifuren"
+      ],
+      "source": "静态替换皮肤_S2/117.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_mifuren.jpg",
+      "sha256": "0069d219f2a3235edf3e870fcac3a79833cd6e9b319987b1654edf07b34d8513"
+    },
+    {
+      "characters": [
+        "nysgs_baosanniang"
+      ],
+      "source": "静态替换皮肤_S1/50.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_baosanniang.jpg",
+      "sha256": "6a582c7e293ff499de01c5a176d4c24e9d24306037e27283fe7e1f66c94b9aba"
+    },
+    {
+      "characters": [
+        "nysgs_xiahoushi"
+      ],
+      "source": "静态替换皮肤_S1/89.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_xiahoushi.jpg",
+      "sha256": "42144d130e4cbe9c9976cf661c9730d92c99cf76b495927273095f4d3327715a"
+    },
+    {
+      "characters": [
+        "nysgs_ganfuren"
+      ],
+      "source": "静态替换皮肤_S1/101.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_ganfuren.jpg",
+      "sha256": "60077f88895d7f833d8b7ef2f60709fa6c32c8b8a5ffd28857cbc65b4123e85f"
+    },
+    {
+      "characters": [
+        "nysgs_zhaoxiang"
+      ],
+      "source": "静态替换皮肤_S2/142.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_zhaoxiang.jpg",
+      "sha256": "3289599060e5c4ec1f4c3fc24edae7be758d959ff14723de7b6454b8859e0214"
+    },
+    {
+      "characters": [
+        "nysgs_zhugeguo"
+      ],
+      "source": "静态替换皮肤_S1/98.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_zhugeguo.jpg",
+      "sha256": "09270e23fee6db5bc53dc285524017fd5289e42456117e34fc75ffd22fa3ac43"
+    },
+    {
+      "characters": [
+        "nysgs_huaman"
+      ],
+      "source": "静态替换皮肤_S2/164.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_huaman.jpg",
+      "sha256": "82e12ebd3103dc0edb545f1fccfa3ab9fa67e297bd8e18ded09f23094de475f3"
+    },
+    {
+      "characters": [
+        "nysgs_wuxian"
+      ],
+      "source": "静态替换皮肤_S1/32.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_wuxian.jpg",
+      "sha256": "931626f12b7edf38f6d19a5944ff868a3f051ecbd53c80326f5b0c754f6e766c"
+    },
+    {
+      "characters": [
+        "nysgs_hujinding"
+      ],
+      "source": "静态替换皮肤_S1/2.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_hujinding.jpg",
+      "sha256": "a64b4f9ea4a3a4818e115ca60bed74cd34a9df3bfdc72d63c9bcd582a86a0697"
+    },
+    {
+      "characters": [
+        "nysgs_huangyueying",
+        "nysgs_jie_huangyueying"
+      ],
+      "source": "静态替换皮肤_S2/194.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_huangyueying.jpg",
+      "sha256": "da4d869a46b80ae5f9904774d295265ba462b1ba9e334c3663bcdbcf1f453824"
+    },
+    {
+      "characters": [
+        "nysgs_zhangxingcai",
+        "nysgs_jie_zhangxingcai"
+      ],
+      "source": "静态替换皮肤_S1/66.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_zhangxingcai.jpg",
+      "sha256": "db033dedec42df2ad892d174414a6fa2645398d5131eb79894206a867c830b91"
+    },
+    {
+      "characters": [
+        "nysgs_bulianshi"
+      ],
+      "source": "nysgs_BuLianShi.jpg",
+      "random": false,
+      "destination": "qingshan/nysgs_bulianshi.jpg",
+      "sha256": "3da87623963390daee5340e0307bc5d938331f87337e62994db660e39cb79fd7"
+    },
+    {
+      "characters": [
+        "nysgs_sunhanhua"
+      ],
+      "source": "静态替换皮肤_S2/126.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_sunhanhua.jpg",
+      "sha256": "c08c63d714a53886ffc096f95e64bc1e77ff0108a0801e76ff7ba4c5a507c6e7"
+    },
+    {
+      "characters": [
+        "nysgs_sunluyu"
+      ],
+      "source": "静态替换皮肤_S1/103.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_sunluyu.jpg",
+      "sha256": "b29a97a20468e0512e53975bba2e8ef0e4b5473cc7637e14a2ede6975d88f377"
+    },
+    {
+      "characters": [
+        "nysgs_panshu"
+      ],
+      "source": "静态替换皮肤_S2/200.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_panshu.jpg",
+      "sha256": "ea45b4bd284692608c7aca130faf012cd8ff0ef61ba88e8b15bfd45e9ba9e310"
+    },
+    {
+      "characters": [
+        "nysgs_zhouyi"
+      ],
+      "source": "静态替换皮肤_S1/73.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_zhouyi.jpg",
+      "sha256": "d86282176363e728e296a5f9151ae2990a53f8b0f3d637b1c43eb80bfadf678e"
+    },
+    {
+      "characters": [
+        "nysgs_huan_xiaoqiao"
+      ],
+      "source": "静态替换皮肤_S2/140.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_huan_xiaoqiao.jpg",
+      "sha256": "474bdae7a8a55177e4781720208ccd8a3edec959e86b822903a2b46bbac2854b"
+    },
+    {
+      "characters": [
+        "nysgs_huan_xiaoqiao_shadow"
+      ],
+      "source": "静态替换皮肤_S1/22.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_huan_xiaoqiao_shadow.jpg",
+      "sha256": "84b7825046a7867ff4b14e98c4a2d9c2a7b59582b6e1503a6599a15ff573087a"
+    },
+    {
+      "characters": [
+        "nysgs_huan_daqiao"
+      ],
+      "source": "静态替换皮肤_S2/161.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_huan_daqiao.jpg",
+      "sha256": "78650dff82181792de0a189bf1c004ba08db3c97d4924e2979844be4e905ca06"
+    },
+    {
+      "characters": [
+        "nysgs_huan_daqiao_shadow"
+      ],
+      "source": "静态替换皮肤_S2/124.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_huan_daqiao_shadow.jpg",
+      "sha256": "d260b9b0e6b03e3202d39a63c6facb77b00a484b92d7239b8c44fa16e13c8a2d"
+    },
+    {
+      "characters": [
+        "nysgs_wuguotai",
+        "nysgs_jie_wuguotai"
+      ],
+      "source": "静态替换皮肤_S1/4.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_wuguotai.jpg",
+      "sha256": "5ebab7a2ad1cc0dff4c22f9aea850f27af0424eeb8b81131953c590dbb247e80"
+    },
+    {
+      "characters": [
+        "nysgs_caiwenji"
+      ],
+      "source": "静态替换皮肤_S2/169.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_caiwenji.jpg",
+      "sha256": "4e6a70fe2aad49c50dc9a0cd5387ab5888cdd0d7431a800384e0d9f321719141"
+    },
+    {
+      "characters": [
+        "nysgs_lingju"
+      ],
+      "source": "静态替换皮肤_S1/67.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_lingju.jpg",
+      "sha256": "a7a8cc473f7abc417a0370e16675fca663f685eab65174c4a112d502686804c3"
+    },
+    {
+      "characters": [
+        "nysgs_lvlingqi"
+      ],
+      "source": "静态替换皮肤_S2/158.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_lvlingqi.jpg",
+      "sha256": "c7003641476f25ef96d4a027abe3f3ba252c9fbd4bd96bdf793d37586b3fdd9a"
+    },
+    {
+      "characters": [
+        "nysgs_zhangqiying"
+      ],
+      "source": "静态替换皮肤_S2/134.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_zhangqiying.jpg",
+      "sha256": "aad6e1b4c217eaed4837cec640441851c1ce4850b1e934d03bae315d069fd927"
+    },
+    {
+      "characters": [
+        "nysgs_dongxie"
+      ],
+      "source": "nysgs_DongXie.jpg",
+      "random": false,
+      "destination": "qingshan/nysgs_dongxie.jpg",
+      "sha256": "a7c35edde19daf84c7a2c43b51a48089697693051cf2932d8b3f816b4c151447"
+    },
+    {
+      "characters": [
+        "nysgs_huan_zhangchu"
+      ],
+      "source": "静态替换皮肤_S1/18.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_huan_zhangchu.jpg",
+      "sha256": "58684eca1c3c81954b34282b38290ef52822ce64f05174001421accaa4010b02"
+    },
+    {
+      "characters": [
+        "nysgs_huan_zhangchu_shadow"
+      ],
+      "source": "静态替换皮肤_S2/183.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_huan_zhangchu_shadow.jpg",
+      "sha256": "a13f507573ed0b5812deb19b5a1c0e1c4ee5ae4be66e88fdf65bac30fe6b8f02"
+    },
+    {
+      "characters": [
+        "nysgs_diaochan",
+        "nysgs_jie_diaochan",
+        "nysgs_qi_diaochan"
+      ],
+      "source": "静态替换皮肤_S1/16.png",
+      "random": true,
+      "destination": "qingshan/nysgs_diaochan.png",
+      "sha256": "cda664c9f31fbf405ff8317a681bd996b4ba4e605e979431cc40f18d0f03bca0"
+    },
+    {
+      "characters": [
+        "nysgs_caifuren",
+        "nysgs_jie_caifuren"
+      ],
+      "source": "nysgs_CaiFuRen.jpg",
+      "random": false,
+      "destination": "qingshan/nysgs_caifuren.jpg",
+      "sha256": "abe0f4eef1312724007722cc6296fb0330db8dca035aadeac94b47e7fe3a0db6"
+    },
+    {
+      "characters": [
+        "nysgs_yangwan"
+      ],
+      "source": "静态替换皮肤_S2/208.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_yangwan.jpg",
+      "sha256": "6c2c03ba6615a9899951d560021c1fa113e8980df32ac1a565e0199151238b66",
+      "originalDestination": "image/character/nysgs_yangwan.jpg",
+      "supplement": true
+    },
+    {
+      "characters": [
+        "nysgs_malingli"
+      ],
+      "source": "静态替换皮肤_S1/58.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_malingli.jpg",
+      "sha256": "5236cbe80b2049caa8458d09c9c9ad4788250ec2881779e0b7c4317f45b222f8",
+      "originalDestination": "image/character/nysgs_malingli.jpg",
+      "supplement": true
+    },
+    {
+      "characters": [
+        "nysgs_huan_sunshangxiang"
+      ],
+      "source": "静态替换皮肤_S1/12.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_huan_sunshangxiang.jpg",
+      "sha256": "d2289e3cad250e8d61322dcb48d50206468985007568e183e51594338af99f8a",
+      "originalDestination": "image/character/nysgs_huan_sunshangxiang.jpg",
+      "supplement": true
+    },
+    {
+      "characters": [
+        "nysgs_zhurong",
+        "nysgs_jie_zhurong"
+      ],
+      "source": "静态替换皮肤_S1/70.jpg",
+      "random": true,
+      "destination": "qingshan/nysgs_zhurong.jpg",
+      "sha256": "a3dccc344037c419af3b9768a3075ac98ebb76f7db21710155f58cf4653a4498",
+      "originalDestination": "image/character/nysgs_zhurong.jpg",
+      "supplement": true
+    }
+  ],
+  "sets": [
+    {
+      "id": "nuyan-original",
+      "name": "怒焰三国 · 旧版皮肤",
+      "pack": "怒焰三国",
+      "entries": {
+        "nysgs_shen_zhenji": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_shen_zhenji.jpg",
+          "variants": {
+            "nysgs_zhenji_canghaiyizhu": "extension/怒焰三国/image/skin-sets/original/canghaiyizhu.jpg"
+          }
+        },
+        "nysgs_zhenji_canghaiyizhu": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/canghaiyizhu.jpg"
+        },
+        "nysgs_zhenji": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhenji.jpg",
+          "variants": {
+            "nysgs_zhenji_shadow": "extension/怒焰三国/image/skin-sets/original/nysgs_zhenji_shadow.jpg",
+            "nysgs_zhenji_canghaiyizhu": "extension/怒焰三国/image/skin-sets/original/canghaiyizhu.jpg"
+          }
+        },
+        "nysgs_zhenji_shadow": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhenji_shadow.jpg"
+        },
+        "nysgs_xinxianying": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_xinxianying.jpg"
+        },
+        "nysgs_guozhao": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_guozhao.jpg"
+        },
+        "nysgs_caoying": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_caoying.jpg"
+        },
+        "nysgs_bianfuren": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_bianfuren.jpg"
+        },
+        "nysgs_yanghuiyu": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_yanghuiyu.jpg"
+        },
+        "nysgs_wangyuanji": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_wangyuanji.jpg"
+        },
+        "nysgs_caizhenji": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_caizhenji.jpg"
+        },
+        "nysgs_huan_caiwenji": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_huan_caiwenji.jpg"
+        },
+        "nysgs_zhangchunhua": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhangchunhua.jpg"
+        },
+        "nysgs_jie_zhangchunhua": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhangchunhua.jpg"
+        },
+        "nysgs_wangyi": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_wangyi.jpg"
+        },
+        "nysgs_jie_wangyi": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_wangyi.jpg"
+        },
+        "nysgs_caojinyu": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_caojinyu.jpg"
+        },
+        "nysgs_jie_caojinyu": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_caojinyu.jpg"
+        },
+        "nysgs_zhangchangpu": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhangchangpu.jpg"
+        },
+        "nysgs_jie_zhangchangpu": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhangchangpu.jpg"
+        },
+        "nysgs_mifuren": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_mifuren.jpg"
+        },
+        "nysgs_baosanniang": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_baosanniang.jpg"
+        },
+        "nysgs_xiahoushi": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_xiahoushi.jpg"
+        },
+        "nysgs_ganfuren": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_ganfuren.jpg"
+        },
+        "nysgs_zhaoxiang": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhaoxiang.jpg"
+        },
+        "nysgs_zhugeguo": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhugeguo.jpg"
+        },
+        "nysgs_huaman": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_huaman.jpg"
+        },
+        "nysgs_wuxian": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_wuxian.jpg"
+        },
+        "nysgs_hujinding": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_hujinding.jpg"
+        },
+        "nysgs_huangyueying": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_huangyueying.jpg"
+        },
+        "nysgs_jie_huangyueying": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_huangyueying.jpg"
+        },
+        "nysgs_zhangxingcai": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhangxingcai.jpg"
+        },
+        "nysgs_jie_zhangxingcai": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhangxingcai.jpg"
+        },
+        "nysgs_bulianshi": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_bulianshi.jpg"
+        },
+        "nysgs_sunhanhua": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_sunhanhua.jpg"
+        },
+        "nysgs_sunluyu": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_sunluyu.jpg"
+        },
+        "nysgs_panshu": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_panshu.jpg"
+        },
+        "nysgs_zhouyi": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhouyi.jpg"
+        },
+        "nysgs_huan_xiaoqiao": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_huan_xiaoqiao.jpg",
+          "variants": {
+            "nysgs_huan_xiaoqiao_shadow": "extension/怒焰三国/image/skin-sets/original/nysgs_huan_xiaoqiao_shadow.jpg"
+          }
+        },
+        "nysgs_huan_xiaoqiao_shadow": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_huan_xiaoqiao_shadow.jpg"
+        },
+        "nysgs_huan_daqiao": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_huan_daqiao.jpg",
+          "variants": {
+            "nysgs_huan_daqiao_shadow": "extension/怒焰三国/image/skin-sets/original/nysgs_huan_daqiao_shadow.jpg"
+          }
+        },
+        "nysgs_huan_daqiao_shadow": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_huan_daqiao_shadow.jpg"
+        },
+        "nysgs_wuguotai": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_wuguotai.jpg"
+        },
+        "nysgs_jie_wuguotai": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_wuguotai.jpg"
+        },
+        "nysgs_caiwenji": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_caiwenji.jpg"
+        },
+        "nysgs_lingju": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_lingju.jpg"
+        },
+        "nysgs_lvlingqi": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_lvlingqi.jpg"
+        },
+        "nysgs_zhangqiying": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_zhangqiying.jpg"
+        },
+        "nysgs_dongxie": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_dongxie.jpg"
+        },
+        "nysgs_huan_zhangchu": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_huan_zhangchu.jpg",
+          "variants": {
+            "nysgs_huan_zhangchu_shadow": "extension/怒焰三国/image/skin-sets/original/nysgs_huan_zhangchu_shadow.jpg"
+          }
+        },
+        "nysgs_huan_zhangchu_shadow": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_huan_zhangchu_shadow.jpg"
+        },
+        "nysgs_diaochan": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_diaochan.jpg"
+        },
+        "nysgs_jie_diaochan": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_diaochan.jpg"
+        },
+        "nysgs_qi_diaochan": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_diaochan.jpg"
+        },
+        "nysgs_caifuren": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_caifuren.jpg"
+        },
+        "nysgs_jie_caifuren": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_caifuren.jpg"
+        },
+        "nysgs_yangwan": {
+          "name": "补全原画",
+          "path": "extension/怒焰三国/image/character/nysgs_yangwan.jpg"
+        },
+        "nysgs_malingli": {
+          "name": "补全原画",
+          "path": "extension/怒焰三国/image/character/nysgs_malingli.jpg"
+        },
+        "nysgs_huan_sunshangxiang": {
+          "name": "补全原画",
+          "path": "extension/怒焰三国/image/character/nysgs_huan_sunshangxiang.jpg"
+        },
+        "nysgs_zhurong": {
+          "name": "补全原画",
+          "path": "extension/怒焰三国/image/character/nysgs_zhurong.jpg"
+        },
+        "nysgs_jie_zhurong": {
+          "name": "补全原画",
+          "path": "extension/怒焰三国/image/character/nysgs_zhurong.jpg"
+        }
+      }
+    },
+    {
+      "id": "nuyan-qingshan",
+      "name": "怒焰三国 · 青山抚媚",
+      "pack": "怒焰三国",
+      "entries": {
+        "nysgs_shen_zhenji": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_shen_zhenji.jpg",
+          "variants": {
+            "nysgs_zhenji_canghaiyizhu": "extension/怒焰三国/image/skin-sets/qingshan/canghaiyizhu.jpg"
+          }
+        },
+        "nysgs_zhenji_canghaiyizhu": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/canghaiyizhu.jpg"
+        },
+        "nysgs_zhenji": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhenji.jpg",
+          "variants": {
+            "nysgs_zhenji_shadow": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhenji_shadow.jpg",
+            "nysgs_zhenji_canghaiyizhu": "extension/怒焰三国/image/skin-sets/qingshan/canghaiyizhu.jpg"
+          }
+        },
+        "nysgs_zhenji_shadow": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhenji_shadow.jpg"
+        },
+        "nysgs_xinxianying": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_xinxianying.jpg"
+        },
+        "nysgs_guozhao": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_guozhao.jpg"
+        },
+        "nysgs_caoying": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_caoying.jpg"
+        },
+        "nysgs_bianfuren": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_bianfuren.jpg"
+        },
+        "nysgs_yanghuiyu": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_yanghuiyu.jpg"
+        },
+        "nysgs_wangyuanji": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_wangyuanji.jpg"
+        },
+        "nysgs_caizhenji": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_caizhenji.jpg"
+        },
+        "nysgs_huan_caiwenji": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huan_caiwenji.jpg"
+        },
+        "nysgs_zhangchunhua": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhangchunhua.jpg"
+        },
+        "nysgs_jie_zhangchunhua": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhangchunhua.jpg"
+        },
+        "nysgs_wangyi": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_wangyi.jpg"
+        },
+        "nysgs_jie_wangyi": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_wangyi.jpg"
+        },
+        "nysgs_caojinyu": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_caojinyu.jpg"
+        },
+        "nysgs_jie_caojinyu": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_caojinyu.jpg"
+        },
+        "nysgs_zhangchangpu": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhangchangpu.jpg"
+        },
+        "nysgs_jie_zhangchangpu": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhangchangpu.jpg"
+        },
+        "nysgs_mifuren": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_mifuren.jpg"
+        },
+        "nysgs_baosanniang": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_baosanniang.jpg"
+        },
+        "nysgs_xiahoushi": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_xiahoushi.jpg"
+        },
+        "nysgs_ganfuren": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_ganfuren.jpg"
+        },
+        "nysgs_zhaoxiang": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhaoxiang.jpg"
+        },
+        "nysgs_zhugeguo": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhugeguo.jpg"
+        },
+        "nysgs_huaman": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huaman.jpg"
+        },
+        "nysgs_wuxian": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_wuxian.jpg"
+        },
+        "nysgs_hujinding": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_hujinding.jpg"
+        },
+        "nysgs_huangyueying": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huangyueying.jpg"
+        },
+        "nysgs_jie_huangyueying": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huangyueying.jpg"
+        },
+        "nysgs_zhangxingcai": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhangxingcai.jpg"
+        },
+        "nysgs_jie_zhangxingcai": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhangxingcai.jpg"
+        },
+        "nysgs_bulianshi": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_bulianshi.jpg"
+        },
+        "nysgs_sunhanhua": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_sunhanhua.jpg"
+        },
+        "nysgs_sunluyu": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_sunluyu.jpg"
+        },
+        "nysgs_panshu": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_panshu.jpg"
+        },
+        "nysgs_zhouyi": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhouyi.jpg"
+        },
+        "nysgs_huan_xiaoqiao": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huan_xiaoqiao.jpg",
+          "variants": {
+            "nysgs_huan_xiaoqiao_shadow": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huan_xiaoqiao_shadow.jpg"
+          }
+        },
+        "nysgs_huan_xiaoqiao_shadow": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huan_xiaoqiao_shadow.jpg"
+        },
+        "nysgs_huan_daqiao": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huan_daqiao.jpg",
+          "variants": {
+            "nysgs_huan_daqiao_shadow": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huan_daqiao_shadow.jpg"
+          }
+        },
+        "nysgs_huan_daqiao_shadow": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huan_daqiao_shadow.jpg"
+        },
+        "nysgs_wuguotai": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_wuguotai.jpg"
+        },
+        "nysgs_jie_wuguotai": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_wuguotai.jpg"
+        },
+        "nysgs_caiwenji": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_caiwenji.jpg"
+        },
+        "nysgs_lingju": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_lingju.jpg"
+        },
+        "nysgs_lvlingqi": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_lvlingqi.jpg"
+        },
+        "nysgs_zhangqiying": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhangqiying.jpg"
+        },
+        "nysgs_dongxie": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_dongxie.jpg"
+        },
+        "nysgs_huan_zhangchu": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huan_zhangchu.jpg",
+          "variants": {
+            "nysgs_huan_zhangchu_shadow": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huan_zhangchu_shadow.jpg"
+          }
+        },
+        "nysgs_huan_zhangchu_shadow": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huan_zhangchu_shadow.jpg"
+        },
+        "nysgs_diaochan": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_diaochan.png"
+        },
+        "nysgs_jie_diaochan": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_diaochan.png"
+        },
+        "nysgs_qi_diaochan": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_diaochan.png"
+        },
+        "nysgs_caifuren": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_caifuren.jpg"
+        },
+        "nysgs_jie_caifuren": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_caifuren.jpg"
+        },
+        "nysgs_yangwan": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_yangwan.jpg"
+        },
+        "nysgs_malingli": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_malingli.jpg"
+        },
+        "nysgs_huan_sunshangxiang": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_huan_sunshangxiang.jpg"
+        },
+        "nysgs_zhurong": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhurong.jpg"
+        },
+        "nysgs_jie_zhurong": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhurong.jpg"
+        }
+      }
+    }
+  ],
+  "randomAssigned": 42,
+  "remainingSourceCount": 178,
+  "characters": {
+    "nysgs_shen_zhenji": {
+      "name": "怒焰神甄姬",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_zhenji_canghaiyizhu": {
+      "name": "怒焰甄姬 · 形态",
+      "sex": "female",
+      "form": true
+    },
+    "nysgs_zhenji": {
+      "name": "怒焰甄姬",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_zhenji_shadow": {
+      "name": "怒焰甄姬 · 形态",
+      "sex": "female",
+      "form": true
+    },
+    "nysgs_xinxianying": {
+      "name": "怒焰辛宪英",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_guozhao": {
+      "name": "怒焰郭照",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_caoying": {
+      "name": "怒焰曹婴",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_bianfuren": {
+      "name": "怒焰卞夫人",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_yanghuiyu": {
+      "name": "怒焰羊徽瑜",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_wangyuanji": {
+      "name": "怒焰王元姬",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_caizhenji": {
+      "name": "怒焰蔡贞姬",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_huan_caiwenji": {
+      "name": "怒焰幻蔡文姬",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_zhangchunhua": {
+      "name": "怒焰张春华",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_jie_zhangchunhua": {
+      "name": "怒焰界张春华",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_wangyi": {
+      "name": "怒焰王异",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_jie_wangyi": {
+      "name": "怒焰界王异",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_caojinyu": {
+      "name": "怒焰曹金玉",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_jie_caojinyu": {
+      "name": "怒焰界曹金玉",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_zhangchangpu": {
+      "name": "怒焰张昌蒲",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_jie_zhangchangpu": {
+      "name": "怒焰界张昌蒲",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_mifuren": {
+      "name": "怒焰糜夫人",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_baosanniang": {
+      "name": "怒焰鲍三娘",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_xiahoushi": {
+      "name": "怒焰夏侯氏",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_ganfuren": {
+      "name": "怒焰甘夫人",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_zhaoxiang": {
+      "name": "怒焰赵襄",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_zhugeguo": {
+      "name": "怒焰诸葛果",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_huaman": {
+      "name": "怒焰花鬘",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_wuxian": {
+      "name": "怒焰吴苋",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_hujinding": {
+      "name": "怒焰胡金定",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_huangyueying": {
+      "name": "怒焰黄月英",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_jie_huangyueying": {
+      "name": "怒焰界黄月英",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_zhangxingcai": {
+      "name": "怒焰张星彩",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_jie_zhangxingcai": {
+      "name": "怒焰界张星彩",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_bulianshi": {
+      "name": "怒焰步练师",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_sunhanhua": {
+      "name": "怒焰孙寒华",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_sunluyu": {
+      "name": "怒焰孙鲁育",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_panshu": {
+      "name": "怒焰潘淑",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_zhouyi": {
+      "name": "怒焰周夷",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_huan_xiaoqiao": {
+      "name": "怒焰幻小乔",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_huan_xiaoqiao_shadow": {
+      "name": "怒焰幻小乔 · 形态",
+      "sex": "female",
+      "form": true
+    },
+    "nysgs_huan_daqiao": {
+      "name": "怒焰幻大乔",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_huan_daqiao_shadow": {
+      "name": "怒焰幻大乔 · 形态",
+      "sex": "female",
+      "form": true
+    },
+    "nysgs_wuguotai": {
+      "name": "怒焰吴国太",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_jie_wuguotai": {
+      "name": "怒焰界吴国太",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_caiwenji": {
+      "name": "怒焰蔡文姬",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_lingju": {
+      "name": "怒焰灵雎",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_lvlingqi": {
+      "name": "怒焰吕玲绮",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_zhangqiying": {
+      "name": "怒焰张琪瑛",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_dongxie": {
+      "name": "怒焰董翓",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_huan_zhangchu": {
+      "name": "怒焰幻张楚",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_huan_zhangchu_shadow": {
+      "name": "怒焰幻张楚 · 形态",
+      "sex": "female",
+      "form": true
+    },
+    "nysgs_diaochan": {
+      "name": "怒焰貂蝉",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_jie_diaochan": {
+      "name": "怒焰界貂蝉",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_qi_diaochan": {
+      "name": "怒焰起貂蝉",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_caifuren": {
+      "name": "怒焰蔡夫人",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_jie_caifuren": {
+      "name": "怒焰界蔡夫人",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_yangwan": {
+      "name": "怒焰杨婉",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_malingli": {
+      "name": "怒焰马伶俐",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_huan_sunshangxiang": {
+      "name": "怒焰幻孙尚香",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_zhurong": {
+      "name": "怒焰祝融",
+      "sex": "female",
+      "form": false
+    },
+    "nysgs_jie_zhurong": {
+      "name": "怒焰界祝融",
+      "sex": "female",
+      "form": false
+    }
+  }
+}

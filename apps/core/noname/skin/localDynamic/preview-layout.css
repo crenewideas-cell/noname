@@ -1,0 +1,45 @@
+/* Only the existing large preview changes shape; player portraits and skin cards do not. */
+.qh-window.local-skin-adapted > .qh-shousha-big-avatar {
+  left: var(--local-preview-left); top: var(--local-preview-top); width: var(--local-preview-width); height: var(--local-preview-height);
+  background-image: none; transition: none !important;
+  border: 18px solid transparent; box-sizing: border-box;
+  border-image: url('../千幻聆音/image/newui_avatar.png') 32 fill / 18px / 0 stretch;
+}
+.qh-window.qh-interaction.local-skin-adapted > .qh-shousha-big-avatar {
+  left:var(--local-preview-left); top:var(--local-preview-top); width:var(--local-preview-width); height:var(--local-preview-height);
+}
+.local-skin-adapted > .qh-shousha-big-avatar > :is(.qh-image-standard,.qh-image-lutou) {
+  inset: 0; width: auto; height: auto;
+}
+.local-skin-adapted > .qh-shousha-big-avatar > :is(.qh-avatar-label,.qh-avatar-label-other) {
+  width: calc(100% + 60px); left: -43px; top: -23px; height: calc(100% + 42px);
+  background-image: none; border: 0 solid transparent;
+  border-image-source: var(--local-frame-image); border-image-slice: 150 35 55 110;
+  border-image-width: 100px 23px 37px 73px; border-image-repeat: stretch;
+}
+.local-skin-adapted > .qh-shousha-big-avatar > .qhhp-decade-big-wrap { left: 28px; right: 12px; bottom: 16px; width: auto !important; max-width: calc(100% - 40px); overflow: hidden; }
+.local-skin-adapted > .qh-shousha-big-avatar > .qhhp-decade-big-skininfo-wrap { left: 28px; bottom: 44px; }
+.local-skin-adapted > .qh-shousha-big-avatar > .qh-avatar-label-name { left: -36px; width: 32px; }
+.local-skin-adapted > .qh-shousha-big-avatar > .qh-avatar-label-title { left: 12px; width: 30px; }
+.local-skin-adapted > .qh-shousha-big-avatar > :is(.qh-avatar-rank,.qh-skin-rank,.qh-skinchange-big-dynamicChange) { width: 54px; height: 54px; right: 0; }
+.local-skin-adapted > .qh-shousha-big-avatar > .qh-skinchange-big-dynamicChange { top: 50px; }
+.local-skin-landscape > .qh-back { width: 7%; height: 10%; z-index: 70; }
+.local-skin-landscape > .qh-shoushabg { top: 12%; height: 49%; left: 66%; right: auto; width: 30%; transition: none; }
+.local-skin-landscape > :is(.qh-shoushabgbody,.qh-shoushabgtail) { left: 66%; right: auto; width: 30.5%; transition: none; }
+.local-skin-landscape > .qh-shoushabgbody { top: calc(12% + 2.7em); height: 41%; }
+.local-skin-landscape > .qh-shoushabg.suoxiao { height: 37%; }
+.local-skin-landscape > .qh-shoushabgbody.suoxiao { height: 29%; }
+.local-skin-landscape > .qh-page-skin { left: 66%; width: 30%; transition: none; }
+.local-skin-landscape > .qh-button { top: 12.1%; left: 86%; width: 9%; padding-left: 0; letter-spacing: .25em; }
+.local-skin-landscape > .qh-button.skillB { left: 66%; }
+.local-skin-landscape > .qh-button.configB { left: 76%; }
+.local-skin-landscape > .qh-button.skinB { width: 0; height: 0; }
+.local-skin-landscape > .qh-avatar-shoushabuttons { left: 0; width: 6%; }
+.local-skin-adapted.local-skin-stacked > .qh-shoushabg { top: 53%; left: 5%; width: 43%; height: 39%; }
+.local-skin-adapted.local-skin-stacked > .qh-shoushabgbody { top: calc(53% + 2.7em); left: 5%; width: 43.5%; height: 31%; }
+.local-skin-adapted.local-skin-stacked > .qh-shoushabgtail { top: calc(83.6% + 2.7em); left: 5%; width: 43.5%; }
+.local-skin-adapted.local-skin-stacked > .qh-page-skin { left: 53%; width: 43%; bottom: 7%; height: 35%; }
+.local-skin-adapted.local-skin-stacked > .qh-button { top: 53.1%; left: 34%; width: 14%; }
+.local-skin-adapted.local-skin-stacked > .qh-button.skillB { left: 5%; }
+.local-skin-adapted.local-skin-stacked > .qh-button.configB { left: 19.5%; }
+.local-skin-adapted.local-skin-stacked > .qh-avatar-shoushabuttons { left: 7%; top: 47%; bottom: auto; width: 86%; flex-direction: row; }

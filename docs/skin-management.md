@@ -1,0 +1,48 @@
+# 皮肤管理与青山抚媚套装
+
+## 使用
+
+从武将皮肤详情页右上角的 **皮肤管理** 进入，也可以在千幻聆音扩展设置中打开 **皮肤管理（批量 / 套装）**。
+
+1. 选择扩展包，按名称、ID 或性别筛选。需要跨包搭配时选择“全部武将 / 跨包搭配”。
+2. 勾选武将或点击“全选筛选结果”，批量启用、禁用静态或动态皮肤。禁用保留选择；重新启用后恢复。页面的“开启换肤”控制总开关。
+3. 在皮肤套装区域点击“一键应用整套”，也可只应用到勾选的武将。套装只影响其覆盖的武将，主将的变身图随之切换。
+4. 点击“查看皮肤”可预览、使用单张皮肤，或勾选多张后批量禁用/启用。已禁用皮肤仍保留在管理器中，方便恢复。
+5. 输入名称后，“保存所选当前搭配”会把所选武将当前的静态、动态或经典形象保存成自定义套装，可再次一键应用。
+
+“恢复个人选择”撤销所选武将的套装覆盖，恢复原先通过千幻选定的皮肤；“恢复经典形象”使用当前安装的原画。若想回到替换前的怒焰原图，请明确选择“怒焰三国 · 旧版皮肤”，因为用户此前已手工修改 8 张原画。
+
+设置存储在 `skin_management` 中。整套切换先校验图片，再以一次持久化写入提交；任何图片加载失败或保存失败，都保留原选择。无需重启即可刷新头像。动态播放仍遵守游戏的动画、低性能模式等设置。
+
+## 本次资源分配
+
+- 实际来源：`temp/静态皮肤_青山抚媚/静态替换皮肤_S1`、`静态替换皮肤_S2`，初始共 220 张。
+- 覆盖 45 位女性武将，加上共享原画的界版、奇版，共 56 个武将 ID。另包含 5 个变身形态 ID。
+- 共 50 张立绘：8 张指定原文件原样复制，42 张随机分配，随机部分不重复使用同一文件或同一哈希内容。
+- 8 张指定原图为 `canghaiyizhu.jpg`、`nysgs_BuLianShi.jpg`、`nysgs_CaiFuRen.jpg`、`nysgs_DongXie.jpg`、`nysgs_shen_zhenji.jpg`、`nysgs_XinXianYing.jpg`、`nysgs_ZhenJi.jpg`、`nysgs_ZhenJi_shadow.jpg`。
+- 旧套装优先从 `temp/怒焰三国旧版皮肤` 复制；备份缺失时读取版本库 HEAD 中的原始图片。现有原画文件均不覆盖。
+- 源目录中已分配的 42 张在导入校验后移除；未分配的 178 张保留供其他扩展使用。
+- 根据后续要求，杨婉、马伶俐、幻孙尚香、祝融已追加随机分配 4 张，并补到 `image/character` 原画目录；界祝融共用祝融图片。这 4 位没有历史原画，切换旧版套装时保留新补全的原画。
+
+运行时资源位于 `apps/core/extension/packs/怒焰三国/image/skin-sets/`：`original/` 是旧套装，`qingshan/` 是新套装。`manifest.json` 记录全部武将/形态、源文件、目标文件和 SHA-256，不依赖 temp 目录运行。文件名大小写和下划线差异已经按实际文件核对，界版共享对应的同一幅新图。
+
+## 维护与验证
+
+键社包现支持 **键社 · 键社新装** 和 **键社 · 旧版皮肤**，覆盖 19 个角色 ID。中文文件名与武将 ID 对照见 [键社皮肤映射](key-skin-mapping.md)。套装注册已集中到 `apps/core/noname/skin/setCatalog.js`，怒焰和键社的清单相互独立。
+
+两者均使用 `extension/packs/扩展名/image/skin-sets/manifest.json` 与扩展内的新旧图片目录，运行时使用 `extension/扩展名/...` 路径。键社扩展的 `extension.js`、`info.json` 和全部 38 张图片位于 `apps/core/extension/packs/键社/`，后续可整体打包。内置键社武将及其技能仍由本体提供，内部 `key` / `key_*` 标识不变，以兼容存档；大厅、选将、联机列表及套装显示名称均为“键社”。旧版选择和自定义搭配中的资源路径会自动迁移。
+
+`scripts/import-qingshan-skins.mjs` 生成首次分配；已有清单时拒绝重新随机分配。`--metadata` 只刷新武将名称；`--consume` 在校验全部导入文件后移除对应源文件，可重复执行且不会删除剩余资源。
+
+扩展开发者可以在 `setCatalog.js` 中接入静态清单，套装结构为 `{id, name, pack, entries}`；每个 `entries[武将ID]` 包含 `{name, path, variants?}`，资源路径使用本体 `image/...` 或发布版逻辑路径 `extension/扩展名/...`。普通用户可直接在管理器中保存当前搭配，无需编辑清单。
+
+验证命令：
+
+```powershell
+node --test scripts/skin-management.test.mjs
+node_modules/.bin/tsx --test scripts/skin-system.test.ts
+node --test scripts/dynamic-lazy.test.mjs scripts/dynamic-composition.test.mjs
+node scripts/skin-management-browser.mjs
+```
+
+浏览器验证使用独立浏览器存储，报告和桌面/小屏截图输出到 `output/skin-management/`。

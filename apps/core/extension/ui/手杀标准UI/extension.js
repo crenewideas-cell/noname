@@ -130,16 +130,25 @@ export async function activate(manifest){
  };
  lib.onloadSplashes ||= [];
  if(manifest.components.home?.runtime==='shousha'){lib.onloadSplashes=lib.onloadSplashes.filter(item=>item.id!==splash.id);lib.onloadSplashes.push(splash);lib.config.splash_style=splash.id;}
- // Register the selected lobby synchronously. Arena skin assets load only when
- // an arena exists; their failure must never replace the selected home screen.
+ // arenaReady is synchronous and does not await returned promises. Prepare the
+ // skin during provider activation, before the engine creates its first dialog.
+ // Keep an existing arena covered during retries instead of flashing stock UI.
+ const arenaGate=document.createElement('style');
+ arenaGate.textContent='body[data-shousha-loading] #arena{visibility:hidden!important}';
+ document.head.append(arenaGate);
  const mountArena=()=>{
   if(disposed||!hasGameSkin)return;
-  void prepare().then(value=>value.installGame()).then(()=>{
+  document.body.setAttribute('data-shousha-loading','');
+  return prepare().then(value=>value.installGame()).then(()=>{
    if(disposed)return;
+   document.body.removeAttribute('data-shousha-loading');
    arenaError?.remove();arenaError=undefined;
    if(lib.uiWorkshop?.failedId===manifest.id){delete lib.uiWorkshop.failedId;delete lib.uiWorkshop.error;}
   }).catch(error=>{
    if(disposed)return;
+   // A failed cosmetic request must never leave the game permanently hidden.
+   // Retry reapplies the gate while the provider installs its presentation.
+   document.body.removeAttribute('data-shousha-loading');
    console.error('手杀对局皮肤加载失败',error);
    const message='手杀对局皮肤加载失败：'+error.message;
    if(lib.uiWorkshop){lib.uiWorkshop.failedId=manifest.id;lib.uiWorkshop.error=message;}
@@ -148,8 +157,10 @@ export async function activate(manifest){
   });
  };
 
- if(hasGameSkin){if(ui.arena)mountArena();else lib.arenaReady.push(mountArena);}
- installed=()=>{if(disposed)return;disposed=true;runtime?.dispose();void splash.dispose();arenaError?.remove();style.remove();const at=lib.arenaReady?.indexOf(mountArena);if(at>=0)lib.arenaReady.splice(at,1);lib.onloadSplashes=lib.onloadSplashes.filter(item=>item!==splash);if(lib.uiWorkshop?.openSuiteSettings===openSettings)delete lib.uiWorkshop.openSuiteSettings;activeRuntime=null;installed=null;};return installed;
+ installed=()=>{if(disposed)return;disposed=true;runtime?.dispose();void splash.dispose();arenaError?.remove();style.remove();arenaGate.remove();document.body.removeAttribute('data-shousha-loading');lib.onloadSplashes=lib.onloadSplashes.filter(item=>item!==splash);if(lib.uiWorkshop?.openSuiteSettings===openSettings)delete lib.uiWorkshop.openSuiteSettings;activeRuntime=null;installed=null;};
+ const release=installed;
+ if(hasGameSkin)await mountArena();
+ return release;
 }
 
 export async function mountPreview(node,manifest,screen='login'){

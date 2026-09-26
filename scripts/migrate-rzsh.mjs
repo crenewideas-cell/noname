@@ -55,7 +55,7 @@ function patch(n) {
  if (ts.isCallExpression(n) && n.expression.getText(sceneTree) === 'yH["add"]' && /person_skel/.test(n.arguments[0]?.getText(sceneTree))) edits.push([n.getStart(sceneTree),n.end, 'lifecycle.optionalSpine(yH, '+n.arguments.map(a=>a.getText(sceneTree)).join(',')+')']);
  if (ts.isCaseClause(n) && n.expression.getText(sceneTree) === '"menuwu3"') edits.push([n.getStart(sceneTree),n.end, 'case "menuwu3": lifecycle.restart(); break;']);
  if (ts.isCaseClause(n) && n.expression.getText(sceneTree) === '"menusi5"') edits.push([n.getStart(sceneTree),n.end, 'case "menusi5": lifecycle.settings(); break;']);
- if (ts.isCallExpression(n) && n.expression.getText(sceneTree) === 'fm["on"]' && n.arguments[0]?.text === "pointerup" && n.getText(sceneTree).includes('skinSwitch')) edits.push([n.getStart(sceneTree),n.end, 'fm.on("pointerup", () => { lifecycle.skins(); GK.removeChild(kT); })']);
+ if (ts.isCallExpression(n) && n.expression.getText(sceneTree) === 'fm["on"]' && n.arguments[0]?.text === "pointerup" && n.getText(sceneTree).includes('skinSwitch')) edits.push([n.getStart(sceneTree),n.end, 'fm.on("pointerup", () => { lifecycle.treasure(); GK.removeChild(kT); })']);
  if (ts.isCallExpression(n) && n.expression.getText(sceneTree) === 'f9["on"]' && n.arguments[0]?.text === "pointerup" && n.getText(sceneTree).includes('dzxy_mzhl')) edits.push([n.getStart(sceneTree),n.end, 'f9.on("pointerup", () => { lifecycle.corridor(); GK.removeChild(kT); })']);
  if (ts.isBinaryExpression(n) && n.left.getText(sceneTree) === 'window["_rzsh_themeReady"]') edits.push([n.right.getStart(sceneTree),n.right.end,'Promise.resolve().then(() => { window._rzsh_theme = lib.config.rzsh_home_theme || "吕布貂蝉"; window._rzsh_themeLocked = true; })']);
  ts.forEachChild(n, patch);

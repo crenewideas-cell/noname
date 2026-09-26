@@ -6,8 +6,14 @@ import {
 	game,
 	ai
 } from './noname.js';
+import {openSkinManager} from 'noname';
 
 export let CONFIG = {
+	"qhly_skin_manager": {
+		name: "皮肤管理（批量 / 套装）",
+		clear: true,
+		onclick: () => openSkinManager(),
+	},
 	"qhly_uishezhi": {
 		"name": "<font size='5' color='blue'>UI设置》</font>",
 		"clear": true,
@@ -118,7 +124,7 @@ export let CONFIG = {
 	"qhly_smallwindowstyle": {
 		"name": "小窗口样式",
 		"intro": "可切换小窗口的样式。",
-		"init": lib.config.qhly_smallwindowstyle === undefined ? 'decade' : lib.config.qhly_smallwindowstyle,
+		"init": lib.config.qhly_smallwindowstyle === undefined ? 'shousha' : lib.config.qhly_smallwindowstyle,
 		"item": {
 			'dragon': '龙头',
 			'common': '经典',
@@ -397,12 +403,7 @@ export let CONFIG = {
 			"600": "每10分钟",
 		},
 		onclick: function(item) {
-			var open = false;
-			if (lib.config.qhly_autoChangeSkin == 'close' || !lib.config.qhly_autoChangeSkin) {
-				if (item !== 'close') {
-					open = true;
-				}
-			}
+			var open = item !== 'close';
 			game.saveConfig('extension_千幻聆音_qhly_autoChangeSkin', item);
 			game.saveConfig('qhly_autoChangeSkin', item);
 			if (open) {
@@ -417,7 +418,7 @@ export let CONFIG = {
 				// @ts-ignore
 				if (_status.qhly_changeSkinFunc) {
 					// @ts-ignore
-					clearTimeout(_status.qhly_changeSkinFunc);
+					clearTimeout(_status.qhly_changeSkinTimer);
 				}
 			}
 		}

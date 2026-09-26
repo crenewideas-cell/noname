@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import vm from 'node:vm';
+import {followPortraitEffect} from '../apps/core/noname/util/portraitEffectFit.js';
 const root=new URL('../apps/core/extension/ui/十周年局内UI/',import.meta.url);
 async function fixture(){
  const plays=[],stops=[];let listener;
@@ -12,16 +13,16 @@ async function fixture(){
   stopSpine(sprite){stops.push(sprite);}stopSpineAll(){}
  }
  const context=vm.createContext({console,performance,setTimeout,clearTimeout,innerWidth:1440,innerHeight:810,cancelAnimationFrame(){},
-  document:{body:{},createElement(){return {remove(){}};}}});
+  document:{body:{},querySelectorAll:()=>[],createElement(){return {remove(){}};}}});
  const source=new vm.SourceTextModule(await fs.readFile(new URL('animations.js',root),'utf8'),{context});
  await source.link(async specifier=>{
-  const values=specifier==='noname'?{subscribePresentation:fn=>{listener=fn;return()=>{listener=undefined;};}}:
+  const values=specifier==='noname'?{followPortraitEffect,subscribePresentation:fn=>{listener=fn;return()=>{listener=undefined;};}}:
    specifier.includes('animation-renderer')?{createAnimationRenderer:()=>({AnimationPlayer:Renderer})}:{spine:{}};
   return new vm.SyntheticModule(Object.keys(values),function(){for(const[k,v]of Object.entries(values))this.setExport(k,v);},{context});
  });await source.evaluate();
  const metadata=JSON.parse(await fs.readFile(new URL('animation-assets.json',root),'utf8'));
  const api=source.namespace.mountAnimations({base:'/',parts:new Set(['arena','lines']),options:{sound:false},metadata,enabled:()=>true,volume:()=>0});
- const emit=async data=>listener?.({time:performance.now(),player:{seat:'0',rect:{left:10,top:20,width:130,height:180}},...data});
+ const emit=async data=>{await listener?.({time:performance.now(),player:{seat:'0',rect:{left:10,top:20,width:130,height:180}},...data});if(data.type==='card'&&data.card!=='wanjian')await new Promise(resolve=>setTimeout(resolve,400));};
  return {api,plays,stops,emit,metadata};
 }
 test('source card definitions take priority and judge outcomes select their source action',async()=>{
@@ -40,12 +41,13 @@ test('source card definitions take priority and judge outcomes select their sour
 test('one limited skill notification pair renders once, ordinary fullscreen labels remain available',async()=>{
  const f=await fixture();try{
   await f.emit({type:'skill',skill:'test',limited:true,time:100});
-  await f.emit({type:'fullscreen',time:110});assert.equal(f.plays.length,1);
-  await f.emit({type:'fullscreen',time:500});assert.equal(f.plays.length,2);
+  const count=f.plays.length; // Limited artwork plus the native frame flash.
+  await f.emit({type:'fullscreen',time:110});assert.equal(f.plays.length,count);
+  await f.emit({type:'fullscreen',time:500});assert.equal(f.plays.length,count+1);
  }finally{f.api.dispose();}
 });
 test('target indicator follows its existing node and stops after deselection/disposal',async()=>{
- const f=await fixture();const node={getBoundingClientRect:()=>({left:1,top:2,width:130,height:180})};
+ const f=await fixture();const node={isConnected:true,getBoundingClientRect:()=>({left:1,top:2,width:130,height:180})};
  f.api.syncTargets([node]);await new Promise(r=>setTimeout(r,0));
  assert.equal(f.plays[0].position.parent,node);assert.equal(f.plays[0].position.follow,true);
  f.api.syncTargets([]);assert.equal(f.stops.length,1);f.api.dispose();await f.emit({type:'start'});assert.equal(f.plays.length,1);
@@ -61,15 +63,15 @@ test('target-resolution actions use the source animations and cancel the delayed
  await new Promise(r=>setTimeout(r,650));assert.equal(f.plays.length,count);
 });
 test('dying loop starts once, follows the seat and stops on recovery or release',async()=>{
- const f=await fixture(),node={getBoundingClientRect:()=>({left:1,top:2,width:130,height:180})};
+ const f=await fixture(),node={isConnected:true,getBoundingClientRect:()=>({left:1,top:2,width:130,height:180})};
  f.api.syncDying([node]);f.api.syncDying([node]);await new Promise(r=>setTimeout(r,0));
- assert.equal(f.plays.length,1);assert.equal(f.plays[0].def.name,'SS_jiuwo');assert.equal(f.plays[0].def.loop,true);assert.equal(f.plays[0].position.parent,node);
+ assert.equal(f.plays.length,1);assert.equal(f.plays[0].def.name,'SZN_jiuwo');assert.equal(f.plays[0].def.loop,true);assert.equal(f.plays[0].position.parent,node);
  f.api.syncDying([]);assert.equal(f.stops.length,1);f.api.dispose();
 });
 test('health effects use explicit public causes and respect source numeric ranges',async()=>{
  const f=await fixture();try{
   await f.emit({type:'number',value:-3});assert.equal(f.plays.length,0);
-  await f.emit({type:'number',value:-2,health:{kind:'loseHp',value:2}});assert.equal(f.plays.at(-1).def.name,'effect_loseHp');
+  await f.emit({type:'number',value:-2,health:{kind:'loseHp',value:2}});assert.equal(f.plays.at(-1).def.name,'SZN_loseHp');
   await f.emit({type:'number',value:2,health:{kind:'recover',value:2}});assert.equal(f.plays.at(-1).def.action,'2');assert.match(f.plays.at(-1).def.name,/huifushuzi/);
   await f.emit({type:'number',value:-1,health:{kind:'damage',value:3,unreal:false}});assert.equal(f.plays.at(-1).def.action,'3');assert.match(f.plays.at(-1).def.name,/SZN_shuzi/);
   await f.emit({type:'number',value:0,health:{kind:'damage',value:0,unreal:true}});assert.equal(f.plays.at(-1).def.action,'play0');
@@ -87,7 +89,7 @@ test('kill achievements consume host counts, legacy deaths stay plain, and conve
   await f.emit({type:'death',source:{seat:'1'},kills:3});await new Promise(r=>setTimeout(r,0));
   assert.ok(f.plays.some(p=>p.def.name==='sanpo'));assert.ok(f.plays.some(p=>p.def.name==='qy_SF_eff_lianzhan_lv3_zi'));
   const length=f.plays.length;await f.emit({type:'death',source:{seat:'0'},kills:3});assert.equal(f.plays.length,length+1);
-  await f.emit({type:'conversion'});assert.equal(f.plays.at(-1).def.name,'zhuanhuanji');
+  await f.emit({type:'conversion'});assert.equal(f.plays.at(-1).def.name,'SS_zhuanhuanji');
  }finally{f.api.dispose();}
 });
 

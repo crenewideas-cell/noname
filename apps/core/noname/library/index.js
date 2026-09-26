@@ -3101,6 +3101,10 @@ export class Library {
 					unfrequent: true,
 					item: {
 						default: "默认",
+						Liuli: "手杀指示线",
+						ZipYulong: "玉龙（指示线扩展）",
+						ZipJingdian: "经典（指示线扩展）",
+						ZipBaoji: "暴击（指示线扩展）",
 						Mohua: "水墨",
 						Xiangong: "先攻",
 						Zhuzhang: "竹杖",
@@ -3119,6 +3123,7 @@ export class Library {
 					},
 					onclick(items) {
 						game.saveConfig("zhishixian", items);
+						game.clearAttackLines();
 						if (items == "default") {
 							game.linexy = game.zsOriginLineXy;
 						} else {

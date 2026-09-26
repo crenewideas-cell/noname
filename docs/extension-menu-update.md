@@ -45,7 +45,7 @@
 ├─ PXLNGU
 │  ├─ 原成员 → 武将
 │  ├─ 合纵抗秦（hezongkangqincharacter）
-│  └─ 二次元（原 Key，key）
+│  └─ 键社（原 Key，key）
 ├─ 芙蕖绿波
 │  ├─ 本包武将
 │  └─ 飞鸿印雪（MX_feihongyinxue）

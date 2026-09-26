@@ -11,6 +11,8 @@
   "native/animation-renderer.js",
   "native/animations.js",
   "native/boot.js",
+  "native/effects.js",
+  "native/indicators.js",
   "native/layout.js",
   "native/lobby.js",
   "native/login-backgrounds.js",

@@ -1,0 +1,15 @@
+{
+  "source": "temp/三国杀·琉璃版5.5/resources/app/extension/皮肤切换",
+  "scope": "Only cangZhenGe, its original settings, pixi-ease and existing art. No legacy gameplay patch is loaded.",
+  "originalFiles": {
+    "extension.js": "cfc218565a0a86450640b33ba15ead0a54d0e43f7b61c58b39050ba418dfb525",
+    "czg_setting.js": "45067e5d8c9b2b36d66cb8552df861a55153c5b2de802e6a625aee224bfc56b1",
+    "spine-lib/pixi/pixi-ease.js": "d9662ca765bff563cbc6dec31a51fe6ddbee4eb2e87834beea248d31c6a106e8"
+  },
+  "assets": "extension/手杀标准UI/original/皮肤切换/",
+  "adaptations": [
+    "Owned lifetime and audio; removed legacy deletion of ui.window/ui.arena",
+    "Load the second reward-animation batch before enabling draws",
+    "Guard callbacks after closing reward windows; use PIXI 6 factory calls"
+  ]
+}

@@ -94,7 +94,7 @@ export const shoushaManifest = {
       "name": "手杀标准 · 指示线",
       "runtime": "shousha",
       "settings": {
-        "zhishixian": "default"
+        "zhishixian": "Liuli"
       },
       "assets": {},
       "style": {}

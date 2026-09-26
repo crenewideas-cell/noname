@@ -102,6 +102,12 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
         subView.skininfoWrap = ui.create.div('.qhhp-decade-big-skininfo-wrap', subView.avatar);
         subView.skininfoText = ui.create.div('.qhhp-decade-big-skininfotext-wrap', subView.skininfoWrap);
         subView.avatar.belowText = ui.create.div('.qh-skinchange-decade-big-skin-text', subView.hpWrap);
+        subView.setSkinCaption = function (key, displayName = key) {
+          const caption = subView.avatar.belowText;
+          caption.dataset.skinKey = key;
+          caption.textContent = displayName + ' · ' + get.translation(name);
+          caption.title = caption.textContent;
+        };
         subView.menuCover = ui.create.div();
         subView.menuCover.style.width = "100%";
         subView.menuCover.style.height = "100%";
@@ -163,14 +169,71 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
         });
         subView.skinBar = ui.create.div('.qh-skinchange-big-skinBar', subView.avatar);
         subView.dynamicToggle = ui.create.div('.qh-skinchange-big-dynamicChange', subView.avatar);
+        const interactionButton = document.createElement('button');
+        interactionButton.type = 'button';
+        interactionButton.className = 'qh-skin-preview-interaction';
+        subView.avatar.append(interactionButton);
+        // The native toggle uses percentage geometry; anchor the interaction
+        // button below its actual bounds in the same coordinate system.
+        const positionInteractionButton = () => {
+          const toggle = subView.dynamicToggle;
+          const portrait = subView.avatarImage;
+          // The decorative frame is inset from the avatar container. Position
+          // inside the actual painting, not along the frame/toggle's outer edge.
+          const inset = subView.avatar.clientWidth - portrait.offsetLeft - portrait.offsetWidth;
+          interactionButton.style.right = Math.max(24, inset + 16) + 'px';
+          const toggleVisible = toggle.getClientRects().length && toggle.offsetHeight > 0;
+          const top = Math.max(portrait.offsetTop + 16, toggleVisible ? toggle.offsetTop + toggle.offsetHeight + 8 : 0);
+          interactionButton.style.top = Math.min(top, portrait.offsetTop + portrait.offsetHeight - interactionButton.offsetHeight - 16) + 'px';
+        };
+        const buttonLayoutObserver = new ResizeObserver(positionInteractionButton);
+        buttonLayoutObserver.observe(subView.avatar);
+        buttonLayoutObserver.observe(subView.dynamicToggle);
+        buttonLayoutObserver.observe(subView.avatarImage);
+        const syncInteractionButton = () => {
+          const host = game.localDynamicSkinTestHub?.previews.get(subView.avatarImage);
+          const ready = host?.frame?.dataset.ready === 'true';
+          const enabled = !!(ready && host.input?.interactive);
+          interactionButton.disabled = !ready;
+          interactionButton.hidden = !ready;
+          interactionButton.textContent = enabled ? '退出交互' : '交互';
+          interactionButton.setAttribute('aria-pressed', String(enabled));
+          interactionButton.title = !ready ? '当前皮肤尚未启用可交互的动态预览' : enabled ? '退出本次预览交互' : '与当前皮肤互动，仅本次查看生效';
+          positionInteractionButton();
+        };
+        interactionButton.addEventListener('click', event => {
+          event.stopPropagation();
+          game.localDynamicSkinTestHub?.setPreviewInteraction(subView.avatarImage, interactionButton.getAttribute('aria-pressed') !== 'true');
+          syncInteractionButton();
+        });
+        subView.avatarImage.addEventListener('qhly-preview-input', syncInteractionButton);
+        const interactionObserver = new MutationObserver(syncInteractionButton);
+        interactionObserver.observe(subView.avatarImage, {childList:true, subtree:true, attributes:true, attributeFilter:['data-ready']});
+        (view.closest('.qh-background') || view).addEventListener('close', () => {
+          for (const node of view.querySelectorAll('.primary-avatar,.qh-image-standard')) game.localDynamicSkinTestHub?.loadThumbnail.cancel(node);
+          interactionObserver.disconnect();
+          buttonLayoutObserver.disconnect();
+          subView.avatarImage.removeEventListener('qhly-preview-input', syncInteractionButton);
+          delete subView.avatarImage.dataset.qhlyManualInteraction;
+        }, {once:true});
+        syncInteractionButton();
         subView.dynamicToggle.addEventListener(lib.config.touchscreen ? 'touchend' : 'click', function () {
           clearInterval(_status.texiaoTimer);
           clearTimeout(_status.texiaoTimer2);
-          var skinStr = state.mainView.avatar.belowText.innerHTML.substring(0, state.mainView.avatar.belowText.innerHTML.lastIndexOf('*'));
+          var skinStr = state.mainView.avatar.belowText.dataset.skinKey;
+          if (view.classList.contains('qh-interaction')) {
+            const preview = state.mainView.avatarImage;
+            const enable = this.classList.contains('jing');
+            this.classList.toggle('jing', !enable);
+            preview.dataset.qhlyPreviewDynamic = String(enable);
+            if (enable) game.qhly_changeDynamicSkin(preview, skinStr, name);
+            else preview.stopDynamic?.();
+            return;
+          }
           if (this.classList.contains('jing')) {
             this.classList.remove('jing');
+            if (lib.config.qhly_skinset.djtoggle[name]) delete lib.config.qhly_skinset.djtoggle[name][skinStr];
             game.qhly_changeDynamicSkin(state.mainView.avatarImage, skinStr, name);
-            if (lib.config.qhly_skinset.djtoggle[name] && lib.config.qhly_skinset.djtoggle[name][skinStr]) delete lib.config.qhly_skinset.djtoggle[name][skinStr];
             if (state.mainView.avatarImage.dynamic && state.mainView.avatarImage.dynamic.primary && state.mainView.avatarImage.dynamic.primary.name) _status.currentTexiao = state.mainView.avatarImage.dynamic.primary.name;
             if (_status.currentTexiao) {
               _status.texiaoTimer2 = setTimeout(function () {
@@ -314,7 +377,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
           lib.config.swipe_right = swipe_right;
           clearInterval(_status.texiaoTimer);
           clearTimeout(_status.texiaoTimer2);
-          game.qhly_checkPlayerImageAudio(name, game.qhly_getSkin(name), cplayer, function () {
+          if (!view.classList.contains('qh-interaction')) game.qhly_checkPlayerImageAudio(name, game.qhly_getSkin(name), cplayer, function () {
             let avatar;
             let playerName = game.qhly_getRealName(name);
             if (cplayer && !cplayer.doubleAvatar) avatar = 'avatar';
@@ -324,7 +387,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
             if (!_status.qhly_replaceSkin[playerName]) _status.qhly_replaceSkin[playerName] = {};
             _status.qhly_replaceSkin[playerName][skin] = cplayer._qhly_skinChange[avatar == 'avatar2' ? 1 : 0];
             // @ts-ignore
-            if (window.decadeUI && !game.qhly_hasExtension('皮肤切换') && !game.qhly_hasExtension('EpicFX')) game.qhly_changeDynamicSkin(cplayer, undefined, undefined, avatar == 'avatar2');
+            if ((game.qhly_coreDynamic || window.decadeUI) && !game.qhly_hasExtension('皮肤切换') && !game.qhly_hasExtension('EpicFX')) game.qhly_changeDynamicSkin(cplayer, undefined, undefined, avatar == 'avatar2');
           });
           if (subView.avatarImage.dynamic && subView.avatarImage.dynamic.renderer.postMessage) {
             subView.avatarImage.dynamic.renderer.postMessage({
@@ -333,7 +396,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
             })
             subView.avatarImage.dynamic.renderer.capacity--;
           }
-          if (_status['qhly_primarySkin_' + name] !== undefined) game.qhly_setCurrentSkin(name, _status['qhly_primarySkin_' + name]);
+          if (!view.classList.contains('qh-interaction') && _status['qhly_primarySkin_' + name] !== undefined) game.qhly_setCurrentSkin(name, _status['qhly_primarySkin_' + name]);
           delete _status['qhly_primarySkin_' + name];
         });
         subView.page = {
@@ -746,7 +809,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
             firstRefresh: true,
             hideSkinMode: false,
             getCurrentSkin: function (name) {
-              var skinId = game.qhly_getSkin(name);
+              var skinId = view.classList.contains('qh-interaction') && this.interactionIndex !== undefined ? this.skinList[this.interactionIndex]?.skinId : game.qhly_getSkin(name);
               for (var skin of this.skinList) {
                 // @ts-ignore
                 if (skin && skin.skinId == skinId) {
@@ -762,6 +825,33 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
             // getSkinAt: function (num) {
             //     return this.skinList[num + this.currentIndex];
             // },
+            // @ts-ignore
+            previewInteractionSkin: function (index, name, state) {
+              const card = this.viewState.skinViews[index], skin = this.skinList[index];
+              if (!card || !skin || card.isLocked) return;
+              this.interactionIndex = index;
+              this.viewState.selectedCard?.classList.remove('sel');
+              card.classList.add('sel');
+              this.viewState.selectedCard = card;
+              clearInterval(_status.texiaoTimer); clearTimeout(_status.texiaoTimer2);
+              const title = card.belowText.textContent, avatar = state.mainView.avatarImage;
+              state.mainView.setSkinCaption(title, card.skin.skinInfo.displayName || title);
+              state.mainView.hpWrap.show(); state.mainView.hp.hide(); state.mainView.dragontail.hide();
+              avatar.stopDynamic?.();
+              delete avatar.dataset.qhlyPreviewDynamic;
+              game.qhly_setOriginSkin(name, skin.skinId, avatar, state);
+              const dynamic = (skin.bothSkin || skin.single) && game.qhly_dynamicSkin?.[name]?.[title];
+              const enabled = !lib.config.qhly_skinset.djtoggle?.[name]?.[title];
+              state.mainView.dynamicToggle.setAttribute('toggle', !!dynamic);
+              state.mainView.dynamicToggle.classList.toggle('jing', !enabled);
+              if (dynamic && enabled) game.qhly_changeDynamicSkin(avatar, title, name);
+              const list = this.viewState, right = card.offsetLeft + card.offsetWidth;
+              if (card.offsetLeft + list.offset < 0) list.offset = -card.offsetLeft + 5;
+              else if (right + list.offset > list.visibleWidth()) list.offset = list.visibleWidth() - right - 5;
+              list.offset = Math.max(Math.min(0, list.visibleWidth() - list.skinTotalWidth), Math.min(0, list.offset));
+              list.tempoffset = list.offset;
+              list.refresh();
+            },
             // @ts-ignore
             onClickSkin: function (num, name, state) {
               var skin = this.skinList[num];
@@ -789,6 +879,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
               } else {
                 // @ts-ignore
                 game.qhly_getSkinList(name, function (ret, list) {
+                  if (!view.isConnected) return;
                   this.afterGetSkinList(list, name, state);
                   this.refreshAfterGot(name, state);
                 }.bind(this), true, true);
@@ -903,17 +994,21 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
               });
             },
             refreshAfterGot: function (name, state) {
+              if (!view.isConnected) return;
               var content = this.viewState.content;
               var viewState = this.viewState;
               var that = this;
-              viewState.skinPerWidth = that.pageView.offsetWidth / 4.134;
-              viewState.skinGap = that.pageView.offsetWidth / 16.5;
+              const interaction = view.classList.contains('qh-interaction');
+              const cardWidth = () => interaction ? Math.min(that.pageView.offsetWidth / 4.134, view.clientHeight * .135 / 1.5) : that.pageView.offsetWidth / 4.134;
+              viewState.skinPerWidth = cardWidth();
+              viewState.skinGap = interaction ? viewState.skinPerWidth * .2 : that.pageView.offsetWidth / 16.5;
               viewState.skinTotalWidth = (viewState.skinPerWidth + viewState.skinGap) * this.skinList.length - viewState.skinGap + 20;
               viewState.lArrow.style.top = viewState.rArrow.style.top = viewState.skinPerWidth * 0.7 + 'px';
               viewState.lArrow.style.height = viewState.rArrow.style.height = viewState.skinPerWidth * 0.4 + 'px';
               var setSize = function () {
-                viewState.skinPerWidth = that.pageView.offsetWidth * 0.242;
-                viewState.skinGap = that.pageView.offsetWidth * 0.06;
+                if (!view.isConnected) return;
+                viewState.skinPerWidth = interaction ? cardWidth() : that.pageView.offsetWidth * 0.242;
+                viewState.skinGap = interaction ? viewState.skinPerWidth * .2 : that.pageView.offsetWidth * 0.06;
                 for (var i = 0; i < viewState.skinViews.length; i++) {
                   viewState.skinViews[i].style.width = viewState.skinPerWidth + 'px';
                   viewState.skinViews[i].style.height = viewState.skinPerWidth * 1.5 + 'px';
@@ -922,14 +1017,25 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                 viewState.lArrow.style.top = viewState.rArrow.style.top = viewState.skinPerWidth * 0.7 + 'px';
                 viewState.lArrow.style.height = viewState.rArrow.style.height = viewState.skinPerWidth * 0.4 + 'px';
                 viewState.skinTotalWidth = (viewState.skinPerWidth + viewState.skinGap) * viewState.skinViews.length - viewState.skinGap + 20;
+                viewState.loadVisibleThumbnails();
               };
               if (this.firstRefresh) {
                 this.firstRefresh = false;
+                if (typeof IntersectionObserver === 'function') {
+                  viewState.thumbnailObserver = new IntersectionObserver(records => {
+                    for (const record of records) if (record.isIntersecting) {
+                      const card = record.target, load = card.loadThumbnail;
+                      if (load) { delete card.loadThumbnail; load(); }
+                      viewState.thumbnailObserver.unobserve(card);
+                    }
+                  }, {root:viewState.cover, rootMargin:'0px'});
+                }
                 const path = state.pkg.skin.standard;
                 for (var i = 0; i < this.skinList.length; i++) {
                   // @ts-ignore
                   var skin = this.skinList[i].skinId;
                   var skinView = ui.create.div('.qh-skinchange-shousha-big-skin', content);
+                  skinView.style.contentVisibility = 'auto';
                   if (lib.config.qhly_lutouType && lib.config.qhly_lutouType == 'shousha') skinView.classList.add('shousha');
                   skinView.id = 'qhly_bigSkin' + i;
                   skinView.skin = this.skinList[i];
@@ -955,14 +1061,13 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                       skinView.belowText.innerHTML = info.translation;
                       if (game.qhly_skinIs(name, skin)) {
                         currentSkinView = skinView;
-                        state.mainView.avatar.belowText.innerHTML = (info.translation + '*' + get.translation(name));
-                        state.mainView.hpWrap.style.width = state.mainView.avatar.belowText.innerHTML.length * 1.25 + 'em';
+                        state.mainView.setSkinCaption(info.translation, info.displayName || info.translation);
                         state.mainView.dragontail.hide();
                         state.mainView.skinType.hide();
                         state.mainView.hp.hide();
                         state.mainView.hpWrap.show();
                         // @ts-ignore
-                        if (this.skinList[i].bothSkin) {
+                        if ((this.skinList[i].bothSkin || this.skinList[i].single)) {
                           state.mainView.dynamicToggle.setAttribute('toggle', true);
                           if (lib.config.qhly_skinset && lib.config.qhly_skinset.djtoggle && (!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name][info.translation])) state.mainView.dynamicToggle.classList.remove('jing');
                           else state.mainView.dynamicToggle.classList.add('jing');
@@ -973,7 +1078,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                       }
                     }
                     // @ts-ignore
-                    if ((!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name][skin.substring(0, skin.lastIndexOf('.'))]) && window.decadeUI && decadeUI.dynamicSkin && decadeUI.dynamicSkin[name] && Object.keys(decadeUI.dynamicSkin[name]).includes(info.translation)) {
+                    if ((!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name][skin.substring(0, skin.lastIndexOf('.'))]) && Object.hasOwn(game.qhly_dynamicSkin?.[name] || {}, info.translation)) {
                       if (game.qhly_skinIs(name, skin)) {
                         currentSkinView = skinView;
                         game.qhly_changeDynamicSkin(state.mainView.avatarImage, info.translation, name);
@@ -989,12 +1094,12 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                       }
                     }
                     // @ts-ignore
-                    if (window.decadeUI && decadeUI.dynamicSkin && decadeUI.dynamicSkin[name] && Object.keys(decadeUI.dynamicSkin[name]).includes(info.translation)) skinView.dynamicTrue.setAttribute('dynamic', true);
+                    if (Object.hasOwn(game.qhly_dynamicSkin?.[name] || {}, info.translation)) skinView.dynamicTrue.setAttribute('dynamic', true);
                     else skinView.dynamicTrue.setAttribute('dynamic', false);
                   } else {
                     skinView.belowText.innerHTML = "经典形象";
                     if (game.qhly_skinIs(name, skin)) {
-                      state.mainView.avatar.belowText.innerHTML = ("经典形象" + '*' + get.translation(name));
+                      state.mainView.setSkinCaption('经典形象');
                       state.mainView.dragontail.show();
                       state.mainView.skinType.show();
                       state.mainView.hp.show();
@@ -1010,7 +1115,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                       if (this.skinList[0].skinId == null && this.skinList[0].bothSkin && lib.config.qhly_skinset && lib.config.qhly_skinset.djtoggle && (!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name]['经典形象'])) game.qhly_changeDynamicSkin(state.mainView.avatarImage, '经典形象', name);
                     }
                     // @ts-ignore
-                    if (window.decadeUI && decadeUI.dynamicSkin && decadeUI.dynamicSkin[name] && Object.keys(decadeUI.dynamicSkin[name]).includes('经典形象')) skinView.dynamicTrue.setAttribute('dynamic', true);
+                    if (Object.hasOwn(game.qhly_dynamicSkin?.[name] || {}, '经典形象')) skinView.dynamicTrue.setAttribute('dynamic', true);
                     else skinView.dynamicTrue.setAttribute('dynamic', false);
                   }
                   skinView.skinQua = ui.create.div('.qh-page-skinavatarlevel', skinView);
@@ -1086,9 +1191,10 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                   // viewState.offset = (viewState.skinPerWidth + viewState.skinGap) * 0.5 - Math.round((viewState.skinPerWidth + viewState.skinGap) * that.currentIndex);
                   if (game.qhly_skinIs(name, skin)) {
                     skinView.classList.add('sel');
+                    viewState.selectedCard = skinView;
                     currentIndex = i;
                     // @ts-ignore
-                    if (this.skinList[i].bothSkin) state.mainView.dynamicToggle.setAttribute('toggle', true);
+                    if ((this.skinList[i].bothSkin || this.skinList[i].single)) state.mainView.dynamicToggle.setAttribute('toggle', true);
                     //state.mainView.rank.style.backgroundImage = skinView.skinQua.style.backgroundImage;
                     if (skinView.offsetLeft > viewState.visibleWidth()) viewState.offset = viewState.visibleWidth() - (skinView.offsetLeft + 20 + viewState.skinPerWidth);
                     var extInfo = "";
@@ -1117,9 +1223,14 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                   if (skin) {
                     let file = game.qhly_getSkinFile(name, skin);
                     let skinView2 = skinView.avatar;
-                    game.qhly_checkFileExist(file, function (s) {
+                    const thumbnailSkin = skin;
+                    skinView.loadThumbnail = () => {
+                      if (game.localDynamicSkinTestHub?.loadThumbnail(name, thumbnailSkin, skinView2)) return;
+                      game.qhly_checkFileExist(file, function (s) {
+                      if (!view.isConnected) return;
                       if (s) {
                         skinView2.qhly_origin_setBackgroundImage(file);
+                        game.localDynamicSkinTestHub?.fillCardPortrait(skinView2,lib.assetURL+file);
                       } else {
                         var prefix = state.pkg.prefix;
                         if (typeof prefix == 'function') {
@@ -1128,7 +1239,9 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                         if (lib.config.qhly_noSkin == 'origin') skinView2.qhly_origin_setBackgroundImage(prefix + name + '.jpg');//原画
                         else skinView2.qhly_origin_setBackgroundImage('extension/千幻聆音/image/noSkin.png');//noskin
                       }
-                    })
+                      });
+                    };
+                    viewState.thumbnailObserver?.observe(skinView);
                   } else {
                     skinView.avatar.qhly_origin_setBackground(name, 'character');
                   }
@@ -1141,15 +1254,17 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                   }
                   skinView.listen(function () {
                     if (this.classList.contains('sel')) return;
+                    if (interaction) {
+                      that.previewInteractionSkin(parseInt(this.id.slice(12)), name, state);
+                      return;
+                    }
                     if (!this.isLocked) {
-                      for (var i = 0; i < viewState.skinViews.length; i++) {
-                        viewState.skinViews[i].classList.remove('sel');
-                      }
+                      viewState.selectedCard?.classList.remove('sel');
                       this.classList.add('sel');
+                      viewState.selectedCard = this;
                       clearInterval(_status.texiaoTimer);
                       clearTimeout(_status.texiaoTimer2);
-                      state.mainView.avatar.belowText.innerHTML = (this.belowText.innerHTML + '*' + get.translation(name));
-                      state.mainView.hpWrap.style.width = state.mainView.avatar.belowText.innerHTML.length * 1.25 + 'em';
+                      state.mainView.setSkinCaption(this.belowText.textContent, this.skin.skinInfo.displayName || this.belowText.textContent);
                       var extInfo = "";
                       if (this.skin.skinInfo.info) {
                         extInfo = this.skin.skinInfo.info;
@@ -1167,14 +1282,16 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                       } else state.mainView.skininfoWrap.hide();
                       var originSkin = this.skin.skinId;
                       var now = this;
+                      const applyInGame = (game.players || []).some(player => [player.name, player.name1, player.name2].some(id => id === name || id === 'gz_' + name || name === 'gz_' + id));
                       game.qhly_setCurrentSkin(name, originSkin, function () {
+                        if (applyInGame) _status['qhly_primarySkin_' + name] = game.qhly_getSkin(name);
                         if (now.belowText.innerHTML != '经典形象') {
                           state.mainView.dragontail.hide();
                           state.mainView.skinType.hide();
                           state.mainView.hp.hide();
                           state.mainView.hpWrap.show();
                           // @ts-ignore
-                          if ((!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name][now.belowText.innerHTML]) && window.decadeUI && decadeUI.dynamicSkin && decadeUI.dynamicSkin[name] && Object.keys(decadeUI.dynamicSkin[name]).includes(now.belowText.innerHTML)) {
+                          if ((!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name][now.belowText.innerHTML]) && Object.hasOwn(game.qhly_dynamicSkin?.[name] || {}, now.belowText.innerHTML)) {
                             game.qhly_changeDynamicSkin(state.mainView.avatarImage, now.belowText.innerHTML, name);
                             if (state.mainView.avatarImage.dynamic && state.mainView.avatarImage.dynamic.primary && state.mainView.avatarImage.dynamic.primary.name) _status.currentTexiao = state.mainView.avatarImage.dynamic.primary.name;
                             if (_status.currentTexiao) {
@@ -1188,7 +1305,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                           }
                           else if (state.mainView.avatarImage.stopDynamic) state.mainView.avatarImage.stopDynamic();
                           // @ts-ignore
-                          if (that.skinList[now.id.slice(12)].bothSkin && window.decadeUI && decadeUI.dynamicSkin && decadeUI.dynamicSkin[name] && Object.keys(decadeUI.dynamicSkin[name]).includes(now.belowText.innerHTML)) {
+                          if ((that.skinList[now.id.slice(12)].bothSkin || that.skinList[now.id.slice(12)].single) && Object.hasOwn(game.qhly_dynamicSkin?.[name] || {}, now.belowText.innerHTML)) {
                             state.mainView.dynamicToggle.setAttribute('toggle', true);
                             if (lib.config.qhly_skinset && lib.config.qhly_skinset.djtoggle && (!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name][now.belowText.innerHTML])) state.mainView.dynamicToggle.classList.remove('jing');
                             else state.mainView.dynamicToggle.classList.add('jing');
@@ -1243,10 +1360,17 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                           game.qhly_setOriginSkin(currentName, originSkin, state.mainView.avatarImage, state, game.qhly_getPlayerStatus(state.mainView.avatarImage, null, state.name) == 2);
                           refreshRank();
                         }
-                      });
+                      }, applyInGame);
                       //state.mainView.rank.style.backgroundImage = this.skinQua.style.backgroundImage;
                     }
                     that.onClickSkin(parseInt(this.id.slice(12)), name, state);
+                    // Keep the selected card visible for keyboard/programmatic
+                    // selection too, so its lazy thumbnail can actually load.
+                    if (this.offsetLeft + viewState.offset < 0) viewState.offset = -this.offsetLeft + 5;
+                    else if (this.offsetLeft + this.offsetWidth + viewState.offset > viewState.visibleWidth()) viewState.offset = viewState.visibleWidth() - this.offsetLeft - this.offsetWidth - 5;
+                    viewState.offset = Math.max(Math.min(0, viewState.visibleWidth() - viewState.skinTotalWidth), Math.min(0, viewState.offset));
+                    viewState.tempoffset = viewState.offset;
+                    viewState.refresh();
                   });
                 }
                 if (viewState.skinTotalWidth + viewState.offset > viewState.visibleWidth()) viewState.rArrow.setAttribute('data-visiable', true);
@@ -1256,10 +1380,20 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                 viewState.refresh();
                 //setSize();
               }
-              var resize = function () {
-                setTimeout(setSize, 600);
+              if (!viewState.eventsInstalled) {
+              viewState.eventsInstalled = true;
+              let resizeTimer;
+              const resize = function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(setSize, 600);
               };
               lib.onresize.push(resize);
+              (view.closest('.qh-background') || view).addEventListener('close', () => {
+                clearTimeout(resizeTimer);
+                viewState.thumbnailObserver?.disconnect();
+                const index = lib.onresize.indexOf(resize);
+                if (index >= 0) lib.onresize.splice(index, 1);
+              }, {once:true});
               if (lib.config.touchscreen) {
                 content.addEventListener('touchstart', function (event) {
                   if (event.touches && event.touches.length) {
@@ -1303,10 +1437,12 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                 });
               }
               //viewState.skinAudioList.innerHTML = '';
+              }
               var addButton = [];
               var currentSkin = this.getCurrentSkin(name);
               _status.currentSkin = currentSkin;
               var currentSkinView = document.querySelectorAll('.qh-skinchange-shousha-big-skin.sel')[0];
+              if(currentSkinView?.toImageBtn)currentSkinView.toImageBtn.setAttribute('single',!!currentSkinView.skin.single&&!!lib.config.extension_千幻聆音_qhly_dom2image);
               var currentIndex;
               if (currentSkinView) currentIndex = currentSkinView.id.slice(12);
               else currentIndex = 0;
@@ -1314,9 +1450,9 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
               if (game.qhly_getSkin(name)) Vicpath += `${game.qhly_earse_ext(game.qhly_getSkin(name))}/`;
               var victoryBg = document.querySelector('#qh-victoryBg');
               // @ts-ignore
-              if (game.thunderFileExist(lib.assetURL + Vicpath + 'victory.mp3')) victoryBg.show();
+              if (victoryBg && game.thunderFileExist(lib.assetURL + Vicpath + 'victory.mp3')) victoryBg.show();
               // @ts-ignore
-              else victoryBg.hide();
+              else if (victoryBg) victoryBg.hide();
               // @ts-ignore
               if (currentSkin && currentSkin.audios) {
                 // @ts-ignore
@@ -1606,9 +1742,14 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                   var info = game.qhly_getSkinInfo(name, skin, state.pkg);
                   var obj = {
                     order: info.order,
+                    sortOrder: game.qhly_getOrder(name, skin, state.pkg),
                     skinId: skin,
                     skinInfo: info,
-                    audios: get.qhly_getAudioInfoInSkin(name, state.pkg, skin),
+                    get audios() {
+                      const value = get.qhly_getAudioInfoInSkin(name, state.pkg, this.skinId);
+                      Object.defineProperty(this, 'audios', {value, writable:true, configurable:true, enumerable:true});
+                      return value;
+                    },
                   };
                   retList.push(obj);
                 }
@@ -1621,8 +1762,8 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                 audios: get.qhly_getAudioInfoInSkin(name, state.pkg, null),
               });
               retList.sort(function (a, b) {
-                var orderA = game.qhly_getOrder(name, a.skinId, state.pkg);
-                var orderB = game.qhly_getOrder(name, b.skinId, state.pkg);
+                var orderA = a.sortOrder;
+                var orderB = b.sortOrder;
                 if (orderA > orderB) return 1;
                 if (orderA == orderB) return 0;
                 return -1;
@@ -1633,23 +1774,24 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
               }
               var dynamicSkinList = [];
               // @ts-ignore
-              if (window.decadeUI) {
+              if (game.qhly_dynamicSkin) {
                 // @ts-ignore
-                if (decadeUI.dynamicSkin && decadeUI.dynamicSkin[name]) dynamicSkinList = Object.keys(decadeUI.dynamicSkin[name]);
+                if (game.qhly_dynamicSkin[name]) dynamicSkinList = Object.keys(game.qhly_dynamicSkin[name]);
+                const dynamicTitles = new Set(dynamicSkinList);
                 for (var i of this.skinList) {
                   // @ts-ignore
                   if (i.skinId) {
                     // @ts-ignore
                     var skin = i.skinId.substring(0, i.skinId.lastIndexOf('.'));
                     // @ts-ignore
-                    if (dynamicSkinList.includes(skin)) i.bothSkin = true;
+                    if (dynamicTitles.has(skin)) i.bothSkin = true;
                   }
                 }
                 if (dynamicSkinList.length) {
-                  var duibiList = [];
+                  var duibiList = new Set();
                   for (var i of this.skinList) {
                     // @ts-ignore
-                    if (i.skinId && i.skinId != null) duibiList.push(i.skinId.substring(0, i.skinId.lastIndexOf('.')));
+                    if (i.skinId && i.skinId != null) duibiList.add(i.skinId.substring(0, i.skinId.lastIndexOf('.')));
                   }
                   // @ts-ignore
                   for (var i of dynamicSkinList) {
@@ -1658,7 +1800,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                       this.skinList['0'].bothSkin = true;
                       subView.skinType.style.cssText += 'transform:translateY(32%);';
                     }
-                    else if (!duibiList.includes(i)) {
+                    else if (!duibiList.has(i)) {
                       var dyskin = i + '.jpg';
                       var dyinfo = game.qhly_getSkinInfo(name, dyskin, state.pkg);
                       // @ts-ignore
@@ -1706,17 +1848,33 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                 //skinTitle: skinTitle,
                 //skinAudioList: skinAudioList,
                 visibleWidth: function () {
-                  var rect = cover.getBoundingClientRect();
-                  return rect.width;
+                  return cover.clientWidth;
                 },
                 cover: cover,
                 content: content,
                 rArrow: rArrow,
                 lArrow: lArrow,
+                loadVisibleThumbnails: function (offset = this.offset || 0) {
+                  const step = this.skinPerWidth + this.skinGap;
+                  if (!(step > 0) || !view.isConnected) return;
+                  const width = this.visibleWidth();
+                  const start = Math.max(0, Math.floor(-offset / step));
+                  const end = Math.min(this.skinViews.length, Math.ceil((-offset + width) / step));
+                  for (let i = start; i < end; i++) {
+                    const card = this.skinViews[i], load = card.loadThumbnail;
+                    if (load) { delete card.loadThumbnail; this.thumbnailObserver?.unobserve(card); load(); }
+                  }
+                },
                 refresh: function () {
                   if (!this.offset) this.offset = 0;
                   content.style.width = Math.round(this.skinTotalWidth) + 'px';
                   content.style.left = Math.round(this.offset) + "px";
+                  this.loadVisibleThumbnails();
+                  {
+                    const index = this.selectedCard ? Number(this.selectedCard.id.slice(12)) : -1;
+                    lArrow.setAttribute('data-visiable', index > 0);
+                    rArrow.setAttribute('data-visiable', index >= 0 && index < this.skinViews.length - 1);
+                  }
                 },
                 handleMouseDown: function (x, y) {
                   if (this.skinTotalWidth <= this.visibleWidth()) {
@@ -1740,6 +1898,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                       this.tempoffset = -(this.skinTotalWidth - this.visibleWidth());
                     }
                     this.content.style.left = Math.round(this.tempoffset) + "px";
+                    this.loadVisibleThumbnails(this.tempoffset);
                     if (this.skinTotalWidth + this.tempoffset > this.visibleWidth()) this.rArrow.setAttribute('data-visiable', true);
                     else this.rArrow.setAttribute('data-visiable', false);
                     if (this.tempoffset < 0) this.lArrow.setAttribute('data-visiable', true);
@@ -1788,6 +1947,28 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                   delete this.mouseDownY;
                 }
               };
+              // Select one adjacent skin through the existing card action.
+              const skinListView = this.viewState;
+              function scrollSkins(direction) {
+                const skinPage = state.mainView.page.skin;
+                let index = (skinListView.selectedCard ? Number(skinListView.selectedCard.id.slice(12)) : -1) - direction;
+                while (skinListView.skinViews[index]?.isLocked) index -= direction;
+                const card = skinListView.skinViews[index];
+                if (!card) return;
+                if (view.classList.contains('qh-interaction')) {
+                  skinPage.previewInteractionSkin(index, name, state);
+                  return;
+                }
+                skinListView.cancelClick = false;
+                card.dispatchEvent(new Event(lib.config.touchscreen ? 'touchend' : 'click'));
+                if (card.offsetLeft + skinListView.offset < 0) skinListView.offset = -card.offsetLeft + 5;
+                else if (card.offsetLeft + card.offsetWidth + skinListView.offset > skinListView.visibleWidth()) skinListView.offset = skinListView.visibleWidth() - card.offsetLeft - card.offsetWidth - 5;
+                skinListView.offset = Math.max(Math.min(0, skinListView.visibleWidth() - skinListView.skinTotalWidth), Math.min(0, skinListView.offset));
+                skinListView.tempoffset = skinListView.offset;
+                skinListView.refresh();
+              }
+              rArrow.listen(() => scrollSkins(-1));
+              lArrow.listen(() => scrollSkins(1));
               this.inited = true;
             }
           },

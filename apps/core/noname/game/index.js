@@ -28,6 +28,7 @@ import { clearSelectionGuide, updateSelectionGuide } from "../ui/selectionGuide.
 import { confirmExtensionRemoval } from "../ui/extensionManagement.js";
 import { displayRandom, displayChoice } from "../util/displayRandom.js";
 import { emitPresentation, playerPresentation } from "../ui/presentationEvents.js";
+import { clearAttackLines, renderAttackLine } from "../ui/attackLines.js";
 
 export class Game {
 	documentZoom;
@@ -5496,10 +5497,33 @@ ${e instanceof Error ? e.stack : String(e)}`);
 			});
 		},
 	};
+	clearAttackLines() { clearAttackLines(); }
+	zsLiuliLineXy(...args) { return this.migratedAttackLine("Liuli", ...args); }
+	zsZipYulongLineXy(...args) { return this.migratedAttackLine("ZipYulong", ...args); }
+	zsZipJingdianLineXy(...args) { return this.migratedAttackLine("ZipJingdian", ...args); }
+	zsZipBaojiLineXy(...args) { return this.migratedAttackLine("ZipBaoji", ...args); }
+	migratedAttackLine(style, path, options, ...rest) {
+		// Drag callers reuse the returned node. Keep that native contract intact.
+		const effectsDisabled = document.body.dataset.shoushaParts?.split(" ").includes("lines") && lib.config.ui_workshop_shousha_settings?.ss_effects === false;
+		if (options === "drag" || lib.config.animation === false || lib.config.low_performance || effectsDisabled) {
+			return this.zsOriginLineXy.call(this, path, options, ...rest);
+		}
+		const parent = ["div", "fragment"].includes(get.objtype(options)) ? options : this.chess ? ui.chess : ui.arena;
+		return renderAttackLine({ style, path, parent, assetURL: lib.assetURL,
+			duration: typeof options === "number" ? options : options?.duration,
+			opacity: options?.opacity });
+	}
 	/**
 	 * @param { [number, number | {opacity:any, color:any, dashed:any, duration:any} | string, number, number] } path
 	 */
 	linexy(path) {
+		// Old personal hand-UI packs may still store "default". Route them to
+		// the same gold renderer instead of the obsolete provider's pink SVG.
+		if (arguments[1] !== "drag" && (!lib.config.zhishixian || lib.config.zhishixian === "default") &&
+			document.body.dataset.shoushaParts?.split(" ").includes("lines") &&
+			lib.config.animation !== false && !lib.config.low_performance && lib.config.ui_workshop_shousha_settings?.ss_effects !== false) {
+			return this.migratedAttackLine("Liuli", ...arguments);
+		}
 		const from = [path[0], path[1]],
 			to = [path[2], path[3]];
 		let total = typeof arguments[1] === "number" ? arguments[1] : lib.config.duration * 2,
@@ -6763,6 +6787,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 			}
 			// The server's result is authoritative. Client statistics may be partial;
 			// retain the host's result table instead of inventing a local ranking.
+			clearAttackLines();
 			emitPresentation("result", () => ({ result: typeof result2 === "boolean" ? result2 : null, rows: [] }));
 			return;
 		}
@@ -7364,6 +7389,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 			ui.swap.close();
 			delete ui.swap;
 		}
+		clearAttackLines();
 		emitPresentation("result", () => ({ result: typeof resultbool === "boolean" ? resultbool : null, rows: [...new Set([...game.players, ...game.dead])].map(player => ({ name: playerPresentation(player)?.name || "未知武将", damage: (player.stat || []).reduce((sum, stat) => sum + (stat.damage || 0), 0), kills: (player.stat || []).reduce((sum, stat) => sum + (stat.kill || 0), 0) })) }));
 		for (let i = 0; i < lib.onover.length; i++) {
 			lib.onover[i](resultbool);

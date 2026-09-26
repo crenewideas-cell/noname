@@ -1,3 +1,4 @@
+import { samplePortraitBackground, releasePortraitSampling, fillPortraitBackdrop } from "./portraitSampling.js";
 import thumbnails from "./generated/portrait-thumbnails.json";
 
 const pending = new WeakMap<HTMLElement, () => void>();
@@ -7,6 +8,7 @@ const cssImages = (sources: string[]) => [...new Set(sources)].map(src => `url($
 
 /** Release a directory entry that will be recreated on another page. */
 export function releasePortraitBackground(node: HTMLElement) {
+	releasePortraitSampling(node);
 	pending.delete(node);
 	observer?.unobserve(node);
 }
@@ -38,16 +40,28 @@ export function setPortraitBackground(node: HTMLDivElement, sources: string[], a
 		const thumbnail = (thumbnails as Record<string, string>)[path];
 		return thumbnail ? new URL(thumbnail, base).href : source;
 	});
-	node.style.backgroundImage = cssImages(mapped);
-	if (mapped.every((url, index) => url === sources[index])) return;
+	// These are load-failure alternatives, not layers in the artwork. A
+	// transparent skin must never reveal a different character underneath it.
+	node.style.backgroundImage = cssImages(mapped.slice(0, 1));
+	if (mapped.length === 1 && mapped[0] === sources[0] && !node.matches('.qh-image-standard, .primary-avatar')) {
+		samplePortraitBackground(node, mapped);
+		return;
+	}
 	const expected = node.style.backgroundImage;
 	const check = () => {
-		void Promise.all(mapped.map((url, i) => url === sources[i] ? true : available(url))).then(ok => {
-			// A late failure must not overwrite a newly selected character/skin.
-			if (node.style.backgroundImage === expected && ok.some(value => !value)) {
-				node.style.backgroundImage = cssImages(mapped.map((url, i) => ok[i] ? url : sources[i]));
+		void (async () => {
+			for (let i = 0; i < mapped.length; i++) {
+				for (const source of [...new Set([mapped[i], sources[i]])]) {
+					const ok = await available(source);
+					if (node.style.backgroundImage !== expected) return;
+					if (!ok) continue;
+					node.style.backgroundImage = cssImages([source]);
+					samplePortraitBackground(node, [source]);
+					if (node.matches('.qh-image-standard, .primary-avatar')) void fillPortraitBackdrop(node, source);
+					return;
+				}
 			}
-		});
+		})();
 	};
 	// Hidden directory entries must never fetch images just to test a fallback.
 	if (typeof IntersectionObserver === "undefined") return;

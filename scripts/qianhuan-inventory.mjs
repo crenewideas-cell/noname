@@ -23,7 +23,8 @@ source.adapterNotes=[
  'Initialization, scoped file/metadata access, core skin persistence and DOM/PIXI refresh are adapted to the current core.',
  'Legacy useSkill source rewriting is disabled. Legacy dynamic renderer hooks require decadeUI and duilib.',
  'Viewport scaling and page lifecycle support both current lobbies and in-game character entry points.',
- 'See docs/qianhuan-skin-migration.md for validation and remaining phases.'
+ 'Separate lobby entries: character directory, native Qianhuan skin view with back-to-directory navigation, and independent treasure lottery. The existing avatar menu adds one interaction button. All hand-theme profile and skin-window arrows select one adjacent skin through the existing card action; interaction mode keeps selection preview-only.',
+ 'See docs/qianhuan-skin-migration.md and docs/qianhuan-feature-audit.md for verified capabilities and unfinished integration.'
 ];
 await fs.writeFile(path.join(root,'SOURCE.json'),JSON.stringify(source,null,2)+'\n');
 files['SOURCE.json']=digest(await fs.readFile(path.join(root,'SOURCE.json')));

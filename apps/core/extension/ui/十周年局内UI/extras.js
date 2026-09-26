@@ -1,4 +1,4 @@
-import { handLimitPresentation, dyingPresentation } from 'noname';
+import { dyingPresentation } from 'noname';
 
 const value=(object,key)=>Object.getOwnPropertyDescriptor(object||{},key)?.value;
 export function specialMarkFile(id){
@@ -16,28 +16,13 @@ export function prefixMarkFile(player,lib,prefixes){
 // Decorate core-owned marks in place so their tooltip, tap and removal paths
 // remain the original ones. No skill registration, storage or rule queries.
 export function mountExtras({base,parts,ui,game,lib,inventory,metadata,animations}){
- const marks=new Set(),prefixes=new Map();let hand;
- const text=(node,str)=>{if(node.textContent!==str)node.textContent=str;};
- if(parts.has('arena')){
-  hand=document.createElement('div');hand.className='decade-hand-limit';hand.hidden=true;
-  hand.title='手牌数 / 本体最近计算的手牌上限；— 表示尚未计算';
-  const current=document.createElement('span'),separator=document.createElement('span'),limit=document.createElement('span');
-  current.className='current';separator.textContent=' / ';limit.className='limit';hand.append(current,separator,limit);ui.arena.append(hand);
- }
+ const marks=new Set(),prefixes=new Map();
  function resetMark(node){node.classList.remove('decade-special-mark');node.style.removeProperty('--decade-special-mark');marks.delete(node);}
  function update(){
   const players=[...ui.arena.querySelectorAll(':scope>.player:not(.minskin)')];
   animations.syncDying(parts.has('arena')?players.filter(dyingPresentation):[]);
-  if(hand){
-   const me=game.me,shown=!!me?.node&&!game.observe&&!me.classList.contains('dead');hand.hidden=!shown;
-   if(shown){
-    const count=me.node.count?.textContent?.trim()||'0',limit=handLimitPresentation(me);
-    const display=limit===Infinity?'∞':typeof limit==='number'&&!Number.isNaN(limit)?String(limit):'—';
-    text(hand.querySelector('.current'),count);text(hand.querySelector('.limit'),display);
-    hand.classList.toggle('over-limit',typeof limit==='number'&&Number(count)>limit);
-    const label='手牌 '+count+' / 上限 '+display;if(hand.getAttribute('aria-label')!==label)hand.setAttribute('aria-label',label);
-   }
-  }
+  animations.syncDrinking(parts.has('arena')?players.filter(player=>player.querySelector('.playerjiu')&&!player.classList.contains('dead')):[]);
+  animations.syncCards();
   const activeMarks=new Set(),activePrefixes=new Set();
   if(parts.has('players'))for(const player of players){
    const hidden=['unseen','unseen2','unseen_v','unseen2_v','unseen_show','unseen2_show'].some(c=>player.classList.contains(c));
@@ -57,5 +42,5 @@ export function mountExtras({base,parts,ui,game,lib,inventory,metadata,animation
   for(const node of marks)if(!activeMarks.has(node))resetMark(node);
   for(const[player,node]of prefixes)if(!activePrefixes.has(player)){node.remove();prefixes.delete(player);}
  }
- return {update,dispose(){hand?.remove();for(const node of marks)resetMark(node);for(const node of prefixes.values())node.remove();prefixes.clear();}};
+ return {update,dispose(){for(const node of marks)resetMark(node);for(const node of prefixes.values())node.remove();prefixes.clear();}};
 }

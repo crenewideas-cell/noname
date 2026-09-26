@@ -1,7 +1,8 @@
+import {mountIndicators} from './indicators.js';
 import {installNativeMenu} from './menu.js';
 import {installAdaptiveLayout} from './layout.js';
 import {installPortraitClips} from './portrait-clips.js';
-import {subscribePresentation,suspendSelectionGuide} from 'noname';
+import {subscribePresentation,suspendSelectionGuide,installEmotionReplies} from 'noname';
 
 /** Resolve artwork without replacing Card.init or changing extension metadata. */
 export function cardArtwork(card, {lib, get, files, base, config}) {
@@ -44,10 +45,13 @@ export async function mountGamePresentation({lib,game,ui,get,manifest,files,base
  if(signal?.aborted){style.remove();return()=>{};}
  const previous=document.body.getAttribute('data-shousha-parts');document.body.dataset.shoushaParts=[...parts].join(' ');
  const releaseGuide=parts.has('arena')?suspendSelectionGuide():()=>{};
+ const releaseEmotions=parts.has('arena')?installEmotionReplies({enabled:()=>config.ss_emotion_reply!==false}):()=>{};
+ const releaseIndicators=mountIndicators({ui,game,parts,enabled:()=>lib.config.animation!==false&&!lib.config.low_performance&&config.ss_effects!==false});
  const disposeClips=parts.has('players')?installPortraitClips():()=>{};
  let disposed=false,frame=0,disposeMenu,disposeLayout,arenaNode,menuNode,settlement;
  function decorate(){
   frame=0;if(disposed)return;
+  releaseIndicators.refresh();
   if(ui.system2!==menuNode){disposeMenu?.();menuNode=ui.system2;if(parts.has('buttons'))disposeMenu=installNativeMenu({ui});}
   if(ui.arena!==arenaNode){
    disposeLayout?.();arenaNode=ui.arena;
@@ -105,8 +109,10 @@ export async function mountGamePresentation({lib,game,ui,get,manifest,files,base
   // Core dialogs own the candidates, eligibility, selection count, confirmation
   // and cancellation. This class changes their layout, never event properties.
   if(parts.has('players'))for(const dialog of document.querySelectorAll('#window .dialog')){
-   const characters=Array.from(dialog.buttons||[]).filter(button=>button.classList.contains('character'));
-   if(characters.length){dialog.classList.add('ss-character-dialog');decorated.add(dialog);}
+   // Reading dialog.buttons materializes every entry in the paged browser.
+   // Recognize an empty search result too, without touching that lazy getter.
+   const characters=dialog.matches('.character-browser,.choose-character')||dialog.querySelector('.button.character');
+   if(characters){if(!decorated.has(dialog))dialog.classList.add('ss-character-dialog');decorated.add(dialog);}
    else if(decorated.delete(dialog))dialog.classList.remove('ss-character-dialog');
   }
   for(const node of cards.keys())if(!node.isConnected){node.classList.remove('ss-card-art');node.style.removeProperty('--ss-card-art');node.querySelector(':scope > .info')?.removeAttribute('data-ss-point');cards.delete(node);}
@@ -138,10 +144,12 @@ export async function mountGamePresentation({lib,game,ui,get,manifest,files,base
   showSettlement(message.result,message.rows);
   return animations?.result(message.result);
  });
- schedule();
+ // Install immediately when activation happens with an existing arena. Future
+ // dialogs also match the CSS structurally, before the observer's next frame.
+ decorate();
  return()=>{
   if(disposed)return;disposed=true;
-  const releases=[unsubscribe,releaseGuide,()=>cancelAnimationFrame(frame),()=>observer.disconnect(),()=>disposeMenu?.(),()=>disposeLayout?.(),disposeClips,()=>settlement?.remove(),()=>style.remove(),
+  const releases=[unsubscribe,releaseGuide,releaseEmotions,releaseIndicators,()=>cancelAnimationFrame(frame),()=>observer.disconnect(),()=>disposeMenu?.(),()=>disposeLayout?.(),disposeClips,()=>settlement?.remove(),()=>style.remove(),
    ...Array.from(cards.keys(),card=>()=>{card.classList.remove('ss-card-art');card.style.removeProperty('--ss-card-art');card.querySelector(':scope > .info')?.removeAttribute('data-ss-point');}),
    ...Array.from(decorated,node=>()=>node.classList.remove('ss-character-dialog')),
    ...Array.from(playerFrames.values(),ornament=>()=>ornament.remove()),

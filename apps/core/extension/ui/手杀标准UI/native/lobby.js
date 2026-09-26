@@ -696,6 +696,9 @@ function getName_排位 (num) {
                 }
 const setTimeout=bridge.timeout, setInterval=bridge.interval, requestAnimationFrame=bridge.frame;
 let openCharactersWhenReady=false;
+window.qhlyOpenCharacters=function(){
+ openCharactersWhenReady=true;bridge.notice("武将界面正在载入…");
+};
 
                             //恢复背景
                             game.isInMenu=true;
@@ -2424,9 +2427,10 @@ let openCharactersWhenReady=false;
                                                 //rzshkz();
                                                 break;
                                             case "under5":
-                                                bridge.collection();
+                                                bridge.skins();
                                                 break;
                                             case "under6":
+                                                bridge.characterPage=undefined;
  if(game.isUnlockDialogs.g) {
                                                 game.cls_wjbg=true;
                                                 oppeen(wujianghome)
@@ -2977,7 +2981,7 @@ let openCharactersWhenReady=false;
                                              if(true){
                                                 
 			                                	
-		                                      	bridge.collection()
+                                                bridge.treasure();
                                              } 
                                                 break;
                                             case "say":
@@ -5293,7 +5297,7 @@ let openCharactersWhenReady=false;
                                     wujiangmenupifu.scale.set(0.25);
                                     wujiangmenupifu.x = 37;
                                     wujiangmenupifu.interactive = true;
-                                    wujiangmenupifu.on('pointerup', () => { bridge.collection(); });
+                                    wujiangmenupifu.on('pointerup', () => { bridge.skins(); });
                                     //右下角按钮加
                                     let wujiangmenubtn2 = new PIXI.Sprite(gloader.resources.spritesui.textures['menu1']);
                                     wujiangmenubtn2.scale.set(0.75 * ppw, 0.75 * ppw);//0.7:0.7
@@ -5415,6 +5419,14 @@ let openCharactersWhenReady=false;
                                     wujiangmenubg.addChild(wujiangmenuset, wujiangmenupifu)
                                     wujiangmenu1.addChild(/*wujiangmenu_hitArea, */wujiangmenubg, wujiangmenubtn2);
                                     let currentwujiang = null;
+                                    window.qhlyRefreshFavorites=function(){
+                                        for(const sprite of wujiangpool)sprite.fav=(!lib.config.rzLock_jsc&&lib.config.favouriteCharacter.includes(sprite.name))||(!lib.config.rzLock_jzj&&game.rz_remen_cha.includes(sprite.name));
+                                        if(currentwujiang==='btn_lvl1_1a'){
+                                            if(renderProcess!=null)cancelAnimationFrame(renderProcess);
+                                            bbox.removeChildren();filteredSprites=wujiangpool.filter(sprite=>sprite.fav);
+                                            addSprites(filteredSprites.slice(),bbox);
+                                        }
+                                    };
                                     //按钮集合
                                     let secgroups = new Map();
                                     //筛选武将集合
@@ -6152,6 +6164,10 @@ let openCharactersWhenReady=false;
                                 }
 
 
+                                window.qhlyOpenCharacters=function(){
+                                    if(game.isUnlockDialogs.g){game.cls_wjbg=true;oppeen(wujianghome);}
+                                    else{openCharactersWhenReady=true;bridge.notice("武将界面正在载入…");}
+                                };
                                 function oppeen(container,smooth) {
                                     window.isOnhide = true;
                                     if(container!=wujianghome&&container!=paiweihome) {

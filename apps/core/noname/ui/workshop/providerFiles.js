@@ -1,9 +1,9 @@
 // Shared by source migration, workshop export and native online packaging.
 // Only these programs belong to a skin; media never grants code execution.
 export const PROVIDER_PROGRAMS = {
-	"十周年局内UI": ["extension.js", "presentation.js", "extras.js", "animations.js", "portraits.js", "layout.js", "animation-renderer.js", "vendor/spine.js"],
+	"十周年局内UI": ["extension.js", "presentation.js", "extras.js", "indicators.js", "animations.js", "portraits.js", "layout.js", "animation-renderer.js", "vendor/spine.js"],
 	"手杀标准UI": ["extension.js", "native-runtime.js", "boot.html", "preview.html",
-		"native/boot.js", "native/lobby.js", "native/layout.js", "native/menu.js", "native/portrait-clips.js", "native/portraits.js", "native/resources.js", "native/presentation.js", "native/animations.js", "native/animation-renderer.js", "native/login-bridge.js", "native/login-backgrounds.js",
+		"native/boot.js", "native/lobby.js", "native/layout.js", "native/menu.js", "native/portrait-clips.js", "native/portraits.js", "native/resources.js", "native/presentation.js", "native/animations.js", "native/effects.js", "native/indicators.js", "native/animation-renderer.js", "native/login-bridge.js", "native/login-backgrounds.js",
 		"original/如真似幻/html/rzsh.html", "original/如真似幻/js/pixi6.min.js", "original/如真似幻/js/gsap.min.js", "original/十周年UI/spine.js"],
 	"如真似幻": ["extension.js", "scenes.js", "bridge.js", "runtime.js", "js/pixi6.min.js", "js/gsap.min.js"],
 };

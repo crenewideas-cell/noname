@@ -5,7 +5,7 @@ import ts from 'typescript';
 
 // Extract rendering classes and literal artwork metadata, never execute a
 // legacy module's registration callback (it also contains gameplay patches).
-export function generateUiRenderer(root, source, skinsSource) {
+export function generateUiRenderer(root, source, skinsSource, effectsSource = source) {
  if(typeof source!=='string'||typeof skinsSource!=='string')throw new Error('Pass external renderer and skin metadata source explicitly.');
  const ast=ts.createSourceFile('animation.js',source,ts.ScriptTarget.Latest,true);
  const factory=ast.statements.find(node=>ts.isExpressionStatement(node)&&ts.isCallExpression(node.expression)&&node.expression.expression.getText(ast).includes('function(duilib)'));
@@ -39,9 +39,10 @@ export function generateUiRenderer(root, source, skinsSource) {
   if(ts.isArrayLiteralExpression(node))return node.elements.map(literal);
   if(ts.isObjectLiteralExpression(node))return Object.fromEntries(node.properties.filter(ts.isPropertyAssignment).map(prop=>[prop.name.text,literal(prop.initializer)]).filter(([,value])=>value!==undefined));
  }
+ const effectsAst=ts.createSourceFile('animation_new.js',effectsSource,ts.ScriptTarget.Latest,true);
  let effects={};
- function visit(node){if(ts.isVariableDeclaration(node)&&node.name.getText(ast)==='defines')effects=literal(node.initializer)||{};ts.forEachChild(node,visit);}
- visit(ast);
+ function visit(node){if(ts.isVariableDeclaration(node)&&node.name.getText(effectsAst)==='defines')effects=literal(node.initializer)||{};ts.forEachChild(node,visit);}
+ visit(effectsAst);
  const skinsAst=ts.createSourceFile('dynamicSkin.js',skinsSource,ts.ScriptTarget.Latest,true);
  let skins={};
  function visitSkins(node){if(ts.isBinaryExpression(node)&&node.left.getText(skinsAst)==='decadeUI.dynamicSkin'&&ts.isObjectLiteralExpression(node.right))skins=literal(node.right);ts.forEachChild(node,visitSkins);}
@@ -51,5 +52,5 @@ export function generateUiRenderer(root, source, skinsSource) {
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  const source=process.argv.find(arg=>arg.startsWith('--source='))?.slice('--source='.length);
  if(!source)throw new Error('Use --source=<external 十周年UI directory>; legacy rule modules are not stored in the provider.');
- generateUiRenderer(path.resolve('apps/core/extension/ui/手杀标准UI'),fs.readFileSync(path.resolve(source,'animation.js'),'utf8'),fs.readFileSync(path.resolve(source,'dynamicSkin_default.js'),'utf8'));
+ generateUiRenderer(path.resolve('apps/core/extension/ui/手杀标准UI'),fs.readFileSync(path.resolve(source,'animation.js'),'utf8'),fs.readFileSync(path.resolve(source,'dynamicSkin_default.js'),'utf8'),fs.readFileSync(path.resolve(source,'animation_new.js'),'utf8'));
 }

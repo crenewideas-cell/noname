@@ -1,5 +1,5 @@
 import { lib, game, get, _status, ui } from "noname";
-import { savedSkinPath } from "../skin/service.js";
+import { managedPortrait } from "../skin/management.js";
 import { portraitCharacter, skinStorageKey } from "../skin/portrait.js";
 import { setPortraitBackground } from "../util/portraitThumbnails.js";
 
@@ -218,7 +218,7 @@ Reflect.defineProperty(HTMLDivElement.prototype, "setBackground", {
 				}
 			}
 			if (type === "character" && !noskin && lib.config.change_skin !== false) {
-				selectedSkin = savedSkinPath(lib.config.skin?.[skinStorageKey(requestedName)]);
+				selectedSkin = managedPortrait(lib.config, skinStorageKey(requestedName));
 			}
 			if (imgPrefixUrl) {
 				src = imgPrefixUrl;
@@ -226,11 +226,9 @@ Reflect.defineProperty(HTMLDivElement.prototype, "setBackground", {
 				src = extimage.replace(/^ext:/, "extension/");
 			} else if (dbimage) {
 				this.setBackgroundImage([selectedSkin, `${lib.characterDefaultPicturePath}male.jpg`].filter(Boolean));
-				const initial = this.style.backgroundImage;
 				game.getDB("image", dbimage.slice(3)).then(image => {
 					if (!image || backgroundRequests.get(this) !== request) return;
-					// Keep the database original below the skin, including when the saved file disappears.
-					this.style.backgroundImage = selectedSkin ? `url("${lib.assetURL}${selectedSkin}"), url("${image}"), ${initial}` : `url("${image}"), ${initial}`;
+					this.setBackgroundImage([selectedSkin, image, `${lib.characterDefaultPicturePath}male.jpg`].filter(Boolean));
 				}).catch(lib.filter.none);
 				this.style.backgroundSize = "cover";
 				return this;
@@ -273,7 +271,7 @@ HTMLDivElement.prototype.setBackgroundDB = async function (img) {
 HTMLDivElement.prototype.setBackgroundImage = function (img) {
 	const sources = (Array.isArray(img) ? img : [img]).filter(Boolean).map(v => URL.canParse(v) ? v : `${lib.assetURL}${v}`);
 	// Character buttons and card copies read/clone this style immediately. Keep
-	// the legacy synchronous contract, including CSS fallback image layers.
+	// the synchronous first image; fallback images are tried on load failure.
 	setPortraitBackground(this, sources, lib.assetURL);
 	return this;
 };

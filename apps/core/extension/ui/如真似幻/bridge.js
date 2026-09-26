@@ -113,8 +113,7 @@ export function createPortraitLoader(lifecycle) {
    return sprite;
   },
   request,
-  fit(sprite, card) {
-   const box = {x:31, y:3, width:Math.max(1,card.texture.orig.width-34), height:Math.max(1,card.texture.orig.height-6)};
+  fit(sprite, card, box = {x:31, y:3, width:Math.max(1,card.texture.orig.width-34), height:Math.max(1,card.texture.orig.height-6)}) {
    const clip = new PIXI.Graphics();
    clip.beginFill(0xffffff).drawRoundedRect(box.x,box.y,box.width,box.height,3).endFill();
    card.addChild(clip); sprite.mask = clip; sprite.workshopPortraitBox = box; fit(sprite);

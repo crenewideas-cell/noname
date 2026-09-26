@@ -617,6 +617,9 @@ const skills = {
         categories: () => ["战法技"],
         equipSkill: true,
         async cost(event, trigger, player) {
+            // Either selection may be cancelled or finish without a result
+            // when its player/event is removed. Only a confirmed use pays cost.
+            event.result = { bool: false };
             const list = get.inpileVCardList(info => {
                 if (info[0] != "trick") {
                     return false;
@@ -624,16 +627,16 @@ const skills = {
                 return player.hasUseTarget({ name: info[2], isCard: true }, true, false);
             });
             if (!list.length) return;
-            const { bool, links } = await player
+            const choice = await player
                 .chooseButton([`${get.translation(event.skill)}`, [list, "vcard"]])
                 .set("ai", button => {
                     const player = get.player();
                     return player.getUseValue(button.link[2]);
                 })
                 .forResult();
-            if (bool) {
+            if (choice?.bool && choice.links?.[0]) {
                 const card = {
-                    name: links[0][2],
+                    name: choice.links[0][2],
                     storage: {
                         nysgsFuryBuff: true,
                     },
@@ -651,8 +654,10 @@ const skills = {
                     })
                     .backup(`${event.skill}_backup`)
                     .set("nouse", true)
-                    .forResult()
-                event.result = { bool: result.bool, cost_data: { result } };
+                    .forResult();
+                if (result?.bool) {
+                    event.result = { bool: true, cost_data: { result } };
+                }
             }
         },
         async content(event, trigger, player) {

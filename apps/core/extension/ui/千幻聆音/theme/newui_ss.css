@@ -1133,10 +1133,14 @@
 }
 
 .qhhp-decade-big-wrap {
-  right: 9%;
+  left: 12%;
+  right: calc(5% + 8px);
   bottom: 6%;
-  width: 8.6em;
-  height: 1.4em;
+  width: auto;
+  height: auto;
+  min-height: 1.4em;
+  box-sizing: border-box;
+  overflow: hidden;
   border: #8a8884 1px solid;
   border-radius: 8px;
   z-index: 63;
@@ -1146,11 +1150,20 @@
 
 .qh-skinchange-decade-big-skin-text {
   color: #8a8884;
-  width: 90%;
-  height: 90%;
+  position: relative;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  padding: .15em .35em;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   text-shadow: 0 0 5px rgb(0, 0, 0), 0 0 10px rgb(0, 0, 0), 0 0 15px rgb(0, 0, 0);
-  font-size: 1.2em;
-  line-height: 1em;
+  font-size: 1em;
+  line-height: 1.35em;
   text-align: center;
   left: 0px;
   right: 0px;
@@ -1161,9 +1174,11 @@
 }
 
 .qhhp-decade-big-skininfo-wrap {
-  left: 9%;
+  left: 12%;
   bottom: 14%;
-  max-width: 81%;
+  max-width: 83%;
+  box-sizing: border-box;
+  overflow: hidden;
   border: #8a8884 1px solid;
   border-radius: 8px;
   z-index: 63;
@@ -1179,6 +1194,13 @@
   font-size: 1.2em;
   display: block;
   position: relative;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  padding: .1em .3em;
 }
 
 .qh-image-standard>.qhdynamic-big-wrap {

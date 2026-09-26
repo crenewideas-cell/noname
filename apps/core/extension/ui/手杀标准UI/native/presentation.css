@@ -7,9 +7,6 @@ body[data-shousha-parts~="arena"]>.background{background-image:url('../original/
 body[data-shousha-parts~="players"] #arena>.player{border:2px solid #b49a62;border-radius:10px;box-shadow:0 0 0 2px #38291b,0 3px 12px #0009;background-color:#34271d}
 body[data-shousha-parts~="players"] #arena>.player>.avatar,body[data-shousha-parts~="players"] #arena>.player>.avatar2{border-radius:8px;background-position:50% 20%;background-size:cover}
 body[data-shousha-parts~="players"] #arena>.player>.name{color:#ffedb5;text-shadow:0 1px 2px #000,0 0 4px #1b0e00}
-body[data-shousha-parts~="players"] .ss-character-dialog{background:linear-gradient(135deg,#302820f5,#151310f5);border:2px solid #ad945e;border-radius:12px;color:#f4dfae}
-body[data-shousha-parts~="players"] .ss-character-dialog .button.character{border:1px solid #b49a62;border-radius:6px;box-shadow:0 3px 8px #0008}
-body[data-shousha-parts~="players"] .ss-character-dialog .button.character.selected{box-shadow:0 0 2px 2px #ffe4a0,0 0 14px #d79c2d}
 body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden):not(:empty){background-image:var(--ss-card-art)!important;background-size:100% 100%!important;border-radius:7px}
 body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden):not(:empty)>.image,body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden):not(:empty)>.background{background-image:none!important}
 /* Mask stale canvases synchronously, before any observer/frame callback. */
@@ -56,13 +53,6 @@ html body[data-shousha-parts~="hp"][data-shousha-parts~="players"] #arena>.playe
 html body[data-shousha-parts~="hp"] #arena .hp:not(.text):not(.textstyle)>div{width:13px;height:13px;min-height:13px;margin:0}
 html body.shousha-skinned-arena #arena>#me{left:var(--ss-hand-left,28px)!important;right:var(--ss-hand-right,204px)!important;width:auto!important;background:transparent!important;border:0!important;box-shadow:none!important}
 
-/* Reuse the shipped selection table, preserving the core's candidate nodes,
-   disabled states, selection limits and confirmation controls. */
-html body[data-shousha-parts~="players"] #arena>.ss-character-dialog:not(.popped){position:fixed!important;left:5vw!important;top:6vh!important;bottom:auto!important;width:90vw!important;height:calc(88vh - 145px)!important;max-height:calc(88vh - 145px);box-sizing:border-box;padding:30px 36px 20px;transform:none!important;border:0!important;border-radius:0!important;background: url('../original/选将美化/assets/image/table_jiangchi_label_large.png') center/100% 100% no-repeat!important;color:#feeee1;box-shadow:none!important}
-html body[data-shousha-parts~="players"] #arena>.ss-character-dialog>.content-container{height:100%;overflow:auto}
-html body[data-shousha-parts~="players"] .ss-character-dialog .button.character{width:92px;height:132px;margin:8px;border:1px solid #b49a62!important;border-radius:6px!important;background-size:cover;box-shadow:0 3px 8px #0008}
-html body[data-shousha-parts~="players"] .ss-character-dialog .button.character.selected{border-color:#ffe4a0!important;box-shadow:0 0 2px 2px #ffe4a0,0 0 14px #d79c2d!important}
-html body[data-shousha-parts~="players"] .ss-character-dialog .caption{font:22px shousha,serif;color:#feeee1;letter-spacing:3px;text-shadow:0 1px 2px #3b3127}
 
 html body[data-shousha-parts~="buttons"] #control>.ss-skill-control{background:none!important;border:0!important;box-shadow:none!important;overflow:visible}
 html body[data-shousha-parts~="buttons"] #control>.ss-skill-control>div{position:relative;min-width:74px;min-height:38px;box-sizing:border-box;padding:8px 16px!important;margin:3px;background:url('../original/手杀ui/skill/images/btn0.png') center/100% 100% no-repeat!important;border:0!important;border-radius:0!important;color:#f0d775!important;font:22px/1.15 shousha,serif!important;text-shadow:0 1px 3px #000}
@@ -78,7 +68,6 @@ body[data-shousha-parts~="buttons"] #system2 [data-ss-icon='pile']{--ss-icon:5}
 body[data-shousha-parts~="buttons"] #system2 [data-ss-icon='surrender']{--ss-icon:7}
 body[data-shousha-parts~="buttons"] #system2 .ss-utility-button:hover{filter:brightness(1.18)}
 body[data-shousha-parts~="buttons"] #system2 .ss-utility-button:active{filter:brightness(.95)}
-html body[data-shousha-parts~="menus"] #window>.dialog:not(.popped):not(.ss-character-dialog){background-image:url('../original/手杀ui/image/dialog.png');background-size:100% 100%;background-repeat:no-repeat}
 
 /* The host still owns navigation actions, pause and close behavior. */
 dialog.game-navigation.ss-game-menu{box-sizing:border-box;position:fixed;inset:0 0 auto auto;margin:0;width:min(566px,100vw);height:min(131px,23.15vw);max-width:100vw;max-height:90vh;padding:0;background:url('../original/手杀ui/lbtn/images/SSCD/yemian.png') top/100% 100% no-repeat;border:0;border-radius:0;color:#ebd797;box-shadow:none;overflow:visible;font-family:shousha,serif}
@@ -116,6 +105,12 @@ html body.shousha-skinned-arena #arena>#me{height:160px!important;bottom:0!impor
 html body.shousha-skinned-arena #arena>#me :is(#handcards1,#handcards2){left:0!important;right:0!important;width:100%!important;height:160px!important;bottom:0!important;box-sizing:border-box;padding:0!important}
 html body.shousha-skinned-arena #arena>#me .handcards{height:150px!important;bottom:0!important;top:auto!important}
 html body[data-shousha-parts~="cards"] #arena .handcards>.card,html body[data-shousha-parts~="cards"] #arena>.card.thrown{width:108px!important;height:150px!important}
+html body[data-shousha-parts~="cards"] :is(#arena,#window)>.card:not(.button),html body[data-shousha-parts~="cards"] #window .dialog :is(.buttons,.item-container,.content)>.card:not(.button){width:108px!important;height:150px!important;aspect-ratio:18/25;flex-shrink:0}
+/* Physical and virtual cards share .button.card in all host dialogs (including
+   五谷丰登, revealed hands and skill choices). Keep the hand-card aspect ratio;
+   the stock 90px square button squeezes the migrated portrait card art. */
+html body[data-shousha-parts~="cards"] #window .button.card:not(.character):not(.player .card){box-sizing:border-box;width:90px!important;height:125px!important;min-width:90px;max-width:90px;min-height:125px;max-height:125px;aspect-ratio:18/25;flex:0 0 90px;padding:0;vertical-align:top}
+html body[data-shousha-parts~="cards"] #window .button.card:not(.character)>.intro{top:auto;bottom:4px}
 html body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden):not(:empty)>.name{visibility:hidden}
 html body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden):not(:empty)>.info[data-ss-point]{left:5px!important;top:5px!important;right:auto!important;width:22px!important;height:auto!important;font-size:0!important;line-height:0!important;text-shadow:none!important;transform:none!important;color:#161616}
 html body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden):not(:empty)>.info[data-ss-point]>span{font-size:0!important}
@@ -124,7 +119,10 @@ html body[data-shousha-parts~="cards"] .card.ss-card-art:not(.infohidden):not(:e
 html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.avatar{left:23px!important;top:auto!important;bottom:-3.5px!important;width:84%!important;height:100%!important;clip-path:url(#ss-solo-clip)}
 html body[data-shousha-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar{width:41%!important;clip-path:url(#ss-left-clip)}
 html body[data-shousha-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar2{left:58.5%!important;top:auto!important;bottom:-3.5px!important;width:44%!important;height:100%!important;clip-path:url(#ss-right-clip)}
-html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.name{left:10px!important;top:22px!important;width:16px!important;height:auto!important;writing-mode:vertical-rl;line-height:16px!important;color:white}
+/* The faction glyph is painted in the 22px left rail of name_new_*.png.
+   Center the name in that same rail, including nested colored prefixes. */
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.name{left:0!important;top:22px!important;width:22px!important;height:auto!important;padding:0!important;writing-mode:vertical-rl;line-height:22px!important;text-align:start;transform:none!important;color:white}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.name span{line-height:inherit;vertical-align:baseline}
 html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.name2{left:60%!important;top:22px!important}
 html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.identity{left:auto!important;right:-15px!important;top:-9.5px!important;width:37.8px!important;height:40.5px!important;background-size:100% 100%;background-repeat:no-repeat;z-index:80}
 html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.identity.ss-identity-art{background-image:var(--ss-identity-art)}
@@ -142,10 +140,6 @@ html body[data-shousha-parts~="players"] #arena>.player:is(.unseen,.unseen2,.uns
 html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.equips{left:24px!important;right:0!important;top:auto!important;bottom:0!important;width:calc(100% - 24px)!important;height:auto!important;z-index:83}
 html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.equips>.card{position:relative!important;left:0!important;right:auto!important;top:auto!important;bottom:auto!important;display:block;width:100%!important;height:22px!important;margin:0!important;border-radius:0!important;background:#28231ee0!important;box-shadow:none!important}
 html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.equips>.card>.name2{display:block!important;left:2px!important;top:1px!important;max-width:100%;white-space:nowrap;overflow:hidden;font:14px/20px shousha,serif}
-html body[data-shousha-parts~="players"] #arena>.ss-character-dialog:not(.popped){left:3vw!important;top:30vh!important;width:94vw!important;height:auto!important;min-height:230px;max-height:50vh;background:url('../original/选将美化/assets/image/table_jiangchi_label_large.png') center/100% 100% no-repeat #211d17ed!important;border:1px solid #ac9058!important;border-radius:6px!important;padding:20px 24px;overflow:auto}
-html body[data-shousha-parts~="players"] .ss-character-dialog .button.character{width:100px;height:150px;margin:8px;border:0!important;border-radius:6px!important}
-html body[data-shousha-parts~="players"] .ss-character-dialog .button.character>.name{font:18px/18px shousha,serif}
-html body[data-shousha-parts~="players"] .ss-character-dialog .button.character>.hp{top:auto!important;bottom:4px!important;left:-12px!important;width:14px!important;display:flex;flex-direction:column}
 html body[data-shousha-parts~="buttons"] #arena>#control.action-controls{left:10%!important;right:10%!important;top:auto!important;bottom:calc(20% + 54px)!important;width:auto!important;max-height:26vh;padding:8px 0;gap:8px 14px;overflow:visible}
 html body[data-shousha-parts~="buttons"] #arena>#control.action-controls>.control{background:none!important;border:0!important;box-shadow:none!important}
 html body[data-shousha-parts~="buttons"] #arena>#control.action-controls>.control>div{min-width:140px;min-height:46px;padding:8px 16px!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:url('../original/手杀ui/lbtn/images/uibutton/cbtn.png') center/100% 100% no-repeat!important;color:#c2c374;font:24px/30px ss-HYZLSJ,shousha,serif!important;text-shadow:1.5px 1.5px 2px #5b6727,-1.5px -1.5px 2px #5b6727;transition:none}
@@ -158,27 +152,323 @@ html body[data-shousha-parts~="buttons"] #arena>#control.action-controls>.ss-ski
 html body[data-shousha-parts~="buttons"] #roundmenu{width:120px!important;height:90px!important;left:auto!important;right:0!important;top:0!important;transform:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:url('../original/手杀ui/lbtn/images/SSCD/button.png') center/contain no-repeat!important}
 html body[data-shousha-parts~="buttons"] #roundmenu::before,html body[data-shousha-parts~="buttons"] #roundmenu::after{display:none!important}
 html body[data-shousha-parts~="buttons"] #roundmenu:not(.clock)>div{display:none!important}
-html body[data-shousha-parts~="menus"] #arena>.dialog.nobutton:not(.popped):not(.ss-character-dialog){left:25%!important;top:auto!important;bottom:calc(20% + 140px)!important;width:50%!important;height:auto!important;min-height:50px!important;max-height:25vh;box-sizing:border-box;background:#211d17ed!important;border:1px solid #ac9058;border-radius:6px;color:white;font:22px/1.5 shousha,serif;overflow:auto}
-html body[data-shousha-parts~="menus"] #arena>.dialog.nobutton:not(.popped):not(.ss-character-dialog)>.content-container,
-html body[data-shousha-parts~="menus"] #arena>.dialog.nobutton:not(.popped):not(.ss-character-dialog)>.content-container>.content{position:relative!important;height:auto!important;width:100%;top:auto;bottom:auto}
+html body[data-shousha-parts~="menus"] #arena>.dialog.nobutton:not(.popped):not(:is(.ss-character-dialog,.character-browser,.choose-character,:has(.button.character))){left:10%!important;top:auto!important;bottom:calc(20% + 140px)!important;width:80%!important;height:auto!important;min-height:50px!important;max-height:25vh;box-sizing:border-box;background:url('../original/十周年UI/assets/image/dialog3.png') center/100% 100% no-repeat!important;border:0;border-radius:0;color:#feeee1;font:22px/1.5 shousha,serif;overflow:auto}
+html body[data-shousha-parts~="menus"] #arena>.dialog.nobutton:not(.popped):not(:is(.ss-character-dialog,.character-browser,.choose-character,:has(.button.character)))>.content-container,
+html body[data-shousha-parts~="menus"] #arena>.dialog.nobutton:not(.popped):not(:is(.ss-character-dialog,.character-browser,.choose-character,:has(.button.character)))>.content-container>.content{position:relative!important;height:auto!important;width:100%;top:auto;bottom:auto}
 /* The host guide retains its real order/target information and undo controls. */
-html body[data-shousha-parts~="menus"] .selection-guide{background:#211d17ed;border:1px solid #ac9058;border-radius:6px;color:#feeee1;font-family:shousha,serif;box-shadow:0 0 0 2px #211d1766}
+html body[data-shousha-parts~="menus"] .selection-guide{background:url('../original/十周年UI/assets/image/dialog3.png') center/100% 100% no-repeat;border:0;border-radius:0;color:#feeee1;font-family:shousha,serif;box-shadow:none}
 html body[data-shousha-parts~="menus"] .selection-guide>strong{color:#feeee1;font-size:22px;font-weight:normal}
 html body[data-shousha-parts~="buttons"] .selection-guide button{border:0;border-radius:0;background:url('../original/手杀ui/lbtn/images/uibutton/cbtn.png') center/100% 100% no-repeat;color:#e7df94;padding:6px 20px;font:18px ss-HYZLSJ,serif;text-shadow:0 1px 2px #35431b}
 @media(max-width:850px){
  html body[data-shousha-parts~="arena"] #arena:not(.chess){left:10px!important;right:12px!important}
- html body[data-shousha-parts~="buttons"] #arena>#control.action-controls{bottom:175px!important;left:4%!important;right:4%!important}
+ html body[data-shousha-parts~="buttons"] #arena>#control.action-controls{bottom:min(175px,32vh)!important;left:4%!important;right:4%!important}
  html body[data-shousha-parts~="buttons"] #arena>#control.action-controls>.control>div{min-width:90px;min-height:36px;font-size:20px!important;padding:4px 10px!important}
  html body[data-shousha-parts~="buttons"] #arena>#control.action-controls>.control>[data-action="confirm"]{min-width:130px;min-height:44px;font-size:0!important}
- html body[data-shousha-parts~="players"] #arena>.ss-character-dialog:not(.popped){top:15vh!important;max-height:58vh;min-height:180px}
- html body[data-shousha-parts~="players"] .ss-character-dialog .button.character{width:80px;height:120px}
 }
 .ss-core-settlement{inset:4% 12%;padding:6vh 7vw;background:url('../original/手杀MVP/image/dialog.png') center/100% 100% no-repeat;border:0;border-radius:0;color:#f0d775}
 .ss-core-settlement h2{position:relative;margin:0 0 18px;font:32px shousha,serif;text-shadow:0 2px 3px #221406}
 .ss-core-settlement td{background:#21180c99;color:#f6dfaf}
+
+/* Source dialog3 is the mobile suite's translucent prompt plate. Cover arena
+   dialogs, window popups and nested dialogs; the host still owns their size,
+   visibility, text and actions. These rules also apply on the first paint. */
+html body[data-shousha-parts~="menus"] #window .dialog {
+ border:0!important;
+ border-radius:0!important;
+ background:url('../original/十周年UI/assets/image/dialog3.png') center/100% 100% no-repeat!important;
+ box-shadow:none!important;
+ color:#feeee1;
+ text-shadow:0 1px 2px #16120e;
+}
+html body[data-shousha-parts~="menus"] #window .dialog>.bar {background:none!important;box-shadow:none!important}
+html body[data-shousha-parts~="menus"] #window .dialog>.content-container {
+ box-sizing:border-box;
+ overscroll-behavior:contain;
+ scrollbar-width:thin;
+ scrollbar-color:#aa9776 transparent;
+}
+html body[data-shousha-parts~="menus"] #window .dialog .caption {
+ font-family:shousha,serif;
+ color:#feeee1;
+ line-height:1.5;
+ text-shadow:0 1px 2px #3b3127;
+}
+html body[data-shousha-parts~="menus"] #window .dialog :is(.text,.skillinfo,.skill-description-row>div) {
+ color:#feeee1;
+ line-height:1.7;
+}
+html body[data-shousha-parts~="menus"] #arena>.dialog:not(.popped):not(.fullheight):not(.fullwidth)>.content-container>.content {
+ box-sizing:border-box;
+ padding:12px 24px;
+}
+html body[data-shousha-parts~="menus"] #window .dialog :is(.tdnode,.menubutton,.textbutton) {
+ border:0!important;
+ border-radius:0!important;
+ background:url('../original/十周年UI/assets/image/tnode-C1.png') center/100% 100% no-repeat!important;
+ box-shadow:none!important;
+ color:#feeee1;
+ font-family:shousha,serif;
+}
+html body[data-shousha-parts~="menus"] #window .dialog :is(.tdnode,.menubutton,.textbutton):is(.selected,.active,.bluebg,.thundertext) {
+ background-image:url('../original/十周年UI/assets/image/tnode-C4.png')!important;
+ color:#fff0ac!important;
+}
+html body[data-shousha-parts~="menus"] #window .dialog .number-choice-select {
+ border-color:#b49a62;
+ background:#30271e;
+ color:#feeee1;
+ font-family:shousha,serif;
+}
+html body[data-shousha-parts~="menus"] #arena .player>.damage.normal-font,
+body[data-shousha-parts~="menus"] .shousha-native-notice {
+ border:0;
+ border-radius:0;
+ background:url('../original/十周年UI/assets/image/dialog3.png') center/100% 100% no-repeat;
+ color:#feeee1;
+ font-family:shousha,serif;
+ box-shadow:none;
+}
+
+/* Character selection and the paged free-choice directory share the original
+   selection table. Structural matching avoids waiting for a decoration frame,
+   and .character-browser keeps the skin even when there are zero candidates. */
+html body[data-shousha-parts~="players"] :is(#arena,#window)>.dialog:is(.ss-character-dialog,.character-browser,.choose-character,:has(.button.character)):not(.popped) {
+ position:absolute!important;
+ box-sizing:border-box;
+ left:3%!important;
+ right:auto!important;
+ top:4%!important;
+ bottom:calc(20% + 130px)!important;
+ width:94%!important;
+ height:auto!important;
+ min-height:0!important;
+ max-height:none!important;
+ margin:0!important;
+ padding:16px 24px!important;
+ transform:none!important;
+ border:0!important;
+ border-radius:0!important;
+ background:url('../original/选将美化/assets/image/table_jiangchi_label_large.png') center/100% 100% no-repeat!important;
+ color:#feeee1;
+ box-shadow:none!important;
+ overflow:hidden;
+}
+html body[data-shousha-parts~="players"] :is(#arena,#window)>.dialog:is(.ss-character-dialog,.character-browser,.choose-character,:has(.button.character)):not(.popped)>.content-container {
+ position:absolute;
+ inset:16px 24px;
+ width:auto!important;
+ height:auto!important;
+ max-height:none!important;
+ overflow:auto!important;
+ overscroll-behavior:contain;
+}
+html body[data-shousha-parts~="players"] #window .dialog:is(.ss-character-dialog,.character-browser,.choose-character,:has(.button.character))>.content-container>.content {
+ box-sizing:border-box;
+ width:100%;
+ padding:0 8px 16px;
+}
+html body[data-shousha-parts~="players"] #window .dialog .button.character {
+ width:100px;
+ height:150px;
+ margin:8px;
+ border:3px solid transparent!important;
+ border-image:url('../original/选将美化/assets/image/game_chr_bg_selectable.png') 16 stretch!important;
+ border-radius:4px!important;
+ background-size:cover;
+ box-shadow:0 3px 8px #0008;
+}
+html body[data-shousha-parts~="players"] #window .dialog .button.character.selected {box-shadow:0 0 2px 2px #ffe4a0,0 0 14px #d79c2d!important}
+html body[data-shousha-parts~="players"] #window .dialog .button.character>.name {font:18px/18px shousha,serif}
+html body[data-shousha-parts~="players"] #window .dialog .button.character>.hp {top:auto!important;bottom:4px!important;left:-12px!important;width:14px!important;display:flex;flex-direction:column}
+html body[data-shousha-parts~="players"] #window .dialog.character-browser .searcher.caption {
+ width:min(580px,100%);
+ margin:0 auto 8px;
+}
+html body[data-shousha-parts~="players"] #window .dialog.character-browser .searcher input {
+ border:1px solid #aa9776!important;
+ border-radius:0!important;
+ background:#211d17c9;
+ color:#feeee1;
+}
+html body[data-shousha-parts~="players"] #window .dialog.character-browser .character-filters {
+ width:100%;
+ max-height:110px;
+ margin:0 0 8px;
+ padding:0 0 8px;
+ overflow:auto;
+ border-bottom:1px solid #aa977655;
+ scrollbar-width:thin;
+}
+html body[data-shousha-parts~="players"] #window .dialog.character-browser :is(.character-filter-alphabet,.character-filter-groups,.character-browser-pages,.character-browser-selection) {
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ justify-content:center;
+ gap:4px;
+}
+html body[data-shousha-parts~="players"] #window .dialog.character-browser :is(button.tdnode,.character-search-submit,.character-filter-groups>.tdnode) {
+ box-sizing:border-box;
+ min-width:34px;
+ min-height:30px;
+ height:auto;
+ margin:2px!important;
+ padding:4px 10px;
+ border:0!important;
+ border-radius:0!important;
+ background:url('../original/十周年UI/assets/image/tnode-C1.png') center/100% 100% no-repeat!important;
+ color:#feeee1;
+ font:16px/22px shousha,serif;
+ box-shadow:none!important;
+}
+html body[data-shousha-parts~="players"] #window .dialog.character-browser .tdnode.thundertext {background-image:url('../original/十周年UI/assets/image/tnode-C4.png')!important;color:#fff0ac!important}
+html body[data-shousha-parts~="players"] #window .dialog.character-browser .character-filter-groups select {
+ max-width:100%;
+ padding:5px 8px;
+ border:1px solid #aa9776;
+ border-radius:0;
+ background:#30271e;
+ color:#feeee1;
+ font:16px shousha,serif;
+}
+html body[data-shousha-parts~="players"] #window .dialog.character-browser :is(.character-browser-status,.character-browser-pages) {color:#feeee1;font:16px/1.5 shousha,serif}
+html body[data-shousha-parts~="players"] #window .dialog.character-browser .character-browser-selection:empty {display:none}
+
+/* Source character/main1_new.css: parchment box, dark skill text and the
+   original close artwork. Keep the host's scroll pane and close callback. */
+html body[data-shousha-parts~="menus"] #window>#nodeintro.dialog.popped,
+html body[data-shousha-parts~="menus"] #window .dialog.popped,
+body[data-shousha-parts~="menus"] .shousha-native-confirm>div {
+ box-sizing:border-box;
+ border:18px solid transparent!important;
+ border-image:url('../original/手杀ui/character/images/box3.png') 22 fill stretch!important;
+ border-radius:0!important;
+ background:none!important;
+ box-shadow:none!important;
+ color:#4b3b30;
+ text-shadow:none;
+}
+html body[data-shousha-parts~="menus"] #window>#nodeintro.dialog.skill-reading-panel>.content-container {
+ left:0;
+ right:0;
+ top:36px;
+ bottom:0;
+ width:100%;
+ height:auto;
+}
+html body[data-shousha-parts~="menus"] #window .dialog.popped :is(.caption,.text,.skillinfo,.skill-description-row>div) {
+ color:#4b3b30!important;
+ text-shadow:none;
+}
+html body[data-shousha-parts~="menus"] #window>#nodeintro.dialog .content>.caption:first-child {
+ color:#3f3023;
+ border-bottom:1px solid #77634c80;
+ font:22px/1.5 shousha,serif;
+}
+html body[data-shousha-parts~="menus"] #window>#nodeintro.dialog .skill-description-row {border-top:1px solid #77634c55}
+html body[data-shousha-parts~="menus"] #window>#nodeintro.dialog .skill-description-row>:is(.skill,.skilln) {
+ background:url('../original/手杀ui/character/images/btn.png') center/100% 100% no-repeat;
+ border-radius:0;
+ padding:4px 14px;
+ color:#ffe2a2!important;
+ font:20px/1.4 shousha,serif;
+ text-shadow:0 1px 2px #302015;
+}
+html body[data-shousha-parts~="menus"] #window>#nodeintro.dialog>.skill-reading-close {
+ top:-10px;
+ right:-10px;
+ width:40px;
+ height:40px;
+ padding:0;
+ border:0;
+ border-radius:0;
+ background:url('../original/手杀ui/shousha_close.png') center/contain no-repeat;
+ color:transparent;
+ text-shadow:none;
+}
+body[data-shousha-parts~="menus"] .shousha-native-confirm button {
+ border:0;
+ background:url('../original/手杀ui/character/images/btn.png') center/100% 100% no-repeat;
+ color:#feeee1;
+}
+
+/* A separate gutter outside the portrait keeps marks off artwork, the name/HP
+   rail and the dragon. Padding includes the counters; excess marks scroll. */
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.marks {
+ display:flex;
+ flex-direction:column;
+ align-items:flex-start;
+ gap:8px;
+ box-sizing:border-box;
+ left:-60px!important;
+ right:auto!important;
+ top:44px!important;
+ bottom:auto!important;
+ width:44px;
+ height:auto;
+ max-height:calc(100% - 44px);
+ padding:8px 8px 4px 4px;
+ transform:none!important;
+ z-index:84;
+ overflow-x:hidden;
+ overflow-y:auto;
+ scrollbar-width:none;
+ pointer-events:auto;
+}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.marks::-webkit-scrollbar {display:none}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.marks>.card:not(.removing) {
+ position:relative!important;
+ flex:0 0 28px;
+ left:auto!important;
+ top:auto!important;
+ margin:0!important;
+ transform:none!important;
+ pointer-events:auto;
+}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin):not(.linked2)>.marks>div:first-child,
+html body[data-shousha-parts~="players"] #arena:not(.nolink)>.player:not(.minskin)>.marks>div:first-child {display:none}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.marks>.removing {position:absolute!important;pointer-events:none}
+html body[data-shousha-parts~="players"] #arena>.player:not(.minskin)>.marks>.card>.markcount {z-index:1}
+
 @media(max-width:850px){
- html body[data-shousha-parts~="players"] #arena>.ss-character-dialog:not(.popped){left:2vw!important;width:96vw!important;padding:20px 16px 12px}
- html body[data-shousha-parts~="players"] .ss-character-dialog .button.character{width:72px;height:104px;margin:6px}
+ html body[data-shousha-parts~="players"] :is(#arena,#window)>.dialog:is(.ss-character-dialog,.character-browser,.choose-character,:has(.button.character)):not(.popped) {left:2%!important;width:96%!important;bottom:calc(min(175px,32vh) + 76px)!important}
+ html body[data-shousha-parts~="players"] #window .dialog .button.character {width:72px;height:104px;margin:6px}
  html body[data-shousha-parts~="buttons"] #control>.ss-skill-control>div{min-width:58px;min-height:32px;padding:6px 10px!important;font-size:18px!important}
  .ss-core-settlement{inset:2%;padding:6vh 7vw}
 }
+
+/* Source battle effects and public action indicators. */
+.ss-battle-skill{position:fixed;inset:0;width:100vw;height:100vh;overflow:hidden;pointer-events:none;z-index:10001;background:rgba(0,0,0,.61);animation:ss-battle-skill-fade var(--ss-skill-duration,2100ms) linear both}
+.ss-battle-skill-stage{position:absolute;left:50%;top:50%;width:900px;height:500px;margin-left:-450px;margin-top:-250px;transform-origin:50% 50%;pointer-events:none}
+.ss-battle-skill-title{position:fixed;z-index:10003;animation:ss-battle-skill-fade var(--ss-skill-duration,2100ms) linear both}
+/* Coordinates follow the transparent portrait cutout in the bundled frames.
+   Scale the stage and Spine together instead of stretching either artwork. */
+.ss-battle-skill-portrait{position:absolute;left:270px;top:104px;width:180px;height:292px;border-radius:8px;background-size:cover;background-position:center;background-repeat:no-repeat;transform:rotate(-9deg);pointer-events:none}
+.ss-battle-skill[data-kind="awakening"] .ss-battle-skill-portrait{left:271px;top:110px;width:176px;height:280px}
+.ss-battle-skill-label{position:absolute;left:500px;top:280px;width:350px;max-height:180px;color:#ffe8aa;font:900 64px/1.3 xingkai,shousha-native,serif;overflow-wrap:anywhere;text-align:left;background:linear-gradient(180deg,#fcfc70 30%,#ad6e22 68%,#f5f1ce 91%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(1px 1px 3px #000);-webkit-text-stroke:1px #0008;animation:ss-battle-skill-label var(--ss-skill-duration,2100ms) linear both}
+.ss-battle-skill-title[data-kind="awakening"] .ss-battle-skill-label{background-image:linear-gradient(180deg,#f1e7f9 30%,#7251ac 68%,#73add1 85%)}
+.ss-battle-skill-title[data-kind="mission"] .ss-battle-skill-label{background-image:linear-gradient(180deg,#ffff9a 19%,#d9532e 73%,#f5f1ce 96%)}
+@keyframes ss-battle-skill-fade{0%{opacity:0}15%,90%{opacity:1}100%{opacity:0}}
+@keyframes ss-battle-skill-label{0%,20%{opacity:0;transform:translateX(20px)}35%,100%{opacity:1;transform:translateX(0)}}
+html body #window>.damage.ss-fullscreen-replaced{visibility:hidden!important}
+.ss-battle-kill{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;pointer-events:none;z-index:10001;background:#0007;animation:ss-battle-kill-fade 3s forwards}
+.ss-battle-kill>div{position:absolute;left:100%}
+.ss-battle-kill>.killer-warpper{top:calc(50% - 180px);width:240px;height:360px;animation:ss-battle-killer 2.6s .2s forwards;z-index:2}
+.ss-battle-kill>.killer-warpper::before{content:'';position:absolute;left:-40%;top:-40%;width:180%;height:180%;background:url('../original/十周年UI/assets/image/shine.png') center/100% 100% no-repeat;z-index:-1}
+.ss-battle-kill .killer,.ss-battle-kill .back,.ss-battle-kill .part1,.ss-battle-kill .part2{position:absolute;inset:0;background-size:cover;background-position:top;background-repeat:no-repeat}
+.ss-battle-kill>.victim{top:calc(50% - 135px);width:180px;height:270px;animation:ss-battle-victim 2.6s .2s forwards;z-index:1;filter:drop-shadow(0 0 3px #000) grayscale(1)}
+.ss-battle-kill .part1{clip-path:polygon(0 0,100% 0,100% 70%,0 30%);animation:ss-battle-split1 .6s 1s forwards}
+.ss-battle-kill .part2{clip-path:polygon(0 30%,100% 70%,100% 100%,0 100%);animation:ss-battle-split2 .6s 1s forwards}
+@keyframes ss-battle-killer{0%{left:100%}10%,60%{left:calc(32% - 120px);opacity:1}100%{left:calc(32% - 120px);opacity:0}}
+@keyframes ss-battle-victim{0%{left:100%}6%,60%{left:calc(67% - 90px);opacity:1}100%{left:calc(67% - 90px);opacity:0}}
+@keyframes ss-battle-split1{to{transform:translate(20px,-20px)}}
+@keyframes ss-battle-split2{to{transform:translate(-20px,20px)}}
+@keyframes ss-battle-kill-fade{from{background:#000b}to{background:transparent}}
+html body[data-shousha-lines="on"] .linexy[data-presentation-line="player"]:not(.drag){visibility:hidden!important}
+.shousha-lines{position:fixed;inset:0;width:100%;height:100%;z-index:10001;pointer-events:none}
+.shousha-phase{position:absolute;left:var(--ss-hand-left,9%);bottom:185px;padding:3px 12px;background:linear-gradient(90deg,#456224d9,#45622433);color:#eee0a9;font:22px/28px shousha-native,serif;pointer-events:none;z-index:6}
+.shousha-phase[hidden]{display:none}
+body[data-shousha-timer="on"] #arena>#timer{visibility:hidden!important;pointer-events:none!important}
+.shousha-progress{position:absolute;left:var(--ss-hand-left,9%);right:var(--ss-hand-right,220px);bottom:173px;height:10px;box-sizing:border-box;border:2px solid #b6a176;border-radius:3px;background:#37312c;box-shadow:0 1px 2px #000;pointer-events:none;z-index:6}
+.shousha-progress[hidden]{display:none}
+.shousha-progress>div{position:absolute;inset:0;background:linear-gradient(#f5c778,#dd9245);transform-origin:left center;transition:transform .2s linear}
+.shousha-progress>span{position:absolute;right:3px;bottom:9px;color:#ffe3ad;font:14px/18px shousha-native,serif;text-shadow:0 1px #000}

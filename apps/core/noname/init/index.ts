@@ -971,7 +971,7 @@ function initSheet() {
 	}
 
 	const zhishixian = config.get("zhishixian");
-	game.zsOriginLineXy = game.linexy;
+	game.zsOriginLineXy ||= game.linexy;
 	if (zhishixian && zhishixian != "default") {
 		const layout = zhishixian;
 		if (!lib.uiWorkshop?.ownsSetting("zhishixian")) game.saveConfig("zhishixian", zhishixian);

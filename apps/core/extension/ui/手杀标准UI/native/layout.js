@@ -17,8 +17,7 @@ export function installAdaptiveLayout({game,ui,className='shousha-native-game',r
   // those layers aligned and avoids stretching the avatar or its skill marks.
   const scale=Math.max(.5,Math.min(count<=4?1.65:1.3,width/(count<=4?1060:count>8?Math.ceil((count-1)/2)*165:1420),height/(count<=4?620:730)));
   // Source: 十周年UI/decadeLayout.css, data-layout="mobile" (手杀).
-  // Edge seats sit at the arena edges; upper seats use the original fractions
-  // and pixel offsets. Only viewport scaling is applied to those coordinates.
+  // Leave a gutter at the left edge for the external mark column.
   const positions=count===2?[null,[.5,9]]:
    count===3?[null,[.675,9],[.325,9]]:
    count===4?[null,['right','side'],[.5,9],['left','side']]:
@@ -26,7 +25,8 @@ export function installAdaptiveLayout({game,ui,className='shousha-native-game',r
    count===6?[null,['right','side'],[.725,22],[.5,9],[.275,22],['left','side']]:
    count===7?[null,['right','middle'],['right',22],[.645,9],[.355,9],['left',22],['left','middle']]:
    [null,['right','middle'],['right',22],[.72,9],[.5,3],[.28,9],['left',22],['left','middle']];
-  let selfWidth=128*scale;
+  const markGutter=64*scale;
+  let selfWidth=128*scale,selfX=width-selfWidth-30*scale;
   for(const player of players){
    save(player);
    const pos=Number(player.dataset.position);if(!Number.isInteger(pos))continue;
@@ -36,7 +36,8 @@ export function installAdaptiveLayout({game,ui,className='shousha-native-game',r
    const fraction=(pos-1)/Math.max(1,count-2);
    const anchor=count>8?[.5+.42*Math.cos(Math.PI*fraction),height*(.40-.35*Math.sin(Math.PI*fraction))/scale]:positions[pos];if(!own&&!anchor)continue;
    const right=arena.dataset.rightLayout!=='off';
-   const x=own?(right?width-pw-30*scale:25*scale):anchor[0]==='left'?0:anchor[0]==='right'?width-pw:width*anchor[0]-pw/2;
+   const x=Math.max(markGutter,own?(right?width-pw-30*scale:markGutter):anchor[0]==='left'?markGutter:anchor[0]==='right'?width-pw:width*anchor[0]-pw/2);
+   if(own)selfX=x;
    const y=own?height-ph-height*.01:anchor[1]==='side'?height*.18:anchor[1]==='middle'?height*.5-ph/2:anchor[1]*scale;
    player.style.setProperty('zoom',String(scale));
    player.style.setProperty('left',x/scale+'px','important');
@@ -46,8 +47,8 @@ export function installAdaptiveLayout({game,ui,className='shousha-native-game',r
   arena.style.setProperty('--ss-self-width',selfWidth+'px');
   // Source right-hand layout starts at 165 - 72 pixels. Account for the
   // host card's existing 14px inset without replacing its spacing algorithm.
-  arena.style.setProperty('--ss-hand-left',arena.dataset.rightLayout==='off'?selfWidth+48+'px':Math.max(12,93*scale-14)+'px');
-  arena.style.setProperty('--ss-hand-right',arena.dataset.rightLayout==='off'?'28px':selfWidth+48+'px');
+  arena.style.setProperty('--ss-hand-left',arena.dataset.rightLayout==='off'?selfX+selfWidth+18*scale+'px':Math.max(12,93*scale-14)+'px');
+  arena.style.setProperty('--ss-hand-right',arena.dataset.rightLayout==='off'?'28px':width-selfX+markGutter+12*scale+'px');
 
   // Refresh hand spacing against the final available width after resize.
   if(game.me&&ui.handcards1)refreshHand();

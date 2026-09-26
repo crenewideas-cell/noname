@@ -70,7 +70,7 @@ function factory(name){const s=read('extension/'+name+'/extension.js');const ast
  sceneText=sceneText.replaceAll("spinelo.state.setAnimation(0, 'idle', true);","spinelo.state.setAnimation(0, 'idle', true); bridge.ready();");
  sceneText=sceneText.replaceAll('new PIXI.Loader()','bridge.own(new PIXI.Loader())').replaceAll('new PIXI.Ticker()','bridge.own(new PIXI.Ticker())');
  sceneText=sceneText.replace(/gsap\.(to|from|fromTo|timeline|set)\(/g,"bridge.tween('$1',");
- sceneText=sceneText.replaceAll('skinSwitch.cangZhenGe()','bridge.collection()').replaceAll("game.qhly_open_new(sprite.name, 'skill')",'bridge.character(sprite.name)');
+ sceneText=sceneText.replaceAll('skinSwitch.cangZhenGe()','bridge.treasure()').replaceAll("game.qhly_open_new(sprite.name, 'skill')",'bridge.character(sprite.name)');
  // The independent character browser owns every atlas it reads, including
  // navigation artwork previously borrowed from the settings/ranked loader.
  sceneText=sceneText.replace("gloader.add('shadow',",`gloader.add('paiweiui', lib.assetURL + 'extension/如真似幻/images/jj.json');
@@ -95,7 +95,7 @@ function factory(name){const s=read('extension/'+name+'/extension.js');const ast
  sceneText=edits(sceneText,localEdits);
  // Character browsing must not wait for settings/ranked/matchmaking pages or
  // eagerly download portraits from the old engine's flat image directory.
- sceneText=sceneText.replace(/case "under6":\s*if\(game.isUnlockDialog\)/,'case "under6":\n if(game.isUnlockDialogs.g)');
+ sceneText=sceneText.replace(/case "under6":\s*if\(game.isUnlockDialog\)/,'case "under6":\n bridge.characterPage=undefined;\n if(game.isUnlockDialogs.g)');
  sceneText=sceneText.replace('oppeen(wujianghome)\n                                              }','oppeen(wujianghome)\n                                              }else{openCharactersWhenReady=true;bridge.notice("武将界面正在载入…");}');
  sceneText=sceneText.replace(/\s*gloader\.load\(setupg\)/g,'');
  sceneText=sceneText.replace("game.isUnlockDialogDo('g');",'');
@@ -141,7 +141,7 @@ function factory(name){const s=read('extension/'+name+'/extension.js');const ast
  const backgrounds=ast.statements.find(n=>n.getText(ast).startsWith('window.chgBackgroundlist'));
  write('native/login-backgrounds.js',backgrounds.getText(ast));
 }
-generateUiRenderer(target, read('extension/十周年UI/animation.js'), read('extension/十周年UI/dynamicSkin_default.js'));
+generateUiRenderer(target, read('extension/十周年UI/animation.js'), read('extension/十周年UI/dynamicSkin_default.js'), read('extension/十周年UI/animation_new.js'));
 const inventory=()=>{const files=[];function visit(dir){for(const e of fs.readdirSync(path.join(target,dir),{withFileTypes:true})){const p=dir?dir+'/'+e.name:e.name;if(e.isDirectory()){if(!['assets','spine','vendor'].includes(p))visit(p);}else if(isProviderFile('手杀标准UI',p))files.push(p);}}visit('');write('files.json',JSON.stringify(files.sort(),null,2));};
 const manifest=JSON.parse(fs.readFileSync(path.join(target,'ui-workshop.json'),'utf8'));
 manifest.author='原界面及各 UI 模块作者；PXLNGU整合';
@@ -154,7 +154,7 @@ const registrations=JSON.parse(fs.readFileSync(registrationFile,'utf8'));
 const registration=registrations.find(item=>item.name==='手杀标准UI');
 if(registration){
  registration.files={};
- for(const file of ['extension.js','native-runtime.js','native.css','ui-workshop.json','native/lobby.js','native/presentation.js','native/presentation.css','native/layout.js','native/portrait-clips.js','native/animations.js','native/animation-renderer.js','native/animation-assets.json'])registration.files[file]=crypto.createHash('sha256').update(fs.readFileSync(path.join(target,file))).digest('hex');
+ for(const file of ['extension.js','native-runtime.js','native.css','ui-workshop.json','native/lobby.js','native/presentation.js','native/presentation.css','native/layout.js','native/portrait-clips.js','native/animations.js','native/effects.js','native/indicators.js','native/animation-renderer.js','native/animation-assets.json'])registration.files[file]=crypto.createHash('sha256').update(fs.readFileSync(path.join(target,file))).digest('hex');
  registration.hash=registration.files['extension.js'];
  const text=JSON.stringify(registrations,null,2)+'\n';
  if(fs.readFileSync(registrationFile,'utf8').replace(/\r\n/g,'\n')!==text)fs.writeFileSync(registrationFile,text);

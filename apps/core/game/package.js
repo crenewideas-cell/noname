@@ -34,7 +34,7 @@ window.noname_package = {
 		sixiang: "四象封印",
 		//DIY系列
 		diy: "设计比赛20",
-		key: "二次元",
+		key: "键社",
 	},
 	card: {
 		standard: "标准",

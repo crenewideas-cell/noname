@@ -19,7 +19,15 @@
       "cixiong_skill": {
         "skill": "cixiong_skill",
         "name": "effect_cixiongshuanggujian",
-        "scale": 0.5
+        "scale": 0.5,
+        "x": [
+          0,
+          0.3
+        ],
+        "y": [
+          0,
+          0.3
+        ]
       },
       "fangtian_skill": {
         "skill": "fangtian_skill",
@@ -37,17 +45,25 @@
         "scale": 0.6,
         "x": [
           0,
-          0.4
+          0.45
         ],
         "y": [
           0,
-          -0.75
+          0.25
         ]
       },
       "hanbing_skill": {
         "skill": "hanbing_skill",
         "name": "effect_hanbingjian",
-        "scale": 0.5
+        "scale": 0.5,
+        "x": [
+          0,
+          0.55
+        ],
+        "y": [
+          0,
+          0.25
+        ]
       },
       "linglong_bagua": {
         "skill": "linglong_bagua",
@@ -72,7 +88,11 @@
       "renwang_skill": {
         "skill": "renwang_skill",
         "name": "effect_renwangdun",
-        "scale": 0.5
+        "scale": 0.5,
+        "x": [
+          0,
+          0.52
+        ]
       },
       "tengjia1": {
         "skill": "tengjia1",
@@ -109,6 +129,15 @@
         "name": "effect_jinhe",
         "scale": 0.4
       },
+      "muniu_skill": {
+        "skill": "muniu_skill",
+        "name": "effect_muniuliuma",
+        "scale": 1.1,
+        "x": [
+          0,
+          0.53
+        ]
+      },
       "numa": {
         "skill": "numa",
         "name": "effect_numa",
@@ -141,17 +170,13 @@
       },
       "lebu": {
         "skill": "lebu",
-        "name": "SZN_lebusishu",
-        "scale": 0.7
+        "name": "SS_lebusishu",
+        "scale": 0.4
       },
       "bingliang": {
         "skill": "bingliang",
-        "name": "SZN_bingliangcunduan",
-        "scale": 0.8,
-        "y": [
-          0,
-          0.3
-        ]
+        "name": "SS_bingliangcunduan",
+        "scale": 0.5
       },
       "shandian": {
         "skill": "shandian",

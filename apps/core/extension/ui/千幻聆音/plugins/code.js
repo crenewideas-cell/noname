@@ -62,9 +62,10 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                 }
             }
             if(info.subSkill){
+                info2.subSkill = {};
                 for(var key in info.subSkill){
                     let r = this.filterSkillInfo(info.subSkill[key]);
-                    info.subSkill[key] = r;
+                    info2.subSkill[key] = r;
                 }
             }
             return info2;

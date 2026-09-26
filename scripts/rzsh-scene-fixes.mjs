@@ -44,7 +44,7 @@ export function fixScenes(source) {
  replace('yx["load"](U2)', 'yx["load"](() => { U2(); lifecycle.readyView("matching", U1, () => U3(U1)); })');
  replace('yx["load"](() =>', 'lifecycle.readyView("mode", Ga, () => Gl(Ga)); lifecycle.readyView("ranking", y6, () => U3(y6)); lifecycle.readyView("home", GK, () => GE());\n            yx["load"](() =>');
  // Replace navigation sites, not the callbacks registered above.
- source = source.replaceAll('                        U3(yA);', '                        lifecycle.showView("characters");');
+ source = source.replaceAll('                        U3(yA);', '                        lifecycle.characters();');
  source = source.replaceAll('                        U3(ys);', '                        lifecycle.showView("recruit");');
  source = source.replaceAll('                        U3(yQ);', '                        lifecycle.showView("profile");');
  source = source.replaceAll('"shenfen", Gl(Ga)', '"shenfen", lifecycle.showView("mode")');
@@ -68,6 +68,12 @@ export function gateViews(source) {
 }
 
 export function repairLobbyAndPortraits(source) {
+ if(!source.includes('case "activity_taixu":'))source=source.replace('case "right_adventure":', 'case "activity_taixu":\n                        lifecycle.adventure("taixuhuanjing");\n                        break;\n                    case "right_adventure":');
+ // Match portraits arrive after construction: fixed sprite width/height would
+ // preserve the empty texture's aspect ratio when the real texture is assigned.
+ source = source.replace('                    UA["width"] = 0x8a, UA["height"] = 0xfd, UA["anchor"]["set"](0.5), UA["y"] = -0x1b;\n', '');
+ const matchingPortrait = '{ UA["texture"] = yx["resources"]["avatar_1"]["texture"]; UA.workshopPortraitLoaded = true; }';
+ if (!source.includes('lifecycle.portraits.fit(UA, UW,')) source = source.replace(matchingPortrait, matchingPortrait + '\n                    lifecycle.portraits.fit(UA, UW, {x:-69, y:-153.5, width:138, height:253});');
  source = source.replace("if (Yi[w7(0x2b9)](YT))", "if (Yi && Object.hasOwn(Yi, YT))");
  source = source.replace(/        function U9\(Uw, Uc\) \{[^\n]*\}/, `        function U9(Uw, Uc) {
             const targetX = rzshUs[Uw.name] ? rzshUs[Uw.name].x * G7 : (Uw.workshopHomeX ??= Uw.x);

@@ -127,7 +127,7 @@ export async function openWorkshop() {
 		const name = draft.manifest.name.replace(/[\\/:*?"<>|\u0000-\u001f]/g, "_").replace(/[. ]+$/, "") || "UI套装";
 		game.export(blob, `${name}-UI套装.zip`); message("已调用游戏导出功能，请完成客户端的文件保存。ZIP 可在 UI 工坊或无名杀扩展入口导入。");
 	});
-	action(toolbar, "恢复原有外观", async () => { await canReload(); await usePack(""); reloadLobby(); });
+	action(toolbar, "恢复本体内置 UI", async () => { await canReload(); await usePack("builtin-native"); reloadLobby(); });
 	action(toolbar, "撤销上次应用", async () => { await canReload(); await undoPack(); reloadLobby(); });
 
 	function renderSidebar() {
@@ -193,7 +193,7 @@ export async function openWorkshop() {
 		if (PARTS[partId].settings.length) el("h3", editor, "本体外观设置");
 		const nativeFields = el("div", editor, undefined, "fields");
 		for (const key of PARTS[partId].settings) {
-			const config = lib.configMenu.appearence.config[key] || {};
+			const config = lib.configMenu.appearence.config[key] || lib.configMenu.view.config[key] || {};
 			let choices = key === "ui_workshop_home_style" ? { shousha: "手杀入口", classic: "经典入口" } : BOOL_KEYS.includes(key) ? { true: "开启", false: "关闭" } : { ...(config.item || {}) };
 			if (key === "theme") choices = { woodden: "木纹", music: "音乐", simple: "简约" };
 			if (key === "splash_style") choices = { style1: "样式一", style2: "样式二" };

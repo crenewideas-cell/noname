@@ -1,12 +1,16 @@
-import { subscribePresentation } from 'noname';
+import { subscribePresentation, followPortraitEffect } from 'noname';
 import { createAnimationRenderer } from './animation-renderer.js';
 import { spine } from './vendor/spine.js';
 const cards={sha:'heisha',shan:'shan',tao:'tao',jiu:'jiu',wuxie:'wuxiekeji',wuzhong:'wuzhongshengyou',guohe:'guohechaiqiao',shunshou:'shunshouqianyang',nanman:'nanmanruqin',wanjian:'wanjianqifa',taoyuan:'taoyuanjieyi',wugu:'wugufengdeng',huogong:'huogong',tiesuo:'tiesuolianhuan',lebu:'lebusishu',bingliang:'bingliangcunduan',shandian:'shandian'};
 const nationalCards={gz_guguoanbang:'effect_guguoanbang',gz_haolingtianxia:'effect_haolingtianxia',gz_kefuzhongyuan:'effect_kefuzhongyuan',gz_wenheluanwu:'effect_wenheluanwu'};
+// 琉璃版 animation.js: these are arena-wide effects, not avatar animations.
+const fullscreenCards={nanman:{name:'SZN_nanmanruqin',scale:.8},taoyuan:{name:'SZN_taoyuanjieyi',scale:.9,speed:.8},wanjian:{name:'effect_wanjianqifa_full',scale:.9}};
 const sounds=new Set(['game_start_shousha','hpLossSund','ss_dead','SkillBtn','BtnSure','card_click','xianding','juexing','shiming','guohechaiqiao','shunshouqianyang','huogong','juedou','nanmanruqin','wanjianqifa','wuxiekeji','taoyuanjieyi','shandian']);
 export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
- const {AnimationPlayer}=createAnimationRenderer(spine),audio=new Set(),loads=new Map(),pending=new Set(),targets=new Map(),dying=new Map(),specialSkills=new Map(),transients=new Map(),delayed=new Set();
- const availableSounds=new Set([...sounds,...(metadata.audio||[])]);
+ const {AnimationPlayer}=createAnimationRenderer(spine),audio=new Set(),loads=new Map(),pending=new Set(),targets=new Map(),dying=new Map(),drinking=new Map(),specialSkills=new Map(),transients=new Map(),delayed=new Set();
+ const pendingCards=[],seenCards=new WeakSet(),cardBirths=new WeakMap(),cardSprites=new Map();
+ for(const card of document.querySelectorAll('#arena>.card.thrown'))seenCards.add(card);
+ const availableSounds=new Set([...sounds,...(metadata.audio||[]),'SZN_loseHp']);
  // Public player rectangles are viewport coordinates. The core scales body
  // for small displays, so the full-screen canvas must live outside that body.
  const overlayRoot=document.documentElement||document.body;
@@ -34,14 +38,16 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
    const cancel=()=>finish(resolve),timer=setTimeout(()=>finish(()=>reject(new Error('动画加载超时：'+name))),5000);pending.add(cancel);
    current.loadSpine(name,'skel',()=>finish(resolve),()=>finish(()=>reject(new Error('动画加载失败：'+name))));
   }));
-  await loads.get(name);
+  try{await loads.get(name);}catch(error){loads.delete(name);throw error;}
   if(disposed||renderer!==current||!enabled()||options.effects===false||performance.now()-time>5000)return;
   const r=player?.rect;
   const axis=(v,size)=>Array.isArray(v)?v[0]+v[1]*size:typeof v==='number'?v:size/2;
-  const position=anchor?{parent:anchor,follow:true,x:def.x,y:def.y,scale:Math.min(r.width/180,.8)}:
+  if(anchor&&!anchor.isConnected)return;
+  const position=anchor?{parent:anchor,follow:true,x:def.x,y:def.y,scale:r.width/(def.referenceWidth||180)}:
    r?{x:r.left+axis(def.x,r.width),y:innerHeight-r.top-r.height+axis(def.y,r.height),scale:Math.min(r.width/180,.8)}:
    {x:def.x,y:def.y,scale:Math.min(innerWidth/1400,innerHeight/800)};
-  return current.playSpine({...def,loop:def.loop===true},{...position,angle:def.angle,scale:position.scale*(def.scale||1)});
+  const sprite=current.playSpine({...def,loop:def.loop===true},{...position,angle:def.angle,scale:position.scale*(def.scale||1)});
+  return sprite&&anchor&&def.loop===true?followPortraitEffect(sprite,anchor,def.scale||1,def.referenceWidth||180):sprite;
  }
  function killPortraits(message){
   if(!enabled()||options.effects===false||!message.source?.avatar||!message.player?.avatar||message.source.seat===message.player.seat)return;
@@ -60,8 +66,25 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
    void play({...definition,loop:true},{rect},performance.now(),node).then(sprite=>{if(entry.cancelled||disposed){if(sprite)renderer?.stopSpine(sprite);}else entry.sprite=sprite;}).catch(error=>console.warn('循环动效保留本体提示',error));
   }
  }
- const syncTargets=nodes=>syncLoop(nodes,targets,metadata.indicators.shousha);
- const syncDying=nodes=>syncLoop(nodes,dying,{name:'SS_jiuwo',speed:.5,scale:.8,y:[0,.4]});
+ const syncTargets=nodes=>syncLoop(options.indicator==='off'?[]:nodes,targets,options.indicator&&metadata.indicators[options.indicator]||{name:'aar_chupaizhishiX',scale:.6,speed:1.2,x:[0,.6]});
+ const syncDying=nodes=>syncLoop(nodes,dying,{name:'SZN_jiuwo',scale:.8,y:[0,.4]});
+ const syncDrinking=nodes=>syncLoop(nodes,drinking,{name:'jiubuff',scale:.5});
+ function syncCards(){
+  const now=performance.now();
+  for(const [node,entry]of cardSprites)if(!node.isConnected||node.classList.contains('removing')){entry.cancelled=true;if(entry.sprite)renderer?.stopSpine(entry.sprite);cardSprites.delete(node);}
+  for(let index=pendingCards.length-1;index>=0;index--)if(now-pendingCards[index].message.time>5000)pendingCards.splice(index,1);
+  for(const node of document.querySelectorAll('#arena>.card.thrown')){
+   if(seenCards.has(node)||node.classList.contains('infohidden'))continue;
+   if(!cardBirths.has(node))cardBirths.set(node,now);
+   const index=pendingCards.findIndex(({message})=>message.actionId&&node.node?.throw_id?String(node.node.throw_id)===message.actionId:cardBirths.get(node)>=message.time-50&&message.card===(node.dataset.cardName||node.name));
+   if(index<0)continue;
+   seenCards.add(node);
+   const {definition,message}=pendingCards.splice(index,1)[0];
+   const rect=node.getBoundingClientRect();
+   const entry={cancelled:false,sprite:null};cardSprites.set(node,entry);
+   void play({...definition,referenceWidth:108},{rect},message.time,node).then(sprite=>{if(entry.cancelled||disposed){if(sprite)renderer?.stopSpine(sprite);}else entry.sprite=sprite;}).catch(error=>console.warn('出牌动效加载失败',error));
+  }
+ }
  const unsubscribe=subscribePresentation(message=>{
   if(disposed||!parts.has('arena'))return;
   // A limited/awakening skill may also emit the host's fullscreen label.
@@ -70,9 +93,37 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
   if(message.type==='fullscreen'&&message.time-(specialSkills.get(message.player?.seat)??-Infinity)<300)return;
   let effect,extraEffect,sfx,player=message.player;
   switch(message.type){
-   case 'start':effect='effect_youxikaishi_shousha';sfx='game_start_shousha';break;
-   case 'card': {let card=cards[message.card];if(message.card==='sha'){if(message.color==='red')card='hongsha';if(message.nature.includes('fire'))card='huosha';else if(message.nature.includes('thunder'))card='leisha';else if(message.nature.includes('ice'))card='bingsha';else if(message.nature.includes('kami'))card='shesha';}effect=metadata.effects.card[message.card]||(message.card==='juedou'?'card/juedou':card?'effect_'+card:undefined);sfx=message.card==='juedou'?'juedou':card;if(message.card==='wanjian')player=null;break;}
-   case 'skill':effect=message.awakening?'juexingji/juexingji1/juexingji':message.mission?'juexingji/juexingji1/shimingji':message.limited?'juexingji/juexingji1/xiandingji':metadata.effects.skill[message.skill]||'jineng';sfx=message.awakening?'juexing':message.mission?'shiming':message.limited?'xianding':'SkillBtn';break;
+   case 'start':effect='effect_youxikaishi_SZN';sfx='game_start_shousha';break;
+   case 'card': {
+    let card=cards[message.card];
+    if(message.card==='sha'){if(message.color==='red')card='hongsha';if(message.nature.includes('fire'))card='huosha';else if(message.nature.includes('thunder'))card='leisha';else if(message.nature.includes('ice'))card='bingsha';else if(message.nature.includes('kami'))card='shesha';}
+    let local=metadata.effects.card[message.card]||(message.card==='juedou'?{name:'card/juedou'}:card?{name:'effect_'+card}:undefined);
+    if(message.card==='caochuan')local={name:'effect_caochuanjiejian'};
+    if(message.card==='wanjian')local={name:'effect_wanjianqifa',scale:.78};
+    if(message.card==='nanman')local=null;
+    if(local){
+     const entry={definition:local,message};pendingCards.push(entry);later(syncCards,0);
+     // Pure virtual cards can have no physical thrown node (or the host may
+     // hide the virtual card label). Still present their effect at the table.
+     later(()=>{
+      const index=pendingCards.indexOf(entry);if(index<0)return;
+      pendingCards.splice(index,1);
+      void play(local,null,message.time).catch(error=>console.warn('虚拟牌动效加载失败',error));
+     },350);
+    }
+    effect=fullscreenCards[message.card];player=null;
+    sfx=message.card==='juedou'?'juedou':card;
+    break;
+   }
+   case 'skill': {
+    const delayed={lebu:{name:'SZN_lebusishu',scale:.7},bingliang:{name:'SZN_bingliangcunduan',scale:.8,y:[0,.3]}};
+    const group=['wei','shu','wu','jin'].includes(player?.group)?player.group:'qun';
+    effect=message.awakening?'juexingji/juexingji1/juexingji':message.mission?'juexingji/juexingji1/shimingji':message.limited?'juexingji/juexingji1/xiandingji':delayed[message.skill]||metadata.effects.skill[message.skill]||{name:'SL'+group,scale:.8};
+    extraEffect={name:'baikuang',speed:1.2,scale:.6};
+    sfx=message.awakening?'juexing':message.mission?'shiming':message.limited?'xianding':'SkillBtn';
+    if(!message.awakening&&!message.mission&&!message.limited&&!metadata.effects.skill[message.skill])void play({name:'effect_jineng_SZN',speed:2,scale:1,x:[0,.52]},player,message.time).catch(error=>console.warn('技能扫光加载失败',error));
+    break;
+   }
    case 'fullscreen':effect='juexingji/juexingji1/xiandingji';break;
    case 'number': {
     // The core supplies the cause and public amount. A skin cannot infer
@@ -81,7 +132,7 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
     if(health?.kind==='damage'&&health.sourced&&Number.isFinite(n)&&n>=3){const name=n===3?'wanfumodi':'shenweizhengqiankun';sound('ss_'+name);void play({name,scale:.7,speed:n===3?.8:1.15},null,message.time).catch(error=>console.warn('伤害成就动画失败',error));}
     if(health?.kind==='damage'&&message.value<0){const actions=message.nature==='thunder'?['play5','play6']:message.nature==='fire'?['play3','play4']:['play1','play2'];extraEffect={name:'effect_shoujidonghua',action:actions[message.value<=-2?1:0],scale:.8};}
     if(health?.kind==='recover'&&message.value>0)extraEffect={name:'effect_zhiliao',scale:.7};
-    if(health?.kind==='loseHp'&&n>0){effect={name:'effect_loseHp',scale:.6,speed:.8};sfx='hpLossSund';}
+    if(health?.kind==='loseHp'&&n>0){effect={name:'SZN_loseHp',scale:.6,speed:.8};sfx='SZN_loseHp';}
     else if(Number.isInteger(n)&&n<=9){
      if(health?.kind==='recover'&&n>=1)effect={name:'globaltexiao/huifushuzi/shuzi2',action:String(n),speed:.6,scale:.5,y:20};
      else if(health?.kind==='damage'&&health.unreal&&n>=0)effect={name:'globaltexiao/xunishuzi/SS_PaiJu_xunishanghai',action:'play'+n,speed:.6,scale:.5,y:20};
@@ -90,7 +141,7 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
     break;
    }
    case 'judge':effect={name:'effect_panding',action:message.effective?'play4':'play5'};break;
-   case 'conversion':effect={name:'zhuanhuanji',scale:.8};break;
+   case 'conversion':effect={name:'SS_zhuanhuanji',scale:.6};break;
    case 'cardTarget': {
     if(!message.target)return;
     player=message.target;
@@ -140,5 +191,5 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
   if(sfx)sound(sfx);
   if(effect||extraEffect)return Promise.all([extraEffect,effect].filter(Boolean).map(def=>play(def,player,message.time)));
  });
- return {sound,syncTargets,syncDying,dispose(){disposed=true;for(const timer of delayed)clearTimeout(timer);delayed.clear();for(const [node,timer] of transients){clearTimeout(timer);node.remove();}transients.clear();for(const entries of [targets,dying]){for(const entry of entries.values())entry.cancelled=true;entries.clear();}specialSkills.clear();unsubscribe();for(const cancel of pending)cancel();pending.clear();destroy();for(const node of audio){node.pause();node.onended=node.onerror=null;node.removeAttribute('src');}audio.clear();loads.clear();resultNode?.remove();}};
+ return {sound,syncTargets,syncDying,syncDrinking,syncCards,dispose(){disposed=true;pendingCards.length=0;for(const entry of cardSprites.values())entry.cancelled=true;cardSprites.clear();for(const timer of delayed)clearTimeout(timer);delayed.clear();for(const [node,timer] of transients){clearTimeout(timer);node.remove();}transients.clear();for(const entries of [targets,dying,drinking]){for(const entry of entries.values())entry.cancelled=true;entries.clear();}specialSkills.clear();unsubscribe();for(const cancel of pending)cancel();pending.clear();destroy();for(const node of audio){node.pause();node.onended=node.onerror=null;node.removeAttribute('src');}audio.clear();loads.clear();resultNode?.remove();}};
 }

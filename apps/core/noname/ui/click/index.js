@@ -1,8 +1,8 @@
 import { getSkinService } from "../../skin/index.js";
-import { openCharacterSkins } from "../../skin/qianhuan/index.js";
+import { openCharacterSkins, openPlayerSkinMenu, openPlayerCharacterInfo } from "../../skin/qianhuan/index.js";
 import { openGameNavigation } from "../gameNavigation.js";
 import { usesModernPresentation } from "../presentation.js";
-import { styleDragLine } from "../workshop/runtime.js";
+import { styleDragLine, drawThemedDragLine } from "../workshop/runtime.js";
 import { lib, game, get, _status, ui } from "noname";
 export class Click {
 	/**
@@ -1506,36 +1506,38 @@ export class Click {
 					ui.canvas.width = ui.arena.offsetWidth;
 					ui.canvas.height = ui.arena.offsetHeight;
 					var ctx = ui.ctx;
-					ctx.shadowBlur = 5;
-					ctx.shadowColor = "rgba(0,0,0,0.3)";
-					ctx.strokeStyle = "white";
-					ctx.lineWidth = 3;
-					ctx.setLineDash([8, 2]);
-					styleDragLine(ctx);
+					if (!drawThemedDragLine(ctx, {start:[_status.mousedragging.clientX/game.documentZoom-ui.arena.offsetLeft,_status.mousedragging.clientY/game.documentZoom-ui.arena.offsetTop],pointer:[e.touches[0].clientX/game.documentZoom-ui.arena.offsetLeft,e.touches[0].clientY/game.documentZoom-ui.arena.offsetTop],selected:_status.lastdragchange.map(player=>player._lastdragchange),multitarget:_status.multitarget,full:_status.selectionfull})) {
+						ctx.shadowBlur = 5;
+						ctx.shadowColor = "rgba(0,0,0,0.3)";
+						ctx.strokeStyle = "white";
+						ctx.lineWidth = 3;
+						ctx.setLineDash([8, 2]);
+						styleDragLine(ctx);
 
-					ctx.beginPath();
+						ctx.beginPath();
 
-					ctx.moveTo(_status.mousedragging.clientX / game.documentZoom - ui.arena.offsetLeft, _status.mousedragging.clientY / game.documentZoom - ui.arena.offsetTop);
+						ctx.moveTo(_status.mousedragging.clientX / game.documentZoom - ui.arena.offsetLeft, _status.mousedragging.clientY / game.documentZoom - ui.arena.offsetTop);
 
-					if (_status.multitarget) {
-						for (var i = 0; i < _status.lastdragchange.length; i++) {
-							var exy = _status.lastdragchange[i]._lastdragchange;
-							ctx.lineTo(exy[0], exy[1]);
+						if (_status.multitarget) {
+							for (var i = 0; i < _status.lastdragchange.length; i++) {
+								var exy = _status.lastdragchange[i]._lastdragchange;
+								ctx.lineTo(exy[0], exy[1]);
+							}
+						}
+						if (!_status.selectionfull) {
+							ctx.lineTo(e.touches[0].clientX / game.documentZoom - ui.arena.offsetLeft, e.touches[0].clientY / game.documentZoom - ui.arena.offsetTop);
+						}
+						ctx.stroke();
+						if (!_status.multitarget) {
+							for (var i = 0; i < _status.lastdragchange.length; i++) {
+								ctx.moveTo(_status.mousedragging.clientX / game.documentZoom - ui.arena.offsetLeft, _status.mousedragging.clientY / game.documentZoom - ui.arena.offsetTop);
+								var exy = _status.lastdragchange[i]._lastdragchange;
+								ctx.lineTo(exy[0], exy[1]);
+								ctx.stroke();
+							}
 						}
 					}
-					if (!_status.selectionfull) {
-						ctx.lineTo(e.touches[0].clientX / game.documentZoom - ui.arena.offsetLeft, e.touches[0].clientY / game.documentZoom - ui.arena.offsetTop);
-					}
-					ctx.stroke();
-					if (!_status.multitarget) {
-						for (var i = 0; i < _status.lastdragchange.length; i++) {
-							ctx.moveTo(_status.mousedragging.clientX / game.documentZoom - ui.arena.offsetLeft, _status.mousedragging.clientY / game.documentZoom - ui.arena.offsetTop);
-							var exy = _status.lastdragchange[i]._lastdragchange;
-							ctx.lineTo(exy[0], exy[1]);
-							ctx.stroke();
-						}
-					}
-				}
+}
 
 				if (item == _status.mousedragorigin) {
 					if (_status.mouseleft) {
@@ -1889,35 +1891,37 @@ export class Click {
 				ui.canvas.width = ui.arena.offsetWidth;
 				ui.canvas.height = ui.arena.offsetHeight;
 				var ctx = ui.ctx;
-				ctx.shadowBlur = 5;
-				ctx.shadowColor = "rgba(0,0,0,0.3)";
-				ctx.strokeStyle = "white";
-				ctx.lineWidth = 3;
-				ctx.setLineDash([8, 2]);
-				styleDragLine(ctx);
+				if (!drawThemedDragLine(ctx, {start:[_status.mousedragging.clientX/game.documentZoom-ui.arena.offsetLeft,_status.mousedragging.clientY/game.documentZoom-ui.arena.offsetTop],pointer:[e.clientX/game.documentZoom-ui.arena.offsetLeft,e.clientY/game.documentZoom-ui.arena.offsetTop],selected:_status.lastdragchange.map(player=>player._lastdragchange),multitarget:_status.multitarget,full:_status.selectionfull})) {
+					ctx.shadowBlur = 5;
+					ctx.shadowColor = "rgba(0,0,0,0.3)";
+					ctx.strokeStyle = "white";
+					ctx.lineWidth = 3;
+					ctx.setLineDash([8, 2]);
+					styleDragLine(ctx);
 
-				ctx.beginPath();
+					ctx.beginPath();
 
-				ctx.moveTo(_status.mousedragging.clientX / game.documentZoom - ui.arena.offsetLeft, _status.mousedragging.clientY / game.documentZoom - ui.arena.offsetTop);
-				if (_status.multitarget) {
-					for (var i = 0; i < _status.lastdragchange.length; i++) {
-						var exy = _status.lastdragchange[i]._lastdragchange;
-						ctx.lineTo(exy[0], exy[1]);
+					ctx.moveTo(_status.mousedragging.clientX / game.documentZoom - ui.arena.offsetLeft, _status.mousedragging.clientY / game.documentZoom - ui.arena.offsetTop);
+					if (_status.multitarget) {
+						for (var i = 0; i < _status.lastdragchange.length; i++) {
+							var exy = _status.lastdragchange[i]._lastdragchange;
+							ctx.lineTo(exy[0], exy[1]);
+						}
+					}
+					if (!_status.selectionfull) {
+						ctx.lineTo(e.clientX / game.documentZoom - ui.arena.offsetLeft, e.clientY / game.documentZoom - ui.arena.offsetTop);
+					}
+					ctx.stroke();
+					if (!_status.multitarget) {
+						for (var i = 0; i < _status.lastdragchange.length; i++) {
+							ctx.moveTo(_status.mousedragging.clientX / game.documentZoom - ui.arena.offsetLeft, _status.mousedragging.clientY / game.documentZoom - ui.arena.offsetTop);
+							var exy = _status.lastdragchange[i]._lastdragchange;
+							ctx.lineTo(exy[0], exy[1]);
+							ctx.stroke();
+						}
 					}
 				}
-				if (!_status.selectionfull) {
-					ctx.lineTo(e.clientX / game.documentZoom - ui.arena.offsetLeft, e.clientY / game.documentZoom - ui.arena.offsetTop);
-				}
-				ctx.stroke();
-				if (!_status.multitarget) {
-					for (var i = 0; i < _status.lastdragchange.length; i++) {
-						ctx.moveTo(_status.mousedragging.clientX / game.documentZoom - ui.arena.offsetLeft, _status.mousedragging.clientY / game.documentZoom - ui.arena.offsetTop);
-						var exy = _status.lastdragchange[i]._lastdragchange;
-						ctx.lineTo(exy[0], exy[1]);
-						ctx.stroke();
-					}
-				}
-			}
+}
 
 			while (item) {
 				if (item == _status.mousedragorigin) {
@@ -2336,6 +2340,8 @@ export class Click {
 		}
 	}
 	hoverplayer(e) {
+		// Player details now use the explicit native profile entry, not a hover panel.
+		if ((this.classList.contains("player") || this.linkplayer) && game.qhly_coreReady && lib.config.extension_千幻聆音_enable) return;
 		var node = get.nodeintro(this, true);
 		if (node) {
 			node.style.zIndex = 21;
@@ -2707,7 +2713,8 @@ export class Click {
 			});
 		}
 	}
-	avatar() {
+	avatar(e) {
+		if (openPlayerSkinMenu(this, e)) return;
 		if (!lib.config.doubleclick_intro) {
 			return;
 		}
@@ -2737,7 +2744,8 @@ export class Click {
 		var audioName = player.skin.name || player.name1 || player.name;
 		ui.click.charactercard(player.name1 || player.name, null, null, true, this, audioName);
 	}
-	avatar2() {
+	avatar2(e) {
+		if (openPlayerSkinMenu(this, e)) return;
 		if (!lib.config.doubleclick_intro) {
 			return;
 		}
@@ -4134,6 +4142,7 @@ export class Click {
 		if (_status.dragged) {
 			return;
 		}
+		if (openPlayerCharacterInfo(this, e)) return;
 		_status.clicked = true;
 		if (this.classList.contains("player") && !this.name) {
 			return;
@@ -4152,6 +4161,7 @@ export class Click {
 		}
 		var uiintro;
 		if (this.classList.contains("card") && this.parentNode && this.parentNode.classList.contains("equips") && get.is.phoneLayout() && !get.is.mobileMe(this.parentNode.parentNode)) {
+			if (openPlayerCharacterInfo(this.parentNode.parentNode, e)) return;
 			uiintro = get.nodeintro(this.parentNode.parentNode, false, e);
 		}
 		uiintro = uiintro || get.nodeintro(this, false, e);

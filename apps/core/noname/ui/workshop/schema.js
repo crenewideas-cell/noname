@@ -7,18 +7,18 @@ export const PARTS = {
 	home: { name: "主界面 / 启动入口", settings: ["ui_workshop_home_style"], slots: ["background"] },
 	modes: { name: "模式选择", settings: ["splash_style"], slots: [], map: "mode" },
 	lobby: { name: "联机大厅 / 房间", settings: [], slots: ["background"] },
-	arena: { name: "对局背景 / 布局", settings: ["theme", "layout", "image_background", "image_background_blur", "image_background_random", "phonelayout", "show_cardpile_number", "show_time3"], slots: ["background"] },
+	arena: { name: "对局背景 / 布局", settings: ["theme", "layout", "image_background", "image_background_blur", "image_background_random", "phonelayout", "show_cardpile_number", "show_time3", "cardshape"], slots: ["background"] },
 	cards: { name: "卡牌正面", settings: ["card_style", "hide_card_image"], slots: ["texture"], map: "card" },
 	cardback: { name: "卡牌背面", settings: ["cardback_style"], slots: ["texture", "alternate"] },
-	buttons: { name: "按钮 / 操作控件", settings: ["control_style"], slots: ["texture"] },
+	buttons: { name: "按钮 / 操作控件", settings: ["control_style", "show_pause", "show_auto", "show_volumn", "show_cardpile", "show_commonCardpile", "show_sortcard"], slots: ["texture"] },
 	menus: { name: "菜单 / 弹窗", settings: ["menu_style", "radius_size"], slots: ["texture"] },
-	players: { name: "武将框 / 选将外观", settings: ["player_style", "border_style", "player_border", "presentation_style"], slots: ["texture", "frame"] },
+	players: { name: "武将框 / 选将外观", settings: ["player_style", "border_style", "player_border", "presentation_style", "player_height"], slots: ["texture", "frame"] },
 	hp: { name: "体力图标", settings: ["hp_style"], slots: ["high", "mid", "low", "lost"] },
 	lines: { name: "攻击 / 拖拽指示线", settings: ["zhishixian"], slots: ["texture"] },
 	fonts: { name: "界面字体", settings: ["global_font", "name_font", "identity_font", "cardtext_font"], slots: ["font"] },
 };
 export const SETTING_KEYS = Object.values(PARTS).flatMap(part => part.settings);
-export const BOOL_KEYS = ["image_background_blur", "image_background_random", "phonelayout", "hide_card_image", "show_cardpile_number", "show_time3"];
+export const BOOL_KEYS = ["image_background_blur", "image_background_random", "phonelayout", "hide_card_image", "show_cardpile_number", "show_time3", "show_pause", "show_auto", "show_volumn", "show_cardpile", "show_commonCardpile", "show_sortcard"];
 export const MIME = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", gif: "image/gif", avif: "image/avif", woff: "font/woff", woff2: "font/woff2", ttf: "font/ttf", otf: "font/otf" };
 export const PROPERTIES = ["color", "background-color", "background-image", "border-color", "border-radius", "border-width", "border-style", "box-shadow", "text-shadow", "font-size", "font-weight", "letter-spacing", "line-height", "text-align", "padding", "margin", "gap", "row-gap", "column-gap", "display", "position", "inset", "top", "right", "bottom", "left", "overflow", "overflow-x", "overflow-y", "grid-template-columns", "grid-template-rows", "grid-auto-flow", "grid-column", "grid-row", "flex-direction", "flex-wrap", "flex", "order", "justify-content", "align-items", "align-self", "background-size", "background-position", "background-repeat", "width", "max-width", "min-width", "height", "min-height", "max-height", "opacity", "transform", "transform-origin", "transition"];
 export const clone = value => JSON.parse(JSON.stringify(value));

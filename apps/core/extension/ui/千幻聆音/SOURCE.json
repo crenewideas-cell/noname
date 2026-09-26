@@ -1166,21 +1166,27 @@
     "theme/wz/qhly_skin_button_wz.png": "c474105b0554c4cc04f69e9a420064a87a95d640f5eaf71ce6bd845654433042"
   },
   "adaptedFiles": {
-    "extension/content.js": "9749818f7a1a3b5dec26a2d5bd50ca42b80ef51b47ff3bc010e859eb3ba02bb5",
+    "extension/config.js": "630dc0b2e8b073f5211986554a98ca3ac7aa6cfa7acbe1ef101eebc266c6178b",
+    "extension/content.js": "2e30312c418dde524cc5823908c1f6ac08a725d9f423d4a9721621523a16b367",
     "extension/noname.js": "9c7ccc503c583d27e22b3dee83ed9b0e98f9318e34fe30deb242df4683a3f286",
-    "extension/precontent.js": "0ead072ef5ab6b8d1ae0f37609c55f1ca069fe5dabdad235ffc4d906e2397ef4",
+    "extension/precontent.js": "81ce7b2d6b4bbef65d33dbb8d06f307099633fa896df5a8cb4f583e7e6a9facd",
+    "extension.css": "61e87e074e4ca687515247bb2d142b61d53fdf86164a9ba6af7849aff560e307",
     "extension.js": "60265fa4cc910dbde046bee25657726a5bf040e963e68c7aeb3ba7140a02d26e",
-    "plugins/code.js": "0e86c83c01fb4dc1766dcab39052f3d1e032d6c7060d933bf5d4b93adc69ba42",
-    "theme/newui_ss.css": "5c08d874cda8d344d6291aecd1a69fce95c1342350c0c2fdf2f10ccaf7aa46d8"
+    "plugins/code.js": "8735bca1f9374dfbd5842a2d204eccaa4631b3dae59e6e8d5bdd808ca0f8522f",
+    "theme/newui_ss.css": "5c08d874cda8d344d6291aecd1a69fce95c1342350c0c2fdf2f10ccaf7aa46d8",
+    "theme/shousha/code/shousha.js": "7f3e3fc7560012a5ee0e3acdad56fc1c8b59d7a1f67842b849fff6c09bace6cb"
   },
   "addedFiles": {
-    "compat.js": "beab3373be001d454ce8174fbe0e2b2f3dd5e7d78d919f2bb04da021079dff1e",
+    "compat.js": "e621bcefc2e4f420654655bf2b96143678e52934bf62d8ba31c2e07b950d9dbb",
+    "dynamic-core.js": "f4693c1990977af8b30c981a3b78940f4580b9a49cbfdfa569f3af1ec903e202",
     "file-access.js": "7bb56a2bcc0e88f40ebf228880372b2349726f63606bf4029abab24278d118f6",
+    "file-io.js": "5b7b9ec6cbd2a9f6351d0147914264044689123aac721e83b94d504c144af46a",
     "filesystem.js": "4916b03637f14dc378f7ac41bc2bfeeaf75b206d187cdf6b90fc2ba56ecfb9ac",
     "metadata.js": "06fb3b53b383c801f222acdad203cdba114b93c58cd2d8d3fa66081ab2edfd98",
-    "resource-index.json": "1423dfffa23367d727ce6f6afa431f7626429a7657cf560a03fc02d4e4a325f2",
+    "resource-index.json": "9413c3729ca2dd14c809b44f21702f5d7fa501ced58d55c4c3d7a5470610f816",
     "resource-sharing.json": "e23a7b599acb5e1ce4a36cc4b5aee54103936b50a70bbed41ee173eaacb167fb",
-    "skinChange.js": "2ff2df0cb0a692feab67bc67d843180b4e34a210b50b35eff0b41f75c7d0fe7d"
+    "skinChange.js": "2ff2df0cb0a692feab67bc67d843180b4e34a210b50b35eff0b41f75c7d0fe7d",
+    "theme/shousha/bigedit_interaction.svg": "edefcf71aac0f46a50833a1ef504666a8226a2e1274589b7ac5ea2ebb7f30690"
   },
   "resources": {
     "root": "extension/手杀标准UI/original/千幻聆音/",
@@ -1195,6 +1201,7 @@
     "Initialization, scoped file/metadata access, core skin persistence and DOM/PIXI refresh are adapted to the current core.",
     "Legacy useSkill source rewriting is disabled. Legacy dynamic renderer hooks require decadeUI and duilib.",
     "Viewport scaling and page lifecycle support both current lobbies and in-game character entry points.",
-    "See docs/qianhuan-skin-migration.md for validation and remaining phases."
+    "Separate lobby entries: character directory, native Qianhuan skin view with back-to-directory navigation, and independent treasure lottery. The existing avatar menu adds one interaction button. All hand-theme profile and skin-window arrows select one adjacent skin through the existing card action; interaction mode keeps selection preview-only.",
+    "See docs/qianhuan-skin-migration.md and docs/qianhuan-feature-audit.md for verified capabilities and unfinished integration."
   ]
 }

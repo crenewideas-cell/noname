@@ -11,6 +11,8 @@ extension/**
 !extension/packs/梦澈涤花/**
 !extension/packs/怒焰三国/
 !extension/packs/怒焰三国/**
+!extension/packs/键社/
+!extension/packs/键社/**
 !extension/packs/红楼幻境/
 !extension/packs/红楼幻境/extension.js
 !extension/packs/红楼幻境/baoyu.js
@@ -165,3 +167,7 @@ noname.ico
 # Installed Qianhuan 4.16.1.11 from the user-provided ZIP.
 !extension/ui/千幻聆音/
 !extension/ui/千幻聆音/**
+
+# Local dynamic skin imports, including future packs and generated manifests.
+extension/imports/本地动态皮肤包/
+extension/ui/动态皮肤验证扩展/
