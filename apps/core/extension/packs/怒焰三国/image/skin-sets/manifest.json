@@ -472,6 +472,90 @@
       "sha256": "a3dccc344037c419af3b9768a3075ac98ebb76f7db21710155f58cf4653a4498",
       "originalDestination": "image/character/nysgs_zhurong.jpg",
       "supplement": true
+    },
+    {
+      "characters": [
+        "nysgs_xizhicai"
+      ],
+      "source": "戏志才.png",
+      "sourceName": "戏志才",
+      "sourceDirectory": "temp/静态皮肤_怒焰三国",
+      "random": false,
+      "destination": "qingshan/nysgs_xizhicai.png",
+      "sha256": "b6e8a6585fabcb855d77db8c236acfd5adb4b856819b400303073da8c9156f19",
+      "originalSkinDestination": "original/nysgs_xizhicai.jpg",
+      "originalSha256": "e6016c7fc78edb211c6b1a80d0d79606a464c90a974faf478bfc0bc6dbeec5cb",
+      "match": "exact"
+    },
+    {
+      "characters": [
+        "nysgs_caopi"
+      ],
+      "source": "曹丕.png",
+      "sourceName": "曹丕",
+      "sourceDirectory": "temp/静态皮肤_怒焰三国",
+      "random": false,
+      "destination": "qingshan/nysgs_caopi.png",
+      "sha256": "2e05e63930065a15dbc46d4ca7717469b25d03d0b5f8404700180443d946c653",
+      "originalSkinDestination": "original/nysgs_caopi.jpg",
+      "originalSha256": "e2394fd6a756dcec4824a11cff6939bce4a766fedaa58f9ae313227e40fa5cd1",
+      "match": "exact"
+    },
+    {
+      "characters": [
+        "nysgs_caorui"
+      ],
+      "source": "曹睿.png",
+      "sourceName": "曹睿",
+      "sourceDirectory": "temp/静态皮肤_怒焰三国",
+      "random": false,
+      "destination": "qingshan/nysgs_caorui.png",
+      "sha256": "a4aae102d988637ec627992c2a9c7f8b64e726d3b1fec1b573d03e9c0bdcee34",
+      "originalSkinDestination": "original/nysgs_caorui.jpg",
+      "originalSha256": "79ffc5513ad6f89c68e594b65b921abf0c728e8ef7c1f1e015b35646939debec",
+      "match": "曹睿／曹叡名称映射"
+    },
+    {
+      "characters": [
+        "nysgs_chengyu"
+      ],
+      "source": "程昱.png",
+      "sourceName": "程昱",
+      "sourceDirectory": "temp/静态皮肤_怒焰三国",
+      "random": false,
+      "destination": "qingshan/nysgs_chengyu.png",
+      "sha256": "83a7f7efa211fa185d4fd25e5d337e3f17197bdea45bc92d8f242faca5dfae8e",
+      "originalSkinDestination": "original/nysgs_chengyu.jpg",
+      "originalSha256": "5e4eede7dcdc17a8c38f6dd8d578c0941bc2c02dcadece47cbd885ec8d72f00f",
+      "match": "exact"
+    },
+    {
+      "characters": [
+        "nysgs_chenlin"
+      ],
+      "source": "陈琳.png",
+      "sourceName": "陈琳",
+      "sourceDirectory": "temp/静态皮肤_怒焰三国",
+      "random": false,
+      "destination": "qingshan/nysgs_chenlin.png",
+      "sha256": "81bbf384667e64c3e49774d89e3ebbca3006294f33d00899900b918614e868df",
+      "originalSkinDestination": "original/nysgs_chenlin.jpg",
+      "originalSha256": "2570586300c0200455ec6f9bb425e6bbd0dca4f4e14b91d4018ba26e82bfe1a6",
+      "match": "exact"
+    },
+    {
+      "characters": [
+        "nysgs_wei_wenyang"
+      ],
+      "source": "魏文鸯.png",
+      "sourceName": "魏文鸯",
+      "sourceDirectory": "temp/静态皮肤_怒焰三国",
+      "random": false,
+      "destination": "qingshan/nysgs_wei_wenyang.png",
+      "sha256": "086e378051908bacece70e9b3be4222436d86552128c591381927e39aae8bf5c",
+      "originalSkinDestination": "original/nysgs_wei_wenyang.jpg",
+      "originalSha256": "779bba2d17688f786917f64d8ecbb5cfc62458505963f290269c6aa05dfcade2",
+      "match": "exact"
     }
   ],
   "sets": [
@@ -739,6 +823,30 @@
         "nysgs_jie_zhurong": {
           "name": "补全原画",
           "path": "extension/怒焰三国/image/character/nysgs_zhurong.jpg"
+        },
+        "nysgs_xizhicai": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_xizhicai.jpg"
+        },
+        "nysgs_caopi": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_caopi.jpg"
+        },
+        "nysgs_caorui": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_caorui.jpg"
+        },
+        "nysgs_chengyu": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_chengyu.jpg"
+        },
+        "nysgs_chenlin": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_chenlin.jpg"
+        },
+        "nysgs_wei_wenyang": {
+          "name": "旧版皮肤",
+          "path": "extension/怒焰三国/image/skin-sets/original/nysgs_wei_wenyang.jpg"
         }
       }
     },
@@ -1006,6 +1114,30 @@
         "nysgs_jie_zhurong": {
           "name": "青山抚媚",
           "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_zhurong.jpg"
+        },
+        "nysgs_xizhicai": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_xizhicai.png"
+        },
+        "nysgs_caopi": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_caopi.png"
+        },
+        "nysgs_caorui": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_caorui.png"
+        },
+        "nysgs_chengyu": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_chengyu.png"
+        },
+        "nysgs_chenlin": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_chenlin.png"
+        },
+        "nysgs_wei_wenyang": {
+          "name": "青山抚媚",
+          "path": "extension/怒焰三国/image/skin-sets/qingshan/nysgs_wei_wenyang.png"
         }
       }
     }
@@ -1317,6 +1449,37 @@
       "name": "怒焰界祝融",
       "sex": "female",
       "form": false
+    },
+    "nysgs_xizhicai": {
+      "name": "怒焰戏志才",
+      "sex": "male",
+      "form": false
+    },
+    "nysgs_caopi": {
+      "name": "怒焰曹丕",
+      "sex": "male",
+      "form": false
+    },
+    "nysgs_caorui": {
+      "name": "怒焰曹叡",
+      "sex": "male",
+      "form": false
+    },
+    "nysgs_chengyu": {
+      "name": "怒焰程昱",
+      "sex": "male",
+      "form": false
+    },
+    "nysgs_chenlin": {
+      "name": "怒焰陈琳",
+      "sex": "male",
+      "form": false
+    },
+    "nysgs_wei_wenyang": {
+      "name": "怒焰魏文鸯",
+      "sex": "male",
+      "form": false
     }
-  }
+  },
+  "namedAssigned": 6
 }

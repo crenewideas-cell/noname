@@ -1,3 +1,4 @@
+import { attachIncrementalCharacters } from "./main/incremental.js";
 import { lib, game, ui, get, ai, _status } from "noname";
 import { precontent } from "./main/precontent.js";
 import { content } from "./main/content.js";
@@ -19,5 +20,6 @@ let extensionPackage = {
     files,
 };
 Object.keys(extensionInfo).forEach(key => extensionPackage.package[key] = extensionInfo[key]);
+attachIncrementalCharacters(extensionPackage);
 export let type = "extension";
 export default extensionPackage;

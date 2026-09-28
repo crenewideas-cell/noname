@@ -17,6 +17,14 @@ export function mountAppearance(manifest, resolveAsset, root = document.head, sc
 	// Exclude host-owned visibility states in every authored selector. A fixed
 	// specificity mask alone can be defeated by a rule with repeated IDs.
 	const protectedNodes = [".hidden", ".hidden *", ".removing", ".removing *", ".card.infohidden > *", ".card.infohidden > * *"];
+	// Lobby settings and its tool menu are host-owned, shared by every skin.
+	protectedNodes.push('.lobby-settings-page .menu', '.lobby-settings-page .menu *', '.lobby-tool-menu', '.lobby-tool-menu *');
+	// Reference-lobby cards/navigation are atlas artwork, including their text.
+	// Generic button palettes (also old saved/mixed packs) must not erase the
+	// image or change its crop. Other lobby and in-game controls stay editable.
+	for (const node of ['.reference-lobby .lobby-atlas-card', '.reference-lobby .session-bar button']) protectedNodes.push(node, node + ' *');
+	// Management and online flows use the same host UI regardless of the game skin.
+	for (const surface of ['.lobby-surface', '.skin-manager', '.online-lobby', '.online-dialog', '.online-game-status', '.online-game-notice', '.shousha-native-confirm']) protectedNodes.push(surface, surface + ' *');
 	for (const [states, children] of [
 		[".unseen,.unseen_v,.unseen_show", ".avatar,.name:not(.name2)"],
 		[".unseen2,.unseen2_v,.unseen2_show", ".avatar2,.name2"],

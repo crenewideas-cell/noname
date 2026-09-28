@@ -1,0 +1,95 @@
+<div style="color:#e8e2d4; font-size:14px; line-height:1.95; text-shadow:0 0 2px black; margin:0; padding:10px 16px 24px;">
+<span style="display:block;text-align:center;font-size:20px;font-weight:700;letter-spacing:4px;color:#f0c85a;text-shadow:0 0 6px rgba(0,0,0,.9);">名 将 杀 · v0.0.3</span>
+<span style="display:block;text-align:center;font-size:12px;color:#9a9da6;margin-bottom:8px;">2026-09-25</span>
+<span style="display:block;color:#f0c85a;font-weight:700;font-size:16px;margin:10px 0 4px;">2026-09-25 更新内容</span>
+<span style="display:block;color:#e8e2d4;">1. 新增 15 名武将：章邯、暴鸢、曹仁、赵云、陆逊、魏华存、羊献容、王濬、卫玠、司马睿、陶渊明、谢灵运、左慈、霍去病、苏武</span>
+<span style="display:block;color:#e8e2d4;">2. 新增势力：韩、西蜀、孙吴、东汉、西汉（共 12 势力 29 将）</span>
+<span style="display:block;color:#e8e2d4;">3. 全武将语音实装（技能台词 + 阵亡语音）</span>
+<span style="display:block;color:#e8e2d4;">4. 优化武将 AI</span>
+<span style="display:block;color:#e8e2d4;">5. 拆分士族牌堆 ⇒ 牌堆 / 弃牌堆</span>
+<span style="display:block;color:#e8e2d4;">6. 修复若干与本体的兼容问题</span>
+<br>
+<span style="display:block;color:#f0c85a;font-weight:700;font-size:16px;margin:10px 0 4px;">2026-09-11 首次发布（v0.0.1）</span>
+<br>
+<span style="display:block;color:#f0c85a;font-weight:700;font-size:16px;margin:10px 0 4px;">── 扩展内容一览 ──</span>
+<br>
+<details>
+<summary style="color:#f0c85a;font-weight:700;">【将包】12 势力 · 29 名武将 · 点击展开</summary>
+秦　　：嬴政（主公）、李信、白起、蒙恬、章邯<br>
+赵　　：赵奢、廉颇<br>
+齐　　：君王后<br>
+韩　　：暴鸢<br>
+曹魏　：王异、曹仁<br>
+西蜀　：赵云<br>
+孙吴　：陆逊<br>
+西晋　：潘安、荀灌、司马炎、魏华存、羊献容、王濬、卫玠<br>
+东晋　：王导、祖逖、司马睿、陶渊明、谢灵运<br>
+西楚　：龙且<br>
+东汉　：左慈<br>
+西汉　：霍去病、苏武
+</details>
+<details>
+<summary style="color:#f0c85a;font-weight:700;">【技能一览】29 名武将 · 点击展开</summary>
+<span style="color:#ffd98a;">嬴政</span>：一统（主公技，与你势力相同的角色造成伤害后，可改其势力或令其下野；全场首次只剩一种势力时回满血，此后每回合掠夺一名在野角色）／长城（锁定技，每轮翻牌堆顶 8 张，把其中【闪】存入"万里长城"，可替同势力角色出闪）／秦弩（翻牌堆顶 8 张，为其中每张【杀】选一名不同目标依次使用）<br>
+<br>
+<span style="color:#ffd98a;">李信</span>：壮勇（造成伤害后若已受伤则回 1 血；每回合限一次，满血时可令即将造成的伤害 +1）／追风（弃 1 张牌令出杀次数 +1，此后需求牌数递增；击杀时按本回合出杀数补牌）<br>
+<br>
+<span style="color:#ffd98a;">白起</span>：歼灭（用杀或杀造成伤害时，可弃置非目标角色区域内的一张牌）／料敌（其他角色失去最后手牌时，可立刻对其出杀）／出奇（回合外需要基本牌时，可把一张手牌当任意基本牌用出，并获得一张【杀】）<br>
+<br>
+<span style="color:#ffd98a;">蒙恬</span>：忠信（每回合限一次，把他人【杀】的目标改为自己）／筑城（成为杀的目标时摸牌，若未受伤则叠增摸牌数）<br>
+<br>
+<span style="color:#ffd98a;">王异</span>：舍子（受伤时可令一名角色弃光手牌并补至手牌上限）／忠贞（回合结束时可令他人手牌数与己相同，变动 ≥2 则自伤 1 点）<br>
+<br>
+<span style="color:#ffd98a;">赵奢</span>：奉公（令一名其他角色进行弃牌阶段，你获得其弃置的牌）／狭路（与一名角色互翻牌堆顶 5 张、互相出杀并重复一次）<br>
+<br>
+<span style="color:#ffd98a;">君王后</span>：巧解（成为他人锦囊目标时，可将其转化为杀对你打出）／事秦（体力或手牌高于你的角色伤你后，可令他人摸牌／回血）／慧眼（开局选一名男性角色，体力或手牌数每回合首次相同时双方各摸 1 张）<br>
+<br>
+<span style="color:#ffd98a;">潘安</span>：悼亡（限定技，他人阵亡后获得弃牌堆中其打出过的所有牌）／潘才（回合结束可把 1 张牌当任意锦囊打出，各限一次并延续给他人）／掷果（锁定技，回合开始令有手牌者各展示 2 张，收取展示最多的两种牌各 1 张）<br>
+<br>
+<span style="color:#ffd98a;">廉颇</span>：负荆（获得攻击范围内一名角色区域内的 2 张牌，其下回合开始时你失 1 血并交回）／饭否（回合结束时按本回合出杀次数摸牌；若未出杀则摸至手牌上限且此后每回合出杀次数 +1）<br>
+<br>
+<span style="color:#ffd98a;">龙且</span>：安营（回合结束弃光手牌、增加等量体力上限并回血；回合开始体力上限压回体力值，每降 1 点摸 2 张）／恃武（他人出杀后，若目标在你攻击范围内，可失去 1 血摸 2 张并对其出杀）<br>
+<br>
+<span style="color:#ffd98a;">荀灌</span>：灌娘（受伤时可削弱一名角色的 2 张牌，其所有牌被削弱则手牌上限 −1）／破围（限定技，受到伤害时可自伤至体力 =1，随后弃置场上全部削弱牌，每 2 张换 1 张正常牌）<br>
+<br>
+<span style="color:#ffd98a;">司马炎</span>：难终（打出削弱牌即摸 1 张；全场累计打出 15 张削弱牌后失去〖谠正〗，并获得"获得牌时削弱"）／谠正（【酒】只能当作上一张被打出的锦囊牌打出，削弱牌以普通效果生效）／新律（限定技，削弱全场同名牌，此后打出削弱牌可再削弱一名角色的 2 张牌）<br>
+<br>
+<span style="color:#ffd98a;">王导</span>：士族（每轮查看士族牌堆顶 5 张并取走其中 2 张）／夷吾（登场可让一名角色获得用士族牌的资格；可将手牌转化为士族牌，并令一名角色获得等量 ±1 张士族牌）／镇静（成为牌的目标且未响应时，可令一名角色获得 1 张士族牌）<br>
+<br>
+<span style="color:#ffd98a;">祖逖</span>：闻鸡（登场 / 牌堆洗牌后立即进行 1 个出牌阶段）／击楫（亮出牌堆中间 1 张牌，同花色或点数的牌生效 2 次，打出后可查看并弃置牌堆顶 3 张）／自募（跳过摸牌阶段，回合结束可失去 1 体力或上限，随机获得本回合进入弃牌堆的 3 种不同类型牌各 1 张）
+</details>
+<br>
+<span style="color:#f0c85a;font-weight:700;">【新增系统】</span><br>
+<span style="color:#ffd98a;">一、士族牌堆</span><br>
+游戏开始时，从牌堆顶转化若干张牌（默认 10 张，可在扩展设置中调为 16 / 20 / 24 张）成为"士族牌"，放入独立的士族牌堆。<br>
+士族牌堆与公共牌堆相互独立，且只有〖士族〗角色才能打出士族牌。牌桌左侧提供可拖动的「士族」按钮，只报张数、不显示牌面。<br>
+<br>
+<span style="color:#ffd98a;">二、削弱牌系统</span><br>
+带"削"标记的牌在结算时会被削弱，规则如下——<br>
+　【杀】使用前须先弃置一张其他牌；属性【杀】改为随机弃置一张手牌<br>
+　【桃】只能对自己使用<br>
+　【酒】不能在濒死时用于回复体力<br>
+　【决斗】由你先出杀<br>
+　【万箭齐发】【南蛮入侵】你也被纳入目标范围<br>
+　【无中生有】改为摸 1 张牌<br>
+　【桃园结义】只有体力最低的角色回复 1 点体力（并列则都回）<br>
+　【过河拆桥】改为随机弃置目标区域内的一张牌<br>
+　【顺手牵羊】改为随机获得目标区域内的一张牌（距离限制保留）<br>
+　【借刀杀人】目标拒出杀时不转移武器<br>
+　【无懈可击】只能抵消对自己生效的锦囊<br>
+　【闪】只能抵挡【杀】的 1 点伤害（其余伤害照常结算）<br>
+<br>
+<span style="color:#ffd98a;">三、立绘档位</span><br>
+每名武将可切换原画 / 十周年露头 / 手杀露头三套立绘，缺图时自动回落原画。<br>
+<br>
+<span style="color:#f0c85a;font-weight:700;">【扩展设置】</span><br>
+· 立绘档位：跟随十周年 UI / 原画 / 十周年露头 / 手杀露头<br>
+· 士族牌堆张数：10（原版）/ 16 / 20 / 24<br>
+· 显示士族牌堆按钮：开 / 关<br>
+· 恢复默认设置：一键还原以上三项<br>
+· 点击查看更新公告：查看本页<br>
+<br>
+<span style="color:#9a9da6;font-size:12px;">备注：本扩展为名将杀的复刻版本；部分技能在原版环境中无法直接实现，已做本土化调整，尽量保持原汁原味。</span><br>
+<br>
+<span style="color:#ffd98a;">我会继续更新，感谢大家支持！</span><br>
+</div>

@@ -599,12 +599,12 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
     for (const info of Object.values(skills)) info.audio = false;
     const cards = {
         hlhj_qingjian: {
-            type: "basic", enable: false, fullskin: false,
+            type: "basic", enable: false, fullskin: true, artworkLayout: "painting-square", image: "ext:红楼幻境/artwork/hlhj_qingjian.webp",
             destroy: letterReturn, destroyLog: false, global: "hlhj_qingjian_use",
             ai: { basic: { useful: 7, value: 7 } },
         },
         hlhj_tonglingbaoyu: {
-            type: "equip", subtype: "equip5", fullskin: false,
+            type: "equip", subtype: "equip5", fullskin: true, artworkLayout: "painting-square", image: "ext:红楼幻境/artwork/hlhj_tonglingbaoyu.webp",
             derivation: "hlhj_baoyu", skills: ["hlhj_moshi"],
             enable: true, selectTarget: -1, filterTarget: (card, player, target) => player === target,
             modTarget: true, toself: true,
@@ -612,7 +612,7 @@ export function createBaoyu(lib, game, ui, get, ai, _status, sync) {
             ai: { basic: { equipValue: 8, order: 9, useful: 6, value: 8 }, result: { target: 2 } },
         },
         // A rules card for inspection; memorials are seat objects, never deck cards.
-        hlhj_furonglei: { type: "hlhj_memorial", enable: false, fullskin: false, derivation: "hlhj_baoyu" },
+        hlhj_furonglei: { type: "hlhj_memorial", enable: false, fullskin: true, artworkLayout: "painting-square", image: "ext:红楼幻境/artwork/hlhj_furonglei.webp", derivation: "hlhj_baoyu" },
     };
     const translate = {
         hlhj_baoyu_jiangzhu: "绛珠仙子",

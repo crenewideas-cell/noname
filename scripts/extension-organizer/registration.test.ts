@@ -25,19 +25,29 @@ function fixture(initial: Record<string, unknown> = {}) {
 	};
 }
 
+test("explicitly enabled dream/watch imports open on first mobile registration and retain later choices", async () => {
+	const f = fixture();
+	const names = ["星之梦", "云中守望"];
+	await registerOrganizedExtensions(f.config, f.save, [], names);
+	for (const name of names) assert.equal(f.values.get(`extension_${name}_enable`), true);
+	f.values.set("extension_星之梦_enable", false);
+	await registerOrganizedExtensions(f.config, f.save, [], names);
+	assert.equal(f.values.get("extension_星之梦_enable"), false);
+});
+
 test("mobile only registers installed resource directories and preserves choices when resources arrive", async () => {
 	const f = fixture();
 	await registerOrganizedExtensions(f.config, f.save, [], ["絶伦逸羣"]);
 	assert.deepEqual(f.values.get("extensions"), ["絶伦逸羣"]);
-	assert.equal(f.values.get("extension_絶伦逸羣_enable"), false);
+	assert.equal(f.values.get("extension_絶伦逸羣_enable"), true);
 	assert.equal(f.values.has("extension_红楼幻境_enable"), false);
-	f.values.set("extension_絶伦逸羣_enable", true);
+	f.values.set("extension_絶伦逸羣_enable", false);
 	await registerOrganizedExtensions(f.config, f.save, [], ["絶伦逸羣", "红楼幻境"]);
 	assert.deepEqual(f.values.get("extensions"), ["絶伦逸羣", "红楼幻境"]);
-	assert.equal(f.values.get("extension_絶伦逸羣_enable"), true);
-	assert.equal(f.values.get("extension_红楼幻境_enable"), false);
+	assert.equal(f.values.get("extension_絶伦逸羣_enable"), false);
+	assert.equal(f.values.get("extension_红楼幻境_enable"), true);
 	await registerOrganizedExtensions(f.config, f.save, [], []);
-	assert.equal(f.values.get("extension_絶伦逸羣_enable"), true);
+	assert.equal(f.values.get("extension_絶伦逸羣_enable"), false);
 });
 
 test("removing crossover packs preserves advanced pack IDs and unrelated saved switches", async () => {
@@ -59,13 +69,12 @@ test("removing crossover packs preserves advanced pack IDs and unrelated saved s
 	assert.deepEqual(f.writes, []);
 });
 
-test("fresh browser registers all installed packs, disables incomplete packs", async () => {
+test("fresh browser enables newly registered packs regardless of old manifest defaults", async () => {
 	const f = fixture({ extensions: ["existing"] });
 	await registerOrganizedExtensions(f.config, f.save);
 	assert.deepEqual(f.values.get("extensions"), ["existing", ...bundled, ...installed.map(p => p.name)]);
-	for (const name of bundled) assert.equal(f.values.get(`extension_${name}_enable`), name === "红楼幻境");
-	const disabled = new Set(validation.disabled.map(p => p.name));
-	for (const p of installed) assert.equal(f.values.get(`extension_${p.name}_enable`), !disabled.has(p.name) && !("defaultEnabled" in p && p.defaultEnabled === false));
+	for (const name of bundled) assert.equal(f.values.get(`extension_${name}_enable`), true);
+	for (const p of installed) assert.equal(f.values.get(`extension_${p.name}_enable`), true);
 	assert.equal(new Set(installed.map(p => p.name)).size, installed.length);
 	for (const p of validation.disabled) assert.ok(installed.some(i => i.name === p.name));
 });
@@ -106,6 +115,15 @@ test("new registration preserves previous disabled choice and does not duplicate
 	await registerOrganizedExtensions(f.config, f.save);
 	assert.equal(f.values.get(`extension_${name}_enable`), false);
 	assert.equal((f.values.get("extensions") as string[]).filter(n => n === name).length, 1);
+});
+
+test("native functional switches survive registration and restart independently of retired extension names", async () => {
+	const f = fixture({ plays: ["cardpile", "boss", "coin"] });
+	await registerOrganizedExtensions(f.config, f.save);
+	assert.deepEqual(f.values.get("plays"), ["cardpile", "boss", "coin"]);
+	f.values.set("plays", ["coin"]);
+	await registerOrganizedExtensions(f.config, f.save);
+	assert.deepEqual(f.values.get("plays"), ["coin"]);
 });
 
 test("APK upgrade restores omitted original registrations while preserving settings and order", async () => {
@@ -246,4 +264,13 @@ test("registration history restores a missing enabled manual pack without guessi
 	assert.ok((f.values.get("extensions") as string[]).includes("custom_pack"));
 	assert.ok(!(f.values.get("extensions") as string[]).includes("unknown_feature"));
 	assert.equal(f.values.get("extension_unknown_feature_enable"), true);
+});
+
+test("manually imported extensions with no saved enable flag default on and preserve a later manual off", async () => {
+	const f = fixture({ extensions: ["manual_new"] });
+	await registerOrganizedExtensions(f.config, f.save);
+	assert.equal(f.values.get("extension_manual_new_enable"), true);
+	f.values.set("extension_manual_new_enable", false);
+	await registerOrganizedExtensions(f.config, f.save);
+	assert.equal(f.values.get("extension_manual_new_enable"), false);
 });

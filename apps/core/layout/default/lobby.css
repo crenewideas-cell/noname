@@ -1,171 +1,132 @@
-/* The default splash uses the normal mode loader; this sheet only presents its choices. */
+@import "./lobby-theme.css";
+@import "./lobby-reference.css";
+/* Shared lobby tools/settings are styled only by lobby-settings.css. */
+
+/* Gallery controls share the host search index and skin-management entry. */
+.lobby-character-tools{position:fixed;inset:0;z-index:10005;pointer-events:none;font-family:shousha,"STKaiti","KaiTi",serif;color:#ecd4a7;}
+.lobby-character-tools[hidden],.lobby-character-tools [hidden]{display:none!important;}
+.lobby-character-tools button.lobby-character-manage{position:absolute;visibility:visible;left:0;right:auto;top:0;min-width:0;}
+.lobby-character-search{position:absolute;right:clamp(12px,13vw,250px);top:clamp(72px,11vh,120px);box-sizing:border-box;width:min(430px,calc(100vw - 32px));max-height:calc(100dvh - 150px);overflow:auto;display:grid;gap:16px;margin:0;padding:22px;border:1px solid #bea06a;outline:3px solid #30251ee6;background:radial-gradient(ellipse at top,#68503966,transparent 70%),#241c18f5;box-shadow:inset 0 0 0 4px #b9964c16,0 16px 40px #120b09aa;pointer-events:auto;}
+.lobby-character-search *{position:relative;box-sizing:border-box;}
+.lobby-character-search strong{font-size:23px;font-weight:normal;letter-spacing:.18em;color:#f2dba8;}
+.lobby-character-search input,.lobby-character-search select,.lobby-character-search button{min-width:0;height:40px;margin:0;padding:8px 12px;border:1px solid #897049;border-radius:2px;background:#1c1714;color:#ecd4a7;font:16px/1.4 shousha,"STKaiti","KaiTi",serif;}
+.lobby-character-search input{width:100%;font-family:inherit;}
+.lobby-character-search input::placeholder{color:#b6a58b;}
+.lobby-character-search-filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.lobby-character-search-filters select:first-child{grid-column:1/-1}
+.lobby-character-search-actions{display:flex;gap:10px;}
+.lobby-character-search button{flex:1;background:linear-gradient(#57422e,#30231c);cursor:pointer;}
+.lobby-character-search button:hover{border-color:#e2c281;color:#fff0c3;}
+.lobby-character-search :is(button,input,select):focus-visible{outline:2px solid #dfba72;outline-offset:2px;}
+.lobby-character-search-status{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);max-width:80vw;margin:0;padding:9px 18px;border:1px solid #a48550;background:#251b16ed;box-shadow:0 3px 12px #0007;color:#f1d6a4;font-size:16px;text-align:center;}
+@media(max-height:500px){.lobby-character-search{top:64px;max-height:calc(100dvh - 80px);gap:10px;padding:14px}.lobby-character-search-status{bottom:8px;padding:5px 12px;font-size:14px;}}
+
+/* Use the same existing artwork, frames and lettering as the loading screen. */
 #splash.shousha-lobby {
-	position: fixed;
-	inset: 0;
-	display: flex;
-	flex-direction: column;
-	box-sizing: border-box;
-	width: 100%;
-	height: 100%;
-	padding: clamp(18px, 4vh, 42px) clamp(18px, 5vw, 80px);
-	overflow: hidden;
-	white-space: normal;
-	background: radial-gradient(ellipse at 50% 20%, #66503599, transparent 65%), linear-gradient(135deg, #1d2228f5, #30271eef);
-	color: #efdab2;
-	text-align: left;
-	font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+ position:fixed;inset:0;display:flex;flex-direction:column;box-sizing:border-box;
+ width:100%;height:100%;padding:0;overflow:auto;white-space:normal;
+ background:var(--lobby-night-background);color:#f3d59a;text-align:left;
+ font-family:var(--lobby-display-font);
 }
-#splash.shousha-lobby * {
-	box-sizing: border-box;
+#splash.shousha-lobby * {box-sizing:border-box;}
+#splash.shousha-lobby .reference-lobby {
+ --lobby-ink:#f3d59a;--lobby-muted:#d4bd92;
+ height:auto;min-height:100%;padding:0 clamp(16px,7.5vw,150px) 4vh;
+ background:linear-gradient(180deg,transparent 10%,#101b2255 60%,#10182033);
+ color:#f3d59a;font-family:var(--lobby-display-font);
 }
-#splash.shousha-lobby .lobby-heading {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 18px;
-	flex: none;
-	padding-bottom: 22px;
-	border-bottom: 1px solid #a6864c66;
-}
-#splash.shousha-lobby .lobby-heading div {
-	position: relative;
-	display: block;
+#splash.shousha-lobby .reference-lobby > .lobby-heading {
+ position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+ flex:none;gap:3px;min-height:210px;height:24vh;margin:0;padding:24px 0 10px;
+ text-align:center;border:0;pointer-events:none;
 }
 #splash.shousha-lobby .lobby-heading h1 {
-	margin: 4px 0 0;
-	font:
-		clamp(30px, 4vw, 46px)/1.3 "xinwei",
-		"KaiTi",
-		serif;
-	letter-spacing: 0.18em;
+ margin:0;color:#f5d281;font:clamp(76px,8.5vw,150px)/1 var(--lobby-display-font);
+ letter-spacing:.09em;filter:drop-shadow(0 4px 2px #090e14);
 }
-#splash.shousha-lobby .lobby-kicker {
-	margin: 0;
-	color: #c3a775;
-	letter-spacing: 0.18em;
-	font-size: 12px;
+#splash.shousha-lobby .lobby-kicker {margin:0;color:#ffe3a2;letter-spacing:.22em;font-size:clamp(18px,1.6vw,27px);text-shadow:0 2px 3px #000;}
+#splash.shousha-lobby .lobby-welcome {margin:0;color:#efd497;font-size:clamp(13px,1vw,18px);}
+#splash.shousha-lobby .lobby-welcome::before,#splash.shousha-lobby .lobby-welcome::after {content:'—';margin:0 12px;color:#a98347;}
+#splash.shousha-lobby .reference-lobby > .lobby-modes {
+ position:relative;display:grid;grid-template-columns:1.1fr .95fr 1.1fr;
+ flex:none;gap:10px;min-height:440px;height:53vh;margin:0;padding:0;overflow:visible;
 }
-#splash.shousha-lobby .lobby-welcome {
-	font-size: 14px;
-	color: #d4c0a0;
+#splash.shousha-lobby .lobby-mode-group {
+ position:relative;display:flex;flex-direction:column;min-width:0;padding:10px 8px 12px;
+ border:12px solid transparent;border-image:var(--lobby-ornament-frame) 20 / 16px;
+ background:radial-gradient(ellipse at top,#35404a99,transparent 80%),#101b26e8;
+ box-shadow:0 6px 24px #0008,inset 0 0 32px #02081066;
 }
-#splash.shousha-lobby .lobby-modes {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-	grid-auto-rows: max-content;
-	align-items: start;
-	align-content: start;
-	gap: 24px;
-	flex: 1;
-	min-height: 0;
-	padding: 24px 4px;
-	overflow: auto;
-	overscroll-behavior: contain;
-	scrollbar-color: #a48756 #292723;
-}
+#splash.shousha-lobby .lobby-group-heading {flex:none;text-align:center;padding:0 0 8px;}
+#splash.shousha-lobby .lobby-group-heading h2 {margin:0;font-size:clamp(23px,1.85vw,32px);line-height:1.2;letter-spacing:.2em;color:#f8da95;}
+#splash.shousha-lobby .lobby-group-heading h2::before,#splash.shousha-lobby .lobby-group-heading h2::after {content:'◆';display:inline-block;margin:0 12px;font:10px/1 serif;vertical-align:middle;color:#b79551;}
+#splash.shousha-lobby .lobby-group-heading p {margin:4px 0 0;font-size:14px;color:#d8bd86;}
+#splash.shousha-lobby .lobby-group-cards {position:relative;display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:repeat(2,minmax(0,1fr));gap:10px;flex:1;min-height:0;}
+#splash.shousha-lobby .lobby-mode-featured {grid-row:span 2;}
+#splash.shousha-lobby .lobby-group-extra .lobby-group-cards {grid-template-columns:repeat(6,minmax(0,1fr));}
+#splash.shousha-lobby .lobby-group-extra .lobby-mode {grid-column:span 2;}
+#splash.shousha-lobby .lobby-group-extra .lobby-mode:nth-child(-n+2) {grid-column:span 3;}
 #splash.shousha-lobby .lobby-mode {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	height: max-content;
-	min-height: min-content;
-	max-height: none;
-	max-width: 310px;
-	min-width: 0;
-	align-self: start;
-	justify-self: center;
-	padding: 0;
-	margin: 0;
-	border: 1px solid #a6854c;
-	border-radius: 7px;
-	background: #27241f;
-	color: #f3dfb4;
-	cursor: pointer;
-	text-align: left;
-	font: inherit;
-	white-space: normal;
-	appearance: none;
-	overflow: hidden;
-	box-shadow: 0 6px 16px #0006;
-	transition:
-		transform 0.2s,
-		border-color 0.2s,
-		opacity 0.2s;
+ position:relative;display:block;align-self:stretch;justify-self:stretch;
+ width:100%;height:100%;min-width:0;min-height:0;max-width:none;padding:0;margin:0;
+ border-width:7px!important;border-image-width:9px!important;
+ border-radius:0;overflow:hidden;cursor:pointer;text-align:center;white-space:normal;
+ transition:filter .18s,transform .18s;
 }
-#splash.shousha-lobby .lobby-mode:hover:not(:disabled) {
-	transform: translateY(-5px);
-	border-color: #f0ca7e;
-}
-#splash.shousha-lobby .lobby-mode:focus-visible {
-	outline: 3px solid #ffe0a0;
-	outline-offset: 3px;
-}
-#splash.shousha-lobby .lobby-mode.clicked {
-	opacity: 0.3;
-	transform: scale(0.97);
-}
+#splash.shousha-lobby .lobby-mode:hover:not(:disabled) {transform:translateY(-3px);filter:brightness(1.12);}
+#splash.shousha-lobby .lobby-mode:focus-visible {outline:3px solid #ffe0a0;outline-offset:2px;}
+#splash.shousha-lobby .lobby-mode.clicked {opacity:.5;}
 #splash.shousha-lobby .lobby-art {
-	position: relative;
-	display: block;
-	flex: none;
-	width: 100%;
-	height: auto;
-	aspect-ratio: 913 / 1275;
-	object-fit: contain;
-	object-position: center;
-	background: #27241f;
+ position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;
+ object-position:center 23%;background:#17222a;pointer-events:none;
 }
 #splash.shousha-lobby .lobby-mode-caption {
-	position: relative;
-	display: block;
-	flex: none;
-	width: 100%;
-	min-height: 80px;
-	padding: 12px 14px;
-	border-top: 1px solid #a6854c55;
-	background: linear-gradient(135deg, #3b3025, #25231f);
-	overflow-wrap: anywhere;
+ position:absolute;inset:auto 0 0;display:block;width:100%;padding:24px 3px 6px;
+ background:linear-gradient(transparent,#141a20f5 28%,#161b20);pointer-events:none;
+ color:#ffdfa1;text-shadow:0 2px 3px #000;
 }
-#splash.shousha-lobby .lobby-mode-caption span {
-	display: block;
-	font:
-		21px/1.4 "xinwei",
-		"KaiTi",
-		serif;
-	letter-spacing: 0.12em;
+#splash.shousha-lobby .lobby-mode-caption span {display:block;font-size:clamp(21px,1.7vw,30px);line-height:1.25;letter-spacing:.09em;}
+#splash.shousha-lobby .lobby-mode-caption small {display:block;margin-top:2px;color:#e4cda0;font-size:clamp(11px,.82vw,15px);line-height:1.4;}
+#splash.shousha-lobby .lobby-mode-featured .lobby-mode-caption {padding-top:32px;padding-bottom:12px;}
+#splash.shousha-lobby .lobby-mode-featured .lobby-mode-caption span {font-size:clamp(30px,2.3vw,42px);}
+#splash.shousha-lobby .lobby-mode-number {position:absolute;right:7px;top:7px;padding:3px 6px;border:1px solid #b59660;border-radius:4px;background:#101b24dc;color:#ffedbd;font:13px/1.2 sans-serif;}
+#splash.shousha-lobby .reference-lobby > .lobby-footer {
+ position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ flex:1;gap:8px;min-height:115px;margin:0;padding:20px 10px;text-align:center;
+ border-bottom:1px solid #bc8e48;box-shadow:0 14px 18px -18px #ffdc9d;
+ background:linear-gradient(90deg,transparent,#101b26aa 25%,#101b26aa 75%,transparent);
 }
-#splash.shousha-lobby .lobby-mode-caption small {
-	display: block;
-	margin-top: 4px;
-	font-size: 11px;
-	color: #bda98a;
-	line-height: 1.6;
+#splash.shousha-lobby .lobby-footer strong {color:#f5d89a;font-size:clamp(26px,2.3vw,40px);font-weight:normal;letter-spacing:.1em;text-shadow:0 2px 4px #000;}
+#splash.shousha-lobby .lobby-footer span {color:#dfc497;font-size:16px;letter-spacing:.15em;}
+#splash.shousha-lobby .lobby-empty {grid-column:1/-1;padding:24px;text-align:center;}
+#splash.shousha-lobby .lobby-more-dialog {
+ position:fixed;inset:0;width:min(920px,92vw);max-height:88dvh;margin:auto;padding:24px;
+ border:16px solid transparent;border-image:var(--lobby-ornament-frame) 20 / 16px;
+ background:#121e29f5;color:#f3d59a;font-family:var(--lobby-display-font);overflow:auto;
 }
-#splash.shousha-lobby .lobby-mode-number {
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	padding: 2px 6px;
-	border: 1px solid #c8ac7366;
-	border-radius: 3px;
-	background: #24201bc9;
-	color: #efdbb2;
-	font-size: 11px;
+#splash.shousha-lobby .lobby-more-dialog::backdrop {background:#02080bcc;}
+#splash.shousha-lobby .lobby-more-dialog > header {display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px;}
+#splash.shousha-lobby .lobby-more-dialog h2 {margin:0;}
+#splash.shousha-lobby .lobby-more-grid {position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;}
+#splash.shousha-lobby .lobby-more-grid .lobby-mode {height:320px;max-width:280px;}
+@media(max-width:1100px) {
+ #splash.shousha-lobby .reference-lobby {padding-left:18px;padding-right:18px;}
+ #splash.shousha-lobby .lobby-group-cards {gap:6px;}
+ #splash.shousha-lobby .lobby-mode-group {padding:8px 2px;border-width:10px;}
+ #splash.shousha-lobby .lobby-group-heading h2::before,#splash.shousha-lobby .lobby-group-heading h2::after {margin:0 6px;}
 }
-#splash.shousha-lobby .lobby-footer {
-	display: flex;
-	justify-content: space-between;
-	gap: 12px;
-	padding-top: 14px;
-	flex: none;
-	border-top: 1px solid #a6864c66;
-	color: #b4a183;
-	font-size: 12px;
+@media(max-width:760px) {
+ #splash.shousha-lobby .reference-lobby > .lobby-heading {height:230px;padding-top:74px;}
+ #splash.shousha-lobby .reference-lobby > .lobby-modes {grid-template-columns:1fr;height:auto;min-height:0;gap:16px;}
+ #splash.shousha-lobby .lobby-mode-group {min-height:420px;}
+ #splash.shousha-lobby .lobby-group-heading h2 {font-size:28px;}
+ #splash.shousha-lobby .lobby-mode-caption span {font-size:28px;}
+ #splash.shousha-lobby .lobby-mode-caption small {font-size:14px;}
+ #splash.shousha-lobby .reference-lobby > .lobby-footer {min-height:120px;}
 }
-#splash.shousha-lobby .lobby-empty {
-	padding: 24px;
-	font-size: 15px;
+@media(prefers-reduced-motion:reduce) {
+ #splash.shousha-lobby .lobby-mode {transition:none;}
+ #splash.shousha-lobby .lobby-mode:hover:not(:disabled) {transform:none;}
 }
 html[data-presentation="shousha"] .lobby-room-list {
 	background: linear-gradient(135deg, #272722f2, #423627eb);
@@ -210,38 +171,4 @@ html[data-presentation="shousha"] .connectbutton {
 	color: #ffe1a6;
 	background: linear-gradient(#785336, #503426);
 	text-shadow: 0 1px 2px #000;
-}
-@media (max-width: 600px) {
-	#splash.shousha-lobby {
-		padding: 18px 16px;
-	}
-	#splash.shousha-lobby .lobby-heading {
-		padding-bottom: 12px;
-	}
-	#splash.shousha-lobby .lobby-welcome {
-		max-width: 105px;
-		font-size: 12px;
-	}
-	#splash.shousha-lobby .lobby-modes {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 14px;
-		padding: 18px 3px;
-	}
-	#splash.shousha-lobby .lobby-mode-caption {
-		padding: 9px;
-	}
-	#splash.shousha-lobby .lobby-mode-caption small {
-		line-height: 1.6;
-	}
-	#splash.shousha-lobby .lobby-footer {
-		font-size: 10px;
-	}
-}
-@media (prefers-reduced-motion: reduce) {
-	#splash.shousha-lobby .lobby-mode {
-		transition: none;
-	}
-	#splash.shousha-lobby .lobby-mode:hover:not(:disabled) {
-		transform: none;
-	}
 }

@@ -85,12 +85,14 @@ export async function registerOrganizedExtensions(config: { get: (key: string) =
 	for (const key of ["characters", "cards", "plays"]) {
 		const previous = config.get(key);
 		if (!Array.isArray(previous)) continue;
-		const next = [...new Set(previous.filter(name => !characterGroups.removed.includes(name) && !isRetiredExtension(name) && !isRetiredExtension(name.replace(/^mode_extension_/, "")))
+		// These names are retired as standalone extensions, but still identify
+		// native play functions. Preserve their saved switches after regrouping.
+		const next = [...new Set(previous.filter(name =>
+			(key === "plays" && ["boss", "cardpile", "coin"].includes(name)) ||
+			(!characterGroups.removed.includes(name) && !isRetiredExtension(name) && !isRetiredExtension(name.replace(/^mode_extension_/, ""))))
 			.map(name => name === "mode_extension_红楼幻梦" ? "mode_extension_红楼幻境" : canonicalExtensionName(name)))];
 		if (next.length !== previous.length || next.some((name, index) => name !== previous[index])) await save(key, next);
 	}
-	const disabled = new Set(validation.disabled.map(p => p.name));
-	const defaultDisabled = new Set(installed.filter(item => "defaultEnabled" in item && item.defaultEnabled === false).map(item => item.name));
 	// An arbitrary *_enable key may belong to an extension's private options.
 	// Restore only manifest/registration identities; new directories are verified
 	// by getExtensionList's file discovery or registered through explicit import.
@@ -110,23 +112,24 @@ export async function registerOrganizedExtensions(config: { get: (key: string) =
 			continue;
 		}
 		if (!extensions.includes(name)) extensions.push(name);
-		// Enable the first-party pack on first registration, but retain an
+		// Enable newly discovered packs on first registration, but retain an
 		// explicit saved choice, including one migrated from its old name.
 		if (!config.has(`extension_${name}_enable`)) {
-			await save(`extension_${name}_enable`, availableNames ? false : name === "红楼幻境" || (!bundled.includes(name) && !disabled.has(name) && !defaultDisabled.has(name)));
+			await save(`extension_${name}_enable`, true);
 		}
 		registered.add(name);
 		changed = true;
 	}
 	// Retain identities of manually imported packs as well as bundled packages.
 	for (const name of extensions) {
+		if (!config.has(`extension_${name}_enable`)) await save(`extension_${name}_enable`, true);
 		if (!registered.has(name)) { registered.add(name); changed = true; }
 	}
 	if (changed) {
 		await save("extensions", extensions);
 		await save("organized_extensions_registered", [...registered]);
 	}
-	// Validation describes defaults, not permission to reset an existing save.
+	// Validation metadata must never reset an existing save.
 	// Adding packages or changing the report version must preserve user switches.
 	if (config.get("organized_extensions_validation") !== validation.version) {
 		await save("organized_extensions_validation", validation.version);

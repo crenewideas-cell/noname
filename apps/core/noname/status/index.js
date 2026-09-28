@@ -52,6 +52,10 @@ export class status {
 	 * @type { string | undefined }
 	 */
 	extension = undefined;
+	/** @type { string | undefined } */
+	loadingExtensionRuntime = undefined;
+	/** @type { boolean | undefined } */
+	evaluatingExtension = undefined;
 	/**
 	 * @type { boolean }
 	 */

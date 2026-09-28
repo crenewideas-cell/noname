@@ -1,0 +1,90 @@
+/* One readable treatment for built-in prompts, selection forms, skill
+ * confirmations and hover details. Provider-owned matches retain their skin.
+ * Reuse existing dialog geometry, scrolling and engine event callbacks. */
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)):has(#arena) .game-navigation,
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(#arena > .dialog, .dialog.popped, .selection-guide) {
+ --lobby-paper: linear-gradient(90deg,transparent,#d9b87999,transparent) center top / 64% 1px no-repeat,
+  radial-gradient(ellipse at 50% 0,#b9985524,transparent 68%),linear-gradient(160deg,#1c2934f7,#101b26fa);
+ --lobby-ink:#e8e0d0;--lobby-muted:#afa99c;--lobby-accent:#f0cd8a;--lobby-line:#bd9b5540;
+ --lobby-font:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+ --lobby-panel-border:1px solid #bfa36688;
+ --lobby-panel-shadow:0 8px 26px #050c165c,inset 0 0 0 3px #070f172b,inset 0 1px #fff0c912;
+ --match-panel-radius:8px;--match-input-background:#111d28;
+ scrollbar-color:#a98b5580 transparent;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)):has(#arena) .game-navigation {
+ border-radius:var(--match-panel-radius);padding:24px 28px;font-size:15px;line-height:1.8;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)):has(#arena) .game-navigation h2 {font-size:22px;color:var(--lobby-accent)!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #arena > .dialog.nobutton:not(:has(.button,.tdnode,.textbutton)) .content > .caption:not(:first-child) {
+ color:var(--lobby-ink)!important;font-size:14px;line-height:1.85;text-align:start;letter-spacing:.015em;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.popped.skill-reading-panel .content .text {text-align:start;font-weight:400;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(#arena > .dialog, .dialog.popped) .content > .caption:not(.searcher) {
+ font-size:16px;line-height:1.65;letter-spacing:.04em;color:#edcf94!important;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(#arena > .dialog, .dialog.popped) :is(.text,.skillinfo) {
+ font-size:14px;line-height:1.85;letter-spacing:.015em;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog .content-container {
+ scrollbar-width:thin;scrollbar-color:#a98b5580 transparent;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #arena > .dialog.nobutton:not(.popped):not(.fullwidth):not(.fullheight):not(.halfleft):not(.halfright):not(:has(.button,.tdnode,.textbutton,input,select,textarea,table)) {
+ width:min(440px,calc(100% - 32px));left:calc(50% - min(220px,calc(50% - 16px)));
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #arena > .dialog.nobutton:not(:has(.button,.tdnode,.textbutton,input,select,textarea,table)) .content {
+ box-sizing:border-box;padding:6px 18px;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #arena > .dialog.nobutton:not(:has(.button,.tdnode,.textbutton,input,select,textarea,table)) .content > .caption {
+ margin:0;padding:8px 0;min-height:0;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide {
+ padding:12px 20px;width:min(520px,calc(100% - 32px));
+ font:13px/1.6 "Microsoft YaHei","PingFang SC",sans-serif;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide > strong {
+ font-size:15px;line-height:1.6;letter-spacing:.025em;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-steps {
+ display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 12px;
+ margin:8px 0 6px;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-step {
+ display:inline-flex;align-items:center;gap:7px;min-height:28px;padding:2px 10px 2px 4px;
+ border:1px solid #85929d33;border-radius:16px;background:#07121d55;color:#b3b6b5;
+ font:12px/1.5 "Microsoft YaHei","PingFang SC",sans-serif;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-step-index {
+ display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;
+ background:#73818e26;color:#bfc8ce;font-size:11px;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-step b {color:inherit;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-step[data-state="current"] {border-color:#dab67888;background:#b8994e18;color:#f3d496;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-step[data-state="current"] .selection-step-index {background:#d3b477;color:#172431;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-step[data-state="complete"] {border-color:#88b8ad55;color:#a3d0c2;background:#5eae9212;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-step[data-state="complete"] .selection-step-index {background:#79bba52b;color:#b8e1d1;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-order {font-size:11px;color:#b3afa3;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-chosen {font-size:12px;line-height:1.7;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-chosen[data-kind="legend"] {
+ display:flex;justify-content:center;flex-wrap:wrap;gap:14px;color:#afa99c!important;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-legend {display:inline-flex;align-items:center;gap:6px;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-legend::before {content:"";width:6px;height:6px;border-radius:50%;background:#75c4d2;box-shadow:0 0 6px #75c4d233;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-legend:last-child::before {background:#e4c078;box-shadow:0 0 6px #e4c07833;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-actions:has(> button:not([hidden])) {padding-top:8px;margin-top:8px;border-top:1px solid #bfa36626;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-actions:not(:has(> button:not([hidden]))) {display:none;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(#arena > .dialog,.selection-guide) .selection-guide-actions > button {
+ min-height:30px;min-width:84px;padding:4px 12px;font-size:12px;
+ /* Keep the shared red/gold action artwork, with compact utility sizing. */
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filters :is(button.tdnode,div.tdnode):is(.thundertext,.active,[aria-pressed="true"]) {
+ color:#14202b!important;
+}
+@media(max-height:650px),(max-width:720px) {
+ :where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide {padding:8px 12px;}
+ :where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-steps {margin:5px 0 4px;gap:6px 8px;}
+ :where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide > strong {font-size:14px;}
+ :where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-step {min-height:24px;}
+ :where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #arena > .dialog.nobutton:not(:has(.button,.tdnode,.textbutton,input,select,textarea,table)) .content {padding:3px 12px;}
+}
+

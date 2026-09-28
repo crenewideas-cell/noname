@@ -1,0 +1,242 @@
+[
+  {
+    "id": "mjs_pen_qihuangong",
+    "source": "apps/core/extension/packs/华夏风云/image/character/yxs_qihuangong.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_qihuangong.jpg"
+  },
+  {
+    "id": "mjs_pen_guanzhong",
+    "source": "apps/core/extension/packs/华夏风云/image/character/hun_guanzhong.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_guanzhong.jpg"
+  },
+  {
+    "id": "mjs_pen_baoshuya",
+    "source": "apps/core/extension/packs/华夏风云/image/character/hx_baoshuya.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_baoshuya.jpg"
+  },
+  {
+    "id": "mjs_pen_wenjiang",
+    "source": "apps/core/extension/packs/华夏风云/image/character/yxs_wenjiang.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_wenjiang.jpg"
+  },
+  {
+    "id": "mjs_pen_yanying",
+    "source": "apps/core/extension/packs/华夏风云/image/character/yxs_wxyanying.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_yanying.jpg"
+  },
+  {
+    "id": "mjs_pen_zouji",
+    "source": "apps/core/extension/packs/华夏风云/image/character/GXS_vxzouji.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_zouji.jpg"
+  },
+  {
+    "id": "mjs_pen_bianque",
+    "source": "apps/core/extension/packs/华夏风云/image/character/yxs_bianque.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_bianque.jpg"
+  },
+  {
+    "id": "mjs_pen_tianji",
+    "source": "apps/core/extension/packs/华夏风云/image/character/GXS_tianji.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_tianji.jpg"
+  },
+  {
+    "id": "mjs_pen_tianrangju",
+    "source": "apps/core/extension/packs/华夏风云/image/character/hx_tianrangju.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_tianrangju.jpg"
+  },
+  {
+    "id": "hx_changyuchun",
+    "source": "apps/core/extension/packs/华夏风云/image/character/hun_changyuchun.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hx_changyuchun.jpg"
+  },
+  {
+    "id": "hx_qijiguang",
+    "source": "apps/core/extension/packs/华夏风云/image/character/hun_qijiguang.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hx_qijiguang.jpg"
+  },
+  {
+    "id": "hx_bianque",
+    "source": "apps/core/extension/packs/华夏风云/image/character/hun_bianque.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hx_bianque.jpg"
+  },
+  {
+    "id": "GXS_vxlanlingwang",
+    "source": "apps/core/extension/packs/华夏风云/image/character/yxs_wxlanlingwang.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/GXS_vxlanlingwang.jpg"
+  },
+  {
+    "id": "swlu_tianshangke",
+    "source": "apps/core/extension/packs/云中守望/assets/character/swx_tianshangke.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/swlu_tianshangke.jpg"
+  },
+  {
+    "id": "nysgs_mou_simayi",
+    "source": "apps/core/extension/packs/怒焰三国/image/character/nysgs_MouSiMaYi.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_mou_simayi.jpg"
+  },
+  {
+    "id": "nysgs_mou_caocao",
+    "source": "apps/core/extension/packs/怒焰三国/image/character/nysgs_MouCaoCao.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_mou_caocao.jpg"
+  },
+  {
+    "id": "nysgs_shen_huangzhong",
+    "source": "apps/core/extension/packs/怒焰三国/image/character/nysgs_ShenHuangZhong.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_shen_huangzhong.jpg"
+  },
+  {
+    "id": "nysgs_mou_zhugeliang",
+    "source": "apps/core/extension/packs/怒焰三国/image/character/nysgs_MouZhuGeLiang.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_mou_zhugeliang.jpg"
+  },
+  {
+    "id": "nysgs_wu_wenyang",
+    "source": "apps/core/extension/packs/怒焰三国/image/character/nysgs_WuWenYang.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_wu_wenyang.jpg"
+  },
+  {
+    "id": "nysgs_shen_sunjian",
+    "source": "apps/core/extension/packs/怒焰三国/image/character/nysgs_ShenSunJian.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_shen_sunjian.jpg"
+  },
+  {
+    "id": "nysgs_wei_machao",
+    "source": "apps/core/image/character/machao.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_wei_machao.jpg"
+  },
+  {
+    "id": "nysgs_pangde",
+    "source": "apps/core/image/character/pangde.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_pangde.jpg"
+  },
+  {
+    "id": "nysgs_menghuo",
+    "source": "apps/core/image/character/menghuo.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_menghuo.jpg"
+  },
+  {
+    "id": "nysgs_jie_pangde",
+    "source": "apps/core/image/character/pangde.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_jie_pangde.jpg"
+  },
+  {
+    "id": "nysgs_jie_menghuo",
+    "source": "apps/core/image/character/menghuo.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_jie_menghuo.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_hetaihou",
+    "source": "apps/core/image/character/hetaihou.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_hetaihou.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_jiaxu",
+    "source": "apps/core/image/character/jiaxu.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_jiaxu.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_guohuanghou",
+    "source": "apps/core/image/character/guohuanghou.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_guohuanghou.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_xinxianying",
+    "source": "apps/core/image/character/xinxianying.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_xinxianying.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_diaochan",
+    "source": "apps/core/image/character/diaochan.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_diaochan.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_bulianshi",
+    "source": "apps/core/image/character/bulianshi.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_bulianshi.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_mayunlu",
+    "source": "apps/core/image/character/mayunlu.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_mayunlu.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_zhugeke",
+    "source": "apps/core/image/character/zhugeke.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_zhugeke.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_qinmi",
+    "source": "apps/core/image/character/qinmi.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_qinmi.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_pangtong",
+    "source": "apps/core/image/character/pangtong.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_pangtong.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_caorui",
+    "source": "apps/core/image/character/caorui.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_caorui.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_yuanshu",
+    "source": "apps/core/image/character/yuanshu.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_yuanshu.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_lvmeng",
+    "source": "apps/core/image/character/lvmeng.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_lvmeng.jpg"
+  },
+  {
+    "id": "wechat_zhiyin_zhaoe",
+    "source": "apps/core/image/character/xia_zhaoe.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhiyin_zhaoe.jpg"
+  },
+  {
+    "id": "wechat_zhi_yuanshu",
+    "source": "apps/core/image/character/yuanshu.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhi_yuanshu.jpg"
+  },
+  {
+    "id": "wechat_zhi_liubei",
+    "source": "apps/core/image/character/liubei.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhi_liubei.jpg"
+  },
+  {
+    "id": "wechat_zhi_caopi",
+    "source": "apps/core/image/character/caopi.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhi_caopi.jpg"
+  },
+  {
+    "id": "wechat_zhi_caozhi",
+    "source": "apps/core/image/character/caozhi.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhi_caozhi.jpg"
+  },
+  {
+    "id": "wechat_zhi_liubiao",
+    "source": "apps/core/image/character/liubiao.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhi_liubiao.jpg"
+  },
+  {
+    "id": "wechat_zhi_yanghu",
+    "source": "apps/core/image/character/jin_yanghu.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhi_yanghu.jpg"
+  },
+  {
+    "id": "wechat_zhi_jiaxu",
+    "source": "apps/core/image/character/jiaxu.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/wechat_zhi_jiaxu.jpg"
+  },
+  {
+    "id": "nysgs_shenshe_shen_huangzhong",
+    "source": "apps/core/extension/packs/怒焰三国/image/character/nysgs_ShenHuangZhong.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_shenshe_shen_huangzhong.jpg"
+  },
+  {
+    "id": "nysgs_tianren_shen_huangzhong",
+    "source": "apps/core/extension/packs/怒焰三国/image/character/nysgs_ShenHuangZhong.jpg",
+    "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/nysgs_tianren_shen_huangzhong.jpg"
+  }
+]

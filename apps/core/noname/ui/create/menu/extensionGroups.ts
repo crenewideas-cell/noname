@@ -3,6 +3,45 @@ import restructure from "../../../../game/extension-restructure.json";
 import apk from "../../../../game/apk-extension-cleanup.json";
 import characterGroups from "../../../../game/character-menu-groups.json";
 import catalogue from "../../../../game/extension-catalog.json";
+import installed from "../../../../game/organized-extensions.json";
+
+/** Resolve existing registered packs; opening settings never imports extension code. */
+export function extensionCharacterPacks(name: string, lib: any): { mode: string; characters: string[] }[] {
+	const entry = installed.find(item => item.name === name);
+	const declared = entry && "characterPacks" in entry ? entry.characterPacks : [];
+	const names = new Set([name, `mode_extension_${name}`, ...declared]);
+	const prefix = `extension/${name}/`;
+	for (const [mode, characters] of Object.entries(lib.characterPack) as [string, Record<string, any>][]) {
+		if (["mode_favourite", "mode_banned"].includes(mode)) continue;
+		// Runtime ownership also covers newly imported packs absent from the catalogue.
+		if (lib.characterPackExtension?.[mode] === name) names.add(mode);
+		else if (Object.values(characters).some(character => character?.img?.startsWith(prefix)
+			|| (character?.trashBin || character?.[4] || []).some((tag: unknown) => typeof tag === "string"
+				&& (tag.startsWith(`ext:${name}/`) || tag.startsWith(`img:${prefix}`))))) names.add(mode);
+	}
+	const seen = new Set<string>();
+	const result: { mode: string; characters: string[] }[] = [];
+	const add = (mode: string, ids: string[]) => {
+		const characters = ids.filter(id => !seen.has(id));
+		if (!characters.length) return;
+		characters.forEach(id => seen.add(id));
+		result.push({ mode, characters });
+	};
+	for (const mode of names) add(mode, Object.keys(lib.characterPack[mode] || {}));
+	// Consolidated imports may intentionally reuse a built-in character instead
+	// of registering a duplicate definition (e.g. 新诸葛果 → mobile/mb_zhugeguo).
+	const reused = new Set<string>(entry?.characters || []);
+	for (const [mode, characters] of Object.entries(lib.characterPack)) {
+		if (["mode_favourite", "mode_banned"].includes(mode)) continue;
+		add(mode, Object.keys(characters || {}).filter(id => reused.has(id)));
+	}
+	return result;
+}
+
+export function extensionExpectsCharacters(name: string): boolean {
+	const entry = installed.find(item => item.name === name);
+	return !!(entry?.characters?.length || (entry && "characterPacks" in entry && entry.characterPacks?.length));
+}
 
 export interface ExtensionMenuGroup {
 	name: string;
@@ -16,10 +55,13 @@ export function groupExtensionMenus(modes: readonly string[]): (string | Extensi
 	const owners = new Map<string, ExtensionMenuGroup>();
 	// Only installed extensions have settings entries. Activity subpacks still use
 	// their source extension's settings, while standalone extensions follow the menu group.
-	const categories = { characters: "独立武将", packs: "武将扩展包", collections: "合并扩展包", ui: "界面与特效", imports: "新导入待分类" };
+	// UI and uncategorized extensions stay directly accessible as individual entries.
+	const categories = { characters: "独立武将", packs: "武将扩展包", collections: "合并扩展包" };
 	const settingsGroups = Object.entries(categories).map(([category, name]) => ({
 		name,
 		members: modes.filter(mode => mode.startsWith("extension_")).map(mode => mode.slice(10)).filter(identity => {
+			if (identity === "卡牌扩展") return false;
+			if (identity === "键社") return category === "collections";
 			const entry = catalogue.find(item => item.name === identity);
 			return (entry?.category || "imports") === category;
 		}),

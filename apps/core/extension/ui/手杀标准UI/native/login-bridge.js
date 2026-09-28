@@ -7,8 +7,7 @@
  byId('updateve').textContent='手杀标准UI';
  byId('updatetext').textContent='手杀标准UI。登录、大厅、模式、选将、对局、换牌、技能、结算与本地界面设置。';
  byId('kftext').textContent='本地游戏与界面设置可直接使用。联机房间使用当前项目的联机服务。';
- byId('sqhe').textContent='社区';byId('sqtext').textContent='PXLNGU整合';
- const communityClose=document.createElement('button');communityClose.textContent='返回';communityClose.onclick=()=>byId('sqsp').style.display='none';byId('sqbg').append(communityClose);
+ byId('sqhe').textContent='社区';byId('sqtext').textContent='原琉璃版5.5UI，PXLNGU整合';
  for(const [button,modal] of [['updatelogimage','updatelogmodal'],['kfbt','kfsp'],['sqbt','sqsp']]){const panel=byId(modal);panel.style.display='none';byId(button).onclick=()=>panel.style.display='block';panel.onclick=event=>{if(event.target===panel)panel.style.display='none';};}
  byId('relog').onclick=()=>{byId('usernameinput').value=byId('loginfoname').textContent;byId('loginoverlay').style.display='block';byId('usernameinput').focus();};
  // Local profile only; credentials are neither requested nor sent elsewhere.

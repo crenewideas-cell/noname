@@ -4,7 +4,7 @@ import list from "./list.js";
 import skill from "./skill.js";
 import translate from "./translate.js";
 
-game.import("card", function () {
+await game.import("card", function () {
 	const mjs = {
 		name: "mjs",
 		connect: true,

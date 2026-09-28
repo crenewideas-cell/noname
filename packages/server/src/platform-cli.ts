@@ -1,7 +1,11 @@
 import { createPlatform } from "./platform/index";
-import { reclaimPort } from "../../../scripts/reclaim-port.mjs";
 const port = Number(process.env.PORT || 8082);
-await reclaimPort(port);
+// Port reclamation belongs to local development. Production images do not
+// ship workspace scripts, and must not terminate another service's listener.
+if (process.env.NODE_ENV !== "production") {
+  const { reclaimPort } = await import("../../../scripts/reclaim-port.mjs");
+  await reclaimPort(port);
+}
 const app = await createPlatform();
 await app.listen({ port, host: process.env.HOST || "127.0.0.1" });
 let stopping = false;

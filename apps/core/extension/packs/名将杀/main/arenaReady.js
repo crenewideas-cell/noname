@@ -1,4 +1,4 @@
-import { lib, game, ui, get, ai, _status } from "noname";
+import { lib, game, ui, get, ai, _status, replaceCardPackPile } from "noname";
 import cardPile from "../src/js/setting/cardPile.js";
 
 export function arenaReady(config, pack) {

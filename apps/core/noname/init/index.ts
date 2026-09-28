@@ -846,7 +846,7 @@ async function getExtensionList() {
 				extensions.push(ext);
 				toLoad.push(ext);
 				if (!config.has(`extension_${ext}_enable`)) {
-					await game.promises.saveConfig(`extension_${ext}_enable`, false);
+					await game.promises.saveConfig(`extension_${ext}_enable`, true);
 				}
 			}
 		});
@@ -854,8 +854,7 @@ async function getExtensionList() {
 
 		await game.promises.saveConfig("extensions", extensions);
 	}
-	// An explicit import is independent of directory discovery. Discovery may
-	// have just added this pack as disabled; honor the requested import once.
+	// An explicit import is independent of directory discovery. Keep the requested import enabled after discovery.
 	if (isValidExtensionName(searchParamsImportExtension)) {
 		await game.promises.saveConfig("deleted_extensions", (config.get("deleted_extensions") || []).filter(name => name !== searchParamsImportExtension));
 		if (!extensions.includes(searchParamsImportExtension)) extensions.push(searchParamsImportExtension);
@@ -1119,6 +1118,7 @@ async function loadCss() {
 		menuPresentation: lib.init.promises.css(lib.assetURL + "layout/default", "menu-presentation"),
 		skillPresentation: lib.init.promises.css(lib.assetURL + "layout/default", "skill-presentation"),
 		extensionMenu: lib.init.promises.css(lib.assetURL + "layout/default", "extension-menu"),
+		lobbySettings: lib.init.promises.css(lib.assetURL + "layout/default", "lobby-settings"),
 		presentation: lib.init.promises.css(lib.assetURL + "layout/default", "presentation"),
 		menu: lib.init.promises.css(lib.assetURL + "layout/default", "menu"),
 		newmenu: lib.init.promises.css(lib.assetURL + "layout/default", "newmenu"),

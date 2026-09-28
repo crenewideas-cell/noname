@@ -1,0 +1,133 @@
+/* Scenery, responsive card geometry and uniformly rendered portraits are independent. */
+#splash.shousha-lobby:has(.reference-lobby) {
+ overflow:auto;background:var(--lobby-reference-scene) center/cover no-repeat #0d1117;
+}
+#splash.shousha-lobby:has(.session-entry) .session-entry.reference-lobby {
+ --reference-edge:clamp(16px,4vw,80px);--reference-gap:clamp(12px,1.5vw,28px);--card-gap:clamp(8px,1vw,16px);
+ position:relative;inset:auto;display:flex;flex-direction:column;flex:none;
+ width:100%;height:auto;min-height:100%;margin:0;padding:0;container-type:inline-size;
+ background:transparent;
+}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby > .lobby-heading {
+ position:relative;inset:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ width:100%;height:clamp(200px,24vh,260px);min-height:0;flex:none;margin:0;padding:8px 0;gap:3px;
+ border:0;background:none;box-shadow:none;pointer-events:none;
+}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-heading h1 {
+ position:relative;inset:auto;width:auto;height:clamp(100px,16vh,150px);aspect-ratio:2123 / 741;
+ margin:0;filter:drop-shadow(0 4px 8px #08111b);
+ background:var(--lobby-reference-logo) center/contain no-repeat;
+}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-kicker {font-size:clamp(12px,2.2vh,26px);}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-welcome {font-size:clamp(10px,1.6vh,18px);}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby > .lobby-modes {
+ position:relative;inset:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;
+ width:calc(100% - 2 * var(--reference-edge));max-width:1800px;height:auto;min-height:0;
+ flex:none;gap:var(--reference-gap);margin:0 auto;padding:0;border:0;background:none;box-shadow:none;
+}
+/* Equal group tracks give Identity and Challenge identical geometry at every width. */
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-group {
+ position:relative;display:flex;flex-direction:column;width:auto;min-width:0;max-width:none;
+ height:auto;min-height:0;margin:0;padding:clamp(10px,1.1vw,20px);
+ border:8px solid transparent;border-image:var(--lobby-ornament-frame) 20 / 12px;
+ border-radius:0;background:linear-gradient(#202c37f5,#111d28f5);box-shadow:0 6px 24px #0005;
+}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-heading {
+ position:relative;inset:auto;display:block;flex:none;width:auto;height:auto;overflow:visible;clip-path:none;
+ margin:0;padding:0 0 clamp(10px,1.2vw,20px);white-space:normal;text-align:center;
+}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-heading h2 {font-size:clamp(20px,1.6vw,30px);letter-spacing:.12em;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-heading p {font-size:clamp(11px,.85vw,15px);}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-cards {
+ position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));
+ flex:none;gap:var(--card-gap);width:100%;height:auto;min-height:0;aspect-ratio:6 / 5;
+}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-extra .lobby-group-cards {grid-template-columns:repeat(6,minmax(0,1fr));}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-extra .lobby-atlas-card {grid-column:span 2;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-extra .lobby-atlas-card:nth-child(-n+2) {grid-column:span 3;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-atlas-card {
+ position:relative;inset:auto;display:block;align-self:stretch;justify-self:stretch;
+ width:100%;height:100%;min-width:0;min-height:0;max-width:none;padding:0;margin:0;
+ border:5px solid transparent!important;border-image:var(--lobby-ornament-frame) 20 / 7px!important;border-radius:0;
+ background:#17222a;box-shadow:none;cursor:pointer;overflow:hidden;transition:filter .16s;transform:none;
+}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-featured {grid-column:1;grid-row:1 / span 2;}
+/* SVG slice applies ONE scale to both axes, independently of the fluid card box. */
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-portrait {position:absolute;inset:0;display:block;width:100%;height:100%;overflow:hidden;pointer-events:none;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-caption {
+ position:absolute;inset:auto 0 0;display:flex;flex-direction:column;justify-content:flex-end;gap:3px;
+ width:100%;height:auto;min-height:35%;padding:26px 6px 8px;overflow:visible;clip-path:none;
+ background:linear-gradient(transparent,#111b26eb 40%,#111b26);white-space:normal;pointer-events:none;
+ color:#ffe0a1;text-shadow:0 2px 3px #000;
+}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-caption span {font:clamp(18px,1.5vw,30px)/1.15 var(--lobby-display-font);letter-spacing:.08em;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-caption small {font:clamp(9px,.65vw,13px)/1.4 var(--lobby-display-font);margin:0;color:#e4cda0;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-featured .lobby-mode-caption {padding-bottom:14px;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-featured .lobby-mode-caption span {font-size:clamp(26px,2vw,38px);}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-number {
+ position:absolute;inset:5px 5px auto auto;width:auto;height:auto;overflow:visible;clip-path:none;
+ margin:0;padding:2px 4px;border:1px solid #b59660;border-radius:3px;background:#101b24dc;
+ color:#ffedbd;font:12px/1.2 sans-serif;pointer-events:none;
+}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-atlas-card:hover:not(:disabled) {filter:brightness(1.13);transform:none;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-atlas-card:active:not(:disabled) {filter:brightness(.85);}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-atlas-card:disabled {filter:grayscale(.85) brightness(.55);cursor:default;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-atlas-card.clicked {opacity:1;filter:brightness(1.35);}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby :is(.lobby-atlas-card,.session-bar button):focus-visible {outline:3px solid #fff0b1;outline-offset:3px;filter:brightness(1.15);}
+
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby > .lobby-footer {
+ position:relative;inset:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ width:calc(100% - 2 * var(--reference-edge));height:auto;min-height:140px;flex:1;gap:8px;
+ margin:0 auto;padding:12px 0;border:0;background:none;box-shadow:none;pointer-events:none;
+}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-footer strong {font-size:clamp(20px,3.5vh,40px);}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-footer span {font-size:clamp(12px,1.8vh,18px);}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby > .session-bar {position:absolute;inset:12px 0 auto;display:flex;width:100%;height:auto;padding:0 var(--reference-edge);gap:8px;pointer-events:none;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .session-switch {position:relative;display:inline-flex;gap:4px;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .session-bar button {
+ position:relative;inset:auto;display:block;flex:none;width:clamp(64px,6cqw,104px);height:auto;min-width:0;min-height:0;margin:0;padding:0;
+ border:0!important;border-image:none!important;border-radius:0;background-image:var(--lobby-reference-atlas);
+ background-repeat:no-repeat;box-shadow:none;color:transparent;-webkit-text-fill-color:transparent;
+ text-shadow:none;font-size:0;pointer-events:auto;transition:filter .16s;
+}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .session-bar button:hover {filter:brightness(1.2);}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .session-switch button[aria-pressed="true"]::after {content:"";position:absolute;left:26%;right:26%;bottom:4%;height:2px;background:#ffdfa0;box-shadow:0 0 7px #ffcc6e;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .session-switch button:first-child {aspect-ratio:103 / 59;background-size:1623.300971% 1594.915254%;background-position:8.413002% 1.473923%;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .session-switch button:last-child {aspect-ratio:105 / 59;background-size:1592.380952% 1594.915254%;background-position:15.188258% 1.473923%;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .session-options {aspect-ratio:101 / 59;background-size:1655.445545% 1594.915254%;background-position:86.569064% 1.473923%;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .session-bar .session-options {margin-left:auto;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .session-exit {aspect-ratio:99 / 59;background-size:1688.888889% 1594.915254%;background-position:93.070566% 1.473923%;}
+
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-common-tools {top:80px;right:var(--reference-edge);max-height:calc(100% - 96px);overflow:auto;}
+#splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-empty {position:absolute;left:20%;top:72%;background:#111c28;}
+@media (max-width:1100px) {
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby > .lobby-modes {grid-template-columns:repeat(2,minmax(0,1fr));}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-extra {grid-column:1 / -1;width:calc((100% - var(--reference-gap)) / 2);justify-self:center;}
+}
+@media (max-width:650px) {
+ /* Container units retain readable proportions when the engine zooms its body. */
+ #splash.shousha-lobby:has(.reference-lobby) .session-entry.reference-lobby {--reference-edge:2cqw;--reference-gap:3cqw;--card-gap:2cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby > .lobby-heading {height:58cqw;padding-top:14cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-heading h1 {width:min(76%,440px);height:auto;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-kicker {font-size:3.5cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-welcome {font-size:3cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .session-bar button {width:18cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-common-tools {top:16cqw;width:92cqw;gap:2cqw;padding:2cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-common-tools button {flex:1 1 38cqw;min-width:0;min-height:10cqw;font-size:4cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-common-tools span {font-size:3cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby > .lobby-modes {grid-template-columns:minmax(0,1fr);}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-group {padding:2cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-heading {padding-bottom:3cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-heading h2 {font-size:5cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-heading p {font-size:3cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-group-extra {grid-column:auto;width:auto;justify-self:stretch;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-caption {padding:7cqw 1cqw 2cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-caption span {font-size:5cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-caption small {font-size:2.7cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-featured .lobby-mode-caption span {font-size:6.5cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-mode-number {font-size:2.8cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby > .lobby-footer {min-height:30cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-footer strong {font-size:5cqw;}
+ #splash.shousha-lobby:has(.reference-lobby) .reference-lobby .lobby-footer span {font-size:3cqw;}
+}
+@media (prefers-reduced-motion:reduce) {#splash.shousha-lobby:has(.reference-lobby) .reference-lobby :is(.lobby-atlas-card,.session-bar button) {transition:none;}}

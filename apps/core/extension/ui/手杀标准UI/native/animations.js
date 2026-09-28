@@ -74,8 +74,7 @@ export function mountSkinAnimations({base,files,config,active=()=>true,enabled=(
   renderer.playSpine({...def,loop:false},position);
  }
  const battle=mountBattleEffects({base,parts,config,inventory,active,enabled,
-  prepare:async()=>({classes:await prepare(),data:metadata}),
-  volume:()=>Math.max(0,Math.min(1,(config.volumn_audio??8)/8))});
+  prepare:async()=>({classes:await prepare(),data:metadata})});
  function syncBattle(){
   const players=[...document.querySelectorAll('#arena>.player:not(.minskin)')];
   battle.syncTargets(players.filter(player=>player.matches('.selectable,.selected,.target')));

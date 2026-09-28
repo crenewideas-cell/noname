@@ -1,0 +1,24 @@
+ async function anchorGeometry(endPose=false,attachments=false){
+  if(model||disposed)return null;
+  const {subjectBounds,transformBounds}=await import('./composition.js');
+  const layers=engine42?.layers||root.children,declared=sourceScene?.layers?.findIndex(l=>l.role==='primary'),named=entry.models.findIndex(m=>m.legacy?.name===entry.legacy?.name&&entry.legacy?.name);
+  const index=declared>=0?declared:named>=0?named:layers.length-1,l=layers[index],track=l.state?.getCurrent?.(0);if(!l.skeleton)return null;
+  const centers=attachments?(await import('./anchor-geometry.js')).attachmentCenters:null,saved=track?.trackTime;
+  const draw=()=>{if(engine42)engine42.draw(0);else{l.update(0);app.render();}};
+  try{
+   if(endPose&&track){track.trackTime=Math.max(0,track.animation.duration-1/60);draw();}
+   // Fade-out alpha must not erase the ending pose's anatomical reference.
+   const alphas=l.skeleton.slots.map(s=>s.color.a);if(endPose)l.skeleton.slots.forEach(s=>s.color.a=1);
+   let boxes;try{boxes=attachments?centers(l.skeleton):[subjectBounds(l.skeleton,{},true)].filter(b=>b?.width&&b.height);}finally{l.skeleton.slots.forEach((s,i)=>s.color.a=alphas[i]);}
+   const w=innerWidth,h=innerHeight,project=raw=>{
+    const up=engine42?raw:{...raw,y:-raw.y-raw.height};if(endPose)return up;
+    if(sourcePlacement){const t=sourceLayout(sourceScene.layers[index],{width:w,height:h,referenceHeight:sourceScene.viewport.referenceHeight},l.skinSourceBounds),b=transformBounds(up,t);return{x:b.x,y:h-b.y-b.height,width:b.width,height:b.height,key:raw.key};}
+    if(!engine42){const b=transformBounds(raw,{scale:l.scale.x,x:l.x,y:l.y,angle:l.angle});return{x:root.x+b.x*root.scale.x,y:root.y+b.y*root.scale.y,width:b.width*root.scale.x,height:b.height*root.scale.y,key:raw.key};}
+    const b=transformBounds(raw,l.transform||{}),cover=entry.legacy?fillScene:preview,scale=(entry.legacy&&cover?Math.max(w/fit.width,h/fit.height):Math.min(w/fit.width,h/fit.height))*(cover?1:.97)*view.scale;
+    return{x:w/2+(b.x-fit.x-fit.width/2)*scale+w*view.x,y:h/2-(b.y+b.height-fit.y-fit.height/2)*scale+h*view.y,width:b.width*scale,height:b.height*scale,key:raw.key};
+   };
+   if(attachments)return{points:boxes.map(project),viewport:{width:w,height:h}};
+   return boxes.length?{...project(boxes[0]),viewport:{width:w,height:h}}:null;
+  }finally{if(endPose&&track){track.trackTime=saved;draw();}}
+ }
+ const subjectAnchor=endPose=>anchorGeometry(endPose),attachmentAnchors=endPose=>anchorGeometry(endPose,true);

@@ -1,16 +1,16 @@
-import { subscribePresentation, followPortraitEffect } from 'noname';
+import { subscribePresentation, followPortraitEffect, mountBattleAudio } from 'noname';
 const cards={sha:'heisha',shan:'shan',tao:'tao',jiu:'jiu',wuxie:'wuxiekeji',wuzhong:'wuzhongshengyou',guohe:'guohechaiqiao',shunshou:'shunshouqianyang',nanman:'nanmanruqin',wanjian:'wanjianqifa',taoyuan:'taoyuanjieyi',wugu:'wugufengdeng',huogong:'huogong',tiesuo:'tiesuolianhuan',lebu:'lebusishu',bingliang:'bingliangcunduan',shandian:'shandian'};
 const nationalCards={gz_guguoanbang:'effect_guguoanbang',gz_haolingtianxia:'effect_haolingtianxia',gz_kefuzhongyuan:'effect_kefuzhongyuan',gz_wenheluanwu:'effect_wenheluanwu'};
 // 琉璃版 animation.js: these are arena-wide effects, not avatar animations.
 const fullscreenCards={nanman:{name:'../../../标记补充/animation/effect_nanmanruqin',scale:.8},taoyuan:{name:'SS_taoyuanjieyi',scale:.8,speed:3},wanjian:{name:'../../../标记补充/animation/effect_wanjianqifa_full',scale:.9,speed:.7,y:[0,.4]}};
-export function mountBattleEffects({base,parts,config,inventory,prepare,active,enabled,volume}) {
+export function mountBattleEffects({base,parts,config,inventory,prepare,active,enabled}) {
  let metadata;
  const options={get effects(){return config.ss_effects!==false&&config.extension_十周年UI_gameAnimationEffect!==false;},get sound(){return config.ss_effects_sound!==false;},get indicator(){return config.extension_十周年UI_CPZS||'shoushaX';}};
  const effectRoot='original/十周年UI/assets/animation/';
  const assetPath=name=>{const segments=[];for(const part of (effectRoot+name).split('/')){if(part==='..')segments.pop();else if(part!=='.')segments.push(part);}return segments.join('/');};
  const markEffect=name=>'../../../标记补充/animation/'+name;
  const hasEffect=name=>inventory.has(assetPath(name)+'.skel');
- const audio=new Set(),loads=new Map(),pending=new Set(),targets=new Map(),dying=new Map(),drinking=new Map(),specialSkills=new Map(),transients=new Map(),delayed=new Set();
+ const loads=new Map(),pending=new Set(),targets=new Map(),dying=new Map(),drinking=new Map(),specialSkills=new Map(),transients=new Map(),delayed=new Set();
  const pendingCards=[],seenCards=new WeakSet(),cardBirths=new WeakMap(),cardSprites=new Map();
  for(const card of document.querySelectorAll('#arena>.card.thrown'))seenCards.add(card);
 
@@ -20,12 +20,8 @@ export function mountBattleEffects({base,parts,config,inventory,prepare,active,e
  let disposed=false,renderer,failed=false,over=false,skillScene,skillRequest=0;
  function later(callback,delay){const timer=setTimeout(()=>{delayed.delete(timer);if(!disposed)callback();},delay);delayed.add(timer);}
  function destroy(){clearSkill();if(!renderer)return;const current=renderer;renderer=undefined;cancelAnimationFrame(current.requestId);current.canvas.remove();for(const release of [()=>current.stopSpineAll(),()=>current.spine.assetManager?.dispose?.(),()=>current.spine.shader?.dispose?.(),()=>current.spine.batcher?.dispose?.(),()=>current.gl?.getExtension('WEBGL_lose_context')?.loseContext()])try{release();}catch(error){console.warn('动画释放失败',error);}}
- function sound(name){
-  if(disposed||over||!active()||!enabled()||!options.effects||options.sound===false||!parts.has('arena'))return;
-  const file=['original/标记补充/audio/','original/十周年UI/audio/'].map(root=>root+name+'.mp3').find(file=>inventory.has(file));if(!file)return;
-  const node=new Audio(base+file);node.volume=volume();audio.add(node);
-  const stop=()=>{node.pause();node.onended=node.onerror=null;node.removeAttribute('src');audio.delete(node);};node.onended=stop;node.onerror=stop;void node.play().catch(stop);
- }
+ const sharedAudio=mountBattleAudio({active:()=>!disposed&&parts.has('arena')&&active(),enabled:()=>options.sound!==false});
+ const sound=sharedAudio.sound;
  async function play(definition,player,time,anchor){
   const def=typeof definition==='string'?{name:definition}:definition,name=def.name;
   if(!hasEffect(name))return;
@@ -194,9 +190,9 @@ export function mountBattleEffects({base,parts,config,inventory,prepare,active,e
   const fullscreenKind=previous&&message.time-previous.message.time<1500&&[previous.message.label,previous.message.animationLabel].includes(message.label)?previous.kind:'limited';
   if(message.type==='fullscreen')specialSkills.delete(message.player?.seat);
   const prepared=await prepare();metadata=prepared.data;if(disposed||over||!active())return;
-  let effect,extraEffect,sfx,player=message.player;
+  let effect,extraEffect,player=message.player;
   switch(message.type){
-   case 'start':effect='effect_youxikaishi_shousha';sfx='game_start_shousha';break;
+   case 'start':effect='effect_youxikaishi_shousha';break;
    case 'card': {
     let card=cards[message.card];
     if(message.card==='sha'){if(message.color==='red')card='hongsha';if(message.nature.includes('fire'))card='huosha';else if(message.nature.includes('thunder'))card='leisha';else if(message.nature.includes('ice'))card='bingsha';else if(message.nature.includes('kami'))card='shesha';}
@@ -220,7 +216,7 @@ export function mountBattleEffects({base,parts,config,inventory,prepare,active,e
      },350);
     }
     effect=fullscreenCards[message.card];player=null;
-    sfx=message.card==='nanman'?'effect_nanmanruqin':message.card==='wanjian'?'effect_wanjianqifa_full':message.card==='juedou'?'juedou':card;
+    
     break;
    }
    case 'skill': {
@@ -228,7 +224,7 @@ export function mountBattleEffects({base,parts,config,inventory,prepare,active,e
     if(special){if(!message.fullscreen)void showSkill(message,special).catch(error=>console.warn('技能原画动效加载失败，保留本体提示',error));}
     else effect=delayed[message.skill]||metadata.effects.skill[message.skill]||{name:'effect_jineng_SS_1',scale:1.2,x:[-100,0],y:[-100,0]};
     extraEffect={name:'baikuang',speed:1.2,scale:.6};
-    sfx=message.awakening?'juexing':message.mission?'shiming':message.limited?'xianding':'SkillBtn';
+    
     if(!message.awakening&&!message.mission&&!message.limited&&!metadata.effects.skill[message.skill])void play({name:'effect_jineng_SS_2',speed:2,scale:1,x:[-15,.5]},player,message.time).catch(error=>console.warn('技能扫光加载失败',error));
     break;
    }
@@ -238,10 +234,10 @@ export function mountBattleEffects({base,parts,config,inventory,prepare,active,e
     // The core supplies the cause and public amount. A skin cannot infer
     // damage/HP loss from a negative popup or rerun armor/recovery rules.
     const health=message.health,n=health?.value;
-    if(health?.kind==='damage'&&health.sourced&&Number.isFinite(n)&&n>=3){const name=n===3?'diankuangtulu':'wanjunqushou';sound('ss_'+name);void play({name:markEffect(name),scale:.7,speed:n===3?.8:1.15},null,message.time).catch(error=>console.warn('伤害成就动画失败',error));}
+    if(health?.kind==='damage'&&!health.unreal&&health.sourced&&Number.isFinite(n)&&n>=3){const name=n===3?'diankuangtulu':'wanjunqushou';void play({name:markEffect(name),scale:.7,speed:n===3?.8:1.15},null,message.time).catch(error=>console.warn('伤害成就动画失败',error));}
     if(health?.kind==='damage'&&message.value<0){const actions=message.nature==='thunder'?['play5','play6']:message.nature==='fire'?['play3','play4']:['play1','play2'];extraEffect={name:'effect_shoujidonghua',action:actions[message.value<=-2?1:0],scale:.8};}
     if(health?.kind==='recover'&&message.value>0)extraEffect={name:'effect_zhiliao',scale:.7};
-    if(health?.kind==='loseHp'&&n>0){effect={name:markEffect('effect_loseHp'),scale:.6,speed:.8};sfx='SZN_loseHp';}
+    if(health?.kind==='loseHp'&&n>0){effect={name:markEffect('effect_loseHp'),scale:.6,speed:.8};}
     else if(Number.isInteger(n)&&n<=9){
      if(health?.kind==='recover'&&n>=1)effect={name:'shuzi2',action:String(n),speed:.6,scale:.5,y:20};
      else if(health?.kind==='damage'&&!health.unreal&&n>1)effect={name:markEffect('shuzi'),action:String(n),speed:.8,scale:.6};
@@ -256,22 +252,22 @@ export function mountBattleEffects({base,parts,config,inventory,prepare,active,e
     player=message.target;
     if(message.card==='guohe'&&message.player?.seat!==player.seat){
      effect={name:'../../../标记补充/animation/effect_guohechaiqiao',action:'zizouqi_guohechaiqiao_futou',scale:.8};
-     extraEffect={name:'../../../标记补充/animation/effect_guohechaiqiao',action:'zizouqi_guohechaiqiao_qiao',scale:.8};sfx='guohechaiqiao';
+     extraEffect={name:'../../../标记补充/animation/effect_guohechaiqiao',action:'zizouqi_guohechaiqiao_qiao',scale:.8};
     }else if(message.card==='shunshou'){
-     sfx='shunshouqianyang';void steal(message).catch(error=>console.warn('顺手牵羊动效失败',error));
+     void steal(message).catch(error=>console.warn('顺手牵羊动效失败',error));
     }
     break;
    }
    case 'recoveryAchievement': {
     let index=0;for(const achievement of message.achievements||[]){
      const name={recovery:'Xmiaoshouhuichun',rescue:'Xyishugaochao'}[achievement];if(!name)continue;
-     const show=()=>{sound('ss_'+name.slice(1));void play({name:markEffect(name),scale:.68,y:[0,.52],speed:.8},null,performance.now()).catch(error=>console.warn('治疗成就动画失败',error));};
+     const show=()=>{void play({name:markEffect(name),scale:.68,y:[0,.52],speed:.8},null,performance.now()).catch(error=>console.warn('治疗成就动画失败',error));};
      if(index++)later(show,2200);else show();
     }
     break;
    }
    case 'death': {
-    effect='SS_zhenwang';sfx='ss_dead';
+    effect='SS_zhenwang';
     if(message.source&&message.source.seat!==message.player?.seat){
      const portraits=killPortraits(message);
      // The host supplies the authoritative cumulative count. A skin never
@@ -280,23 +276,20 @@ export function mountBattleEffects({base,parts,config,inventory,prepare,active,e
      if(count){
       const show=()=>{
       const action='play'+count;
-      const soundName=['yipo','shuanglian','sanlian','silian','wulian','liulian','qilian'][count-1];
       const time=performance.now();
       void play({name:markEffect('shoushajisha'),action,scale:.8},null,time).catch(error=>console.warn('击杀成就动画失败',error));
-      sound('a_'+soundName);
       };if(portraits)later(show,3000);else show();
      }
      if(message.source.avatar&&message.player?.avatar){
-      void play({name:'effect_jisha1',scale:1.2},null,message.time).catch(error=>console.warn('击杀动画失败',error));sound('kill_effect_sound');
+      void play({name:'effect_jisha1',scale:1.2},null,message.time).catch(error=>console.warn('击杀动画失败',error));
      }
     }
     break;
    }
 
   }
-  if(message.type==='card'&&nationalCards[message.card]){effect='../../../标记补充/animation/'+nationalCards[message.card];sfx=nationalCards[message.card];player=null;}
-  if(sfx)sound(sfx);
+  if(message.type==='card'&&nationalCards[message.card]){effect='../../../标记补充/animation/'+nationalCards[message.card];player=null;}
   if(effect||extraEffect)return Promise.all([extraEffect,effect].filter(Boolean).map(def=>play(def,player,message.time)));
  });
- return {sound,syncTargets,syncDying,syncDrinking,syncCards,dispose(){disposed=true;pendingCards.length=0;for(const entry of cardSprites.values())entry.cancelled=true;cardSprites.clear();for(const timer of delayed)clearTimeout(timer);delayed.clear();for(const [node,timer] of transients){clearTimeout(timer);node.remove();}transients.clear();for(const entries of [targets,dying,drinking]){for(const entry of entries.values())entry.cancelled=true;entries.clear();}specialSkills.clear();unsubscribe();for(const cancel of pending)cancel();pending.clear();destroy();for(const node of audio){node.pause();node.onended=node.onerror=null;node.removeAttribute('src');}audio.clear();loads.clear();}};
+ return {sound,syncTargets,syncDying,syncDrinking,syncCards,dispose(){disposed=true;pendingCards.length=0;for(const entry of cardSprites.values())entry.cancelled=true;cardSprites.clear();for(const timer of delayed)clearTimeout(timer);delayed.clear();for(const [node,timer] of transients){clearTimeout(timer);node.remove();}transients.clear();for(const entries of [targets,dying,drinking]){for(const entry of entries.values())entry.cancelled=true;entries.clear();}specialSkills.clear();unsubscribe();for(const cancel of pending)cancel();pending.clear();destroy();sharedAudio.dispose();loads.clear();}};
 }

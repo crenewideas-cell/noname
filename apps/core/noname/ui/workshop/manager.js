@@ -7,19 +7,20 @@ import { builtinPacks } from "./presets.js";
 import { providerDirectory } from './provider.js';
 import { decadeManifest, mixIngame, INGAME_PARTS } from './ingame.js';
 import css from "./manager.css?inline";
+import surfaceCSS from "../../../layout/default/lobby-surface.css?inline";
+import { renderStyleControls } from "./styleControls.js";
 
 let current;
 const SLOT_NAMES = { background: "背景", texture: "纹理 / 图片", alternate: "未翻转卡背", frame: "武将边框", high: "高体力", mid: "中体力", low: "低体力", lost: "已损失体力", font: "自定义字体" };
-const STYLE_FIELDS = { color: "文字 / 指示线颜色", "background-color": "底色", "border-color": "边框颜色", "border-radius": "圆角（如 12px）", "font-size": "字号（如 16px）", gap: "间距（如 12px）", "box-shadow": "阴影 / 发光", width: "宽度（指示线如 3px）", opacity: "透明度（0–1）" };
 
 export async function openWorkshop() {
 	if (current) { current.focus(); return; }
 	const host = document.createElement("noname-ui-workshop");
 	host.tabIndex = -1; current = host;
 	const shadow = host.attachShadow({ mode: "open" });
-	const sheet = document.createElement("style"); sheet.textContent = css; shadow.append(sheet);
+	const sheet = document.createElement("style"); sheet.textContent = css + '\n' + surfaceCSS; shadow.append(sheet);
 	const el = (tag, parent, text, className) => { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; parent?.append(node); return node; };
-	const veil = el("div", shadow, undefined, "veil");
+	const veil = el("dialog", shadow, undefined, "veil lobby-surface");
 	const panel = el("section", veil, undefined, "panel"); panel.setAttribute("role", "dialog"); panel.setAttribute("aria-modal", "true"); panel.setAttribute("aria-label", "UI 工坊");
 	const header = el("header", panel); el("h1", header, "UI 工坊"); el("span", header, "整套使用 · 自由混搭 · 素材随包分享", "muted"); el("span", header, "", "spacer");
 	const toolbar = el("div", panel, undefined, "toolbar");
@@ -40,7 +41,7 @@ export async function openWorkshop() {
 	const priorFocus = document.activeElement;
 	const previousInert = [...document.body.children].filter(node => node instanceof HTMLElement).map(node => [node, node.inert]);
 	previousInert.forEach(([node]) => { node.inert = true; });
-	document.body.append(host); host.focus();
+	document.body.append(host); veil.showModal(); host.focus();
 	const message = (text, error = false) => { status.textContent = text; status.classList.toggle("error", error); };
 	const action = (parent, text, handler, className) => {
 		const button = el("button", parent, text, className); button.type = "button";
@@ -59,9 +60,10 @@ export async function openWorkshop() {
 		host.remove(); current = undefined; priorFocus?.focus?.();
 	}
 	function mayReplace() { return !dirty || confirm("当前搭配有未保存的修改，确定放弃这些修改？"); }
+	veil.addEventListener('cancel', event => { event.preventDefault(); if (!busy && mayReplace()) cleanup(); });
 	action(header, "关闭", () => { if (mayReplace()) cleanup(); });
 	host.addEventListener("keydown", event => {
-		if (event.key === "Escape") { event.stopPropagation(); if (!busy && mayReplace()) cleanup(); }
+		if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); if (!busy && mayReplace()) cleanup(); }
 		if (event.key === "Tab") {
 			const nodes = [...shadow.querySelectorAll("button,input,select,textarea,summary,iframe")].filter(node => !node.disabled && node.offsetParent !== null);
 			const first = nodes[0], last = nodes[nodes.length - 1];
@@ -147,7 +149,7 @@ export async function openWorkshop() {
 			if (!mayReplace()) return;
 			draft = await resolvePack(selectedLibrary); dirty = false; renderEditor(); updatePreview(); message("已载入整套。可以混搭、编辑或应用。");
 		});
-		action(commands, "从当前游戏外观创建", async () => {
+		action(commands, "以当前外观创建", async () => {
 			if (!mayReplace()) return;
 			draft = await captureCurrent(); dirty = true; renderEditor(); updatePreview(); message("已读取本体外观配置和自定义素材。第三方扩展自行注入的界面代码不会自动拆分。");
 		});
@@ -206,16 +208,15 @@ export async function openWorkshop() {
 			});
 		}
 		el("h3", editor, "素材");
-		if (part.runtime) el("p", editor, `此部件使用${({shousha:"手杀标准UI",rzsh:"如真似幻",decade:"十周年局内 UI"})[part.runtime]}内置素材与界面程序，导出时会一并打包。下方可添加自己的覆盖素材。`, "muted");
-		el("p", editor, "图片支持 PNG / JPG / WebP / GIF / AVIF；字体支持 WOFF / WOFF2 / TTF / OTF。素材会复制到套装中。", "muted");
+		if (part.runtime) el("p", editor, `当前使用${({shousha:"手杀标准UI",rzsh:"如真似幻",decade:"十周年局内 UI"})[part.runtime]}素材，可按需替换。`, "muted");
+		const assetHelp=el('details',editor);el('summary',assetHelp,'支持的素材格式');el('p',assetHelp,'图片：PNG / JPG / WebP / GIF / AVIF。字体：WOFF / WOFF2 / TTF / OTF。导出时一并打包。','muted');
 		for (const slot of PARTS[partId].slots) assetRow(part, slot);
 		if (PARTS[partId].map) {
 			for (const slot of Object.keys(part.assets).filter(slot => slot.startsWith(PARTS[partId].map + ":"))) assetRow(part, slot);
 			const mapRow = el("div", editor, undefined, "row");
-			const input = field(mapRow, partId === "cards" ? "卡牌 ID（如 sha / shan / tao）" : "模式 ID（如 identity / guozhan）", "");
-			const list = el("datalist", editor); list.id = "ui-asset-ids"; input.setAttribute("list", list.id);
+			const input = field(mapRow, partId === "cards" ? "选择卡牌" : "选择模式", "",undefined,'select');
 			const ids = partId === "cards" ? Object.keys(lib.card || {}) : lib.config.all.mode;
-			for (const id of ids) { const option = el("option", list, get.translation(id)); option.value = id; }
+			for (const id of ids) { const option = el("option", input, get.translation(id)); option.value = id; }
 			action(mapRow, "添加对应图片", () => {
 				if (!/^[a-zA-Z0-9_-]{1,100}$/.test(input.value)) throw new Error("请填写有效的卡牌或模式 ID");
 				return chooseAsset(part, `${PARTS[partId].map}:${input.value}`);
@@ -232,10 +233,11 @@ export async function openWorkshop() {
 				draft = validateRecord(candidate); changed(); renderEditor(); message(`已加入 ${additions.length} 个素材。`);
 			}, true));
 		}
-		el("h3", editor, "颜色与细节（留空沿用原样式）");
+		el("h3", editor, "颜色与细节");
+		el('p',editor,'点击色块自选颜色，尺寸直接选择；选“沿用原样式”可恢复。','muted');
 		if (partId === "lines") el("p", editor, "本体特效可直接选择；自定义颜色、粗细和纹理作用于“默认”指示线。画布型攻击动画保留本体实现。", "muted");
 		const styles = el("div", editor, undefined, "fields");
-		for (const [key, name] of Object.entries(STYLE_FIELDS)) field(styles, name, part.style[key] || "", value => { if (value.trim()) part.style[key] = value.trim(); else delete part.style[key]; });
+		renderStyleControls(styles,part,partId,changed);
 		const advanced = el("details", editor); el("summary", advanced, "高级：编辑当前部件清单");
 		el("p", advanced, "可配置 rules，为部件内部元素调整颜色、间距、网格等。仅接受外观属性；素材使用 assets 内的相对路径。", "muted");
 		const json = el("textarea", advanced); json.setAttribute("aria-label", "部件 JSON"); json.value = JSON.stringify(part, null, 2);
@@ -272,11 +274,10 @@ export async function openWorkshop() {
 		const generation = ++previewGeneration;
 		previewDispose?.(); previewDispose = undefined; previewURLs.forEach(url => URL.revokeObjectURL(url)); previewURLs = [];
 		preview.replaceChildren(); el("h2", preview, "素材搭配预览");
-		el("p", preview, "这是素材与样式的示意预览；本体主题、布局和启动模板在应用后生效。", "muted");
-		if (draft.manifest.components.home?.runtime === "rzsh") el("p", preview, "已包含如真似幻交互大厅。动画、原版菜单与模式选择会在应用后整套启用；下方仅预览其余素材搭配。", "muted");
+		el("p", preview, "预览当前搭配，保存并应用后在游戏中生效。", "muted");
 		const shousha = Object.values(draft.manifest.components).some(part => part.runtime === "shousha");
 		if (shousha) {
-			el("p", preview, "手杀标准UI：登录页播放原版动画；大厅、选将和对局展示原版参考图。完整交互在应用套装后启用。所有依赖封装在套装内部，不列为独立扩展。", "muted");
+			el("p", preview, "大厅和对局为参考图，完整效果请在应用后体验。", "muted");
 			select(preview, "预览页面", {login:"登录界面",home:"大厅 / 模式选择",arena:"对局 / 卡牌 / 控件"}, previewScreen, value => {previewScreen=value;updatePreview();});
 		}
 		const frame = el("iframe", preview); frame.title = "UI 素材预览"; frame.setAttribute("sandbox", shousha ? "allow-same-origin allow-scripts" : "allow-same-origin");
@@ -299,8 +300,9 @@ export async function openWorkshop() {
 				previewDispose = () => {appearanceDispose();runtimeDispose?.();};
 			} catch (error) { message(error.message || String(error), true); }
 		};
-		const lines = Object.entries(draft.manifest.components).map(([id, part]) => `${PARTS[id].name}：${part.name || "自定义"} · ${part.runtime ? "内置界面素材 + " : ""}${Object.keys(part.assets || {}).length} 项自定义素材`);
-		el("p", preview, lines.join("\n"), "summary muted");
+		const parts=Object.entries(draft.manifest.components),assets=parts.reduce((total,[,part])=>total+Object.keys(part.assets||{}).length,0);
+		const overview=el('details',preview,undefined,'composition-overview');el('summary',overview,`搭配清单 · ${parts.length} 个部件 · ${assets} 项自定义素材`);
+		const list=el('dl',overview);for(const [id,part]of parts){const row=el('div',list);el('dt',row,PARTS[id].name);el('dd',row,`${part.name||'自定义'} · ${Object.keys(part.assets||{}).length ? Object.keys(part.assets).length+' 项素材' : part.runtime?'内置素材':'沿用原设置'}`);}
 	}
 	busy = true; workspace.inert = true; toolbar.inert = true;
 	try { draft = await captureCurrent(); message(lib.uiWorkshop?.error || "已读取当前本体外观。可选取套装部件、添加素材，保存后应用。"); }

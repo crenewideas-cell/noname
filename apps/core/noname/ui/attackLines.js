@@ -29,10 +29,10 @@ export function renderAttackLine({ style, path, parent, assetURL = "", duration,
 	node.className = "migrated-attack-line";
 	node.dataset.lineStyle = style;
 	node.setAttribute("aria-hidden", "true");
-	const texture = textures[style], height = texture.height, width = distance + 2;
+	const texture = textures[style], height = texture.height, width = distance;
 	Object.assign(node.style, {
 		position: "absolute", pointerEvents: "none", zIndex: "1000", margin: "0", padding: "0", border: "0",
-		left: `${x}px`, top: `${y - 30}px`, width: `${width}px`, height: `${height}px`,
+		left: `${x}px`, top: `${y - height / 2}px`, width: `${width}px`, height: `${height}px`,
 		transformOrigin: "0 50%", transform: `rotate(${angle}deg) scaleX(0)`,
 		opacity: String(Number.isFinite(opacity) ? Math.max(0, Math.min(1, opacity)) : 1),
 		background: `url(${JSON.stringify(assetURL + "image/pointer/migrated/" + texture.folder + "/line.png")}) 0 0 / 100% 100% no-repeat`,

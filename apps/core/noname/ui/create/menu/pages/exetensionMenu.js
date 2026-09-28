@@ -3,7 +3,10 @@ import { ui, game, get, ai, lib, _status } from "noname";
 import { delay } from "@/util/index.js";
 import { security } from "@/util/sandbox.js"
 import { Character } from "@/library/element/index.js";
-import { groupExtensionMenus, mergedMenuSections, createPackSubmenu } from "../extensionGroups.js";
+import { groupExtensionMenus, mergedMenuSections, createPackSubmenu, extensionCharacterPacks, extensionExpectsCharacters } from "../extensionGroups.js";
+
+import { installMenuSearch, createEnabledFilter, matchesEnabledFilter, revealMenuTarget } from "../menuSearch.js";
+import { enableExtensionRuntime, refreshExtensionCharacters } from "../../../../init/extensionRuntime.js";
 
 export const extensionMenu = function (connectMenu, context) {
 	if (connectMenu) {
@@ -20,16 +23,33 @@ export const extensionMenu = function (connectMenu, context) {
 	// @ts-expect-error ignore
 	var start = cacheMenuxpages.shift();
 	var rightPane = start.lastChild;
+	const characterMenuPage = (context?.menux || menux).pages[2];
 	const groupedNodes = [];
 	const groupedTabs = new Map();
 	const groupSummaries = [];
+	const searchEntries = [];
+	let packSearch;
+	const groupFilters = [];
+	const isEnabled = mode => mode.startsWith("extension_") ? !!lib.config[`${mode}_enable`] : lib.config.plays.includes(mode);
+	let builtinMenu;
+	const openBuiltinTool = node => {
+		clickMode.call(builtinMenu.node);
+		builtinMenu.search.value = "";
+		builtinMenu.enabledFilter.value = "all";
+		builtinMenu.search.dispatchEvent(new Event("input"));
+		node.loadTool();
+		node.toolDetails.open = true;
+		revealMenuTarget(node.toolDetails, rightPane);
+	};
 
 	var clickMode = function () {
+		if (this.toolDetails) return openBuiltinTool(this);
 		if (this.mode == "get") {
 			this.update();
 		}
 		var active = this.parentNode.querySelector(".active");
 		if (active === this) {
+			this.loadCharacters?.();
 			return;
 		}
 		active?.classList.remove("active");
@@ -42,6 +62,7 @@ export const extensionMenu = function (connectMenu, context) {
 			this._initLink();
 			rightPane.appendChild(this.link);
 		}
+		this.loadCharacters?.();
 		updateNodes();
 	};
 	ui.click.extensionTab = function (name) {
@@ -50,9 +71,11 @@ export const extensionMenu = function (connectMenu, context) {
 		if (grouped) {
 			clickMode.call(grouped.node);
 			grouped.search.value = "";
+			grouped.enabledFilter.value = "all";
 			grouped.search.dispatchEvent(new Event("input"));
 			grouped.details.open = true;
-			grouped.details.scrollIntoView({ block: "nearest" });
+			grouped.load?.();
+			revealMenuTarget(grouped.details, rightPane);
 			return;
 		}
 		for (var i = 0; i < start.firstChild.childElementCount; i++) {
@@ -64,7 +87,7 @@ export const extensionMenu = function (connectMenu, context) {
 	};
 	var updateNodes = function () {
 		for (const node of [...start.firstChild.childNodes, ...groupedNodes]) {
-			if (node.extensionGroup) continue;
+			if (node.extensionGroup || !node.mode) continue;
 			if (node.mode == "get") {
 				continue;
 			}
@@ -97,17 +120,23 @@ export const extensionMenu = function (connectMenu, context) {
 				}
 			}
 		}
-		for (const { name: groupName, header, members } of groupSummaries) {
+		for (const { name: groupName, builtin, header, members } of groupSummaries) {
 			let enabled = 0;
 			for (const { mode, summary, name } of members) {
-				const on = !!lib.config[`${mode}_enable`];
+				const on = mode.startsWith("extension_") ? !!lib.config[`${mode}_enable`] : lib.config.plays.includes(mode);
 				if (on) enabled++;
 				summary.textContent = `${name} · ${on ? "已启用" : "已关闭"}`;
 			}
-			header.textContent = `${groupName} · 作者：PXLNGU · 成员扩展（已启用 ${enabled}/${members.length}）`;
+			header.textContent = groupName === "功能性扩展" ? "功能性扩展 · 游戏功能设置" : builtin ? `${groupName} · 界面与皮肤设置` : `${groupName} · 作者：PXLNGU · 成员扩展（已启用 ${enabled}/${members.length}）`;
+		}
+		for (const refresh of groupFilters) refresh();
+		packSearch?.refresh();
+		for (const node of [...start.firstChild.childNodes, ...groupedNodes]) {
+			if (node.link?.isConnected && (!node.link.parentElement.matches("details") || node.link.parentElement.open)) node.loadCharacters?.();
 		}
 	};
 	var togglePack = function (bool) {
+		if (this.dataset.loading === "true") return false;
 		var name = this._link.config._name;
 		if (name.startsWith("extension_")) {
 			if (bool) {
@@ -128,6 +157,28 @@ export const extensionMenu = function (connectMenu, context) {
 			this.onswitch(bool);
 		}
 		updateNodes();
+		if (name.startsWith("extension_")) {
+			const extension = name.slice(10, -7);
+			if (!bool) refreshExtensionCharacters(extension);
+			else {
+				const control = this;
+				control.dataset.loading = "true";
+				control.setAttribute("aria-busy", "true");
+				const status = ui.create.div(".config.extension-loading-status", "正在加载扩展…", control.parentNode);
+				void enableExtensionRuntime(extension).then(() => {
+					status.remove();
+					control.parentNode.refreshExtensionConfig?.();
+				}).catch(error => {
+					game.saveConfig(name, false);
+					refreshExtensionCharacters(extension);
+					status.textContent = `加载失败：${error.message || error}。可再次开启重试。`;
+				}).finally(() => {
+					delete control.dataset.loading;
+					control.removeAttribute("aria-busy");
+					updateNodes();
+				});
+			}
+		}
 	};
 
 	var createModeConfig = function (mode, position) {
@@ -140,6 +191,43 @@ export const extensionMenu = function (connectMenu, context) {
 		node.mode = mode;
 		// node._initLink=function(){
 		node.link = page;
+		const renderedPacks = new Map();
+		let characterStatus;
+		node.loadCharacters = () => {
+			if (!mode.startsWith("extension_")) return;
+			const packs = extensionCharacterPacks(mode.slice(10), lib);
+			if (!packs.length) {
+				if (extensionExpectsCharacters(mode.slice(10))) {
+					characterStatus ||= ui.create.div(".config.extension-character-status", page);
+					characterStatus.textContent = isEnabled(mode) ? "武将包正在准备，加载完成后自动显示。" : "此扩展已关闭，开启后自动加载武将。";
+				}
+				return;
+			}
+			characterStatus?.remove();
+			characterStatus = undefined;
+			characterMenuPage.ensure?.();
+			if (!characterMenuPage.createCharacterPackPage) return;
+			const anchor = page.querySelector(":scope > .extension-action, :scope > .pack-submenu, :scope > .extension-pack-manage");
+			for (const [key, existing] of renderedPacks) {
+				if (packs.some(pack => pack.mode === key)) continue;
+				ui.create.cancelButtonPreparation(existing.node);
+				existing.node.remove();
+				renderedPacks.delete(key);
+			}
+			for (const pack of packs) {
+				const signature = JSON.stringify(pack.characters);
+				const existing = renderedPacks.get(pack.mode);
+				if (existing?.signature === signature) continue;
+				const portraits = characterMenuPage.createCharacterPackPage(pack.mode, pack.characters);
+				if (portraits) {
+					if (existing) { ui.create.cancelButtonPreparation(existing.node); existing.node.replaceWith(portraits); }
+					else page.insertBefore(portraits, anchor);
+					renderedPacks.set(pack.mode, { signature, node: portraits });
+				}
+			}
+			ui.create.prepareButtons(Array.from(page.querySelectorAll(".prebutton-pending")));
+		};
+		const buildControls = () => {
 		const sections = mergedMenuSections(mode.slice(10)).map(section => ({ ...section, controls: [] }));
 		for (var i in lib.extensionMenu[mode]) {
 			if (i == "game") {
@@ -184,10 +272,11 @@ export const extensionMenu = function (connectMenu, context) {
 		}
 		for (const section of sections) {
 			const details = createPackSubmenu(page, section.name, `settings:${mode}:${section.name}`);
+			section.details = details;
 			if (section.controls.length) details.append(...section.controls);
 			else {
 				const help = document.createElement("p");
-				help.textContent = lib.config[`${mode}_enable`] ? "随主包加载；该成员无独立设置。武将资料请在“武将”页展开对应分组。" : "当前主包未开启；成员资源仍在，启用主包并重启后显示设置。";
+				help.textContent = lib.config[`${mode}_enable`] ? "随主包加载；该成员无独立设置。" : "当前主包未开启；成员资源仍在，启用主包并重启后显示设置。";
 				details.append(help);
 			}
 		}
@@ -202,9 +291,26 @@ export const extensionMenu = function (connectMenu, context) {
 		}
 		// };
 		// if(!get.config('menu_loadondemand')) node._initLink();
+		const label = get.plainText(node.textContent);
+		searchEntries.push({ label, mode, node, keywords: [mode, lib.extensionPack[mode.slice(10)]?.intro || ""].join(" ") });
+		for (const section of sections) {
+			searchEntries.push({ label: section.name, parentLabel: label, mode, node, section: section.details });
+		}
+		};
+		page.refreshExtensionConfig = () => {
+			ui.create.cancelButtonPreparation(page);
+			page.replaceChildren();
+			renderedPacks.clear();
+			characterStatus = undefined;
+			for (let i = searchEntries.length - 1; i >= 0; i--) if (searchEntries[i].node === node) searchEntries.splice(i, 1);
+			buildControls();
+			node.loadCharacters();
+		};
+		buildControls();
 		return node;
 	};
 	const createGroup = function (group) {
+		const functional = group.name === "功能性扩展";
 		const page = ui.create.div("");
 		page.style.cssText = "padding:10px;box-sizing:border-box;width:100%";
 		const node = ui.create.div(".menubutton.large", group.name, start.firstChild, clickMode);
@@ -213,18 +319,24 @@ export const extensionMenu = function (connectMenu, context) {
 		node.link = page;
 		const header = document.createElement("div");
 		header.style.cssText = "position:relative;font-size:18px;line-height:1.6;margin-bottom:8px";
+		if (group.builtin || functional) header.style.cssText += ";display:block;text-align:left;font-size:24px";
 		page.appendChild(header);
 		const help = document.createElement("div");
-		help.textContent = "展开武将可调整原有开关及设置，修改后重启生效。此处只统一管理，不改变原技能、素材或已保存的选项。";
+		help.textContent = group.builtin || functional ? "展开下方功能可调整原有开关和设置。" : "开启扩展后自动加载武将，并同步到武将栏位。展开可调整原有开关及设置。";
 		help.style.cssText = "position:relative;font-size:13px;line-height:1.6;opacity:.8;margin-bottom:10px";
+		if (group.builtin || functional) help.style.cssText += ";display:block;text-align:left;font-size:18px";
 		page.appendChild(help);
 		const search = document.createElement("input");
 		search.type = "search";
-		search.placeholder = "搜索武将扩展";
-		search.setAttribute("aria-label", `搜索 ${group.name} 武将扩展`);
+		search.placeholder = group.builtin || functional ? `搜索${group.name}` : "搜索武将扩展";
+		search.setAttribute("aria-label", group.builtin || functional ? `搜索${group.name}` : `搜索 ${group.name} 武将扩展`);
 		search.style.cssText = "position:relative;box-sizing:border-box;width:100%;margin-bottom:10px;padding:6px";
+		if (group.builtin || functional) search.style.fontSize = "18px";
 		page.appendChild(search);
+		const enabledFilter = createEnabledFilter(`${group.name}：启用状态`, () => refreshFilter());
+		page.appendChild(enabledFilter);
 		const members = [];
+		const searchableDetails = [];
 		for (const mode of group.members) {
 			// Reuse the exact original controls and config keys, including custom
 			// onclick/onswitch callbacks. Never import disabled extension code here.
@@ -232,20 +344,27 @@ export const extensionMenu = function (connectMenu, context) {
 			groupedNodes.push(member);
 			const name = member.textContent?.trim() || mode.slice(10);
 			const details = createPackSubmenu(page, name, `settings:${group.name}:${mode}`);
-			details.dataset.extension = mode.slice(10);
+			details.dataset.extension = mode.startsWith("extension_") ? mode.slice(10) : mode;
 			const summary = details.querySelector("summary");
 			details.append(summary, member.link);
+			details.addEventListener("toggle", () => { if (details.open) member.loadCharacters(); });
+			if (details.open) member.loadCharacters();
 			page.appendChild(details);
 			members.push({ mode, name, details, summary });
-			const target = { node, details, search };
-			groupedTabs.set(mode.slice(10), target);
+			searchableDetails.push({ name, details, mode });
+			const target = { node, details, search, enabledFilter, load: member.loadCharacters };
+			groupedTabs.set(mode, target);
+			groupedTabs.set(mode.startsWith("extension_") ? mode.slice(10) : mode, target);
 			groupedTabs.set(name, target);
 		}
-		search.addEventListener("input", () => {
+		const refreshFilter = () => {
 			const query = search.value.trim().toLocaleLowerCase();
-			for (const { name, details } of members) details.hidden = !name.toLocaleLowerCase().includes(query);
-		});
-		groupSummaries.push({ name: group.name, header, members });
+			for (const { name, details, mode } of searchableDetails) details.hidden = !name.toLocaleLowerCase().includes(query) || !matchesEnabledFilter(mode ? isEnabled(mode) : undefined, enabledFilter.value);
+		};
+		search.addEventListener("input", refreshFilter);
+		groupFilters.push(refreshFilter);
+		groupSummaries.push({ name: group.name, builtin: group.builtin, header, members });
+		return { node, page, search, enabledFilter, searchableDetails };
 	};
 	let extensionsInMenu = Object.keys(lib.extensionMenu);
 	if (lib.config.extensionSort && Array.isArray(lib.config.extensionSort)) {
@@ -256,13 +375,21 @@ export const extensionMenu = function (connectMenu, context) {
 	const visibleExtensions = extensionsInMenu.filter(i =>
 		!(lib.config.all.stockextension.includes(i) && !lib.config.all.plays.includes(i)) && !lib.config.hiddenPlayPack.includes(i)
 	);
+	// Built-in UI/skin providers retain their original controls and config keys.
+	// Defer their single entry until AFTER the maker and download tools, so saved
+	// extensionSort cannot move it away from the end of the sidebar.
+	const builtinModes = new Set(["如真似幻", "手杀标准UI", "十周年局内UI", "千幻聆音"].map(name => `extension_${name}`));
+	const functionalModes = new Set(["cardpile", "boss", "coin"]);
+	const functionalGroup = { name: "功能性扩展", members: visibleExtensions.filter(mode => functionalModes.has(mode)) };
+	const builtinGroup = { name: "内置功能", builtin: true, members: visibleExtensions.filter(mode => builtinModes.has(mode)) };
 	if (import.meta.env.DEV) {
 		const toolbar = document.createElement("div"); toolbar.className = "extension-studio-entry";
 		const button = document.createElement("button"); button.textContent = "扩展工坊 · 管理与导出";
 		button.onclick = () => window.open(new URL("/__extensions/", location.origin).href, "_blank", "noopener");
 		toolbar.append(button); start.firstChild.prepend(toolbar);
 	}
-	for (const entry of groupExtensionMenus(visibleExtensions)) {
+	if (functionalGroup.members.length) createGroup(functionalGroup);
+	for (const entry of groupExtensionMenus(visibleExtensions.filter(mode => !builtinModes.has(mode) && !functionalModes.has(mode)))) {
 		if (typeof entry === "string") createModeConfig(entry, start.firstChild);
 		else createGroup(entry);
 	}
@@ -411,14 +538,7 @@ export const extensionMenu = function (connectMenu, context) {
 				dash2.link.classList.remove("active");
 				dash3.link.classList.remove("active");
 				dash4.link.classList.remove("active");
-				var active = node.parentNode.querySelector(".active");
-				if (active === node) {
-					return;
-				}
-				active.classList.remove("active");
-				active.link.remove();
-				node.classList.add("active");
-				rightPane.appendChild(node.link);
+				clickMode.call(node);
 			};
 			var processExtension = async function (exportext) {
 				if (page.currentExtension) {
@@ -2792,6 +2912,52 @@ export const extensionMenu = function (connectMenu, context) {
 			node._initLink();
 		}
 	})();
+	builtinMenu = createGroup(builtinGroup);
+    for (const node of [...start.firstChild.children].filter(node => ["create", "get"].includes(node.mode))) {
+        // Move the original lazy tool pages, preserving their handlers and state.
+        const name = node.textContent;
+        document.createElement("div").append(node);
+        const details = createPackSubmenu(builtinMenu.page, name, "settings:内置功能:" + node.mode);
+        node.toolDetails = details;
+        node.loadTool = () => {
+            node.update?.();
+            if (!node.link) node._initLink();
+            if (!details.contains(node.link)) details.append(node.link);
+        };
+        details.addEventListener("toggle", () => { if (details.open) node.loadTool(); });
+        if (details.open) node.loadTool();
+        builtinMenu.searchableDetails.push({name, details});
+        groupedTabs.set(name, {node:builtinMenu.node, details, search:builtinMenu.search, enabledFilter:builtinMenu.enabledFilter, load:node.loadTool});
+        searchEntries.push({label:name, mode:node.mode, node, tool:true});
+    }
+	packSearch = installMenuSearch(start.firstChild, {
+		label: "搜索扩展 / 功能",
+		entries: () => searchEntries.map(entry => {
+			const grouped = groupedTabs.get(entry.mode);
+			return {
+				...entry,
+				enabled: entry.tool ? undefined : isEnabled(entry.mode),
+				path: [entry.tool ? "内置功能" : grouped?.node.textContent, entry.parentLabel, entry.label].filter(Boolean).join(" › "),
+				open: () => {
+					if (entry.tool) return openBuiltinTool(entry.node);
+					if (grouped) {
+						clickMode.call(grouped.node);
+						grouped.search.value = "";
+						grouped.enabledFilter.value = "all";
+						grouped.search.dispatchEvent(new Event("input"));
+						grouped.details.open = true;
+						grouped.load?.();
+					} else {
+						clickMode.call(entry.node);
+					}
+					if (entry.section) entry.section.open = true;
+					const target = entry.section || grouped?.details;
+					if (target) revealMenuTarget(target, rightPane);
+					else rightPane.scrollTop = 0;
+				},
+			};
+		}),
+	});
 	var active = start.firstChild.querySelector(".active");
 	if (!active) {
 		active = start.firstChild.querySelector(".menubutton");
@@ -2801,5 +2967,9 @@ export const extensionMenu = function (connectMenu, context) {
 		active._initLink();
 	}
 	rightPane.appendChild(active.link);
+	active.loadCharacters?.();
 	updateNodes();
+	const refreshCharacters = () => { if (start.isConnected) updateNodes(); };
+	menuUpdates.push(refreshCharacters);
+	return refreshCharacters;
 };

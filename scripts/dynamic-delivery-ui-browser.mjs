@@ -1,0 +1,38 @@
+import fs from 'node:fs/promises';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';import {createRequire} from 'node:module';
+const {chromium}=createRequire(import.meta.url)('C:/Users/1/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const root='output/dynamic-remediation/20260926-r01/runtime-delivery-r06',phase=process.env.SKIN_DELIVERY_PHASE||'before',out=root+'/'+phase,origin='http://127.0.0.1:8081';await fs.mkdir(out,{recursive:true});
+const report={phase,errors:[],cases:[],runtimeResponses:[],runtimeOverrides:false,entryOverrides:false};
+const context=await chromium.launchPersistentContext(root+'/isolated-profile',{headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',viewport:{width:1440,height:900}});
+const installed=JSON.parse(await fs.readFile('apps/core/game/organized-extensions.json'));
+try{
+ await context.routeWebSocket('**',s=>s.close());
+ await context.route('**/*',r=>new URL(r.request().url()).hostname!=='127.0.0.1'?r.abort():r.continue());
+ await context.route('**/game/config.json',async r=>{const response=await r.fetch(),config=await response.json();Object.assign(config,{extensions:['千幻聆音'],extension_auto_import:false,new_tutorial:true,version:'1.11.6',show_splash:'always',mode:'identity',characters:['standard'],cards:['standard'],ui_workshop_active:'builtin-rzsh',change_skin:true,change_skin_auto:'off',animation:true,low_performance:false});for(const k of Object.keys(config))if(k.startsWith('extension_')&&k.endsWith('_enable'))config[k]=false;for(const e of installed)config['extension_'+e.name+'_enable']=e.name==='千幻聆音';await r.fulfill({response,json:config});});
+ await context.addInitScript(()=>sessionStorage.setItem('noname_0.9_return_to_lobby','true'));
+ const page=context.pages()[0]||await context.newPage();page.on('pageerror',e=>report.errors.push(String(e)));
+ const pending=[];page.on('response',r=>{const u=new URL(r.url());if(/\/runtime(?:-[^/]+)?\/(?:player|composition|idle-framing|spine36|source-masks)\.js$/.test(u.pathname))pending.push(r.body().then(b=>report.runtimeResponses.push({url:r.url(),sha256:createHash('sha256').update(b).digest('hex')})).catch(()=>{}));});
+ page.on('dialog',d=>d.accept());
+ await page.goto(origin,{waitUntil:'domcontentloaded',timeout:120000});await page.waitForSelector('#splash canvas',{timeout:120000});
+ await page.evaluate(async()=>{window.__env=await import('/noname.js');await __env.game.localDynamicPacksReady;});
+ for(const [character,id,title]of [['shen_xunyu','base_38c67eef25ea1c12','匡汉延祚'],['shen_xunyu','base_aada6c1f8c328f4b','为汉建安'],['db_wenyang','base_2ffdbe289f05a565','破云翔宇2'],['db_wenyang','base_548a5def3d1b73f9','云涯文鸯']].filter(c=>!process.env.SKIN_DELIVERY_CASE_IDS||process.env.SKIN_DELIVERY_CASE_IDS.split(',').includes(c[1]))){
+  await page.evaluate(character=>window.__skinSession=__env.openCharacterSkins(character,undefined,'skin'),character);
+  const selected=JSON.parse(await fs.readFile('apps/core/extension/imports/本地动态皮肤包/无名杀基础扩展/entries/'+id+'.json'));
+  await page.waitForFunction(key=>[...document.querySelectorAll('.qh-skinchange-shousha-big-skin')].some(n=>n.skin?.skinId===key),selected.skinTitle+'.png');
+  const cardId=await page.evaluate(key=>[...document.querySelectorAll('.qh-skinchange-shousha-big-skin')].find(n=>n.skin?.skinId===key)?.id,selected.skinTitle+'.png');assert.ok(cardId,'exact installed skin token exists');
+  const card=page.locator('#'+cardId);await card.evaluate(n=>n.click());
+  await page.waitForFunction(id=>[...document.querySelectorAll('.qh-image-standard iframe[data-ready=true]')].some(f=>f.contentWindow.skinPlayer?.entry.id===id),id,{timeout:60000});
+  await card.locator('.primary-avatar[data-skin-thumbnail-ready=true]').waitFor({timeout:60000});
+  if(id==='base_548a5def3d1b73f9'&&!phase.startsWith('before'))await page.waitForFunction(()=>{const v=document.querySelector('.qh-window');if(!v?.classList.contains('local-skin-landscape'))return false;const a=v.querySelector('.qh-shousha-big-avatar').getBoundingClientRect(),b=v.querySelector('.qh-shoushabg').getBoundingClientRect(),c=v.querySelector('.qh-page-skin').getBoundingClientRect(),tab=v.querySelector('.qh-button.skillB').getBoundingClientRect();const selected=v.querySelector('.qh-skinchange-shousha-big-skin.sel'),cover=selected?.parentElement?.parentElement;if(!selected||!cover)return false;const sr=selected.getBoundingClientRect(),cr=cover.getBoundingClientRect();return c.left>=a.right&&tab.left>=b.left-2&&sr.left>=cr.left-1&&sr.right<=cr.right+1;},null,{timeout:10000});
+  const data=await page.evaluate(id=>{const f=[...document.querySelectorAll('.qh-image-standard iframe')].find(f=>f.contentWindow.skinPlayer?.entry.id===id),p=f.contentWindow.skinPlayer;if(p.pause)p.pause(true);else{p.engine42?.pause(true);p.app?.stop();}const canvas=p.canvas,t=document.createElement('canvas');t.width=canvas.width;t.height=canvas.height;const ctx=t.getContext('2d');ctx.drawImage(canvas,0,0);let gray=0;const d=ctx.getImageData(0,0,t.width,t.height).data;for(let i=0;i<d.length;i+=4)if(d[i]===80&&d[i+1]===80&&d[i+2]===80&&d[i+3]>240)gray++;return{url:f.src,entry:p.entry.id,fit:p.fit,presentation:p.presentation,fillScene:p.fillScene,grayPixels:gray,pixels:t.width*t.height,frame:f.getBoundingClientRect().toJSON()};},id);
+  data.layout=await page.evaluate(()=>[...document.querySelector('.qh-window').children].map(n=>({class:n.className,rect:n.getBoundingClientRect().toJSON(),left:getComputedStyle(n).left,width:getComputedStyle(n).width,inline:n.getAttribute('style')})));
+  const background=await card.locator('.primary-avatar').evaluate(n=>n.style.backgroundImage);const match=background.match(/data:image\/\w+;base64,([^"')]+)/);assert.ok(match);await fs.writeFile(out+'/'+id+'-thumbnail.webp',Buffer.from(match[1],'base64'));data.thumbnailSHA256=createHash('sha256').update(Buffer.from(match[1],'base64')).digest('hex');
+  if(!phase.startsWith('before')){
+   if(data.presentation.protectedSubject){const s=data.presentation.protectedSubject;assert.ok(Math.abs(data.fit.x+data.fit.width/2-s.x-s.width/2)<1e-4,'actual installed preview must center subject');}
+   if(id==='base_2ffdbe289f05a565')assert.ok(data.grayPixels<data.pixels*.005,'actual installed preview has no gray band');
+   if(id==='base_548a5def3d1b73f9'){assert.equal(data.fillScene,false);assert.ok(data.presentation.previewAspect);}
+  }
+  await page.screenshot({path:out+'/'+id+'-ui.png'});report.cases.push({character,id,title,...data});await fs.writeFile(out+'/report.json',JSON.stringify(report,null,2));console.log(JSON.stringify({phase,id,url:data.url,guard:data.presentation.cameraGuard?.reason}));
+ }
+ report.cacheKeys=await page.evaluate(()=>new Promise(resolve=>{const r=indexedDB.open('noname-dynamic-thumbnails',1);r.onsuccess=()=>{const db=r.result,q=db.transaction('images').objectStore('images').getAllKeys();q.onsuccess=()=>{resolve(q.result);db.close();};};r.onerror=()=>resolve([]);}));
+ await Promise.all(pending);assert.deepEqual(report.errors,[]);report.passed=true;
+}catch(error){report.failure=String(error);const p=context.pages()[0];await p.screenshot({path:out+'/failure.png'}).catch(()=>{});report.failureState=await p.evaluate(()=>({frames:[...document.querySelectorAll('iframe')].map(f=>({src:f.src,ready:f.dataset.ready,entry:f.contentWindow?.skinPlayer?.entry?.id,error:f.contentWindow?.skinPlayerError})),cards:[...document.querySelectorAll('.qh-skinchange-shousha-big-skin')].map(n=>n.textContent)})).catch(()=>null);throw error;}finally{await fs.writeFile(out+'/report.json',JSON.stringify(report,null,2));await context.close();}

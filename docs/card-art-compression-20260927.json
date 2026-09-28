@@ -1,0 +1,508 @@
+{
+  "tool": "built-in image_gen",
+  "style": "Portrait 2:3 collectible card illustration, detailed historical ink or equipment painting on antique parchment, upper 18% and left edge quiet for game labels, no text, lettering, frame or watermark.",
+  "images": [
+    {
+      "id": "mjs003_card_mjs_yujian",
+      "prompt": "玉剑：一柄完整的古代玉柄青白玉剑，斜向构图，精致青铜护手，冷色雷光在剑锋周围消散，纸面留白。Chinese ink and restrained mineral pigment, antique parchment, historical equipment illustration.",
+      "source": "output/card-art-originals/apps/core/extension/packs/名将杀/assets/incremental/mjs003_card_mjs_yujian.png",
+      "dest": "apps/core/extension/packs/名将杀/assets/incremental/mjs003_card_mjs_yujian.webp",
+      "originalDest": "apps/core/extension/packs/名将杀/assets/incremental/mjs003_card_mjs_yujian.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-e2f979a6-4461-40a8-a1a4-99c59899feb6.png",
+        "output": "apps/core/extension/packs/名将杀/assets/incremental/mjs003_card_mjs_yujian.webp",
+        "originalBytes": 3365851,
+        "bytes": 79970,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "mjs003_card_mjs_ju",
+      "prompt": "菊：盛开的金白秋菊与深墨绿叶，几片花瓣在风中回旋，古雅而沉静。Chinese ink and restrained mineral pigment, antique parchment, historical botanical illustration.",
+      "source": "output/card-art-originals/apps/core/extension/packs/名将杀/assets/incremental/mjs003_card_mjs_ju.png",
+      "dest": "apps/core/extension/packs/名将杀/assets/incremental/mjs003_card_mjs_ju.webp",
+      "originalDest": "apps/core/extension/packs/名将杀/assets/incremental/mjs003_card_mjs_ju.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-8a69099e-47c3-4d6e-ae3c-b45e622f4355.png",
+        "output": "apps/core/extension/packs/名将杀/assets/incremental/mjs003_card_mjs_ju.webp",
+        "originalBytes": 3204282,
+        "bytes": 79780,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "tanting",
+      "prompt": "探听：古代谋士藏身竹帘暗处，倾听远处烛光下两位官员交谈，近景侧脸与帘隙形成悬念。Chinese historical ink illustration, sepia parchment and muted colors.",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/tanting.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/tanting.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/tanting.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-d855c06b-2b80-4d29-b92e-b537a53bc1d3.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/tanting.webp",
+        "originalBytes": 2422286,
+        "bytes": 53882,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "xianlu",
+      "prompt": "仙露：青瓷小瓶与翠绿莲叶，晶莹露珠汇入瓶口，淡青雾气，柔和仙光。Chinese historical ink illustration, sepia parchment and muted jade colors.",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/xianlu.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/xianlu.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/xianlu.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-3a299a91-785a-43ab-badc-f53cde9ca1f3.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/xianlu.webp",
+        "originalBytes": 2816569,
+        "bytes": 64346,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "xianrenzhili",
+      "prompt": "仙人之力：白衣道人在山崖挥袖，金色气流卷起巨石，松树和云海，沉稳有力的动作。Chinese historical ink illustration, sepia parchment, restrained gold.",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/xianrenzhili.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/xianrenzhili.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/xianrenzhili.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-273f5cb9-a602-4a8f-b522-eb982d439d28.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/xianrenzhili.webp",
+        "originalBytes": 3243310,
+        "bytes": 91620,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "shidu",
+      "prompt": "施毒：古代黑袖密探将翡翠色药液滴入青铜酒爵，近景手与细颈药瓶，暗处微弱灯光。Chinese historical ink illustration, sepia parchment and restrained green.",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/shidu.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/shidu.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/shidu.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-8e9fa579-19ad-4b17-8360-556a5fea9b51.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/shidu.webp",
+        "originalBytes": 2706891,
+        "bytes": 60932,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "zhan",
+      "prompt": "斩：古代披甲武士双手挥动长刀，凌厉弧形刀光，飞扬披风与墨色尘土，力量感，无血腥。Chinese historical ink illustration, sepia parchment, muted steel and red.",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/zhan.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/zhan.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/zhan.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-3d15a793-5509-404e-951f-0a49d255d07a.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/zhan.webp",
+        "originalBytes": 3278236,
+        "bytes": 94116,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "fengshizhenx",
+      "prompt": "锋矢阵：俯瞰古代军队呈锐利箭头楔形阵列，盾牌长矛有序密集，战旗随风，尘烟。Chinese ink historical tactical illustration, antique parchment, muted ochre.",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/fengshizhenx.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/fengshizhenx.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/fengshizhenx.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-ab78bee1-14f2-4f3d-b4f2-44234afdd7a3.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/fengshizhenx.webp",
+        "originalBytes": 3310658,
+        "bytes": 92138,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "zhonghuangzhenx",
+      "prompt": "中黄阵：俯瞰古代军队环绕中央高台与一面黄色大旗形成守护阵型，大地色调，战场尘烟。Chinese ink historical tactical illustration, antique parchment, muted ochre.",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/zhonghuangzhenx.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/zhonghuangzhenx.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/zhonghuangzhenx.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-6c9d04cf-9d9d-4b4f-8bf0-7d7567f02a2c.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/zhonghuangzhenx.webp",
+        "originalBytes": 3322288,
+        "bytes": 99110,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "pozhenjuex",
+      "prompt": "破阵决：古代骑兵从前景冲破敌军盾阵，盾牌与长矛阵列向两侧分开，破阵气势，无血腥。Chinese ink historical tactical illustration, antique parchment, muted ochre.",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/pozhenjuex.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/pozhenjuex.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/pozhenjuex.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-2c48c43b-8ef9-4bee-9e22-9abcca35dc29.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/pozhenjuex.webp",
+        "originalBytes": 3055774,
+        "bytes": 84312,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "shepanzhenx",
+      "prompt": "蛇蟠阵：高处俯瞰古代长矛军队盘绕成蛇形螺旋阵，中央指挥旗，尘土薄雾。Chinese ink historical tactical illustration, antique parchment, muted ochre.",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/shepanzhenx.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/shepanzhenx.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/shepanzhenx.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-47497fe1-2e0c-4512-9676-70e9c9ca0bbd.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/shepanzhenx.webp",
+        "originalBytes": 3280332,
+        "bytes": 90592,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "wechatjiguangjian",
+      "prompt": "极光剑，金色龙纹科幻战甲骑士的巨大直剑，银色刃与琥珀能量核心，黑金握柄，淡金光辉，完整武器斜置。",
+      "source": "output/card-art-originals/apps/core/extension/packs/活动武将/image/card/wechatjiguangjian.png",
+      "dest": "apps/core/extension/packs/活动武将/image/card/wechatjiguangjian.webp",
+      "originalDest": "apps/core/extension/packs/活动武将/image/card/wechatjiguangjian.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-bd6fa139-4f4c-4f1b-8d36-f1f326cf9770.png",
+        "output": "apps/core/extension/packs/活动武将/image/card/wechatjiguangjian.webp",
+        "originalBytes": 3289990,
+        "bytes": 84724,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "wechatjiguangdun",
+      "prompt": "极光盾，金色龙纹科幻战甲骑士的盾牌，厚重黑金甲片，浮雕龙首，琥珀能量核心，完整盾牌。",
+      "source": "output/card-art-originals/apps/core/extension/packs/活动武将/image/card/wechatjiguangdun.png",
+      "dest": "apps/core/extension/packs/活动武将/image/card/wechatjiguangdun.webp",
+      "originalDest": "apps/core/extension/packs/活动武将/image/card/wechatjiguangdun.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-61706a75-3ac1-4a54-9c5a-5c40ea72c19b.png",
+        "output": "apps/core/extension/packs/活动武将/image/card/wechatjiguangdun.webp",
+        "originalBytes": 3428183,
+        "bytes": 100632,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "wechatdihuangzhanji",
+      "prompt": "帝皇战戟，金色龙纹科幻战甲的长柄战戟，龙首金刃，黑金长柄，琥珀色晶体，完整武器斜置。",
+      "source": "output/card-art-originals/apps/core/extension/packs/活动武将/image/card/wechatdihuangzhanji.png",
+      "dest": "apps/core/extension/packs/活动武将/image/card/wechatdihuangzhanji.webp",
+      "originalDest": "apps/core/extension/packs/活动武将/image/card/wechatdihuangzhanji.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-1a8c43f5-3ee6-47a2-90fe-f3878c5e0094.png",
+        "output": "apps/core/extension/packs/活动武将/image/card/wechatdihuangzhanji.webp",
+        "originalBytes": 3189315,
+        "bytes": 79762,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "wechatlieyanbiao",
+      "prompt": "烈焰镖，火焰战甲的双翼回旋镖，红色金属与银色锋刃，凤翼轮廓，少量烈焰围绕，完整物件。",
+      "source": "output/card-art-originals/apps/core/extension/packs/活动武将/image/card/wechatlieyanbiao.png",
+      "dest": "apps/core/extension/packs/活动武将/image/card/wechatlieyanbiao.webp",
+      "originalDest": "apps/core/extension/packs/活动武将/image/card/wechatlieyanbiao.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-5f6fcde1-398f-4ff0-aa98-ee442151314c.png",
+        "output": "apps/core/extension/packs/活动武将/image/card/wechatlieyanbiao.webp",
+        "originalBytes": 3387058,
+        "bytes": 91098,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "wechatlieyandao",
+      "prompt": "烈焰刀，火焰战甲骑士的长刀，红黑握柄、锋利银刃与火焰金纹，刀锋流动赤金火光，完整长刀斜置。",
+      "source": "output/card-art-originals/apps/core/extension/packs/活动武将/image/card/wechatlieyandao.png",
+      "dest": "apps/core/extension/packs/活动武将/image/card/wechatlieyandao.webp",
+      "originalDest": "apps/core/extension/packs/活动武将/image/card/wechatlieyandao.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-28133ad2-fd9a-4525-9bd1-6008edca9b3e.png",
+        "output": "apps/core/extension/packs/活动武将/image/card/wechatlieyandao.webp",
+        "originalBytes": 3158443,
+        "bytes": 80770,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "wechatlieyangong",
+      "prompt": "烈焰弓，火焰战甲的机械长弓，凤翼形红金弓臂，银色刃饰，绷紧的能量弓弦，火光凝成箭矢，完整长弓。",
+      "source": "output/card-art-originals/apps/core/extension/packs/活动武将/image/card/wechatlieyangong.png",
+      "dest": "apps/core/extension/packs/活动武将/image/card/wechatlieyangong.webp",
+      "originalDest": "apps/core/extension/packs/活动武将/image/card/wechatlieyangong.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-d504a806-3085-4748-8578-a370ca69184d.png",
+        "output": "apps/core/extension/packs/活动武将/image/card/wechatlieyangong.webp",
+        "originalBytes": 3315443,
+        "bytes": 84692,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "xzm_DB_diaogong",
+      "prompt": "雕弓，华丽中国古代硬弓，深木色弓身镶嵌鎏金鹰羽雕饰，绿色玉饰与红色绶带，细致雕刻，完整长弓与一支羽箭斜置。",
+      "source": "output/card-art-originals/apps/core/extension/packs/星之梦/card/artwork/xzm_DB_diaogong.png",
+      "dest": "apps/core/extension/packs/星之梦/card/artwork/xzm_DB_diaogong.webp",
+      "originalDest": "apps/core/extension/packs/星之梦/card/artwork/xzm_DB_diaogong.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-97110a70-a73d-4bdb-925e-6708c809e947.png",
+        "output": "apps/core/extension/packs/星之梦/card/artwork/xzm_DB_diaogong.webp",
+        "originalBytes": 3143295,
+        "bytes": 71724,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "mjs_pen_kuangzhang",
+      "prompt": "匡章：战国齐国老将，黝黑短须，青铜鳞甲，披风，手按长剑，背后函谷雄关与旌旗，沉稳威严。",
+      "style": "Create one finished portrait 2:3 card illustration. Detailed painterly fantasy collectible card art, convincing anatomy and materials, dramatic but restrained colors, subtle parchment texture, cohesive with Chinese historical card games. Subject occupies lower central 80%, quiet top and left for UI text. Full illustration, no words, no typography, no watermark, no card frame. ",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_kuangzhang.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_kuangzhang.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_kuangzhang.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-b8dc7c21-5d35-440e-86cf-bdd0dfb66dc3.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_kuangzhang.webp",
+        "originalBytes": 2771599,
+        "bytes": 67578,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "mjs_pen_zouyan",
+      "prompt": "邹衍：战国阴阳家老者，长须白发，青灰宽袍，手展简牍，五行星象和山海环绕，深邃但朴素。",
+      "style": "Create one finished portrait 2:3 card illustration. Detailed painterly fantasy collectible card art, convincing anatomy and materials, dramatic but restrained colors, subtle parchment texture, cohesive with Chinese historical card games. Subject occupies lower central 80%, quiet top and left for UI text. Full illustration, no words, no typography, no watermark, no card frame. ",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_zouyan.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_zouyan.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_zouyan.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-c6cf1b70-11d6-4c41-8e7a-b1a79c8d42c6.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/portraits/mjs_pen_zouyan.webp",
+        "originalBytes": 3175878,
+        "bytes": 86418,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "hun_yiyin",
+      "prompt": "伊尹：商代贤相，中年长须，古朴深色祭服，手持玉圭，青铜鼎与殿堂远景，庄重。",
+      "style": "Create one finished portrait 2:3 card illustration. Detailed painterly fantasy collectible card art, convincing anatomy and materials, dramatic but restrained colors, subtle parchment texture, cohesive with Chinese historical card games. Subject occupies lower central 80%, quiet top and left for UI text. Full illustration, no words, no typography, no watermark, no card frame. ",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_yiyin.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_yiyin.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_yiyin.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-55f56fd1-9f66-40b3-87b6-c68dcd55605e.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_yiyin.webp",
+        "originalBytes": 2655416,
+        "bytes": 50300,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "hx_chuzhuangwang",
+      "prompt": "楚庄王：春秋楚王，成熟男性，黑红王袍，早期冕冠，青铜礼鼎，红黑凤纹，威严的雄主。",
+      "style": "Create one finished portrait 2:3 card illustration. Detailed painterly fantasy collectible card art, convincing anatomy and materials, dramatic but restrained colors, subtle parchment texture, cohesive with Chinese historical card games. Subject occupies lower central 80%, quiet top and left for UI text. Full illustration, no words, no typography, no watermark, no card frame. ",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/portraits/hx_chuzhuangwang.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hx_chuzhuangwang.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hx_chuzhuangwang.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-0d9c3bbc-ea44-42df-b3da-edd4d4222543.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hx_chuzhuangwang.webp",
+        "originalBytes": 2694833,
+        "bytes": 64714,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "hun_zhuangzi",
+      "prompt": "庄子：清瘦中年哲人，布衣披散长发，安然倚古树，蝴蝶与朦胧鲲鹏云海，青绿淡金。",
+      "style": "Create one finished portrait 2:3 card illustration. Detailed painterly fantasy collectible card art, convincing anatomy and materials, dramatic but restrained colors, subtle parchment texture, cohesive with Chinese historical card games. Subject occupies lower central 80%, quiet top and left for UI text. Full illustration, no words, no typography, no watermark, no card frame. ",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_zhuangzi.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_zhuangzi.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_zhuangzi.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-0d49f6cf-45f2-4d89-9e1a-d7447a5c7439.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_zhuangzi.webp",
+        "originalBytes": 3171336,
+        "bytes": 94678,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "hx_zhaochongguo",
+      "prompt": "赵充国：汉代白须老将，铁甲红袍，手持地形简图，背后边塞屯田麦浪和军营，稳重苍劲。",
+      "style": "Create one finished portrait 2:3 card illustration. Detailed painterly fantasy collectible card art, convincing anatomy and materials, dramatic but restrained colors, subtle parchment texture, cohesive with Chinese historical card games. Subject occupies lower central 80%, quiet top and left for UI text. Full illustration, no words, no typography, no watermark, no card frame. ",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/portraits/hx_zhaochongguo.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hx_zhaochongguo.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hx_zhaochongguo.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-95f84d0f-72c9-4fb5-9473-ac141b5fb1a9.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hx_zhaochongguo.webp",
+        "originalBytes": 2870352,
+        "bytes": 80380,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "shen_huozhurong",
+      "prompt": "火神祝融：上古神话男性火神，强壮端正，赤铜甲与火焰长发，举起燃烧的长矛，祥云火龙盘旋，朱红金色。",
+      "style": "Create one finished portrait 2:3 card illustration. Detailed painterly fantasy collectible card art, convincing anatomy and materials, dramatic but restrained colors, subtle parchment texture, cohesive with Chinese historical card games. Subject occupies lower central 80%, quiet top and left for UI text. Full illustration, no words, no typography, no watermark, no card frame. ",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/portraits/shen_huozhurong.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/shen_huozhurong.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/shen_huozhurong.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-9e057ecd-e661-4c33-a465-94054229fe3b.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/portraits/shen_huozhurong.webp",
+        "originalBytes": 3030090,
+        "bytes": 92364,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "hun_yaosong",
+      "prompt": "姚崇与宋璟：唐代两位成熟文臣并肩，一人紫袍一人深青袍，黑色幞头，手持奏章，金色朝堂，刚正平和，画面明确两个人。",
+      "style": "Create one finished portrait 2:3 card illustration. Detailed painterly fantasy collectible card art, convincing anatomy and materials, dramatic but restrained colors, subtle parchment texture, cohesive with Chinese historical card games. Subject occupies lower central 80%, quiet top and left for UI text. Full illustration, no words, no typography, no watermark, no card frame. ",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_yaosong.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_yaosong.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_yaosong.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-7566246e-8b75-456b-8d86-2aca16a8218f.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/portraits/hun_yaosong.webp",
+        "originalBytes": 2644766,
+        "bytes": 60112,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "swx_wudouwawa",
+      "prompt": "巫毒娃娃：精美奇幻游戏召唤物，一只小型棕色缝线布偶，纽扣眼睛，布补丁和几根银针，紫色幽光缠绕，非血腥，精致可爱神秘。",
+      "style": "Create one finished portrait 2:3 card illustration. Detailed painterly fantasy collectible card art, convincing anatomy and materials, dramatic but restrained colors, subtle parchment texture, cohesive with Chinese historical card games. Subject occupies lower central 80%, quiet top and left for UI text. Full illustration, no words, no typography, no watermark, no card frame. ",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/portraits/swx_wudouwawa.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/swx_wudouwawa.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/swx_wudouwawa.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-61a640b9-5c33-40b1-85b4-ae11113f0763.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/portraits/swx_wudouwawa.webp",
+        "originalBytes": 2547975,
+        "bytes": 64086,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "swe_Dfeiaoleituo",
+      "prompt": "残影的菲奥雷托：日式奇幻青年男性剑客，紫黑短发，优雅冷峻，白黑紫贵族长衣，腰侧细长佩剑，紫色蝴蝶与高速残影，帅气动画游戏厚涂。",
+      "style": "Create one finished portrait 2:3 card illustration. Detailed painterly fantasy collectible card art, convincing anatomy and materials, dramatic but restrained colors, subtle parchment texture, cohesive with Chinese historical card games. Subject occupies lower central 80%, quiet top and left for UI text. Full illustration, no words, no typography, no watermark, no card frame. ",
+      "source": "output/card-art-originals/apps/core/extension/collections/卡牌扩展/artwork/portraits/swe_Dfeiaoleituo.png",
+      "dest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/swe_Dfeiaoleituo.webp",
+      "originalDest": "apps/core/extension/collections/卡牌扩展/artwork/portraits/swe_Dfeiaoleituo.png",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-31973b1f-3773-4759-96e7-9c9d11587904.png",
+        "output": "apps/core/extension/collections/卡牌扩展/artwork/portraits/swe_Dfeiaoleituo.webp",
+        "originalBytes": 2898511,
+        "bytes": 73244,
+        "width": 512,
+        "height": 768,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "hlhj_qingsi",
+      "source": "output/card-art-originals/apps/core/extension/packs/红楼幻境/hlhj_qingsi.png",
+      "originalDest": "apps/core/extension/packs/红楼幻境/hlhj_qingsi.png",
+      "dest": "apps/core/extension/packs/红楼幻境/artwork/hlhj_qingsi.webp",
+      "compression": {
+        "input": "apps/core/extension/packs/红楼幻境/hlhj_qingsi.png",
+        "output": "apps/core/extension/packs/红楼幻境/artwork/hlhj_qingsi.webp",
+        "originalBytes": 2919346,
+        "bytes": 51328,
+        "width": 512,
+        "height": 512,
+        "quality": 82,
+        "alpha": false
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 <template>
   <section class="online-panel online-social">
-    <header class="online-list-heading"><h2>同道好友</h2><button @click="refresh" :disabled="busy">刷新</button></header>
+    <header class="online-list-heading"><h2><RoomIcon kind="friends" />同道好友</h2><button @click="refresh" :disabled="busy">刷新</button></header>
     <p v-if="error" class="online-modal-error" role="alert">{{ error }}</p>
     <p v-if="notice" role="status">{{ notice }}</p>
     <form class="online-chat-form" @submit.prevent="find"><input v-model="code" maxlength="12" placeholder="输入 12 位玩家码" aria-label="搜索玩家码" /><button :disabled="busy || code.length !== 12">查找</button></form>
@@ -16,6 +16,7 @@
 </template>
 <script setup lang="ts">
 import { computed, ref, onBeforeUnmount } from "vue";
+import RoomIcon from "./RoomIcon.vue";
 import { onlineState as s, api, command, loadSocial } from "../client";
 const emit = defineEmits<{ joined: [modeId: string] }>();
 const code = ref(''), found = ref<any>(null), error = ref(''), notice = ref(''), busy = ref(false), selectedInvite = ref<any>(null), invitePassword = ref('');

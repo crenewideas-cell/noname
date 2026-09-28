@@ -499,7 +499,7 @@ export default {
 			const state = {};
 			for (const id in lib.playerOL) {
 				const player = lib.playerOL[id];
-				state[id] = { identity: player.identity };
+				state[id] = { identity: player.identity, identityShown: player.identityShown === true };
 				if (player == game.zhu) {
 					state[id].zhu = true;
 				}
@@ -545,6 +545,15 @@ export default {
 						game.zhong = player;
 					}
 					player.ai.shown = state[id].shown;
+					// Reconnect/state sync must repair the public label and the
+					// already-created death overlay as well as the identity field.
+					if (state[id].identityShown || player.classList.contains("dead")) player.showIdentity();
+					else if (player === game.me && !game.observe) {
+						// Knowing one's own role is private, not a public reveal.
+						player.setIdentity();
+						player.node.identity.classList.remove("guessing");
+						if (player.special_identity) player.node.identity.firstChild.innerHTML = get.translation(`${player.special_identity}_bg`);
+					}
 					//player.group=state[i].group;
 					//player.node.name.dataset.nature=get.groupnature(player.group);
 				}
@@ -3107,13 +3116,13 @@ export default {
 				if (_status.video) {
 					return;
 				}
+				let str;
+				if (this.special_identity) {
+					str = get.translation(this.special_identity);
+				} else {
+					str = get.translation(`${this.identity}2`);
+				}
 				if (!this.node.dieidentity) {
-					let str;
-					if (this.special_identity) {
-						str = get.translation(this.special_identity);
-					} else {
-						str = get.translation(`${this.identity}2`);
-					}
 					const node = ui.create.div(".damage.dieidentity", str, this);
 					if (str === "野心家") {
 						node.style.fontSize = "40px";
@@ -3122,6 +3131,9 @@ export default {
 					node.style.opacity = 1;
 					this.node.dieidentity = node;
 				}
+				// Remote death animation can arrive before the identity reveal.
+				this.node.dieidentity.textContent = str;
+				this.node.dieidentity.style.fontSize = str === "野心家" ? "40px" : "";
 				const trans = this.style.transform;
 				if (trans) {
 					if (trans.indexOf("rotateY") !== -1) {
@@ -3202,9 +3214,13 @@ export default {
 				if (!this.identityShown) {
 					game.broadcastAll(
 						(player, identity, identity2) => {
-							player.setIdentity(player.identity);
+							player.identity = identity2;
+							if (identity) player.special_identity = identity;
+							player.setIdentity(identity2);
 							player.identityShown = true;
+							player.ai.shown = 1;
 							player.node.identity.classList.remove("guessing");
+							if (player.node.dieidentity) player.$dieAfter();
 							if (identity) {
 								player.node.identity.firstChild.innerHTML = get.translation(`${identity}_bg`);
 								game.log(player, "的身份是", `#g${get.translation(identity)}`);
@@ -3449,6 +3465,7 @@ export default {
 				this.identityShown = true;
 				this.ai.shown = 1;
 				this.setIdentity();
+				if (this.node.dieidentity) this.$dieAfter();
 				if (this.special_identity) {
 					this.node.identity.firstChild.innerHTML = get.translation(`${this.special_identity}_bg`);
 				}

@@ -1,0 +1,188 @@
+@font-face {font-family:lobby-calligraphy;src:url('../../font/shousha.woff2') format('woff2');font-display:swap;}
+html.lobby-settings-page,
+#window:has(#arena),
+.lobby-tool-menu,
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice,.game-navigation:not(:where(.ss-game-menu))) {
+ --lobby-ink:#30251c;
+ --lobby-paper:#c4b590;
+ --lobby-gold:#d3b472;
+ --lobby-button:url('../../image/lobby/decade-button.png');
+ --lobby-button-active:url('../../image/lobby/decade-button-active.png');
+ --lobby-frame:linear-gradient(135deg,#c4b493,#675746 7px,#b8a181 12px,#4f4436 17px);
+ --lobby-font:lobby-calligraphy,"STKaiti","KaiTi",serif;
+ --lobby-panel-width:min(1360px,calc(100% - 64px));
+ --lobby-heading:#91866a;--lobby-sidebar:#a39676;--lobby-line:#a99b78;
+ --lobby-muted:#65563e;--lobby-accent:#702a1d;
+ --lobby-button-frame:var(--lobby-button) 8 fill / 12px / 0 stretch;
+ --lobby-panel-border:3px ridge #b5a78a;
+ --lobby-panel-shadow:0 12px 48px #0008,inset 0 0 0 2px #d5c4a1;
+}
+/* Atlas-backed home controls own their image, crop and frame, including text.
+   Provider-owned navigation menus keep their own artwork in every button state. */
+html.lobby-settings-page .lobby-settings-heading button,
+html.lobby-settings-page #window .menu .menubutton,
+html.lobby-settings-page #window .menu .left.pane > div:not(.extension-studio-entry),
+.lobby-tool-menu button,
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice,.game-navigation:not(:where(.ss-game-menu))) button:not(:where(.reference-lobby .lobby-atlas-card,.reference-lobby .session-bar button)) {
+ box-sizing:border-box;border:10px solid transparent!important;border-radius:0!important;
+ border-image:var(--lobby-button-frame)!important;
+ background:none!important;color:#fff3d3!important;
+ box-shadow:none!important;
+ text-shadow:0 1px 2px #3b120e!important;cursor:pointer;
+ font-family:var(--lobby-font)!important;transition:filter .15s,box-shadow .15s;
+}
+html.lobby-settings-page .lobby-settings-heading button:hover,
+html.lobby-settings-page #window .menu .menubutton:hover,
+.lobby-tool-menu button:hover,
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice,.game-navigation:not(:where(.ss-game-menu))) button:not(:where(.reference-lobby .lobby-atlas-card,.reference-lobby .session-bar button)):hover:not(:disabled) {filter:brightness(1.08);}
+html.lobby-settings-page #window .menu .left.pane > div.active,
+html.lobby-settings-page .lobby-settings-heading button:active,
+.lobby-tool-menu button:active,
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice,.game-navigation:not(:where(.ss-game-menu))) button:not(:where(.reference-lobby .lobby-atlas-card,.reference-lobby .session-bar button)):is(:active,.selected,.active,.is-active,[aria-pressed="true"]) {border-image-source:var(--lobby-button-active)!important;color:#ffe4a5!important;}
+html.lobby-settings-page :is(button,[contenteditable],input,select):focus-visible,
+.lobby-tool-menu button:focus-visible,
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice,.game-navigation:not(:where(.ss-game-menu))) :is(button,input,select,textarea,summary):focus-visible {outline:3px solid #f2d692;outline-offset:3px;}
+/* Shared elements from template 0. Page styles supply layout, never a new palette. */
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) {
+ color:var(--lobby-ink);font:20px/1.5 var(--lobby-font);text-shadow:none;
+ --ol-muted:var(--lobby-muted);--ol-line:var(--lobby-line);--ol-gold:var(--lobby-accent);
+}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) * {box-sizing:border-box;scrollbar-width:thin;scrollbar-color:#94794f #d8c7a4;}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) :is(h1,h2,h3,h4) {font-family:var(--lobby-font);font-weight:normal;color:inherit;text-shadow:none;}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) h1 {font-size:32px;letter-spacing:.12em;}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) h2 {font-size:28px;}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) h3 {font-size:23px;}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) :is(small,.muted,.online-eyebrow,.skin-manager-help) {color:var(--lobby-muted);}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) button {min-height:46px;max-width:100%;padding:4px 14px;font-size:20px;line-height:1.3;white-space:normal;overflow-wrap:anywhere;}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) button:disabled {opacity:.5;cursor:not-allowed;filter:none;}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) :is(input,select,textarea):not([type=checkbox]):not([type=radio]) {
+ min-height:44px;padding:8px 12px;border:1px solid #9c8155;border-radius:4px;background:#fffaee;color:var(--lobby-ink);font:inherit;text-shadow:none;max-width:100%;
+}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) input::placeholder {color:var(--lobby-muted);opacity:.85;}
+/* Native inputs keep keyboard and accessibility semantics; visuals match template 0 toggles. */
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) input:is([type=checkbox],[type=radio]) {
+ appearance:none;position:relative;display:inline-block;flex:0 0 60px;width:60px!important;height:30px!important;min-width:60px;min-height:30px!important;padding:0!important;margin:0 8px 0 0;vertical-align:middle;
+ background:#18201f!important;border:1px solid #6c5d46;border-radius:18px!important;box-shadow:inset 0 1px 4px #0005;cursor:pointer;
+}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) input:is([type=checkbox],[type=radio])::before {
+ content:'';position:absolute;width:26px;height:26px;top:1px;left:1px;box-sizing:border-box;background:linear-gradient(#fff6dc,#d6bd89);border:1px solid #6c5533;border-radius:50%;box-shadow:0 1px 3px #0008;
+}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) input:is([type=checkbox],[type=radio]):checked {background:#8b713d!important;border-color:#b0985f;}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) input:is([type=checkbox],[type=radio]):checked::before {left:31px;}
+:is(.lobby-surface .panel,.skin-manager,.online-dialog,.online-panel,.shousha-native-confirm>div) {
+ border:var(--lobby-panel-border);border-radius:0;background:var(--lobby-paper);box-shadow:var(--lobby-panel-shadow);
+ color:var(--lobby-ink);text-shadow:none;
+}
+:is(.lobby-surface .panel>header,.skin-manager-head,.online-heading,.online-dialog header,.shousha-native-settings h3) {
+ background:var(--lobby-heading);color:#fff1d2;border-bottom:1px solid #6f6249;padding:16px 24px;
+}
+:is(.skin-manager-head,.online-heading,.shousha-native-settings h3) {margin:0;}
+:is(.skin-manager-head,.online-heading,.online-dialog header) :is(small,p,.online-eyebrow,.online-connection) {color:#fff0d2;}
+:is(.lobby-surface .toolbar,.lobby-surface aside,.skin-manager-filters,.online-search,.shousha-native-settings summary) {
+ background:var(--lobby-sidebar);border-bottom:1px solid var(--lobby-line);padding:12px 16px;
+}
+:is(.lobby-surface .preview,.skin-manager-detail) {border-left:1px solid var(--lobby-line);}
+:is(.skin-manager-character,.skin-manager-skin,.skin-manager-entry-editor,.skin-import-row,.skin-dynamic-card,.online-room-card,.online-seats article,.social-person,.social-invitation,.online-feedback,.online-empty,.online-loading,.online-chat,.online-pool-editor,.online-rules-editor) {
+ border:1px solid var(--lobby-line);border-radius:0;background:var(--lobby-paper);color:var(--lobby-ink);box-shadow:none;
+}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm) :is(.error,.online-modal-error) {color:var(--lobby-accent);}
+:is(.skin-manager-view-tabs,.lobby-surface .status,.online-pagination,.shousha-native-settings details) {border-color:var(--lobby-line);}
+:is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm) summary {cursor:pointer;color:var(--lobby-ink);}
+:is(.skin-manager,.online-dialog)::backdrop,.shousha-native-confirm,.lobby-surface.veil {background:#25221ced;backdrop-filter:none;}
+.online-room-overlay::backdrop {background:#25221c;}
+.online-game-status {background:var(--lobby-paper);border:3px ridge #b5a78a;}
+.online-game-notice {background:var(--lobby-paper);border:1px solid var(--lobby-line);}
+body.lobby-preview {background:var(--lobby-paper);color:var(--lobby-ink);}
+.online-room-overlay,#splash:has(.online-lobby) {background:#25221c!important;}
+#splash .online-lobby,.online-room-overlay .online-lobby {background:var(--lobby-paper);border:3px ridge #b5a78a;color:var(--lobby-ink);}
+.online-heading {min-height:0;border:0;}
+.online-auth {max-width:1100px;}
+.online-auth-art {color:#fff1d2;}
+.online-auth-links {gap:12px;}
+.online-auth-links button {flex:1;}
+.online-lobby,.online-dialog {font-size:18px;line-height:1.6;}
+:is(.online-lobby,.online-dialog) :is(h1,h2,h3,p,span,strong,small,label,summary,li,dt,dd,button,input,select) {font-family:var(--lobby-font);}
+:is(.online-lobby,.online-dialog) h1 {font-size:30px;line-height:1.3;}
+:is(.online-lobby,.online-dialog) h2 {font-size:24px;line-height:1.4;}
+:is(.online-lobby,.online-dialog) h3 {font-size:22px;line-height:1.4;}
+:is(.online-lobby,.online-dialog) :is(p,label,summary,li,dt,dd,strong) {font-size:18px;font-weight:normal;}
+:is(.online-lobby,.online-dialog) :is(small,.online-eyebrow,.online-connection,.online-hint,.online-profile small,.room-card-top) {font-size:16px;line-height:1.5;}
+:is(.online-lobby,.online-dialog) button {font-size:18px;white-space:nowrap;overflow-wrap:normal;flex-shrink:0;}
+.online-lobby .online-panel {background:transparent;border:0;box-shadow:none;}
+.online-lobby .online-room-browser {background:transparent;border:0;padding:0;}
+.online-lobby .online-auth-art {color:var(--lobby-ink);border-right:1px solid var(--lobby-line);}
+.online-lobby :is(.online-room-config,.online-room-conversation,.online-social,.online-create-card,.online-match) {border:1px solid var(--lobby-line);background:transparent;box-shadow:none;}
+.online-rule-facts>div,.composition-overview dl>div {border-bottom:1px solid var(--lobby-line);}
+.online-rule-facts dt,.online-auth-steps span,.online-lobby .online-hint {color:var(--lobby-muted);}
+.online-rule-facts dd {color:var(--lobby-ink);}
+:is(.online-lobby,.online-dialog) input:autofill {box-shadow:0 0 0 1000px #fffaee inset;-webkit-text-fill-color:var(--lobby-ink);}
+.lobby-surface .style-field input[type=color] {width:48px;min-width:48px;height:44px;padding:3px;cursor:pointer;}
+.online-body {grid-template-columns:minmax(0,1fr) 340px;gap:20px;}
+.online-room-browser {padding:18px;border:3px ridge #b5a78a;background:var(--lobby-paper);min-width:0;}
+.online-profile button,.online-back {min-height:42px;}
+.online-lobby .online-connection[data-state=connected] {color:#fff3d3;}
+.online-room-card h3,.online-empty h3 {color:var(--lobby-ink);}
+.online-seats article.occupied {background:#d6c7a5;border:1px solid #94794f;}
+.online-seats img {border:1px solid #94794f;}
+.online-chat strong,.room-card-top b {color:var(--lobby-accent);}
+.online-dialog {width:min(680px,calc(100vw - 32px));padding:24px;}
+.online-dialog header {margin:-24px -24px 20px;}
+.online-dialog .online-pool-editor {padding:16px;}
+.online-pool-editor label {align-items:center;}
+.online-pool-editor :is(.online-pool-pack-list,.online-pool-character-list) {grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));}
+.online-pool-editor small,.online-seats small,.online-social small {font-size:15px;}
+.online-lobby .online-room-card footer,.online-list-heading span,.online-profile small {font-size:16px;}
+.session-entry .entry-notice {background:var(--lobby-paper);border:3px ridge #b5a78a;}
+.skin-manager {width:min(1500px,calc(100vw - 64px));height:calc(100dvh - 64px);max-width:none;max-height:none;padding:0 20px 14px;gap:14px;overflow-wrap:anywhere;}
+.skin-manager-head {margin:0 -20px;padding:16px 24px;}
+.skin-manager-help {padding-top:2px;font-size:17px;}
+.skin-manager-grid {grid-template-columns:repeat(auto-fill,minmax(205px,1fr));}
+.skin-manager-character {padding:14px;gap:9px;}
+.skin-manager-character label {display:flex;align-items:center;}
+.skin-manager-character small {font-size:14px;}
+.skin-manager-detail {padding:0 4px 0 20px;}
+.skin-manager-view-tabs {display:flex;gap:10px;position:static;background:var(--lobby-paper);padding-bottom:12px;}
+.skin-manager-view-tabs button {flex:1;}
+.skin-manager-toolbar {gap:10px;}
+.skin-manager-sets,.skin-manager-assets,.skin-manager-entry-editor {border-color:var(--lobby-line);}
+.skin-manager-current,.skin-manager-status {color:var(--lobby-ink);}
+.skin-manager-assets>p {color:var(--lobby-muted);}
+.skin-manager :is(.dynamic-library-hero,.dynamic-library-metrics>div,.dynamic-library-labeling,.dynamic-library-card,.dynamic-assignment) {border:1px solid var(--lobby-line);background:var(--lobby-paper);border-radius:0;color:var(--lobby-ink);}
+.skin-manager :is(.dynamic-library-hero,.dynamic-library-labeling) {background:var(--lobby-sidebar);}
+.skin-manager .dynamic-library-card:has(input:checked) {outline:2px solid #94794f;outline-offset:-2px;}
+.skin-manager .dynamic-library-card img {background:var(--lobby-sidebar);}
+.skin-manager .dynamic-library-badge {border:1px solid #94794f;color:var(--lobby-accent);}
+.skin-manager :is(.dynamic-library-hero p,.dynamic-assignment>p,.dynamic-library-metrics span,.dynamic-library-card p,.dynamic-assignment-switches,.dynamic-assignment-warning,.dynamic-library-filters>label) {font-size:17px;}
+.skin-manager :is(.dynamic-library-card small,.dynamic-library-badge,.dynamic-library-eyebrow) {font-size:14px;}
+.skin-manager .dynamic-assignment-warning {background:#d8c7a4;border-left:2px solid #94794f;}
+.skin-manager .skin-manager-set-select {background:#fffaee;font-weight:normal;}
+.skin-asset-transfer,.skin-dynamic-preview,.skin-import {height:auto;max-height:calc(100dvh - 40px);}
+.skin-dynamic-preview {height:min(850px,90dvh);}
+.shousha-native-confirm {font-family:var(--lobby-font);}
+.shousha-native-confirm.shousha-native-settings {box-sizing:border-box;display:flex;align-items:center;justify-content:center;position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:16px;border:0;overflow-y:auto;overscroll-behavior:contain;}
+.shousha-native-settings:not([open]) {display:none;}
+.shousha-native-confirm.shousha-native-settings>div {box-sizing:border-box;flex:none;height:auto;max-width:100%;max-height:calc(100dvh - 32px);min-height:0;margin:0;overflow-y:auto;}
+.shousha-native-confirm>div {width:min(860px,calc(100vw - 48px));padding:20px;max-height:calc(100dvh - 48px);}
+.shousha-native-settings h3 {margin:-20px -20px 20px;font-size:28px;}
+.shousha-native-settings details {padding:0;margin:14px 0;border:1px solid var(--lobby-line);}
+.shousha-native-settings summary {font-size:24px;}
+.shousha-native-settings label {padding:14px 18px;min-height:62px;border-bottom:1px solid #86765224;gap:16px;}
+.shousha-native-settings details>p {padding:0 18px;}
+.shousha-native-settings button {margin:6px;}
+.shousha-native-settings input[type=checkbox] {margin:0;}
+.shousha-native-settings select {width:52%;max-width:52%;}
+@media(max-width:1000px) {.online-body{grid-template-columns:1fr}.online-sidebar{grid-template-columns:1fr 1fr}}
+@media(max-height:640px),(max-width:700px) {
+ :is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice){font-size:17px;}
+ :is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice) button{font-size:18px;min-height:42px;padding:3px 10px;}
+ #splash .online-lobby,.online-room-overlay .online-lobby{padding:12px;}
+ .skin-manager{width:calc(100vw - 24px);height:calc(100dvh - 24px);max-width:none;max-height:none;padding:0 12px 12px;gap:10px;}
+ .skin-manager-head{margin:0 -12px;padding:10px 14px;}
+ .skin-manager-help{font-size:15px;}
+ .skin-manager-detail{padding:12px 0;border-left:0;border-top:1px solid var(--lobby-line);}
+ .shousha-native-confirm>div{width:calc(100vw - 24px);max-height:calc(100dvh - 24px);padding:14px;}
+ .shousha-native-settings h3{margin:-14px -14px 14px;padding:12px 16px;font-size:22px;}
+ .shousha-native-settings label{padding:10px 12px;min-height:50px;}
+ .shousha-native-settings summary{font-size:21px;}
+}
+@media(max-width:650px){.online-sidebar{grid-template-columns:1fr}.online-heading{padding:14px;align-items:flex-start}.online-auth-links{flex-wrap:wrap}.online-search{grid-template-columns:minmax(0,1fr) auto}.online-auth-art{min-height:170px}.skin-manager-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.skin-manager-character{padding:9px}.skin-manager-character label{flex-wrap:wrap;gap:5px}}

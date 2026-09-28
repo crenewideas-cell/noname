@@ -1,3 +1,5 @@
+import { applyModeCardPacks } from "../../init/cardPackRuntime.js";
+import { supplementCardPile } from "../../init/cardpileSupplement.js";
 import { lib, game, get, _status, ai, ui } from "noname";
 import { menu } from "./menu/index.js";
 import { cardPackMenu } from "./menu/pages/cardPackMenu.js";
@@ -12,6 +14,9 @@ import { createCharacterBrowser } from "../characterBrowser.js";
 import { CharacterSearch } from "../../util/characterSearch.js";
 import { backgroundTasks } from "../../util/backgroundTasks.js";
 import { applyPresentation, usesModernPresentation } from "../presentation.js";
+import { installBuiltinAdaptiveLayout, releaseBuiltinAdaptiveLayout } from "../adaptiveLayout.js";
+import { installCompactSeatLayout, refreshCompactSeatLayout, releaseCompactSeatLayout } from "../compactSeats.js";
+import { installArenaBackground } from "../arenaBackground.js";
 import { listenForActivation } from "../activation.js";
 
 const buttonPreparations = new Set();
@@ -1120,10 +1125,6 @@ export class Create {
 		var recent = get.config("recentCharacter");
 		if (recent && recent.length) {
 			node = createNode("最近");
-			if (lib.config.character_dialog_tool == "最近") {
-				clickCapt.call(node);
-				bool = false;
-			}
 		}
 		if (lib.config.favouriteCharacter.length) {
 			node = createNode("收藏");
@@ -1138,7 +1139,7 @@ export class Create {
 			bool = false;
 		}
 		if (bool) {
-			clickCapt.call(packnode.firstChild);
+			clickCapt.call(node);
 		}
 
 		var node = ui.create.div(".dialogbutton.menubutton.large", "筛选", packnode);
@@ -1279,6 +1280,9 @@ export class Create {
 		var newlined = false;
 		var newlined2;
 		var packsource;
+		// Both mobile UIs share RZSH's native pack filter, including extension packs.
+		const usePackDropdown = !thisiscard && lib.onloadSplashes?.some(splash => ["rzsh-modern", "shousha-standard"].includes(splash.id));
+		let packSelect;
 		/** 点击筛选中的按钮 */
 		var clickCapt = function (e) {
 			if (_status.dragged) {
@@ -1412,6 +1416,7 @@ export class Create {
 					packsource.classList.remove("thundertext");
 				}
 			}
+			if (packSelect) packSelect.value = lib.characterPack[dialog.currentcapt2] ? dialog.currentcapt2 : "";
 			updatePagination();
 			if (e) {
 				e.stopPropagation();
@@ -1547,7 +1552,7 @@ export class Create {
 				filternode.classList.remove("shown");
 				clickCapt.call(this.link, e);
 			};
-			if (get.is.phoneLayout() && lib.config.filternode_button) {
+			if (!usePackDropdown && get.is.phoneLayout() && lib.config.filternode_button) {
 				newlined.style.marginTop = "";
 				packsource.innerHTML = "筛选";
 				filternode = ui.create.div(".popup-container.filter-character.modenopause");
@@ -1650,6 +1655,33 @@ export class Create {
 					return lib.config[`extension_${extName}_characters_enable`] === true;
 				})
 				.forEach(key => packlist.add(key));
+			if (usePackDropdown) {
+				packlist = Object.keys(lib.characterPack).filter(pack =>
+					(!onlypack || pack === onlypack) && list.some(id => lib.characterPack[pack][id])
+				);
+				packsource.style.display = "none";
+				const field = document.createElement("label");
+				field.className = "character-pack-dropdown";
+				const title = document.createElement("span");
+				title.textContent = "武将包";
+				packSelect = document.createElement("select");
+				packSelect.setAttribute("aria-label", "筛选武将包");
+				const all = document.createElement("option");
+				all.value = "";
+				all.textContent = "全部武将包";
+				packSelect.append(all);
+				field.append(title, packSelect);
+				newlined.append(field);
+				for (const type of ["keydown", "keyup", "keypress", "mousedown", "pointerdown", "touchstart", "touchend", "click"]) {
+					packSelect.addEventListener(type, event => event.stopPropagation());
+				}
+				packSelect.onchange = () => {
+					const target = Array.from(newlined2.children).find(item => item.link === packSelect.value);
+					if (target && dialog.currentcaptnode2 !== target) clickCapt.call(target);
+					else if (!packSelect.value && dialog.currentcaptnode2) clickCapt.call(dialog.currentcaptnode2);
+				};
+				if (onlypack) packSelect.disabled = true;
+			}
 			for (var i = 0; i < packlist.length; i++) {
 				var span = document.createElement("div");
 				span.style.display = "inline-block";
@@ -1664,6 +1696,12 @@ export class Create {
 				span.link = packlist[i];
 				span.addEventListener(lib.config.touchscreen ? "touchend" : "click", clickCapt);
 				newlined2.appendChild(span);
+				if (packSelect) {
+					const option = document.createElement("option");
+					option.value = packlist[i];
+					option.textContent = get.plainText(get.translation(packlist[i] + "_character_config"));
+					packSelect.append(option);
+				}
 				if (filternode && !onlypack) {
 					span.touchlink = ui.create.div(filternode.firstChild, clickCaptNode, ".menubutton.large", span.innerHTML);
 					span.touchlink.link = span;
@@ -1898,10 +1936,15 @@ export class Create {
 				dialog.buttons[i].capt = getCapt(dialog.buttons[i].link);
 			}
 		}
-		if (!expandall) {
+		// A saved recent filter must not narrow a newly opened selection dialog.
+		if (!expandall && lib.config.character_dialog_tool !== "最近") {
 			if (!thisiscard && (lib.characterDialogGroup[lib.config.character_dialog_tool] || lib.config.character_dialog_tool == "自创")) {
 				clickCapt.call(node[lib.config.character_dialog_tool]);
 			}
+		}
+		if (packSelect && onlypack) {
+			packSelect.value = onlypack;
+			packSelect.onchange();
 		}
 		if (dialog.paginationMaxCount.get("character")) {
 			/** @type { HTMLDivElement } */
@@ -2285,6 +2328,8 @@ export class Create {
 		return buttonChooseAll;
 	}
 	arena(settingsOnly = false) {
+		releaseBuiltinAdaptiveLayout(ui.arena);
+		releaseCompactSeatLayout(ui.arena);
 		applyPresentation();
 		var i, j;
 		ui.window = ui.create.div("#window.hidden", document.body);
@@ -2327,6 +2372,7 @@ export class Create {
 		listenForActivation(ui.window, ui.click.window);
 		ui.system = ui.create.div("#system.", ui.window);
 		ui.arena = ui.create.div("#arena.nome", ui.window);
+		installCompactSeatLayout({ game, ui, mode: () => lib.config.mode });
 		if (lib.device == "ios" && !get.is.phoneLayout()) {
 			ui.arena.classList.add("ipad");
 		}
@@ -2426,14 +2472,16 @@ export class Create {
 		ui.arena.dataset.target_shake = lib.config.target_shake || "off";
 		ui.backgroundMusic = document.createElement("audio");
 		ui.backgroundMusic.volume = lib.config.volumn_background / 8;
-		game.playBackgroundMusic();
-		ui.backgroundMusic.autoplay = true;
+		// Settings initialized over a lobby must not start a second music track.
+		const arenaMusicEnabled = !settingsOnly && !window.inSplash;
+		if (arenaMusicEnabled) game.playBackgroundMusic();
+		ui.backgroundMusic.autoplay = arenaMusicEnabled;
 		ui.backgroundMusic.addEventListener("ended", game.playBackgroundMusic);
 		ui.window.appendChild(ui.backgroundMusic);
 		ui.window.addEventListener(
 			lib.config.touchscreen ? "touchend" : "click",
 			() => {
-				if (!ui.backgroundMusic.played.length && lib.config.background_music != "music_off" && !isNaN(ui.backgroundMusic.duration)) {
+				if (arenaMusicEnabled && !window.inSplash && !ui.backgroundMusic.played.length && lib.config.background_music != "music_off" && !isNaN(ui.backgroundMusic.duration)) {
 					ui.backgroundMusic.play();
 				}
 			},
@@ -3152,10 +3200,12 @@ export class Create {
 		lib.status.date = new Date();
 		lib.status.dateDelayed = 0;
 
+		if (!settingsOnly) installArenaBackground({ ui });
 		while (lib.arenaReady?.length) {
 			lib.arenaReady?.shift()();
 		}
 		delete lib.arenaReady;
+		if (!settingsOnly) installBuiltinAdaptiveLayout({ game, ui, mode: () => lib.config.mode });
 		/*if (lib.config.auto_check_update && !sessionStorage.getItem("auto_check_update")) {
 			setTimeout(() => {
 				sessionStorage.setItem("auto_check_update", "1");
@@ -3846,6 +3896,7 @@ export class Create {
 		players[players.length - 1].nextSeat = players[0];
 		ui.arena.setNumber(numberOfPlayers);
 		players.forEach(player => ui.arena.appendChild(player));
+		refreshCompactSeatLayout(ui.arena);
 		return players;
 	}
 	me(hasme) {
@@ -3897,6 +3948,7 @@ export class Create {
 		}
 	}
 	cards(ordered) {
+		applyModeCardPacks(lib, get);
 		if (_status.brawl) {
 			if (_status.brawl.cardPile) {
 				lib.card.list = _status.brawl.cardPile(lib.card.list);
@@ -3905,6 +3957,7 @@ export class Create {
 				ordered = true;
 			}
 		}
+		supplementCardPile(lib);
 		if (!ordered) {
 			lib.card.list.randomSort();
 		}

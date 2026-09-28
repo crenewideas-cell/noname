@@ -1,6 +1,6 @@
 // Nothing is fetched until a caller requests a character. Only small summaries
 // live in the parent page; each player iframe owns its selected model's details.
-export function createLazyCatalog({ read, base, bindings = () => ({}), merge }) {
+export function createLazyCatalog({ read, base, bindings = () => ({}), assignments=()=>({}), merge }) {
   let indexPromise;
   const requests = new Map(), loaded = new Set();
   function cached(file) {
@@ -17,7 +17,7 @@ export function createLazyCatalog({ read, base, bindings = () => ({}), merge }) 
     });
   }
   const pending = new Map();
-  function key(name) { return JSON.stringify([name, bindings()[name]]); }
+  function key(name) { return JSON.stringify([name, bindings()[name],assignments()[name]]); }
   return {
     has(name) { return loaded.has(key(name)); },
     async ensure(name) {
@@ -27,15 +27,24 @@ export function createLazyCatalog({ read, base, bindings = () => ({}), merge }) 
       if (pending.has(token)) return pending.get(token);
       const job = (async () => {
         const data = await index(), file = data.characters[name];
-        let rows = file ? await cached(file) : [];
+        let rows = file ? [...await cached(file)] : [];
         const binding = bindings()[name];
-        if (binding && !binding.automatic && data.packs.some(p => p.name === binding.pack)) {
+        const assignment=assignments()[name];
+        if (assignment?.mode==='replace')rows=[];
+        if (assignment?.mode!=='replace'&&binding && !binding.automatic && data.packs.some(p => p.name === binding.pack)) {
           const prefix = binding.pack + '/', groups = await cached(prefix + 'binding-index.json');
           if (groups[binding.id]) {
             const extra = await cached(prefix + groups[binding.id]);
             rows = [...rows, ...extra.map(row => ({ ...row, entry: { ...row.entry,
               characterIds: [...new Set([...row.entry.characterIds, name])] } }))];
           }
+        }
+        for(const skin of assignment?.skins||[]){
+          if(!data.packs.some(pack=>pack.name===skin.pack))continue;
+          const prefix=skin.pack+'/',groups=await cached(prefix+'binding-index.json');
+          if(!groups[skin.id])continue;
+          const extra=await cached(prefix+groups[skin.id]);
+          rows.push(...extra.filter(row=>row.entry.id===skin.id).map(row=>({...row,entry:{...row.entry,characterIds:[...new Set([...row.entry.characterIds,name])]}})));
         }
         // A binding may change while a request is in flight.
         if (key(name) !== token) return;

@@ -1,0 +1,58 @@
+/* Shared compact equipment geometry for the two core-node presentations.
+   The stock mobile textequip rule uses height:20%!important. That percentage
+   collapses inside these themes' auto-height equipment stacks, only for self.
+   Match the self selector's specificity without changing the stock layout,
+   equipment nodes, visibility state, selection or game ownership. */
+html body[data-decade-parts~="players"] {--equipment-label-background:#382a18ed;--equipment-label-color:#ffe6ac;}
+html body:is([data-shousha-parts~="players"],[data-decade-parts~="players"]) #arena>.player[data-position]:not(.minskin)>.equips {
+ height:auto!important;
+ transform:none!important;
+ max-height:132px;
+ overflow-x:hidden;
+ overflow-y:auto;
+ scrollbar-width:none;
+ pointer-events:none;
+}
+html body:is([data-shousha-parts~="players"],[data-decade-parts~="players"]) #arena>.player[data-position]:not(.minskin)>.equips::-webkit-scrollbar {display:none}
+/* The engine hides empty slots with visibility, which still reserves a row.
+   Compact labels must collapse those rows and leave empty space clickable. */
+html body:is([data-shousha-parts~="players"],[data-decade-parts~="players"]) #arena>.player[data-position]:not(.minskin)>.equips>.card:is(.hidden,.removing) {display:none!important}
+html body:is([data-shousha-parts~="players"],[data-decade-parts~="players"]) #arena>.player[data-position]:not(.minskin)>.equips>.card {
+ box-sizing:border-box;
+ pointer-events:auto;
+ position:relative!important;
+ height:22px!important;
+ min-height:22px!important;
+ max-height:none!important;
+ flex:none;
+ margin:0!important;
+ padding:0!important;
+ background:var(--equipment-label-background,#28231ee8)!important;
+ color:var(--equipment-label-color,#fff3d3)!important;
+ top:auto!important;
+ bottom:auto!important;
+}
+html body:is([data-shousha-parts~="players"],[data-decade-parts~="players"]) #arena>.player[data-position]:not(.minskin)>.equips>.card.selected {
+ box-shadow:inset 0 0 0 2px #fff46a!important;
+}
+/* Text equipment must not inherit the mobile miniature card's art/point layers
+   when the user switches textequip off. Retain the engine's actual label. */
+html body:is([data-shousha-parts~="players"],[data-decade-parts~="players"]) #arena>.player[data-position]:not(.minskin)>.equips>.card>:not(.name2) {
+ display:none!important;
+}
+html body:is([data-shousha-parts~="players"],[data-decade-parts~="players"]) #arena>.player[data-position]:not(.minskin)>.equips>.card>.name2 {
+ position:relative!important;
+ box-sizing:border-box;
+ left:0!important;
+ top:0!important;
+ width:100%!important;
+ margin:0!important;
+ padding:0 3px;
+ font-size:14px!important;
+ line-height:20px!important;
+ color:var(--equipment-label-color,#fff3d3)!important;
+ text-shadow:0 1px 2px #000;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}

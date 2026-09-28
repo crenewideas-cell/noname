@@ -1,0 +1,48 @@
+// One temporary renderer; cached portraits are shared by lists and previews.
+import {dynamicPlayerURL,dynamicThumbnailKey} from './runtime-url.js';
+export function createThumbnailLoader(lookup) {
+  const jobs=new Map(),images=new Map(),waiting=[],targets=new WeakMap(),rows=new WeakMap(),retries=new Map(),timers=new Map();
+  let running=false,database;
+  function db(){return database||=new Promise(resolve=>{
+    let settled=false;const finish=value=>{if(settled){value?.close();return;}settled=true;clearTimeout(timer);resolve(value);};
+    const timer=setTimeout(()=>finish(null),1500);
+    try{const r=indexedDB.open('noname-dynamic-thumbnails',1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains('images'))r.result.createObjectStore('images');};r.onsuccess=()=>finish(r.result);r.onerror=r.onblocked=()=>finish(null);}catch{finish(null);}
+  });}
+  async function cached(key,value){const d=await db();if(!d)return;return new Promise(resolve=>{
+    const timer=setTimeout(resolve,1500),finish=v=>{clearTimeout(timer);resolve(v);};
+    try{const t=d.transaction('images',value?'readwrite':'readonly'),r=value?t.objectStore('images').put(value,key):t.objectStore('images').get(key);r.onsuccess=()=>finish(r.result);r.onerror=t.onabort=()=>finish();}catch{finish();}
+  });}
+  const visible=node=>{if(!node.isConnected||!node.getClientRects().length)return false;const r=node.getBoundingClientRect(),c=node.closest('.qh-skinchange-shousha-big-skin')?.parentElement?.parentElement.getBoundingClientRect()||{left:0,top:0,right:innerWidth,bottom:innerHeight};return r.right>Math.max(0,c.left)&&r.left<Math.min(innerWidth,c.right)&&r.bottom>Math.max(0,c.top)&&r.top<Math.min(innerHeight,c.bottom);};
+  function remember(key,source){images.set(key,source);if(images.size>100)images.delete(images.keys().next().value);retries.delete(key);void cached(key,source);}
+  function apply(row,source){for(const node of row.nodes)if(targets.get(node)===row.key&&node.isConnected){node.style.backgroundImage='url('+JSON.stringify(source)+')';node.dataset.skinThumbnailReady='true';delete node.dataset.skinThumbnailError;}row.nodes.clear();}
+  async function snapshot(row){
+    const frame=document.createElement('iframe'),channel='thumbnail-'+crypto.randomUUID();frame.__nonameSkinEntry=row.e;
+    frame.style.cssText='position:fixed;left:-1000px;top:0;width:240px;height:360px;border:0;pointer-events:none';frame.setAttribute('aria-hidden','true');frame.dataset.skinThumbnail='true';
+    try{return await new Promise((resolve,reject)=>{
+      let finished=false;const finish=(error,value)=>{if(finished)return;finished=true;clearTimeout(timer);clearInterval(abandon);removeEventListener('message',message);row.finish=undefined;error?reject(error):resolve(value);};row.finish=finish;
+      const timer=setTimeout(()=>finish(Error('缩略图渲染超时')),30000),abandon=setInterval(()=>{if(![...row.nodes].some(visible))finish(Error('缩略图已不可见'));},250);
+      const message=event=>{if(event.source!==frame.contentWindow||event.data?.channel!==channel)return;if(event.data.type==='noname-skin-error')finish(Error(event.data.message));if(event.data.type==='noname-skin-ready')try{const p=frame.contentWindow.skinPlayer;p.pause(true);p.capture();finish(null,p.canvas.toDataURL('image/webp',.85));}catch(e){finish(e);}};
+      addEventListener('message',message);frame.src=dynamicPlayerURL(row.p.base,{id:row.e.id,presentation:'portrait',channel});document.body.append(frame);
+    });}finally{frame.contentWindow?.skinPlayerLifecycle?.dispose();frame.remove();}
+  }
+  const observer=new IntersectionObserver(entries=>{for(const e of entries){if(!e.target.isConnected){observer.unobserve(e.target);continue;}if(e.isIntersecting){observer.unobserve(e.target);enqueue(rows.get(e.target),e.target);}}});
+  function retry(row){const attempts=(retries.get(row.key)||0)+1;retries.set(row.key,attempts);for(const node of row.nodes){if(!node.isConnected)continue;node.dataset.skinThumbnailError='retry';if(!visible(node))observer.observe(node);}
+    if(attempts<=2){const timer=setTimeout(()=>{timers.delete(row.key);for(const node of row.nodes)if(rows.get(node)&&visible(node))enqueue(rows.get(node),node);},attempts*1000);timers.set(row.key,timer);}
+  }
+  async function pump(){if(running)return;running=true;try{while(waiting.length){const row=waiting.shift();if(jobs.get(row.key)!==row)continue;try{let source=images.get(row.key)||await cached(row.key);if(!source&&[...row.nodes].some(visible)){source=await snapshot(row);remember(row.key,source);}if(source){images.set(row.key,source);apply(row,source);}else for(const n of row.nodes)if(n.isConnected)observer.observe(n);}catch{retry(row);}finally{jobs.delete(row.key);}}}finally{running=false;}}
+  function enqueue(own,node){if(!own)return;const key=dynamicThumbnailKey(own.p,own.e);targets.set(node,key);if(images.has(key)){apply({key,nodes:new Set([node])},images.get(key));return;}let row=jobs.get(key);if(!row){row={...own,key,nodes:new Set()};jobs.set(key,row);waiting.push(row);}row.nodes.add(node);void pump();}
+  function watch(own,node){const key=dynamicThumbnailKey(own.p,own.e);if(targets.get(node)!==key){delete node.dataset.skinThumbnailReady;delete node.dataset.skinThumbnailError;}rows.set(node,own);targets.set(node,key);if(!node.style.backgroundImage||node.style.backgroundImage==='none')node.style.backgroundImage='url('+JSON.stringify(own.p.base+own.e.thumbnail)+')';if(visible(node))enqueue(own,node);else observer.observe(node);}
+  const load=(name,skin,node)=>{const own=lookup(name,skin);if(!own||!own.e.thumbnail?.endsWith('.svg'))return false;watch(own,node);return true;};
+  // A selected preview already owns a renderer. Reuse its pending first frame,
+  // rather than start a second renderer just to create its loading backdrop.
+  load.preview=(p,e,node)=>{const own={p,e},key=dynamicThumbnailKey(p,e);rows.set(node,own);targets.set(node,key);if(images.has(key))apply({key,nodes:new Set([node])},images.get(key));else void cached(key).then(source=>{if(source)apply({key,nodes:new Set([node])},source);});};
+  load.publish=(p,e,player)=>{
+    // A preview camera can be wider than a portrait. Only reuse an exact
+    // portrait-shaped steady first frame for the list's portrait cache.
+    if(!player?.canvas||Math.abs(player.canvas.width/player.canvas.height-2/3)>.035)return;
+    const key=dynamicThumbnailKey(p,e);try{player.capture();const c=document.createElement('canvas');c.width=240;c.height=360;c.getContext('2d').drawImage(player.canvas,0,0,240,360);const source=c.toDataURL('image/webp',.85);remember(key,source);const job=jobs.get(key);if(job){apply(job,source);job.finish?.(null,source);}}catch{}
+  };
+  load.cancel=node=>{targets.delete(node);rows.delete(node);observer.unobserve(node);for(const row of jobs.values())row.nodes.delete(node);};
+  return load;
+}
+export {fillPortraitBackdrop as fillCardPortrait} from '../../util/portraitSampling.js';

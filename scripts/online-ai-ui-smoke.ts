@@ -45,11 +45,19 @@ try {
     export const onOnlineEvent = () => () => {};
     export const login = async () => {}, logout = async () => {}, copyOnlineText = async () => {}, loadSocial = async () => {}, api = async () => ({});
     export async function command(type,payload) {
-      window.__commands.push({type,payload}); const room = onlineState.room;
+      window.__commands.push({type,payload});
+      if (type === 'room.join') {
+        const target = onlineState.rooms.find(room => room.code === payload.code);
+        let seat = 0; while (target.members.some(member => member.seat === seat)) seat++;
+        target.members.push({...onlineState.account,seat,ready:false,online:true});
+        onlineState.room = target;
+      }
+      const room = onlineState.room;
       if (type === 'room.ai') {
         if (payload.enabled) for (const seat of payload.seats) room.members.push({id:'ai:'+seat,nickname:'AI '+(seat+1)+'号',seat,isAI:true,ready:true,online:false});
         else room.members = room.members.filter(m => !payload.seats.includes(m.seat));
       } else if (type === 'room.ready') room.members[0].ready = payload.ready;
+      else if (type === 'room.rematch') room.state = 'waiting';
       room.revision++; return room;
     }
   ` }));
@@ -87,6 +95,41 @@ try {
   assert.equal(await page.getByRole("button", { name: /添加 AI|移除.*号位 AI|AI 补满空位/ }).count(), 0);
   const commands = await page.evaluate(() => (window as any).__commands);
   assert.deepEqual(commands[0], { type: "room.ai", payload: { roomId: "test", revision: 1, seats: [2], enabled: true } });
+  // A settled room with one free seat must be joinable before the owner rematches.
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.evaluate(() => {
+    const s = (window as any).__roomState;
+    const room = { ...s.room, state: "finished", capacity: 5, members: [
+      { id: "owner", nickname: "房主", seat: 0, ready: false, online: true },
+      ...[2, 3, 4].map(seat => ({ id: "ai:" + seat, nickname: "AI " + (seat + 1) + "号", seat, isAI: true, ready: true, online: false })),
+    ] };
+    s.account = { id: "guest", nickname: "2号位" };
+    s.room = null; s.rooms = [room]; s.total = 1;
+  });
+  const join = page.getByRole("button", { name: "加入", exact: true });
+  await join.waitFor();
+  assert(await join.isEnabled(), "已结算且4/5席的房间应允许加入");
+  for (const state of ["waiting", "starting", "in_game", "closed", "finished"]) {
+    await page.evaluate(state => { (window as any).__roomState.rooms[0].state = state; }, state);
+    assert.equal(await join.isEnabled(), ["waiting", "finished"].includes(state));
+  }
+  await page.evaluate(() => { (window as any).__roomState.rooms[0].members.push({ id: "full", seat: 1 }); });
+  assert(await join.isDisabled(), "已结算但满员时仍禁止加入");
+  await page.evaluate(() => { (window as any).__roomState.rooms[0].members.pop(); (window as any).__roomState.maintenance = true; });
+  assert(await join.isDisabled(), "维护时仍禁止加入");
+  await page.evaluate(() => { (window as any).__roomState.maintenance = false; });
+  await join.click();
+  await page.locator(".online-seats").getByText("2号位", { exact: true }).waitFor();
+  const joined = await page.evaluate(() => ({ room: (window as any).__roomState.room, command: (window as any).__commands.at(-1) }));
+  assert.equal(joined.command.type, "room.join");
+  assert.equal(joined.command.payload.code, "ABC123");
+  assert.equal(joined.room.state, "finished");
+  assert.equal(joined.room.members.length, 5);
+  assert.equal(joined.room.members.find((member: any) => member.id === "guest").seat, 1);
+  assert.equal(await page.getByRole("button", { name: "准备就绪", exact: true }).count(), 0);
+  await page.evaluate(() => { (window as any).__roomState.account.id = "owner"; });
+  await page.getByRole("button", { name: "再来一局", exact: true }).click();
+  await page.getByRole("button", { name: "准备就绪", exact: true }).waitFor();
   assert.deepEqual(errors, []);
-  console.log("AI 房间 UI：逐席添加/移除、一键补满、准备开局、房主可见性、桌面及手机布局全部通过");
+  console.log("AI 房间 UI：逐席添加/移除、一键补满、准备开局、房主可见性、桌面及手机布局、已结算房间加入与再来一局全部通过");
 } finally { await browser?.close(); await server.close(); }

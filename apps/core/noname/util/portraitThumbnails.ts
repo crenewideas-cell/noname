@@ -43,7 +43,7 @@ export function setPortraitBackground(node: HTMLDivElement, sources: string[], a
 	// These are load-failure alternatives, not layers in the artwork. A
 	// transparent skin must never reveal a different character underneath it.
 	node.style.backgroundImage = cssImages(mapped.slice(0, 1));
-	if (mapped.length === 1 && mapped[0] === sources[0] && !node.matches('.qh-image-standard, .primary-avatar')) {
+	if (mapped.length === 1 && mapped[0] === sources[0] && !node.matches('.qh-image-standard, .primary-avatar, .button.character')) {
 		samplePortraitBackground(node, mapped);
 		return;
 	}
@@ -57,7 +57,7 @@ export function setPortraitBackground(node: HTMLDivElement, sources: string[], a
 					if (!ok) continue;
 					node.style.backgroundImage = cssImages([source]);
 					samplePortraitBackground(node, [source]);
-					if (node.matches('.qh-image-standard, .primary-avatar')) void fillPortraitBackdrop(node, source);
+					if (node.matches('.qh-image-standard, .primary-avatar, .button.character')) void fillPortraitBackdrop(node, source);
 					return;
 				}
 			}

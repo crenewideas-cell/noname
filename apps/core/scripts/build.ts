@@ -167,6 +167,8 @@ async function buildSelf(target: string | string[], importMap: Record<string, st
 				input: {
 					index: "index.html",
 					noname: "noname.js",
+					// The loading iframe imports this small entry without booting another engine.
+					"noname/ui/lobbyElements": join(root, "noname/ui/lobbyElements.js"),
 					...(standaloneBuild ? { "noname/entry": join(root, "noname/entry.ts") } : {}),
 				},
 				output: {

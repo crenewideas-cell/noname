@@ -33,14 +33,14 @@ test("settings distinguish major packs, collections, characters, UI and unclassi
 		{ name: "武将扩展包", members: ["extension_活动武将", "extension_絶伦逸羣"] },
 		{ name: "合并扩展包", members: collections },
 		{ name: "独立武将", members: ["extension_笮融", "extension_朱绩"] },
-		{ name: "界面与特效", members: ["extension_千幻聆音"] },
-		{ name: "新导入待分类", members: ["extension_custom"] },
+		"extension_千幻聆音", // The menu page collects builtins after tools.
+		"extension_custom",
 	]);
 });
 
 test("partial installs, removed or hidden members are not resurrected", () => {
 	assert.deepEqual(groupExtensionMenus([]), []);
-	assert.deepEqual(groupExtensionMenus(["coin", "extension_custom"]), ["coin", { name: "新导入待分类", members: ["extension_custom"] }]);
+	assert.deepEqual(groupExtensionMenus(["coin", "extension_custom"]), ["coin", "extension_custom"]);
 	assert.deepEqual(groupExtensionMenus(["extension_界周妃"]), [{ name: "独立武将", members: ["extension_界周妃"] }]);
 	assert.deepEqual(groupExtensionMenus(["extension_EpicFX"]), []);
 });
@@ -50,7 +50,7 @@ test("custom top-level and member sort order are preserved", () => {
 		"coin",
 		{ name: "独立武将", members: ["extension_朱绩", "extension_笮融", "extension_界周妃"] },
 		{ name: "武将扩展包", members: ["extension_名将杀"] },
-		{ name: "新导入待分类", members: ["extension_指示线"] },
+		"extension_指示线",
 	]);
 });
 
@@ -83,6 +83,7 @@ test("each PXLNGU member exists and removed EpicFX is absent from registration",
 });
 
 test("startup, post-game rebuild and late arrivals share one character owner map", () => {
+	assert.equal(characterMenuOwner("zerongPack"), "PXLNGU");
 	for (let rebuild = 0; rebuild < 3; rebuild++) {
 		for (const name of groups[0].members) {
 			assert.equal(characterMenuOwner(name), "PXLNGU");

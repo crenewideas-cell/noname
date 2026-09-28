@@ -1,0 +1,191 @@
+.mjs-ctl-ball {
+	position: absolute;
+	right: 1%;
+	top: 42%;
+	width: 42px;
+	height: 42px;
+	line-height: 42px;
+	text-align: center;
+	font-size: 22px;
+	font-family: xinwei, yuanli, serif;
+	color: #fff;
+	text-shadow: 0 0 2px #000, 0 0 2px #000;
+	background: rgba(25, 25, 28, .72);
+	border: 1px solid rgba(255, 255, 255, .4);
+	border-radius: 50%;
+	box-shadow: 0 0 6px rgba(0, 0, 0, .5);
+	cursor: pointer;
+	z-index: 90;
+	user-select: none;
+}
+
+.mjs-ctl-panel {
+	position: fixed;
+	display: block;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%) scale(1);
+	z-index: 99999;
+	background: rgba(18, 18, 22, .96);
+	border: 2px solid #b8a070;
+	border-radius: 10px;
+	padding: 16px 18px 10px;
+	box-shadow: 0 8px 28px rgba(0, 0, 0, .75);
+	color: #eee;
+	font-family: xinwei, yuanli, serif;
+	width: 440px;
+	max-width: 90vw;
+	max-height: 80vh;
+	overflow: auto;
+	text-align: left;
+	line-height: 1.6;
+	font-size: 14px;
+	transform-origin: center center;
+	opacity: 1;
+	visibility: visible;
+	transition: opacity .2s ease, transform .26s ease-out, visibility 0s;
+}
+
+.mjs-ctl-panel.mjs-ctl-hidden {
+	opacity: 0;
+	visibility: hidden;
+	transform: translate(calc(-50% + var(--mjs-ctl-dx, 0px)), calc(-50% + var(--mjs-ctl-dy, 0px)))
+		scale(.1);
+	pointer-events: none;
+	transition: opacity .2s ease, transform .26s ease-out, visibility 0s .26s;
+}
+
+.mjs-ctl-panel div {
+	position: static;
+}
+
+.mjs-ctl-logo {
+	text-align: center;
+	margin-bottom: 8px;
+}
+
+.mjs-ctl-logo img {
+	display: block;
+	width: 15%;
+	border-radius: 12px;
+}
+
+.mjs-ctl-tip {
+	font-size: 12px;
+	color: #9a9da6;
+	line-height: 1.6;
+	margin: 4px 0 8px;
+}
+
+.mjs-ctl-warn {
+	font-size: 12px;
+	color: #e8a33d;
+	line-height: 1.6;
+	margin: 6px 0 2px 0;
+}
+
+.mjs-ctl-panel .mjs-ctl-close {
+	position: absolute;
+	right: 10px;
+	top: 8px;
+	cursor: pointer;
+	color: #ff9a5a;
+	font-size: 14px;
+}
+
+.mjs-ctl-row {
+	display: block;
+	margin: 0 0 10px 0;
+}
+
+.mjs-ctl-btn {
+	display: inline-block;
+	padding: 4px 12px;
+	margin: 0 8px 8px 0;
+	border: 1px solid #6a6a72;
+	border-radius: 5px;
+	background: rgba(60, 60, 68, .9);
+	cursor: pointer;
+	font-size: 14px;
+	color: #eee;
+	user-select: none;
+}
+
+.mjs-ctl-run {
+	display: inline-block;
+	padding: 4px 16px;
+	margin: 0 8px 8px 0;
+	border: 1px solid #4ecdc4;
+	border-radius: 5px;
+	background: #2c6b46;
+	cursor: pointer;
+	font-size: 14px;
+	color: #eee;
+	user-select: none;
+}
+
+.mjs-ctl-pbtn {
+	display: inline-block;
+	padding: 3px 10px;
+	margin: 0 8px 8px 0;
+	border: 1px solid #55555e;
+	border-radius: 5px;
+	background: rgba(45, 45, 52, .9);
+	cursor: pointer;
+	font-size: 13px;
+	color: #eee;
+	user-select: none;
+}
+
+.mjs-ctl-btn.mjs-ctl-on,
+.mjs-ctl-pbtn.mjs-ctl-on {
+	background: #b8892c;
+	border-color: #f5d76e;
+	color: #111;
+	font-weight: 700;
+}
+
+.mjs-ctl-btn.mjs-ctl-dis {
+	opacity: .35;
+	cursor: not-allowed;
+}
+
+.mjs-ctl-pbtn.mjs-ctl-dead {
+	opacity: .55;
+}
+
+.mjs-ctl-run.mjs-ctl-ready {
+	box-shadow: 0 0 8px #4ecdc4;
+}
+
+.mjs-ctl-panel.mjs-sz-info {
+	width: auto;
+	min-width: 190px;
+	max-width: 76vw;
+	padding: 14px 22px 13px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.mjs-sz-info .mjs-ctl-title {
+	margin-bottom: 6px;
+	letter-spacing: 3px;
+}
+
+.mjs-sz-info .mjs-sz-line {
+	font-size: 15px;
+	color: #f5d76e;
+	line-height: 1.7;
+}
+
+.mjs-sz-info .mjs-sz-line b {
+	font-size: 18px;
+	color: #fff;
+	margin: 0 2px;
+}
+
+.mjs-sz-info .mjs-ctl-warn {
+	margin: 4px 0 0 0;
+	color: #9a9da6;
+}
+

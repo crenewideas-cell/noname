@@ -5290,7 +5290,7 @@ else if (entry[1] !== void 0) stringifying[key] = JSON.stringify(entry[1]);*/
 				}
 			}
 			for (i = 0; i < skills.length; i++) {
-				if (lib.skill[skills[i]] && (lib.skill[skills[i]].nopop || lib.skill[skills[i]].equipSkill)) {
+				if (!lib.skill[skills[i]] || lib.skill[skills[i]].nopop || lib.skill[skills[i]].equipSkill) {
 					continue;
 				}
 				if (lib.translate[skills[i] + "_info"]) {

@@ -1,4 +1,15 @@
 /* Structural correction, independent of the selected visual theme and nesting depth. */
+.menu.main .left.pane .pack-menu-search {position:relative;display:block;box-sizing:border-box;width:100%;margin:0 0 12px;padding:0;text-align:left;}
+.menu.main .pack-menu-search input {position:relative;display:block;box-sizing:border-box;width:100%;min-width:0;padding:9px 8px;font:inherit;font-size:16px;line-height:1.4;color:inherit;background:#7772;border:1px solid #ad966866;border-radius:4px;}
+.menu.main .pack-enabled-filter {position:relative;display:block;box-sizing:border-box;width:100%;min-width:0;margin:6px 0 10px;padding:7px 8px;font:inherit;font-size:16px;line-height:1.4;color:inherit;background:#7772;border:1px solid #ad966866;border-radius:4px;}
+.menu.main .pack-enabled-filter option {color:#4c361d;background:#fff8ec;}
+.menu.main .pack-menu-search p {position:relative;display:block;margin:6px 0;font-size:14px;line-height:1.5;white-space:normal;}
+.menu.main .pack-menu-search-results {position:relative;display:block;max-height:35vh;overflow:auto;}
+.menu.main .pack-menu-search-results button {position:relative;display:block;box-sizing:border-box;width:100%;margin:4px 0;padding:9px 8px;text-align:left;white-space:normal;overflow-wrap:anywhere;color:inherit;background:#a48b5430;border:1px solid #a48b5450;border-radius:4px;cursor:pointer;}
+.menu.main .pack-menu-search-results :is(strong,small) {position:relative;display:block;font:inherit;line-height:1.5;}
+.menu.main .pack-menu-search-results strong {font-size:16px;}
+.menu.main .pack-menu-search-results small {font-size:13px;opacity:.8;}
+.menu.main .pack-menu-search [hidden] {display:none!important;}
 .menu.main .right.pane .pack-submenu {
 	position: relative;
 	display: block;
@@ -157,22 +168,7 @@ html[data-presentation="shousha"] .extension-config-control.toggle > div > div {
 /* Full pre-game menus share the engine controls, but never expose match actions. */
 #window.lobby-settings-runtime:not(.lobby-settings-overlay) { display: none !important; }
 #window.lobby-settings-overlay { visibility: visible; pointer-events: auto; z-index: 110; background: #0007; }
-html.lobby-settings-page .lobby-settings-heading { z-index: 111; }
-.lobby-settings-page .menu-tab > div:first-child { display: none; }
 .lobby-settings-page #system,
 .lobby-settings-page #arena,
 .lobby-settings-page #historybar { visibility: hidden !important; pointer-events: none !important; }
-.lobby-settings-page .lobby-settings-heading { position: fixed; inset: 0 0 auto; z-index: 30; box-sizing: border-box; display: flex; align-items: center; gap: 16px; padding: 12px 24px; background: #27231af2; border-bottom: 1px solid #b99b60; color: #edddba; font: 16px/1.5 "Microsoft YaHei", sans-serif; }
-.lobby-settings-page .lobby-settings-heading span { color: #c3b393; font-size: 13px; }
-.lobby-settings-page .lobby-settings-heading button { margin-left: auto; padding: 8px 16px; border: 1px solid #ba9c62; border-radius: 7px; background: #655039; color: #fff0ce; cursor: pointer; font: inherit; }
-html.lobby-settings-page .menu-container > .main.menu {
-	top: 76px !important;
-	left: max(10px, calc(50% - 290px)) !important;
-	width: min(580px, calc(100% - 24px));
-	height: min(460px, calc(100% - 90px));
-	box-sizing: border-box;
-}
-@media (max-width: 640px) {
-  .lobby-settings-page .lobby-settings-heading { padding: 10px 12px; gap: 8px; }
-  .lobby-settings-page .lobby-settings-heading span { display: none; }
-}
+

@@ -1,3 +1,7 @@
+@import "./equipment-labels.css";
+@import "./adaptive-layout.css";
+@import "./compact-seats.css";
+@import "./arena-background.css";
 /*--------标签--------*/
 html {
 	width: 100%;
@@ -2061,6 +2065,13 @@ div.select-all:not(.card):not(.player) {
 }
 .button.card {
 	font-size: 14px;
+}
+.button.character {
+	/* The transparent selection border is part of the portrait, too. Sizing
+	 * against the padding box tiles narrow image strips above and below it. */
+	background-origin: border-box;
+	background-clip: border-box;
+	background-repeat: no-repeat;
 }
 .button.character > .name {
 	left: 5px;
@@ -4390,6 +4401,11 @@ div[data-decoration="bronze"]::after {
 .card.fullskin > .background {
 	display: none !important;
 }
+/* Printed card faces already carry their title/type. Keep live suit/number in play. */
+.card.card-printed-title:not(.infohidden) > .name,
+.card-pack-page .card:is(.card-printed-title, .decade-card, .ss-card-art) > :is(.info, .range) {
+	display: none !important;
+}
 .card:not(.fullskin) > .image {
 	display: none !important;
 }
@@ -5758,7 +5774,8 @@ progress.progress::-webkit-progress-value {
     margin: 8px 12px;
 }
 .dialog.character-browser-paged button.tdnode,
-.dialog.character-browser-paged .character-filter-groups select {
+.dialog.character-browser-paged .character-filter-groups select,
+.dialog .character-pack-dropdown select {
     position: relative;
     display: inline-block;
     width: auto;
@@ -5990,3 +6007,56 @@ progress.progress::-webkit-progress-value {
 #arena.selecting .card.oljuhun:not(.selectable):not(.selected) {
 	filter: brightness(0.48) grayscale(0.65) !important;
 }
+
+.menu-buttons .card-pack-gallery { position: relative; display: block; width: 100%; }
+.menu-buttons .card-gallery-controls { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 10px 4px; font-size: 14px; }
+.card-gallery-controls input { width: 150px; padding: 5px 8px; border: 1px solid #8c794e; border-radius: 4px; background: #f3ead5; color: #382c1a; }
+.card-gallery-controls button { cursor: pointer; padding: 5px 10px; border: 1px solid #8c794e; border-radius: 4px; background: linear-gradient(#e8dab3, #cbb987); color: #382c1a; font: inherit; }
+.card-gallery-controls button:disabled { opacity: .45; cursor: default; }
+.menu-buttons .card-gallery-grid { position: relative; display: block; min-height: 150px; width: 100%; }
+.menu-buttons .card-gallery-grid > .button.card { position: relative; }
+
+/* Generated illustrations are inserts, not complete printed card faces. Keep
+ * the engine's parchment/frame and fit the entire subject inside its safe area. */
+.card.fullskin:is(.card-art-painting, .card-art-sprite) > .image,
+#arena .card.fullskin:is(.card-art-painting, .card-art-sprite) > .image {
+	left: 5px !important;
+	top: 7px !important;
+	width: calc(100% - 10px) !important;
+	height: calc(100% - 14px) !important;
+	border-radius: 4px;
+	background-size: contain !important;
+	background-repeat: no-repeat;
+	background-position: center !important;
+	box-shadow: none;
+}
+.card.fullskin.card-art-painting > .image {
+	mix-blend-mode: multiply;
+	mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 94%, transparent);
+	mask-composite: intersect;
+}
+.card.fullskin.card-art-square > .image,
+#arena .card.fullskin.card-art-square > .image {
+	top: 23px !important;
+	height: auto !important;
+	aspect-ratio: 1 !important;
+}
+.card.fullskin:is(.card-art-painting, .card-art-sprite) > .name {
+	background-color: rgba(245, 230, 201, .88);
+}
+.card.fullskin.card-art-sprite > .image,
+#arena .card.fullskin.card-art-sprite > .image {
+	top: 18px !important;
+	height: calc(100% - 30px) !important;
+}
+/* Paged directory: keep large filter sets out of the portrait grid. */
+.dialog .character-pack-dropdown {position:relative;display:inline-flex;max-width:100%;align-items:center;gap:8px;vertical-align:middle;}
+.dialog .character-pack-dropdown > span {position:static;flex:none;font-size:14px;}
+.dialog .character-pack-dropdown > select {min-width:0;max-width:240px;font-size:16px;}
+.character-browser-paged .character-filter-field {position:relative;display:flex;flex:1 1 180px;min-width:0;align-items:center;gap:10px;text-align:left;}
+.character-browser-paged .character-filter-field > span {position:static;flex:none;font-size:14px;}
+.character-browser-paged .character-filter-field > select {position:static;flex:1;min-width:0;width:100%;box-sizing:border-box;}
+.character-browser-paged .character-filter-categories {position:relative;display:flex;flex-wrap:wrap;gap:8px;margin:12px;}
+.character-browser-paged .character-filter-index {position:relative;display:block;margin:12px;text-align:left;font-size:14px;}
+.character-browser-paged .character-filter-index > summary {position:relative;cursor:pointer;padding:7px 0;}
+.character-browser-paged .character-filter-index .character-filter-alphabet {justify-content:flex-start;margin:8px 0;}

@@ -195,434 +195,7 @@ window.tipsClick=function(music){
 		    }*/
 		}
 return {createHome:function(){
-const uisprite = {
-                "actak": {
-                    "x": 172,
-                    "y": 10,
-                    "scale": 0.68
-                },
-                "actbk": {
-                    "x": 307,
-                    "y": 10,
-                    "scale": 0.68
-                },
-                "activeea": {
-                    "x": 173,
-                    "y": 10,
-                    "scale": 0.67
-                },
-                "avatar": {
-                    "x": 218,
-                    "y": 43,
-                    "scale": 0.69
-                },
-                "guan": {
-                    "x": 245,
-                    "y": 58,
-                    "scale": 1
-                },
-                "left1": {
-                    "x": 71,
-                    "y": 92,
-                    "scale": 0.7
-                },
-                "left2": {
-                    "x": 72,
-                    "y": 178,
-                    "scale": 0.7
-                },
-                "left3": {
-                    "x": 71,
-                    "y": 267,
-                    "scale": 0.7
-                },
-                "left4": {
-                    "x": 70,
-                    "y": 350,
-                    "scale": 0.7
-                },
-                "leftlong": {
-                    "x": 3,
-                    "y": 253,
-                    "scale": 0.8
-                },
-                "lvlup": {
-                    "x": 324,
-                    "y": 10,
-                    "scale": 0.8
-                },
-                "menu1": {
-                    "x": 1059,
-                    "y": 0.5,
-                    "scale": 0.7
-                },
-                "pubbtn_close": {
-                    "x": 1059,
-                    "y": 470,
-                    "scale": 0.7
-                },
-                "mode1": {
-                    "x": 267,
-                    "y": 256,
-                    "scale": 0.7
-                },
-                "mode2": {
-                    "x": 535,
-                    "y": 254,
-                    "scale": 0.7
-                },
-                "mode3": {
-                    "x": 802,
-                    "y": 166,
-                    "scale": 0.61
-                },
-                "mode4": {
-                    "x": 802,
-                    "y": 340,
-                    "scale": 0.72
-                },
-                "player_nan": {
-                    "x": 150,
-                    "y": 10,
-                    "scale": 1
-                },
-                "right2": {
-                    "x": 898,
-                    "y": 34.5,
-                    "scale": 0.62
-                },
-                "right3": {
-                    "x": 960,
-                    "y": 34.5,
-                    "scale": 0.62
-                },
-                "right44": {
-                    "x": 1027,
-                    "y": 36,
-                    "scale": 0.63
-                },
-                "yukasaoguang": {
-                    "x": 833,
-                    "y": 32,
-                    "scale": 0.63
-                },
-                "rightacbg": {
-                    "x": 27,
-                    "y": 145.5,
-                    "scale": 0.7
-                },
-                "rightbg": {
-                    "x": 834,
-                    "y": 32,
-                    "scale": 0.68
-                },
-                "ro2": {
-                    "x": 27,
-                    "y": 278,
-                    "scale": 0.7
-                },
-                "czg": {
-                    "x": 29,
-                    "y": 345,
-                    "scale": 0.7
-                },
-                "say": {
-                    "x": 45,
-                    "y": 0.5,
-                    "scale": 1.15
-                },
-                "uactive1": {
-                    "x": 308.5,
-                    "y": -3.5,
-                    "scale": 0.71
-                },
-                "under1": {
-                    "x": 550,
-                    "y": 14,
-                    "scale": 0.7
-                },
-                "shop": {
-                    "x": 628,
-                    "y": 19.5,
-                    "scale": 0.74
-                },
-                "under3": {
-                    "x": 705,
-                    "y": 11.5,
-                    "scale": 0.7
-                },
-                "under4": {
-                    "x": 785,
-                    "y": 13.5,
-                    "scale": 0.7
-                },
-                "under5": {
-                    "x": 865,
-                    "y": 11.5,
-                    "scale": 0.7
-                },
-                "under6": {
-                    "x": 944,
-                    "y": 7.5,
-                    "scale": 0.75
-                },
-                "vipbg1": {
-                    "x": 460,
-                    "y": 21,
-                    "scale": 0.92
-                },
-                "vipbg2": {
-                    "x": 623,
-                    "y": 20,
-                    "scale": 0.9
-                },
-                "大元帅": {
-                    "x": 154,
-                    "y": 58,
-                    "scale": 0.2
-                },
-                "pica": {
-                    "x": 76,
-                    "y": 36,
-                    "scale": 0.7
-                },
-                "riactive": {
-                    "x": 27.5,
-                    "y": 147.5,
-                    "scale": 0.7
-                },
-                "modesecbg": {
-                    "x": 550,
-                    "y": 250,
-                    "scale": 0.63
-                },
-                "mode1bbg": {
-                    "x": 590,
-                    "y": 256,
-                    "scale": 0.67
-                },
-                "modetta": {
-                    "x": 422,
-                    "y": 102,
-                    "scale": 0.69
-                },
-                "modettb": {
-                    "x": 422,
-                    "y": 102,
-                    "scale": 0.69
-                },
-                "mode1tt": {
-                    "x": 221,
-                    "y": 102,
-                    "scale": 0.69
-                },
-                "modesecoff": {
-                    "x": 225,
-                    "y": 158,
-                    "scale": 0.7
-                },
-                "modesecoff1": {
-                    "x": 225,
-                    "y": 158,
-                    "scale": 0.7
-                },
-                "modesecoff2": {
-                    "x": 225,
-                    "y": 218,
-                    "scale": 0.7
-                },
-                "modesecoff3": {
-                    "x": 225,
-                    "y": 278,
-                    "scale": 0.7
-                },
-                "5pjz": {
-                    "x": 225,
-                    "y": 159,
-                    "scale": 0.7
-                },
-                "8pjz": {
-                    "x": 225,
-                    "y": 219,
-                    "scale": 0.7
-                },
-                "guowar": {
-                    "x": 227,
-                    "y": 280,
-                    "scale": 0.7
-                },
-                "whelp": {
-                    "x": 488,
-                    "y": 103,
-                    "scale": 0.65
-                },
-                "rzclose": {
-                    "x": 1055.5,
-                    "y": 41,
-                    "scale": 0.47
-                },
-                "ttrankbg1": {
-                    "x": 230,
-                    "y": 240,
-                    "scale": 0.8
-                },
-                "ttrankbg2": {
-                    "x": 230,
-                    "y": 222,
-                    "scale": 0.8
-                },
-                "ttrankbg3": {
-                    "x": 230,
-                    "y": 360,
-                    "scale": 0.8
-                },
-                "ttrank": {
-                    "x": 230,
-                    "y": 160,
-                    "scale": 0.8
-                },
-                "jj_grade_qingtong": {
-                    "x": 230,
-                    "y": 180,
-                    "scale": 1
-                },
-                "jj_grade_baiyin": {
-                    "x": 230,
-                    "y": 180,
-                    "scale": 1
-                },
-                "jj_grade_huangjin": {
-                    "x": 230,
-                    "y": 180,
-                    "scale": 1
-                },
-                "jj_grade_feicui": {
-                    "x": 230,
-                    "y": 180,
-                    "scale": 1
-                },
-                "jj_grade_dashi": {
-                    "x": 230,
-                    "y": 180,
-                    "scale": 1
-                },
-                "jj_star_on": {
-                    "x": 200,
-                    "y": 300,
-                    "scale": 0.8
-                },
-                "jj_star_off": {
-                    "x": 200,
-                    "y": 300,
-                    "scale": 0.8
-                },
-                "tiantibg": {
-                    "x": 100,
-                    "y": 220,
-                    "scale": 1
-                },
-                "solobtn": {
-                    "x": 100,
-                    "y": 170,
-                    "scale": 0.7
-                },
-                "versustwobtn": {
-                    "x": 100,
-                    "y": 320,
-                    "scale": 0.7
-                },
-                "jj_dianfeng": {
-                    "x": 100,
-                    "y": 50,
-                    "scale": 1.2
-                },
-                "jj_tittle": {
-                    "x": 100,
-                    "y": 20,
-                    "scale": 0.7
-                },
-                "publicui_title_bg": {
-                    "x": 140,
-                    "y": 30,
-                    "scale": 0.8
-                },
-                "s0": {
-                    "x": 180,
-                    "y": 20,
-                    "scale": 0.7
-                },
-                "bigmenu": {
-                    "x": 551.5,
-                    "y": 310,
-                    "scale": 1.05
-                },
-                "set_dialog": {
-                    "x": 551.5,
-                    "y": 257,
-                    "scale": 1
-                },
-                "warr_info_bg": {
-                    "x": 341,
-                    "y": 69,//69
-                    "scale": 0.68
-                },
-                "wujiangchangkuang": {
-                    "x": -470,
-                    "y": 270,
-                    "scale": 1
-                },
-                "jl_bar_fg": {
-                    "x": 172,
-                    "y": -78,
-                    "scale": 0.98
-                },
-                "jianghun": {
-                    "x": -228,
-                    "y": -18,
-                    "scale": 1
-                },
-                "warr_info_dec": {
-                    "x": -190,
-                    "y": 152,
-                    "scale": 1
-                },
-                "offical_dayuanshuai": {
-                    "x": -210,
-                    "y": -71.,
-                    "scale": 1.2
-                },
-                
-                "warr_arr_official": {
-                    "x": -51,
-                    "y": -71,
-                    "scale": 1
-                },
-                "officalui_icon_10": {
-                    "x": -345,
-                    "y": -30,
-                    "scale": 0.5
-                },
-                "biaojibeijing": {
-                    "x": 788,
-                    "y": 25,
-                    "scale": 0.9
-                },
-                "search_btn": {
-                    "x": 912,
-                    "y": 25,
-                    "scale": 0.6
-                },
-                "wujiangback": {
-                    "x": 1045,
-                    "y": 37,
-                    "scale": 0.75
-                },
-                /*备份原版："wujiangback": {
-                    "x": 1045,
-                    "y": 37,
-                    "scale": 0.75
-                },*/
-            }
+const sceneUI = bridge.sceneUI();
 function numtoroma(num) {
                     switch (num) {
                         case 1:
@@ -866,10 +439,8 @@ window.qhlyOpenCharacters=function(){
                             });
                             
                             xloader.load(() => {
-                                spinelo = new PIXI.spine.Spine(xloader.resources.spineloading.spineData);
-                                uibg = new PIXI.Sprite(xloader.resources.loadingbg2.texture);//萌新修改，去除了原先冗杂的uibg2，减少了进入时的错误
-                                uibg.width = pixiapp.screen.width;
-                                uibg.height = pixiapp.screen.height;
+                                spinelo = sceneUI.idle(xloader.resources.spineloading.spineData, pixiapp.screen);
+                                uibg = sceneUI.background(xloader.resources.loadingbg2.texture, pixiapp.screen);
                                 
                                 //骨骼加载完毕后如果前面判断到有了这里直接写函数
                                 if(window.rz_hasVideoBGS) {
@@ -883,39 +454,9 @@ window.qhlyOpenCharacters=function(){
                                 }
                                 pixiapp.stage.addChild(uibg, spinelo);
                                 pixiapp.stage.setChildIndex(uibg, 0);
-                                spinelo.state.setAnimation(0, 'idle', true); bridge.ready();
-                                /*spinelo.x = 0.51 * pixiapp.screen.width;
-                                spinelo.y = 0.5 * pixiapp.screen.height;
-                                spinelo.scale.set(0.75);*/
-                                spinelo.x = 0.5 * pixiapp.screen.width;
-                                spinelo.y = 0.5 * pixiapp.screen.height;
-                                spinelo.scale.set(0.8);//0.95
-                                // 随机的三国杀文本
-                                let sanguoTexts = [
-                                    '三国杀是一款流行的桌面卡牌游戏，基于三国历史背景。',
-                                    '在三国杀中，玩家需要策略地使用各种角色卡牌来击败对手。',
-                                    '诸葛亮、曹操和刘备是三国杀中的著名角色。',
-                                    '游戏中的卡牌包括杀、闪、桃等各种不同的功能。',
-                                    '每位角色都有独特的技能和特点，增加了游戏的变化性。',
-                                    '三国杀的策略性和战术性使其成为一款受欢迎的卡牌游戏。',
-                                    '在三国杀中，胜利需要巧妙地使用卡牌和角色技能。',
-                                    '游戏中的合作和背叛元素增加了战局的紧张感。',
-                                    '使用你喜欢的武将，积累武将经验，可以获得炫酷的武将表现效果',
-                                    '付费购买的武将及招募的武将均可以分解成一定数量的将魂',
-                                    '开通会员后，可以加速等级的提升哦',
-                                ];
-                                // 创建一个随机的三国杀文本
-                                function getRandomSanguoText() {
-                                    return sanguoTexts[Math.floor(Math.random() * sanguoTexts.length)];
-                                }
-                                let sanguoTip = new PIXI.Text(getRandomSanguoText(), {
-                                    fontSize: 17,
-                                    fill: '#DAA520',
-                                    fontFamily: 'shousha'
-                                });
-                                sanguoTip.anchor.set(0.5);
-                                sanguoTip.x = 0.51 * pixiapp.screen.width; // 调整文本位置
-                                sanguoTip.y = 0.95 * pixiapp.screen.height; // 调整文本位置
+                                bridge.ready();
+                                const getRandomSanguoText = sceneUI.randomTip;
+                                const sanguoTip = sceneUI.tip(pixiapp.screen);
                                 pixiapp.stage.addChild(sanguoTip);
                                 // 每隔一段时间更新文本内容
                                 //sanguoTip.text = getRandomSanguoText();
@@ -1010,10 +551,8 @@ window.qhlyOpenCharacters=function(){
                             });
                             xloader.load(() => {
                              window.uibg3Aready=true;
-                             spinelo = new PIXI.spine.Spine(xloader.resources.spineloading.spineData);
-                             uibg = new PIXI.Sprite(xloader.resources.uiBG.texture);
-                             uibg.width = pixiapp.screen.width;
-                             uibg.height = pixiapp.screen.height;
+                             spinelo = sceneUI.idle(xloader.resources.spineloading.spineData, pixiapp.screen);
+                             uibg = sceneUI.background(xloader.resources.uiBG.texture, pixiapp.screen);
                              //静态主题禁用视频
                              /*game.getFileList('extension/手杀标准UI/original/如真似幻/images/uiStyles/'+bgnum,function(folders,files){
                                     if(files.includes(`bg${bgnums}.mp4`)) {
@@ -1027,17 +566,12 @@ window.qhlyOpenCharacters=function(){
                                     }
                                 });*/
                              // 添加载入图的精灵
-                             const hombgSprite = new PIXI.Sprite(xloader.resources.homBG.texture);
-                             hombgSprite.width = pixiapp.screen.width;
-                             hombgSprite.height = pixiapp.screen.height;
+                             const hombgSprite = sceneUI.background(xloader.resources.homBG.texture, pixiapp.screen);
                              pixiapp.stage.addChild(hombgSprite); // 添加载入图的精灵到舞台
                              pixiapp.stage.addChild(uibg); // 添加原来的背景图到舞台
                              pixiapp.stage.addChild(spinelo);
                              pixiapp.stage.setChildIndex(uibg, 0)
-                             spinelo.state.setAnimation(0, 'idle', true); bridge.ready();
-                             spinelo.x = 0.5 * pixiapp.screen.width;
-                             spinelo.y = 0.5 * pixiapp.screen.height;
-                             spinelo.scale.set(0.8);//1
+                             bridge.ready();//1
                              btnmList.forEach(asset => {
                                   PIXI.sound.add(asset.name, lib.assetURL + asset.path);
                              });
@@ -1503,7 +1037,10 @@ window.qhlyOpenCharacters=function(){
                                     window.container = container;
                                 }
                                 //关闭场景时回到父级场景
-                                function closee() {
+                                function openMainTools() {
+ bridge.openTools(() => { if (!uihome.parent) closee(); uihome.addChild(menuhome); }, () => { if (!uihome.parent) closee(); });
+}
+function closee() {
                                     opeen(uihome);
                                     game.storyBgMode=false;
                                     if(lib.config.rzEpicSpine) {
@@ -1527,57 +1064,11 @@ window.qhlyOpenCharacters=function(){
                                     }
                                 }
 
-                                function uiinit(sprite, bool) {
-                                    const name = sprite.name;
-                                    if (bool !== undefined) {
-                                        sprite.interactive = true;
-                                        sprite.on('pointerup', onButtonUpx);
-                                        sprite.on('pointerdown', onButtonDownx);
-                                    }
-                                    if (!uisprite[name]) return;
-                                    var has = function(str){
-                                        return name.indexOf(str)!=-1;
-                                    };
-                                    var pptw = ppw;//横向
-                                    var ppth = pph;//纵向
-                                    var max = Math.max(ppw,pph);
-                                    var min = Math.min(ppw,pph);
-                                    if((has('menuyi')||has('menuer')||has('menusan')||has('menusi')||has('menuwu'))) {
-                                        ppth = ppw;
-                                    }
-                                    sprite.x = uisprite[name].x * pptw;
-                                    sprite.y = uisprite[name].y * ppth;
-                                    sprite.anchor.set(0.5);
-                                    var ppsw = ppw;//横向
-                                    var ppsh = pph;//纵向
-                                    if((name!='leftlong')&&(has('jj_grade')||has('ttrank')||has('left')||has('under')||has('shop')||has('right')||has('menuyi')||has('menuer')||has('menusan')||has('menusi')||has('menuwu')||has('ro2')||has('czg')||has('riactive')||has('doudizhu'))) {
-                                        //alert(name);
-                                        ppsw = pph;
-                                    }else if(has('bigmenu')) {
-                                        ppsh = ppw;
-                                    }
-                                    sprite.scale.set(uisprite[name].scale * ppsw, uisprite[name].scale * ppsh);
-                                }
+                                function uiinit(sprite, bool) { sceneUI.place(sprite, { x: ppw, y: pph, handlers: bool !== undefined ? { up: onButtonUpx, down: onButtonDownx } : undefined }); }
 
-                                function uiinit2(fromFrames) {
-                                    fromFrames.anchor.set(0.5);
-                                    fromFrames.scale.set(0.29 * pps);
-                                }
+                                function uiinit2(fromFrames) { sceneUI.center(fromFrames, 0.29 * pps); }
 
-                                function uiinit3(sprite, bool) {
-                                    if(!sprite) return;
-                                    const name = sprite.name;
-                                    if (bool !== undefined) {
-                                        sprite.interactive = true;
-                                        sprite.on('pointerup', onButtonUpx);
-                                        sprite.on('pointerdown', onButtonDownx);
-                                    }
-                                    if (!uisprite[name]) return;
-                                    sprite.x = uisprite[name].x;
-                                    sprite.y = uisprite[name].y;
-                                    sprite.anchor.set(0.5);
-                                    sprite.scale.set(uisprite[name].scale, uisprite[name].scale);
-                                }
+                                function uiinit3(sprite, bool) { sceneUI.place(sprite, { raw: true, handlers: bool !== undefined ? { up: onButtonUpx, down: onButtonDownx } : undefined }); }
                                 //首屏加载
                                 function setupx() {
                                     console.timeEnd('y加载完毕')
@@ -2492,18 +1983,18 @@ window.qhlyOpenCharacters=function(){
                                                     });
                                                   }
                                                 //头像切换优化了一下下，可以精准选择了
-                                                if(old==rzsh_headlist[num]) {
+                                                if(old==window.rzsh_headlist[num]) {
                                                     var menu=['下一项','返回','跳十项'];
                                                 }else {
                                                     var menu=['下一项','确定','跳十项'];
                                                 }
-                                                var strs=rzsh_headlist[num].slice(0,-4);
+                                                var strs=window.rzsh_headlist[num].slice(0,-4);
                                                 for(var strn=strs.length;strn<=8;strn++) {
                                                    strs='0'+strs;
                                                 }
                                                 strs='NO.'+strs;
-                                                var show='◈切换玩家头像〔'+(num+1)+'｜'+rzsh_headlist.length+'〕\n☞编号 - '+strs;
-                                                //rzsh_headlist[num].slice(0,-4);
+                                                var show='◈切换玩家头像〔'+(num+1)+'｜'+window.rzsh_headlist.length+'〕\n☞编号 - '+strs;
+                                                //window.rzsh_headlist[num].slice(0,-4);
                                                 navigator.notification.confirm(
 									    			show,
 										    		function(index){
@@ -2512,7 +2003,7 @@ window.qhlyOpenCharacters=function(){
 											    		    case 0:
 											    		    //window.rzsh_headcho(num);
 											    		    window.uibg3Aready=true;
-											    		    if(old==rzsh_headlist[num]) {
+											    		    if(old==window.rzsh_headlist[num]) {
 											    		        window.hide_out_rz(30);
 											    		    }else {
 											    		        window.chg_head_rz(10,false,function(){
@@ -2527,11 +2018,11 @@ window.qhlyOpenCharacters=function(){
 										    
 											    		    case 1:
 											    		    /*if(num<=0) {
-											    		        var next=rzsh_headlist.length-1;
+											    		        var next=window.rzsh_headlist.length-1;
 											    		    }else {
 											    		        var next=num-1;
 											    		    }*/
-											    		    if(num>=rzsh_headlist.length-1) {
+											    		    if(num>=window.rzsh_headlist.length-1) {
 											    		        var next=0;
 											    		    }else {
 											    		        var next=num+1;
@@ -2546,22 +2037,22 @@ window.qhlyOpenCharacters=function(){
 								    					    window.uibg3Aready=true;
 								    					    window.hide_out_rz(30);
 								    					    //window.show_rzsh_head.remove();
-								    					    var headitem=rzsh_headlist[num];
+								    					    var headitem=window.rzsh_headlist[num];
 											    			game.saveConfig('rzsh_head',headitem);
 											    			window.tipsClick('Enter');//确定
-												    		if(old!=rzsh_headlist[num]) setTimeout(()=>{
+												    		if(old!=window.rzsh_headlist[num]) setTimeout(()=>{
                                                                 game.reload3();
                                                             },0);
 												    		break;
 												    		
 												    		case 3: 
-										        			/*if(num>=rzsh_headlist.length-1) {
+										        			/*if(num>=window.rzsh_headlist.length-1) {
 											    		        var next=0;
 											    		    }else {
 											    		        var next=num+1;
 											    		    }*/
 											    		    var next=Math.floor((num+10)/10)*10;
-											    		    if(next>=rzsh_headlist.length-1) {
+											    		    if(next>=window.rzsh_headlist.length-1) {
 											    		        next=0;
 											    		    }
 											    		    window.rzsh_headcho(next,old);
@@ -2586,8 +2077,8 @@ window.qhlyOpenCharacters=function(){
 								    	        return parseInt(a.slice(0,-4))-parseInt(b.slice(0,-4));
 								    	    });
                                             var old=lib.config.rzsh_head?lib.config.rzsh_head:'2.png';
-								    	    if(rzsh_headlist.contains(old)) {
-								    	        window.rzsh_headcho(rzsh_headlist.indexOf(old),old);
+								    	    if(window.rzsh_headlist.contains(old)) {
+								    	        window.rzsh_headcho(window.rzsh_headlist.indexOf(old),old);
 								    	    }else {
 								    	        window.rzsh_headcho(0,old);
 								    	    }
@@ -2604,13 +2095,13 @@ window.qhlyOpenCharacters=function(){
                                             if(lib.config.rzLock_set) break;
                                             window.uibg3Aready=false;
                                             window.rzsh_uicho=(num,old)=>{
-                                                if(old==rzsh_uiimglist[num]) {
+                                                if(old==window.rzsh_uiimglist[num]) {
                                                     var menu=['上一项','返回','下一项'];
                                                 }else {
                                                     var menu=['上一项','确定','下一项'];
                                                 }
-                                                var show='◈切换登录界面动画['+(num+1)+'/'+rzsh_uiimglist.length+']：'+rzsh_uiimglist[num];
-                                                //〔'+(num+1)+'/'+rzsh_ideimglist.length+'〕;
+                                                var show='◈切换登录界面动画['+(num+1)+'/'+window.rzsh_uiimglist.length+']：'+window.rzsh_uiimglist[num];
+                                                //〔'+(num+1)+'/'+window.rzsh_ideimglist.length+'〕;
                                                 navigator.notification.confirm(
 									    			show,
 										    		function(index){
@@ -2626,7 +2117,7 @@ window.qhlyOpenCharacters=function(){
 										    
 											    		    case 1:
 											    		    if(num<=0) {
-											    		        var next=rzsh_uiimglist.length-1;
+											    		        var next=window.rzsh_uiimglist.length-1;
 											    		    }else {
 											    		        var next=num-1;
 											    		    }
@@ -2638,16 +2129,16 @@ window.qhlyOpenCharacters=function(){
 								    					    
 								    					    case 2:
 								    					    window.uibg3Aready=true;
-								    					    var uiitem=rzsh_uiimglist[num];
+								    					    var uiitem=window.rzsh_uiimglist[num];
 											    			localStorage.setItem("rzsh_loginui",uiitem)
-												    		/*if(old!=rzsh_headlist[num]) setTimeout(()=>{
+												    		/*if(old!=window.rzsh_headlist[num]) setTimeout(()=>{
                                                                 game.reload3();
                                                             },0);*/
                                                             window.tipsClick('Enter');//确定
 												    		break;
 												    		
 												    		case 3: 
-										        			if(num>=rzsh_uiimglist.length-1) {
+										        			if(num>=window.rzsh_uiimglist.length-1) {
 											    		        var next=0;
 											    		    }else {
 											    		        var next=num+1;
@@ -2669,8 +2160,8 @@ window.qhlyOpenCharacters=function(){
 								    	    }
 								    	    //alert(window.rzsh_ideimglist);
                                             var old=localStorage.getItem("rzsh_loginui")?localStorage.getItem("rzsh_loginui"):'戏志才·举棋若定';
-								    	    if(rzsh_uiimglist.contains(old)) {
-								    	        window.rzsh_uicho(rzsh_uiimglist.indexOf(old),old);
+								    	    if(window.rzsh_uiimglist.contains(old)) {
+								    	        window.rzsh_uicho(window.rzsh_uiimglist.indexOf(old),old);
 								    	    }else {
 								    	        window.rzsh_uicho(0,old);
 								    	    }
@@ -2683,13 +2174,13 @@ window.qhlyOpenCharacters=function(){
                                             window.rzsh_uiHudie={};
                                             window.rzsh_nowEpicTheme=lib.config.rzEpicSpine;
                                             window.rzsh_uicho=(num,old)=>{
-                                                if(old==rzsh_uiimglist[num]) {
+                                                if(old==window.rzsh_uiimglist[num]) {
                                                     var menu=['上一项','返回','下一项'];
                                                 }else {
                                                     var menu=['上一项','确定','下一项'];
                                                 }
-                                                var show='◈切换大厅主题['+(num+1)+'/'+rzsh_uiimglist.length+']：'+rzsh_uiimglist[num];
-                                                //〔'+(num+1)+'/'+rzsh_ideimglist.length+'〕;
+                                                var show='◈切换大厅主题['+(num+1)+'/'+window.rzsh_uiimglist.length+']：'+window.rzsh_uiimglist[num];
+                                                //〔'+(num+1)+'/'+window.rzsh_ideimglist.length+'〕;
                                                 navigator.notification.confirm(
 									    			show,
 										    		function(index){
@@ -2705,7 +2196,7 @@ window.qhlyOpenCharacters=function(){
 										    
 											    		    case 1:
 											    		    if(num<=0) {
-											    		        var next=rzsh_uiimglist.length-1;
+											    		        var next=window.rzsh_uiimglist.length-1;
 											    		    }else {
 											    		        var next=num-1;
 											    		    }
@@ -2717,7 +2208,7 @@ window.qhlyOpenCharacters=function(){
 								    					    
 								    					    case 2:
 								    					    window.uibg3Aready=true;
-								    					    var uiitem=rzsh_uiimglist[num];
+								    					    var uiitem=window.rzsh_uiimglist[num];
 											    			//localStorage.setItem("rzsh_loginui",uiitem)
 											    			game.saveConfig('uiStyles',uiitem);
 											    			if(window.rzsh_uiHudie[uiitem]) {
@@ -2727,13 +2218,13 @@ window.qhlyOpenCharacters=function(){
 											    			    game.saveConfig('rzNoHuDieSpine',false);
 											    			}
 											    			window.tipsClick('Enter');//确定
-												    		if(old!=rzsh_uiimglist[num]) setTimeout(()=>{
+												    		if(old!=window.rzsh_uiimglist[num]) setTimeout(()=>{
                                                                 game.reload3();
                                                             },0);
 												    		break;
 												    		
 												    		case 3: 
-										        			if(num>=rzsh_uiimglist.length-1) {
+										        			if(num>=window.rzsh_uiimglist.length-1) {
 											    		        var next=0;
 											    		    }else {
 											    		        var next=num+1;
@@ -2758,8 +2249,8 @@ window.qhlyOpenCharacters=function(){
 								    	    }
 								    	    //alert(window.rzsh_ideimglist);
                                             var old=lib.config.uiStyles?lib.config.uiStyles:'经典主题';
-								    	    if(rzsh_uiimglist.contains(old)) {
-								    	        window.rzsh_uicho(rzsh_uiimglist.indexOf(old),old);
+								    	    if(window.rzsh_uiimglist.contains(old)) {
+								    	        window.rzsh_uicho(window.rzsh_uiimglist.indexOf(old),old);
 								    	    }else {
 								    	        window.rzsh_uicho(0,old);
 								    	    }
@@ -2900,13 +2391,13 @@ window.qhlyOpenCharacters=function(){
                                             if(lib.config.rzLock_set) break;
                                             window.uibg3Aready=false;
                                             window.rzsh_idecho=(num,old)=>{
-                                                if(old==rzsh_ideimglist[num]) {
+                                                if(old==window.rzsh_ideimglist[num]) {
                                                     var menu=['上一项','返回','下一项'];
                                                 }else {
                                                     var menu=['上一项','确定','下一项'];
                                                 }
-                                                var show='◈切换身份模式图片：'+rzsh_ideimglist[num].slice(0,-4)+'\n（重新启动后生效）';
-                                                //〔'+(num+1)+'/'+rzsh_ideimglist.length+'〕;
+                                                var show='◈切换身份模式图片：'+window.rzsh_ideimglist[num].slice(0,-4)+'\n（重新启动后生效）';
+                                                //〔'+(num+1)+'/'+window.rzsh_ideimglist.length+'〕;
                                                 navigator.notification.confirm(
 									    			show,
 										    		function(index){
@@ -2922,7 +2413,7 @@ window.qhlyOpenCharacters=function(){
 										    
 											    		    case 1:
 											    		    if(num<=0) {
-											    		        var next=rzsh_ideimglist.length-1;
+											    		        var next=window.rzsh_ideimglist.length-1;
 											    		    }else {
 											    		        var next=num-1;
 											    		    }
@@ -2934,16 +2425,16 @@ window.qhlyOpenCharacters=function(){
 								    					    
 								    					    case 2:
 								    					    window.uibg3Aready=true;
-								    					    var ideitem=rzsh_ideimglist[num];
+								    					    var ideitem=window.rzsh_ideimglist[num];
 											    			game.saveConfig('rszh_ideimg',ideitem);
-												    		/*if(old!=rzsh_headlist[num]) setTimeout(()=>{
+												    		/*if(old!=window.rzsh_headlist[num]) setTimeout(()=>{
                                                                 game.reload3();
                                                             },0);*/
                                                             window.tipsClick('Enter');//确定
 												    		break;
 												    		
 												    		case 3: 
-										        			if(num>=rzsh_ideimglist.length-1) {
+										        			if(num>=window.rzsh_ideimglist.length-1) {
 											    		        var next=0;
 											    		    }else {
 											    		        var next=num+1;
@@ -2969,8 +2460,8 @@ window.qhlyOpenCharacters=function(){
 								    	    window.rzsh_ideimglist.add('随机背景.ran');
 								    	    //alert(window.rzsh_ideimglist);
                                             var old=lib.config.rszh_ideimg?lib.config.rszh_ideimg:'君临天下.png';
-								    	    if(rzsh_ideimglist.contains(old)) {
-								    	        window.rzsh_idecho(rzsh_ideimglist.indexOf(old),old);
+								    	    if(window.rzsh_ideimglist.contains(old)) {
+								    	        window.rzsh_idecho(window.rzsh_ideimglist.indexOf(old),old);
 								    	    }else {
 								    	        window.rzsh_idecho(0,old);
 								    	    }
@@ -3273,61 +2764,17 @@ window.qhlyOpenCharacters=function(){
                                     const czgsprite = yloader.resources.uiczg.data.animations;
                                     //创建函数，输入一个名字，自动在纹理集里检索对应名字，然后赋名，然后输出
                                     //这是ui里不可交互元素
-                                    function rzshcreate(name) {
-                                        const sprite = new PIXI.Sprite(spritesheet[name]);
-                                        sprite.name = name;
-                                        return sprite;
-                                    }
+                                    function rzshcreate(name) { return sceneUI.sprite(spritesheet, name); }
                                     //这是ui可交互元素
-                                    function rzshcreatex(name) {
-                                        const sprite = new PIXI.Sprite(spritesheet[name]);
-                                        sprite.name = name;
-                                        sprite.interactive = true;
-                                        sprite.on('pointerdown', onButtonDown);
-                                        sprite.on('pointerup', onButtonUp);
-                                        return sprite;
-                                    }
+                                    function rzshcreatex(name) { return sceneUI.sprite(spritesheet, name, { down: onButtonDown, up: onButtonUp }); }
                                     //从vip包里拿东西
-                                    function vipcreat(name) {
-                                        const sprite = new PIXI.Sprite(vipsprite[name]);
-                                        sprite.name = name;
-                                        sprite.interactive = true;
-                                        //因为显示错误，暂时注释掉
-                                        //sprite.on('pointerdown', onButtonDown);
-                                        //sprite.on('pointerup', onButtonUp);
-                                        return sprite;
-                                    }
+                                    function vipcreat(name) { return sceneUI.sprite(vipsprite, name, { interactive: true }); }
                                     //这是灯里的可交互
-                                    function lightcreat1(name) {
-                                        const sprite = new PIXI.Sprite(lightsheet[name]);
-                                        sprite.name = name;
-                                        sprite.interactive = true;
-                                        sprite.on('pointerdown', onButtonDown);
-                                        sprite.on('pointerup', onButtonUp);
-                                        return sprite;
-                                    }
+                                    function lightcreat1(name) { return sceneUI.sprite(lightsheet, name, { down: onButtonDown, up: onButtonUp }); }
                                     //这是灯的动态交互
-                                    function lightcreat2(name) {
-                                        const fromFrames = new PIXI.AnimatedSprite.fromFrames(lightanimations[name])
-                                        fromFrames.name = name;
-                                        fromFrames.interactive = true;
-                                        fromFrames.animationSpeed = 1;
-                                        fromFrames.play();
-                                        fromFrames.on('pointerdown', onButtonDown);
-                                        fromFrames.on('pointerup', onButtonUp);
-                                        return fromFrames;
-                                    }
+                                    function lightcreat2(name) { return sceneUI.sprite(lightanimations, name, { down: onButtonDown, up: onButtonUp, animated: true, speed: 1 }); }
                                     //从藏珍阁里拿东西
-                                    function czgcreat(name) {
-                                        const fromFrames = new PIXI.AnimatedSprite.fromFrames(czgsprite[name])
-                                        fromFrames.name = name;
-                                        fromFrames.interactive = true;
-                                        fromFrames.animationSpeed = 0.5;
-                                        fromFrames.play();
-                                        fromFrames.on('pointerdown', onButtonDown);
-                                        fromFrames.on('pointerup', onButtonUp);
-                                        return fromFrames;
-                                    }
+                                    function czgcreat(name) { return sceneUI.sprite(czgsprite, name, { down: onButtonDown, up: onButtonUp, animated: true }); }
                                     yloader.add('modesecb', lib.assetURL + 'extension/手杀标准UI/original/如真似幻/images/mode.json');
                                     yloader.add('spinekss', lib.assetURL + 'extension/手杀标准UI/original/如真似幻/spine/kaizhan.skel');
                                     yloader.load(() => {
@@ -3346,21 +2793,9 @@ window.qhlyOpenCharacters=function(){
                                         }
                                         let modestexture = yloader.resources.modesecb.textures;
 
-                                        function modecreate(name) {
-                                            const sprite = new PIXI.Sprite(modestexture[name]);
-                                            sprite.name = name;
-                                            return sprite;
-                                        }
+                                        function modecreate(name) { return sceneUI.sprite(modestexture, name); }
                                         //这是模式可交互元素
-                                        function modecreatex(name) {
-                                            const sprite = new PIXI.Sprite(modestexture[name]);
-                                            sprite.name = name;
-                                            sprite.interactive = true;
-                                            //sprite.on('pointerdown', onButtonDown);
-                                            sprite.on('pointerup', onButtonUp);
-                                            sprite.on('pointerdown', onButtonDown);
-                                            return sprite;
-                                        }
+                                        function modecreatex(name) { return sceneUI.sprite(modestexture, name, { down: onButtonDown, up: onButtonUp }); }
                                         //透明框背景
                                         const modesecbg = modecreate('modesecbg');
                                         uiinit(modesecbg);
@@ -3522,13 +2957,17 @@ window.qhlyOpenCharacters=function(){
                                     if(!lib.config.rzLock_nod) [right1,right2,right4,yukasaoguang].forEach(node=>node.alpha=0.6);
                                     //上边预留玩家姓名，灯，vip等级，玩家头像，玩家等级，元宝数量
                                     //左边四个图标，可交互
-                                    const left1 = rzshcreatex('left1');
+                                    const left1 = rzshcreate('left1');
+left1.interactive=true;left1.buttonMode=true;left1.on('pointertap',()=>bridge.notice('公会功能暂未开放'));
                                     uiinit(left1);
-                                    const left2 = rzshcreatex('left2');
+                                    const left2 = rzshcreate('left2');
+left2.interactive=true;left2.buttonMode=true;left2.on('pointertap',()=>bridge.notice('好友功能暂未开放'));
                                     uiinit(left2);
-                                    const left3 = rzshcreatex('left3');
+                                    const left3 = rzshcreate('left3');
+left3.interactive=true;left3.buttonMode=true;left3.on('pointertap',()=>bridge.notice('比赛功能暂未开放'));
                                     uiinit(left3);
-                                    const left4 = rzshcreatex('left4');
+                                    const left4 = rzshcreate('left4');
+left4.interactive=true;left4.buttonMode=true;left4.on('pointertap',()=>bridge.notice('此入口功能暂未开放'));
                                     uiinit(left4);
                                     uihomeleft.addChild(left1, left2, left3, left4);
                                     //中间的mode区，可交互         
@@ -3602,7 +3041,11 @@ window.qhlyOpenCharacters=function(){
                                     const shop = czgcreat('shop');
                                     uiinit(shop);
                                     shop.animationSpeed = 0.3;
-                                    const under3 = rzshcreatex('under3');
+                                    // Guild services are not provided by the host lobby.
+                                    const under3 = rzshcreate('under3');
+                                    under3.interactive = true;
+                                    under3.buttonMode = true;
+                                    under3.on('pointertap', () => bridge.notice('公会功能暂未开放'));
                                     uiinit(under3);
                                     const under4 = rzshcreatex('under4');
                                     uiinit(under4);
@@ -3613,7 +3056,10 @@ window.qhlyOpenCharacters=function(){
                                     if(!lib.config.rzLock_nod) [under1,shop,under3,under4].forEach(node=>node.alpha=0.6);
                                     //右下角的十字按键
                                     const menu1 = rzshcreate('menu1')
-                                    uiinit(menu1, true);
+                                    uiinit(menu1);
+                                    menu1.interactive = true;
+                                    menu1.buttonMode = true;
+                                    menu1.on('pointertap', openMainTools);
                                     menu1.x = pixiapp.screen.width - menu1.width / 4;
                                     /*"menu1": {
                                     "x": 1059,
@@ -3661,22 +3107,9 @@ window.qhlyOpenCharacters=function(){
                                 paiweihometop.height = 0.3 * pixiapp.screen.height;
                                 paiweihome.addChild(paiweihometop, paiweihomeleft, paiweihomeright)
                                 //排位
-                                function paiweicreate(name) {
-                                    const sprite = new PIXI.Sprite(zloader.resources.paiweiui.textures[name]);
-                                    //sprite.scale.x=sprite.scale.y;
-                                    sprite.name = name;
-                                    return sprite;
-                                }
+                                function paiweicreate(name) { return sceneUI.sprite(zloader.resources.paiweiui.textures, name); }
                                 //龙头
-                                function paiweicreatey(name) {
-                                    let fromFrames = new PIXI.AnimatedSprite.fromFrames(zloader.resources.paiweiui.data.animations[name])
-                                    //fromFrames.scale.x=fromFrames.scale.y;
-                                    fromFrames.name = name;
-                                    fromFrames.anchor.set(0.5);
-                                    fromFrames.animationSpeed = 0.3;
-                                    fromFrames.play();
-                                    return fromFrames;
-                                }
+                                function paiweicreatey(name) { return sceneUI.sprite(zloader.resources.paiweiui.data.animations, name, { animated: true, speed: 0.3, anchor: 0.5 }); }
                                 //菜单
                                 const menuhome = new PIXI.Container();
                                 menuhome.width = pixiapp.screen.width;
@@ -3692,11 +3125,7 @@ window.qhlyOpenCharacters=function(){
                                 menu_hitArea.interactive = true;
                                 menuhome.addChild(menu_hitArea, menuhomeunder);
 
-                                function menucreate(name) {
-                                    const sprite = new PIXI.Sprite(zloader.resources.menubtn.textures[name]);
-                                    sprite.name = name;
-                                    return sprite;
-                                }
+                                function menucreate(name) { return sceneUI.sprite(zloader.resources.menubtn.textures, name); }
                                 menuhome.on("added", () => {
                                     if(lib.config.rzEpicSpine) {
                                         pixiapp.stage.setChildIndex(spinelo2, 2);//萌新修改
@@ -4090,11 +3519,7 @@ window.qhlyOpenCharacters=function(){
                                     //背景音乐，
                                     //技能：自动发动：
                                     //游戏背景，随机背景按钮
-                                    function setcreate(name) {
-                                        const sprite = new PIXI.Sprite(zloader.resources.setting.textures[name]);
-                                        sprite.name = name;
-                                        return sprite;
-                                    }
+                                    function setcreate(name) { return sceneUI.sprite(zloader.resources.setting.textures, name); }
 
                                     function setcreatex(name) {
                                         const sprite = new PIXI.Sprite();
@@ -4415,14 +3840,7 @@ window.qhlyOpenCharacters=function(){
                                 //武将界面必须使用内存控制。在修改选将之前 否则内存会爆炸。
                                 //创建一个容器池。
                                 //所有的武将必须加入武将池。
-                                function wujiangcreate(name) {
-                                    //留一个出BUG重启的预设
-                                    if(!gloader.resources.wujiang) {return;}
-                                    //if(!gloader.resources.wujiang) {game.reload();return;}
-                                    let sprite = new PIXI.Sprite(gloader.resources.wujiang.textures[name]);
-                                    sprite.name = name;
-                                    return sprite;
-                                }
+                                function wujiangcreate(name) { if (!gloader.resources.wujiang) return; return sceneUI.sprite(gloader.resources.wujiang.textures, name); }
                                 let wujiangpool = [];
                                 //武将界面大容器，放置所有小容器和精灵
                                 let wujianghome = new PIXI.Container();
@@ -4592,111 +4010,7 @@ window.qhlyOpenCharacters=function(){
                                     let quanbuxianshi = wujiangcreate('biaojibeijing');
                                     uiinit(quanbuxianshi);
                                     quanbuxianshi.scale.set(0.885 * ppw, 0.6 * pph);
-                                  if(!lib.config.extension_斗转星移_enable) {
-                                    var quanbuxianshitext = new PIXI.Text(` 全部武将`, {
-                                        fontFamily: 'shousha',
-                                        fontSize: 22,
-                                        fill: '#FFE4B5'
-                                    });
-                                  }else {
-                                    var quanbuxianshitext = new PIXI.Text(` 禁将设置`, {
-                                        fontFamily: 'shousha',
-                                        fontSize: 22,
-                                        fill: '#FFE4B5'
-                                    });
-                                    quanbuxianshitext.interactive = true;
-                                    quanbuxianshitext.on('pointerup', function(){
-                                                if(!lib.config.extension_斗转星移_enable) return;
-                                                //entermodegame('brawl');
-                                                window.qnssReload=true;
-                                                entermodegame('identity','normal','3');
-                                                window.hideArena=function(){
-                                                    if(ui.arena) {
-                                                        ui.arena.hide();
-                                                        if(window.shoushaBlanks&&window.shoushaBlanks.length) window.shoushaBlanks.forEach(node=>{
-                                                            node.style.transition='all 0.3s';
-                                                            node.style.opacity=0;
-                                                        });
-                                                        //ui.arena.style.display='none';
-                                                    }else {
-                                                        setTimeout(function(){
-                                                            window.hideArena();
-                                                        },100);
-                                                    }
-                                                }
-                                                window.hideArena();
-                                                if(window.shoushaBlanks&&window.shoushaBlanks.length) window.shoushaBlanks.forEach(node=>{
-                                                    node.style.opacity=0;
-                                                });
-                                                //ui.background.setBackgroundImage('image/background/1.jpg');
-                                                //lib.config.image_background='1';
-                                                setTimeout(function(){
-                                                    rzshkz();
-                                                },0);
-                                                uihome.removeChild(uihomecenter);
-                                                setTimeout(function(){
-                                                    hideDrawer(uihometop, "top");
-                                                    hideDrawer(uihomeunder, "under");
-                                                    hideDrawer(uihomeleft, "left");
-                                                    hideDrawer(uihomeright, "right");
-                                                },100);
-                                                window.isOnhide = true;
-                                                opprogress = setTimeout(function() {
-                                                    window.isOnhide = false;
-                                                    pixiapp.stage.removeChild(uihome);
-                                                    if (opprogress != null) clearTimeout(opprogress);
-                                                    opprogress = null;
-                                                },200);
-                                                /*pixiapp.stage.children.forEach(function(child) {
-                                                    if (child == uibg&&lib.config.rzEpicSpine) {
-                                                        pixiapp.stage.removeChild(child);
-                                                    }
-                                                });*/
-                                                    uibg.showfunc=function(num,sum){
-                                                        if(!uibg) return;
-                                                        uibg.alpha=(sum-num)/sum;
-                                                        if(sum>num){
-                                                            setTimeout(function(){
-                                                                uibg.showfunc(num+1,sum);
-                                                            },10);
-                                                        }else {
-                                                            //uibg3.alpha=1;
-                                                            //pixiapp.stage.removeChild(spinelo2, uibg3);
-                                                            if(pixiapp) pixiapp.stage.removeChild(uibg);
-                                                            //uibg.texture = xloader.resources.loadingbg.texture;
-                                                        }
-                                                    }
-                                                    if(uibg.playVideoTheme) uibg.playVideoTheme(true, 'delete');
-                                                    else uibg.showfunc(0,10);
-                                                /*setTimeout(function(){
-                                                    if(window.shoushaBlanks&&window.shoushaBlanks.length) window.shoushaBlanks.forEach(node=>{
-                                                        node.style.transition='all 0.3s';
-                                                        node.style.opacity=0;
-                                                    });
-                                                    window.qnssReload=true;
-                                                    //fix十周年的报错
-                                                    ui.dialogs=[];
-                                                    window.诗笺_manual.show();
-                                                },100);//2200*/
-                                                window.showManual=function(){
-                                                    if(ui.arena&&window.bancharss) {
-                                                        if(window.shoushaBlanks&&window.shoushaBlanks.length) window.shoushaBlanks.forEach(node=>{
-                                                            node.style.transition='all 0.3s';
-                                                            node.style.opacity=0;
-                                                        });
-                                                        window.qnssReload=true;
-                                                        //fix十周年的报错
-                                                        ui.dialogs=[];
-                                                        window.bancharss();
-                                                    }else {
-                                                        setTimeout(function(){
-                                                            window.showManual();
-                                                        },100);
-                                                    }
-                                                }
-                                                window.showManual();
-                                    });
-                                  }
+                                    const quanbuxianshitext = new PIXI.Text('全部武将', {fontFamily:'shousha',fontSize:22,fill:'#FFE4B5'});
                                     //quanbuxianshitext.scale.set(1.1, 1.5);
                                     quanbuxianshitext.scale.set(1, 1.4);
                                     quanbuxianshitext.anchor.set(0.6);
@@ -4705,98 +4019,6 @@ window.qhlyOpenCharacters=function(){
                                     union_arrow.x = quanbuxianshi.width * 0.37;
                                     quanbuxianshi.addChild(quanbuxianshitext, union_arrow);
                                     let search_btn = wujiangcreate('search_btn');
-                                    //搜索，跳转至全能搜索
-                                    search_btn.interactive = true;
-                                    search_btn.on('pointerup', function(){
-                                                if(!lib.config.extension_全能搜索_enable) return;
-                                                //entermodegame('brawl');
-                                                window.qnssReload=true;
-                                                entermodegame('identity','normal','3');
-                                                window.hideArena=function(){
-                                                    if(ui.arena) {
-                                                        ui.arena.hide();
-                                                        if(window.shoushaBlanks&&window.shoushaBlanks.length) window.shoushaBlanks.forEach(node=>{
-                                                            node.style.transition='all 0.3s';
-                                                            node.style.opacity=0;
-                                                        });
-                                                        //ui.arena.style.display='none';
-                                                    }else {
-                                                        setTimeout(function(){
-                                                            window.hideArena();
-                                                        },100);
-                                                    }
-                                                }
-                                                window.hideArena();
-                                                if(window.shoushaBlanks&&window.shoushaBlanks.length) window.shoushaBlanks.forEach(node=>{
-                                                    node.style.opacity=0;
-                                                });
-                                                //ui.background.setBackgroundImage('image/background/1.jpg');
-                                                //lib.config.image_background='1';
-                                                setTimeout(function(){
-                                                    rzshkz();
-                                                },0);
-                                                uihome.removeChild(uihomecenter);
-                                                setTimeout(function(){
-                                                    hideDrawer(uihometop, "top");
-                                                    hideDrawer(uihomeunder, "under");
-                                                    hideDrawer(uihomeleft, "left");
-                                                    hideDrawer(uihomeright, "right");
-                                                },100);
-                                                window.isOnhide = true;
-                                                opprogress = setTimeout(function() {
-                                                    window.isOnhide = false;
-                                                    pixiapp.stage.removeChild(uihome);
-                                                    if (opprogress != null) clearTimeout(opprogress);
-                                                    opprogress = null;
-                                                },200);
-                                                /*pixiapp.stage.children.forEach(function(child) {
-                                                    if (child == uibg&&lib.config.rzEpicSpine) {
-                                                        pixiapp.stage.removeChild(child);
-                                                    }
-                                                });*/
-                                                    uibg.showfunc=function(num,sum){
-                                                        if(!uibg) return;
-                                                        uibg.alpha=(sum-num)/sum;
-                                                        if(sum>num){
-                                                            setTimeout(function(){
-                                                                uibg.showfunc(num+1,sum);
-                                                            },10);
-                                                        }else {
-                                                            //uibg3.alpha=1;
-                                                            //pixiapp.stage.removeChild(spinelo2, uibg3);
-                                                            if(pixiapp) pixiapp.stage.removeChild(uibg);
-                                                            //uibg.texture = xloader.resources.loadingbg.texture;
-                                                        }
-                                                    }
-                                                    uibg.showfunc(0,10);
-                                                /*setTimeout(function(){
-                                                    if(window.shoushaBlanks&&window.shoushaBlanks.length) window.shoushaBlanks.forEach(node=>{
-                                                        node.style.transition='all 0.3s';
-                                                        node.style.opacity=0;
-                                                    });
-                                                    window.qnssReload=true;
-                                                    //fix十周年的报错
-                                                    ui.dialogs=[];
-                                                    window.诗笺_manual.show();
-                                                },100);//2200*/
-                                                window.showManual=function(){
-                                                    if(ui.arena&&window.诗笺_manual&&typeof SimplePagination !== 'undefined') {
-                                                        if(window.shoushaBlanks&&window.shoushaBlanks.length) window.shoushaBlanks.forEach(node=>{
-                                                            node.style.transition='all 0.3s';
-                                                            node.style.opacity=0;
-                                                        });
-                                                        window.qnssReload=true;
-                                                        //fix十周年的报错
-                                                        ui.dialogs=[];
-                                                        window.诗笺_manual.show();
-                                                    }else {
-                                                        setTimeout(function(){
-                                                            window.showManual();
-                                                        },100);
-                                                    }
-                                                }
-                                                window.showManual();
-                                    });
                                     uiinit(search_btn);
                                     let wujiangback = new PIXI.Sprite(gloader.resources.paiweiui.textures['back'])
                                     wujiangback.name = 'wujiangback';
@@ -4920,7 +4142,7 @@ window.qhlyOpenCharacters=function(){
                                         //变暗
                                         if (lib.config.characters && !lib.config.characters.includes(i)) spritebtn.filters = [characterclose];
                                         //武将包名字
-                                        let text = new PIXI.Text(rzshtranslate[i + '_character_config']);
+                                        let text = new PIXI.Text(get.plainText(rzshtranslate[i + '_character_config'] || i));
                                         text.style.fontFamily = 'shousha';
                                         text.style.fontSize = 28;//28
                                         text.position.set(120, 53);//120,50
@@ -4956,7 +4178,7 @@ window.qhlyOpenCharacters=function(){
                                             spritea.y = 4;
                                             spritea.name = 'avatar';
                                             //边框（空）
-                                            let sprite = new PIXI.Sprite();
+                                            let sprite = bridge.own(new PIXI.Sprite());
                                             //给精灵一个名字，应该给框才对
                                             sprite.name = j;
                                             //名字翻译，为搜索考虑
@@ -5107,27 +4329,8 @@ window.qhlyOpenCharacters=function(){
                                     wujiangmenubtn.y = pixiapp.screen.height - wujiangmenubtn.height;
                                     wujianghome.addChild(wujiangmenubtn);
                                     wujiangmenubtn.interactive = true;
-                                    wujiangmenubtn.on('pointerup', () => {
-                                        if(window.cantbecontinue) return;
-                                        window.cantbecontinue=true;
-                                        wujiangmenubtn.alpha=0;
-                                        wujianghome.addChild(wujiangmenu1)
-                                        window.menuminleft=function(num,sum,spd){
-                                            wujiangmenubg.x=sum+wujiangmenubg.width*(10-num)*0.1;
-                                            if(wujiangmenubg.x>sum) {
-                                                setTimeout(function(){
-                                                    window.menuminleft(num+0.5,sum,spd+1);
-                                                },10-spd*0.2);
-                                            }else {
-                                                wujiangmenubg.x=sum;
-                                                window.cantbecontinue=false;
-                                            }
-                                        }
-                                        window.menuminleft(4,wujiangmenubg.x,0);
-                                    })
-                                    wujiangmenubtn.on('pointerdown', () => {
-                                        /*¥PIXI.sound.play¥*/window.tipsClick('PopUp')
-                                    })
+                                    wujiangmenubtn.buttonMode = true;
+wujiangmenubtn.on('pointertap', openMainTools);
                                     //需要做一个蒙版，用来解决触屏按钮问题			
                                     let wujiangmenu1 = new PIXI.Container();
                                     let wujiangmenu_hitArea = new PIXI.Graphics();
@@ -5171,7 +4374,7 @@ window.qhlyOpenCharacters=function(){
                                                     var menu=['上一项','确定','下一项'];
                                                 }
                                                 var show='◈切换背景['+(num+1)+'/'+rzsh_skinimglist.length+']：'+rzsh_skinimglist[num].slice(0,-4);
-                                                //〔'+(num+1)+'/'+rzsh_ideimglist.length+'〕;
+                                                //〔'+(num+1)+'/'+window.rzsh_ideimglist.length+'〕;
                                                 window.tipsClick('TinyButton');//切换
                                                 navigator.notification.confirm(
 									    			show,
@@ -5200,7 +4403,7 @@ window.qhlyOpenCharacters=function(){
 								    					    var skinitem=rzsh_skinimglist[num];
 											    			game.saveConfig('rzsh_wjbg',skinitem);
 											    			gloader.resources.wujiangBG.texture=gloader.resources['wujiangBG'+num].texture;
-												    		/*if(old!=rzsh_headlist[num]) setTimeout(()=>{
+												    		/*if(old!=window.rzsh_headlist[num]) setTimeout(()=>{
                                                                 game.reload3();
                                                             },0);*/
                                                             window.tipsClick('Enter');//确定
@@ -5423,7 +4626,7 @@ window.qhlyOpenCharacters=function(){
                                         for(const sprite of wujiangpool)sprite.fav=(!lib.config.rzLock_jsc&&lib.config.favouriteCharacter.includes(sprite.name))||(!lib.config.rzLock_jzj&&game.rz_remen_cha.includes(sprite.name));
                                         if(currentwujiang==='btn_lvl1_1a'){
                                             if(renderProcess!=null)cancelAnimationFrame(renderProcess);
-                                            bbox.removeChildren();filteredSprites=wujiangpool.filter(sprite=>sprite.fav);
+                                            bbox.removeChildren();filteredSprites=characterTools.popular(wujiangpool);
                                             addSprites(filteredSprites.slice(),bbox);
                                         }
                                     };
@@ -5432,6 +4635,7 @@ window.qhlyOpenCharacters=function(){
                                     //筛选武将集合
                                     let filteredSprites = []; //当前选中的武将包
                                     let currentgroup = null;
+                                    const characterTools = bridge.characterTools({page:wujianghome,filterButton:quanbuxianshi,searchButton:search_btn,filterLabel:quanbuxianshitext,powerBar:jl_bar_fg,allCards:()=>wujiangpool,render:renderSprites,canvas:pixiapp.view,renderer:pixiapp.renderer,ticker:pixiapp.ticker});
                                     wujianghome.on('added', () => {
                                         uibg.texture = gloader.resources.wujiangBG.texture;
                                         if(uibg.playVideoTheme) {
@@ -5453,7 +4657,7 @@ window.qhlyOpenCharacters=function(){
                                         currentwujiang = 'btn_lvl1_1a';
                                         btn_lvl1_1a.texture = gloader.resources.wujiang.textures['btn_lvl1_2'];
                                         bbox.removeChildren();
-                                        filteredSprites = wujiangpool.filter((sprite) => sprite.fav === true);
+                                        filteredSprites = characterTools.popular(wujiangpool);
                                         let filteredSpritesq = filteredSprites.slice();
                                         if (renderProcess != null) cancelAnimationFrame(renderProcess);
                                         addSprites(filteredSpritesq, bbox);
@@ -5561,7 +4765,7 @@ window.qhlyOpenCharacters=function(){
                                         if (event.target.sec === 'all') {
                                             filteredSprites = wujiangpool;
                                         } else if (event.target.sec === 'favourite') {
-                                            filteredSprites = wujiangpool.filter((sprite) => sprite.fav === true);
+                                            filteredSprites = characterTools.popular(wujiangpool);
                                         } else {
                                             filteredSprites = wujiangpool.filter((sprite) => sprite.pack === event.target.name);
                                         }
@@ -5689,31 +4893,10 @@ window.qhlyOpenCharacters=function(){
                                     }
 
                                     function addSprites(filteredSpritess, bbox) {
-                                        let ROW_SIZE = 4; // 每行放置的精灵数量
-                                        let X_SPACING = 179 * ppw; // 精灵在x轴上的间隔
-                                        let Y_SPACING = 192 * pph; // 精灵在y轴上的间隔
-                                        let rzx = 2 * ppw; // x坐标
-                                        let rzy = 14 * pph; // y坐标	
-                                        let rzcounter = 0; // 当前行已经放置的精灵数量
-                                        function addSprite() {
-                                            const sprite = filteredSpritess.shift();
-                                            if (!sprite) {
-                                                renderProcess = null;
-                                                return
-                                            }
-                                            sprite.x = rzx; // 设置 X 位置
-                                            sprite.y = rzy; // 设置 Y 位置
-                                            bbox.addChild(sprite); // 将精灵添加到 bbox 容器中
-                                            rzx += X_SPACING; // 更新 X 位置
-                                            rzcounter++; // 更新计数器
-                                            if (rzcounter === ROW_SIZE) { // 如果已经添加了一行精灵
-                                                rzx = 2 * ppw; // 重置 X 位置
-                                                rzy += Y_SPACING; // 更新 Y 位置
-                                                rzcounter = 0; // 重置计数器
-                                            }
-                                            renderProcess = requestAnimationFrame(addSprite);
-                                        }
-                                        renderProcess = requestAnimationFrame(addSprite);
+                                        characterTools.show(filteredSpritess);
+                                    }
+                                    function renderSprites(cards) {
+                                        bridge.grid(cards,bbox,wujiangscrollright,ppw,pph,pixiapp);
                                     }
 
                                     function wujiangdonghua() {
@@ -6257,10 +5440,6 @@ window.qhlyOpenCharacters=function(){
                                                     }
                                                     paiweihome.showfunc(0,10);
                                             break;
-                                        case "menu1":
-                                            /*¥PIXI.sound.play¥*/window.tipsClick('WinButton')
-                                            uihome.addChild(menuhome)
-                                            break;
                                         case "rzclose":
                                             /*¥PIXI.sound.play¥*/window.tipsClick('Report01')
                                             if (window.isOnhide != true) closee();
@@ -6320,7 +5499,7 @@ window.qhlyOpenCharacters=function(){
                                                     var zt='✔';
                                                 }
                                                 var show='  ☞ ['+(num+1)+'/'+menuList.length+'] '+menuList[num][0]+'：'+zt;
-                                                //〔'+(num+1)+'/'+rzsh_ideimglist.length+'〕;
+                                                //〔'+(num+1)+'/'+window.rzsh_ideimglist.length+'〕;
                                                 navigator.notification.confirm(
 									    			show,
 										    		function(index){

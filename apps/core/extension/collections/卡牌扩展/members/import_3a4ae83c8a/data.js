@@ -1,0 +1,379 @@
+// Generated from 卡牌扩展.zip/(卡牌)饕餮盛宴.zip; registration and configuration live in cardPackRuntime.js.
+export default function(lib, game, ui, get, ai, _status) {
+
+return { config: {}, build(config, builder) {
+builder.addPack({
+        card:{
+            "stave_mwdt":{
+                type:"stave",
+                subtype:"甜点",
+                enable:true,
+                selectTarget:-1,
+                vanish:true,
+                modTarget:true,
+                toself:true,
+                filterTarget:function (card,player,target){return player==target},
+                content:function (){
+        target.storage.stave_hunger+=Math.min(5,30-target.storage.stave_hunger);
+        target.storage.stave_sanity+=Math.min(10,30-target.storage.stave_sanity);
+        target.update();
+    },
+                ai:{
+                    basic:{
+                        order:7.2,
+                        useful:4.5,
+                        value:9.2,
+                    },
+                    result:{
+                        target:2,
+                    },
+                },
+                fullimage:true,
+            },
+            "stave_ywxk":{
+                type:"stave",
+                subtype:"主食",
+                enable:true,
+                selectTarget:-1,
+                vanish:true,
+                modTarget:true,
+                toself:true,
+                filterTarget:function (card,player,target){return player==target},
+                content:function (){
+        target.storage.stave_hunger+=Math.min(15,30-target.storage.stave_hunger);
+        target.storage.stave_sanity+=Math.max(-15,0-target.storage.stave_sanity);
+        target.recover();
+        target.update();
+    },
+                ai:{
+                    basic:{
+                        order:7.2,
+                        useful:4.5,
+                        value:9.2,
+                    },
+                    result:{
+                        target:2,
+                    },
+                },
+                fullimage:true,
+            },
+            "stave_llqc":{
+                type:"stave",
+                subtype:"甜点",
+                enable:true,
+                selectTarget:-1,
+                vanish:true,
+                modTarget:true,
+                toself:true,
+                filterTarget:function (card,player,target){return player==target},
+                content:function (){
+        target.storage.stave_hunger+=Math.min(7,30-target.storage.stave_hunger);
+        target.storage.stave_sanity+=Math.max(-5,0-target.storage.stave_sanity);
+        player.recover(2);
+        target.update();
+    },
+                ai:{
+                    basic:{
+                        order:7.2,
+                        useful:4.5,
+                        value:9.2,
+                    },
+                    result:{
+                        target:2,
+                    },
+                },
+                fullimage:true,
+            },
+            "stave_mwhb":{
+                type:"stave",
+                subtype:"主食",
+                enable:true,
+                selectTarget:-1,
+                vanish:true,
+                modTarget:true,
+                toself:true,
+                filterTarget:function (card,player,target){return player==target},
+                content:function (){
+        target.storage.stave_hunger+=Math.min(12,30-target.storage.stave_hunger);
+        target.storage.stave_sanity+=Math.min(7,30-target.storage.stave_sanity);
+        target.update();
+    },
+                ai:{
+                    basic:{
+                        order:7.2,
+                        useful:4.5,
+                        value:9.2,
+                    },
+                    result:{
+                        target:2,
+                    },
+                },
+                fullimage:true,
+            },
+            "stave_fsrc":{
+                type:"stave",
+                subtype:"饮品",
+                enable:true,
+                selectTarget:-1,
+                vanish:true,
+                modTarget:true,
+                toself:true,
+                filterTarget:function (card,player,target){return player==target},
+                content:function (){
+        target.storage.stave_hunger+=Math.min(2,30-target.storage.stave_hunger);
+        target.storage.stave_sanity+=Math.min(15,30-target.storage.stave_sanity);
+        target.update();
+    },
+                ai:{
+                    basic:{
+                        order:7.2,
+                        useful:4.5,
+                        value:9.2,
+                    },
+                    result:{
+                        target:2,
+                    },
+                },
+                fullimage:true,
+            },
+            "stave_pgqc":{
+                type:"stave",
+                subtype:"饮品",
+                enable:true,
+                selectTarget:-1,
+                vanish:true,
+                modTarget:true,
+                toself:true,
+                filterTarget:function (card,player,target){return player==target},
+                content:function (){
+        target.storage.stave_hunger+=Math.min(2,30-target.storage.stave_hunger);
+        target.storage.stave_sanity+=Math.min(3,30-target.storage.stave_sanity);
+        player.recover(3);
+        target.update();
+    },
+                ai:{
+                    basic:{
+                        order:7.2,
+                        useful:4.5,
+                        value:9.2,
+                    },
+                    result:{
+                        target:2,
+                    },
+                },
+                fullimage:true,
+            },
+            "stave_hjbs":{
+                type:"stave",
+                subtype:"饮品",
+                enable:true,
+                selectTarget:-1,
+                vanish:true,
+                modTarget:true,
+                toself:true,
+                filterTarget:function (card,player,target){return player==target},
+                content:function (){
+        target.storage.stave_hunger+=Math.min(3,30-target.storage.stave_hunger);
+        target.storage.stave_sanity+=Math.min(8,30-target.storage.stave_sanity);
+        target.update();
+    },
+                ai:{
+                    basic:{
+                        order:7.2,
+                        useful:4.5,
+                        value:9.2,
+                    },
+                    result:{
+                        target:2,
+                    },
+                },
+                fullimage:true,
+            },
+            "stave_jdcf":{
+                type:"stave",
+                subtype:"主食",
+                enable:true,
+                selectTarget:-1,
+                vanish:true,
+                modTarget:true,
+                toself:true,
+                filterTarget:function (card,player,target){return player==target},
+                content:function (){
+        target.storage.stave_hunger+=Math.min(17,30-target.storage.stave_hunger);
+        target.storage.stave_sanity+=Math.min(5,30-target.storage.stave_sanity);
+        target.recover();
+        target.update();
+    },
+                ai:{
+                    basic:{
+                        order:7.2,
+                        useful:4.5,
+                        value:9.2,
+                    },
+                    result:{
+                        target:2,
+                    },
+                },
+                fullimage:true,
+            },
+        },
+        translate:{
+            "stave_mwdt":"美味蛋挞",
+            "stave_mwdt_info":"<li>松软可口的蛋挞</br>体力+0</br>饱腹+5</br>脑残+10",
+            "stave_ywxk":"仰望星空",
+            "stave_ywxk_info":"<li>看起来十分嚇人</br>体力+1</br>饱腹+15</br>脑残-15",
+            "stave_llqc":"榴莲千层",
+            "stave_llqc_info":"<li>很有营养！</br>体力+2</br>饱腹+7</br>脑残-5",
+            "stave_mwhb":"美味汉堡",
+            "stave_mwhb_info":"<li>好吃又顶饿！</br>体力+0</br>饱腹+12</br>脑残+7",
+            "stave_fsrc":"浮生若茶",
+            "stave_fsrc_info":"<li>茶中自有真意在</br>体力+0</br>饱腹+2</br>脑残+15",
+            "stave_pgqc":"泡枸杞茶",
+            "stave_pgqc_info":"<li>人到中年身不由己</br>体力+3</br>饱腹+2</br>脑残+3",
+            "stave_hjbs":"胡椒博士",
+            "stave_hjbs_info":"<li>口感奇妙的碳酸饮料</br>体力+0</br>饱腹+3</br>脑残+8",
+            "stave_jdcf":"鸡蛋炒饭",
+            "stave_jdcf_info":"<li>奈何这碗炒饭实在真香</br>体力+1</br>饱腹+17</br>脑残+5",
+        },
+        list:[],
+    });
+builder.addPack({
+        skill:{
+            "stave_hunger":{
+                mark:true,
+                marktext:"饱",
+                intro:{
+                    name:"饱食度",
+                    content:function (storage){
+            return '当前饱食度：'+storage+'/30';
+        },
+                },
+            },
+            "stave_sanity":{
+                mark:true,
+                marktext:"脑",
+                intro:{
+                    name:"脑残值",
+                    content:function (storage){
+            return '当前脑残：'+storage+'/30';
+        },
+                },
+            },
+        },
+        translate:{
+            "stave_hunger":"stave_hunger",
+            "stave_hunger_info":"",
+            "stave_sanity":"stave_sanity",
+            "stave_sanity_info":"",
+        },
+    });
+builder.translate.stave='<span style="color:#233333">美食</span>';
+builder.skill._stave_gameStart_import_3a4ae83c8a={
+        trigger:{
+            global:'gameStart',
+        },
+        forced:true,
+        locked:true,
+        popup:false,
+        priority:Infinity,
+        content:function(){
+            player.storage.stave_hunger=30;
+            player.storage.stave_sanity=30;
+            player.markSkill('stave_hunger');
+            player.markSkill('stave_sanity');
+        },
+    }
+builder.skill._stave_phaseBegin_import_3a4ae83c8a={
+        trigger:{
+            global:'phaseBegin',
+        },
+        forced:true,
+        locked:true,
+        popup:false,
+        priority:Infinity,
+        content:function(){
+            if(player.storage.stave_hunger>0){
+                if(player.storage.stave_hunger>10){
+                    player.storage.stave_hunger--
+                }
+                else{
+                	if(player==game.me){
+                        player.say("我有点饿了");
+                    }
+                    player.storage.stave_hunger--
+                }
+            }
+            else{
+            	if(player==game.me){
+                player.say("饥肠辘辘!")
+            		}
+                player.loseHp();
+            }
+            player.update();
+        },
+    }
+builder.skill._stave_drawBefore_import_3a4ae83c8a={
+        trigger:{
+            player:"drawBegin",
+        },
+        silent:true,
+        priority:-12,
+        filter:function (event,player){
+            if(player.isMin()) return false;
+            if(game.fixedPile) return false;
+            if(Math.random()<0.6) return false;
+            return event.num>0&&event.parent.name=='phaseDraw';
+        },
+        content:function(){
+            var list=[];
+            list=get.libCard(function(info){
+                return info.type=='stave';
+            });
+            ui.cardPile.insertBefore(game.createCard(list.randomGet()),ui.cardPile.firstChild);
+        },
+    }
+builder.skill._stave_useCard_import_3a4ae83c8a={
+        trigger:{
+            player:"useCardBegin",
+        },
+        forced:true,
+        locked:true,
+        content:function(){
+            if(get.type(trigger.card,'trick')=='spell'||get.type(trigger.card,'trick')=='trick'){
+                player.storage.stave_sanity-=Math.min(1,player.storage.stave_sanity);
+                if(player.storage.stave_sanity<=10&&player==game.me){player.say("感觉有点不妙")}
+            }
+        },
+    }
+builder.skill._stave_attack_import_3a4ae83c8a={
+        trigger:{
+            source:"damageBegin"
+        },
+        forced:true,
+        locked:true,
+        content:function(){
+            "step 0"
+            if(player.storage.stave_sanity>15){event.goto(1)}
+            else{
+                if(player.storage.stave_sanity>5){
+                    if(Math.random()>0.7){
+                        trigger.cancel();
+                        player.say("啊哦，打偏了");
+                        event.finish()
+                    }
+                }
+                else{
+                    if(Math.random()>0.3){
+                        trigger.cancel();
+                        player.say("啊哦，打偏了");
+                        event.finish()
+                    }
+                }
+            }
+            "step 1"
+            trigger.player.storage.stave_sanity-=Math.min(trigger.num,trigger.player.storage.stave_sanity);
+            if(trigger.player.storage.stave_sanity<=10){trigger.player.say("感觉有点不妙")}
+        },
+    }
+} };
+}

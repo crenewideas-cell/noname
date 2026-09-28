@@ -18,8 +18,9 @@ async function fixture({characters={caocao:{},xiaoqiao:{}},packs={},last='hlhj_d
  const game={qhly_coreReady:true,qhly_open(id,page,player){const view=new Node('view');document.body.append(view);view.addEventListener('close',()=>view.remove());opened.push({id,page,player,view});return view;},saveConfig(k,v){saved.push([k,v]);lib.config[k]=v;}};
  const context=vm.createContext({Event,EventTarget,document});
  const noname=new vm.SyntheticModule(['lib','game','get','ui','_status'],function(){for(const[k,v]of Object.entries({lib,game,get,ui:{},_status:{}}))this.setExport(k,v);},{context});
+ const management=new vm.SyntheticModule(['createSkinManagementButton'],function(){this.setExport('createSkinManagementButton',()=>Object.assign(new Node('button'),{classList:{add(){}}}));},{context});
  const module=new vm.SourceTextModule(await fs.readFile('apps/core/noname/skin/qianhuan/index.js','utf8'),{context});
- await module.link(()=>noname);await module.evaluate();
+ await module.link(specifier=>specifier==='noname'?noname:management);await module.evaluate();
  return {open:module.namespace.openCharacterSkins,lib,opened,saved,document};
 }
 test('stale last character falls back to loaded Cao Cao and repairs history after opening',async()=>{

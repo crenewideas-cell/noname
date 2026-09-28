@@ -1,0 +1,149 @@
+{
+  "tool": "built-in image_gen",
+  "images": [
+    {
+      "id": "hlhj_qingjian",
+      "prompt": "Square 1:1 complete illustration for a Chinese collectible game card. Match an antique Red Chamber ink wash painting on warm mottled handmade ivory paper, desaturated black-brown ink and delicate pale pink with a small vermilion accent, literary and melancholic. Quiet upper left 22%, detailed primary object in lower middle/right, painted paper texture throughout, harmonious traditional composition, not photorealistic, no frame, no text, no typography, no watermark. 红楼梦意象的情笺：半展开的古朴花笺与朱红丝线，纸上有淡淡水墨梅影，不出现字迹，一枝粉白海棠与两片落花，旁边一支细毛笔。",
+      "source": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-080bea3b-c548-408b-9ad7-19a19bba1c57.png",
+      "dest": "apps/core/extension/packs/红楼幻境/artwork/hlhj_qingjian.webp",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-080bea3b-c548-408b-9ad7-19a19bba1c57.png",
+        "output": "apps/core/extension/packs/红楼幻境/artwork/hlhj_qingjian.webp",
+        "originalBytes": 2955148,
+        "bytes": 55704,
+        "width": 512,
+        "height": 512,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "hlhj_tonglingbaoyu",
+      "prompt": "Square 1:1 complete illustration for a Chinese collectible game card. Match an antique Red Chamber ink wash painting on warm mottled handmade ivory paper, desaturated black-brown ink and delicate pale pink with a small vermilion accent, literary and melancholic. Quiet upper left 22%, detailed primary object in lower middle/right, painted paper texture throughout, harmonious traditional composition, not photorealistic, no frame, no text, no typography, no watermark. 红楼梦通灵宝玉：一枚温润的椭圆羊脂白玉，浅浮雕云纹，系朱红中国结与细流苏，静置于深灰太湖石前，角落疏竹和散落的粉色花瓣。不要铭文。",
+      "source": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-32d7ae6b-b23e-4c40-add6-8ef6112278dd.png",
+      "dest": "apps/core/extension/packs/红楼幻境/artwork/hlhj_tonglingbaoyu.webp",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-32d7ae6b-b23e-4c40-add6-8ef6112278dd.png",
+        "output": "apps/core/extension/packs/红楼幻境/artwork/hlhj_tonglingbaoyu.webp",
+        "originalBytes": 3064883,
+        "bytes": 58390,
+        "width": 512,
+        "height": 512,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "hlhj_furonglei",
+      "prompt": "Square 1:1 complete illustration for a Chinese collectible game card. Match an antique Red Chamber ink wash painting on warm mottled handmade ivory paper, desaturated black-brown ink and delicate pale pink with a small vermilion accent, literary and melancholic. Quiet upper left 22%, detailed primary object in lower middle/right, painted paper texture throughout, harmonious traditional composition, not photorealistic, no frame, no text, no typography, no watermark. 红楼梦芙蓉诔：一卷展开但没有字的古雅祭文花笺，木芙蓉粉白花与枯萎落瓣，一缕淡淡香烟，古园太湖石和疏竹隐于远景，哀婉克制。",
+      "source": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-32212246-b248-4a60-8fae-156605bb1769.png",
+      "dest": "apps/core/extension/packs/红楼幻境/artwork/hlhj_furonglei.webp",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-32212246-b248-4a60-8fae-156605bb1769.png",
+        "output": "apps/core/extension/packs/红楼幻境/artwork/hlhj_furonglei.webp",
+        "originalBytes": 2940577,
+        "bytes": 57786,
+        "width": 512,
+        "height": 512,
+        "quality": 82,
+        "alpha": false
+      }
+    },
+    {
+      "id": "ymhaoshouqiongjing",
+      "prompt": "Create one square fantasy Chinese xianxia inventory item sprite, transparent background. Match refined colorful anime RPG equipment icon rendering: delicate polished jade, pearls, silver/gold metal, soft pink aqua lavender pastel accents, crisp silhouette, high quality hand painted volume and tiny highlights. Single complete item centered with comfortable margins, at large readable scale, all ribbon tips inside frame, no person, no letters, no typography, no border, no watermark. 一本精美的仙侠古籍，打开的米白书页、青蓝封皮和鎏金包角，一支毛笔，淡金色的灵光和细小光点从书页旋起，粉白梅花小装饰，书页不要文字。",
+      "source": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-ed513247-45b5-44e2-b9e7-fdacb6034996.png",
+      "dest": "apps/core/extension/collections/清瑶葭绮/artwork/ymhaoshouqiongjing.webp",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-ed513247-45b5-44e2-b9e7-fdacb6034996.png",
+        "output": "apps/core/extension/collections/清瑶葭绮/artwork/ymhaoshouqiongjing.webp",
+        "originalBytes": 1855251,
+        "bytes": 87368,
+        "width": 512,
+        "height": 512,
+        "quality": 82,
+        "alpha": true
+      }
+    },
+    {
+      "id": "yuyanliguangzhuyuanxinwuzb",
+      "prompt": "Create one square fantasy Chinese xianxia inventory item sprite, transparent background. Match refined colorful anime RPG equipment icon rendering: delicate polished jade, pearls, silver/gold metal, soft pink aqua lavender pastel accents, crisp silhouette, high quality hand painted volume and tiny highlights. Single complete item centered with comfortable margins, at large readable scale, all ribbon tips inside frame, no person, no letters, no typography, no border, no watermark. 一颗饱满圆润的粉白珍珠，镶嵌在精细金色莲花座内，系暖红短丝带和两颗小珠，珠面柔光细腻，仙侠宝物。",
+      "source": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-4de0bb56-a46a-4bdc-98cb-b79a2252ecc3.png",
+      "dest": "apps/core/extension/collections/清瑶葭绮/artwork/yuyanliguangzhuyuanxinwuzb.webp",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-4de0bb56-a46a-4bdc-98cb-b79a2252ecc3.png",
+        "output": "apps/core/extension/collections/清瑶葭绮/artwork/yuyanliguangzhuyuanxinwuzb.webp",
+        "originalBytes": 1401083,
+        "bytes": 52510,
+        "width": 512,
+        "height": 512,
+        "quality": 82,
+        "alpha": true
+      }
+    },
+    {
+      "id": "yuyanliguanglinlangxinwuzb",
+      "prompt": "Create one square fantasy Chinese xianxia inventory item sprite, transparent background. Match refined colorful anime RPG equipment icon rendering: delicate polished jade, pearls, silver/gold metal, soft pink aqua lavender pastel accents, crisp silhouette, high quality hand painted volume and tiny highlights. Single complete item centered with comfortable margins, at large readable scale, all ribbon tips inside frame, no person, no letters, no typography, no border, no watermark. 一对青绿翡翠与浅金铃铛组成的玲珑佩饰，细腻金丝镂空花纹，青绿丝带轻轻飘动，三个小银铃，清新活泼的仙侠宝物。",
+      "source": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-60597fb5-b239-4fa7-a6c1-3d2aa9309419.png",
+      "dest": "apps/core/extension/collections/清瑶葭绮/artwork/yuyanliguanglinlangxinwuzb.webp",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-60597fb5-b239-4fa7-a6c1-3d2aa9309419.png",
+        "output": "apps/core/extension/collections/清瑶葭绮/artwork/yuyanliguanglinlangxinwuzb.webp",
+        "originalBytes": 1704987,
+        "bytes": 90716,
+        "width": 512,
+        "height": 512,
+        "quality": 82,
+        "alpha": true
+      }
+    },
+    {
+      "id": "yuyanliguangwuxiaxinwuzb",
+      "prompt": "Create one square fantasy Chinese xianxia inventory item sprite, transparent background. Match refined colorful anime RPG equipment icon rendering: delicate polished jade, pearls, silver/gold metal, soft pink aqua lavender pastel accents, crisp silhouette, high quality hand painted volume and tiny highlights. Single complete item centered with comfortable margins, at large readable scale, all ribbon tips inside frame, no person, no letters, no typography, no border, no watermark. 一枚冰白透明水晶玉璧，雪花般银色镂空外框，中央澄澈蓝白光晕，银白流苏，净澈冷色仙侠宝物。",
+      "source": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-59ddac08-fc9e-4091-b057-be6e0fff5abe.png",
+      "dest": "apps/core/extension/collections/清瑶葭绮/artwork/yuyanliguangwuxiaxinwuzb.webp",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-59ddac08-fc9e-4091-b057-be6e0fff5abe.png",
+        "output": "apps/core/extension/collections/清瑶葭绮/artwork/yuyanliguangwuxiaxinwuzb.webp",
+        "originalBytes": 1726309,
+        "bytes": 90344,
+        "width": 512,
+        "height": 512,
+        "quality": 82,
+        "alpha": true
+      }
+    },
+    {
+      "id": "yuyanliguangyuehuaxinwuzb",
+      "prompt": "Create one square fantasy Chinese xianxia inventory item sprite, transparent background. Match refined colorful anime RPG equipment icon rendering: delicate polished jade, pearls, silver/gold metal, soft pink aqua lavender pastel accents, crisp silhouette, high quality hand painted volume and tiny highlights. Single complete item centered with comfortable margins, at large readable scale, all ribbon tips inside frame, no person, no letters, no typography, no border, no watermark. 一枚温柔的粉紫月牙玉佩，银色弯月抱着小颗乳白珍珠，点缀淡粉樱花，淡紫细丝带与短流苏，清雅柔美的仙侠宝物。",
+      "source": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-175f1636-4ffb-4d6d-9957-9506ccb0b7b7.png",
+      "dest": "apps/core/extension/collections/清瑶葭绮/artwork/yuyanliguangyuehuaxinwuzb.webp",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-175f1636-4ffb-4d6d-9957-9506ccb0b7b7.png",
+        "output": "apps/core/extension/collections/清瑶葭绮/artwork/yuyanliguangyuehuaxinwuzb.webp",
+        "originalBytes": 1363521,
+        "bytes": 64216,
+        "width": 512,
+        "height": 512,
+        "quality": 82,
+        "alpha": true
+      }
+    },
+    {
+      "id": "ymfushu_card",
+      "prompt": "Create one square fantasy Chinese xianxia inventory item sprite, transparent background. Match refined colorful anime RPG equipment icon rendering: delicate polished jade, pearls, silver/gold metal, soft pink aqua lavender pastel accents, crisp silhouette, high quality hand painted volume and tiny highlights. Single complete item centered with comfortable margins, at large readable scale, all ribbon tips inside frame, no person, no letters, no typography, no border, no watermark. 一卷空白丝绢画轴，淡金卷头，浅青玉轴，轻柔银白灵光围绕，纸面仅有极淡兰花水印而没有字迹，象征可幻化的空白特殊牌。",
+      "source": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-19a8e0bb-b2d1-4d1c-a89a-fbcb3713408c.png",
+      "dest": "apps/core/extension/collections/清瑶葭绮/artwork/ymfushu_card.webp",
+      "compression": {
+        "input": "C:\\Users\\1\\.codex\\generated_images\\01a0e0d5-7ade-7622-b838-eef73ff40a30\\exec-19a8e0bb-b2d1-4d1c-a89a-fbcb3713408c.png",
+        "output": "apps/core/extension/collections/清瑶葭绮/artwork/ymfushu_card.webp",
+        "originalBytes": 1948009,
+        "bytes": 88600,
+        "width": 512,
+        "height": 512,
+        "quality": 82,
+        "alpha": true
+      }
+    }
+  ]
+}

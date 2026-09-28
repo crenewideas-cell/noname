@@ -1,0 +1,89 @@
+@font-face {
+	font-family: lobby-brush;
+	src: url('../../font/xingkai.woff2') format('woff2');
+	font-display: swap;
+}
+@font-face {
+	font-family: lobby-calligraphy;
+	src: url('../../font/shousha.woff2') format('woff2');
+	font-display: swap;
+}
+:root {
+	--lobby-reference-atlas: url('../../image/lobby/reference-atlas.png');
+	--lobby-reference-scene: url('../../image/lobby/reference-scene.png');
+	--lobby-reference-logo: url('../../image/lobby/reference-logo.png');
+	--lobby-display-font: lobby-brush, lobby-calligraphy, "STKaiti", "KaiTi", serif;
+	--lobby-night-background: linear-gradient(180deg, #0b131a15, #0c182455), url('../../image/lobby/room-night.png') center / cover no-repeat #111d28;
+	--lobby-ornament-frame: url('../../image/lobby/room-frame.svg');
+}
+.lobby-brand {
+	/* Reference lettering with no title seal and no system-font dependency.
+	   Boot uses the transparent companion below so the scenery stays seamless. */
+	display: block; width: min(580px, 58vw); aspect-ratio: 484 / 150;
+	background: var(--lobby-reference-atlas) 50.925926% 1.517067% / 345.454545% 627.333333% no-repeat;
+	color: transparent !important; -webkit-text-fill-color: transparent !important;
+	font-size: 0 !important; text-shadow: none !important;
+}
+.lobby-gold-title {
+	color: #f5d281;
+	/* An inherited black text shadow paints over transparent gradient glyphs. */
+	text-shadow: none;
+	background: linear-gradient(#fff0bc 10%, #e7b653 55%, #ac702b 62%, #f3d486 90%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+#noname-boot-status {
+	position: fixed; inset: 0; z-index: 99999;
+	display: grid; place-content: center; justify-items: center; gap: 18px;
+	padding: 24px; box-sizing: border-box; overflow: hidden;
+	background: var(--lobby-night-background); color: #f5d99f;
+	font: 20px/1.6 var(--lobby-display-font); text-align: center; pointer-events: none;
+}
+#noname-boot-status::before {
+	content: ''; position: absolute; inset: clamp(12px, 4vw, 64px);
+	border: 20px solid transparent; border-image: var(--lobby-ornament-frame) 20 / 20px;
+	background: radial-gradient(ellipse, #111b2688, transparent 65%);
+	pointer-events: none;
+}
+#noname-boot-status > * { position: relative; }
+#noname-boot-status .boot-title {
+	display: block; margin: 0;
+	font: clamp(72px, 10vw, 160px)/1.2 var(--lobby-display-font);
+	letter-spacing: .08em; filter: drop-shadow(0 5px 3px #0a1118);
+	/* Solid gold remains legible during font/style loading as well. */
+	color: #f5d281;
+	-webkit-text-fill-color: #f5d281;
+	background: none;
+	text-shadow: 0 2px 3px #071019, 0 0 22px #e8b95e30;
+}
+#noname-boot-status .boot-motto { font-size: clamp(16px, 2vw, 28px); letter-spacing: .22em; }
+#noname-boot-status .boot-message { font-size: 18px; color: #e1cba2; }
+#noname-boot-status .boot-progress {
+	display: block; width: min(340px, 60vw); height: 4px; margin: 10px 0;
+	overflow: hidden; background: #101922; border: 1px solid #93743f;
+}
+#noname-boot-status .boot-progress::after {
+	content: ''; display: block; width: 40%; height: 100%;
+	background: linear-gradient(90deg, transparent, #ffe3a0, transparent);
+	animation: lobby-loading-glow 2s ease-in-out infinite;
+}
+#noname-boot-status:has(iframe)::before { display: none; }
+#noname-boot-status:not([data-runtime="rzsh"]):not([data-runtime="shousha"]) {
+	background: var(--lobby-reference-scene) center / cover no-repeat #0d1117;
+	gap: clamp(12px, 2vh, 24px);
+}
+#noname-boot-status:not([data-runtime="rzsh"]):not([data-runtime="shousha"])::before {
+	inset: 15% 19%; border: 0;
+	background: radial-gradient(ellipse, #0c1725cc 15%, #0c172566 50%, transparent 72%);
+}
+#noname-boot-status .boot-title.lobby-brand {
+	width: min(640px, 58vw); height: auto; padding: 0; aspect-ratio: 2123 / 741;
+	/* Transparent companion of the atlas lettering, without scenery or a seal. */
+	background: var(--lobby-reference-logo) center / contain no-repeat;
+	filter: drop-shadow(0 4px 8px #08111b); letter-spacing: 0;
+}
+@keyframes lobby-loading-glow { from { transform: translateX(-100%); } to { transform: translateX(350%); } }
+@media (prefers-reduced-motion: reduce) {
+	#noname-boot-status .boot-progress::after { animation: none; width: 100%; }
+}

@@ -5,7 +5,7 @@ import { visibleSkillState } from "../apps/core/noname/online/publicSkillState.j
 
 const choice = result => ({ set() { return this; }, async forResult() { return result; } });
 function setup() {
-    const lib = { config: {}, card: {
+    const lib = { config: {}, group: [], card: {
         sha: { type: "basic", damage: true }, shan: { type: "basic" }, tao: { type: "basic" },
         juedou: { type: "trick", damage: true }, nanman: { type: "trick", damage: true },
         wuzhong: { type: "trick" }, wuxie: { type: "trick" }, lebu: { type: "delay" },

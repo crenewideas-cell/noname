@@ -2,9 +2,13 @@
 import { layoutPreview } from './preview-layout.js';
 import { layoutLocalPlayer } from './player-layout.js';
 import { eventMotions } from './events.js';
+import { createEffectHost } from './effect-host.js';
 import { createCatalogIndex } from './catalog-index.js';
 import { createThumbnailLoader, fillCardPortrait } from './thumbnails.js';
-import {skinEnabled} from '../management.js';
+import {skinEnabled,managedSelection} from '../management.js';
+import {dynamicOwners} from './assignments.js';
+import {createSkinResourceCache} from './resource-cache.js';
+import {dynamicPlayerURL} from './runtime-url.js';
 export function readJSON(address) {
   if(!address.startsWith('file:'))return fetch(address,{signal:AbortSignal.timeout(15000)}).then(r=>{if(!r.ok)throw Object.assign(Error('读取失败 '+r.status),{status:r.status});return r.json();});
   return new Promise((resolve,reject)=>{
@@ -21,14 +25,16 @@ export function install(env,packName,resourcePath='extension/'+packName+'/') {
   return pack;
 }
 export function createHub({lib,game,ui,_status,openCharacterSkins}) {
-  const hub={version:3,packs:{},hosts:new Map(),previews:new Map(),framing:new Map(Object.entries(lib.config.localDynamicSkinFrames||{}).filter(([,frame])=>frame.version===3))};let serial=0,localLayout,localPlayer;
+  const hub={version:3,packs:{},hosts:new Map(),previews:new Map(),framing:new Map(Object.entries(lib.config.localDynamicSkinFrames||{}).filter(([,frame])=>frame.version===3))};let serial=0,localLayout,localPlayer;const warmPreviews=[];
   const active=p=>lib.config['extension_'+p.name+'_enable']!==false;
-  const current=name=>name?(game.qhly_getSkin?game.qhly_getSkin(name):lib.config.qhly_skinset?.skin?.[name]):null;
-  const interactive=p=>lib.config['extension_'+p.name+'_interaction']===true;
-  const catalog=createCatalogIndex(hub.packs,active);
+  const current=name=>name?(game.qhly_getSkin?game.qhly_getSkin(name):managedSelection(lib.config,name)?.token||lib.config.qhly_skinset?.skin?.[name]):null;
+  const interactive=p=>lib.config['extension_'+p.name+'_interaction']!==false;
+  const owners=(p,e)=>dynamicOwners(lib.config,p.name,e);
+  const catalog=createCatalogIndex(hub.packs,active,owners);
   const lookup=skin=>skin?catalog.read().byFile.get(skin):undefined;
   const lookupOwned=(name,skin)=>{const row=lookup(skin);return catalog.owns(name,row)?row:undefined;};
-  hub.loadThumbnail=createThumbnailLoader(lookupOwned);
+  hub.resources=createSkinResourceCache();
+  hub.loadThumbnail=createThumbnailLoader(lookupOwned,hub.resources);
   hub.fillCardPortrait=fillCardPortrait;
   const isLocal=skin=>typeof skin==='string'&&(skin.startsWith('本地 · ')||skin.startsWith('localdyn_'));
   hub.owns=(name,skin)=>!!lookupOwned(name,skin);
@@ -41,7 +47,8 @@ export function createHub({lib,game,ui,_status,openCharacterSkins}) {
   function updateInput(h,force=false){
     if(!h.frame)return;
     const manual=h.portrait.dataset.qhlyManualInteraction;
-    const enabled=((manual===undefined?interactive(h.p):manual==='true')||h.portrait.closest('.qh-interaction'))&&!blocked(h);
+    const enabled=((manual===undefined?false:manual==='true')||h.portrait.closest('.qh-interaction'))&&!blocked(h);
+    h.tapEnabled=!!(h.player&&interactive(h.p)&&h.capabilities?.interaction?.available&&!blocked(h));
     h.node.style.pointerEvents='none';
     h.frame.style.pointerEvents=!h.player&&enabled?'auto':'none';
     const options={interactive:!!(!h.player&&enabled),volume:Math.max(0,Math.min(1,(lib.config.volumn_audio??8)/8))};
@@ -63,6 +70,11 @@ export function createHub({lib,game,ui,_status,openCharacterSkins}) {
     if(value)openManual([...hub.hosts.values()].find(h=>h.player===game.me&&h.p.name===name));
   };
   hub.skinTable=name=>catalog.forCharacter(name).byTitle;
+  hub.listSkins=name=>Object.values(hub.packs).flatMap(p=>p.entries.filter(e=>owners(p,e).includes(name)&&e.available!==false).map(e=>({name:e.title,token:e.skinTitle+'.png',path:p.resourcePath+e.thumbnail,dynamic:true,pack:p.name,id:e.id,packEnabled:active(p)})));
+  hub.previewResource=(node,pack,entry)=>{
+    hub.stopPreview(node);const p=hub.packs[pack];if(!p||!canAnimate('',entry,node))return false;
+    const h=createHost(p,entry,node,'');h.libraryPreview=true;hub.previews.set(node,h);return true;
+  };
   function wrap(name,replacement){
     const old=game[name];if(typeof old!=='function'||old._localDynamicHub===hub)return;
     const fn=replacement(old);fn._localDynamicHub=hub;game[name]=fn;
@@ -74,7 +86,7 @@ export function createHub({lib,game,ui,_status,openCharacterSkins}) {
       if(!own)return old.call(this,name,isLocal(skin)?null:skin,node,...args);
       // Imported skins use their own thumbnail in static mode. Never request a
       // native character portrait that can arrive late beneath the transparent canvas.
-      node.style.backgroundImage='url('+JSON.stringify(own.p.base+own.e.thumbnail)+')';
+      if(!node.style.backgroundImage||node.style.backgroundImage==='none')node.style.backgroundImage='url('+JSON.stringify(own.p.base+own.e.thumbnail)+')';
       hub.loadThumbnail(name,skin,node);
     });
     wrap('qhly_getSkinList',old=>function(name,callback,...args){
@@ -100,35 +112,61 @@ export function createHub({lib,game,ui,_status,openCharacterSkins}) {
     });
   };
   if(!document.getElementById('local-dynamic-style')){
-    const style=document.createElement('style');style.id='local-dynamic-style';style.textContent='.local-dynamic-visible,:has(>.local-dynamic-preview){background-image:none!important}';document.head.append(style);
+    const style=document.createElement('style');style.id='local-dynamic-style';style.textContent='.local-dynamic-visible{background-image:none!important}.local-dynamic-loading{position:absolute;left:50%;bottom:18%;transform:translateX(-50%);padding:5px 12px;border-radius:8px;background:#211a18b8;color:#eadcb8;font-size:14px;white-space:nowrap;pointer-events:none}.local-dynamic-effect::backdrop{background:transparent;pointer-events:none}';document.head.append(style);
   }
   function createHost(p,e,portrait,name,player,animated=true){
     const node=document.createElement('div');node.className=player?'local-dynamic-skin':'local-dynamic-preview';
     node.style.cssText='position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3;border-radius:inherit;background-size:contain;background-position:center;background-repeat:no-repeat;';
-    // Suppress the old portrait immediately, including the loading interval.
-    portrait.classList.add('local-dynamic-visible');
+    // Keep a real portrait until the composed first frame is ready.
+    portrait.classList.remove('local-dynamic-visible');
     if(!animated){node.style.backgroundImage='url('+JSON.stringify(p.base+e.thumbnail)+')';hub.loadThumbnail(name,filename(e),node);}
     const h={p,e,portrait,name,player,node};
     if(animated){
+      hub.loadThumbnail.preview(p,e,node);
+      h.loading=document.createElement('span');h.loading.className='local-dynamic-loading';h.loading.textContent='动态加载中…';node.append(h.loading);
+    }
+    if(animated){
+      h.releasePriority=hub.loadThumbnail.prioritize(p,e);
+      const start=()=>{
+      if(!node.isConnected)return;
       // Pass only selected metadata to the same-origin player, not the whole catalog.
-      const f=h.frame=document.createElement('iframe');f.title=e.character+' · '+e.title;f.dataset.channel='skin-'+(++serial);f.__nonameSkinEntry=e;
-      f.src=p.base+'runtime/player.html?id='+encodeURIComponent(e.id)+'&channel='+f.dataset.channel+'&interactive='+Number(!player&&interactive(p))+'&presentation='+(player&&player!==game.me?'portrait':'preview');
+      const f=h.frame=document.createElement('iframe');f.title=e.character+' · '+e.title;f.dataset.channel='skin-'+(++serial);f.__nonameSkinEntry=e;f.__nonameSkinResources=hub.resources;
+      f.src=dynamicPlayerURL(p.base,{id:e.id,channel:f.dataset.channel,interactive:Number(!player&&interactive(p)),presentation:player&&player!==game.me?'portrait':'preview'});
       f.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;pointer-events:none;visibility:hidden;';
+      h.effectHost=f.__nonameSkinEffectHost=createEffectHost({frame:f,anchor:player||portrait,local:!!player&&player===game.me,preview:!player});
       node.append(f);f.addEventListener('load',()=>updateInput(h,true));
+      };if(player)queueMicrotask(start);else h.startTimer=setTimeout(start,100);
     }else portrait.classList.add('local-dynamic-visible');
-    (player||portrait).append(node);updateInput(h);return h;
+    (player||portrait).append(node);
+    if(player){
+      const tap=event=>{
+        if(!h.tapEnabled||blocked(h)||event.button!==0||event.defaultPrevented||event.target.closest('.card,.button'))return;
+        const r=h.node.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)return;
+        const choices=h.capabilities.interaction.motions,command=choices[(h.tapIndex||0)%choices.length];h.tapIndex=(h.tapIndex||0)+1;
+        message(h.frame,'motion',{motion:command});
+      };
+      player.addEventListener('click',tap,true);h.cleanupInput=()=>player.removeEventListener('click',tap,true);
+    }
+    updateInput(h);return h;
   }
-  function dispose(h){if(h){h.cleanupLayout?.();message(h.frame,'options',{interactive:false});h.node.remove();h.portrait.classList.remove('local-dynamic-visible');}}
+  function dispose(h){if(h){clearTimeout(h.startTimer);h.releasePriority?.();hub.loadThumbnail.cancel(h.node);h.cleanupInput?.();h.effectHost?.dispose();h.cleanupLayout?.();message(h.frame,'options',{interactive:false});const child=h.frame?.contentWindow;if(child?.skinPlayerLifecycle)child.skinPlayerLifecycle.dispose();else child?.skinPlayer?.dispose();h.node.remove();if(!h.parked)h.portrait.classList.remove('local-dynamic-visible');}}
+  function prunePreviews(){for(let i=warmPreviews.length-1;i>=0;i--){const h=warmPreviews[i];if(!h.node.isConnected||Date.now()-h.parkedAt>45000){warmPreviews.splice(i,1);dispose(h);}}while(warmPreviews.length>(hub.previews.size?2:3))dispose(warmPreviews.shift());}
   hub.stopPreview=node=>{
-    const h=hub.previews.get(node);if(!h)return;dispose(h);hub.previews.delete(node);
-    if(node.dynamic===h.facade){h.facade.primary=null;queueMicrotask(()=>{if(node.dynamic===h.facade)delete node.dynamic;});}
+    const h=hub.previews.get(node);if(!h)return;hub.previews.delete(node);
+    if(node.isConnected&&h.frame?.dataset.ready==='true'){
+      h.effectHost?.stop();h.frame.contentWindow.skinPlayer.pause(true);message(h.frame,'options',{interactive:false});
+      h.cleanupLayout?.();h.cleanupLayout=undefined;h.parked=true;h.parkedAt=Date.now();h.node.style.visibility='hidden';h.frame.style.visibility='hidden';node.classList.remove('local-dynamic-visible');warmPreviews.push(h);prunePreviews();
+    }else dispose(h);
+    if(h.facade&&node.dynamic===h.facade){const previous=h.facade;previous.primary=null;queueMicrotask(()=>{if(node.dynamic===previous)delete node.dynamic;});}
   };
   hub.mount=(node,name,title)=>{
     if(node.closest('#arena>.player')){hub.refresh();return;}
     const own=lookupOwned(name,title+'.png');if(!own){hub.stopPreview(node);return;}
     if(hub.previews.get(node)?.e.id===own.e.id)return;
     hub.stopPreview(node);if(!canAnimate(name,own.e,node))return;
-    const h=createHost(own.p,own.e,node,name);hub.previews.set(node,h);
+    prunePreviews();const index=warmPreviews.findIndex(h=>h.portrait===node&&h.e.id===own.e.id&&h.p===own.p);
+    const h=index<0?createHost(own.p,own.e,node,name):warmPreviews.splice(index,1)[0];hub.previews.set(node,h);prunePreviews();
+    if(h.parked){h.parked=false;h.entered=false;h.lastEvent=undefined;h.node.style.visibility='';h.frame.contentWindow.skinPlayer.pause(false);readyHost(h,h.readyData);}
     h.facade={id:++serial,primary:{},renderer:{capacity:1,postMessage(data){if(data.message==='DESTROY')hub.stopPreview(node);}}};
     node.dynamic=h.facade;node.stopDynamic=()=>hub.stopPreview(node);
   };
@@ -164,21 +202,21 @@ export function createHub({lib,game,ui,_status,openCharacterSkins}) {
       localLayout.update(aspects);
       for(const h of localHosts)Object.assign(h.node.style,{left:h.portrait.offsetLeft+'px',top:h.portrait.offsetTop+'px',width:h.portrait.offsetWidth+'px',height:h.portrait.offsetHeight+'px'});
     }
-    for(const [node,h] of hub.previews){if(!node.isConnected||!node.getClientRects().length||!active(h.p)||!canAnimate(h.name,h.e,node))hub.stopPreview(node);else {h.cleanupLayout?.resize?.();updateInput(h);}}
+    for(const [node,h] of hub.previews){if(!node.isConnected||!node.getClientRects().length||(!h.libraryPreview&&!active(h.p))||!canAnimate(h.name,h.e,node))hub.stopPreview(node);else {h.cleanupLayout?.resize?.();updateInput(h);}}
   };
-  addEventListener('message',event=>{
-    for(const h of [...hub.hosts.values(),...hub.previews.values()]){
-      if(event.source!==h.frame?.contentWindow||event.data?.channel!==h.frame?.dataset.channel)continue;
-      if(event.data.type==='noname-skin-ready'){
-        h.node.style.backgroundImage='none';h.portrait.classList.add('local-dynamic-visible');h.frame.dataset.ready='true';
-        h.events=eventMotions(h.e,event.data.info?.motions);
-        if(event.data.presentation){
-          const p=event.data.presentation;
+  function readyHost(h,data){
+        h.releasePriority?.();h.releasePriority=undefined;hub.loadThumbnail.cancel(h.node);h.loading?.remove();h.node.style.backgroundImage='none';h.portrait.classList.add('local-dynamic-visible');h.frame.dataset.ready='true';
+        h.capabilities=data.info;
+        h.events=data.info?.events||eventMotions(h.e,data.info?.motions);
+        if(!h.readyData)hub.loadThumbnail.publish(h.p,h.e,h.frame.contentWindow.skinPlayer);h.readyData=data;
+        if(data.presentation){
+          const p=data.presentation;
           h.nativePortrait=!!p.nativePortrait;
           if(p.nativePortrait){
             h.cleanupLayout?.();h.cleanupLayout=undefined;hub.framing.delete(h.e.id);
             if(lib.config.localDynamicSkinFrames?.[h.e.id]){delete lib.config.localDynamicSkinFrames[h.e.id];game.saveConfig('localDynamicSkinFrames',lib.config.localDynamicSkinFrames);}
           }
+          if(!h.player&&p.nativePortrait&&p.previewAspect){h.cleanupLayout?.();h.cleanupLayout=layoutPreview(h.portrait,{...p,orientation:p.previewAspect>1.15?'landscape':'portrait'});}
           // Startup fallback until this skin has been shown in the native preview.
           if(!p.nativePortrait&&!hub.framing.has(h.e.id)){const r=p.focus.width/p.focus.height;hub.framing.set(h.e.id,{aspect:p.orientation==='landscape'?r:Math.max(r, .67)});}
           if(!h.player&&!p.nativePortrait){h.cleanupLayout?.();h.cleanupLayout=layoutPreview(h.portrait,p,frame=>{
@@ -188,10 +226,17 @@ export function createHub({lib,game,ui,_status,openCharacterSkins}) {
           });}
         }
         updateInput(h,true);hub.refresh();h.frame.style.visibility='visible';
-        if(h.pendingEvent){const kind=h.pendingEvent;delete h.pendingEvent;playHostEvent(h,kind);}
+        playHostEvent(h,'enter');
+        if(h.pendingEvent&&h.pendingEvent!=='enter'){const kind=h.pendingEvent;delete h.pendingEvent;playHostEvent(h,kind);}else delete h.pendingEvent;
+  }
+  addEventListener('message',event=>{
+    for(const h of [...hub.hosts.values(),...hub.previews.values()]){
+      if(event.source!==h.frame?.contentWindow||event.data?.channel!==h.frame?.dataset.channel)continue;
+      if(event.data.type==='noname-skin-ready'){
+        readyHost(h,event.data);
       }
       if(event.data.type==='noname-skin-event-finished'&&event.data.kind==='death'){h.deathUntil=0;hub.refresh();}
-      if(event.data.type==='noname-skin-error'){console.warn(h.p.name,h.e.id,event.data.message);h.node.style.backgroundImage='url('+JSON.stringify(h.p.base+h.e.thumbnail)+')';h.frame.remove();h.frame=null;}
+      if(event.data.type==='noname-skin-error'){h.releasePriority?.();h.releasePriority=undefined;console.warn(h.p.name,h.e.id,event.data.message);h.node.style.backgroundImage='url('+JSON.stringify(h.p.base+h.e.thumbnail)+')';h.frame.remove();h.frame=null;}
     }
   });
   let refreshFrame=0;
@@ -203,6 +248,7 @@ export function createHub({lib,game,ui,_status,openCharacterSkins}) {
     if(!h.frame||h.deathUntil>Date.now()&&kind!=='death')return;
     if(h.frame.dataset.ready!=='true'){h.pendingEvent=kind;return;}
     const motion=h.events?.[kind];if(!motion)return;
+    if(kind==='enter'){if(h.entered)return;h.entered=true;}
     // useSkill and logSkill can refer to the same activation. Avoid restarting
     // the animation while still permitting a different following event.
     if(h.lastEvent===kind&&Date.now()-h.lastEventAt<180)return;
@@ -225,17 +271,17 @@ export function createHub({lib,game,ui,_status,openCharacterSkins}) {
       else if(triggername==='dieAfter')hub.playEvent(trigger.source,'kill');
       return;
     }
-    const kind={useCard:trigger.card?.name==='sha'?'attack':'card',respond:'respond',
+    const kind={useCard:trigger.card?.name==='sha'?'attack':trigger.card?.name==='shan'?'dodge':'card',respond:trigger.card?.name==='shan'?'dodge':'respond',
       useSkill:'skill',logSkill:'skill',enterGame:'enter',damage:'damage'}[trigger.name];
     if(kind)hub.playEvent(trigger.player,kind);
   };
   if(lib.skill&&typeof game.addGlobalSkill==='function'){
     lib.skill._localDynamicTestEvents={charlotte:true,forced:true,popup:false,silent:true,forceDie:true,
       trigger:{global:['useCard','respond','useSkill','logSkill','damageEnd','dieBegin','dieAfter','gameStart','enterGame']},
-      filter(event,player,name){return name==='gameStart'||!!(event.player||event.source);},
+      filter(event,player,name){return player===(game.me||game.players?.[0])&&(name==='gameStart'||!!(event.player||event.source));},
       async content(event,trigger){game.localDynamicSkinTestHub?.handleEvent(trigger,event.triggername);}};
     game.addGlobalSkill('_localDynamicTestEvents');
   }
-  hub.timer=setInterval(()=>{hub.integrate();hub.refresh();},750);
+  hub.timer=setInterval(()=>{prunePreviews();hub.resources.prune();hub.integrate();hub.refresh();},750);
   lib.arenaReady?.push(()=>{hub.integrate();hub.refresh();});return hub;
 }

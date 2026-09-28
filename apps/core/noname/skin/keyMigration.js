@@ -14,6 +14,7 @@ export function migrateKeySkinManagement(previous){
   }
  };
  for(const [id,value] of Object.entries(state.selections||{}))entry(value,id);
+ for(const [id,value] of Object.entries(state.defaults||{}))entry(value,id);
  for(const preset of state.presets||[]){
   if(preset.pack==='二次元')preset.pack='键社';
   if(typeof preset.name==='string')preset.name=preset.name.replace(/^二次元(?= · )/,'键社');

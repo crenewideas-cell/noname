@@ -20,3 +20,13 @@ test('runtime-discovered Spine motions work even when absent from the catalog',(
 test('idle-only models do not fabricate stage responses',()=>{
  assert.deepEqual(eventMotions({motions:['idle_1']}),{});
 });
+
+test('advertised source commands route game events, with explicit overrides first',()=>{
+ const motions=['source:chuchang','source:gongji','source:teshu','source:shan','attack','slash'];
+ const map=eventMotions({},motions);
+ assert.equal(map.enter,'source:chuchang');assert.equal(map.attack,'source:gongji');assert.equal(map.skill,'source:teshu');assert.equal(map.dodge,'source:shan');
+ assert.notEqual(map.respond,'source:shan');assert.equal(map.death,undefined);
+ assert.equal(eventMotions({events:{attack:'slash'}},motions).attack,'slash');
+ assert.equal(eventMotions({events:{respond:'slash'}},motions).dodge,'slash');
+ assert.notEqual(eventMotions({},['attack']).enter,'source:chuchang');
+});

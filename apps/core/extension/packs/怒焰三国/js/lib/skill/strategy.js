@@ -950,7 +950,8 @@ const skills = {
             return bool;
         },
         async content(event, trigger, player) {
-            const target = event.targets[0];
+            // Preparation-phase trigger: there is no chooseTarget result.
+            const target = trigger.player;
             player.logSkill(event.name, target);
             await target.chooseToGive(player, 2, true);
             if (target.nysgsHasStatusEffect()) {

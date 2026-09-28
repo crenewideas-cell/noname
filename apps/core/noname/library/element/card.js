@@ -1,3 +1,4 @@
+import { resolveCardPackImage } from "../../init/cardPackRuntime.js";
 import { _status, game, get, lib, ui } from "noname";
 import { listenForActivation } from "../../ui/activation.js";
 
@@ -41,10 +42,10 @@ export class Card extends HTMLDivElement {
 			if (lib.config.touchscreen) {
 				card.addEventListener("touchstart", ui.click.cardtouchstart);
 				card.addEventListener("touchmove", ui.click.cardtouchmove);
-			} else {
-				card.addEventListener("mouseenter", ui.click.cardmouseenter);
-				card.addEventListener("mouseleave", ui.click.cardmouseleave);
 			}
+			// Hybrid devices can use a mouse even when touch controls are enabled.
+			card.addEventListener("mouseenter", ui.click.cardmouseenter);
+			card.addEventListener("mouseleave", ui.click.cardmouseleave);
 			if (lib.cardSelectObserver) {
 				lib.cardSelectObserver.observe(card, {
 					attributes: true,
@@ -380,7 +381,7 @@ export class Card extends HTMLDivElement {
 		if (info.cardimage) {
 			bg = info.cardimage;
 		}
-		let img = get.dynamicVariable(lib.card[bg].image, this);
+		let img = resolveCardPackImage(lib, card[2], card[3]) || get.dynamicVariable(lib.card[bg].image, this);
 		if (img) {
 			if (typeof img != "string") {
 				img = null;
@@ -399,6 +400,10 @@ export class Card extends HTMLDivElement {
 		this.dataset.cardType = info.type || "";
 		this.dataset.cardSubtype = info.subtype || "";
 		this.dataset.cardMultitarget = info.multitarget ? "1" : "0";
+		this.classList.toggle("card-printed-title", !!info.artworkHasTitle && !lib.config.hide_card_image);
+		this.classList.toggle("card-art-painting", ["painting", "painting-square"].includes(info.artworkLayout) && !lib.config.hide_card_image);
+		this.classList.toggle("card-art-square", info.artworkLayout === "painting-square");
+		this.classList.toggle("card-art-sprite", info.artworkLayout === "sprite" && !lib.config.hide_card_image);
 		this.node.name.dataset.nature = "";
 		this.node.info.classList.remove("red");
 		if (!lib.config.hide_card_image && lib.card[bg].fullskin) {

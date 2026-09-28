@@ -1,3 +1,6 @@
+@import "./lobby-surface.css";
+@import "./lobby-theme.css";
+@import "./builtin-surface.css";
 /* Navigation is available in both visual themes and in every mode. */
 #system.with-game-navigation {
 	display: flex;
@@ -76,19 +79,20 @@ html[data-presentation="shousha"] .menu.main.has-session-actions > .menu-content
 	box-sizing: border-box;
 	position: fixed;
 	inset: 0;
-	width: min(440px, calc(100vw - 32px));
+	width: min(480px, calc(100vw - 32px));
 	height: max-content;
 	max-height: calc(100vh - 32px);
 	max-height: calc(100dvh - 32px);
 	margin: auto;
 	padding: 24px;
 	overflow: auto;
-	border: 1px solid #c5a16a;
-	border-radius: 12px;
-	background: linear-gradient(130deg, #393128, #202623);
+	border: 16px solid transparent;
+	border-image: var(--lobby-ornament-frame) 20 / 16px;
+	border-radius: 0;
+	background: radial-gradient(ellipse at top, #38414c88, transparent 75%), #14202b;
 	color: #eadfc9;
 	box-shadow: 0 20px 70px #0009;
-	font: 15px/1.7 "Microsoft YaHei", "PingFang SC", sans-serif;
+	font: 18px/1.7 var(--lobby-display-font);
 	text-align: left;
 	text-shadow: none;
 }
@@ -98,7 +102,7 @@ html[data-presentation="shousha"] .menu.main.has-session-actions > .menu-content
 .game-navigation h2 {
 	margin: 0 0 12px;
 	color: #f2d6a0;
-	font-size: 22px;
+	font-size: 28px;
 	font-weight: 500;
 }
 .game-navigation p {
@@ -117,13 +121,9 @@ html[data-presentation="shousha"] .menu.main.has-session-actions > .menu-content
 	flex: 1 1 110px;
 	width: auto;
 	height: auto;
-	min-height: 40px;
+	min-height: 54px;
 	margin: 0;
 	padding: 8px 12px;
-	border: 1px solid #a3896055;
-	border-radius: 6px;
-	background: #444339;
-	color: #f1e2c4;
 	font: inherit;
 	text-shadow: none;
 	white-space: normal;
@@ -131,14 +131,9 @@ html[data-presentation="shousha"] .menu.main.has-session-actions > .menu-content
 }
 .game-navigation button.primary {
 	flex-basis: 100%;
-	border-color: #c5a16a;
-	background: #7e4433;
 }
 .game-navigation button.danger {
 	flex-basis: 100%;
-	border-color: #ba7467;
-	background: linear-gradient(120deg, #703b33, #432d2b);
-	color: #ffddd0;
 }
 .game-navigation button:hover:not(:disabled) {
 	filter: brightness(1.15);

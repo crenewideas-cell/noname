@@ -2,6 +2,7 @@ import {mountIndicators} from './indicators.js';
 import {installNativeMenu} from './menu.js';
 import {installAdaptiveLayout} from './layout.js';
 import {installPortraitClips} from './portrait-clips.js';
+import {mountCardPhantoms} from './card-phantom.js';
 import {subscribePresentation,suspendSelectionGuide,installEmotionReplies} from 'noname';
 
 /** Resolve artwork without replacing Card.init or changing extension metadata. */
@@ -45,17 +46,21 @@ export async function mountGamePresentation({lib,game,ui,get,manifest,files,base
  if(signal?.aborted){style.remove();return()=>{};}
  const previous=document.body.getAttribute('data-shousha-parts');document.body.dataset.shoushaParts=[...parts].join(' ');
  const releaseGuide=parts.has('arena')?suspendSelectionGuide():()=>{};
- const releaseEmotions=parts.has('arena')?installEmotionReplies({enabled:()=>config.ss_emotion_reply!==false}):()=>{};
+ const releaseEmotions=parts.has('arena')?installEmotionReplies({enabled:()=>config.ss_emotion_reply!==false,automatic:()=>config.ss_auto_emotion!==false}):()=>{};
+ const releasePhantoms=parts.has('arena')?mountCardPhantoms({ui,enabled:()=>lib.config.animation!==false&&!lib.config.low_performance&&config.ss_effects!==false&&config.ss_card_phantom!==false,decorate:(node,source)=>{
+  const art=parts.has('cards')&&cardArtwork(source,{lib,get,files:inventory,base,config});
+  if(art){node.classList.add('ss-card-art');node.style.setProperty('--ss-card-art',`url(${JSON.stringify(art)})`);}
+ }}):()=>{};
  const releaseIndicators=mountIndicators({ui,game,parts,enabled:()=>lib.config.animation!==false&&!lib.config.low_performance&&config.ss_effects!==false});
  const disposeClips=parts.has('players')?installPortraitClips():()=>{};
- let disposed=false,frame=0,disposeMenu,disposeLayout,arenaNode,menuNode,settlement;
+ let disposed=false,frame=0,disposeMenu,disposeLayout,arenaNode,menuNode;
  function decorate(){
   frame=0;if(disposed)return;
   releaseIndicators.refresh();
   if(ui.system2!==menuNode){disposeMenu?.();menuNode=ui.system2;if(parts.has('buttons'))disposeMenu=installNativeMenu({ui});}
   if(ui.arena!==arenaNode){
    disposeLayout?.();arenaNode=ui.arena;
-   if(arenaNode&&parts.has('arena')&&parts.has('players')&&!game.chess)disposeLayout=installAdaptiveLayout({game,ui,className:'shousha-skinned-arena',refreshHand:()=>ui.updatehl()});
+   if(arenaNode&&parts.has('arena')&&parts.has('players')&&!game.chess)disposeLayout=installAdaptiveLayout({game,ui,mode:()=>lib.config.mode,className:'shousha-skinned-arena'});
   }
   if(parts.has('players')&&!manifest.components.players?.assets?.frame)for(const player of ui.arena?.querySelectorAll(':scope > .player')||[]){
    if(player.classList.contains('minskin')){
@@ -127,21 +132,8 @@ export async function mountGamePresentation({lib,game,ui,get,manifest,files,base
   if(records.some(record=>record.type==='childList'||record.type==='characterData'||['data-card-name','data-nature','data-color','data-skin-character'].includes(record.attributeName)||(record.attributeName==='class'&&record.target.matches('.card,.player'))))schedule();
  });
  observer.observe(document.body,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class','data-card-name','data-nature','data-color','data-skin-character']});
- // Statistics are read after the host has determined the result. This panel
- // cannot award cards/skills, decide a winner, or change any player's score.
- function showSettlement(result,rows){
-  if(!parts.has('arena')||config.rzsh_mvp===false||disposed||!rows.length)return;
-  settlement?.remove();settlement=document.createElement('section');settlement.className='ss-core-settlement';
-  const heading=document.createElement('h2');heading.textContent=result===true?'对局胜利':result===false?'对局结束':'对局统计';settlement.append(heading);
-  const top=[...rows].sort((a,b)=>b.damage-a.damage||b.kills-a.kills)[0];
-  if(top){const mvp=document.createElement('p');mvp.textContent='本场输出最高：'+top.name;settlement.append(mvp);}
-  const table=document.createElement('table');
-  for(const row of [['武将','造成伤害','击杀'],...rows.map(row=>[row.name,row.damage,row.kills])]){const tr=document.createElement('tr');for(const text of row){const cell=document.createElement('td');cell.textContent=String(text);tr.append(cell);}table.append(tr);}
-  const close=document.createElement('button');close.textContent='关闭';close.onclick=()=>settlement.remove();settlement.append(table,close);document.body.append(settlement);
- }
  const unsubscribe=subscribePresentation(message=>{
   if(message.type!=='result')return;
-  showSettlement(message.result,message.rows);
   return animations?.result(message.result);
  });
  // Install immediately when activation happens with an existing arena. Future
@@ -149,7 +141,7 @@ export async function mountGamePresentation({lib,game,ui,get,manifest,files,base
  decorate();
  return()=>{
   if(disposed)return;disposed=true;
-  const releases=[unsubscribe,releaseGuide,releaseEmotions,releaseIndicators,()=>cancelAnimationFrame(frame),()=>observer.disconnect(),()=>disposeMenu?.(),()=>disposeLayout?.(),disposeClips,()=>settlement?.remove(),()=>style.remove(),
+  const releases=[unsubscribe,releaseGuide,releaseEmotions,releasePhantoms,releaseIndicators,()=>cancelAnimationFrame(frame),()=>observer.disconnect(),()=>disposeMenu?.(),()=>disposeLayout?.(),disposeClips,()=>style.remove(),
    ...Array.from(cards.keys(),card=>()=>{card.classList.remove('ss-card-art');card.style.removeProperty('--ss-card-art');card.querySelector(':scope > .info')?.removeAttribute('data-ss-point');}),
    ...Array.from(decorated,node=>()=>node.classList.remove('ss-character-dialog')),
    ...Array.from(playerFrames.values(),ornament=>()=>ornament.remove()),

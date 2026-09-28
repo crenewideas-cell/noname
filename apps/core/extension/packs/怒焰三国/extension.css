@@ -138,10 +138,81 @@
     margin-bottom: inherit;
 }
 
+.nysgs-buff-panel {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 24px;
+    justify-content: start;
+    gap: 4px;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: calc(100% + 38px);
+    width: max-content;
+    max-width: calc(100% + 56px);
+    padding: 2px 2px 5px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    border: none;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    z-index: 86;
+    pointer-events: auto;
+}
+.nysgs-buff-panel:empty { display: none; }
+.player:not([data-position="0"]) > .nysgs-buff-panel {
+    left: var(--nysgs-buff-left, 0px);
+}
+.player[data-buff-placement="above"]:not([data-position="0"]) > .nysgs-buff-panel {
+    top: auto;
+    bottom: calc(100% + 6px);
+}
+.player[data-position="0"] > .nysgs-buff-panel {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, 24px);
+    justify-content: center;
+    gap: 5px 4px;
+    left: -96px;
+    top: 0;
+    width: 90px;
+    max-height: 180px;
+    overflow-y: auto;
+}
+.nysgs-buff-panel > div {
+    position: relative;
+    width: 24px !important;
+    height: 25px !important;
+}
+.nysgs-buff-panel .nysgs-skillBuff {
+    width: 24px !important;
+    height: 24px !important;
+    margin: 0;
+}
+.nysgs-buff-panel .nysgs-skillBuffText {
+    position: absolute;
+    z-index: 9;
+    right: -2px;
+    bottom: -2px;
+    width: auto;
+    height: auto;
+    min-width: 10px;
+    margin: 0;
+    padding: 0 2px;
+    border-radius: 3px;
+    background: none;
+    color: #fff0be;
+    font: bold 11px/13px "Microsoft YaHei", sans-serif;
+    text-shadow: -1px -1px 1px #000, 1px 1px 2px #000, 0 0 3px #000;
+    pointer-events: none;
+}
+.nysgs-buff-panel .nysgs-skillBuffText:empty { display: none; }
+
 .nysgs-skillBuffDesc {
     position: absolute;
     width: 30%;
-    z-index: 7;
+    z-index: 120;
     border: 1px solid gold;
     top: 44%;
     left: 37%;

@@ -1,6 +1,22 @@
 'use strict';
 // @ts-ignore
 window.qhly_import(function(lib, game, ui, get, ai, _status){
+    // Optional artwork/audio probes must never block a skin click on network I/O.
+    const assetChecks = new Map();
+    function hasAsset(url) {
+      if (!assetChecks.has(url)) {
+        const pending = new Promise(resolve => {
+          const request = new XMLHttpRequest();
+          request.open('HEAD', url, true); request.timeout = 3000;
+          request.onload = () => resolve(request.status >= 200 && request.status < 300 || request.status === 0);
+          request.onerror = request.ontimeout = () => { assetChecks.delete(url); resolve(false); };
+          try { request.send(); } catch { resolve(false); }
+        });
+        assetChecks.set(url, pending);
+        if (assetChecks.size > 256) assetChecks.delete(assetChecks.keys().next().value);
+      }
+      return assetChecks.get(url);
+    }
     game.qhly_initShoushaView = function (name, view, page, cplayer) {
         var currentViewSkin = lib.qhly_viewskin[lib.config.qhly_currentViewSkin];
         var subView = {};
@@ -55,11 +71,11 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
         }
         var slimName = name.split('_');
         slimName = slimName[slimName.length - 1];
-        if (get.mode() == 'guozhan' || game.thunderFileExist(lib.assetURL + 'image/character/gz_' + slimName + '.jpg') && name.indexOf('shen') < 0) hasGuozhan = true;
+        hasGuozhan = get.mode() == 'guozhan';
         // @ts-ignore
         for (var i = 0; i < 3; i++) {
           // @ts-ignore
-          if (i == 0 || i == 1 && hasGuozhan || i == 2 && hasJjc) {
+          if (i == 0 || i == 1 || i == 2 && hasJjc) {
             skintype[i] = ui.create.div('.qh-shousha-skintype' + i, subView.skinType);
             skintype[i].id = 'qh_skintype' + i;
             skintype[i].listen(function () {
@@ -89,6 +105,12 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
               game.qhly_setOriginSkin(currentName, null, subView.avatarImage, state, game.qhly_getPlayerStatus(subView.avatarImage, null, name) == 2);
             })
           }
+        }
+        if (!hasGuozhan) {
+          skintype[1].hide();
+          if (name.indexOf('shen') < 0) hasAsset(lib.assetURL + 'image/character/gz_' + slimName + '.jpg').then(exists => {
+            if (exists && skintype[1].isConnected) skintype[1].show();
+          });
         }
         if (get.mode() == 'guozhan') {
           subView.skinTypeGuozhan = true;
@@ -194,8 +216,9 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
           const host = game.localDynamicSkinTestHub?.previews.get(subView.avatarImage);
           const ready = host?.frame?.dataset.ready === 'true';
           const enabled = !!(ready && host.input?.interactive);
-          interactionButton.disabled = !ready;
-          interactionButton.hidden = !ready;
+          const capable = !!host?.capabilities?.interaction?.available;
+          interactionButton.disabled = !ready || !capable;
+          interactionButton.hidden = !ready || !capable;
           interactionButton.textContent = enabled ? '退出交互' : '交互';
           interactionButton.setAttribute('aria-pressed', String(enabled));
           interactionButton.title = !ready ? '当前皮肤尚未启用可交互的动态预览' : enabled ? '退出本次预览交互' : '与当前皮肤互动，仅本次查看生效';
@@ -752,48 +775,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                       });
                     }
                     var check = document.getElementById('qhly_autoskill_' + skill);
-                    if (check) {
-                      var list = [];
-                      var info = get.info(skill);
-                      if (info.frequent) {
-                        list.add(skill);
-                      }
-                      if (info.subfrequent) {
-                        for (var sub of info.subfrequent) {
-                          list.add(skill + "_" + sub);
-                        }
-                      }
-                      ui.qhly_initCheckBox(check, list.filter(function (sk) {
-                        return !lib.config.autoskilllist || !lib.config.autoskilllist.includes(sk);
-                      }).length != 0);
-                      bindFunc(check, document.getElementById('qhly_autoskill_text_' + skill));
-                      // @ts-ignore
-                      check.qhly_onchecked = function (checked) {
-                        var list = [];
-                        var info = get.info(skill);
-                        if (info.frequent) {
-                          list.add(skill);
-                        }
-                        if (info.subfrequent) {
-                          for (var sub of info.subfrequent) {
-                            list.add(skill + "_" + sub);
-                          }
-                        }
-                        if (!lib.config.autoskilllist) {
-                          lib.config.autoskilllist = [];
-                        }
-                        if (!checked) {
-                          for (var s of list) {
-                            lib.config.autoskilllist.add(s);
-                          }
-                        } else {
-                          for (var s of list) {
-                            lib.config.autoskilllist.remove(s);
-                          }
-                        }
-                        game.saveConfig('autoskilllist', lib.config.autoskilllist);
-                      };
-                    }
+                    if (check) { game.qhly_profileControls.autoSkill(check, skill, bindFunc); }
                   })(skill);
                 }
               }
@@ -1017,7 +999,14 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                 viewState.lArrow.style.top = viewState.rArrow.style.top = viewState.skinPerWidth * 0.7 + 'px';
                 viewState.lArrow.style.height = viewState.rArrow.style.height = viewState.skinPerWidth * 0.4 + 'px';
                 viewState.skinTotalWidth = (viewState.skinPerWidth + viewState.skinGap) * viewState.skinViews.length - viewState.skinGap + 20;
-                viewState.loadVisibleThumbnails();
+                const selected = viewState.selectedCard;
+                if (selected) {
+                  if (selected.offsetLeft + viewState.offset < 0) viewState.offset = -selected.offsetLeft + 5;
+                  else if (selected.offsetLeft + selected.offsetWidth + viewState.offset > viewState.visibleWidth()) viewState.offset = viewState.visibleWidth() - selected.offsetLeft - selected.offsetWidth - 5;
+                }
+                viewState.offset = Math.max(Math.min(0, viewState.visibleWidth() - viewState.skinTotalWidth), Math.min(0, viewState.offset));
+                viewState.tempoffset = viewState.offset;
+                viewState.refresh();
               };
               if (this.firstRefresh) {
                 this.firstRefresh = false;
@@ -1039,6 +1028,10 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                   if (lib.config.qhly_lutouType && lib.config.qhly_lutouType == 'shousha') skinView.classList.add('shousha');
                   skinView.id = 'qhly_bigSkin' + i;
                   skinView.skin = this.skinList[i];
+                  if (skinView.skin.isDefault) {
+                    const badge = ui.create.div('.qh-default-skin-badge', skinView);
+                    badge.textContent = '默认形象';
+                  }
                   skinView.avatar = ui.create.div('.primary-avatar', skinView);
                   skinView.campBack = ui.create.div('.qhcamp-shousha-big-back', skinView);
                   skinView.campBack.setAttribute('data-pinzhi', game.qhly_getSkinLevel(name, skin));
@@ -1105,14 +1098,14 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                       state.mainView.hp.show();
                       state.mainView.hpWrap.hide();
                       // @ts-ignore
-                      if (this.skinList[0].bothSkin) {
+                      if (this.skinList[i].bothSkin) {
                         state.mainView.dynamicToggle.setAttribute('toggle', true);
                         if (lib.config.qhly_skinset && lib.config.qhly_skinset.djtoggle && (!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name]['经典形象'])) state.mainView.dynamicToggle.classList.remove('jing');
                         else state.mainView.dynamicToggle.classList.add('jing');
                       }
                       else state.mainView.dynamicToggle.setAttribute('toggle', false);
                       // @ts-ignore
-                      if (this.skinList[0].skinId == null && this.skinList[0].bothSkin && lib.config.qhly_skinset && lib.config.qhly_skinset.djtoggle && (!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name]['经典形象'])) game.qhly_changeDynamicSkin(state.mainView.avatarImage, '经典形象', name);
+                      if (this.skinList[i].bothSkin && lib.config.qhly_skinset && lib.config.qhly_skinset.djtoggle && (!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name]['经典形象'])) game.qhly_changeDynamicSkin(state.mainView.avatarImage, '经典形象', name);
                     }
                     // @ts-ignore
                     if (Object.hasOwn(game.qhly_dynamicSkin?.[name] || {}, '经典形象')) skinView.dynamicTrue.setAttribute('dynamic', true);
@@ -1283,8 +1276,14 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                       var originSkin = this.skin.skinId;
                       var now = this;
                       const applyInGame = (game.players || []).some(player => [player.name, player.name1, player.name2].some(id => id === name || id === 'gz_' + name || name === 'gz_' + id));
-                      game.qhly_setCurrentSkin(name, originSkin, function () {
-                        if (applyInGame) _status['qhly_primarySkin_' + name] = game.qhly_getSkin(name);
+                      game.qhly_setCurrentSkin(name, originSkin, function (error) {
+                        if (error) {
+                          now.classList.remove('sel');
+                          viewState.selectedCard = null;
+                          that.refresh(name, state);
+                          return;
+                        }
+                        _status['qhly_primarySkin_' + name] = game.qhly_getSkin(name);
                         if (now.belowText.innerHTML != '经典形象') {
                           state.mainView.dragontail.hide();
                           state.mainView.skinType.hide();
@@ -1317,10 +1316,10 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                           state.mainView.hp.show();
                           state.mainView.hpWrap.hide();
                           // @ts-ignore
-                          if (that.skinList[0].skinId == null && that.skinList[0].bothSkin && lib.config.qhly_skinset && lib.config.qhly_skinset.djtoggle && (!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name]['经典形象'])) game.qhly_changeDynamicSkin(state.mainView.avatarImage, '经典形象', name);
+                          if (now.skin.bothSkin && lib.config.qhly_skinset && lib.config.qhly_skinset.djtoggle && (!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name]['经典形象'])) game.qhly_changeDynamicSkin(state.mainView.avatarImage, '经典形象', name);
                           else if (state.mainView.avatarImage.stopDynamic) state.mainView.avatarImage.stopDynamic();
                           // @ts-ignore
-                          if (that.skinList[0].skinId == null && that.skinList[0].bothSkin) {
+                          if (now.skin.bothSkin) {
                             state.mainView.dynamicToggle.setAttribute('toggle', true);
                             if (lib.config.qhly_skinset && lib.config.qhly_skinset.djtoggle && (!lib.config.qhly_skinset.djtoggle[name] || lib.config.qhly_skinset.djtoggle[name] && !lib.config.qhly_skinset.djtoggle[name]['经典形象'])) state.mainView.dynamicToggle.classList.remove('jing');
                             else state.mainView.dynamicToggle.classList.add('jing');
@@ -1338,6 +1337,9 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                           _status.qhly_skillAudioWhich[skills[0]]++;
                           // @ts-ignore
                           window.qhly_TrySkillAudio(skills[0], { name: name }, null, count);
+                        }
+                        // Hidden forms can have no skills and still need their portrait updated.
+                        {
                           state.mainView.page.config.refresh(name, state);
                           //that.refresh(name, state);
                           if (state.pkg.isLutou || lib.config.qhly_lutou) {
@@ -1388,8 +1390,18 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                 resizeTimer = setTimeout(setSize, 600);
               };
               lib.onresize.push(resize);
+              // Preview aspect changes resize the card viewport without a
+              // browser resize event. Recompute widths and keep selection visible.
+              let layoutFrame;
+              const layoutObserver = new ResizeObserver(() => {
+                cancelAnimationFrame(layoutFrame);
+                layoutFrame = requestAnimationFrame(setSize);
+              });
+              layoutObserver.observe(viewState.cover);
               (view.closest('.qh-background') || view).addEventListener('close', () => {
                 clearTimeout(resizeTimer);
+                cancelAnimationFrame(layoutFrame);
+                layoutObserver.disconnect();
                 viewState.thumbnailObserver?.disconnect();
                 const index = lib.onresize.indexOf(resize);
                 if (index >= 0) lib.onresize.splice(index, 1);
@@ -1450,9 +1462,16 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
               if (game.qhly_getSkin(name)) Vicpath += `${game.qhly_earse_ext(game.qhly_getSkin(name))}/`;
               var victoryBg = document.querySelector('#qh-victoryBg');
               // @ts-ignore
-              if (victoryBg && game.thunderFileExist(lib.assetURL + Vicpath + 'victory.mp3')) victoryBg.show();
-              // @ts-ignore
-              else if (victoryBg) victoryBg.hide();
+              if (victoryBg) {
+                const address = lib.assetURL + Vicpath + 'victory.mp3';
+                if (victoryBg._skinAudioURL !== address) {
+                  victoryBg._skinAudioURL = address; victoryBg.hide();
+                  hasAsset(address).then(exists => {
+                    if (!victoryBg.isConnected || victoryBg._skinAudioURL !== address) return;
+                    exists ? victoryBg.show() : victoryBg.hide();
+                  });
+                }
+              }
               // @ts-ignore
               if (currentSkin && currentSkin.audios) {
                 // @ts-ignore
@@ -1815,6 +1834,15 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                   }
                 }
               }
+              // The applied suite is the persistent default, independently of
+              // which individual skin is currently being previewed/selected.
+              const defaultSkin = game.qhly_getDefaultSkin?.(name);
+              const defaultIndex = this.skinList.findIndex(row => row.skinId === (defaultSkin?.token || null));
+              if (defaultIndex >= 0) {
+                const row = this.skinList.splice(defaultIndex, 1)[0];
+                row.isDefault = true;
+                this.skinList.unshift(row);
+              }
               this.viewState.skins = this.skinList;
               this.skinListGot = true;
               if (dynamicSkinList && dynamicSkinList.length > 3) this.dynamicSkinMore = true;
@@ -1995,9 +2023,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                 }
                 content += "<br><br>";
               }
-              content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue('favouriteImage', 'extension/千幻聆音/image/newui_fav.png') + "' style='width:50px;margin-bottom:-4px;'/>收藏设置</h2>";
-              content += "<p>可以选择收藏此武将。进行自由选将操作时，可以更快找到此武将。</p>";
-              content += "<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_fav'/><span id='qhconfig_checkbox_text_fav' style='display:inline-block;position:relative;bottom:25%;'>收藏" + get.translation(name) + "</span></span></p>";
+              content += game.qhly_profileControls.favoriteTemplate(name);
 
               var group = state.group, group1, group2;
               const groupList = ['jin', 'wei', 'shu', 'wu', 'qun', 'jin'];
@@ -2022,28 +2048,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
               content += "<p id='qhly_dgselect'>势力一：<input type='radio' name='group1' value='jin' id=qhly_dgselectjin1><label for='qhly_dgselectjin1'>晋  </label><input type='radio' name='group1' value='wei' id=qhly_dgselectwei1><label for='qhly_dgselectwei1'>魏  </label><input type='radio' name='group1' id=qhly_dgselectshu1 value='shu'><label for='qhly_dgselectshu1'>蜀  </label><input type='radio' id=qhly_dgselectwu1 name='group1' value='wu'><label for='qhly_dgselectwu1'>吴  </label><input type='radio' id=qhly_dgselectqun1 name='group1' value='qun' checked='true'><label for='qhly_dgselectqun1'>群  </label>"
               content += "<br>势力二：<input type='radio' name='group2' value='jin' id=qhly_dgselectjin2><label for='qhly_dgselectjin2'>晋  </label><input type='radio' name='group2' value='wei' id=qhly_dgselectwei2><label for='qhly_dgselectwei2'>魏  </label><input type='radio' name='group2' id=qhly_dgselectshu2 value='shu'><label for='qhly_dgselectshu2'>蜀  </label><input type='radio' id=qhly_dgselectwu2 name='group2' value='wu'><label for='qhly_dgselectwu2'>吴  </label><input type='radio' id=qhly_dgselectqun2 name='group2' value='qun'><label for='qhly_dgselectqun2'>群  </label></p>"
 
-              content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue('forbidImage', 'extension/千幻聆音/image/newui_forbid.png') + "' style='width:50px;margin-bottom:-4px;'/>禁用设置</h2>";
-              content += "<p>可以选择在某模式下禁用或启用该武将。该设置将在重启游戏后生效。</p>"
-              content += "<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_banned_mode_all'/><span id='qhconfig_checkbox_text_all' style='display:inline-block;position:relative;bottom:25%;'>所有模式禁用</span></span></p>";
-              for (var mode in lib.mode) {
-                if (mode != 'connect') {
-                  var translatemode = get.translation(mode);
-                  if (mode == 'tafang') translatemode = '塔防';
-                  else if (mode == 'chess') translatemode = '战棋';
-                  content += "<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_banned_mode_" + mode + "'/><span id='qhconfig_checkbox_text_" + mode + "' style='display:inline-block;position:relative;bottom:25%;'>" + translatemode + "模式禁用</span></span></p>";
-                }
-              }
-              content += "<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_banned_ai'/><span id='qhconfig_checkbox_text_ai' style='display:inline-block;position:relative;bottom:25%;'>仅自由选将可选</span></span></p>";
-
-              content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue('rankImage', 'extension/千幻聆音/image/newui_rank_icon.png') + "' style='width:50px;margin-bottom:-4px;'/>等阶设置</h2>";
-              content += "<p>可以设置" + get.translation(name) + "的等阶，重启后生效。</p>";
-              content += "<p><select style='font-size:22px;font-family:'qh_youyuan';' id='qhconfig_rank_select'></select></p>";
-
-              if (lib.config.qhly_enableCharacterMusic) {
-                content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue('musicImage', 'extension/千幻聆音/image/newui_music_icon.png') + "' style='width:50px;margin-bottom:-4px;'/>音乐设置</h2>";
-                content += "<p>可以设置" + get.translation(name) + "的专属背景音乐，在游戏开始时将自动切换。</p>";
-                content += "<p><select style='font-size:22px;font-family:'qh_youyuan';' id='qhconfig_music_select'></select></p>";
-              }
+              content += game.qhly_profileControls.optionsTemplate(name);
               var extraConfigs = [];
               if (state.pkg.characterConfigExtra) {
                 var characterConfigExtra = state.pkg.characterConfigExtra(name);
@@ -2109,24 +2114,7 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                   };
                 }
               }
-              var checkboxFav = document.getElementById('qhconfig_checkbox_fav');
-              ui.qhly_initCheckBox(checkboxFav, lib.config.favouriteCharacter && lib.config.favouriteCharacter.includes(name));
-              bindFunc(checkboxFav, document.getElementById('qhconfig_checkbox_text_fav'));
-              // @ts-ignore
-              checkboxFav.qhly_onchecked = function (check) {
-                if (!check) {
-                  if (lib.config.favouriteCharacter && lib.config.favouriteCharacter.includes(name)) {
-                    lib.config.favouriteCharacter.remove(name);
-                  }
-                } else {
-                  if (!lib.config.favouriteCharacter) {
-                    lib.config.favouriteCharacter = [name];
-                  } else {
-                    lib.config.favouriteCharacter.add(name);
-                  }
-                }
-                game.saveConfig('favouriteCharacter', lib.config.favouriteCharacter);
-              };
+              game.qhly_profileControls.favorite(document.getElementById('qhconfig_checkbox_fav'), name, bindFunc);
               var checkboxdG = document.getElementById('qhconfig_checkbox_doubleGroup');
               var dgselect = document.getElementById('qhly_dgselect');
               // @ts-ignore
@@ -2222,189 +2210,11 @@ window.qhly_import(function(lib, game, ui, get, ai, _status){
                 })
               })
 
-              var checkboxAll = document.getElementById('qhconfig_checkbox_banned_mode_all');
-              var allForbid = true;
-              for (var mode in lib.mode) {
-                if (mode != 'connect') {
-                  if (lib.config[mode + '_banned'] && lib.config[mode + '_banned'].includes(mode)) {
-                    continue;
-                  }
-                  allForbid = false;
-                  break;
-                }
-              }
-
-              ui.qhly_initCheckBox(checkboxAll, allForbid);
-              bindFunc(checkboxAll, document.getElementById('qhconfig_checkbox_text_all'));
-              // @ts-ignore
-              checkboxAll.qhly_onchecked = function (check) {
-                if (check) {
-                  for (var mode in lib.mode) {
-                    if (mode == 'connect') continue;
-                    if (that['banned_checkbox_mode_' + mode]) {
-                      that['banned_checkbox_mode_' + mode].qhly_setChecked(true, true);
-                    }
-                  }
-                } else {
-                  for (var mode in lib.mode) {
-                    if (mode == 'connect') continue;
-                    if (that['banned_checkbox_mode_' + mode]) {
-                      that['banned_checkbox_mode_' + mode].qhly_setChecked(false, true);
-                    }
-                  }
-                }
-              };
-              this.banned_checkbox_mode_all = checkboxAll;
-              var checkboxBanai = document.getElementById('qhconfig_checkbox_banned_ai');
-
-              ui.qhly_initCheckBox(checkboxBanai, game.qhly_isForbidAI(name));
-
-              bindFunc(checkboxBanai, document.getElementById('qhconfig_checkbox_text_ai'));
-              // @ts-ignore
-              checkboxBanai.qhly_onchecked = function (check) {
-                if (check) {
-                  game.qhly_setForbidAI(name, true);
-                } else {
-                  game.qhly_setForbidAI(name, false);
-                }
-              };
-              for (var mode in lib.mode) {
-                if (mode != 'connect') {
-                  var checkbox = document.getElementById('qhconfig_checkbox_banned_mode_' + mode);
-                  this['banned_checkbox_mode_' + mode] = checkbox;
-                  if (checkbox) {
-                    ui.qhly_initCheckBox(checkbox, lib.config[mode + '_banned'] && lib.config[mode + '_banned'].includes(name));
-                    bindFunc(checkbox, document.getElementById('qhconfig_checkbox_text_' + mode));
-                    (function (mode) {
-                      // @ts-ignore
-                      checkbox.qhly_onchecked = function (checked) {
-                        if (!checked) {
-                          that.banned_checkbox_mode_all.qhly_setChecked(false, true);
-                          if (lib.config[mode + '_banned'] && lib.config[mode + '_banned'].includes(name)) {
-                            lib.config[mode + '_banned'].remove(name);
-                          }
-                        } else {
-                          if (lib.config[mode + '_banned']) {
-                            lib.config[mode + '_banned'].add(name);
-                          } else {
-                            lib.config[mode + '_banned'] = [name];
-                          }
-                        }
-                        game.saveConfig(mode + '_banned', lib.config[mode + '_banned']);
-                      };
-                    })(mode);
-                  }
-                }
-              }
+              game.qhly_profileControls.modeBans(this, name, bindFunc);
               lib.setScroll(this.innerConfig);
               game.qhly_changeViewPageSkin('config', this.pageView);
-              var rankSelect = document.getElementById('qhconfig_rank_select');
-              var rankList = ['默认', '普通', '史诗', '传说', '稀有', '精品'];
-              var rankToEng = {
-                '默认': "default",
-                '普通': 'common',
-                '史诗': "epic",
-                '传说': "legend",
-                '稀有': 'rare',
-                '精品': "junk",
-              };
-              /* var rankToIcon = {
-                  '默认': "",
-                  '稀有': 'A+',
-                  '史诗': "SS",
-                  '传说': "SSS",
-                  '精品': 'S',
-                  '精良': "A",
-              }; */
-              var rank = null;
-              if (lib.config.qhly_rarity && lib.config.qhly_rarity[name]) {
-                rank = lib.config.qhly_rarity[name];
-              }
-              for (var r of rankList) {
-                var opt = document.createElement('option');
-                opt.innerHTML = r;
-                opt.setAttribute('rank', rankToEng[r]);
-                if (!rank && r == '默认') {
-                  // @ts-ignore
-                  opt.selected = 'selected';
-                } else if (rankToEng[r] == rank) {
-                  // @ts-ignore
-                  opt.selected = 'selected';
-                }
-                // @ts-ignore
-                rankSelect.appendChild(opt);
-              }
-              // @ts-ignore
-              rankSelect.onchange = function (e) {
-                var event = e ? e : window.event;
-                // @ts-ignore
-                if (event.target) {
-                  // @ts-ignore
-                  var target = event.target;
-                  // @ts-ignore
-                  var opt = target[target.selectedIndex];
-                  if (opt) {
-                    var rank = opt.getAttribute('rank');
-                    if (!lib.config.qhly_rarity) {
-                      lib.config.qhly_rarity = {};
-                    }
-                    if (rank == 'default') {
-                      if (lib.config.qhly_rarity[name]) {
-                        delete lib.config.qhly_rarity[name];
-                      }
-                    } else {
-                      lib.config.qhly_rarity[name] = rank;
-                    }
-                    game.saveConfig('qhly_rarity', lib.config.qhly_rarity);
-                  }
-                }
-                refreshRank();
-              };
-              if (lib.config.qhly_enableCharacterMusic) {
-                var select = document.getElementById('qhconfig_music_select');
-                var currentMusic = game.qhly_getCharacterMusic(name);
-                var opt = document.createElement('option');
-                opt.innerHTML = "无";
-                opt.setAttribute('musicpath', '');
-                if (!currentMusic) {
-                  // @ts-ignore
-                  opt.selected = 'selected';
-                }
-                // @ts-ignore
-                select.appendChild(opt);
-                for (var p in lib.qhlyMusic) {
-                  var opt = document.createElement('option');
-                  opt.innerHTML = lib.qhlyMusic[p].name;
-                  opt.setAttribute('musicpath', p);
-                  if (currentMusic == p) {
-                    // @ts-ignore
-                    opt.selected = 'selected';
-                  }
-                  // @ts-ignore
-                  select.appendChild(opt);
-                }
-                // @ts-ignore
-                select.onchange = function (e) {
-                  var event = e ? e : window.event;
-                  // @ts-ignore
-                  if (event.target) {
-                    // @ts-ignore
-                    var target = event.target;
-                    // @ts-ignore
-                    var opt = target[target.selectedIndex];
-                    if (opt) {
-                      var path = opt.getAttribute('musicpath');
-                      if (path) {
-                        lib.config.qhly_characterMusic[name] = path;
-                      } else {
-                        delete lib.config.qhly_characterMusic[name];
-                      }
-                      game.saveConfig('qhly_characterMusic', lib.config.qhly_characterMusic);
-                      game.qhly_switchBgm();
-                    }
-                  }
-                };
-              }
+              game.qhly_profileControls.rarity(document.getElementById('qhconfig_rank_select'), name, refreshRank);
+              if (lib.config.qhly_enableCharacterMusic) { game.qhly_profileControls.music(document.getElementById('qhconfig_music_select'), name); }
               this.inited = true;
             }
           }

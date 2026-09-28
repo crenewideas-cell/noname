@@ -2677,8 +2677,11 @@ const skills = {
         },
         async content(event, trigger, player) {
             const target = event.targets[0];
-            const gains = trigger.getg(target);
-            let cards = target.getCards("h").randomGets(gains.length);
+            if (!target?.isIn()) return;
+            const gains = trigger.getg(target) || [];
+            if (!gains.length) return;
+            const handCards = target.getCards("h").randomGets(gains.length);
+            let cards = handCards.slice();
             let cards2 = get.cards();
             cards.addArray(cards2).randomSort();
             while (cards2.length) {
@@ -2702,17 +2705,21 @@ const skills = {
             next.set("dialog", videoIdx);
             next.set("ai", button => {
                 const evt = get.event();
-                if (evt.answer) {
-                    return button.link == evt.answer ? 1 : 0;
+                if (evt.answers) {
+                    return evt.answers.includes(button.link) ? 1 : 0;
                 }
                 return get.value(button.link, evt.player);
             });
             if (player.hasSkillTag("viewHandcard", null, target, true)) {
-                next.set("answer", card);
+                next.set("answers", handCards);
             }
-            const result = await next.forResult();
-            game.broadcastAll("closeDialog", videoIdx);
-            if (result?.bool) {
+            let result;
+            try {
+                result = await next.forResult();
+            } finally {
+                game.broadcastAll("closeDialog", videoIdx);
+            }
+            if (result?.bool && result.links?.length) {
                 const card = result.links[0];
                 if (get.owner(card) == target) {
                     await target.damage(gains.length);
@@ -3372,6 +3379,11 @@ const skills = {
                 dialog.id = "nysgs_playMode";
                 dialog.classList.add("fullwidth");
                 dialog.buttons.forEach(button => {
+                    // These choices use the extension's original illustrated cards,
+                    // not the host's ordinary text-button background.
+                    button.classList.add("artwork-choice");
+                    button.setAttribute("aria-label", button.textContent);
+                    button.title = button.textContent;
                     button.innerHTML = "";
                     button.dataset.condition = button.link.slice("nysgs_mode_".length);
                 });
@@ -4593,8 +4605,11 @@ const skills = {
             return evt && evt.player == player && evt.es?.length;
         },
         async content(event, trigger, player) {
-            player.enableSkill("nysgs_wangyou");
-            player.disableSkill("nysgs_wangyou", get.info("nysgs_wangyou").getSkills(player));
+            // 忘机 inherits this handler; use the active skill as the disable
+            // reason so equipment changes and onremove clear the same entry.
+            const skill = event.name;
+            player.enableSkill(skill);
+            player.disableSkill(skill, get.info(skill).getSkills(player));
         },
         init(player, skill) {
             player.disableSkill(skill, get.info("nysgs_huan_caiwenji_wangyou").getSkills(player));
@@ -11242,7 +11257,7 @@ const skills = {
             player.logSkill(event.name, target);
             await player.discard(event.cards);
             const result = await target
-                .chooseToDiscard("he", `弃置${get.cnNumber(event.cards.length)}张装备牌，或受到等量的伤害`)
+                .chooseToDiscard("he", event.cards.length, `弃置${get.cnNumber(event.cards.length)}张牌，或受到等量的伤害`)
                 .set("ai", card => {
                     if (get.event().damage > 0) {
                         return 0;

@@ -1,4 +1,4 @@
-import {lib, game, ui, get, createSceneContext, openCharacterSkins, openTreasure, getSkinService, subscribeCharacterSkins} from 'noname';
+import {lib, game, ui, get, createSceneContext, openCharacterSkins, openTreasure, getSkinService, subscribeCharacterSkins, createLobbyCharacterTools, createLobbyViews, createCharacterGrid, createLobbyElements} from 'noname';
 import {createPortraitTextures} from './native/portraits.js';
 import {createResourceAccess} from './native/resources.js';
 import {mountGamePresentation} from './native/presentation.js';
@@ -24,7 +24,7 @@ function scopedStorage(storage) {
 }
 const defaults={uiStyles:'经典主题',rzEpicSpine:false,rzsh_head:'3.png',rzshbgm:'争流',
  rzsh_wjbg:'战火连天.jpg',rszh_ideimg:'君临天下.png',zhuanzhuan:'on',storyBG_default:'1',
- hidepack:[],favouriteCharacter:[],recentCharacter:[],rzsh_cards:true,rzsh_mvp:true,ss_effects:true,ss_dynamic:true,
+ hidepack:[],favouriteCharacter:[],recentCharacter:[],rzsh_cards:true,ss_effects:true,ss_dynamic:true,
  tianti_versus_two:{count:0,top:40,win:0,fail:0,num:0,top_win:0,win_Cty:0,xxingnum:0}};
 
 export async function createNativeRuntime(manifest) {
@@ -94,7 +94,20 @@ export async function createNativeRuntime(manifest) {
  storage.setItem('hideModesA','true');storage.setItem('liuli_tenUIfix','fix');storage.setItem('firstSTBG','on');
  storage.setItem('loggedIn',lib.config.connect_nickname||'无名玩家');session.setItem('Network','online');session.setItem('rzshk','true');
  function portraitStore(){return portraits ||= createPortraitTextures({PIXI:graphics,character:name=>context.lib.character[name]||Object.values(context.lib.characterPack).map(pack=>pack[name]).find(Boolean),assetURL:lib.assetURL,defaultPath:lib.characterDefaultPicturePath,readImage:key=>game.getDB('image',key),url,skin:name=>lib.config.change_skin!==false?getSkinService().current(name):null});}
+ const profileViews=createLobbyViews({lib,openCharacter:openCharacterSkins,openTreasure,graphics:()=>graphics,
+  showCharacters:()=>sceneWindow.qhlyOpenCharacters?.(),
+  syncFavorites:(favorites,changed)=>{config.favouriteCharacter=favorites;if(changed)sceneWindow.qhlyRefreshFavorites?.();}
+ });
+ let characterGrid;
  const bridge={storage,session,url,
+  sceneUI:()=>createLobbyElements(graphics,'shousha'),
+  grid(cards,container,scrollbox,scaleX,scaleY,app){
+   if(!characterGrid){
+    characterGrid=createCharacterGrid({graphics,app,ticker:()=>new graphics.Ticker()});
+    scene.own({destroy(){characterGrid?.dispose();characterGrid=undefined;}});
+   }
+   characterGrid.show(cards,container,scrollbox,scaleX,scaleY,{columnWidth:179});
+  },
   timeout:(fn,ms,...args)=>scene?.timeout(fn,ms,...args)||0,
   interval:(fn,ms,...args)=>scene?.interval(fn,ms,...args)||0,
   frame:fn=>scene?.frame(fn)||0,
@@ -106,9 +119,11 @@ export async function createNativeRuntime(manifest) {
   tween(method,...args){const tween=motion[method](...args);scene?.ownTween(tween);return tween;},
   get screen(){return scene?.screen||{width:1103,height:514};},
   mount(app){scene.mount(app);},ready(){scene?.ready();},login(){scene?.login();},
+  openTools(onOriginal,onHome){return scene?.openTools(onOriginal,onHome);},
+  characterTools(options){return scene.own(createLobbyCharacterTools(options));},
   matching(mode){const current=scene;const token=homeGeneration;scene?.timeout(()=>{if(!disposed&&scene===current&&token===homeGeneration)void bridge.finish(mode);},20000);},
   async finish(mode){if(disposed||entering)return;if(mode==='connect')return bridge.openOnlineLobby();entering=true;const current=scene;try{await context.commitMode(mode);if(disposed||scene!==current)return;portraits?.pause();await current?.finish(mode);}catch(error){console.error(error);bridge.notice(error.message);}finally{entering=false;}},
-  releaseScene(current){if(scene!==current)return;homeGeneration++;clearInterval(portraitTimer);portraitTimer=undefined;visiblePortraits.clear();portraits?.dispose();portraits=undefined;context.ui.backgroundMusicRZ?.pause();clearSceneNodes();scene=undefined;for(const key of Object.keys(sceneWindow))delete sceneWindow[key];for(const key of Object.keys(context.game))if(!draftGameKeys.has(key))delete context.game[key];for(const key of Object.keys(context.ui))if(!['create','background','dialogs'].includes(key))delete context.ui[key];prepared=undefined;homeFactory=undefined;},
+  releaseScene(current){if(scene!==current)return;homeGeneration++;characterGrid?.dispose();characterGrid=undefined;profileViews.closeAll();clearInterval(portraitTimer);portraitTimer=undefined;visiblePortraits.clear();portraits?.dispose();portraits=undefined;context.ui.backgroundMusicRZ?.pause();clearSceneNodes();scene=undefined;for(const key of Object.keys(sceneWindow))delete sceneWindow[key];for(const key of Object.keys(context.game))if(!draftGameKeys.has(key))delete context.game[key];for(const key of Object.keys(context.ui))if(!['create','background','dialogs'].includes(key))delete context.ui[key];prepared=undefined;homeFactory=undefined;},
   async openOnlineLobby(mode='identity'){if(disposed||onlineEntry)return;onlineEntry=true;const current=scene,resume=current?.suspendRendering();try{const entry=await lib.uiWorkshop.openRooms(mode);if(disposed||scene!==current){entry?.close();return;}onlineController=entry;await entry?.closed;}catch(error){if(!disposed){console.error(error);bridge.notice(error.message);}}finally{onlineController=undefined;onlineEntry=false;resume?.();}},
   watchPortrait(sprite,name,options){visiblePortraits.add({sprite,name,options});if(portraitTimer)return;portraitTimer=scene.interval(()=>{
    let started=0;for(const entry of visiblePortraits){if(entry.sprite.destroyed){visiblePortraits.delete(entry);continue;}if(!entry.sprite.worldVisible||!scene.isVisible(entry.sprite))continue;
@@ -117,18 +132,14 @@ export async function createNativeRuntime(manifest) {
    }},200);},
   framePortrait(player,portrait,labels){const frame=new graphics.Graphics();frame.lineStyle(7,0x251b13,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(2,0xbda36b,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(1,0xead6a0,.8).drawRoundedRect(-81,-134,162,188,3);player.addChildAt(frame,player.getChildIndex(labels));},
   notice(message){if(disposed)return;const node=document.createElement('div');node.className='shousha-native-notice';node.textContent=message;document.body.append(node);const close=()=>{clearTimeout(timer);node.remove();dialogs.delete(close);};const timer=setTimeout(close,4500);dialogs.add(close);},
-  characterPage:undefined,
-  character:name=>characterSkins(name,bridge.characterPage||lib.config.qhly_listdefaultpage||"introduce"),
-  skins(){bridge.characterPage="skin";sceneWindow.qhlyOpenCharacters?.();return characterSkins(undefined,"skin");},
-  treasure(){const view=openTreasure({PIXI:graphics});const close=()=>{view.close();dialogs.delete(close);};dialogs.add(close);view.addEventListener("close",()=>dialogs.delete(close),{once:true});return view;},
+  get characterPage(){return profileViews.characterPage;},
+  set characterPage(value){profileViews.characterPage=value;},
+  character:(name,page)=>profileViews.character(name,page),
+  characters:()=>profileViews.characters(),
+  skins:()=>profileViews.skins(),
+  treasure:()=>profileViews.treasure(),
   characterTexture:(name,options)=>portraitStore().get(name,options),
  };
- function characterSkins(name,page){
-  const favoritesBefore=JSON.stringify(lib.config.favouriteCharacter||[]);
-  const gallery=openCharacterSkins(name,undefined,page);
-  const close=()=>{gallery.close();dialogs.delete(close);};dialogs.add(close);
-  gallery.addEventListener('close',()=>{dialogs.delete(close);if(disposed)return;config.favouriteCharacter=[...(lib.config.favouriteCharacter||[])];if(favoritesBefore!==JSON.stringify(lib.config.favouriteCharacter||[]))sceneWindow.qhlyRefreshFavorites?.();},{once:true});return gallery;
- }
  function confirmDialog(message,callback,title,buttons=['确定','取消']) {
   const backdrop=document.createElement('div');backdrop.className='shousha-native-confirm';
   const panel=document.createElement('div'),heading=document.createElement('h3'),body=document.createElement('p');
@@ -184,7 +195,7 @@ export async function createNativeRuntime(manifest) {
   },
   dispose(){
    if(disposed)return;disposed=true;homeGeneration++;controller.abort();context.dispose();unsubscribeSkins();
-   const releases=[()=>onlineController?.close(),()=>disposeGame?.(),()=>animations?.dispose(),()=>scene?.dispose(),()=>portraits?.dispose(),clearSceneNodes,...Array.from(sounds,audio=>()=>{audio.pause();audio.removeAttribute('src');}),...dialogs,...Array.from(styles,node=>()=>node.remove())];
+   const releases=[()=>profileViews.destroy(),()=>characterGrid?.dispose(),()=>onlineController?.close(),()=>disposeGame?.(),()=>animations?.dispose(),()=>scene?.dispose(),()=>portraits?.dispose(),clearSceneNodes,...Array.from(sounds,audio=>()=>{audio.pause();audio.removeAttribute('src');}),...dialogs,...Array.from(styles,node=>()=>node.remove())];
    for(const release of releases)try{release();}catch(error){console.warn('手杀资源释放失败',error);}
    sounds.clear();dialogs.clear();styles.clear();clearInterval(portraitTimer);visiblePortraits.clear();
   },

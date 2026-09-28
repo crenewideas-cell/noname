@@ -35,3 +35,48 @@ test("断缆 checks remaining slots, supports expanded/combined mounts and turn 
   const used = player(); used.storage.jvelun_dongxi_duanlanUse = 0;
   assert.equal(filter({}, used), false);
 });
+
+function muniuPack(game, ui = {}) {
+  const source = readFileSync(new URL("../apps/core/extension/packs/极略/card/jlsg_qs.js", import.meta.url), "utf8");
+  const context = vm.createContext({ lib: {}, game, ui, get: {}, ai: {}, _status: {}, console: { log() {} } });
+  vm.runInContext("Array.prototype.addArray = function (cards) { for (const card of cards) if (!this.includes(card)) this.push(card); return this; };", context);
+  return vm.runInContext(source.replace(/^import .*?;\s*/, "").replace("export default jlsg_qs;", "jlsg_qs;"), context);
+}
+
+test("木牛流马 gives the selected drawn card to the selected recipient", async () => {
+  const pack = muniuPack({});
+  const cards = [{ name: "sha" }], target = {}, vcard = { name: "jlsgqs_muniu" };
+  const calls = [];
+  const player = {
+    addTempSkill: name => calls.push(["temp", name]),
+    markAuto: (name, values) => calls.push(["mark", name, values[0]]),
+    async give(given, recipient) {
+      assert.equal(given, cards);
+      assert.equal(recipient, target);
+      calls.push(["give"]);
+    },
+  };
+  await pack.skill.jlsgqs_muniu_skill.content({ name: "jlsgqs_muniu_skill", cards, targets: [target], cost_data: { vcard } }, {}, player);
+  assert.deepEqual(calls, [["temp", "jlsgqs_muniu_skill_use"], ["mark", "jlsgqs_muniu_skill_use", vcard], ["give"]]);
+  assert.equal(vcard.storage, undefined, "giving cards does not store them under the equipment");
+});
+
+test("木牛流马 still stores cards at the deck bottom when the owner selects themself", async () => {
+  const cardPile = {}, cards = [{ name: "shan" }], vcard = { name: "jlsgqs_muniu" };
+  let lost, delayed = false;
+  const pack = muniuPack({
+    log() {},
+    broadcastAll: (callback, ...args) => callback(...args),
+    async delayx() { delayed = true; },
+  }, { cardPile });
+  const player = {
+    addTempSkill() {}, markAuto() {}, markSkill() {},
+    async lose(data) { lost = data; },
+  };
+  await pack.skill.jlsgqs_muniu_skill.content({ name: "jlsgqs_muniu_skill", cards, targets: [player], cost_data: { vcard } }, {}, player);
+  assert.equal(lost.source, player);
+  assert.equal(lost.cards, cards);
+  assert.equal(lost.position, cardPile);
+  assert.deepEqual(Array.from(vcard.storage.jlsgqs_muniu), cards);
+  assert.equal(delayed, true);
+});

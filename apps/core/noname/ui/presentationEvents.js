@@ -48,6 +48,28 @@ export function subscribePresentation(listener) {
 	listeners.add(listener);
 	return () => listeners.delete(listener);
 }
+const emotionTriggers = new Set(['recoverAfter', 'gainAfter', 'turnOverAfter', 'changeHujiaAfter', 'damageSource']);
+const recoveryStarts = new WeakMap();
+// Observe the actual engine trigger even when no gameplay skill subscribes to
+// it. Copy public participants/counts only, never the event or continuation.
+export function emotionTriggerPresentation(trigger, event) {
+	if (trigger === 'recoverBegin') { recoveryStarts.set(event, event.player?.hp); return; }
+	if (!listeners.size || !emotionTriggers.has(trigger)) return;
+	const rescued = trigger === 'recoverAfter' && recoveryStarts.get(event) <= 0 && event.player?.hp > 0;
+	if (trigger === 'recoverAfter') recoveryStarts.delete(event);
+	const seat = player => player?.dataset ? String(player.dataset.position) : null;
+	emitPresentation('emotionTrigger', () => ({
+		trigger, player: seat(event.player), source: seat(event.source), giver: seat(event.giver),
+		savePlayer: trigger === 'recoverAfter' ? seat(event.getParent('_save')?.player) : null,
+		parentPlayer: ['turnOverAfter','gainAfter','recoverAfter','changeHujiaAfter'].includes(trigger) ? seat(event.parent?.player) : null,
+		hp: event.player?.hp,
+		rescued,
+		turnedOver: trigger === 'turnOverAfter' ? event.player?.classList.contains('turnedover') : undefined,
+		count: trigger === 'gainAfter' ? event.cards?.length : undefined,
+		gainAnimation: trigger === 'gainAfter' && typeof event.animate === 'string' ? event.animate : undefined,
+		num: ['damageSource','recoverAfter','changeHujiaAfter'].includes(trigger) && Number.isFinite(event.num) ? event.num : undefined,
+	}));
+}
 export function emitPresentation(type, snapshot) {
 	if (!listeners.size) return;
 	try {

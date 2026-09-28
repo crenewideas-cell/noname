@@ -17,7 +17,11 @@ export function mountIndicators({ui,game,parts,enabled}) {
   progress.hidden=!timer?.isConnected||timer.classList.contains('hidden')||timer.style.display==='none';
   if(progress.hidden)return;
   const fraction=Math.max(0,Math.min(1,1-(parseFloat(timer.fillnode?.style.top)||0)/100));
-  fill.style.transform=`scaleX(${fraction})`;remaining.textContent=timer.popnode?.textContent||'';
+  const transform=`scaleX(${fraction})`,label=timer.popnode?.textContent||'';
+  if(fill.style.transform!==transform)fill.style.transform=transform;
+  // Presentation observes childList changes and calls refresh(). Replacing
+  // identical text here feeds that observer again on every animation frame.
+  if(remaining.textContent!==label)remaining.textContent=label;
  };
  const timerObserver=new MutationObserver(updateTimer);
  // Provider activation also runs in the lobby, before the core owns an arena.

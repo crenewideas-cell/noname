@@ -1,6 +1,7 @@
 import { createRequire } from 'node:module';
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
+import path from 'node:path';
 const require = createRequire(import.meta.url);
 const { chromium } = require('C:/Users/1/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const baseline = process.argv.includes('--baseline');
@@ -9,12 +10,18 @@ const failInventory = process.argv.includes('--timeout');
 const character = process.env.SKIN_TEST_CHARACTER || 'caocao';
 const skinTitle = process.env.SKIN_TEST_TITLE || '魏武东临';
 const origin = process.env.NONAME_UI_TEST_ORIGIN || 'http://127.0.0.1:8081';
+const output=process.env.SKIN_TEST_OUTPUT||'output/dynamic-import';await fs.mkdir(output,{recursive:true});
 const installed = JSON.parse(await fs.readFile('apps/core/game/organized-extensions.json'));
-const browser = await chromium.launch({ headless: true, executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', args: ['--enable-unsafe-swiftshader'] });
+const browser = await chromium.launch({ headless: true, executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe' });
 const report = { baseline, requests: [], errors: [] };
 try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } }), page = await context.newPage();
   await context.route('**/*', route => { const u = new URL(route.request().url()); return u.hostname !== '127.0.0.1' || /^\/(api|ws)\//.test(u.pathname) ? route.abort() : route.fallback(); });
+  if(process.argv.includes('--candidate'))await context.route('**/runtime/*',async route=>{
+    const name=new URL(route.request().url()).pathname.split('/').at(-1);
+    if(!/^[a-z0-9-]+\.(?:js|html|css)$/.test(name))return route.fallback();
+    try{await route.fulfill({body:await fs.readFile(path.resolve('apps/core/noname/skin/localDynamic/runtime',name)),contentType:name.endsWith('.js')?'text/javascript':name.endsWith('.html')?'text/html':'text/css'});}catch(e){if(e.code==='ENOENT')return route.fallback();throw e;}
+  });
   page.on('pageerror', e => report.errors.push(e.message));
   page.on('dialog', d => void d.accept());
   page.on('request', r => { const p = decodeURIComponent(new URL(r.url()).pathname); if (p.includes('本地动态皮肤包')) report.requests.push(p); });
@@ -98,7 +105,7 @@ try {
     if(r.right<=c.left||r.left>=c.right||r.bottom<=c.top||r.top>=c.bottom)return true;
     return card.querySelector('.primary-avatar')?.dataset.skinThumbnailReady==='true';
   }),null,{timeout:60000});
-  await page.screenshot({ path: `output/dynamic-import/lazy-preview-${character}.png` });
+  await page.screenshot({ path: `${output}/lazy-preview-${character}.png` });
   report.buttons = await page.evaluate(() => {
     const result = {};
     for (const [key,selector] of Object.entries({interaction:'.qh-skin-preview-interaction',toggle:'.qh-skinchange-big-dynamicChange',avatar:'.qh-shousha-big-avatar'})) {
@@ -165,11 +172,11 @@ try {
     await page.waitForFunction(()=>document.querySelector('.qh-image-standard')?.style.backgroundImage.startsWith('url("data:image/'));
     assert.equal(await page.locator('.qh-image-standard').evaluate(n=>(n.style.backgroundImage.match(/url\(/g)||[]).length),1,'Transparent static art does not overlay another character');
   }
-  await page.screenshot({path:`output/dynamic-import/static-preview-${character}.png`});
+  await page.screenshot({path:`${output}/static-preview-${character}.png`});
   report.staticButtonHidden=true;report.thumbnailCached=true;
   assert.deepEqual(report.errors, []);
 } finally {
-  await fs.writeFile('output/dynamic-import/' + (baseline ? 'lazy-before' : failInventory ? 'lazy-timeout-recovery' : shousha ? 'lazy-shousha' : 'lazy-after') + '.json', JSON.stringify(report, null, 2));
+  await fs.writeFile(output+'/' + (baseline ? 'lazy-before' : failInventory ? 'lazy-timeout-recovery' : shousha ? 'lazy-shousha' : 'lazy-after') + '.json', JSON.stringify(report, null, 2));
   await browser.close();
 }
 console.log('PASS', JSON.stringify({ startupMs: report.startupMs, listMs: report.listMs, entries: report.afterList?.entries, selected: report.loadedSkin }));

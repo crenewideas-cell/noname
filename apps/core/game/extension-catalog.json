@@ -1,5 +1,15 @@
 [
   {
+    "name": "星之梦",
+    "category": "packs",
+    "path": "extension/packs/星之梦"
+  },
+  {
+    "name": "云中守望",
+    "category": "packs",
+    "path": "extension/packs/云中守望"
+  },
+  {
     "name": "3D精选",
     "category": "packs",
     "path": "extension/packs/3D精选"
@@ -288,5 +298,15 @@
     "name": "千幻聆音",
     "category": "ui",
     "path": "extension/ui/千幻聆音"
+  },
+  {
+    "name": "华夏风云",
+    "category": "packs",
+    "path": "extension/packs/华夏风云"
+  },
+  {
+    "name": "卡牌扩展",
+    "category": "collections",
+    "path": "extension/collections/卡牌扩展"
   }
 ]

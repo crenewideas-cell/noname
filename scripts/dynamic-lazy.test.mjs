@@ -7,6 +7,7 @@ import { indexDynamicSkins } from './index-dynamic-skins.mjs';
 import { createLazyCatalog } from '../apps/core/noname/skin/localDynamic/lazy-catalog.js';
 
 test('offline index loads only one owner, retains aliases, filters broken and unbound skins', async () => {
+  const pointer=new URL('../apps/core/noname/skin/localDynamic/runtime-release.js',import.meta.url),active=await fs.readFile(pointer);
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'noname-lazy-'));
   try {
     await fs.mkdir(path.join(root, 'pack'));
@@ -16,7 +17,8 @@ test('offline index loads only one owner, retains aliases, filters broken and un
       entry('b', ['liubei']), entry('loose', [], { group: 'manual' }), entry('loose2', [], { group: 'manual' })];
     await fs.writeFile(path.join(root, 'manifest.json'), JSON.stringify({ packs: [{ name: 'pack' }] }));
     await fs.writeFile(path.join(root, 'pack/catalog.json'), JSON.stringify({ entries }));
-    const index = await indexDynamicSkins(root), requests = [], merged = [];
+    const index = await indexDynamicSkins(root, {runtimeOptions:{activate:false,releases:path.join(root,'releases')}}), requests = [], merged = [];
+    assert.deepEqual(await fs.readFile(pointer),active,'temporary catalogs must never publish the active game runtime');
     let bindings = {};
     const loader = createLazyCatalog({ base: root + '/', bindings: () => bindings,
       read: async file => { requests.push(file);return JSON.parse(await fs.readFile(file, 'utf8')); },

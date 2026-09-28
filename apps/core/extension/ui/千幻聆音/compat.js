@@ -1,9 +1,7 @@
-import { lib, game, ui, get, ai, _status } from 'noname';
-import { getSkinService, refreshCharacterSkins } from '../../noname/skin/index.js';
+import { lib, game, ui, get, ai, _status, getSkinService, refreshCharacterSkins, connectSkinManagement } from 'noname';
 import { directories } from './filesystem.js';
 import {connectFileIO} from './file-io.js';
 import {connectDynamicCore} from './dynamic-core.js';
-import {connectSkinManagement} from '../../noname/skin/managementRuntime.js';
 import sharing from './resource-sharing.json' with {type:'json'};
 export { checkFile } from './filesystem.js';
 
@@ -74,10 +72,14 @@ export function connectCore() {
  // The bundled resource pack has explicit aliases which predate this program ZIP.
  // Keep new package declarations; fill only missing aliases with actual shipped art.
  for(const [name,entry] of Object.entries(sharing))if(!lib.qhly_skinShare[name] && !directories[resourceRoot+'sanguoskin/'+name] && directories[resourceRoot+'sanguoskin/'+entry.name])lib.qhly_skinShare[name]=entry;
- if(!lib.qhly_skinShare.pot_xiaoqiao)lib.qhly_skinShare.pot_xiaoqiao={name:'xiaoqiao'};
+ if(!lib.qhly_skinShare.pot_xiaoqiao&&!directories[resourceRoot+'sanguoskin/pot_xiaoqiao'])lib.qhly_skinShare.pot_xiaoqiao={name:'xiaoqiao'};
  // Preserve the core portrait resolver (forms, metadata, hidden generals, and PIXI subscribers).
  if(HTMLDivElement.prototype.qhly_origin_setBackground) {
   const original=HTMLDivElement.prototype.qhly_origin_setBackground;
+  HTMLDivElement.prototype.qhly_origin_setBackground=function(name,type,...rest){
+   if(type==='character')rest[0]='noskin';
+   return original.call(this,name,type,...rest);
+  };
   HTMLDivElement.prototype.setBackground=function(name,type,...rest){
    if(type==='character'&&this.classList.contains('qh-not-replace'))rest[0]='noskin';
    return original.call(this,name,type,...rest);
@@ -96,6 +98,9 @@ export function connectCore() {
  const sync = () => {
   const skins={...lib.config.skin};
   for(const [name,skin] of Object.entries(lib.config.qhly_skinset.skin)) {
+   // Managed choices have their own durable store. Never copy stale legacy
+   // selections over them or persist virtual set tokens as ordinary skin files.
+   if(lib.config.skin_management?.selections?.[name]||skin?.startsWith('套装 · '))continue;
    if(game.qhly_isDynamicOnly?.(name,skin)){delete skins[name];continue;}
    if(skin) skins[name]=[game.qhly_getSkinName(name,skin),game.qhly_getSkinFile(name,skin)];
   }
@@ -105,7 +110,7 @@ export function connectCore() {
   refreshCharacterSkins();
  };
  (lib.qhly_callbackList ||= []).push({onChangeSkin(name,skin){
-  if(!skin) delete lib.config.skin?.[name];
+  if(!skin&&!lib.config.skin_management?.selections?.[name]) delete lib.config.skin?.[name];
   sync();
  }});
  sync();

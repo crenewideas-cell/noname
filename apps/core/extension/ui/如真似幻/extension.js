@@ -1,6 +1,6 @@
-import { lib, game, ui, get, createSceneContext, openTreasure } from "noname";
-import { createSceneGame, createPortraitLoader, packLabel, openTools } from "./bridge.js";
-import { createLobbyAudio, createCharacterGrid, addSessionButtons } from "./runtime.js";
+import { lib, game, ui, get, createSceneContext, openTreasure, openCharacterSkins, createLobbyViews, createCharacterGrid, openLobbyTools, createLobbyCharacterTools, createLobbyElements, fitLobbyBackground } from "noname";
+import { createSceneGame, createPortraitLoader, packLabel } from "./bridge.js";
+import { createLobbyAudio } from "./runtime.js";
 
 export const type = "extension";
 export const workshopManifest = {
@@ -69,7 +69,7 @@ export async function activate(manifest) {
    let viewport = {width:screen.width,height:screen.height,scale:1};
    const views = new Map();
    let pendingView = restore.view || "home", activeView = restore.view || "home", resizing, finishing = false, homeReady = false;
-   let observer, onlineController, onlineOpen = false, resizeScene;
+   let observer, onlineController, onlineOpen = false, resizeScene, toolMenu;
    let done = false, adventureEntering = false, graphics, motion;
    const lifecycle = this.lifecycle = {
     window:sceneWindow, document:sceneDocument,
@@ -113,11 +113,11 @@ export async function activate(manifest) {
      observer = new ResizeObserver(resize); observer.observe(node); resize();
      app.ticker.add(() => backgrounds.forEach(sprite => { if (!sprite.destroyed) lifecycle.cover(sprite); }));
     },
+    sceneUI: () => createLobbyElements(graphics, 'rzsh'),
     cover(sprite) {
      const first = backgrounds.size === 0;
      backgrounds.add(sprite);
-     const scale = Math.max(viewport.width / viewport.scale / Math.max(1,sprite.texture.width), viewport.height / viewport.scale / Math.max(1,sprite.texture.height));
-     sprite.scale.set(scale); sprite.anchor.set(0.5); sprite.position.set(screen.width/2,screen.height/2);
+     fitLobbyBackground(sprite, {width:viewport.width/viewport.scale, height:viewport.height/viewport.scale, centerX:screen.width/2, centerY:screen.height/2});
      if (first) queueMicrotask(() => { if (pendingView) lifecycle.showView(pendingView); });
     },
     loader() {
@@ -126,10 +126,10 @@ export async function activate(manifest) {
      loaders.add(loader); return loader;
     },
     ticker() { const ticker = new graphics.Ticker(), update=ticker.update.bind(ticker);ticker.update=(...args)=>runVisual(update,...args);tickers.add(ticker); return ticker; },
+    releaseTicker(ticker) { tickers.delete(ticker); ticker.destroy(); },
     container() { const container = new graphics.Container(); containers.add(container); return container; },
     packLabel,
-    sessionButtons(parent, x, y, scale) { addSessionButtons(lifecycle, parent, x, y, scale); },
-    offline() { game.saveConfig("sessionType", "offline"); sceneWindow.moode = "shenfen"; lifecycle.showView("mode"); },
+    characterTools(options) { return lifecycle.own(createLobbyCharacterTools({...options,canvas:lifecycle.app.view,renderer:lifecycle.app.renderer,ticker:lifecycle.app.ticker})); },
     async online(mode = "identity") {
      if (done || finishing || onlineOpen) return;
      onlineOpen = true; clearTimeout(resizing);
@@ -143,7 +143,6 @@ export async function activate(manifest) {
      finally { onlineController = null; onlineOpen = false; if (!done) resizeScene?.(); }
     },
     startGame(mode, matching = false) {
-     if (lib.config.sessionType === "online") return lifecycle.online(mode);
      if (matching) {
       lifecycle.showView("matching");
       // A visual timeline is never the sole gate to the core mode. The owned
@@ -183,18 +182,18 @@ export async function activate(manifest) {
      if(!address.startsWith(base())||!fileList.includes(relative))throw new Error("此动态皮肤未随原素材包提供");
      return loader.add(name,address);
     },
-    openTools(onOriginal) { openTools(() => lifecycle.settings(), onOriginal); },
+    openTools(onOriginal,onHome) { toolMenu?.destroy();toolMenu = openLobbyTools({title:"如真似幻",onSettings:()=>lifecycle.settings(),onOnline:()=>lifecycle.online("identity"),onOriginal,onHome}); },
     settings() { return lib.uiWorkshop.openSettings("options"); },
     restart() { game.reload(); },
-    async character(name, page = lifecycle.characterPage || lib.config.qhly_listdefaultpage || "introduce") { const favoritesBefore=JSON.stringify(lib.config.favouriteCharacter||[]); const view = await lib.uiWorkshop.openSkins(name,page); if(done){view.close();return view;} const resource={destroy:()=>view.close()};lifecycle.own(resource);view.addEventListener('close',()=>{owned.delete(resource);if(done)return;sceneContext.config.favouriteCharacter=[...(lib.config.favouriteCharacter||[])];if(favoritesBefore!==JSON.stringify(lib.config.favouriteCharacter||[]))lifecycle.refreshFavorites?.();},{once:true});return view; },
-    characters() { lifecycle.characterPage = undefined; lifecycle.showView("characters"); },
-    skins() { lifecycle.characterPage = "skin"; lifecycle.showView("characters"); return lifecycle.character(undefined, "skin"); },
-    treasure() { const view=openTreasure({PIXI:graphics});const resource={destroy:()=>view.close()};lifecycle.own(resource);view.addEventListener("close",()=>owned.delete(resource),{once:true});return view; },
+    character(name, page) { return profileViews.character(name, page); },
+    characters() { return profileViews.characters(); },
+    skins() { return profileViews.skins(); },
+    treasure() { return profileViews.treasure(); },
     corridor() { return alertScene("梦之回廊所需的扩展尚未安装。"); },
     timeout(fn, ms, ...args) { if(done)return 0;const id = setTimeout(() => { timers.delete(id); if (!done) runVisual(fn,...args); }, ms); timers.add(id); return id; },
     interval(fn, ms, ...args) { if(done)return 0;const id = setInterval(() => { if (!done) runVisual(fn,...args); }, ms); intervals.add(id); return id; },
     frame(fn) { if(done)return 0;const id = requestAnimationFrame(t => { frames.delete(id); if (!done) runVisual(fn,t); }); frames.add(id); return id; },
-    async finish(mode) { if (done || finishing) return; finishing = true; try { await sceneContext.commitMode(mode); if(done||disposed)return; clearTimeout(resizing); lifecycle.sound.dispose(); resolve(mode); } catch(error) { finishing=false;if(!done)alertScene(error.message); } },
+    async finish(mode) { if (done || finishing) return; finishing = true; try { await sceneContext.commitMode(mode); if(done||disposed)return; await game.promises.saveConfig("sessionType", "offline"); if(done||disposed)return; clearTimeout(resizing); lifecycle.sound.dispose(); resolve(mode); } catch(error) { finishing=false;if(!done)alertScene(error.message); } },
     dispose(resize = false) {
      if (done) return; done = true;
      const release = action => { try { action(); } catch(error) { console.warn("如真似幻资源释放失败",error); } };
@@ -223,9 +222,14 @@ export async function activate(manifest) {
      release(()=>lifecycle.app?.destroy(true, { children: true })); lifecycle.app = null;
      for(const node of sceneNodes)release(()=>{if(node instanceof HTMLMediaElement){node.pause();node.removeAttribute('src');node.load();}node.remove();});sceneNodes.clear();
      for(const key of Object.keys(sceneWindow))delete sceneWindow[key];
-     links.forEach(link => link.remove()); status.remove(); document.querySelector(".rzsh-tool-menu")?.remove();
+     links.forEach(link => link.remove()); status.remove(); toolMenu?.destroy();toolMenu=undefined;
     }
    };
+   const profileViews = createLobbyViews({lib, openCharacter:openCharacterSkins, openTreasure, graphics:()=>graphics,
+    showCharacters:()=>lifecycle.showView('characters'),
+    syncFavorites:(favorites,changed)=>{sceneContext.config.favouriteCharacter=favorites;if(changed)lifecycle.refreshFavorites?.();}
+   });
+   lifecycle.own(profileViews);
    activeScene = lifecycle;
    // The source scene already supplies the loading artwork. Keep this node
    // detached during normal loading; real errors still show recovery controls.

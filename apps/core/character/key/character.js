@@ -41,6 +41,7 @@ const characters = {
 		group: "key",
 		hp: 3,
 		isUnseen: true,
+		img: "image/character/key_umi.jpg",
 		names: "鹰原|羽未",
 	},
 	key_rei: {

@@ -53,6 +53,8 @@ export class Library {
 	connectBanned = [];
 	characterIntro = {};
 	characterTitle = {};
+	/** @type { Record<string, string> } */
+	characterPackExtension = {};
 	characterPack = new Proxy(
 		{},
 		{
@@ -4645,7 +4647,7 @@ export class Library {
 				character_dialog_tool: {
 					name: "自由选将显示",
 					intro: "点击自由选将时默认显示的条目",
-					init: "最近",
+					init: "all",
 					item: {
 						收藏: "收藏",
 						最近: "最近",

@@ -31,6 +31,7 @@ export function clearSelectionGuide() {
     marked.clear();
     panel?.remove(); panel = null; activeEvent = null;
 	ui.window?.style.removeProperty("--selection-guide-clearance");
+	ui.arena?.style.removeProperty("--builtin-prompt-bottom");
 }
 
 function scheduleLayout() {
@@ -47,6 +48,11 @@ function scheduleLayout() {
         panel.style.maxHeight = `${Math.max(52, Math.min(180, (top - container.top) / scale - 20))}px`;
 		// Subtitles share this coordinate system and sit above the whole guide.
 		ui.window.style.setProperty("--selection-guide-clearance", `${parseFloat(panel.style.bottom) + panel.offsetHeight + 12}px`);
+		if (ui.arena?.classList.contains("builtin-responsive")) {
+			const arena = ui.arena.getBoundingClientRect();
+			const arenaScale = arena.height / ui.arena.clientHeight || 1;
+			ui.arena.style.setProperty("--builtin-prompt-bottom", `${Math.max(12, (arena.bottom - panel.getBoundingClientRect().top) / arenaScale + 12)}px`);
+		}
     });
 }
 
@@ -105,8 +111,24 @@ export function updateSelectionGuide(event, ok) {
         }
         window.addEventListener("resize", scheduleLayout);
     }
-    const stageText = counts.map((item, index) => `${index + 1}. ${item.label} ${item.count}/${formatRange(item.min, item.max)}`).join(" → ") + (ordered ? " · 按编号依次选人" : "");
-    if (steps.textContent !== stageText) steps.textContent = stageText;
+    const currentStage = prerequisite?.type || (!ok && targetStage ? "target" : "");
+    const stageKey = JSON.stringify([counts, currentStage, ordered]);
+    if (steps.dataset.state !== stageKey) {
+        steps.dataset.state = stageKey;
+        steps.replaceChildren();
+        for (const [index, item] of counts.entries()) {
+            const step = document.createElement("span"); step.className = "selection-guide-step";
+            step.dataset.state = item.type === currentStage ? "current" : item.count >= item.min ? "complete" : "pending";
+            if (item.type === currentStage) step.setAttribute("aria-current", "step");
+            const number = document.createElement("span"); number.className = "selection-step-index"; number.textContent = String(index + 1);
+            const label = document.createElement("span"); label.textContent = item.label;
+            const count = document.createElement("b"); count.textContent = `${item.count}/${formatRange(item.min, item.max)}`;
+            step.append(number, label, count); steps.append(step);
+        }
+        if (ordered) {
+            const hint = document.createElement("span"); hint.className = "selection-guide-order"; hint.textContent = "按编号依次选择"; steps.append(hint);
+        }
+    }
     const role = (index, target) => roles[Math.min(index, roles.length - 1)] ||
         (target && typeof prompts === "function" ? plain(prompts(target)) : "") || "目标";
     let text;
@@ -116,8 +138,19 @@ export function updateSelectionGuide(event, ok) {
     else text = "请先选择要使用的卡牌或技能";
     if (message.textContent !== text) message.textContent = text;
     const names = chosen.map((target, index) => `${index + 1}. ${role(index, target)}：${plain(target.nickname || get.translation(target))}`);
-    const summary = names.length ? names.join(ordered ? " → " : "；") : roles.length ? roles.map((name, index) => `${index + 1}. ${name}`).join(" → ") : "青色边框：可选 · 金色边框与编号：已选";
-    if (selection.textContent !== summary) selection.textContent = summary;
+    const kind = names.length ? "chosen" : roles.length ? "roles" : "legend";
+    if (kind === "legend") {
+        if (selection.dataset.kind !== kind) {
+            selection.replaceChildren();
+            for (const text of ["青色边框 · 可选", "金色边框与编号 · 已选"]) {
+                const label = document.createElement("span"); label.className = "selection-guide-legend"; label.textContent = text; selection.append(label);
+            }
+        }
+    } else {
+        const summary = names.length ? names.join(ordered ? " → " : "；") : roles.map((name, index) => `${index + 1}. ${name}`).join(" → ");
+        if (selection.textContent !== summary) selection.textContent = summary;
+    }
+    selection.dataset.kind = kind;
     undo.disabled = reset.disabled = !chosen.length || targetRange[1] < 0;
     scheduleLayout();
     undo.hidden = reset.hidden = !chosen.length || typeof event.custom?.replace?.target === "function";

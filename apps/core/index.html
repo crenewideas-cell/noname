@@ -9,6 +9,8 @@
 	<!-- 禁止缩放 手机端全屏 -->
 	<meta name="viewport" content="user-scalable=no, viewport-fit=cover" />
 	<title>无名杀</title>
+	<link rel="stylesheet" href="./layout/default/lobby-theme.css" />
+	<link rel="preload" as="image" href="./image/lobby/reference-atlas.png" />
 	<script>
 		if (new URLSearchParams(location.search).get("perf") === "1") {
 			performance.setResourceTimingBufferSize(4096);
@@ -116,15 +118,18 @@
 	<script type="module" src="./noname/entry.ts"></script>
 </head>
 <body>
-	<div id="noname-boot-status" role="status" style="position:fixed;inset:0;z-index:99999;display:grid;place-content:center;background:#172326;color:#e9e1d1;font:16px/1.8 system-ui,sans-serif;text-align:center;pointer-events:none">
-		<strong style="font-size:26px;letter-spacing:.2em">无名杀</strong>
-		<span>正在载入游戏…</span>
+	<div id="noname-boot-status" role="status">
+		<strong class="boot-title lobby-brand" aria-label="无名杀">无名杀</strong>
+		<span class="boot-motto">群雄聚首 · 共竞风云</span>
+		<span class="boot-progress" aria-hidden="true"></span>
+		<span class="boot-message">正在载入游戏…</span>
 	</div>
 	<script>
 		// Paint the selected UI before the game/module graph loads. Only a fixed,
 		// known local appearance is cached here; no package HTML/code is executed.
 		try {
 			const status = document.getElementById("noname-boot-status");
+			const defaultBoot = status.innerHTML;
 			const safe = new URLSearchParams(location.search).has("uiSafe");
 			window.nonameApplyBootAppearance = function (runtime) {
 				if (!status.isConnected || safe) return;
@@ -140,14 +145,17 @@
 					status.replaceChildren(frame);
 					return;
 				}
-				status.innerHTML = '<strong style="font-size:26px;letter-spacing:.2em">无名杀</strong><span>正在载入游戏…</span>';
-				if (runtime !== "rzsh") { status.style.background = "#172326"; return; }
+				status.innerHTML = defaultBoot;
+				status.style.removeProperty("background");
+				status.style.removeProperty("color");
+				if (runtime !== "rzsh") return;
 				status.style.background = "#211a12 url('extension/如真似幻/images/hom.jpg') center/cover";
 				status.style.color = "#dfc594";
 				const logo = status.querySelector("strong");
+				logo.classList.remove("lobby-gold-title", "lobby-brand");
 				logo.textContent = ""; logo.setAttribute("aria-label", "无名杀");
 				logo.style.cssText = "display:block;width:528px;height:224px;background:url('extension/如真似幻/spine/loding.png') -657px -170px;transform:scale(.8);margin:auto";
-				status.querySelector("span").textContent = "加载中 · · ·";
+				status.querySelector(".boot-message").textContent = "加载中 · · ·";
 			};
 			const cached = localStorage.getItem("noname-ui-workshop-boot");
 			if (cached || safe) window.nonameApplyBootAppearance(cached);

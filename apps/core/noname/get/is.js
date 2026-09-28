@@ -554,7 +554,7 @@ export class Is {
 	 * @param { Player } [player]
 	 */
 	mobileMe(player) {
-		return (game.layout == "mobile" || game.layout == "long") && !game.chess && player && player.dataset.position == "0";
+		return (game.layout == "mobile" || game.layout == "long") && !game.chess && player && player.dataset.position == "0" && !player.parentElement?.classList.contains("compact-seats");
 	}
 	newLayout() {
 		return game.layout != "default";

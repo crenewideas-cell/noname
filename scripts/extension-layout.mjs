@@ -81,7 +81,11 @@ export function classifiedExtensionsPlugin(core) {
           }
           if (name.startsWith("/extension/") && !/\.(?:js|ts|css)$/.test(name) && !(name.endsWith(".json") && url.searchParams.has("import"))) {
             const file = resolveExtensionPath(core, name);
-            req.url = "/" + path.relative(core, file).split(path.sep).map(encodeURIComponent).join("/") + url.search;
+            // Vite decodes URI paths, not URI components. Escaping legal path
+            // punctuation (notably + in model names) leaves a literal %2B on
+            // disk lookup and incorrectly returns 404 for existing assets.
+            const physicalPath = path.relative(core, file).split(path.sep).join("/");
+            req.url = "/" + encodeURI(physicalPath).replace(/[?#]/g, encodeURIComponent) + url.search;
           }
           next();
         } catch (error) {

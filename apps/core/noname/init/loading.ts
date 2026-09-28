@@ -3,97 +3,15 @@
  */
 
 import { lib, game, get, _status, ui, ai } from "noname";
+import { registerCardPack } from "./cardPackRuntime.js";
+import { initializeCharacterPack } from "./characterPackRuntime.js";
 import { isClass } from "@/util/index.js";
 
 /**
  * 读取导入的卡牌包信息
  */
 export function loadCard(cardConfig: importCardConfig) {
-	const cardConfigName = cardConfig.name;
-	lib.cardPackInfo[cardConfigName] = cardConfig;
-
-	lib.cardPack[cardConfigName] ??= [];
-	if (cardConfig.card) {
-		for (let [cardPackName, cardPack2] of Object.entries(cardConfig.card)) {
-			if (!(!cardPack2.hidden && cardConfig.translate?.[`${cardPackName}_info`])) {
-				continue;
-			}
-			lib.cardPack[cardConfigName].add(cardPackName);
-		}
-	}
-
-	for (const [configName, configItem] of Object.entries(cardConfig)) {
-		switch (configName) {
-			case "name":
-			case "mode":
-			case "forbid":
-				break;
-			case "connect":
-				// @ts-expect-error ignore
-				if (configItem === true) lib.connectCardPack.add(cardConfigName);
-				break;
-			case "list": {
-				const source = typeof configItem === "function" ? configItem() : configItem;
-				if (!Array.isArray(source)) break;
-				// Keep the unmodified source list for the editor, even for disabled packs.
-				lib.cardPile[cardConfigName] = get.copy(source);
-				if (lib.config.mode === "connect") {
-					// @ts-expect-error ignore
-					lib.cardPackList[cardConfigName] ??= [];
-					// @ts-expect-error ignore
-					lib.cardPackList[cardConfigName].addArray(get.copy(source));
-				} else if (lib.config.cards.includes(cardConfigName)) {
-					/**
-					 * @type {any[]}
-					 */
-					let pile = get.copy(source);
-
-					if (lib.config.bannedpile[cardConfigName]) {
-						pile = pile.filter((_value, index) => !lib.config.bannedpile[cardConfigName].includes(index));
-					}
-
-					if (lib.config.addedpile[cardConfigName]) {
-						pile = [...pile, ...get.copy(lib.config.addedpile[cardConfigName])];
-					}
-
-					lib.card.list.addArray(pile);
-				}
-				break;
-			}
-			default:
-				for (const [itemName, item] of Object.entries(configItem)) {
-					if (configName === "skill" && itemName[0] === "_" && !item.forceLoad && (lib.config.mode !== "connect" ? !lib.config.cards.includes(cardConfigName) : !cardConfig.connect)) {
-						continue;
-					}
-
-					if (configName === "translate" && itemName === cardConfigName) {
-						lib[configName][`${itemName}_card_config`] = item;
-					} else {
-						if (lib[configName][itemName] == null) {
-							if (configName === "skill" && !item.forceLoad && lib.config.mode === "connect" && !cardConfig.connect) {
-								lib[configName][itemName] = {
-									nopop: item.nopop,
-									derivation: item.derivation,
-								};
-							} else {
-								// @ts-expect-error ignore
-								Object.defineProperty(lib[configName], itemName, Object.getOwnPropertyDescriptor(configItem, itemName));
-							}
-						} else {
-							console.log(`duplicated ${configName} in card ${cardConfigName}:\n${itemName}:\nlib.${configName}.${itemName}`, lib[configName][itemName], `\ncard.${cardConfigName}.${configName}.${itemName}`, item);
-						}
-
-						if (configName === "card" && lib[configName][itemName].derivation) {
-							// @ts-expect-error ignore
-							lib.cardPack.mode_derivation ??= [];
-							// @ts-expect-error ignore
-							lib.cardPack.mode_derivation.push(itemName);
-						}
-					}
-				}
-				break;
-		}
-	}
+	registerCardPack(lib, game, get, cardConfig);
 }
 
 /**
@@ -120,6 +38,7 @@ export function loadCardPile() {
  */
 export function loadCharacter(character: importCharacterConfig) {
 	let name = character.name;
+	initializeCharacterPack(lib, game, name, lib.characterPackExtension?.[name]);
 
 	if (character.character) {
 		const characterPack = lib.characterPack[name];
@@ -243,6 +162,7 @@ export async function loadExtension(extension) {
 			try {
 				await extension[1].call(extension, extension[2], extension[4]);
 			} catch (e) {
+				if (_status.loadingExtensionRuntime === extension[0]) throw e;
 				console.log(`加载《${extension[0]}》扩展的content时出现错误。`, e);
 				if (!lib.config.ignore_error) {
 					alert(`加载《${extension[0]}》扩展的content时出现错误。
@@ -332,55 +252,14 @@ ${(e instanceof Error ? e.stack : String(e))}`);
 					lib.imported.character[extension[0]] = content;
 				}
 
-				if (!lib.config[`@Experimental.extension.${extension[0]}.character`]) {
-					game.saveConfig(`@Experimental.extension.${extension[0]}.character`, true);
-					lib.config.characters.add(extension[0]);
-					await game.promises.saveConfigValue("characters");
-				}
+				initializeCharacterPack(lib, game, extension[0], extension[0]);
 
 				loadCharacter(content);
 			}
-			if (typeof extension[4].card?.card == "object" && Object.keys(extension[4].card.card).length > 0) {
-				const content = { ...extension[4].card };
-				content.name = extension[0];
-				content.translate ??= {};
-				content.translate[content.name] ??= extension[0];
-
-				// ~~到最后，还得遍历一遍~~
-				// 我就是被拷打，成为新的1103，受到白鼠群的嘲笑谩骂，我也绝不再次遍历！
-				for (const [cardName, card] of Object.entries(content.card)) {
-					if (card.audio === true) {
-						card.audio = `ext:${extension[0]}`;
-					}
-					if (!card.image) {
-						if (card.fullskin || card.fullimage) {
-							const suffix = card.fullskin ? "png" : "jpg";
-
-							if (extension[3]) {
-								card.image = `db:extension-${extension[0]}:${cardName}.${suffix}`;
-							} else {
-								card.image = `ext:${extension[0]}/${cardName}.${suffix}`;
-							}
-						}
-					}
-				}
-				if (typeof content.skill == "object") {
-					for (const skillInfo of Object.values(content.skill)) {
-						extSkillInject(extension[0], skillInfo);
-					}
-				}
-
-				if (lib.imported.card) {
-					lib.imported.card[extension[0]] = content;
-				}
-
-				if (!lib.config[`@Experimental.extension.${extension[0]}.card`]) {
-					game.saveConfig(`@Experimental.extension.${extension[0]}.card`, true);
-					lib.config.cards.add(extension[0]);
-					await game.promises.saveConfigValue("cards");
-				}
-
-				loadCard(content);
+			if (extension[4].card && (Object.keys(extension[4].card.card || {}).length || extension[4].card.list?.length)) {
+				const content = { ...extension[4].card, name: extension[0], extension: extension[0] };
+				if (lib.imported.card) lib.imported.card[extension[0]] = content;
+				registerCardPack(lib, game, get, content, { database: extension[3] });
 			}
 			if (typeof extension[4].skill?.skill == "object" && Object.keys(extension[4].skill.skill).length > 0) {
 				for (const [skillName, skillInfo] of Object.entries(extension[4].skill.skill)) {
@@ -408,6 +287,7 @@ ${(e instanceof Error ? e.stack : String(e))}`);
 		delete _status.extension;
 		delete _status.evaluatingExtension;
 	} catch (e) {
+		if (_status.loadingExtensionRuntime === extension[0]) throw e;
 		console.error(e);
 	}
 }

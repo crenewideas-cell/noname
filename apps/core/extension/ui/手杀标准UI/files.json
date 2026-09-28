@@ -11,6 +11,7 @@
   "native/animation-renderer.js",
   "native/animations.js",
   "native/boot.js",
+  "native/card-phantom.js",
   "native/effects.js",
   "native/indicators.js",
   "native/layout.js",

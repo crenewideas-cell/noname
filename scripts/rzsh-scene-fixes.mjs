@@ -1,5 +1,6 @@
 // Applied to the printed migration output and the checked-in scene source.
 import {fixMatchingScenes} from './fix-matching-scenes.mjs';
+import {fixGalleryControls} from './fix-gallery-controls.mjs';
 // Keep adaptations here so regenerating community scenes preserves the fixes.
 export function fixScenes(source) {
  const replace = (from, to) => {
@@ -24,9 +25,10 @@ export function fixScenes(source) {
  const gridEnd = source.indexOf('            function kK()', gridStart);
  if (gridStart < 0 || gridEnd < 0) throw new Error("Missing character grid anchors");
  source = source.slice(0, gridStart) + `            function kb(kJ, kI) {
-                lifecycle.grid.show(kJ, kI, yn, G7, G8);
+                characterTools.show(kJ);
             }
 ` + source.slice(gridEnd);
+ replace('let k9 = null, kG = new Map(), ky = [], kU = null;', 'let k9 = null, kG = new Map(), ky = [], kU = null;\nconst characterTools = lifecycle.characterTools({page:yA,filterButton:Ue,searchButton:UD,filterLabel:Uo,render:cards=>lifecycle.grid.show(cards,yZ,yn,G7,G8)});');
  replace('new PIXI["Sprite"](yt["resources"][yB["randomGet"]()]["texture"])', 'lifecycle.portraits.sprite(yB["randomGet"]())');
  // The local player's portrait is already part of the small matchmaking atlas.
  replace('UA["texture"] = yx["resources"]["avatar_1"]["texture"];', '{ UA["texture"] = yx["resources"]["avatar_1"]["texture"]; UA.workshopPortraitLoaded = true; }');
@@ -79,12 +81,12 @@ export function repairLobbyAndPortraits(source) {
             const targetX = rzshUs[Uw.name] ? rzshUs[Uw.name].x * G7 : (Uw.workshopHomeX ??= Uw.x);
             gsap.fromTo(Uw, {x:i.screen.width + Uw.width}, {x:targetX, duration:Uc, ease:"power2.out", overwrite:true});
         }`);
- source = source.replace('GM["addChild"](kY, km, kb, kK, kK)', 'GM["addChild"](kY, km, kb, kK), lifecycle.sessionButtons(GM, 0x39a * G7, 432 * G8, G9)');
+ source = source.replace('GM["addChild"](kY, km, kb, kK, kK)', 'GM["addChild"](kY, km, kb, kK)');
  source = source.replaceAll('i["stage"]["children"]["forEach"]', 'i["stage"]["children"].slice()["forEach"]');
  source = source.replace('function Gl(UU) {\n            const K6 = K0;', 'function Gl(UU) {\n            if (GP !== null) { clearTimeout(GP); GP = null; }\n            if (UU === GK) window.isOnhide = false;\n            const K6 = K0;');
  source = source.replace('Object.assign(kM, {width:lib.config.sprite_avatar.w, height:lib.config.sprite_avatar.h, x:lib.config.sprite_avatar.x, y:lib.config.sprite_avatar.y, name:"avatar"});', 'kM.name = "avatar";');
  source = source.replace('ku["addChild"](kM);', 'ku["addChild"](kM); lifecycle.portraits.fit(kM, ku);');
  source = source.replace('function U7() { lifecycle.showView("matching"); }', 'function U7() { lifecycle.startGame(lib.config.mode, true); }');
  source = source.replace('function U8() { lifecycle.finish(lib.config.mode); }', 'function U8() { lifecycle.startGame(lib.config.mode); }');
- return fixMatchingScenes(source,'rzsh');
+ return fixGalleryControls(fixMatchingScenes(source,'rzsh'),'rzsh');
 }

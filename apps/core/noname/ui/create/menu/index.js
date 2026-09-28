@@ -34,7 +34,9 @@ export function openMenu(node, e, onclose) {
 		idealtop = (ui.window.offsetHeight - 10) / zoom - height;
 	}
 	node.style.top = idealtop + "px";
-	node.style.left = left + "px";
+	// Full-width lobby settings can place a switcher next to the right edge.
+	// Keep the existing popup in the host viewport instead of opening offscreen.
+	node.style.left = Math.max(10, Math.min(left, (ui.window.offsetWidth - 10) / zoom - node.offsetWidth)) + "px";
 	// }
 
 	popupContainer.classList.remove("hidden");
@@ -573,7 +575,7 @@ export function menu(connectMenu) {
 				// for room settings. Do not consume a shared mutable pages queue.
 				const result = ui.create[name](connectMenu, { ...context, menuxpages: [page] });
 				if (name === "startMenu") startButton = result;
-				if (name === "characterPackMenu") ui.updateCharacterPackMenu.push(result);
+				if (name === "characterPackMenu" || name === "extensionMenu") ui.updateCharacterPackMenu.push(result);
 				if (name === "cardPackMenu") ui.updateCardPackMenu.push(result);
 				context.updateActive = updateActive; context.updateActiveCard = updateActiveCard;
 				// Newly lazy pages missed the menu-open update pass. Apply their

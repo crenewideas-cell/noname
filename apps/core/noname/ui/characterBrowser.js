@@ -25,13 +25,28 @@ export function createCharacterBrowser({ ids, caption, heightset, noclick, onlyp
 	const searchButton = control(searchRow, "搜索", () => { void pager.search(input.value); });
 	searchButton.className = "character-search-submit";
 	const filters = ui.create.div(".caption.character-filters", dialog.content);
-	const alphabet = ui.create.div(".character-filter-alphabet", filters);
 	const groups = ui.create.div(".character-filter-groups", filters);
-	const packs = document.createElement("select"); packs.setAttribute("aria-label", "筛选武将包"); groups.append(packs);
+	const selectField = (label, ariaLabel) => {
+		const field = document.createElement("label"); field.className = "character-filter-field";
+		const title = document.createElement("span"); title.textContent = label;
+		const select = document.createElement("select"); select.setAttribute("aria-label", ariaLabel);
+		field.append(title, select); groups.append(field); return select;
+	};
+	const packs = selectField("武将包", "筛选武将包");
+	const factions = selectField("势力", "筛选势力");
 	const addOption = (value, label) => { const option = document.createElement("option"); option.value = value; option.textContent = get.plainText(label); packs.append(option); };
 	addOption("", "全部武将包");
 	for (const name of Object.keys(lib.characterPack)) if (!onlypack || name === onlypack) addOption(name, get.translation(`${name}_character_config`));
 	if (onlypack) { packs.value = onlypack; packs.disabled = true; }
+	const allFactions = document.createElement("option"); allFactions.value = ""; allFactions.textContent = "全部势力"; factions.append(allFactions);
+	for (const value of [...new Set(ids.map(id => get.is.double(id) ? "double" : lib.character[id][1]))].sort(lib.sort.group)) {
+		const option = document.createElement("option"); option.value = value; option.textContent = get.plainText(get.translation(value)); factions.append(option);
+	}
+	const categories = ui.create.div(".character-filter-categories", filters);
+	const alphabetDetails = document.createElement("details"); alphabetDetails.className = "character-filter-index";
+	const alphabetSummary = document.createElement("summary"); alphabetSummary.textContent = "按首字母筛选";
+	alphabetDetails.append(alphabetSummary); filters.append(alphabetDetails);
+	const alphabet = document.createElement("div"); alphabet.className = "character-filter-alphabet"; alphabetDetails.append(alphabet);
 	const status = ui.create.div(".caption.character-browser-status", dialog.content); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
 	const selection = ui.create.div(".character-browser-selection", dialog.content);
 	const grid = ui.create.div(".buttons", dialog.content); grid.setAttribute("role", "group"); grid.setAttribute("aria-label", "人物候选");
@@ -47,7 +62,7 @@ export function createCharacterBrowser({ ids, caption, heightset, noclick, onlyp
 	const disabled = new Map();
 	const index = new CharacterSearch();
 	let view = [], matches = ids.slice(), full = false, retired = false, token = 0, activeQuery = "", focusedId, legacyButtons;
-	let alpha = "", group = "", category = !onlypack && !expandall && lib.characterDialogGroup[lib.config.character_dialog_tool] ? lib.config.character_dialog_tool : "";
+	let alpha = "", group = "", category = !onlypack && !expandall && lib.config.character_dialog_tool !== "最近" && lib.characterDialogGroup[lib.config.character_dialog_tool] ? lib.config.character_dialog_tool : "";
 	const refreshFilterControls = [];
 	const matchesFilters = id => {
 		if (!lib.character[id]) return false;
@@ -185,8 +200,11 @@ export function createCharacterBrowser({ ids, caption, heightset, noclick, onlyp
 		refresh();
 	};
 	toggle(alphabet, [...new Set(ids.map(capt))].sort().map(value => [value, value.toUpperCase()]), () => alpha, value => { alpha = value; });
-	toggle(groups, [...new Set(ids.map(id => get.is.double(id) ? "double" : lib.character[id][1]))].sort(lib.sort.group).map(value => [value, get.translation(value)]), () => group, value => { group = value; }, true);
-	toggle(groups, Object.keys(lib.characterDialogGroup).map(value => [value, value]), () => category, value => { category = value; });
+	const updateAlphabetSummary = () => { alphabetSummary.textContent = alpha ? `首字母：${alpha.toUpperCase()}` : "按首字母筛选"; };
+	alphabet.addEventListener("click", updateAlphabetSummary);
+	refreshFilterControls.push(updateAlphabetSummary, () => { factions.value = group; });
+	factions.onchange = () => { group = factions.value; pager.page = 1; pager.render(); };
+	toggle(categories, Object.keys(lib.characterDialogGroup).map(value => [value, value]), () => category, value => { category = value; });
 	packs.onchange = () => {
 		// Selecting a pack starts a new browse scope. A saved "recent" default,
 		// a previous search or faction must not silently hide most of the pack.

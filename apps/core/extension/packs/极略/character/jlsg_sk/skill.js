@@ -4733,7 +4733,7 @@ const skills = {
 		filter(event, player) {
 			const suits = player
 				.getCards("h")
-				.map(card => get.suit(suit))
+				.map(card => get.suit(card))
 				.unique();
 			return lib.suit.some(suit => !suits.includes(suit));
 		},
@@ -4744,7 +4744,7 @@ const skills = {
 			await player.showHandcards();
 			const suits = player
 				.getCards("h")
-				.map(card => get.suit(suit))
+				.map(card => get.suit(card))
 				.unique();
 			let num = lib.suit.filter(suit => !suits.includes(suit)).length;
 			if (num > 0) {
@@ -5283,6 +5283,9 @@ const skills = {
 		async content(event, trigger, player) {
 			await event.target.judge({
 				judge(card) {
+					// Rejudging AI runs in a child event owned by the responder.
+					// Resolve the original judged player without a lost closure.
+					const target = get.event().getParent("judge", true, true)?.player || get.player();
 					if (target.isDamaged() && get.suit(card) == "heart") {
 						return 2;
 					}
@@ -5300,7 +5303,7 @@ const skills = {
 			order: 9,
 			expose: 0.2,
 			result: {
-				target(target) {
+				target(player, target) {
 					if (target.isDamaged()) {
 						return 2;
 					}

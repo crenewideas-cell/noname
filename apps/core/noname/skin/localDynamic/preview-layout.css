@@ -43,3 +43,16 @@
 .local-skin-adapted.local-skin-stacked > .qh-button.skillB { left: 5%; }
 .local-skin-adapted.local-skin-stacked > .qh-button.configB { left: 19.5%; }
 .local-skin-adapted.local-skin-stacked > .qh-avatar-shoushabuttons { left: 7%; top: 47%; bottom: auto; width: 86%; flex-direction: row; }
+
+/* The native theme also positions these controls with inline declarations.
+   Keep the existing controls in the same right column as the wide preview's
+   text panel; otherwise cards and tabs overlap the expanded portrait. */
+.qh-window.local-skin-adapted.local-skin-landscape:not(.local-skin-stacked):not(.qh-interaction) > .qh-page-skin {
+  left: 66% !important; width: 30% !important; transition: none !important;
+}
+.qh-window.local-skin-adapted.local-skin-landscape:not(.local-skin-stacked):not(.qh-interaction) > .qh-button {
+  left: 86% !important; width: 9% !important; top: 12.1% !important; transition: none !important;
+}
+.qh-window.local-skin-adapted.local-skin-landscape:not(.local-skin-stacked):not(.qh-interaction) > .qh-button.skillB { left: 66% !important; }
+.qh-window.local-skin-adapted.local-skin-landscape:not(.local-skin-stacked):not(.qh-interaction) > .qh-button.configB { left: 76% !important; }
+.qh-window.local-skin-adapted.local-skin-landscape:not(.local-skin-stacked):not(.qh-interaction) > .qh-button.skinB { width: 0 !important; height: 0 !important; }

@@ -1,6 +1,7 @@
 import { lib, game, get, _status } from "noname";
 import { Click } from "./click/index.js";
 import { Create } from "./create/index.js";
+import { refreshCompactSeatLayout } from "./compactSeats.js";
 
 export class UI {
 	updates = [];
@@ -186,6 +187,9 @@ export class UI {
 	 */
 	getSpreadOffset(cards, options = {}) {
 		const result = { spreadIndex: -1, spreadLeft: 0, spreadRight: 0 };
+		// Compact desktop hands reveal hovered cards in place via CSS. Moving
+		// neighbours here would change the hit target under a stationary mouse.
+		if (ui.arena?.classList.contains("compact-seats") && !lib.config.touchscreen) return result;
 		if (!lib.config.spread_card) return result;
 
 		const cardWidth = options.cardWidth || 112;
@@ -388,6 +392,9 @@ export class UI {
 		delete ui._updatexr;
 	}
 	updatexr() {
+		// The table cannot wait for the legacy 500ms dialog/update debounce:
+		// body dimensions and seat coordinates must describe the same frame.
+		if (ui.arena?.classList.contains("compact-seats") && game.documentZoom > 0) ui.updatez();
 		if (ui._updatexr) {
 			clearTimeout(ui._updatexr);
 		}
@@ -468,11 +475,14 @@ export class UI {
 		}
 		var offset1,
 			offset12 = 0;
+		// Reserve the existing hover/touch fan expansion in the responsive hand.
+		// Otherwise revealing a selected card can push the last card out of view.
+		const handEdgeAllowance = ui.arena?.classList.contains("compact-seats") && lib.config.touchscreen && lib.config.spread_card ? 224 : 128;
 		if (!lib.config.fold_card) {
 			offset1 = 112;
 			ui.handcards1Container.classList.add("scrollh");
 		} else {
-			offset1 = Math.min(112, (ui.handcards1Container.offsetWidth - 128) / (hs1.length - 1));
+			offset1 = Math.min(112, (ui.handcards1Container.offsetWidth - handEdgeAllowance) / (hs1.length - 1));
 			if (hs1.length > 1 && offset1 < 32) {
 				offset1 = 32;
 				ui.handcards1Container.classList.add("scrollh");
@@ -520,7 +530,7 @@ export class UI {
 			offset2 = 112;
 			ui.handcards2Container.classList.add("scrollh");
 		} else {
-			offset2 = Math.min(112, (ui.handcards2Container.offsetWidth - 128) / (hs2.length - 1));
+			offset2 = Math.min(112, (ui.handcards2Container.offsetWidth - handEdgeAllowance) / (hs2.length - 1));
 			if (hs2.length > 1 && offset2 < 32) {
 				offset2 = 32;
 				ui.handcards2Container.classList.add("scrollh");
@@ -624,6 +634,7 @@ export class UI {
 			document.body.style.height = height + "px";
 			document.body.style.transform = "";
 		}
+		refreshCompactSeatLayout(ui.arena);
 	}
 	update() {
 		for (var i = 0; i < ui.updates.length; i++) {
@@ -772,6 +783,14 @@ export class UI {
 	updatePlayerPositions(numberOfPlayers) {
 		if (typeof numberOfPlayers != "number") {
 			numberOfPlayers = ui.arena.dataset.number;
+		}
+		// The shared compact layout owns opponents in every presentation. Remove
+		// the old many-player transform so it cannot shrink the portrait twice.
+		if (ui.arena.classList.contains("compact-seats") || ui.arena.classList.contains("builtin-responsive")) {
+			for (const position of ui.playerPositions) game.dynamicStyle.remove(position);
+			ui.playerPositions.length = 0;
+			refreshCompactSeatLayout(ui.arena);
+			return;
 		}
 		//当人数不超过8人时，还是用以前的布局
 		if (!numberOfPlayers || numberOfPlayers <= 8) {

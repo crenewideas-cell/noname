@@ -2,8 +2,9 @@
 .decade-prefix-mark{position:absolute;top:108px;left:-11px;width:22px;height:34px;background:center/100% 100% no-repeat;pointer-events:none;z-index:9}
 html body[data-decade-parts~="players"] #arena .player .marks>.decade-special-mark{width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;border:0!important;box-shadow:none!important;border-radius:0!important;background:var(--decade-special-mark) center/100% 100% no-repeat!important}
 html body[data-decade-parts~="players"] #arena .player .marks>.decade-special-mark>.background{visibility:hidden}
-.decade-passive-skills{position:absolute;right:165px;bottom:65px;max-width:220px;display:flex;flex-wrap:wrap-reverse;justify-content:flex-end;gap:4px;z-index:8;pointer-events:none}
-.decade-passive-skills>span{position:relative;padding:2px 7px;border:.3px solid #b69d4d;border-radius:50px;background:#3a2819;color:#f5d78e;font:16px/16px decade-ingame,serif;white-space:nowrap}
+.player>.decade-passive-skills{position:absolute;box-sizing:border-box;right:calc(100% + 28px);left:auto;top:var(--decade-passive-top,0px);bottom:auto;width:128px;max-height:calc(100% - var(--decade-passive-top,0px));display:flex;flex-wrap:wrap;align-content:flex-start;justify-content:flex-end;gap:3px;padding:2px;background:none;border:0;box-shadow:none;overflow:auto;scrollbar-width:thin;z-index:8;pointer-events:auto}
+.player>.decade-passive-skills:empty{display:none}
+.decade-passive-skills>span{position:relative;max-width:100%;box-sizing:border-box;padding:1px 5px;border:.3px solid #b69d4d;border-radius:50px;background:#3a2819;color:#f5d78e;font:11px/15px decade-ingame,serif;white-space:normal;overflow-wrap:anywhere;flex-shrink:0}
 .decade-skill-marks{position:absolute;right:-15px;top:28px;display:flex;flex-direction:column;z-index:8;pointer-events:none}
 .decade-skill-badge{position:relative;display:block;width:29px;height:29px;background:center/contain no-repeat;pointer-events:none}
 .decade-skill-badge+.decade-skill-badge{margin-top:-6px}
@@ -29,7 +30,7 @@ html body[data-decade-parts~="players"] #arena .player .marks>.decade-special-ma
 @keyframes decade-split1{to{transform:translate(20px,-20px)}}
 @keyframes decade-split2{to{transform:translate(-20px,20px)}}
 @keyframes decade-kill-fade{from{background:#000b}to{background:transparent}}
-@media(max-height:500px){.decade-kill>.killer-warpper,.decade-kill>.victim{scale:.7}.decade-skin-button{width:34px;height:34px}.decade-passive-skills{right:140px;bottom:58px;max-width:170px}}
+@media(max-height:500px){.decade-kill>.killer-warpper,.decade-kill>.victim{scale:.7}.decade-skin-button{width:34px;height:34px}}
 @media(prefers-reduced-motion:reduce){.decade-skill-badge[data-kind="conversion"]{animation:none}.decade-kill{display:none}}
 @font-face{font-family:decade-ingame;src:url('./assets/ui/assets/fonts/HYZLSJ.woff2') format('woff2');font-display:swap}
 html body[data-decade-parts~="arena"] #arena{background:url('./assets/background.jpg') center/cover no-repeat!important}
@@ -48,7 +49,7 @@ html body[data-decade-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.
 html body[data-decade-parts~="players"] #arena>.player.fullskin2:not(.minskin)>.avatar2{left:calc(50% + 9px)!important;top:0!important;width:calc(50% - 9px)!important;height:100%!important;border-radius:0 6px 6px 0!important;background-position:center top!important;background-size:cover!important}
 html body[data-decade-parts~="players"] #arena>.player>.decade-frame{position:absolute;left:-13px;top:1px;width:37px;height:128px;pointer-events:none;z-index:5;color:#fff0ac;text-shadow:0 0 3px #392b05;text-align:center;box-sizing:border-box;font:26px/38px decade-ingame,serif}
 .decade-frame::before{content:'';position:absolute;left:7.25px;top:-1.78px;width:24px;height:182px;border-radius:10px 0 0 10px;background:linear-gradient(to top,#9b816c,#49473a);z-index:-2}
-.decade-frame::after{content:'';position:absolute;left:-6px;top:-18px;width:55px;height:187px;background:url('./assets/image/styles/xinsha/new_border_camp.png') center/100% 100% no-repeat;z-index:-1}
+.decade-frame::after{content:'';position:absolute;left:-6px;top:-18px;width:55px;height:187px;background:url('./assets/image/styles/xinsha/dragon-jade-gold.png') center/100% 100% no-repeat;filter:drop-shadow(0 1px 1px #241508aa);z-index:-1}
 .decade-frame[data-group="wei"]::before{background:linear-gradient(to top,#23537b,#0f2344)}
 .decade-frame[data-group="shu"]::before{background:linear-gradient(to top,#991c22,#390c11)}
 .decade-frame[data-group="wu"]::before{background:linear-gradient(to top,#1d721d,#222a1b)}
@@ -70,6 +71,7 @@ html body[data-decade-parts~="hp"] #arena .hp[data-condition="mid"]>div{backgrou
 html body[data-decade-parts~="hp"] #arena .hp[data-condition="low"]>div{background-image:url('./assets/image/styles/xinsha/glass3.png')!important}
 html body[data-decade-parts~="hp"] #arena .hp>div.lost{background-image:url('./assets/image/styles/xinsha/glass4.png')!important}
 body.decade-layout #arena>#me{left:var(--ss-hand-left,9%)!important;right:var(--ss-hand-right,220px)!important;width:auto!important;background:transparent!important;border:0!important;box-shadow:none!important}
+html body[data-decade-parts~="arena"] #arena>#mebg{display:none!important}
 html body[data-decade-parts~="cards"] #window .card.decade-card:not(.infohidden):not(:empty){background-image:var(--decade-card)!important;background-size:100% 100%!important;border-radius:5px}
 html body[data-decade-parts~="cards"] #window .card.decade-card:not(.infohidden):not(:empty)>:is(.image,.background){background-image:none!important}
 html body[data-decade-parts~="cards"] #window .card.decade-card:not(.infohidden)>.name{opacity:0}
@@ -77,9 +79,35 @@ html body[data-decade-parts~="cards"] #window .card.selected{box-shadow:0 0 1px 
 html body[data-decade-parts~="cardback"] #window .card:is(.infohidden,:empty){background-image:url('./assets/image/ui/card/kb3.png')!important;background-size:100% 100%!important}
 html body[data-decade-parts~="menus"] #arena>.dialog:not(.popped){background:url('./assets/image/ui/dialog/dialog5.png') center/100% 100% no-repeat!important;border:0;border-radius:0;box-shadow:none;color:#fff9e9;padding:20px 12px;box-sizing:border-box}
 /* Match new dialogs before the observer's next frame, including empty searches. */
-html body[data-decade-parts~="players"] #arena>.dialog:is(.decade-characters,.character-browser,.choose-character,:has(.button.character)):not(.popped){position:absolute!important;left:15%!important;top:auto!important;bottom:calc(100% / 3 + 16px)!important;width:70%!important;height:auto!important;min-height:0!important;max-height:calc(200% / 3 - 28px)!important;transform:none!important;padding:24px 14px 12px;box-sizing:border-box;background:url('./assets/image/ui/dialog/dialog5.png') center/100% 100% no-repeat!important;border:0;border-radius:0;box-shadow:none;color:#fff9e9}
-html body[data-decade-parts~="players"] .dialog:is(.decade-characters,.character-browser,.choose-character,:has(.button.character)) .content-container{position:relative!important;display:block!important;height:auto!important;max-height:calc(200vh / 3 - 72px);overflow:auto}
-html body[data-decade-parts~="players"] .dialog:is(.decade-characters,.character-browser,.choose-character,:has(.button.character)) .content{position:relative!important;height:auto!important}
+/* Ordinary and free choices share one frame. Flex shrink bounds the scrolling
+   area to that frame (also under UI zoom), rather than a separate vh limit.
+   dialog5 has a transparent top 12% and bottom 4%; reserve those painted edges. */
+html body[data-decade-parts~="players"] #arena>.dialog:is(.decade-characters,.character-browser,.choose-character,:has(.button.character)):not(.popped){position:absolute!important;display:flex;flex-direction:column;left:15%!important;top:auto!important;bottom:calc(100% / 3 + 16px)!important;width:70%!important;height:auto!important;min-height:0!important;max-height:calc(200% / 3 - 28px)!important;margin:0!important;transform:none!important;padding:calc(8vh + 8px) 14px calc(3vh + 4px);box-sizing:border-box;background:url('./assets/image/ui/dialog/dialog5.png') center/100% 100% no-repeat!important;border:0;border-radius:0;box-shadow:none;color:#fff9e9;overflow:hidden}
+html body[data-decade-parts~="players"] #arena>.dialog:is(.decade-characters,.character-browser,.choose-character,:has(.button.character)):not(.popped)>.content-container{position:relative!important;display:block!important;flex:0 1 auto;min-height:0;width:100%;height:auto!important;max-height:none;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable both-edges}
+html body[data-decade-parts~="players"] #arena>.dialog:is(.decade-characters,.character-browser,.choose-character,:has(.button.character)):not(.popped)>.content-container>.content{position:relative!important;box-sizing:border-box;width:100%;height:auto!important;padding:4px 4px 8px}
+/* The directory retains search/paging, but uses the same typography, chips and
+   card spacing as the ordinary 2v2/identity choice panel. */
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser .character-filters{display:flex;flex-wrap:wrap;align-items:center;gap:8px;width:100%;margin:0 auto 8px;padding:0 0 8px;font:16px/1.5 decade-ingame,serif!important;color:#fff9e9}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser .character-filter-groups{display:flex;flex:1 1 100%;flex-wrap:wrap;align-items:center;gap:6px 16px}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser .character-filter-field{flex:1 1 240px}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser .character-filter-categories{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:auto;margin:0}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser .character-filter-index{margin:0 0 0 auto}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser .character-filter-index[open]{flex-basis:100%}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser :is(button.tdnode,.character-search-submit,.character-filter-field>select){box-sizing:border-box;min-height:32px;height:auto;margin:2px;padding:5px 10px;border:1px solid #b49761;border-radius:4px;background:#39291e;color:#f5d79e;font:16px/1.4 decade-ingame,serif;box-shadow:none}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser :is(button.tdnode,.character-search-submit):is(.thundertext,[aria-pressed="true"]){background:#88613b!important;border-color:#ffe0a1;color:#fff0ac!important;box-shadow:0 0 4px #e8b871}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser .searcher.caption{margin:4px auto 8px}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser .searcher input{background:#251c15;color:#fff9e9;border-color:#b49761!important}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser .buttons{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;width:100%;margin:0;padding:8px 0}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser .buttons>.button.character{flex:none;margin:0}
+html body[data-decade-parts~="players"] #arena>.dialog.character-browser :is(.character-browser-status,.character-browser-pages){color:#f5d79e;font:16px/1.5 decade-ingame,serif}
+/* Short landscape screens use the space above the action bar, so directory
+   filters do not consume the entire visible area before the first card row. */
+@media(max-height:600px){
+ html body[data-decade-parts~="players"] #arena>.dialog:is(.decade-characters,.character-browser,.choose-character,:has(.button.character)):not(.popped){bottom:82px!important;max-height:calc(100% - 94px)!important;padding-top:calc(12vh + 8px);padding-bottom:calc(4vh + 4px)}
+ html body[data-decade-parts~="players"] #arena>.dialog.character-browser .searcher.caption{margin:0 auto 4px}
+ html body[data-decade-parts~="players"] #arena>.dialog.character-browser .character-filters{gap:4px;margin-bottom:4px;padding-bottom:4px}
+ html body[data-decade-parts~="players"] #arena>.dialog.character-browser .character-browser-status{padding-top:0}
+}
 html body[data-decade-parts~="players"] .dialog .button.character{width:82px;height:112px;margin:6px;border:1px solid #5d492d;border-radius:4px;background-position:center top;background-size:cover}
 html body[data-decade-parts~="players"] .dialog .button.character.selected{box-shadow:0 0 2px 2px #ffe990,0 0 10px #f5c038}
 html body[data-decade-parts~="buttons"] #arena #control .control{background:none!important;box-shadow:none!important;border:0!important;overflow:visible}
@@ -294,6 +322,8 @@ html body[data-decade-menu] .decade-menu-toggle {
 html body[data-decade-menu] .decade-menu-toggle {
  position:fixed;right:clamp(14px,calc(4vw + 2px),42px)!important;top:16px!important;width:140px!important;z-index:40;
 }
+/* The drawer belongs to a match, including when settings initialize it in a lobby. */
+html body[data-decade-menu]:has(#splash) .decade-menu-toggle {display:none!important;}
 body[data-decade-menu] .decade-identity-tip {right:calc(clamp(12px,4vw,40px) + 154px);top:22px}
 html body[data-decade-menu] #system.with-game-navigation :is(#system1,#system2,.game-navigation-slot)>div:focus-visible {outline:2px solid #f5d79e;outline-offset:-2px}
 html body[data-decade-parts~="buttons"] #arena>#control.action-controls>.decade-skills>div{background-image:url('./assets/ui/assets/skill/yijiang/new_btnn1.png')!important}

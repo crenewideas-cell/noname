@@ -12606,7 +12606,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 				}
 				const skills = player.getSkills();
 				for (const skill of skills) {
-					if (lib.skill[skill].temp) {
+					if (lib.skill[skill]?.temp) {
 						player.removeSkill(skill);
 					}
 				}

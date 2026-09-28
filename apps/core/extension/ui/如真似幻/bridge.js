@@ -1,4 +1,4 @@
-import { lib, game, get, subscribeCharacterSkins } from "noname";
+import { lib, game, get, getSkinService, subscribeCharacterSkins } from "noname";
 
 export const baseURL = () => import.meta.url.slice(0, import.meta.url.lastIndexOf('/') + 1);
 export function plainText(value) {
@@ -14,7 +14,7 @@ function portrait(name, portraitJobs) {
  const job = (async () => {
   const info = get.character(name);
   const database = (info.trashBin || []).find(tag => tag.startsWith("db:"));
-  if (database && !lib.config.skin?.[name]) {
+  if (database && (lib.config.change_skin === false || !getSkinService().current(name))) {
    const image = await game.getDB("image", database.slice(3));
    if (typeof image === "string") return image;
   }
@@ -53,7 +53,8 @@ export function createPortraitLoader(lifecycle) {
  const fit = sprite => {
   const box = sprite.workshopPortraitBox;
   if (!box) return;
-  const scale = Math.max(box.width / Math.max(1,sprite.texture.orig.width), box.height / Math.max(1,sprite.texture.orig.height));
+  const fitScale = box.fit === 'contain' ? Math.min : Math.max;
+  const scale = fitScale(box.width / Math.max(1,sprite.texture.orig.width), box.height / Math.max(1,sprite.texture.orig.height));
   sprite.anchor.set(0.5); sprite.scale.set(scale);
   sprite.position.set(box.x + box.width/2, box.y + box.height/2);
  };
@@ -114,6 +115,13 @@ export function createPortraitLoader(lifecycle) {
   },
   request,
   fit(sprite, card, box = {x:31, y:3, width:Math.max(1,card.texture.orig.width-34), height:Math.max(1,card.texture.orig.height-6)}) {
+   if (box.fit === 'contain') {
+    // Letterbox the complete illustration inside the frame, including hair
+    // and headdresses. The matte is behind the art, never a crop over it.
+    const matte = new PIXI.Graphics();
+    matte.beginFill(0x28231e).drawRoundedRect(box.x,box.y,box.width,box.height,3).endFill();
+    card.addChildAt(matte, 0);
+   }
    const clip = new PIXI.Graphics();
    clip.beginFill(0xffffff).drawRoundedRect(box.x,box.y,box.width,box.height,3).endFill();
    card.addChild(clip); sprite.mask = clip; sprite.workshopPortraitBox = box; fit(sprite);
@@ -138,23 +146,4 @@ export function createSceneGame(files, sceneGame) {
   };
   return Reflect.get(target, key);
  } });
-}
-export function openTools(onSettings, onOriginal) {
- document.querySelector(".rzsh-tool-menu")?.remove();
- const overlay = document.createElement("div"); overlay.className = "rzsh-tool-menu";
- overlay.setAttribute("role", "dialog"); overlay.setAttribute("aria-label", "如真似幻菜单");
- const panel = document.createElement("section"); overlay.append(panel);
- const title = document.createElement("h2"); title.textContent = "如真似幻"; panel.append(title);
- const add = (label, run) => {
-  const button = document.createElement("button"); button.textContent = label;
-  button.onclick = () => { overlay.remove(); run(); }; panel.append(button);
- };
- add("UI 工坊", () => lib.uiWorkshop.open());
- add("游戏设置", onSettings);
- add("如真似幻设置", onSettings);
- if (onOriginal) add("原版功能菜单", onOriginal);
- add("返回大厅", () => {});
- overlay.onclick = event => { if (event.target === overlay) overlay.remove(); };
- overlay.onkeydown = event => { if (event.key === "Escape") overlay.remove(); };
- document.body.append(overlay); panel.querySelector("button").focus();
 }

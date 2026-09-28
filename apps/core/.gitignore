@@ -2,9 +2,20 @@ audio/*.TXT
 image/*.TXT
 
 extension/**
+!extension/collections/
+!extension/collections/清瑶葭绮/
+!extension/collections/清瑶葭绮/members/
+!extension/collections/清瑶葭绮/members/假装无敌/
+!extension/collections/清瑶葭绮/members/假装无敌/compatibility.js
 !extension/packs/
+!extension/packs/星之梦/
+!extension/packs/星之梦/**
+!extension/packs/云中守望/
+!extension/packs/云中守望/**
 !extension/packs/名将杀/
 !extension/packs/名将杀/**
+!extension/packs/华夏风云/
+!extension/packs/华夏风云/**
 !extension/packs/极略/
 !extension/packs/极略/**
 !extension/packs/梦澈涤花/
@@ -171,3 +182,14 @@ noname.ico
 # Local dynamic skin imports, including future packs and generated manifests.
 extension/imports/本地动态皮肤包/
 extension/ui/动态皮肤验证扩展/
+
+# Imported card definitions and assets use the common card runtime.
+!extension/collections/
+!extension/collections/卡牌扩展/
+!extension/collections/卡牌扩展/**
+
+# Route the existing Feihong card addition through the shared registrar.
+!extension/packs/活动武将/
+!extension/packs/活动武将/js/
+!extension/packs/活动武将/js/precontent/
+!extension/packs/活动武将/js/precontent/MX_feihongyinxue.js

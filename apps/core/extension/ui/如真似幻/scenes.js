@@ -124,35 +124,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
             }
         }
     }(rzshG, 0x25fc6));
-    const rzshy3 = {};
-    rzshy3["x"] = 0xac, rzshy3["y"] = 0xa, rzshy3["scale"] = 0.68;
-    const rzshy4 = {};
-    rzshy4["x"] = 0x133, rzshy4["y"] = 0xa, rzshy4["scale"] = 0.68;
-    const rzshy5 = {};
-    rzshy5["x"] = 0xad, rzshy5["y"] = 0xa, rzshy5["scale"] = 0.67;
-    const rzshy6 = {};
-    rzshy6["x"] = 0x49, rzshy6["y"] = 0x71, rzshy6["scale"] = 0.9;
-    const rzshy7 = {};
-    rzshy7["x"] = 0xda, rzshy7["y"] = 0x2b, rzshy7["scale"] = 0.69;
-    const rzshy8 = {};
-    rzshy8["x"] = 0x3, rzshy8["y"] = 0x3f, rzshy8["scale"] = 0.8;
-    const rzshy9 = {};
-    rzshy9["x"] = 0x118, rzshy9["y"] = 0x37, rzshy9["scale"] = 0.7;
-    const rzshyG = {};
-    rzshyG["x"] = 0x4a, rzshyG["y"] = 0x7f, rzshyG["scale"] = 0.69;
-    const rzshyy = {};
-    rzshyy["x"] = 0x0, rzshyy["y"] = 0x0, rzshyy["scale"] = 0.69;
-    const rzshyU = {};
-    rzshyU["x"] = 0x0, rzshyU["y"] = 0x0, rzshyU[rzshbm(0x14c, "TK2T")] = 0.69;
-    const rzshyk = {};
-    rzshyk["x"] = 0x0, rzshyk["y"] = 0x0, rzshyk["scale"] = 0.69;
-    const rzshyf = {};
-    rzshyf["x"] = 0x2, rzshyf["y"] = 0xda, rzshyf["scale"] = 0.69;
-    const rzshyY = {};
-    rzshyY["x"] = 0x144, rzshyY["y"] = 0xa, rzshyY["scale"] = 0.7;
-    const rzshym = {};
-    rzshym["x"] = 0x167, rzshym["y"] = 0xf, rzshym["scale"] = 0.7;
-    function rzshy(G, y) {
+function rzshy(G, y) {
         G = G - 0x147;
         const U = rzshG();
         let k = U[G];
@@ -173,10 +145,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
         const Y = U[0x0], m = G + Y, b = rzshy["aflukT"][m];
         return !b ? (k = rzshy["PovSGk"](k), rzshy["aflukT"][m] = k) : k = b, k;
     }
-    const rzshyb = {};
-    rzshyb["x"] = 0x423, rzshyb["y"] = 0.5, rzshyb["scale"] = 0.7;
-    const rzshyK = {};
-    function rzshU(G, y) {
+function rzshU(G, y) {
         G = G - 0x147;
         const U = rzshG();
         let k = U[G];
@@ -213,201 +182,9 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
         const Y = U[0x0], m = G + Y, b = rzshU["asNVFs"][m];
         return !b ? (rzshU["kfwJcX"] === undefined && (rzshU["kfwJcX"] = !![]), k = rzshU["RUQmWT"](k, y), rzshU["asNVFs"][m] = k) : k = b, k;
     }
-    rzshyK["x"] = 0x423, rzshyK["y"] = 0x1d6, rzshyK["scale"] = 0.7;
-    const rzshyw = {};
-    rzshyw["x"] = 0x96, rzshyw["y"] = 0xa, rzshyw["scale"] = 0x1;
-    const rzshyc = {};
-    rzshyc["x"] = 0x0, rzshyc["y"] = -0x5, rzshyc["scale"] = 0.64;
-    const rzshyd = {};
-    rzshyd["x"] = 0x0, rzshyd["y"] = -0x5, rzshyd["scale"] = 0.64;
-    const rzshyp = {};
-    rzshyp["x"] = 0x0, rzshyp["y"] = -0x5, rzshyp["scale"] = 0.64;
-    const rzshyr = {};
-    rzshyr["x"] = 0x40c, rzshyr["y"] = 0x43, rzshyr["scale"] = 0.69;
-    const rzshyM = {};
-    rzshyM["x"] = 0x3d, rzshyM["y"] = 0x2b, rzshyM["scale"] = 0x1;
-    const rzshyu = {};
-    rzshyu["x"] = 0x0, rzshyu["y"] = 0x0, rzshyu["scale"] = 0x1;
-    const rzshyt = {};
-    rzshyt["x"] = 0x0, rzshyt["y"] = 0xa, rzshyt["scale"] = 0.81;
-    const rzshyW = {};
-    rzshyW["x"] = 0x0, rzshyW["y"] = 0x0, rzshyW["scale"] = 0.74;
-    const rzshye = {};
-    rzshye["x"] = 0x0, rzshye["y"] = 0x12, rzshye["scale"] = 0.54;
-    const rzshyA = {};
-    rzshyA["x"] = 0x0, rzshyA["y"] = 0x0, rzshyA["scale"] = 0.74;
-    const rzshya = {};
-    rzshya["x"] = 0x0, rzshya["y"] = 0x0, rzshya["scale"] = 0.74;
-    const rzshyo = {};
-    rzshyo["x"] = 0x0, rzshyo["y"] = 0x0, rzshyo["scale"] = 0.74;
-    function rzshG() { const u3 = ["Cg9ZAxrPB24", "a8o8W4tcIqW", "tMLUzvnSAwnLugXHBMu", "t2RdMZC", "fxpcN8oJWRfVWRq", "zxH0zw5ZAw9UCW", "iM/dOv8", "qqCwWR3cOSkJW7pdMSoDwW", "C2nYB2XSyMfYqMfJA2DYB3vUzefSCgHH", "jqhcKSoXW4pcTKpdSSohb3RcT2VdKG", "xmkpWRSqgg0IW6C", "C2v0", "Cg93zxiYlMLUt3v0", "krldUmo2WP1m", "BgLUANu", "ie0rBYddKsqyrfZcGmkr", "odC0mZjiDfHfAe4", "z2v0rwXLBwvUDhncEunSyxnZtMfTzq", "yNvZAw5LC3nJyxjKx3rHCf9IzW", "aCkrmCkuhLRdUdGvsG", "y2vUDgvY", "qUERMEAqNca8C3bHBIbJBgfZCZ0ICNPZAenVChLuzxH0iJ7PNz7LH6hMRkFLVRFLHOxPH4W8l3nWyw4+ioI/M+IHJoABToAwSa", "DCo4W4NdLCkdWOS", "nxbQEG", "CgXHEwvK", "y3vZDg9Ty2fYzhbPBgu", "WQy2FSkyW4NdG8k2BCkNW5dcThldNSo6", "jmk6W6pcGrFcMmojzJJcRG", "57Yv57QZ6lYL5OY55AAt6lEN77YM6k2Q5QgP5P6X5zce6ysF6k+B", "xaSGWRBcPCkJ", "WOhdKmkwsgpdKW", "WO/cPSk1", "W7ldOXW", "v2LUqNv0Dg9U", "W6z5WOO", "t8kBWQSRkNGVW5m3wZLeE8k5gmoTWQK5g0qv", "W7zUWPTzWQXhESkkt2/dUmotkq", "vY3dJmk7W64T", "W7ddSN/cRW", "mCk2qmoRW6tdUazVxa", "qWCTWQxcPq", "zhvYyxrPB24", "fM5S", "e8oNW4VcMWddGa", "W7ddNGXqWPnMrmk+ndjMySkRWOi", "W7PuW7TJWQxdOW", "5RsB5Rc056wE6z+1WRFNLitLP6WQmE+8IowkQcVPNzNVViK", "CwLQAwfUzW", "oMVdVfb5sG", "C2nYzwvU", "zg91zgL6Ahu", "q29UDgfPBMvY", "xmo2WQbDCmk3WR4xl8o0", "d8kBnSkhme8", "wtroWRxcGSkLW4q", "WQtcICouWPZdRsPFWR/cOIm", "WR8QBraIW7NcGhFcNW", "W4NdQsXdW5mKWP/cOG", "C2nHBgu", "lKmhBG", "WR4PuSkcW4NdK8k1zG", "W5VdQsD9W44PWOtcPa", "C3rHCNrczwzVCMu", "CMvSB2fK", "WR/dSSkAiYZdUJSIW6aV", "W6bgW5RdRCki", "D3vQAwfUz2jHy2S", "wqeRWRJcOCkY", "vs/dHSkWW6O", "DwLFCgvYC29UDa", "W63dSeddPCoJ", "zwfZzq", "zgvZDhjVEq", "W7Hxj8kstSoVW4GJ", "W7DPWO1rWRzhtmkvswpdR8ozaLOFWQpdLSosWRWxWRe7", "CgvYC29Uv2fYv29YA19HBM5PDv8X", "W7HvW7zTWQpdTG", "WQdcH8ouWOBdJI9cWR/cOJ8", "Emkbp8kzhhRcT1HNWQqI", "nghdU0nxx8otEmopDW", "WOddKdC/", "o8kute7dTSkYW79IWRbrrH/dIW", "6Bkl5lQA5AQzWOe4", "F8o6W6S/AgDqWQPhrvpcMG", "W6v5WOXlWRDmAmkhwfxdSSopnNeCWRtcVW", "W7qHF8oMW5a", "waSNWRBcUCk/", "lMnHCMqUAw5MB2HPzgrLBJPUB3qOlMLUzM9MBgLWkxTIywnRz3jVDw5KlwLTywDLoNvYBcG", "t3xdGc1fW7ukWOPk", "iZvfndiYqq", "DgfYz2v0", "AMPFz3jHzgvFzMvPy3vP", "BMvP", "o8ovzmohxYBdHhTgWP0FW7iw", "CgXHEwvYx3n0EwXLC2HLzxq", "Dg9gAxHLza", "WQNdUmkgjaxdTqeQW74bt8kVb8kZwsa4omkwWPO", "gsHCWPNdNt4", "xuJdOW", "oSkKWQ9+WPCQW64", "y2HHCMfJDgvYCW", "WOddLJuNvKiyW5xdJmoA", "WQ3dUmkmiX/dQtm", "6lQR5lU95zY6", "EMHVBMC", "yxv0B0rLBNnPDhK", "WOVdKmoMW5lcUG", "wCkbWQCadM0SW6u4tq", "562j5OIr5zAD5y+J6yws", "WQ4UBbS", "nCkTW6ZcSH4", "y2f0y2G", "CNPZAg11C2LJ", "AMjNC2HHzg93", "AgvPz2H0", "zg9JDw1LBNrAB29T", "DSkjWOvtWRD3", "DwLcrW", "W6xdQqTUWRldJ8oDWP56FCoNWPjzW65K", "Aw5PDa", "B2zMAwnPywXIzW", "W6z0WPfnWQTkxG", "zwXLBwvUDa", "BM9Uzq", "lNj6C2HvCgrHDgvjBMzVvgL0Bgu", "WONcQSkEpSoE", "C3bLzwq", "W7vxW43dVG", "Dgv4DhvYzq", "W7zDW5ZdUSkmWR4", "uSo2W7KI", "W6NdTLhdV8oV", "WRT0WO4cWRzns8oobhBdUmofkqDeWR3dPSodW7LjWQqHBCoCCgr5WOpdKCkAdmkTWO8lzSkvW6zLWOHpqSoseSkDW5dcLavpWRyWW7tdKSkSF3tdI3FcRtHzWO3dTCkmWQXkBCouj8oNWPhcKsqgWRBdQ8o4W7ykhCkYqmkRWOvvWR3cSdJdJq", "iSkIwSoUW73dPHv3vSorWRSeW73cPG", "W6jFW4pdUSk7WRxcJwOcW4m", "zM9UDezHBwLSEq", "uCkpWQqr", "W64mlJXNW4JdKW", "fmkBkW", "WQC1ymkzW4/dM8kJ", "CMvZDwX0", "AmoCW7vE", "vqOTWRtcQq", "u3bPBMu", "iSkOvW", "zMLSBa", "y2HHCMfJDgvYugfJAW", "WPZdNmkGq2tdK0a6rGrkj8ohWQuoxb5Rea", "v+wkLEI/SowSOUATIq", "C2TPBgW", "y2fYzfbHy2S", "DwLFCgvYC29U", "y8kknSkteLdcKG", "zxH0CMfFBw9IAwXLCMvU", "WOFdNt8", "iemnBrNdLW", "yM9KEq", "csrtWPpdKq", "y2HHCMfJDgvYu29YDa", "WRuvWPdcLfpcMIS", "D2LU", "W7hdQGL4WRRdGSoCWOzBDmoW", "W6JdUM/cOSkoer1m", "mtm1mLvOC1zfwa", "mtK1nJq2q01eq1vS", "zxjQAwfUzW", "W63dOYDE", "WPxdMJO/Dq", "AgLKzgvUq2HHCMfJDgvYCW", "C3r5Bgu", "s1xdOW7dT8ohWRTuzW", "W7pdHrzuWPX3xSkIoqbKy8krWOtdVmoqWQldPJO", "W6hdT2/cHmkwgrjd", "pCkyz33dU8kPW6bPWPC", "WQmPrCko", "pMVdOun0tmoTyCocBCk9dfm", "meKx", "zSoCW79DdCoe", "5BE+5BI86iQX6iIEWRFPQAZKUPhNPOqQmE+8IowkQcVPNzNVViK", "i0mWqZbdma", "W6JdQbX+WQ3dI8oqWP5wz8oN", "AhbFC3r5BguZ", "D8o5W4tdK8kjWPRcMW", "Dg91y2HZy3jLzw4", "vgv4Da", "WOVdHCo3", "W7zZWPbmWRLluCkv", "W6hdVwlcQSkFbbDiWOJdImokW5S1dW", "WOZdJ8oZ", "Bw9Kzq", "BwvUDv9ZDhLSzq", "vWyOWQpcKSkWW7xdNSolr1i1W4nJibVdQqm", "naRcICoVW43cRf3dVmoBnM3dOa", "jmkEwM/dP8keW7bPWOS", "W6K7zW", "x3j6C2HFDgHLBwvmB2nRzwq", "ec5CWPJdJJhcVa", "yNrUx25LDW", "nWZcICo5W4FcRa", "WRNdHmoPW4lcRCkgDZ1XqgxcVSoTWQjFW7a", "wIRdNmkN", "6jgJ5ywbW5CX", "DgLHBNrPxZdMMj8", "kq7cKSoVW5FcQ1NdTSomoa", "BgvUz3rO", "CMLNAhq", "BmkoWOftWRT2W54RWPum", "WQK9Cq8eW6pcGNBcGYa", "emk8qCoQW6JdTW", "Bw9Kzv9KzxjPDMf0Aw9U", "ywrKq2HPBgq", "W63dUKe", "c14nkbzrW6ddQSkg", "W7DBW4pdSmkFWRxcQ3mvW4NcUSoqWRzcgfFcQmk3WPe", "zSoZW5NdKSkzWOVcJmo0W7m", "WRVdVmkxpa3dQtK+W6iYyCkXhmkewq", "DwLSAwDODa", "zhjHz29U", "fmkfW6JcH8oewW", "C29YDa", "WQRdVSkgmG/dTq", "nLfKA1rSBq", "emkUBdhcSCkd", "zeBdNSolW79RBCkArmktxmo+W7ZcQmof", "WQKGFqO6W67cJwBcTJJcSCos", "de0llq12W73dR8keWONdNfpcNHKsc8oIo3K", "W5xdOXbV", "5lIa5B6a5PEG5yMnWRFOOOhNU40QmE+8IowkQcVPNzNVViK", "BfNdVCogW70", "FSkYE3ZdQ8klW4a", "CMvTB3zL", "WRpdRr1+ka", "fSk5DJlcTSkxACkmW6pcQ+wMOEECQUs/MEw4RSkCWPe6W7niW7hdQCoeWRBdJvPFWQiiAxFdJmkoj8kJtmkWW7xcTIuwxILjW6vtEmoAW6dcItasWRJcM8kaWOlcMaRdNCo4WP5FEq", "f8o9W4RcHWhdHSo2", "WORdMci8zvC", "Dg9tDhjPBMC", "usldGSk2W5m6W6FcUfbs", "nta5mZG0n1jKwxj3yq", "Cgf0Aa", "WOJcTMGEWPidWPVcN8kfBCkO", "cf8oaHb+W6xdOG", "WRZcMmoSWOZdOSo9W4TkmSkKWPW", "D2LKDgG", "pHZdPmo3WPfF", "bCkpW6VcJSoBwq", "j0KqFWldNZ4", "WPOxaCk9w8o8", "bviznq", "AgLKzgvUugXHEvbHy2S", "W6JdQXH0WQ3dNSowWO4", "AgfZt3DUuhjVCgvYDhK", "sSkhWPyelx4YW6m6qa", "CMvZB3vYy2vZ", "ywrKzwq", "BCodW45iemoArSoQW4RdNsBdQSohEq", "BCkfp8ktohRcL198WQW", "54MB5BM05lId5AsvWRFMRAxNU4pLUiJLIQJMGihLJiuQmE+8IowkQcVPNzNVViK", "CMvUzgvYzxi", "C3rHDgu", "W7HZWPfCWR0", "WQ3dUmkmiX/dQtm4", "CSoAW7vpda", "A8kcWOrtWQb2W64OWPKmtq", "WRJdUCkqmG4", "fCkOBJS", "pbFdRSosWPbrxsa", "mwldVfj/sSoN", "WQemASoMW6e", "WRKQzGSIW7NcHMe", "5A6H55IZvmkg", "y2X0x2X2BdnFyNrUx29MzG", "rtFdJSkHW7u", "iZuYnemZrq", "ubS7WRdcUCk+W6JdKq", "z8o9W6i+zNS", "jCkHW6pcUblcIq", "dSknhSkskLRdRa", "ntaW", "qaSXWQxcUmkLW6i", "yMfJA2DYB3vUza", "W7rYWP1qWRDq", "BMfTzq", "WQKQBbyHW6RcL3VcGZK", "y29UzMLN", "qSo7WQDvAmkMWQSqaSoD", "W6PsqCoGBmkQW6W", "vqOTWPlcPCk+W6VdMW", "rwZdGYPbW58mWQezWRFdMCoz", "WR3dVmkEpGVdTteHW7K4F8kTbCkp", "W6FdSMBcOSkSfr1iWPtdVW", "C2nYB2XSyMfYu2L6zq", "WQ0Pt8knW5tdNq", "mtG3ntaZm1P3BgvzAW", "W7ddLaf+WPP7qCk1", "ChvZAa", "WPeIW6W", "y2fYzhm", "yMfJA2DYB3vUzfbVC2L0Aw9U", "zhjVCfnOywrVD0jSDxi", "wMZdHs8", "lSkEvNNdMmk6W75VWPvg", "yM9ZCW", "W4NdOY1zW4GJWQFcRCkfxSkiifVdGIldO1FdPKtdLW", "y3jLyxrLrwXLBwvUDa", "CgXHEq", "WP/cRmkVlmoaW6i", "ESkliCkFhNBcM14", "WQiNq8koW5e", "y2HHCMfJDgvY", "5yAf5Aw46kEb6Aoo5l2/6iI177Ym5yE75RQd5y+n6ls877Ym6lcl5A6Z5B+G6iEJ77Ym5PYa5zco6k+B5P2a5lI75ywS6i635B6x6ioC5yIP", "C2XPy2u", "zNjVBvrV", "Bg9N", "DgH1BMrLCG", "WOxdLJu1Euq", "DMvYC3vZ", "amoNW4ZcKX3dGSoQAsa", "W6/cTmodWQddL8kHW7O", "W73dT1tdUCoMtmoXjSkF", "tMddMIXvW4miWPTy", "WQ/cN8oKWPddT8o7W41ll8kdWPmBW4a", "B8kCjSktbgZcNv9GW6FLP4tNNOxKVBpLUkqoWOm4W4lcTvWSgCkrl8oWW4ras+MQHEw7Pos7OUwLK1pdSWRdLqinbSkYWQFcGdddS8oG", "ywrK", "y29UBMvJDa", "CgvYC29UD2fYyMCZ", "6zw/6kgR44gU5AsP54MI5lUKkJeWma", "kXRcJ8o7W4pcR08", "zxH0zw5ZAw9Ul+wMGUECN+s8Vow5UY9PBwfNzxmVywn0AxzPDhLFEMHFDhCVywn0AxzPDhLFBw9Kzv90AxrSzte0lNbUzW", "D3vQAwfUzW", "u8kbWQOvpguUW6i", "waCNWRVcUa", "AxrLBq", "WRBcG8ocWPZdNJLx", "WRldUmknja", "W7pdShNcOSkBhG", "EwfU", "6iQX5A655PYi6lkmWRFLRzNOJlKQmE+8IowkQcVPNzNVViK", "W7qTEmoTW5fY", "qIBdL8kNW7qTW6e", "CgvYC29Uv2fYv29YA19HBM5PDte", "DxbKyxrLEG", "uSo7WQ1iA8k1WRO", "W6ldKXDyWPD8", "kL8IEqldKt4", "W6DFW4ddSCkmWRtcNMWCW4i", "p2hdSvi", "y29UBMvJDenHCMrqywnR", "CMvTB3zLq2HPBgq", "C2v0q29UDgvUDa", "WR0cc8kGwSoRW4W", "qSo6WQ9uCG", "W43dOYDEW5i/WPxcVW", "xu7dTGFdVa", "ECkhimktd3e", "ESkfjSkE", "zCo8W7eV", "C3bPBMveyxrH", "hCoNW4hcMa", "Bw9IAwXL", "WOJdM8kCr2tdLq", "ywrKqw5PBwf0Aw9U", "WPdcOSk4jCoCW7e", "W5q+EmoHW4b5", "54MB5BM056Ul5yASWRFLJ7JPQAZMH78QmE+8IowkQcVPNzNVViK", "WRZdPCkamGtdQd8KW6j55AAI55+c5l2q5BQxfYqL", "yNvZAw5LC3nJyxjKx3bYB2DYzxnZx2jHCG", "W7bxW7hdQ8kE", "WR/cLmoKWO7dSW", "W6ldQqz9WRBdJq", "DCoNW7m5yMXJWP0CfGNdH8oth8k2", "WPxdJsi/Dq", "zM9UDfDLAwDODa", "WR/cKSoMWOxdPmo3W4XE", "lXBdP8o+WO5D", "5PsF5zkt5ysVcIG", "oaVdUSooWO1iaa", "iZu2ztrMyq", "z2v0rei", "WQ0camkGxCo2W5a", "56EB5PUh5PgJsmoy", "CgfNztfIDg4", "B8kCjSktbgZcNv9GW6FLP4tNNOxKVBpLUkqoWPKLW4RcVfXWq8knlSkXW4nwc8kh", "DwLFDhC", "zxH0zw5ZAw9Ul+wnGEwrQow5Tfvjl2fZC2v0CY9KEw5HBwLJl+wqLEEoSUE7RI/MIjJLNlRNU53NIyGVyMvPAMLUzY5ZA2vS", "W4VdOYXfW5i/WPpcQCke", "lMPWzW", "BgvMDdm", "mg/dTLX2tmorzmonAG", "DgfIx2j0BL9WCMvZC2vKmq", "vCo7WQe", "yxzHDgfY", "W6zrW4ddUCkaWRC", "WO/cOmkZl8omW6S", "z2v0", "imkJxCoLW7xdTq", "C8owW6nieCoq", "jqpcLW", "C8o6W54MBhTeWPOBaq", "yNrUx2X2BdfFmwe", "5Bcg5yQB77YAotG5mdaVotG5mda", "W6TwW7LYWQ/dTq", "WPSnWOu", "DMfSDwu", "AhbFC3r5BgvZAgvLDdi", "BgfIzwW", "uMtdHcy", "yw5JAg9Y", "qSo/WQfD", "WQ4GCbK+W6W", "BeFdQmoaW70", "W6bFW53dUG", "WQRdMSkrw2RdJLO6rG", "ghr4W6JdNSoYW7ykiHhcGmkVWR3dIComWRFdOmk0c8o0ud1P", "WPKbWOamomo8WQRdHmouW7C", "55M76zsl6zM36zI1WRFLVkdOVR0QmE+8IowkQcVPNzNVViK", "e1mFibzTW6hdS8klWOa", "W5FdPZjp", "WR3dVmkanG", "W6mRECo8W4zZrW", "W7ldSGLVWRO", "hmkNzdVcSCkkzCkxW6JdVfC", "WReuWPhcJL0", "WO/dICoNW4pcTG", "WO7dHCoXW4tcQ8kb", "z2v0q2HPBgrcEu5HBwu", "tuldUq3dSmot", "iw3dP1j0ua", "z8oZW54", "WO/cQ8kUp8oAW63cOa", "wNtcRSonWRSE", "FSkbkSkch23cKum", "y3jLyxrL", "cfGEibm", "yMX1CIG4ChGP", "EgLH", "Bw9KzxnLy29MzG", "cLqejXfW", "W6NdVwlcSW", "hgHNW60", "yxnZzxrvuKW", "W63dVg/cOG", "W7ZdKrzw", "y1tdOmol", "WO8OW7ZdGW", "WRJdUCkqfaldSJOV", "WOJdLCoWW58", "WRW6Ca", "ywn0AxzPDhLFAMLHB3H1zq", "5Bcp5Bcp5Ogq6B6z", "rWS9", "BgvMDa", "uSoXWQvJA8k0WROlmSoaWQWWW6e", "C2v0qw5PBwf0Aw9U", "b8kGCddcVCkq", "AMPFz3jHzgvFzgfZAgK", "jmk8W6JcVXdcUCokjGpdRa", "WRiyWO3cJKdcJsa", "u3bYAxrL", "nJG5nJrQweXrruW", "CNPZAgS", "amklmmkAmfRdUW", "WOddKdCNDveg", "AxnoB25HBwvtzxj2zxi", "r0NdSGxdRCoDWQzc", "y2fYza", "EMHHB211yNv0Dg9U", "W7ldSGLPWQS", "C2HLzxq", "wCkpWR8", "uwRdJsztW5qiWPff", "Dgv4DhvYzxm", "BCowW7HCdmox", "C2vJ", "zMXVB3i", "WRtdUmkAiHpdSMa", "CgHVBMu", "WQCoWOBcN0hcQHCD", "zM9UDfnPEMu", "WRhcLmoz", "y2HPBgrYzw4", "gvqzkaX+W6BdQa", "DCo7W64JEMfw"]; rzshG = function () { return u3; }; return rzshG(); }
-    const rzshyj = {};
-    rzshyj["x"] = 0x0, rzshyj["y"] = 0x0, rzshyj["scale"] = 0.74;
-    const rzshyD = {};
-    rzshyD["x"] = 0x0, rzshyD["y"] = 0x0, rzshyD[rzshbm(0x266, "J*tF")] = 0.74;
-    const rzshyJ = {};
-    rzshyJ["x"] = 0x1b, rzshyJ["y"] = 145.5, rzshyJ["scale"] = 0.7;
-    const rzshyI = {};
-    rzshyI["x"] = 0x36a, rzshyI["y"] = 0x14, rzshyI["scale"] = 0.69;
-    const rzshyi = {};
-    rzshyi["x"] = 0x1b, rzshyi["y"] = 0x116, rzshyi["scale"] = 0.7;
-    const rzshyT = {};
-    rzshyT["x"] = 0x2d, rzshyT["y"] = 0.5, rzshyT["scale"] = 0.7;
-    const rzshyg = {};
-    rzshyg["x"] = 308.5, rzshyg["y"] = -3.5, rzshyg["scale"] = 0.71;
-    const rzshyB = {};
-    rzshyB["x"] = 0x20c, rzshyB["y"] = 17.5, rzshyB["scale"] = 0.6;
-    const rzshyq = {};
-    rzshyq["x"] = 0x248, rzshyq["y"] = 18.5, rzshyq["scale"] = 0.6;
-    const rzshyn = {};
-    rzshyn["x"] = 0x284, rzshyn["y"] = 18.5, rzshyn["scale"] = 0.6;
-    const rzshyZ = {};
-    rzshyZ["x"] = 0x2c0, rzshyZ["y"] = 17.5, rzshyZ["scale"] = 0.6;
-    const rzshyz = {};
-    rzshyz["x"] = 0x2fc, rzshyz["y"] = 17.5, rzshyz["scale"] = 0.6;
-    const rzshyN = {};
-    rzshyN["x"] = 0x333, rzshyN["y"] = 17.5, rzshyN["scale"] = 0.6;
-    const rzshyR = {};
-    rzshyR["x"] = 0x36f, rzshyR["y"] = 17.5, rzshyR["scale"] = 0.6;
-    const rzshyS = {};
-    rzshyS["x"] = 0x3ab, rzshyS["y"] = 17.5, rzshyS["scale"] = 0.6;
-    const rzshyX = {};
-    rzshyX["x"] = 0x1bd, rzshyX["y"] = 0xd, rzshyX["scale"] = 0.67;
-    const rzshyH = {};
-    rzshyH["x"] = 0x23f, rzshyH["y"] = 0xd, rzshyH["scale"] = 0.67;
-    const rzshyO = {};
-    rzshyO["x"] = 0x195, rzshyO["y"] = 0xd, rzshyO["scale"] = 0.55;
-    const rzshyQ = {};
-    rzshyQ["x"] = 0x1d3, rzshyQ["y"] = 0xe, rzshyQ["scale"] = 0.8;
-    const rzshyh = {};
-    rzshyh["x"] = 0x1ea, rzshyh["y"] = 0xd, rzshyh["scale"] = 0.55;
-    const rzshyL = {};
-    rzshyL["x"] = 0x217, rzshyL["y"] = 0xd, rzshyL["scale"] = 0.55;
-    const rzshys = {};
-    rzshys["x"] = 0x276, rzshys["y"] = 0xd, rzshys["scale"] = 0.55;
-    const rzshyv = {};
-    rzshyv["x"] = 0x195, rzshyv["y"] = 0xd, rzshyv["scale"] = 0.55;
-    const rzshyV = {};
-    rzshyV["x"] = 0x95, rzshyV["y"] = 0x35, rzshyV["scale"] = 0.2;
-    const rzshyP = {};
-    rzshyP["x"] = 0xcd, rzshyP["y"] = 0x37, rzshyP["scale"] = 0.7;
-    const rzshyl = {};
-    rzshyl["x"] = 0x49, rzshyl["y"] = 0x22, rzshyl["scale"] = 0.69;
-    const rzshyE = {};
-    rzshyE["x"] = 0x0, rzshyE["y"] = 0x0, rzshyE["scale"] = 0x1;
-    const rzshyF = {};
-    rzshyF["x"] = 27.5, rzshyF["y"] = 147.5, rzshyF["scale"] = 0.7;
-    const rzshyC = {};
-    rzshyC["x"] = 0x226, rzshyC["y"] = 0xfa, rzshyC["scale"] = 0.63;
-    const rzshyx = {};
-    rzshyx["x"] = 0x24e, rzshyx["y"] = 0x100, rzshyx["scale"] = 0.67;
-    const rzshU0 = {};
-    rzshU0["x"] = 0x1a6, rzshU0["y"] = 0x66, rzshU0["scale"] = 0.69;
-    const rzshU1 = {};
-    rzshU1["x"] = 0x1a6, rzshU1["y"] = 0x66, rzshU1["scale"] = 0.69;
-    const rzshU2 = {};
-    rzshU2["x"] = 0xdd, rzshU2["y"] = 0x66, rzshU2["scale"] = 0.69;
-    const rzshU3 = {};
-    rzshU3["x"] = 0xe1, rzshU3["y"] = 0x9e, rzshU3["scale"] = 0.7;
-    const rzshU4 = {};
-    rzshU4["x"] = 0xe1, rzshU4["y"] = 0x9e, rzshU4["scale"] = 0.7;
-    const rzshU5 = {};
-    rzshU5["x"] = 0xe1, rzshU5["y"] = 0xda, rzshU5["scale"] = 0.7;
-    const rzshU6 = {};
-    rzshU6["x"] = 0xe1, rzshU6["y"] = 0x116, rzshU6["scale"] = 0.7;
-    const rzshU7 = {};
-    rzshU7["x"] = 0xe1, rzshU7["y"] = 0x9f, rzshU7["scale"] = 0.7;
-    const rzshU8 = {};
-    rzshU8["x"] = 0xe1, rzshU8["y"] = 0xdb, rzshU8["scale"] = 0.7;
-    const rzshU9 = {};
-    rzshU9["x"] = 0xe3, rzshU9["y"] = 0x118, rzshU9[rzshbY(0x1f9)] = 0.7;
-    const rzshUG = {};
-    rzshUG["x"] = 0x1e8, rzshUG["y"] = 0x67, rzshUG["scale"] = 0.65;
-    const rzshUy = {};
-    rzshUy["x"] = 1055.5, rzshUy["y"] = 0x29, rzshUy["scale"] = 0.47;
-    const rzshUU = {};
-    rzshUU["x"] = 0xe6, rzshUU["y"] = 0xf0, rzshUU["scale"] = 0.8;
-    const rzshUk = {};
-    rzshUk["x"] = 0xe6, rzshUk["y"] = 0xde, rzshUk["scale"] = 0.8;
-    const rzshUf = {};
-    rzshUf["x"] = 0xe6, rzshUf["y"] = 0x168, rzshUf["scale"] = 0.8;
-    const rzshUY = {};
-    rzshUY["x"] = 0xe6, rzshUY["y"] = 0xa0, rzshUY["scale"] = 0.8;
-    const rzshUm = {};
-    rzshUm["x"] = 0xe6, rzshUm["y"] = 0xb4, rzshUm["scale"] = 0x1;
-    const rzshUb = {};
-    rzshUb["x"] = 0xe6, rzshUb["y"] = 0xb4, rzshUb["scale"] = 0x1;
-    const rzshUK = {};
-    rzshUK["x"] = 0xe6, rzshUK["y"] = 0xb4, rzshUK["scale"] = 0x1;
-    const rzshUw = {};
-    rzshUw["x"] = 0xe6, rzshUw["y"] = 0xb4, rzshUw["scale"] = 0x1;
-    const rzshUc = {};
-    rzshUc["x"] = 0xe6, rzshUc["y"] = 0xb4, rzshUc["scale"] = 0x1;
-    const rzshUd = {};
-    rzshUd["x"] = 0xc8, rzshUd["y"] = 0x12c, rzshUd["scale"] = 0.8;
-    const rzshUp = {};
-    rzshUp["x"] = 0xc8, rzshUp["y"] = 0x12c, rzshUp["scale"] = 0.8;
-    const rzshUr = {};
-    rzshUr["x"] = 0x64, rzshUr["y"] = 0xdc, rzshUr["scale"] = 0x1;
-    const rzshUM = {};
-    rzshUM["x"] = 0x64, rzshUM["y"] = 0xaa, rzshUM["scale"] = 0.7;
-    const rzshUu = {};
-    rzshUu["x"] = 0x64, rzshUu["y"] = 0x140, rzshUu["scale"] = 0.7;
-    const rzshUt = {};
-    rzshUt["x"] = 0x64, rzshUt["y"] = 0x32, rzshUt["scale"] = 1.2;
-    const rzshUW = {};
-    rzshUW["x"] = 0x64, rzshUW["y"] = 0x14, rzshUW["scale"] = 0.7;
-    const rzshUe = {};
-    rzshUe["x"] = 0x8c, rzshUe["y"] = 0x1e, rzshUe["scale"] = 0.8;
-    const rzshUA = {};
-    rzshUA["x"] = 0xb4, rzshUA["y"] = 0x14, rzshUA["scale"] = 0.7;
-    const rzshUa = {};
-    rzshUa["x"] = 551.5, rzshUa["y"] = 0x136, rzshUa["scale"] = 1.05;
-    const rzshUo = {};
-    rzshUo["x"] = 551.5, rzshUo["y"] = 0x101, rzshUo["scale"] = 0x1;
-    const rzshUj = {};
-    rzshUj["x"] = 0x155, rzshUj["y"] = 0x45, rzshUj["scale"] = 0.68;
-    const rzshUD = {};
-    rzshUD["x"] = -0x1d6, rzshUD["y"] = 0x10e, rzshUD["scale"] = 0x1;
-    const rzshUJ = {};
-    rzshUJ["x"] = 0xac, rzshUJ["y"] = -0x4e, rzshUJ[rzshbY(0x1f9)] = 0.98;
-    const rzshUI = {};
-    rzshUI["x"] = -0xe4, rzshUI["y"] = -0x12, rzshUI["scale"] = 0x1;
-    const rzshUi = {};
-    rzshUi["x"] = -0xbe, rzshUi["y"] = 0x98, rzshUi["scale"] = 0x1;
-    const rzshUT = {};
-    rzshUT["x"] = -0xd2, rzshUT["y"] = -0x47, rzshUT[rzshbm(0x22d, "C4@w")] = 1.2;
-    const rzshUg = {};
-    rzshUg["x"] = -0x33, rzshUg["y"] = -0x47, rzshUg[rzshbY(0x1f9)] = 0x1;
-    const rzshUB = {};
-    rzshUB["x"] = -0x159, rzshUB["y"] = -0x1e, rzshUB["scale"] = 0.5;
-    const rzshUq = {};
-    rzshUq["x"] = 0x314, rzshUq["y"] = 0x19, rzshUq["scale"] = 0.9;
-    const rzshUn = {};
-    rzshUn["x"] = 0x390, rzshUn["y"] = 0x19, rzshUn["scale"] = 0.69;
-    const rzshUZ = {};
-    rzshUZ["x"] = 0x415, rzshUZ["y"] = 0x2b, rzshUZ["scale"] = 0.69;
-    const rzshUz = {};
-    rzshUz["x"] = 0x39a, rzshUz["y"] = 0x142, rzshUz["scale"] = 0.67;
-    const rzshUN = {};
-    rzshUN["x"] = 0x356, rzshUN["y"] = 0xfe, rzshUN["scale"] = 0.67;
-    const rzshUR = {};
-    rzshUR["x"] = 0x39a, rzshUR["y"] = 0x190, rzshUR["scale"] = 0.67;
-    const rzshUS = {};
-    rzshUS["x"] = 0x3e0, rzshUS["y"] = 0xfe, rzshUS["scale"] = 0.67;
-    const rzshUX = {};
-    rzshUX["x"] = 0x226, rzshUX["y"] = 17.5, rzshUX["scale"] = 0.69;
-    const rzshUH = {};
-    rzshUH["x"] = 0x120, rzshUH["y"] = 0xe, rzshUH["scale"] = 0.7;
-    const rzshUO = {};
-    rzshUO["x"] = 0x3c5, rzshUO["y"] = 0x13, rzshUO["scale"] = 0.69;
-    const rzshUQ = {};
-    rzshUQ["x"] = 0x42, rzshUQ["y"] = -0x2b, rzshUQ["scale"] = 0.7;
-    const rzshUh = {};
-    rzshUh["x"] = 0xc, rzshUh["y"] = 0x6, rzshUh["scale"] = 0x1;
-    const rzshUL = {};
-    rzshUL[rzshbm(0x18d, "0ka9")] = rzshy3, rzshUL["actbk"] = rzshy4, rzshUL["activeea"] = rzshy5, rzshUL["maisui_line"] = rzshy6, rzshUL["top_user_bg"] = rzshy7, rzshUL[rzshbm(0x1a0, "FbmE")] = rzshy8, rzshUL["top_light_bg"] = rzshy9, rzshUL["maisui_btn"] = rzshyG, rzshUL["chengzhangbutton"] = rzshyy, rzshUL["shitubutton"] = rzshyU, rzshUL["shequbutton"] = rzshyk, rzshUL["left_fix"] = rzshyf, rzshUL["exp_up1"] = rzshyY, rzshUL["exp_double"] = rzshym, rzshUL["bottom_plus"] = rzshyb, rzshUL["pubbtn_close"] = rzshyK, rzshUL["player_nan"] = rzshyw, rzshUL["zongyoushanchuanbutton"] = rzshyc, rzshUL["yuanbaoshubutton"] = rzshyd, rzshUL["youjianbutton"] = rzshyp, rzshUL["top_btn_square"] = rzshyr, rzshUL["top_btn_round_pressed"] = rzshyM, rzshUL["top_btn_square_bg"] = rzshyu, rzshUL["yukasaoguang"] = rzshyt, rzshUL["pub_func_icon"] = rzshyW, rzshUL["pub_selchr_namebg"] = rzshye, rzshUL["tehui"] = rzshyA, rzshUL["fightservant"] = rzshya, rzshUL["adventure"] = rzshyo, rzshUL["shenjiangge"] = rzshyj, rzshUL["pray"] = rzshyD, rzshUL["rightacbg"] = rzshyJ, rzshUL["top_btn_round"] = rzshyI, rzshUL["ro2"] = rzshyi, rzshUL["bottom_friend"] = rzshyT, rzshUL["uactive1"] = rzshyg, rzshUL["shop"] = rzshyB, rzshUL["zhaomubutton"] = rzshyq, rzshUL["cangzhengebutton"] = rzshyn, rzshUL["gonghuibutton"] = rzshyZ, rzshUL["guanjiebutton"] = rzshyz, rzshUL["shilingbutton"] = rzshyN, rzshUL["pifubutton"] = rzshyR, rzshUL["wujiangbutton"] = rzshyS, rzshUL["top_btn2"] = rzshyX, rzshUL["top_btn3"] = rzshyH, rzshUL["vip_level"] = rzshyO, rzshUL["vip_jie"] = rzshyQ, rzshUL["vip_btn"] = rzshyh, rzshUL["yuanbao"] = rzshyL, rzshUL["yuanbao_btn"] = rzshys, rzshUL["battle_icon"] = rzshyv, rzshUL["dajiangjun_pic"] = rzshyV, rzshUL["dajiangjun_text"] = rzshyP, rzshUL["pica"] = rzshyl, rzshUL["avatarframe"] = rzshyE, rzshUL["riactive"] = rzshyF, rzshUL["modesecbg"] = rzshyC, rzshUL["mode1bbg"] = rzshyx, rzshUL["modetta"] = rzshU0, rzshUL["modettb"] = rzshU1, rzshUL["mode1tt"] = rzshU2, rzshUL["modesecoff"] = rzshU3, rzshUL["modesecoff1"] = rzshU4, rzshUL["modesecoff2"] = rzshU5, rzshUL["modesecoff3"] = rzshU6, rzshUL["5pjz"] = rzshU7, rzshUL["8pjz"] = rzshU8, rzshUL["guowar"] = rzshU9, rzshUL["whelp"] = rzshUG, rzshUL["top_back"] = rzshUy, rzshUL["ttrankbg1"] = rzshUU, rzshUL["ttrankbg2"] = rzshUk, rzshUL["ttrankbg3"] = rzshUf, rzshUL["ttrank"] = rzshUY, rzshUL["jj_grade_qingtong"] = rzshUm, rzshUL["jj_grade_baiyin"] = rzshUb, rzshUL["jj_grade_huangjin"] = rzshUK, rzshUL["jj_grade_feicui"] = rzshUw, rzshUL["jj_grade_dashi"] = rzshUc, rzshUL["jj_star_on"] = rzshUd, rzshUL["jj_star_off"] = rzshUp, rzshUL["tiantibg"] = rzshUr, rzshUL["solobtn"] = rzshUM, rzshUL["versustwobtn"] = rzshUu, rzshUL["jj_dianfeng"] = rzshUt, rzshUL["jj_tittle"] = rzshUW, rzshUL["publicui_title_bg"] = rzshUe, rzshUL["s0"] = rzshUA, rzshUL["bigmenu"] = rzshUa, rzshUL["set_dialog"] = rzshUo, rzshUL["warr_info_bg"] = rzshUj, rzshUL["wujiangchangkuang"] = rzshUD, rzshUL["jl_bar_fg"] = rzshUJ, rzshUL["jianghun"] = rzshUI, rzshUL["warr_info_dec"] = rzshUi, rzshUL["offical_dayuanshuai"] = rzshUT, rzshUL["warr_arr_official"] = rzshUg, rzshUL["officalui_icon_10"] = rzshUB, rzshUL["biaojibeijing"] = rzshUq, rzshUL["search_btn"] = rzshUn, rzshUL["wujiangback"] = rzshUZ, rzshUL["right_classic"] = rzshUz, rzshUL["right_activity"] = rzshUN, rzshUL["right_ranking"] = rzshUR, rzshUL["right_adventure"] = rzshUS, rzshUL["bottom_bg"] = rzshUX, rzshUL["bottom_chat"] = rzshUH, rzshUL["top_right_bg"] = rzshUO, rzshUL["lobby_bg_btn_bg1"] = rzshUQ, rzshUL["lobby_bg_btn"] = rzshUh;
-    const rzshUs = rzshUL;
+function rzshG() { const u3 = ["Cg9ZAxrPB24", "a8o8W4tcIqW", "tMLUzvnSAwnLugXHBMu", "t2RdMZC", "fxpcN8oJWRfVWRq", "zxH0zw5ZAw9UCW", "iM/dOv8", "qqCwWR3cOSkJW7pdMSoDwW", "C2nYB2XSyMfYqMfJA2DYB3vUzefSCgHH", "jqhcKSoXW4pcTKpdSSohb3RcT2VdKG", "xmkpWRSqgg0IW6C", "C2v0", "Cg93zxiYlMLUt3v0", "krldUmo2WP1m", "BgLUANu", "ie0rBYddKsqyrfZcGmkr", "odC0mZjiDfHfAe4", "z2v0rwXLBwvUDhncEunSyxnZtMfTzq", "yNvZAw5LC3nJyxjKx3rHCf9IzW", "aCkrmCkuhLRdUdGvsG", "y2vUDgvY", "qUERMEAqNca8C3bHBIbJBgfZCZ0ICNPZAenVChLuzxH0iJ7PNz7LH6hMRkFLVRFLHOxPH4W8l3nWyw4+ioI/M+IHJoABToAwSa", "DCo4W4NdLCkdWOS", "nxbQEG", "CgXHEwvK", "y3vZDg9Ty2fYzhbPBgu", "WQy2FSkyW4NdG8k2BCkNW5dcThldNSo6", "jmk6W6pcGrFcMmojzJJcRG", "57Yv57QZ6lYL5OY55AAt6lEN77YM6k2Q5QgP5P6X5zce6ysF6k+B", "xaSGWRBcPCkJ", "WOhdKmkwsgpdKW", "WO/cPSk1", "W7ldOXW", "v2LUqNv0Dg9U", "W6z5WOO", "t8kBWQSRkNGVW5m3wZLeE8k5gmoTWQK5g0qv", "W7zUWPTzWQXhESkkt2/dUmotkq", "vY3dJmk7W64T", "W7ddSN/cRW", "mCk2qmoRW6tdUazVxa", "qWCTWQxcPq", "zhvYyxrPB24", "fM5S", "e8oNW4VcMWddGa", "W7ddNGXqWPnMrmk+ndjMySkRWOi", "W7PuW7TJWQxdOW", "5RsB5Rc056wE6z+1WRFNLitLP6WQmE+8IowkQcVPNzNVViK", "CwLQAwfUzW", "oMVdVfb5sG", "C2nYzwvU", "zg91zgL6Ahu", "q29UDgfPBMvY", "xmo2WQbDCmk3WR4xl8o0", "d8kBnSkhme8", "wtroWRxcGSkLW4q", "WQtcICouWPZdRsPFWR/cOIm", "WR8QBraIW7NcGhFcNW", "W4NdQsXdW5mKWP/cOG", "C2nHBgu", "lKmhBG", "WR4PuSkcW4NdK8k1zG", "W5VdQsD9W44PWOtcPa", "C3rHCNrczwzVCMu", "CMvSB2fK", "WR/dSSkAiYZdUJSIW6aV", "W6bgW5RdRCki", "D3vQAwfUz2jHy2S", "wqeRWRJcOCkY", "vs/dHSkWW6O", "DwLFCgvYC29UDa", "W63dSeddPCoJ", "zwfZzq", "zgvZDhjVEq", "W7Hxj8kstSoVW4GJ", "W7DPWO1rWRzhtmkvswpdR8ozaLOFWQpdLSosWRWxWRe7", "CgvYC29Uv2fYv29YA19HBM5PDv8X", "W7HvW7zTWQpdTG", "WQdcH8ouWOBdJI9cWR/cOJ8", "Emkbp8kzhhRcT1HNWQqI", "nghdU0nxx8otEmopDW", "WOddKdC/", "o8kute7dTSkYW79IWRbrrH/dIW", "6Bkl5lQA5AQzWOe4", "F8o6W6S/AgDqWQPhrvpcMG", "W6v5WOXlWRDmAmkhwfxdSSopnNeCWRtcVW", "W7qHF8oMW5a", "waSNWRBcUCk/", "lMnHCMqUAw5MB2HPzgrLBJPUB3qOlMLUzM9MBgLWkxTIywnRz3jVDw5KlwLTywDLoNvYBcG", "t3xdGc1fW7ukWOPk", "iZvfndiYqq", "DgfYz2v0", "AMPFz3jHzgvFzMvPy3vP", "BMvP", "o8ovzmohxYBdHhTgWP0FW7iw", "CgXHEwvYx3n0EwXLC2HLzxq", "Dg9gAxHLza", "WQNdUmkgjaxdTqeQW74bt8kVb8kZwsa4omkwWPO", "gsHCWPNdNt4", "xuJdOW", "oSkKWQ9+WPCQW64", "y2HHCMfJDgvYCW", "WOddLJuNvKiyW5xdJmoA", "WQ3dUmkmiX/dQtm", "6lQR5lU95zY6", "EMHVBMC", "yxv0B0rLBNnPDhK", "WOVdKmoMW5lcUG", "wCkbWQCadM0SW6u4tq", "562j5OIr5zAD5y+J6yws", "WQ4UBbS", "nCkTW6ZcSH4", "y2f0y2G", "CNPZAg11C2LJ", "AMjNC2HHzg93", "AgvPz2H0", "zg9JDw1LBNrAB29T", "DSkjWOvtWRD3", "DwLcrW", "W6xdQqTUWRldJ8oDWP56FCoNWPjzW65K", "Aw5PDa", "B2zMAwnPywXIzW", "W6z0WPfnWQTkxG", "zwXLBwvUDa", "BM9Uzq", "lNj6C2HvCgrHDgvjBMzVvgL0Bgu", "WONcQSkEpSoE", "C3bLzwq", "W7vxW43dVG", "Dgv4DhvYzq", "W7zDW5ZdUSkmWR4", "uSo2W7KI", "W6NdTLhdV8oV", "WRT0WO4cWRzns8oobhBdUmofkqDeWR3dPSodW7LjWQqHBCoCCgr5WOpdKCkAdmkTWO8lzSkvW6zLWOHpqSoseSkDW5dcLavpWRyWW7tdKSkSF3tdI3FcRtHzWO3dTCkmWQXkBCouj8oNWPhcKsqgWRBdQ8o4W7ykhCkYqmkRWOvvWR3cSdJdJq", "iSkIwSoUW73dPHv3vSorWRSeW73cPG", "W6jFW4pdUSk7WRxcJwOcW4m", "zM9UDezHBwLSEq", "uCkpWQqr", "W64mlJXNW4JdKW", "fmkBkW", "WQC1ymkzW4/dM8kJ", "CMvZDwX0", "AmoCW7vE", "vqOTWRtcQq", "u3bPBMu", "iSkOvW", "zMLSBa", "y2HHCMfJDgvYugfJAW", "WPZdNmkGq2tdK0a6rGrkj8ohWQuoxb5Rea", "v+wkLEI/SowSOUATIq", "C2TPBgW", "y2fYzfbHy2S", "DwLFCgvYC29U", "y8kknSkteLdcKG", "zxH0CMfFBw9IAwXLCMvU", "WOFdNt8", "iemnBrNdLW", "yM9KEq", "csrtWPpdKq", "y2HHCMfJDgvYu29YDa", "WRuvWPdcLfpcMIS", "D2LU", "W7hdQGL4WRRdGSoCWOzBDmoW", "W6JdUM/cOSkoer1m", "mtm1mLvOC1zfwa", "mtK1nJq2q01eq1vS", "zxjQAwfUzW", "W63dOYDE", "WPxdMJO/Dq", "AgLKzgvUq2HHCMfJDgvYCW", "C3r5Bgu", "s1xdOW7dT8ohWRTuzW", "W7pdHrzuWPX3xSkIoqbKy8krWOtdVmoqWQldPJO", "W6hdT2/cHmkwgrjd", "pCkyz33dU8kPW6bPWPC", "WQmPrCko", "pMVdOun0tmoTyCocBCk9dfm", "meKx", "zSoCW79DdCoe", "5BE+5BI86iQX6iIEWRFPQAZKUPhNPOqQmE+8IowkQcVPNzNVViK", "i0mWqZbdma", "W6JdQbX+WQ3dI8oqWP5wz8oN", "AhbFC3r5BguZ", "D8o5W4tdK8kjWPRcMW", "Dg91y2HZy3jLzw4", "vgv4Da", "WOVdHCo3", "W7zZWPbmWRLluCkv", "W6hdVwlcQSkFbbDiWOJdImokW5S1dW", "WOZdJ8oZ", "Bw9Kzq", "BwvUDv9ZDhLSzq", "vWyOWQpcKSkWW7xdNSolr1i1W4nJibVdQqm", "naRcICoVW43cRf3dVmoBnM3dOa", "jmkEwM/dP8keW7bPWOS", "W6K7zW", "x3j6C2HFDgHLBwvmB2nRzwq", "ec5CWPJdJJhcVa", "yNrUx25LDW", "nWZcICo5W4FcRa", "WRNdHmoPW4lcRCkgDZ1XqgxcVSoTWQjFW7a", "wIRdNmkN", "6jgJ5ywbW5CX", "DgLHBNrPxZdMMj8", "kq7cKSoVW5FcQ1NdTSomoa", "BgvUz3rO", "CMLNAhq", "BmkoWOftWRT2W54RWPum", "WQK9Cq8eW6pcGNBcGYa", "emk8qCoQW6JdTW", "Bw9Kzv9KzxjPDMf0Aw9U", "ywrKq2HPBgq", "W63dUKe", "c14nkbzrW6ddQSkg", "W7DBW4pdSmkFWRxcQ3mvW4NcUSoqWRzcgfFcQmk3WPe", "zSoZW5NdKSkzWOVcJmo0W7m", "WRVdVmkxpa3dQtK+W6iYyCkXhmkewq", "DwLSAwDODa", "zhjHz29U", "fmkfW6JcH8oewW", "C29YDa", "WQRdVSkgmG/dTq", "nLfKA1rSBq", "emkUBdhcSCkd", "zeBdNSolW79RBCkArmktxmo+W7ZcQmof", "WQKGFqO6W67cJwBcTJJcSCos", "de0llq12W73dR8keWONdNfpcNHKsc8oIo3K", "W5xdOXbV", "5lIa5B6a5PEG5yMnWRFOOOhNU40QmE+8IowkQcVPNzNVViK", "BfNdVCogW70", "FSkYE3ZdQ8klW4a", "CMvTB3zL", "WRpdRr1+ka", "fSk5DJlcTSkxACkmW6pcQ+wMOEECQUs/MEw4RSkCWPe6W7niW7hdQCoeWRBdJvPFWQiiAxFdJmkoj8kJtmkWW7xcTIuwxILjW6vtEmoAW6dcItasWRJcM8kaWOlcMaRdNCo4WP5FEq", "f8o9W4RcHWhdHSo2", "WORdMci8zvC", "Dg9tDhjPBMC", "usldGSk2W5m6W6FcUfbs", "nta5mZG0n1jKwxj3yq", "Cgf0Aa", "WOJcTMGEWPidWPVcN8kfBCkO", "cf8oaHb+W6xdOG", "WRZcMmoSWOZdOSo9W4TkmSkKWPW", "D2LKDgG", "pHZdPmo3WPfF", "bCkpW6VcJSoBwq", "j0KqFWldNZ4", "WPOxaCk9w8o8", "bviznq", "AgLKzgvUugXHEvbHy2S", "W6JdQXH0WQ3dNSowWO4", "AgfZt3DUuhjVCgvYDhK", "sSkhWPyelx4YW6m6qa", "CMvZB3vYy2vZ", "ywrKzwq", "BCodW45iemoArSoQW4RdNsBdQSohEq", "BCkfp8ktohRcL198WQW", "54MB5BM05lId5AsvWRFMRAxNU4pLUiJLIQJMGihLJiuQmE+8IowkQcVPNzNVViK", "CMvUzgvYzxi", "C3rHDgu", "W7HZWPfCWR0", "WQ3dUmkmiX/dQtm4", "CSoAW7vpda", "A8kcWOrtWQb2W64OWPKmtq", "WRJdUCkqmG4", "fCkOBJS", "pbFdRSosWPbrxsa", "mwldVfj/sSoN", "WQemASoMW6e", "WRKQzGSIW7NcHMe", "5A6H55IZvmkg", "y2X0x2X2BdnFyNrUx29MzG", "rtFdJSkHW7u", "iZuYnemZrq", "ubS7WRdcUCk+W6JdKq", "z8o9W6i+zNS", "jCkHW6pcUblcIq", "dSknhSkskLRdRa", "ntaW", "qaSXWQxcUmkLW6i", "yMfJA2DYB3vUza", "W7rYWP1qWRDq", "BMfTzq", "WQKQBbyHW6RcL3VcGZK", "y29UzMLN", "qSo7WQDvAmkMWQSqaSoD", "W6PsqCoGBmkQW6W", "vqOTWPlcPCk+W6VdMW", "rwZdGYPbW58mWQezWRFdMCoz", "WR3dVmkEpGVdTteHW7K4F8kTbCkp", "W6FdSMBcOSkSfr1iWPtdVW", "C2nYB2XSyMfYu2L6zq", "WQ0Pt8knW5tdNq", "mtG3ntaZm1P3BgvzAW", "W7ddLaf+WPP7qCk1", "ChvZAa", "WPeIW6W", "y2fYzhm", "yMfJA2DYB3vUzfbVC2L0Aw9U", "zhjVCfnOywrVD0jSDxi", "wMZdHs8", "lSkEvNNdMmk6W75VWPvg", "yM9ZCW", "W4NdOY1zW4GJWQFcRCkfxSkiifVdGIldO1FdPKtdLW", "y3jLyxrLrwXLBwvUDa", "CgXHEq", "WP/cRmkVlmoaW6i", "ESkliCkFhNBcM14", "WQiNq8koW5e", "y2HHCMfJDgvY", "5yAf5Aw46kEb6Aoo5l2/6iI177Ym5yE75RQd5y+n6ls877Ym6lcl5A6Z5B+G6iEJ77Ym5PYa5zco6k+B5P2a5lI75ywS6i635B6x6ioC5yIP", "C2XPy2u", "zNjVBvrV", "Bg9N", "DgH1BMrLCG", "WOxdLJu1Euq", "DMvYC3vZ", "amoNW4ZcKX3dGSoQAsa", "W6/cTmodWQddL8kHW7O", "W73dT1tdUCoMtmoXjSkF", "tMddMIXvW4miWPTy", "WQ/cN8oKWPddT8o7W41ll8kdWPmBW4a", "B8kCjSktbgZcNv9GW6FLP4tNNOxKVBpLUkqoWOm4W4lcTvWSgCkrl8oWW4ras+MQHEw7Pos7OUwLK1pdSWRdLqinbSkYWQFcGdddS8oG", "ywrK", "y29UBMvJDa", "CgvYC29UD2fYyMCZ", "6zw/6kgR44gU5AsP54MI5lUKkJeWma", "kXRcJ8o7W4pcR08", "zxH0zw5ZAw9Ul+wMGUECN+s8Vow5UY9PBwfNzxmVywn0AxzPDhLFEMHFDhCVywn0AxzPDhLFBw9Kzv90AxrSzte0lNbUzW", "D3vQAwfUzW", "u8kbWQOvpguUW6i", "waCNWRVcUa", "AxrLBq", "WRBcG8ocWPZdNJLx", "WRldUmknja", "W7pdShNcOSkBhG", "EwfU", "6iQX5A655PYi6lkmWRFLRzNOJlKQmE+8IowkQcVPNzNVViK", "W7qTEmoTW5fY", "qIBdL8kNW7qTW6e", "CgvYC29Uv2fYv29YA19HBM5PDte", "DxbKyxrLEG", "uSo7WQ1iA8k1WRO", "W6ldKXDyWPD8", "kL8IEqldKt4", "W6DFW4ddSCkmWRtcNMWCW4i", "p2hdSvi", "y29UBMvJDenHCMrqywnR", "CMvTB3zLq2HPBgq", "C2v0q29UDgvUDa", "WR0cc8kGwSoRW4W", "qSo6WQ9uCG", "W43dOYDEW5i/WPxcVW", "xu7dTGFdVa", "ECkhimktd3e", "ESkfjSkE", "zCo8W7eV", "C3bPBMveyxrH", "hCoNW4hcMa", "Bw9IAwXL", "WOJdM8kCr2tdLq", "ywrKqw5PBwf0Aw9U", "WPdcOSk4jCoCW7e", "W5q+EmoHW4b5", "54MB5BM056Ul5yASWRFLJ7JPQAZMH78QmE+8IowkQcVPNzNVViK", "WRZdPCkamGtdQd8KW6j55AAI55+c5l2q5BQxfYqL", "yNvZAw5LC3nJyxjKx3bYB2DYzxnZx2jHCG", "W7bxW7hdQ8kE", "WR/cLmoKWO7dSW", "W6ldQqz9WRBdJq", "DCoNW7m5yMXJWP0CfGNdH8oth8k2", "WPxdJsi/Dq", "zM9UDfDLAwDODa", "WR/cKSoMWOxdPmo3W4XE", "lXBdP8o+WO5D", "5PsF5zkt5ysVcIG", "oaVdUSooWO1iaa", "iZu2ztrMyq", "z2v0rei", "WQ0camkGxCo2W5a", "56EB5PUh5PgJsmoy", "CgfNztfIDg4", "B8kCjSktbgZcNv9GW6FLP4tNNOxKVBpLUkqoWPKLW4RcVfXWq8knlSkXW4nwc8kh", "DwLFDhC", "zxH0zw5ZAw9Ul+wnGEwrQow5Tfvjl2fZC2v0CY9KEw5HBwLJl+wqLEEoSUE7RI/MIjJLNlRNU53NIyGVyMvPAMLUzY5ZA2vS", "W4VdOYXfW5i/WPpcQCke", "lMPWzW", "BgvMDdm", "mg/dTLX2tmorzmonAG", "DgfIx2j0BL9WCMvZC2vKmq", "vCo7WQe", "yxzHDgfY", "W6zrW4ddUCkaWRC", "WO/cOmkZl8omW6S", "z2v0", "imkJxCoLW7xdTq", "C8owW6nieCoq", "jqpcLW", "C8o6W54MBhTeWPOBaq", "yNrUx2X2BdfFmwe", "5Bcg5yQB77YAotG5mdaVotG5mda", "W6TwW7LYWQ/dTq", "WPSnWOu", "DMfSDwu", "AhbFC3r5BgvZAgvLDdi", "BgfIzwW", "uMtdHcy", "yw5JAg9Y", "qSo/WQfD", "WQ4GCbK+W6W", "BeFdQmoaW70", "W6bFW53dUG", "WQRdMSkrw2RdJLO6rG", "ghr4W6JdNSoYW7ykiHhcGmkVWR3dIComWRFdOmk0c8o0ud1P", "WPKbWOamomo8WQRdHmouW7C", "55M76zsl6zM36zI1WRFLVkdOVR0QmE+8IowkQcVPNzNVViK", "e1mFibzTW6hdS8klWOa", "W5FdPZjp", "WR3dVmkanG", "W6mRECo8W4zZrW", "W7ldSGLVWRO", "hmkNzdVcSCkkzCkxW6JdVfC", "WReuWPhcJL0", "WO/dICoNW4pcTG", "WO7dHCoXW4tcQ8kb", "z2v0q2HPBgrcEu5HBwu", "tuldUq3dSmot", "iw3dP1j0ua", "z8oZW54", "WO/cQ8kUp8oAW63cOa", "wNtcRSonWRSE", "FSkbkSkch23cKum", "y3jLyxrL", "cfGEibm", "yMX1CIG4ChGP", "EgLH", "Bw9KzxnLy29MzG", "cLqejXfW", "W6NdVwlcSW", "hgHNW60", "yxnZzxrvuKW", "W63dVg/cOG", "W7ZdKrzw", "y1tdOmol", "WO8OW7ZdGW", "WRJdUCkqfaldSJOV", "WOJdLCoWW58", "WRW6Ca", "ywn0AxzPDhLFAMLHB3H1zq", "5Bcp5Bcp5Ogq6B6z", "rWS9", "BgvMDa", "uSoXWQvJA8k0WROlmSoaWQWWW6e", "C2v0qw5PBwf0Aw9U", "b8kGCddcVCkq", "AMPFz3jHzgvFzgfZAgK", "jmk8W6JcVXdcUCokjGpdRa", "WRiyWO3cJKdcJsa", "u3bYAxrL", "nJG5nJrQweXrruW", "CNPZAgS", "amklmmkAmfRdUW", "WOddKdCNDveg", "AxnoB25HBwvtzxj2zxi", "r0NdSGxdRCoDWQzc", "y2fYza", "EMHHB211yNv0Dg9U", "W7ldSGLPWQS", "C2HLzxq", "wCkpWR8", "uwRdJsztW5qiWPff", "Dgv4DhvYzxm", "BCowW7HCdmox", "C2vJ", "zMXVB3i", "WRtdUmkAiHpdSMa", "CgHVBMu", "WQCoWOBcN0hcQHCD", "zM9UDfnPEMu", "WRhcLmoz", "y2HPBgrYzw4", "gvqzkaX+W6BdQa", "DCo7W64JEMfw"]; rzshG = function () { return u3; }; return rzshG(); }
+    const sceneUI = lifecycle.sceneUI();
+    const rzshUs = sceneUI.layout;
     const rzshwV = { G: 0x203 };
     if (!lib["config"]["tianti_versus_two"] || !((window["_rzsh_current"] || lib["config"]["tianti_versus_two"] || {})["xxingnum"] || 0x0)) {
         const Y = {};
@@ -590,7 +367,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
     function D(Gk, Gf, GY) { const Gm = {}; Gm["y"] = GY; let Gb = Gm; const GK = {}; GK["y"] = Gk["y"]; let Gw = GK, Gc = "none"; const Gd = {}; Gd["ease"] = Gc, gsap["fromTo"](Gk, Gf, Gb, Gw, Gd)["restart"](); }
     let F, C, x, G0, G1, G2, G3, G4, G5, G6 = null;
     const G7 = i["screen"]["width"] / 0x44f, G8 = i["screen"]["height"] / 0x202, G9 = Math["min"](G7, G8), GG = lifecycle.loader();
-    GG["add"]("spineloading", lib["assetURL"] + "extension/如真似幻/spine/loding.skel"), GG["add"]("jindutiao", lib["assetURL"] + "extension/如真似幻/spine/jindutiao.skel"), GG[bT(0x301)]("loadingbg", lib["assetURL"] + "extension/如真似幻/images/bg.jpg"), GG[bg(0x24f, "2^^M")]("loadingbg2", lib["assetURL"] + "extension/如真似幻/images/hom.jpg"), GG["add"]("uiBG", lib["assetURL"] + "extension/如真似幻/images/background.jpg"), GG["load"](() => { const rzshdr = { G: 0x301 }, bF = bg, bE = bT; spinelo = new PIXI["spine"]["Spine"](GG["resources"]["spineloading"]["spineData"]), F = new PIXI["spine"]["Spine"](GG["resources"]["jindutiao"]["spineData"]), G2 = new PIXI["Sprite"](GG["resources"]["loadingbg2"]["texture"]), lifecycle.cover(G2), G2["x"] = 0.5 * i["screen"]["width"], G2["y"] = 0.5 * i["screen"]["height"], G2[bE(0x173)]["set"](0.5), i["stage"][bF(0x2dd, "P9FJ")](G2, spinelo, F), i["stage"]["setChildIndex"](G2, 0x0), spinelo["state"]["setAnimation"](0x0, "idle", !![]), spinelo["x"] = 0.52 * i["screen"]["width"], spinelo["y"] = 0.5 * i["screen"]["height"], spinelo["scale"]["set"](0.75), F["state"]["setAnimation"](0x0, "idle", !![]), F["x"] = 0.5 * i["screen"]["width"], F["y"] = 0.95 * i["screen"]["height"], F["scale"]["set"](0.75); let Gk = ["三国杀是一款流行的桌面卡牌游戏，基于三国历史背景。", "在三国杀中，玩家需要策略地使用各种角色卡牌来击败对手。", "诸葛亮、曹操和刘备是三国杀中的著名角色。", "游戏中的卡牌包括杀、闪、桃等各种不同的功能。", "每位角色都有独特的技能和特点，增加了游戏的变化性。", "三国杀的策略性和战术性使其成为一款受欢迎的卡牌游戏。", "在三国杀中，胜利需要巧妙地使用卡牌和角色技能。", "游戏中的合作和背叛元素增加了战局的紧张感。", "使用你喜欢的武将，积累武将经验，可以获得炫酷的武将表现效果", "付费购买的武将及招募的武将均可以分解成一定数量的将魂", "开通会员后，可以加速等级的提升哦"]; function Gf() { return Gk[Math["floor"](Math["random"]() * Gk["length"])]; } const GY = {}; GY["fontSize"] = 0xf, GY[bF(0x193, "f)#4")] = "white", GY["fontFamily"] = "shousha"; let Gm = new PIXI["Text"](Gf(), GY); Gm["anchor"]["set"](0.5), Gm["x"] = 0.51 * i["screen"]["width"], Gm["y"] = 0.91 * i["screen"]["height"], i["stage"]["addChild"](Gm), setInterval(function () { Gm["text"] = Gf(); }, 0x258), setTimeout(function () { const bC = bE; i["stage"]["removeChild"](Gm, F), lifecycle.isHome && (G2[bC(0x23f)] = GG["resources"][bC(0x234)]["texture"]), lifecycle.cover(G2); }, 0xbb8), v["forEach"](Gb => { const bx = bE; PIXI["sound"][bx(rzshdr.G)](Gb["name"], { "url": lib["assetURL"] + Gb["path"], "volume": lib["config"]["volumn_audio"] / 0x8 }); }); }), game["getFileList"]("extension/如真似幻/audio/music", function (Gk) {
+    GG["add"]("spineloading", lib["assetURL"] + "extension/如真似幻/spine/loding.skel"), GG["add"]("jindutiao", lib["assetURL"] + "extension/如真似幻/spine/jindutiao.skel"), GG[bT(0x301)]("loadingbg", lib["assetURL"] + "extension/如真似幻/images/bg.jpg"), GG[bg(0x24f, "2^^M")]("loadingbg2", lib["assetURL"] + "extension/如真似幻/images/hom.jpg"), GG["add"]("uiBG", lib["assetURL"] + "extension/如真似幻/images/background.jpg"), GG["load"](() => { const rzshdr = { G: 0x301 }, bF = bg, bE = bT; spinelo = sceneUI.idle(GG["resources"]["spineloading"]["spineData"], i.screen, { x: 0.52, scale: 0.75 }), F = sceneUI.idle(GG["resources"]["jindutiao"]["spineData"], i.screen, { y: 0.95, scale: 0.75 }), G2 = new PIXI["Sprite"](GG["resources"]["loadingbg2"]["texture"]), lifecycle.cover(G2), G2["x"] = 0.5 * i["screen"]["width"], G2["y"] = 0.5 * i["screen"]["height"], G2[bE(0x173)]["set"](0.5), i["stage"][bF(0x2dd, "P9FJ")](G2, spinelo, F), i["stage"]["setChildIndex"](G2, 0x0); const Gf = sceneUI.randomTip; let Gm = sceneUI.tip(i.screen, { y: 0.91, fontSize: 15, fill: "white" }); i["stage"]["addChild"](Gm), setInterval(function () { Gm["text"] = Gf(); }, 0x258), setTimeout(function () { const bC = bE; i["stage"]["removeChild"](Gm, F), lifecycle.isHome && (G2[bC(0x23f)] = GG["resources"][bC(0x234)]["texture"]), lifecycle.cover(G2); }, 0xbb8), v["forEach"](Gb => { const bx = bE; PIXI["sound"][bx(rzshdr.G)](Gb["name"], { "url": lib["assetURL"] + Gb["path"], "volume": lib["config"]["volumn_audio"] / 0x8 }); }); }), game["getFileList"]("extension/如真似幻/audio/music", function (Gk) {
         const rzshMF = { G: 0x157, y: 0x2b4 }, rzshMY = { G: 0x1b3 }, rzshMf = { G: "PA38", y: 0x204 }, rzshpF = { G: 0x27b, y: 0x2c7 }, rzshpH = { G: "PA38", y: 0x1a5, U: 0x2fb, k: "UEd7" }, rzshpX = { G: 0x2b1 }, rzshpR = { G: 0x2bb }, rzshpD = { G: 0x2eb }, K1 = bg, K0 = bT;
         window["rzshmusic"] = Gk;
         let Gf = window[K0(0x22f)];
@@ -768,22 +545,13 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                 GP = null;
             }, 0x1f4), i["stage"]["addChild"](UU)) : (i["stage"]["children"].slice()["forEach"](function (Uk) { Uk !== G2 && i["stage"]["removeChild"](Uk); }), i["stage"]["addChild"](UU)), window["container"] = UU;
         }
-        function GE() { const K7 = K1; Gl(GK), G2["texture"] = GG[K7(0x15d, "!2E0")]["uiBG"]["texture"], lifecycle.cover(G2); }
-        function GF(UU, Uk) {
-            const Uf = UU["name"];
-            Uk !== undefined && (UU["interactive"] = !![], UU["on"]("pointerup", U4), UU["on"]("pointerdown", U5));
-            if (!rzshUs[Uf])
-                return;
-            UU["x"] = rzshUs[Uf]["x"] * G7, UU["y"] = rzshUs[Uf]["y"] * G8, UU["anchor"]["set"](0.5), UU["scale"]["set"](rzshUs[Uf]["scale"] * (/bg|kuang/.test(Uf) ? G7 : G9), rzshUs[Uf]["scale"] * (/bg|kuang/.test(Uf) ? G8 : G9));
-        }
-        function GC(UU) { UU["anchor"]["set"](0.5), UU["scale"]["set"](0.29 * G9); }
-        function Gx(UU, Uk) {
-            const Uf = UU["name"];
-            Uk !== undefined && (UU["interactive"] = !![], UU["on"]("pointerup", U4), UU["on"]("pointerdown", U5));
-            if (!rzshUs[Uf])
-                return;
-            UU["x"] = rzshUs[Uf]["x"], UU["y"] = rzshUs[Uf]["y"], UU["anchor"]["set"](0.5), UU["scale"]["set"](rzshUs[Uf]["scale"], rzshUs[Uf]["scale"]);
-        }
+        function openMainTools() {
+ lifecycle.openTools(() => { lifecycle.showView("home"); GK.addChild(yU); }, () => lifecycle.showView("home"));
+}
+function GE() { const K7 = K1; Gl(GK), G2["texture"] = GG[K7(0x15d, "!2E0")]["uiBG"]["texture"], lifecycle.cover(G2); }
+        function GF(UU, Uk) { sceneUI.place(UU, { x: G7, y: G8, handlers: Uk !== undefined ? { up: U4, down: U5 } : undefined }); }
+        function GC(UU) { sceneUI.center(UU, 0.29 * G9); }
+        function Gx(UU, Uk) { sceneUI.place(UU, { raw: true, handlers: Uk !== undefined ? { up: U4, down: U5 } : undefined }); }
         const y0 = {};
         y0["repeat"] = -0x1, y0["yoyo"] = !![];
         let y1 = gsap["timeline"](y0);
@@ -963,16 +731,16 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                 }
             }
             const Ur = Gb["resources"]["ui_tw"]["textures"], UM = Gb["resources"]["btn_new"]["textures"], Uu = Gb["resources"]["btn_new"]["data"]["animations"], Ut = Gb["resources"]["chongzhi"]["data"]["animations"], UW = Gb["resources"]["uilight"]["textures"], Ue = Gb["resources"]["uilight"]["data"]["animations"], UA = Gb["resources"]["uivip"][K8(0x31e, "!2E0")], Ua = Gb["resources"]["uiczg"]["data"]["animations"];
-            function Uo(kn) { const kZ = new PIXI["Sprite"](Ur[kn]); return kZ["name"] = kn, kZ; }
-            function Uj(kn) { const kZ = new PIXI["Sprite"](Ur[kn]); return kZ["name"] = kn, kZ["interactive"] = !![], kZ["on"]("pointerdown", Up), kZ["on"]("pointerup", Ud), kZ; }
-            function UD(kn) { const kZ = new PIXI["Sprite"](UM[kn]); return kZ["name"] = kn, kZ["interactive"] = !![], kZ["on"]("pointerdown", Up), kZ["on"]("pointerup", Ud), kZ; }
-            function UJ(kn) { const Kb = K8, kZ = new PIXI["AnimatedSprite"]["fromFrames"](Uu[kn]); return kZ["name"] = kn, kZ["interactive"] = !![], kZ[Kb(0x244, "2^^M")] = 0.5, kZ["play"](), kZ["on"]("pointerdown", Up), kZ["on"]("pointerup", Ud), kZ; }
-            function UI(kn) { const kZ = new PIXI["Sprite"](UA[kn]); return kZ["name"] = kn, kZ["interactive"] = !![], kZ["on"]("pointerdown", Up), kZ["on"]("pointerup", Ud), kZ; }
-            function Ui(kn) { const kZ = new PIXI["AnimatedSprite"]["fromFrames"](Ut[kn]); return kZ["name"] = kn, kZ["animationSpeed"] = 0.5, kZ["play"](), kZ; }
-            function UT(kn) { const KK = K8, kZ = new PIXI["AnimatedSprite"]["fromFrames"](Ut[kn]); return kZ["name"] = kn, kZ["interactive"] = !![], kZ["animationSpeed"] = 0.5, kZ["play"](), kZ["on"](KK(0x2b0, "TK2T"), Up), kZ["on"]("pointerup", Ud), kZ; }
-            function Ug(kn) { const kZ = new PIXI["Sprite"](UW[kn]); return kZ["name"] = kn, kZ["interactive"] = !![], kZ; }
-            function UB(kn) { const kZ = new PIXI["AnimatedSprite"]["fromFrames"](Ue[kn]); return kZ["name"] = kn, kZ["interactive"] = !![], kZ["animationSpeed"] = 0x1, kZ["play"](), kZ; }
-            function Uq(kn) { const kZ = new PIXI["AnimatedSprite"]["fromFrames"](Ua[kn]); return kZ["name"] = kn, kZ["interactive"] = !![], kZ["animationSpeed"] = 0.5, kZ["play"](), kZ["on"]("pointerdown", Up), kZ["on"]("pointerup", Ud), kZ; }
+            function Uo(kn) { return sceneUI.sprite(Ur, kn); }
+            function Uj(kn) { return sceneUI.sprite(Ur, kn, { down: Up, up: Ud }); }
+            function UD(kn) { return sceneUI.sprite(UM, kn, { down: Up, up: Ud }); }
+            function UJ(kn) { return sceneUI.sprite(Uu, kn, { down: Up, up: Ud, animated: true }); }
+            function UI(kn) { return sceneUI.sprite(UA, kn, { down: Up, up: Ud }); }
+            function Ui(kn) { return sceneUI.sprite(Ut, kn, { animated: true }); }
+            function UT(kn) { return sceneUI.sprite(Ut, kn, { down: Up, up: Ud, animated: true }); }
+            function Ug(kn) { return sceneUI.sprite(UW, kn, { interactive: true }); }
+            function UB(kn) { return sceneUI.sprite(Ue, kn, { animated: true, speed: 1, interactive: true }); }
+            function Uq(kn) { return sceneUI.sprite(Ua, kn, { down: Up, up: Ud, animated: true }); }
             Gb["add"]("modesecb", lib["assetURL"] + "extension/如真似幻/images/mode.json"), Gb["add"]("spinekss", lib["assetURL"] + "extension/如真似幻/spine/kaizhan.skel"), Gb["add"]("maisuiskel", lib["assetURL"] + "extension/如真似幻/spine/SSHW_eff_maisui.skel"), Gb["add"]("SSHW_DT_eff_yuanbaoshudiguang", lib["assetURL"] + "extension/如真似幻/spine/SSHW_DT_eff_yuanbaoshudiguang.skel"), Gb[K8(0x259, "J*tF")]("SSHW_DT_eff_yuanbaoshushanshuo", lib["assetURL"] + "extension/如真似幻/spine/SSHW_DT_eff_yuanbaoshushanshuo.skel"), Gb["add"]("ui_lottery_entrance", lib["assetURL"] + "extension/如真似幻/images/anim_pick2.json"), Gb["add"]("coranim", lib["assetURL"] + "extension/如真似幻/spine/lottery/Ss_CangZhenGe_cj_1.skel"), Gb["add"]("czganim", lib["assetURL"] + "extension/如真似幻/spine/lottery/Ss_CangZhenGe_cj_2.skel");
             window["_rzsh_theme"] === "马年七夕" ? (Gb["add"]("uihomeskelbg", lib["assetURL"] + K8(0x300, "v*9j")), Gb["add"]("uihomeskel", lib["assetURL"] + "extension/如真似幻/spine/uihome/马年七夕/XingXiang.skel")) : (Gb["add"]("uihomeskelbg", lib["assetURL"] + "extension/如真似幻/spine/uihome/吕布貂蝉/beijing.json"), Gb["add"](K8(0x28d, "4(Dr"), lib["assetURL"] + "extension/如真似幻/spine/uihome/吕布貂蝉/daiji.json"), Gb["add"]("uihomeskelfg", lib["assetURL"] + "extension/如真似幻/spine/uihome/吕布貂蝉/qianjing.json"), Gb["add"]("uihomeskellb", lib["assetURL"] + "extension/如真似幻/spine/uihome/吕布貂蝉/吕布/daiji.json"));
             Gb["load"](() => {
@@ -991,8 +759,8 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                     }
                 }
                 let kZ = Gb["resources"]["modesecb"]["textures"];
-                function kz(kL) { const ks = new PIXI["Sprite"](kZ[kL]); return ks["name"] = kL, ks; }
-                function kN(kL) { const ks = new PIXI["Sprite"](kZ[kL]); return ks["name"] = kL, ks["interactive"] = !![], ks["on"]("pointerup", kn), ks["on"]("pointerdown", Up), ks; }
+                function kz(kL) { return sceneUI.sprite(kZ, kL); }
+                function kN(kL) { return sceneUI.sprite(kZ, kL, { down: Up, up: kn }); }
                 const kR = kz("modesecbg");
                 GF(kR), Ga["addChild"](kR), Ga["setChildIndex"](kR, 0x0), GF(UU), Ga["addChild"](UU);
                 const kS = kz("modettb");
@@ -1200,7 +968,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
             const kb = Uj("right_activity");
             GF(kb);
             const kK = Uj("right_adventure");
-            GF(kK), GM["addChild"](kY, km, kb, kK), lifecycle.sessionButtons(GM, 0x39a * G7, 432 * G8, G9), GM["on"](K8(0x24d, "P9FJ"), () => { U9(kY, 0.4), U9(km, 0.4), U9(kb, 0.4), U9(kK, 0.4); });
+            GF(kK), GM["addChild"](kY, km, kb, kK), GM["on"](K8(0x24d, "P9FJ"), () => { U9(kY, 0.4), U9(km, 0.4), U9(kb, 0.4), U9(kK, 0.4); });
             const kw = Uo("bottom_bg");
             GF(kw);
             const kc = Uj("bottom_friend");
@@ -1425,15 +1193,15 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
         y6["width"] = i["screen"]["width"], y6["height"] = i["screen"]["height"], y7["width"] = 0.3 * i["screen"]["width"], y7["x"] = 0.1 * i["screen"]["width"], y7["height"] = i["screen"]["height"], y8["width"] = 0.3 * i["screen"]["width"], y8["height"] = i["screen"]["height"], y8["x"] = 0.6 * i["screen"]["width"];
         const y9 = lifecycle.container();
         y9["width"] = 0.4 * i["screen"]["width"], y9["height"] = 0.3 * i["screen"]["height"], y6["addChild"](y9, y7, y8);
-        function yG(UU) { const Uk = new PIXI["Sprite"](ym["resources"]["paiweiui"]["textures"][UU]); return Uk["name"] = UU, Uk; }
-        function yy(UU) { let Uk = new PIXI["AnimatedSprite"]["fromFrames"](ym["resources"]["paiweiui"]["data"]["animations"][UU]); return Uk["name"] = UU, Uk["anchor"]["set"](0.5), Uk["animationSpeed"] = 0.3, Uk["play"](), Uk; }
+        function yG(UU) { return sceneUI.sprite(ym.resources.paiweiui.textures, UU); }
+        function yy(UU) { return sceneUI.sprite(ym.resources.paiweiui.data.animations, UU, { animated: true, speed: 0.3, anchor: 0.5 }); }
         const yU = lifecycle.container();
         yU["width"] = i["screen"]["width"], yU["height"] = i["screen"]["height"];
         const yk = lifecycle.container();
         yk["width"] = i["screen"]["width"], yk["height"] = i["screen"]["height"];
         let yf = new PIXI["Graphics"]();
         yf["beginFill"](0x0, 0.8), yf["drawRect"](0x0, 0x0, i["renderer"][K1(0x315, "PA38")]["width"], i[K0(0x2c0)]["screen"]["height"]), yf["endFill"](), yf["interactive"] = !![], yU["addChild"](yf, yk);
-        function yY(UU) { const Uk = new PIXI["Sprite"](ym["resources"]["menubtn"]["textures"][UU]); return Uk["name"] = UU, Uk; }
+        function yY(UU) { return sceneUI.sprite(ym.resources.menubtn.textures, UU); }
         yU["on"](K1(0x2c6, "PYEN"), () => { const UU = {}; UU["y"] = i["screen"]["height"]; const Uk = {}; Uk["duration"] = 0.5, Uk["y"] = 0x0, Uk["ease"] = "power2.out", gsap["fromTo"](yk, UU, Uk); }), yU["on"]("removed", () => { });
         const ym = lifecycle.loader(), yb = {};
         yb["name"] = "menubtn", yb["path"] = "extension/如真似幻/images/menu.json";
@@ -1620,7 +1388,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
         }
         let yt = lifecycle.loader();
         yt["add"]("wujiang", lib["assetURL"] + "extension/如真似幻/images/wujiang.json"), yt["add"]("label", lib["assetURL"] + "extension/如真似幻/images/label.json"), yt["add"]("wujiangBG", lib["assetURL"] + "extension/如真似幻/images/wujiangbg.jpg");
-        function yW(UU) { let Uk = new PIXI["Sprite"](yt["resources"]["wujiang"]["textures"][UU]); return Uk["name"] = UU, Uk; }
+        function yW(UU) { return sceneUI.sprite(yt.resources.wujiang.textures, UU); }
         let ye = [], yA = lifecycle.container();
         yA[K0(0x2b1)] = i["screen"]["width"], yA["height"] = i["screen"]["height"];
         let ya = lifecycle.container();
@@ -1810,7 +1578,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
             let UO = yW("pub_corner_bg");
             UO["scale"]["set"](0.71), UO["x"] = i["screen"]["width"] - UO["width"] * 0.775, UO["y"] = i["screen"]["height"] - UO["height"];
             let UQ = yW("pubbtn_menu");
-            UQ["anchor"][KX(0x1e1, "vV5]")](0.5), UQ["position"]["set"](0.45 * UO["width"], 0.85 * UO["height"]), UO["addChild"](UQ), yA["addChild"](UO), UO["interactive"] = !![], UO["on"]("pointerup", () => { const kJ = {}; kJ["rotation"] = 0x2d * (Math["PI"] / 0xb4), kJ["ease"] = "none", gsap["to"](UQ, 0.2, kJ), yA["addChild"](Uh); const kI = {}; kI["x"] = i["screen"]["width"], gsap["fromTo"](Us, kI, { "duration": 0.75, "x": i["screen"]["width"] - Us["width"], "ease": "power4.out" }); }), UO["on"]("pointerdown", () => { const KL = KH; PIXI["sound"]["play"]("HugeButtom"), UO["filters"] = [P], gsap["to"](P, { "duration": 0.5, "ease": KL(0x1cb), "gamma": 0x3, "onUpdate": () => { UO["filters"] = [P]; }, "onComplete": () => { UO["filters"] = null; } }); });
+            UQ["anchor"][KX(0x1e1, "vV5]")](0.5), UQ["position"]["set"](0.45 * UO["width"], 0.85 * UO["height"]), UO["addChild"](UQ), yA["addChild"](UO), UO["interactive"] = !![], UO["buttonMode"] = true, UO["on"]("pointertap", openMainTools), UO["on"]("pointerdown", () => { const KL = KH; PIXI["sound"]["play"]("HugeButtom"), UO["filters"] = [P], gsap["to"](P, { "duration": 0.5, "ease": KL(0x1cb), "gamma": 0x3, "onUpdate": () => { UO["filters"] = [P]; }, "onComplete": () => { UO["filters"] = null; } }); });
             let Uh = lifecycle.container(), UL = new PIXI["Graphics"]();
             UL[KX(0x293, "0ka9")](0x0), UL["drawRect"](0x0, 0x0, i["screen"]["width"], i["screen"]["height"]), UL["endFill"](), UL["interactive"] = !![], UL["alpha"] = 0x0, UL["on"]("pointerup", () => {
                 if (UP != !![]) {
@@ -1883,11 +1651,12 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
             const k5 = [UC, k0, k2, k4], k6 = (kJ, kI) => { const KP = KX, ki = document["createElement"]("input"); return ki["setAttribute"]("type", kJ["type"]), ki["setAttribute"](KP(0x260, "JHx]"), kJ["placeholder"]), ki["style"]["position"] = "fixed", ki["style"]["width"] = "10%", ki["style"]["height"] = "10%", ki["style"]["zIndex"] = "100", ki["value"] = (ye[0]?.getChildByName("avatar")?.[kJ.propertyName] ?? lib.config.sprite_avatar[({width:"w",height:"h"})[kJ.propertyName] || kJ.propertyName]), Object["assign"](ki["style"], kJ["position"]), ki["addEventListener"]("input", kT => { kI(kJ["propertyName"], kT["target"]["value"]); }), ki; }, k7 = (kJ, kI) => { ye["forEach"](ki => { const kT = ki["getChildByName"]("avatar"); kT && (kT[kJ] = kI); }); }, k8 = k5["map"](kJ => { return k6(kJ, k7); });
             Us["addChild"](Ul, Uv, UE), Uh["addChild"](UL, Us);
             let k9 = null, kG = new Map(), ky = [], kU = null;
+            const characterTools = lifecycle.characterTools({page:yA,filterButton:Ue,searchButton:UD,filterLabel:Uo,powerBar:Ud,allCards:()=>ye,render:cards=>lifecycle.grid.show(cards,yZ,yn,G7,G8)});
             lifecycle.refreshFavorites = () => {
                 for (const card of ye) card.fav = lib.config.favouriteCharacter.includes(card.name);
                 if (k9 === "btn_lvl1_1a") {
                     if (G6 != null) cancelAnimationFrame(G6);
-                    yZ.removeChildren(); ky = ye.filter(card => card.fav); kb(ky.slice(), yZ);
+                    yZ.removeChildren(); ky = characterTools.popular(ye); kb(ky.slice(), yZ);
                 }
             };
             yA["on"]("added", () => {
@@ -1901,7 +1670,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                     yI["getChildByName"](k9)["texture"] = yt["resources"]["wujiang"]["textures"]["btn_lvl2_1"];
                 else
                     yJ["getChildByName"](k9)["texture"] = yt["resources"]["wujiang"]["textures"]["btn_lvl1_1"];
-                k9 = "btn_lvl1_1a", UI["texture"] = yt["resources"]["wujiang"]["textures"]["btn_lvl1_2"], yZ["removeChildren"](), ky = ye["filter"](ki => ki["fav"] === !![]);
+                k9 = "btn_lvl1_1a", UI["texture"] = yt["resources"]["wujiang"]["textures"]["btn_lvl1_2"], yZ["removeChildren"](), ky = characterTools.popular(ye);
                 let kJ = ky[Kl(0x2f5)]();
                 if (G6 != null)
                     cancelAnimationFrame(G6);
@@ -1956,7 +1725,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                 if (kJ["target"][Kx(0x1b5)] === "all")
                     ky = ye;
                 else
-                    kJ["target"]["sec"] === "favourite" ? ky = ye["filter"](kg => kg["fav"] === !![]) : ky = ye["filter"](kg => kg["pack"] === kJ["target"]["name"]);
+                    kJ["target"]["sec"] === "favourite" ? ky = characterTools.popular(ye) : ky = ye["filter"](kg => kg["pack"] === kJ["target"]["name"]);
                 let ki = ky["slice"]();
                 kG["clear"]();
                 for (const kg of ky) {
@@ -2010,7 +1779,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
             }
             function km(kJ) { window["currentSprite"] = kJ["target"], PIXI["sound"]["play"]("Label"); }
             function kb(kJ, kI) {
-                lifecycle.grid.show(kJ, kI, yn, G7, G8);
+                characterTools.show(kJ);
             }
             function kK() { const w6 = KX, w5 = KH, kJ = {}; kJ["duration"] = 0.5, kJ["y"] = 0x0, kJ["ease"] = "power4.out", gsap["fromTo"](ya, { "y": -ya["height"] / 0x2 }, kJ); const kI = {}; kI["duration"] = 0.5, kI["x"] = 0x0, kI["ease"] = "power4.out", gsap["fromTo"](yo, { "x": -yo[w5(0x2b1)] }, kI); const ki = {}; ki["duration"] = 0.75, ki["x"] = 0x0, ki["ease"] = "power4.out", gsap["fromTo"](yD, { "x": yD["width"] }, ki); const kT = {}; kT["y"] = i["screen"][w6(rzshrq.G, "P9FJ")], gsap["fromTo"](UO, kT, { "duration": 0.5, "y": i["screen"]["height"] - UO["height"], "ease": "power4.out" }); }
         }
@@ -3091,11 +2860,16 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                     UW["anchor"][wT(0x188, "og)$")](0.5), UW[wT(0x22d, "C4@w")]["set"](0.7);
                     let Ue = new PIXI["Sprite"](yx["resources"][wg(0x230)]["texture"]);
                     Ue["y"] = 0.37 * UW["height"], Ue["anchor"]["set"](0.5);
-                    let UA = lifecycle.portraits.sprite(yB["randomGet"]());
-                    if (Ut == 0x0)
-                        { UA["texture"] = yx["resources"]["avatar_1"]["texture"]; UA.workshopPortraitLoaded = true; }
+                    // Every seat uses the same raw character portrait source.
+                    // The old avatar_1 is a preframed card with baked padding.
+                    const portraitName = Ut === 0 && lib.character[lib.config.connect_avatar]
+                        ? lib.config.connect_avatar : yB["randomGet"]();
+                    let UA = lifecycle.portraits.sprite(portraitName);
                     // Retain a fixed frame and refit asynchronously loaded portraits uniformly.
-                    lifecycle.portraits.fit(UA, UW, {x:-69, y:-153.5, width:138, height:253});
+                    // The 178×272 seat texture is centered on its anchor.
+                    // Keep artwork inside the upper portrait opening and out
+                    // of the level/name plates below it.
+                    lifecycle.portraits.fit(UA, UW, {x:-80, y:-128, width:160, height:180, fit:'contain'});
                     let Ua = new PIXI["spine"]["Spine"](yx["resources"]["dayuanshuai"]["spineData"]);
                     Ua["state"]["setAnimation"](0x0, "play1", ![]), Ua["scale"]["set"](1.8);
                     if (Ut == Ud - 0x1)
@@ -3186,7 +2960,7 @@ export function createScene(lib, game, ui, get, ai, _status, node, lifecycle) {
                     U6("versus", "two"), U7();
                     break;
                 case "bottom_plus":
-                    lifecycle.openTools(() => GK.addChild(yU));
+                    openMainTools();
                     break;
                 case "legacy_bottom_plus":
                     GK["addChild"](yU);

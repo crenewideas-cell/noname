@@ -156,7 +156,7 @@ background-repeat: no-repeat;
   overflow: hidden;  
   background-color: transparent;
 }
-#kfsp{
+#kfsp, #sqsp{
   position: absolute;
   width:100%;
   height: 100%;
@@ -170,7 +170,7 @@ align-items:center;
   box-shadow:none;
   z-index:100;
 }
-#kfbg{
+#kfbg, #sqbg{
   position: absolute;
   width: 60%;
   display:flex;
@@ -185,7 +185,7 @@ top:10%;
   background-size:100% 100%;
 background-repeat: no-repeat;
 }
-#kfhe {
+#kfhe, #sqhe {
         position: absolute;
         display:flex;
         justify-content:center;
@@ -200,7 +200,7 @@ background-repeat: no-repeat;
         font-weight: bold;      
         color: white;             
       }
-#kftext {
+#kftext, #sqtext {
         position: absolute;       
         top: 28%;
         font-family: 'shousha';
@@ -228,59 +228,6 @@ background-repeat: no-repeat;
   overflow: hidden;  
   background-color: transparent;
 }
-#sqsp{
-  position: absolute;
-  width:100%;
-  height: 100%;
-  left:0;
-  top:0;
-  justify-content:center;
-  align-items:center;
- /* transform: translate(-50%, -50%);*/
-  display: none;
-    background-color: rgba(0, 0, 0, 0.5);
-  border:none;
-  box-shadow:none;
-  z-index:100;
-}
-#sqbg{
-  position: absolute;
-  width: 30%;  
-  display:block;
-height:60%;
-left:35%;
-top:26%;
-  border:none;   
-  z-index:50; 
-  box-shadow:none;  
-  background-position:center;
-       /* background-color:yellow; */     
- background-image: url('../images/loginui/sqm.jpg');
-  background-size:contain;
-background-repeat: no-repeat;
-}
-#sqbg::before {
-        content:'';
-        position: absolute;         
-  background-image: url('../images/loginui/sqbg.png');
-  background-size:contain;
-  background-position:center;
-background-repeat: no-repeat;  
-       top: -40%;    
-      left:-30%;
-        height:160%;        
-        width:160%;
-      /*  background-color:red;   */   
-      }
-#sqtext {
-        position: absolute;       
-        top: 28%;
-        left: 10%;
-       width:80%;
-        font-size: 15px;
-        font-weight: bold;
-        color: white;     
-      }      
 #offlinebutton {
   /*淡季贴吧？*/
   border:none;

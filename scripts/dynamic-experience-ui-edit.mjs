@@ -1,0 +1,5 @@
+import fs from 'node:fs/promises';
+const file='scripts/dynamic-experience-browser.mjs';let s=await fs.readFile(file,'utf8');
+s=s.replace("await page.evaluate(name=>__env.openCharacterSkins(name,undefined,'skin'),e.characterIds[0]);", "const character=await page.evaluate(ids=>ids.find(id=>__env.lib.character[id]),e.characterIds);if(!character)throw Error('No installed owner: '+e.characterIds);row.character=character;\n  await page.evaluate(name=>__env.openCharacterSkins(name,undefined,'skin'),character);");
+s=s.replace("row.cards=await cards();", "await page.waitForTimeout(6000);await page.screenshot({path:out+'/'+id+'-settled.png'});row.settled=await page.evaluate(id=>{const h=[...__env.game.localDynamicSkinTestHub.previews.values()].find(h=>h.e.id===id),p=h.frame.contentWindow.skinPlayer;return{effect:!!h.effectHost.active,tracks:(p.engine42?.layers||p.root?.children||[]).map(l=>({name:l.state?.getCurrent(0)?.animation?.name,loop:l.state?.getCurrent(0)?.loop,hidden:l.sourceHidden||l.renderable===false}))};},id);\n  row.cards=await cards();");
+await fs.writeFile(file+'.tmp',s);await fs.rename(file+'.tmp',file);

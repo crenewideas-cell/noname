@@ -1,0 +1,88 @@
+/* Shared profile controls; layout and theme-specific artwork stay in each theme. */
+.qh-button>.qh-otherinfoarrow {
+    display: block;
+    z-index: 15;
+    right: 3px;
+    top: calc(33%);
+    width: 10px;
+    height: 17px;
+    background-image: url('decade/qhly_pic_down_arrow.png');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: rotateY 0.5s;
+}
+
+.qh-otherinfoarrow.sel {
+    transform: rotate(90deg);
+    transform-origin: center center;
+}
+
+.qh-skinchange-big-dynamicChange[toggle=true] {
+    display: block;
+}
+
+.qh-skinchange-decade-big-skillaudioinfo {
+    width: 80%;
+    left: 5%;
+    height: 26px;
+    line-height: 26px;
+    border: 2px solid;
+    border-left: none;
+    border-right: none;
+    padding-left: 30px;
+    border-image: -webkit-linear-gradient(left, transparent, #5d5a53 10%, #4a463a 30%, #656258 50%, transparent 100%) 1;
+    background-image: -webkit-linear-gradient(left, transparent, #5d5a53 10%, #565144 30%, #656050 50%, transparent 100%);
+    font-size: 20px;
+    color: white;
+    position: relative;
+}
+
+.qh-skinchange-decade-big-huawen {
+    height: 26px;
+    width: 17px;
+    background: url('decade/huawen.png') no-repeat;
+    background-size: 100% 100%;
+    left: 1.5%;
+    top: 0;
+}
+
+.qh-skinchange-decade-big-skillaudiobar {
+    width: 26px;
+    height: 26px;
+    float: right;
+}
+
+.qh-skinchange-decade-big-skilltaici {
+    width: 90%;
+    left: 5%;
+    margin-bottom: 20px;
+    position: relative;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.qh-skinchange-decade-big-skinconfig {
+    width: 80%;
+    left: 5%;
+    height: auto;
+    position: relative;
+}
+
+.qh-page-skin>.qh-hide-skin-button {
+    z-index: 35;
+    left: 159px;
+    bottom: 18px;
+    width: calc(9.86%);
+    height: calc(9.58%);
+    display: block;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('rq/qhly_skin_button_rq.png');
+}
+
+.qh-skinchange-big-skinBar>div.sel {
+    filter: brightness(1.2);
+}
+

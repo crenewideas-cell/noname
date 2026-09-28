@@ -1,5 +1,5 @@
 // Index explicit ownership; display names and cross-pack aliases are not IDs.
-export function createCatalogIndex(packs, active) {
+export function createCatalogIndex(packs, active, ownersOf=(pack,entry)=>entry.characterIds||[]) {
   let previous = [], snapshot;
   const empty = Object.freeze({ files: Object.freeze([]), byTitle: Object.freeze({}) });
   function read() {
@@ -12,7 +12,7 @@ export function createCatalogIndex(packs, active) {
       const row = { p, e, order }, file = e.skinTitle + '.png';
       // Preserve the original first-pack lookup and last-title table behavior.
       for (const key of [file, 'localdyn_' + e.id + '.png']) if (!byFile.has(key)) byFile.set(key, row);
-      const owners = [...new Set(e.characterIds || [])];
+      const owners = [...new Set(ownersOf(p,e))];
       if (!owners.length) unbound.push(row);
       for (const name of owners) {
         let table = byCharacter.get(name);
@@ -25,6 +25,6 @@ export function createCatalogIndex(packs, active) {
     return snapshot = { byFile, byCharacter, unbound };
   }
   return { read, forCharacter: name => read().byCharacter.get(name) || empty,
-    owns: (name, row) => !!name && !!row?.e.characterIds?.includes(name),
+    owns: (name, row) => !!name && !!row && ownersOf(row.p,row.e).includes(name),
     invalidate() { snapshot = undefined; } };
 }

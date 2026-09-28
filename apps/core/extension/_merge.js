@@ -19,6 +19,12 @@ export function normalizeCharacterMetadata(pack) {
 function normalizeAssets(pack, targetName, sourceName) {
     normalizeCharacterMetadata(pack);
     const base = `${targetName}/members/${sourceName}`;
+    // A merged card still owns resources in its member directory, not the parent root.
+    for (const [id, card] of Object.entries(pack.card?.card || {})) {
+        if (card && typeof card === "object" && !card.image && !card.cardimage && (card.fullskin || card.fullimage)) {
+            card.image = `ext:${base}/${id}.${card.fullskin ? "png" : "jpg"}`;
+        }
+    }
     for (const [id, character] of Object.entries(pack.character?.character || {})) {
         if (Array.isArray(character)) {
             const tags = character[4] ||= [];

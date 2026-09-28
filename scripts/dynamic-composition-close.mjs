@@ -1,0 +1,31 @@
+import fs from 'node:fs/promises';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
+const root='output/dynamic-remediation/20260926-r01/composition-r08',read=async p=>JSON.parse(await fs.readFile(p)),sha=b=>createHash('sha256').update(b).digest('hex');
+const release=await read(root+'/release/release-manifest.json'),ui=await read(root+'/final-ui-v3/report.json'),entries=await read(root+'/rollback/entry-manifest.json'),deferred=new Set((await read('output/dynamic-remediation/20260926-r01/scope-adjustment.json')).deferredSkinIds);
+for(const r of release.installed)assert.equal(sha(await fs.readFile(r.file)),r.sha256);
+for(const r of release.source)assert.equal(sha(await fs.readFile('apps/core/noname/skin/localDynamic/runtime/'+r.file)),r.sha256);
+for(const r of entries){assert.equal(sha(await fs.readFile(r.file)),r.afterSHA256);assert.equal(sha(await fs.readFile(root+'/rollback/entries/'+r.id+'.json')),r.beforeSHA256);assert.ok(!deferred.has(r.id));}
+assert.ok(ui.passed&&ui.cases.length===6&&!ui.runtimeOverrides&&!ui.entryOverrides);
+const httpVerified=[];
+for(const r of new Map(ui.runtimeResponses.map(r=>[r.url,r])).values()){
+ const name=r.url.split('/').at(-1),response=Buffer.from(await(await fetch(r.url)).arrayBuffer());assert.equal(sha(response),r.sha256,'capture matches actual HTTP response');
+ const served=response.toString(),marker=served.match(/\/\/# sourceMappingURL=data:application\/json;base64,(\S+)/),body=marker?served.slice(0,marker.index).trim():served.trim();
+ const normalize=s=>s.replaceAll('\r\n','\n').trim();
+ if(marker){const map=JSON.parse(Buffer.from(marker[1],'base64'));assert.equal(normalize(body),normalize(map.sourcesContent[0]));}
+ // Vite rewrites only the relative import literals and appends an inline map.
+ // Verify the complete delivered body, not just a trusted source-map claim.
+ const literal='"/noname/skin/localDynamic/releases/'+release.directory+'/';
+ const restored=body.replace(new RegExp(literal+'([^"\\n]+)"','g'),(_,path)=>"'./"+path+"'");
+ assert.equal(normalize(restored),normalize(await fs.readFile('apps/core/noname/skin/localDynamic/runtime/'+name,'utf8')),'HTTP body differs beyond Vite import rewrite / newline / sourcemap');
+ await fs.writeFile(root+'/http-'+name,response);httpVerified.push({name,httpSHA256:r.sha256,sourceSHA256:release.source.find(s=>s.file===name).sha256,allowedTransform:'Vite absolute import URL, inline sourcemap and line endings only'});
+}
+await fs.writeFile(root+'/http-verification.json',JSON.stringify(httpVerified,null,2));
+for(const c of ui.cases){assert.ok(c.url.includes('runtime-'+release.revision));assert.ok(ui.cacheKeys.some(k=>k.includes(release.revision)&&k.includes(c.id)));}
+await fs.copyFile(root+'/before/apps/core/noname/skin/localDynamic/runtime-release.js',root+'/rollback/runtime-release.r07.js');
+const verification={recordedAt:new Date().toISOString(),revision:release.revision,sharedReleaseFiles:release.installed.length,runtimeHTTPResponses:ui.runtimeResponses.length,entryModelsChanged:entries.length,nonModelFieldsChanged:false,deferredTouched:0,sourceAssetsWritten:false,originalCatalogWritten:false,saveFilesWritten:false,perSkinProductionBranches:false,uiRealCode:true,uiRealEntries:true,thumbnailVersionMatched:true};
+await fs.writeFile(root+'/verification.json',JSON.stringify(verification,null,2));
+const game=await read(root+'/game-final/report.json'),cycles=await read(root+'/cycles-final/report.json');
+const close={recordedAt:new Date().toISOString(),scope:{frozen:4934,priority:4895,deferred:39,deleted:0,individualFinalAcceptance:0},previousClose:'../shared-runtime-r07/shared-runtime-close.json',revision:release.revision,architecture:'one common player; active a5 copies retained',verification,feedback:{improved:['虚拟天团','花好月圆','明智春馨','智飞巧慧','临水照花'],unresolved:[{title:'万圣节 wife_full4_3036',reason:'source cut edges reproduced by pinned independent official renderer'}],presentation:'portrait scene; not complete-body guarantee'},tests:{existing:71,sharedRuntime:3,sceneCoordinates:2,lazyIsolationRetested:3,cycles:cycles.map(r=>({id:r.id,passed:r.passed,frames:r.frames.length})),actualGame:{completed:game.completed,seconds:game.elapsedSeconds,errors:game.errors,skinHostErrors:game.samples.flatMap(s=>s.hosts).filter(h=>h.error).length,limitation:'ArrayCompiler fails and turns do not advance; not a soak pass'}},evidence:{actualUI:'final-ui-v3',cycles:'cycles-final',controls:'controls-final',reference:'halloween-reference',rollback:'rollback/entry-manifest.json'},limitations:['260 structural matches are not 260 individually certified visuals','4.0 only equal shared static root transform category changes','No source asset repair for Halloween','Earlier before-ui is transitional code/entry state, not R07 baseline'],status:'common composition fixes delivered; source-artifact and game-soak issues remain'};
+await fs.writeFile(root+'/composition-close.json',JSON.stringify(close,null,2));
+const ids=await read(root+'/ids.json'),names=['虚拟天团','花好月圆','万圣节 wife_full4_3036','明智春馨','智飞巧慧','临水照花'];
+await fs.writeFile(root+'/review.html',`<!doctype html><html lang="zh"><meta charset="utf-8"><title>R08 实际画面对照</title><style>body{font:16px system-ui;margin:30px;background:#171b24;color:#eee}article{margin:30px 0;padding:20px;background:#242b38}section{display:flex;gap:20px;align-items:start}figure{margin:0;flex:1}img{max-width:100%;max-height:620px;object-fit:contain;background:#777}a{color:#abcfff}small{display:block;color:#bac6d8}</style><h1>R08 分层坐标与构图</h1><p>公共版本 ${release.revision}；真实千幻界面，无代码/entry替换。五条核心构图反馈改善，万圣节源切边未修复。冻结4934 / 原暂缓39不变。</p><p><a href="composition-close.json">收尾记录</a> · <a href="verification.json">哈希校验</a></p>${ids.map((id,i)=>`<article><h2>${names[i]}${i===2?'（源切边仍待处理）':''}</h2><section><figure><figcaption>用户反馈</figcaption><img src="user-feedback/${i+1}.png"></figure><figure><figcaption>实际公共播放器竖幅</figcaption><img src="final-direct/${id}-portrait.png"><small>完整全身不是本轮取景目标。</small></figure></section><details><summary>实际游戏界面与缩略图</summary><img src="final-ui-v3/${id}-ui.png"><img src="final-ui-v3/${id}-thumbnail.webp"></details></article>`).join('')}<p>实际对局60秒中动态宿主播放，但事件编译器报错，对局耐久未通过。</p></html>`);
+console.log(JSON.stringify(verification));

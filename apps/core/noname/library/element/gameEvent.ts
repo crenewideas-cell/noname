@@ -3,7 +3,7 @@ import { Player } from "./index.js";
 import ContentCompiler from "./GameEvent/compilers/ContentCompiler.js";
 import { EventCompileable, EventCompiledContent } from "./GameEvent/compilers/IContentCompiler.js";
 import GameEventManager from "./GameEvent/GameEventManager.js";
-import { emitPresentation } from "../../ui/presentationEvents.js";
+import { emitPresentation, emotionTriggerPresentation } from "../../ui/presentationEvents.js";
 export { GameEventManager, ContentCompiler };
 
 type triggerSkillTodo = {
@@ -486,6 +486,7 @@ export class GameEvent implements PromiseLike<void> {
 			emitPresentation("start", () => ({}));
 			game.showHistory();
 		}
+		emotionTriggerPresentation(name, this);
 		if (!lib.hookmap[name]) {
 			return;
 		}

@@ -1,0 +1,40 @@
+/* Built-in panels share the charcoal/gold surface of character selection. */
+#window:has(#arena.builtin-responsive) {
+	--builtin-panel: linear-gradient(135deg, #353029fa, #24211dfa);
+	--builtin-panel-border: #b6945b;
+	--builtin-panel-text: #f4e6cb;
+}
+#window #arena.builtin-responsive > .dialog,
+#window:has(#arena.builtin-responsive) > .selection-guide {
+	border: 1px solid var(--builtin-panel-border);
+	border-radius: 8px;
+	background: var(--builtin-panel);
+	color: var(--builtin-panel-text);
+	box-shadow: 0 0 0 2px #211d1780, 0 5px 18px #0005;
+	text-shadow: 0 1px 1px #0008;
+}
+#window #arena.builtin-responsive > .dialog {
+	max-width: calc(100% - 24px);
+}
+#window #arena.builtin-responsive > .dialog .caption,
+#window:has(#arena.builtin-responsive) > .selection-guide > strong {
+	color: #ffdb91;
+	font-weight: 400;
+}
+#window:has(#arena.builtin-responsive) > .selection-guide {
+	width: min(560px, calc(100% - 32px));
+	padding: 10px 16px;
+}
+#window:has(#arena.builtin-responsive) .selection-guide-steps {
+	color: #e0cda9;
+}
+#window:has(#arena.builtin-responsive) .selection-guide-chosen {
+	color: #cbbfa9;
+}
+@media (max-height: 650px) {
+	#window:has(#arena.builtin-responsive) > .selection-guide {
+		padding: 6px 12px;
+		font-size: 12px;
+	}
+	#window:has(#arena.builtin-responsive) > .selection-guide > strong { font-size: 15px; }
+}

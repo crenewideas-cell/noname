@@ -34,7 +34,7 @@ export async function onlineBuildId(root: string) {
     "apps/core/extension/packs/红楼幻境/theme/catalog.js", "apps/core/extension/packs/红楼幻境/voice/runtime.js",
     "apps/core/extension/packs/红楼幻境/voice/daiyu.js", "apps/core/extension/packs/红楼幻境/voice/panel.js", "apps/core/extension/packs/红楼幻境/voice/catalogs",
     "apps/core/package.json", "apps/core/pnpm-lock.yaml", "apps/core/vite.config.ts", "packages/online-protocol/src",
-    "scripts/build-online.ts", "scripts/online-artifacts.ts", "scripts/online-ui-assets.ts",
+    "scripts/build-online.ts", "scripts/online-artifacts.ts", "scripts/online-ui-assets.ts", "scripts/online-ui-compat.mjs",
     "apps/core/extension/ui/手杀标准UI/extension.js", "apps/core/extension/ui/手杀标准UI/native-runtime.js", "apps/core/extension/ui/手杀标准UI/native",
     "apps/core/extension/ui/手杀标准UI/native.css", "apps/core/extension/ui/手杀标准UI/boot.html", "apps/core/extension/ui/手杀标准UI/preview.html",
     "apps/core/extension/ui/手杀标准UI/files.json", "apps/core/extension/ui/手杀标准UI/ui-workshop.json",
@@ -44,10 +44,11 @@ export async function onlineBuildId(root: string) {
   return `online-${hash.digest("hex").slice(0, 20)}`;
 }
 
-export async function assembleOnline(root: string, client: boolean, build: string, origin: string) {
-  const source = resolve(root, "apps/core/dist");
+export async function assembleOnline(root: string, client: boolean, build: string, origin: string, runtimeSource = resolve(root, "apps/core/dist")) {
+  const source = resolve(runtimeSource);
   const output = resolve(root, client ? "dist/online-client" : "dist-online-host");
   if (relative(root, output).replaceAll("\\", "/") !== (client ? "dist/online-client" : "dist-online-host")) throw new Error("Unexpected output directory");
+  if (source === output || !relative(output, source).startsWith("..")) throw new Error("Runtime source must be outside the output directory");
   await rm(output, { recursive: true, force: true });
   await mkdir(output, { recursive: true });
   await cp(source, output, { recursive: true, filter: async path => {
@@ -60,6 +61,18 @@ export async function assembleOnline(root: string, client: boolean, build: strin
     return client || (stat.isDirectory() ? !excluded.has(top) : isHostRuntimeFile(name));
   } });
   if (client) {
+    // The host intentionally has no fonts or theme/thumbnail media. When its
+    // code is reused, retain those locally built assets without copying any
+    // newer JavaScript, HTML, CSS or rule/config JSON over the release.
+    const local = resolve(root, "apps/core/dist");
+    if (source !== local) await cp(local, output, { recursive: true, filter: async path => {
+      const name = relative(local, path);
+      if (!name) return true;
+      const stat = await lstat(path);
+      if (stat.isSymbolicLink()) throw new Error(`Unexpected media symlink: ${name}`);
+      if (["src", "extension"].includes(name.split(/[\\/]/)[0])) return false;
+      return stat.isDirectory() || /\.(?:png|jpe?g|webp|gif|avif|svg|ico|woff2?|ttf|otf|mp3|ogg|wav|m4a|mp4|webm|atlas|skel)$/i.test(name);
+    } });
     await copyOnlineSkins(root,output);
     await cp(resolve(root, "apps/core/image"), join(output, "image"), { recursive: true, filter: path => !path.split(/[\\/]/).some(part => part === "动态资源" || part.endsWith("_配音")) });
     await cp(resolve(root, "apps/core/audio"), join(output, "audio"), { recursive: true });
@@ -68,7 +81,9 @@ export async function assembleOnline(root: string, client: boolean, build: strin
     await mkdir(join(output, "image/character"), { recursive: true });
     await mkdir(join(output, "image/card"), { recursive: true });
     await cp(resolve(root, "apps/core/extension/packs/红楼幻境/hlhj_daiyu.svg"), join(output, "image/character/hlhj_daiyu.svg"));
-    await cp(resolve(root, "apps/core/extension/packs/红楼幻境/hlhj_qingsi.png"), join(output, "image/card/hlhj_qingsi.png"));
+    // image/card/hlhj_qingsi.png is already included with core media. The
+    // extension now owns WebP artwork and no longer has a root-level PNG.
+    await cp(resolve(root, "apps/core/extension/packs/红楼幻境/artwork"), join(output, "extension/红楼幻境/artwork"), { recursive: true });
     await cp(resolve(root, "apps/core/extension/packs/红楼幻境/theme"), join(output, "image/hlhj/theme"), { recursive: true, filter: path => !path.split(/[\\/]/).some(part => part === "动态资源" || part.endsWith("_配音")) });
   }
   await cp(resolve(root, "LICENSE"), join(output, "LICENSE"));

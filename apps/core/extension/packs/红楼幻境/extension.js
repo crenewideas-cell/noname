@@ -51,10 +51,27 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
             }
         }
     }
-    const ordinary = (card, player) => get.position(card) === "h" &&
-        get.owner(card) === player &&
-        card.name !== "hlhj_qingsi" && (lib.card[card.name]?.type === "basic" ||
-            lib.card[card.name]?.subtype === "equip1" || !!get.tag({ name: card.name, nature: card.nature }, "damage"));
+    const isXian = card => lib.card[card.name]?.qingyaoXian === true;
+    const isXianEquip = card => isXian(card) && lib.card[card.name]?.type === "equip";
+    const hasXianEquip = player => player.hasCard(isXianEquip, "e");
+    const xianTagged = card => card.hasGaintag?.("hlhj_xian");
+    const settlingHand = new WeakSet();
+    const equipOffered = new WeakMap();
+    function offeredEquips(player) {
+        if (!equipOffered.has(player)) equipOffered.set(player, new WeakSet());
+        return equipOffered.get(player);
+    }
+    function ordinary(card, player, decideBasic = false) {
+        if (get.position(card) !== "h" || get.owner(card) !== player ||
+            card.name === "hlhj_qingsi" || isXian(card) || xianTagged(card)) return false;
+        const info = lib.card[card.name];
+        // The synchronous hand-gain/name hooks must wait for the owner's choice.
+        // An equipment gained in the same batch is equipped before that choice.
+        if (info?.type === "basic" && !decideBasic &&
+            (hasXianEquip(player) || player.hasCard(card => isXianEquip(card) && !offeredEquips(player).has(card), "h"))) return false;
+        return info?.type === "basic" || info?.subtype === "equip1" ||
+            !!get.tag({ name: card.name, nature: card.nature }, "damage");
+    }
     const sync = (player, key, value) => {
         player.storage[key] = value;
         player.syncStorage(key);
@@ -71,8 +88,8 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
     };
     const canDiscardQingsi = (card, player) => get.name(card, player) === "hlhj_qingsi" &&
         lib.filter.cardDiscardable(card, player, "hlhj_mushi");
-    function convertHand(player) {
-        const cards = player.getCards("h", card => ordinary(card, player));
+    function convertHand(player, decidedBasics = []) {
+        const cards = player.getCards("h", card => ordinary(card, player, decidedBasics.includes(card)));
         if (!cards.length) return;
         // Store the physical identity before conversion. The hand still contains
         // real 情思; only a return to a pile restores the underlying physical card.
@@ -100,6 +117,40 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
         player.send(change, cards, sources);
         // Conversion depends on a private hand: only its owner hears this cue.
         if (game.hlhjVoice?.entered.has(player)) speak(player, "convert", { private: true });
+    }
+    async function settleHand(player) {
+        if (settlingHand.has(player)) return;
+        settlingHand.add(player);
+        try {
+            for (const card of player.getCards("h", card => isXianEquip(card) && !offeredEquips(player).has(card))) {
+                if (!player.isIn()) return;
+                if (get.owner(card) === player && get.position(card) === "h" && player.canEquip(card, true)) {
+                    const result = await player.chooseBool(`绛珠仙子：是否装备获得的仙界牌【${get.translation(card)}】？`)
+                        .set("ai", () => true).forResult();
+                    offeredEquips(player).add(card);
+                    if (result.bool && player.isIn() && get.owner(card) === player && get.position(card) === "h" && player.canEquip(card, true)) {
+                        await player.equip(card);
+                    }
+                } else {
+                    offeredEquips(player).add(card);
+                }
+            }
+            const basics = player.getCards("h", card => lib.card[card.name]?.type === "basic" &&
+                card.name !== "hlhj_qingsi" && !isXian(card) && !xianTagged(card));
+            if (basics.length && hasXianEquip(player) && player.isIn()) {
+                const result = await player.chooseCard("绛珠仙子：选择任意张基本牌保留并标记为“仙”（取消则全部转化为情思）", "h", [1, basics.length])
+                    .set("hlhj_basic_candidates", basics)
+                    .set("filterCard", card => _status.event.hlhj_basic_candidates.includes(card))
+                    .set("ai", card => get.value(card)).forResult();
+                if (result.bool && hasXianEquip(player) && player.isIn()) {
+                    const retained = (result.cards || []).filter(card => basics.includes(card) && get.owner(card) === player && get.position(card) === "h");
+                    if (retained.length) player.addGaintag(retained, "hlhj_xian");
+                }
+            }
+            convertHand(player, basics);
+        } finally {
+            settlingHand.delete(player);
+        }
     }
     function qingsiReturn(card, position, player, event) {
         if (position !== "discardPile" && position !== "cardPile") return false;
@@ -202,10 +253,10 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
         await dream(player);
     }
     function lostFlowerCount(loss) {
-        // Count each actual loss once, regardless of its reason or destination.
-        // getl() hides getlx:false child losses, so read the loss snapshot itself.
-        // Tags have already been removed from the cards by this point.
-        return Object.values(loss.gaintag_map || {}).filter(tags => tags.includes("hlhj_hua")).length;
+        // Use the original hand zone and tag snapshot, even for getlx:false
+        // child losses. Using/responding/equipping/giving all count once here;
+        // later moves out of ordering, equipment or expansions do not.
+        return (loss.hs || []).filter(card => loss.gaintag_map?.[card.cardid]?.includes("hlhj_hua")).length;
     }
     function discarded(event, player) {
         if (event.type !== "discard" || event.getlx === false) return [];
@@ -271,17 +322,45 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 cardname(card, player) { if (ordinary(card, player)) return "hlhj_qingsi"; },
                 cardnature(card, player) { if (ordinary(card, player)) return false; },
             },
-            group: ["hlhj_qingsi_redirect", "hlhj_jiangzhu_convert"],
+            group: ["hlhj_qingsi_redirect", "hlhj_jiangzhu_convert", "hlhj_xian"],
         },
         hlhj_jiangzhu_convert: {
             charlotte: true,
-            trigger: { player: ["gainAfter", "enterGame"], global: ["loseAsyncAfter", "gameDrawAfter", "phaseBefore"] },
+            trigger: { player: ["gainAfter", "loseAfter", "equipAfter", "enterGame"], global: ["loseAsyncAfter", "gameDrawAfter", "phaseBefore"] },
             forced: true,
             silent: true,
             firstDo: true,
             priority: 50,
-            filter(event, player) { return player.hasCard(card => ordinary(card, player), "h"); },
-            async content(event, trigger, player) { convertHand(player); },
+            filter(event, player) {
+                if (event.name === "lose" && event.hs?.some(isXianEquip)) return true;
+                return !settlingHand.has(player) && player.hasCard(card => ordinary(card, player, true) ||
+                    (isXianEquip(card) && !offeredEquips(player).has(card)), "h");
+            },
+            async content(event, trigger, player) {
+                if (trigger.name === "lose") {
+                    for (const card of trigger.hs || []) offeredEquips(player).delete(card);
+                }
+                await settleHand(player);
+            },
+        },
+        hlhj_xian: {
+            charlotte: true,
+            mod: {
+                ignoredHandcard(card) { if (xianTagged(card)) return true; },
+                cardDiscardable(card, player, reason) {
+                    if (reason === "phaseDiscard" && xianTagged(card)) return false;
+                },
+            },
+            trigger: { player: "useCard1" },
+            forced: true,
+            filter(event, player) {
+                if (_status.currentPhase !== player || event.respondTo || lib.card[event.card?.name]?.type !== "basic") return false;
+                // Hand tags are removed by lose before useCard1. Read the loss
+                // snapshot belonging to this use, never a previous use's cards.
+                return player.getHistory("lose").some(loss => loss.getParent() === event &&
+                    loss.hs?.some(card => event.cards?.includes(card) && loss.gaintag_map?.[card.cardid]?.includes("hlhj_xian")));
+            },
+            async content(event, trigger, player) { trigger.effectCount++; },
         },
         hlhj_qingsi_redirect: {
             mod: {
@@ -357,10 +436,22 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
             onremove: true,
         },
         hlhj_mushi_change: {
-            trigger: { player: "phaseBegin" },
+            enable: ["chooseToUse", "chooseToRespond"],
             direct: true,
+            delay: false,
+            selectCard: -1,
+            filterCard: () => false,
             filter(event, player) {
-                return player.hasCard(card => canDiscardQingsi(card, player), "h") && game.hasPlayer(target => target !== bond(player));
+                return _status.currentPhase === player && !mushiPaying.has(player) &&
+                    player.hasCard(card => canDiscardQingsi(card, player), "h") && game.hasPlayer(target => target !== bond(player));
+            },
+            // Reopen the pending use/response after changing the bond. This
+            // skill itself must never count as playing the requested card.
+            async precontent(event, trigger, player) {
+                await lib.skill.hlhj_mushi_change.content(event, trigger, player);
+                event.result.bool = true;
+                event.result.cancel = true;
+                delete event.result.skill;
             },
             async content(event, trigger, player) {
                 const result = await player.chooseCardTarget({
@@ -381,7 +472,12 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 if (!target?.isIn() || !player.getCards("h").includes(card) || !canDiscardQingsi(card, player)) return;
                 voiceScope(player, "changeBond", event);
                 // Set the new bond only after the mandatory cost has left hand.
-                await player.discard(card);
+                mushiPaying.add(player);
+                try {
+                    await player.discard(card);
+                } finally {
+                    mushiPaying.delete(player);
+                }
                 if (player.isIn() && target.isIn() && !player.getCards("h").includes(card)) {
                     player.logSkill("hlhj_mushi", target);
                     setBond(player, target);
@@ -473,7 +569,8 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
             forced: true,
             silent: true,
             firstDo: true,
-            priority: 40,
+            // Mark flowers before automatic equipping can move them out of hand.
+            priority: 60,
             filter(event, player) { return event.hlhj_flower_owner === player; },
             async content(event, trigger, player) {
                 // 花 is a tag on the resulting card; it never restores its former name.
@@ -623,17 +720,20 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
     for (const info of Object.values(skill)) info.audio = false;
     const translate = {
         hlhj_jiangzhu: "绛珠仙子",
-        hlhj_jiangzhu_info: "锁定技，你的身份不能分配为内奸。基本牌、伤害牌和武器牌进入你的手牌后，转化为【情思】，保留花色和点数。【情思】不计入手牌上限，且不因手牌上限而弃置。转化牌进入牌堆或弃牌堆时恢复原牌；额外生成的牌则销毁。",
+        hlhj_jiangzhu_info: "锁定技，你的身份不能分配为内奸。基本牌、伤害牌和武器牌进入你的手牌后，转化为【情思】，保留花色和点数；仙界牌不转化。每次获得仙界装备牌时，你可以选择立即装备之；不装备则保留在手牌中。装备区有仙界牌时，你可以选择任意张新获得的基本牌不转化，并标记为“仙”。“仙”牌不计入手牌上限，不因手牌上限而弃置；你于自己的回合主动使用“仙”基本牌时，额外结算一次（响应不重复）。“仙”标记保留至该牌离开手牌。【情思】不计入手牌上限，且不因手牌上限而弃置。转化牌进入牌堆或弃牌堆时恢复原牌；额外生成的牌则销毁。",
         hlhj_qingsi_redirect: "情思",
         hlhj_mushi: "木石前缘",
-        hlhj_mushi_info: "①游戏开始时，你选择一名角色成为你的“木石缘”。②回合开始时，你可以弃置一张【情思】，令另一名角色成为你的“木石缘”。③当你获得“泪”时，你可以令你或存活的“木石缘”摸等量的牌。若你以此法摸牌，你须弃置一张【情思】（无可弃置的【情思】则不弃置；此弃牌结算期间获得的“泪”不触发此项效果）。",
+        hlhj_mushi_info: "①游戏开始时，你选择一名角色成为你的“木石缘”。②自己的回合内，在使用或响应牌的可操作时机，你可以主动发动〖木石·换缘〗，弃置一张【情思】，令另一名角色成为你的“木石缘”，次数不限。③当你获得“泪”时，你可以令你或存活的“木石缘”摸等量的牌。若你以此法摸牌，你须弃置一张【情思】（无可弃置的【情思】则不弃置；支付本技能弃牌代价期间获得的“泪”不触发此项效果）。",
         hlhj_mushi_change: "木石·换缘",
+        hlhj_mushi_change_info: "自己的回合内，在使用或响应牌的可操作时机，你可以弃置一张【情思】，重新指定一名不同的木石缘。次数不限，可以取消。",
+        hlhj_xian: "仙",
+        hlhj_xian_info: "此牌保留原基本牌效果，不计入手牌上限，不因手牌上限而弃置；自己的回合内主动使用时额外结算一次，响应不重复。离开手牌后移除此标记。",
         hlhj_mushiyuan: "木石缘",
         hlhj_mushi_bg: "缘",
         hlhj_mushiyuan_bg: "木石",
         hlhj_mushiyuan_info: "你是标记所示角色的“木石缘”。其重新指定“木石缘”或死亡后，移除此关系。",
         hlhj_xiangduan: "香断谁怜",
-        hlhj_xiangduan_info: "①当其他角色弃置牌后，你可以选择其中一张仍在弃牌堆的牌，并选择“复制原牌”或“随机同类型牌”。你获得原牌及X张复制牌（X为本回合此项发动次数减一）；若你的“木石缘”存活且不为你，其获得与你以此法获得牌数相同的复制牌。本次双方的复制牌均按你所选方式生成：复制原牌时，牌名、花色、点数和属性均与原牌相同；随机同类型牌时，每张独立随机，允许重复，类型按基本牌、锦囊牌（含延时锦囊）、装备牌区分。取消不计次数。你以此法获得的牌结算〖绛珠仙子〗后，标记为“花”。②当你失去“花”时，你获得等量的“泪”，并移去这些牌的“花”标记。③随机同类型的复制牌保留所选弃牌的花色、点数，同名时保留属性，异名时无属性；所有复制牌进入牌堆或弃牌堆时销毁。",
+        hlhj_xiangduan_info: "①当其他角色弃置牌后，你可以选择其中一张仍在弃牌堆的牌，并选择“复制原牌”或“随机同类型牌”。你获得原牌及X张复制牌（X为本回合此项发动次数减一）；若你的“木石缘”存活且不为你，其获得与你以此法获得牌数相同的复制牌。本次双方的复制牌均按你所选方式生成：复制原牌时，牌名、花色、点数和属性均与原牌相同；随机同类型牌时，每张独立随机，允许重复，类型按基本牌、锦囊牌（含延时锦囊）、装备牌区分。取消不计次数。你以此法获得的牌标记为“花”（与情思转化、仙标记兼容）。②当你的“花”离开你的手牌时，无论使用、打出、装备、弃置、交给其他角色或移至其他区域，你获得等量的“泪”，并移去这些牌的“花”标记；同一次离手仅计算一次。③随机同类型的复制牌保留所选弃牌的花色、点数，同名时保留属性，异名时无属性；所有复制牌进入牌堆或弃牌堆时销毁。",
         hlhj_zanghuayin: "葬花吟",
         hlhj_zanghuayin_info: "出牌阶段，你可以将任意张标记为“花”的手牌置入弃牌堆，然后依〖香断谁怜〗获得等量的“泪”。",
         hlhj_hua: "花",
@@ -657,7 +757,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
         connect: true,
         content() {},
         precontent() {
-            game.addGroup("hlhj_ming", "命", "命", { color: "#b88caa" });
+            if (!lib.group.includes("qingyao_xian")) game.addGroup("qingyao_xian", "仙", "仙", { color: "#b88caa" });
             game.addGroup("hlhj_qing", "情", "情", { color: "#c97989" });
             game.hlhjResolveIdentity = resolveIdentity;
             const voices = installVoiceRuntime(lib, game, ui, get, _status);
@@ -682,7 +782,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 connect: true,
                 character: {
                     hlhj_daiyu: {
-                        sex: "female", group: "hlhj_ming", hp: 3,
+                        sex: "female", group: "qingyao_xian", hp: 3,
                         skills: ["hlhj_jiangzhu", "hlhj_mushi", "hlhj_xiangduan", "hlhj_zanghuayin", "hlhj_xiaoxiang", "hlhj_guimeng"],
                         img: appearancePaths.theme + "daiyu-bamboo.png", dieAudios: [],
                     },
@@ -706,7 +806,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                     ...baoyu.cards,
                     hlhj_qingsi: {
                         type: "basic", enable: false,
-                        fullskin: true, image: "ext:红楼幻境/hlhj_qingsi.png",
+                        fullskin: true, artworkLayout: "painting-square", image: "ext:红楼幻境/artwork/hlhj_qingsi.webp",
                         destroy: qingsiReturn, destroyLog: false,
                         global: "hlhj_qingsi_redirect",
                         ai: { basic: { useful: 5, value: 5 } },

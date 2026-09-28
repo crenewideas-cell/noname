@@ -1,0 +1,107 @@
+@import "./match-prompts.css";
+/* Built-in match surfaces reuse the workshop's lobby-surface tokens and assets.
+   Provider-owned matches keep their own presentation; no gameplay DOM is rebuilt. */
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(#control > .control > div, #system > div > div, .dialog .tdnode:not(.artwork-choice), .dialog button, .dialog .button.text, .dialog .textbutton, .dialog .replaceButton, .dialog .switchbutton, .selection-guide button, .menu button, .menu .menubutton, .menu-session-actions > button, .skill-reading-close):not(.character-filters *) {
+ box-sizing:border-box;
+ border:10px solid transparent!important;
+ border-radius:0!important;
+ border-image:var(--lobby-button-frame)!important;
+ background:none!important;
+ color:#fff3d3!important;
+ box-shadow:none!important;
+ text-shadow:0 1px 2px #3b120e!important;
+ font-family:var(--lobby-font)!important;
+ cursor:pointer;
+ transition:filter .15s;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(#control > .control > div, #system > div > div, .dialog .tdnode:not(.artwork-choice), .dialog button, .dialog .button.text, .dialog .textbutton, .dialog .replaceButton, .dialog .switchbutton, .selection-guide button, .menu button, .menu .menubutton, .menu-session-actions > button, .skill-reading-close):not(.character-filters *):is(:active,.selected,.active,.bluebg,.is-active,[aria-pressed="true"]) {
+ border-image-source:var(--lobby-button-active)!important;
+ color:#ffe4a5!important;
+}
+@media (hover:hover) {
+ :where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(#control > .control:not(.disabled) > div, #system > div > div, .dialog .tdnode:not(.artwork-choice), .dialog button, .dialog .button.text, .dialog .textbutton, .dialog .replaceButton, .dialog .switchbutton, .selection-guide button, .menu button, .menu .menubutton, .skill-reading-close):hover:not(:disabled):not(.disabled):not([aria-disabled="true"]) {filter:brightness(1.08);}
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(#control > .control.disabled, #system > div > .disabled, .dialog .tdnode:not(.artwork-choice).disabled, .dialog button:disabled, .selection-guide button:disabled, .menu button:disabled, [aria-disabled="true"]) {opacity:.5;cursor:default;filter:none;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(#control > .control > div, #system > div > div, .dialog .tdnode:not(.artwork-choice), .dialog button, .selection-guide button, .menu button, .menu .menubutton, .skill-reading-close):focus-visible {outline:3px solid #f2d692;outline-offset:2px;}
+/* A control is an engine-owned group. Frame each action, not its wrapper. */
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #control > .control {border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #control > .control > div,
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide button {min-height:42px;min-width:72px;padding:2px 12px;font-size:17px;line-height:1.3;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #system > div > div {height:auto;min-height:34px;padding:0 6px;font-size:15px;line-height:1.2;vertical-align:top;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog .tdnode:not(.artwork-choice) {height:auto;min-height:36px;min-width:40px;padding:0 4px!important;margin:4px 3px!important;line-height:1.3;font-size:16px!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog .character-search-submit {min-height:38px;padding:0 4px!important;white-space:nowrap!important;overflow-wrap:normal!important;font-size:16px!important;}
+/* Portrait/card buttons intentionally retain their artwork and selection frame. */
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(#arena > .dialog, .dialog.popped, .menu, .menubg, .selection-guide) {
+ border:var(--lobby-panel-border)!important;
+ border-radius:var(--match-panel-radius,0)!important;
+ background:var(--lobby-paper)!important;
+ box-shadow:var(--lobby-panel-shadow)!important;
+ color:var(--lobby-ink)!important;
+ text-shadow:none!important;
+ backdrop-filter:none!important;
+ font-family:var(--lobby-font);
+ scrollbar-color:#94794f #d8c7a4;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(.dialog .caption, .dialog .text, .dialog .skillinfo, .dialog .skill-description-row, .dialog .skill-description-row > div, .dialog .character-browser-status, .dialog .character-browser-pages, .dialog .character-browser-selection, .dialog .config, .menu .config, .selection-guide-chosen) {
+ color:var(--lobby-ink)!important;
+ text-shadow:none!important;
+ font-family:var(--lobby-font)!important;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(.dialog .skill, .dialog .skilln, .selection-guide > strong) {color:var(--lobby-accent)!important;text-shadow:none!important;font-family:var(--lobby-font)!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(.dialog .caption, .selection-guide > strong) {font-weight:normal;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .selection-guide-steps {color:var(--lobby-muted)!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog .content > .caption:not(.searcher) {line-height:1.6;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog .skill-description-row {border-color:var(--lobby-line);}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog :is(input:not([type=checkbox]):not([type=radio]),select,textarea) {
+ border:1px solid #9c8155!important;border-radius:4px;background:var(--match-input-background,#fffaee)!important;color:var(--lobby-ink)!important;text-shadow:none;font-family:var(--lobby-font)!important;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) :is(.menu > .menu-tab, .menu > .menu-session-actions) {background:var(--lobby-heading)!important;color:#fff1d2;text-shadow:none;border-color:var(--lobby-line);}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .menu > .menu-tab > div {color:#fff1d2!important;text-shadow:none;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .menu > .menu-tab > div.active {color:#fff3d3!important;background:var(--lobby-accent)!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .menu .left.pane {background:var(--lobby-sidebar)!important;border-color:var(--lobby-line)!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .menu .left.pane > div {color:var(--lobby-ink);text-shadow:none;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .menu .left.pane > div.active {background:var(--lobby-heading)!important;color:#fff3d3!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .menu .config.switcher > div {color:var(--lobby-accent)!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .menu .config.toggle > div {background:#18201f!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .menu .config.toggle.on > div {background:#8b713d!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .menu .config.toggle > div > div {background:linear-gradient(#fff6dc,#d6bd89)!important;}
+@media (max-height:650px),(max-width:720px) {
+ :where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #control > .control > div {min-height:38px;min-width:64px;padding:0 8px;font-size:16px;}
+ :where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #system > div > div {min-height:30px;border-width:8px!important;padding:0 3px;font-size:14px;}
+ :where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog .tdnode:not(.artwork-choice) {min-height:34px;padding:0 3px;}
+}
+
+
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog .replaceButton {box-sizing:border-box;width:auto;min-width:44px;height:26px;line-height:14px;padding:0 3px;border-width:6px!important;border-image-width:8px!important;font-size:14px;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog .character-filters > span {color:var(--lobby-muted);text-shadow:none;}
+
+/* Size the short selection form to its content; the adaptive max-height still
+   bounds it on small screens and its existing content pane remains scrollable. */
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #arena.choose-character > .dialog:not(.character-browser):not(.fullheight) {display:flex;flex-direction:column;height:auto!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #arena.choose-character > .dialog:not(.character-browser):not(.fullheight) > .content-container {position:relative;flex:1 1 auto;min-height:0;height:auto;overflow-y:auto;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) #arena.choose-character > .dialog:not(.character-browser):not(.fullheight) > .content-container > .content {position:relative;}
+/* Native dialog is portalled to body, outside #window. */
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)):has(#arena) .game-navigation {border:var(--lobby-panel-border);border-image:none;background:var(--lobby-paper);box-shadow:var(--lobby-panel-shadow);color:var(--lobby-ink);font-family:var(--lobby-font);text-shadow:none;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)):has(#arena) .game-navigation :is(h2,p) {color:var(--lobby-ink);text-shadow:none;}
+/* Filters are secondary navigation, not framed game actions. Retain the shared
+   paper/ink/accent palette while reserving red-gold artwork for primary actions. */
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filters {padding:0 0 14px!important;margin:0 auto 12px!important;text-align:left;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filter-groups {display:flex!important;flex-wrap:wrap;gap:12px 20px;margin:6px 0 12px!important;justify-content:flex-start;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filter-field > select {margin:0;min-height:36px;padding:6px 10px;font-size:15px;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filter-field > span {color:var(--lobby-muted);}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filter-categories {margin:0 0 8px;gap:8px;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filter-index {margin:0;border-top:1px solid var(--lobby-line);color:var(--lobby-muted);}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filter-index > summary {padding:10px 0 2px;line-height:24px;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filter-index[open] > summary {padding-bottom:8px;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filters :is(button.tdnode,div.tdnode) {
+ border:1px solid transparent!important;border-image:none!important;border-radius:4px!important;
+ background:transparent!important;color:var(--lobby-ink)!important;box-shadow:none!important;text-shadow:none!important;
+ min-width:34px;min-height:32px;height:auto;padding:4px 10px!important;margin:0!important;font:15px/22px var(--lobby-font)!important;
+}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filters :is(button.tdnode,div.tdnode):is(:hover,:focus-visible) {background:#fffaee66!important;border-color:var(--lobby-line)!important;filter:none;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filters :is(button.tdnode,div.tdnode):is(.thundertext,.active,[aria-pressed="true"]) {border-image:none!important;background:var(--lobby-accent)!important;color:#fff3d3!important;border-color:var(--lobby-accent)!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filter-alphabet {gap:6px;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-filter-categories > button.tdnode {background:#fffaee55!important;border-color:var(--lobby-line)!important;padding:4px 16px!important;}
+:where(body:not([data-decade-parts]):not([data-shousha-parts]):not([data-decade-loading]):not([data-shousha-loading]):not(.decade-layout):not(.shousha-skinned-arena):not(.shousha-native-game)) #window:has(#arena) .dialog.character-browser .character-browser-status {margin:6px 16px 10px;font-size:14px;}
+
+

@@ -1,14 +1,15 @@
 <template>
-  <section class="session-entry" :class="{ 'online-visible': activeMode, 'classic-entry': !shousha }">
+  <section class="session-entry" :class="{ 'online-visible': activeMode, 'classic-entry': !shousha, 'reference-lobby': shousha && !activeMode }">
     <div class="session-bar">
       <div class="session-switch" role="group" aria-label="对局方式">
         <button :class="{ active: sessionType === 'offline' }" :aria-pressed="sessionType === 'offline'" @click="selectType('offline')">单机</button>
-        <button :class="{ active: sessionType === 'online' }" :aria-pressed="sessionType === 'online'" @click="selectType('online')">联机 <i></i></button>
+        <button :class="{ active: sessionType === 'online' }" :aria-pressed="sessionType === 'online'" @click="selectType('online')">联机</button>
       </div>
-      <span class="session-hint">{{ sessionType === 'online' ? '选择玩法，进入在线房间' : '随时开局，独享策略时光' }}</span>
+      <div v-show="activeMode" ref="lobbyActions" class="session-lobby-actions" role="group" aria-label="联机导航"></div>
+      <button type="button" class="session-options" :aria-expanded="toolsOpen" aria-controls="lobby-common-tools" @click="toolsOpen = !toolsOpen">选项</button>
       <button class="session-exit" @click="exit">退出</button>
     </div>
-    <nav class="lobby-common-tools" aria-label="通用设置">
+    <nav v-show="toolsOpen" id="lobby-common-tools" class="lobby-common-tools" aria-label="通用设置">
       <button type="button" class="primary" @click="settings('options')">选项</button>
       <button type="button" @click="workshop">UI 工坊</button>
       <button type="button" @click="settings('log')">日志设置</button>
@@ -19,7 +20,7 @@
       <button type="button" @click="settings('other')">其它</button>
       <span>开局前即可调整设置</span>
     </nav>
-    <OnlineLobby v-if="activeMode" :mode-id="activeMode" @back="activeMode = ''" @play="play" @mode="activeMode = $event" />
+    <OnlineLobby v-if="activeMode" :mode-id="activeMode" :navigation-target="lobbyActions" @back="activeMode = ''" @play="play" @mode="activeMode = $event" />
     <component v-else :is="shousha ? ShoushaSplash : OnloadSplash" :handle="handle" :click="choose" />
     <div v-if="notice" class="entry-notice" role="status">{{ notice }}<button @click="notice = ''">知道了</button></div>
   </section>
@@ -41,6 +42,8 @@ const sessionType = ref(lib.config.sessionType || (lib.config.mode === "connect"
 const activeMode = ref(sessionStorage.getItem("noname_online_return") || "");
 sessionStorage.removeItem("noname_online_return");
 const notice = ref("");
+const toolsOpen = ref(false);
+const lobbyActions = ref<HTMLElement | null>(null);
 let entering = false;
 async function workshop() {
   if (entering) return;

@@ -4,6 +4,8 @@
  * skills, replace event contents, change a player's state, or register hooks.
  * This is an API boundary for bundled providers, not a sandbox for arbitrary JS.
  */
+import { characterGalleryPacks } from "./characterGallery.js";
+
 export function copySceneData(value, seen = new Map()) {
 	if (typeof value === "function") return undefined;
 	if (!value || typeof value !== "object") return value;
@@ -60,9 +62,9 @@ export function createSceneContext(host, { settingsKey, defaults = {}, actions =
 		sceneLib[key] = copySceneData(lib[key] || {});
 	}
 	function importedMetadata() {
-		return { character: Object.fromEntries(Object.entries(lib.imported.character || {}).map(([key, pack]) => [key, {
+		return { character: characterGalleryPacks(Object.fromEntries(Object.entries(lib.imported.character || {}).map(([key, pack]) => [key, {
 			character: copySceneData(pack.character || {}), translate: copySceneData(pack.translate || {}),
-		}])) };
+		}]))) };
 	}
 	function refreshSort() {
 		for (const pack of Object.values(lib.imported.character || {})) {
@@ -72,7 +74,7 @@ export function createSceneContext(host, { settingsKey, defaults = {}, actions =
 	sceneLib.imported = importedMetadata();
 	refreshSort();
 	const sceneGet = {};
-	for (const key of ["cnNumber", "translation", "slimName", "rand", "itemtype", "groupnature"]) {
+	for (const key of ["cnNumber", "translation", "plainText", "slimName", "rand", "itemtype", "groupnature"]) {
 		if (typeof get[key] === "function") sceneGet[key] = (...args) => copySceneData(get[key](...args));
 	}
 	sceneGet.config = (key, mode = config.mode) => config.mode_config?.[mode]?.[key] ?? config[key];
@@ -119,6 +121,9 @@ export function createSceneContext(host, { settingsKey, defaults = {}, actions =
 				sceneLib.characterPack[name] = pack.character;
 				Object.assign(sceneLib.translate, pack.translate);
 				sceneLib.translate[name + "_character_config"] ||= pack.translate[name] || sceneLib.translate[name] || name;
+				const label = new DOMParser().parseFromString(String(sceneLib.translate[name + "_character_config"]), 'text/html').body.textContent;
+				sceneLib.translate[name + "_character_config"] = label.trim() || name;
+				pack.translate[name + "_character_config"] = label.trim() || name;
 			}
 			refreshSort();
 		},

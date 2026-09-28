@@ -27,7 +27,7 @@ test('original resources retain exact SHA-256 and all choices validate as worksh
 });
 test('saved Liuli option renders the reference gold artwork, never the old pink primitive',async()=>{
  const {parent}=fixture();const node=renderAttackLine({style:'Liuli',path:[200,150,500,150],parent});
- assert.equal(node.style.width,'302px');assert.equal(node.style.height,'60px');assert.equal(node.style.top,'120px');
+ assert.equal(node.style.width,'300px');assert.equal(node.style.height,'60px');assert.equal(node.style.top,'120px');
  assert.ok(node.style.background.includes('yulongLineXy/line.png'));
  assert.equal(node.animations[0].options.duration,1400);assert.equal(node.animations[0].keyframes[1].offset,50/1400);
  for(const animation of node.animations)animation.finish();await new Promise(r=>setImmediate(r));assert.equal(node.removed,true);
@@ -36,7 +36,7 @@ test('ZIP artwork preserves dimensions, extension/retraction timing, direction a
  const {parent}=fixture();
  for(const [style,height,folder] of [['ZipYulong',50,'yulongLineXy'],['ZipJingdian',60,'jingdianLineXy'],['ZipBaoji',60,'baojilinexy']]){
   const node=renderAttackLine({style,path:[100,200,100,100],parent,assetURL:'/game/'});
-  assert.equal(node.style.height,height+'px');assert.equal(node.style.width,'102px');assert.equal(node.style.top,'170px');
+  assert.equal(node.style.height,height+'px');assert.equal(node.style.width,'100px');assert.equal(node.style.top,(200-height/2)+'px');
   assert.ok(node.style.background.includes('/game/image/pointer/migrated/'+folder+'/line.png'));
   assert.equal(node.animations[0].keyframes[1].offset,50/1400);assert.equal(node.animations[0].options.duration,1400);
   assert.ok(node.animations[0].keyframes[2].transform.startsWith('rotate(-90deg)'));

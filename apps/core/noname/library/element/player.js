@@ -7,6 +7,7 @@ import { AsyncFunction } from "@/util/index.js";
 import dedent from "dedent";
 import { listenForActivation } from "../../ui/activation.js";
 import { displayRandom } from "../../util/displayRandom.js";
+import { playerLinePath } from "../../ui/lineCoordinates.js";
 import { emitPresentation, playerPresentation, rememberHandLimit, rememberDying, clearPlayerPresentation } from "../../ui/presentationEvents.js";
 
 let fullscreenPresentationId = 0;
@@ -2892,36 +2893,22 @@ export class Player extends HTMLDivElement {
 	$throwEmotion(target, name, rotate) {
 		emitPresentation("emotion", () => ({ player: playerPresentation(this), target: playerPresentation(target), emotion: String(name) }));
 		game.addVideo("throwEmotion", this, [target.dataset.position, name]);
-		var getLeft = function (player) {
-			if (player == game.me && !ui.fakeme && !ui.chess) {
-				return player.getLeft() + player.node.avatar.offsetWidth / 2;
-			}
-			return player.getLeft() + player.offsetWidth / 2;
-		};
 		var player = this;
-		var emotion = ui.create.div("", '<div style="text-align:center"> <img src="' + lib.assetURL + "image/emotion/throw_emotion/" + name + '1.png"> </div>', game.chess ? ui.chess : ui.window);
+		const parent = game.chess ? ui.chess : ui.window;
+		const path = playerLinePath(player, target, parent);
+		if (!path) return;
+		var emotion = ui.create.div("", '<div style="text-align:center"> <img src="' + lib.assetURL + "image/emotion/throw_emotion/" + name + '1.png"> </div>', parent);
 		emotion.style.width = "60px";
 		emotion.style.height = "60px";
 		var width = emotion.offsetWidth / 2;
 		var height = emotion.offsetHeight / 2;
-		if (game.chess) {
-			width += 60;
-		}
-		var left = getLeft(player) - width;
-		var top = player.getTop() + player.offsetHeight / 3 - height;
+		var left = path[0] - width;
+		var top = path[1] - height;
 		emotion.style.left = left + "px";
 		emotion.style.top = top + "px";
-		var left2 = getLeft(target) - width;
-		var top2 = target.getTop() + target.offsetHeight / 3 - height;
-		if (["egg", "flower", "shoe"].includes(name) || rotate) {
-			var num1 = 0.95 + displayRandom() * (1.1 - 0.95);
-			var num2 = 1 + displayRandom() * (3 - 1);
-			var left2 = getLeft(target) / num1 - width;
-			var top2 = target.getTop() + target.offsetHeight / num2 - height;
-		} else {
-			var left2 = getLeft(target) - width;
-			var top2 = target.getTop() + target.offsetHeight / 3 - height;
-		}
+		var left2 = path[2] - width;
+		var top2 = path[3] - height;
+		emotion.style.pointerEvents = "none";
 		emotion.style["z-index"] = 10;
 		emotion.style.transform = "translateY(" + (top2 - top) + "px) translateX(" + (left2 - left) + "px)";
 		// @ts-expect-error ignore
@@ -2929,7 +2916,7 @@ export class Player extends HTMLDivElement {
 			emotion.firstElementChild.style.transform = "rotate(1440deg)";
 		}
 		if (lib.config.background_audio) {
-			game.playAudio("effect", "throw_" + name + get.rand(1, 2));
+			game.playAudio("effect", "throw_" + name + (1 + Math.floor(displayRandom() * 2)));
 		}
 		setTimeout(function () {
 			emotion.innerHTML = '<div style="text-align:center"> <img src="' + lib.assetURL + "image/emotion/throw_emotion/" + name + '2.png"> </div>';
@@ -3771,8 +3758,7 @@ export class Player extends HTMLDivElement {
 									lib.character[character] = get.convertedCharacter(["", "", 0, [], (list.find(i => i[0] == character) || [character, []])[1]]);
 								}
 								player.smoothAvatar(name == "name2");
-								const skinImg = !lib.config.skin[character] && lib.character[character]?.img;
-								skinImg ? player.node["avatar" + name.slice(4)].setBackgroundImage(skinImg) : player.node["avatar" + name.slice(4)].setBackground(character, "character");
+								player.node["avatar" + name.slice(4)].setBackground(character, "character");
 								player.node["avatar" + name.slice(4)].show();
 								if (goon) {
 									delete lib.character[character];
@@ -5040,7 +5026,9 @@ export class Player extends HTMLDivElement {
 			);
 			game.addVideo("line", this, [target.dataset.position, config]);
 			emitPresentation("line", () => ({ player: playerPresentation(this), target: playerPresentation(target) }));
-			const line = game.linexy([this.getLeft() + this.offsetWidth / 2, this.getTop() + this.offsetHeight / 2, target.getLeft() + target.offsetWidth / 2, target.getTop() + target.offsetHeight / 2], config, true);
+			const path = playerLinePath(this, target, game.chess ? ui.chess : ui.arena);
+			if (!path) return;
+			const line = game.linexy(path, config, true);
 			if (line?.dataset) line.dataset.presentationLine = "player";
 		}
 	}
@@ -7722,13 +7710,13 @@ export class Player extends HTMLDivElement {
 			for (const key of keys) {
 				let preResult = "unchanged";
 				for (const skill of skills) {
-					const mod = get.info(skill).mod[key == "cardsuit" ? "suit" : key];
-					if (mod) {
+					const mod = get.info(skill)?.mod?.[key == "cardsuit" ? "suit" : key];
+					if (typeof mod === "function") {
 						let arg = [card, this, get[key.slice(4)](card, false), preResult];
 						let result = mod.call(game, ...arg);
 						if (key == "cardsuit") {
-							const mod2 = get.info(skill).mod[key];
-							if (mod2) {
+							const mod2 = get.info(skill)?.mod?.[key];
+							if (typeof mod2 === "function") {
 								let arg2 = [card, this, get[key.slice(4)](card, false), result];
 								result = mod2.call(game, ...arg2);
 							}
@@ -8175,8 +8163,8 @@ export class Player extends HTMLDivElement {
 			skills.sort((a, b) => get.priority(a) - get.priority(b));
 		}
 		for (let skill of skills) {
-			let mod = get.info(skill).mod.canBeDiscarded;
-			if (mod) {
+			let mod = get.info(skill)?.mod?.canBeDiscarded;
+			if (typeof mod === "function") {
 				for (let i = 0; i < next.cards.length; i++) {
 					let arg = [next.cards[i], next.discarder, this, event, "unchanged"],
 						result = mod.call(game, ...arg);
@@ -8189,8 +8177,8 @@ export class Player extends HTMLDivElement {
 					}
 				}
 			}
-			mod = get.info(skill).mod.cardDiscardable;
-			if (mod) {
+			mod = get.info(skill)?.mod?.cardDiscardable;
+			if (typeof mod === "function") {
 				for (let i = 0; i < next.cards.length; i++) {
 					let arg = [next.cards[i], this, event, "unchanged"],
 						result = mod.call(game, ...arg);
@@ -8345,13 +8333,13 @@ export class Player extends HTMLDivElement {
 			for (const key of keys) {
 				let preResult = "unchanged";
 				for (const skill of skills) {
-					const mod = get.info(skill).mod[key == "cardsuit" ? "suit" : key];
-					if (mod) {
+					const mod = get.info(skill)?.mod?.[key == "cardsuit" ? "suit" : key];
+					if (typeof mod === "function") {
 						let arg = [card, this, get[key.slice(4)](card, false), preResult];
 						let result = mod.call(game, ...arg);
 						if (key == "cardsuit") {
-							const mod2 = get.info(skill).mod[key];
-							if (mod2) {
+							const mod2 = get.info(skill)?.mod?.[key];
+							if (typeof mod2 === "function") {
 								let arg2 = [card, this, get[key.slice(4)](card, false), result];
 								result = mod2.call(game, ...arg2);
 							}
@@ -15170,6 +15158,14 @@ export class Player extends HTMLDivElement {
 					}
 				}
 			}
+			if (ui.arena.classList.contains("compact-seats")) {
+				const origin = playerLinePath(this, this, ui.arena);
+				const scale = parseFloat(ui.arena.style.getPropertyValue("--table-discard-scale")) || 1;
+				if (origin) {
+					dx = (origin[0] - ui.arena.offsetWidth / 2) / scale;
+					dy = (origin[1] - ui.arena.offsetHeight / 2) / scale;
+				}
+			}
 			if (node.style.transform && node.style.transform != "none" && node.style.transform.indexOf("translate") == -1) {
 				node.style.transform += " translate(" + dx + "px," + dy + "px)";
 			} else {
@@ -15189,6 +15185,8 @@ export class Player extends HTMLDivElement {
 		}
 		var cards = ui.thrown;
 		var pw = ui.arena.offsetWidth;
+		const tableDiscardScale = ui.arena.classList.contains("compact-seats") ? parseFloat(ui.arena.style.getPropertyValue("--table-discard-scale")) || 1 : 1;
+		pw /= tableDiscardScale;
 		var cardWidth = 105;
 		var cardGap = 2;
 		var totalWidth = cards.filter(i => !i.subThrow).length * cardWidth + (cards.filter(i => !i.subThrow).length - 1) * cardGap;
@@ -15219,7 +15217,7 @@ export class Player extends HTMLDivElement {
 				dlcX += xx;
 				x -= xx;
 			}
-			cards[j].style.transform = "translate(" + x + "px, -30px)";
+			cards[j].style.transform = "translate(" + x + "px, " + (ui.arena.classList.contains("compact-seats") ? 0 : -30) + "px)";
 			if (cards[j].node && j < cards.length - 1 && infoOffset > 0) {
 				var actualInfoOffset = infoOffset;
 				if (infoOffset > 40) {

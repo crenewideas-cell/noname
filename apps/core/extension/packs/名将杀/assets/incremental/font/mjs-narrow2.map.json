@@ -1,0 +1,911 @@
+{
+  "family": "mjs-narrow2",
+  "font_ttf": "C:/Users/28113/Desktop/noname/无名杀（十周年）/resources/app/src/extension/名将杀/assets/incremental/font/mjs-narrow2.ttf",
+  "em": 256,
+  "ascent": 220,
+  "descent": 36,
+  "code_base": "E000",
+  "generated": "2026-09-25 08:14:55",
+  "skills": [
+    {
+      "id": "mjs003_skill_mjs_fenglangjuxu",
+      "name": "封狼居胥",
+      "groups": [
+        "封狼",
+        "居胥"
+      ],
+      "codes": [
+        "E000",
+        "E001"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_heyijiawei",
+      "name": "何以家为",
+      "groups": [
+        "何以",
+        "家为"
+      ],
+      "codes": [
+        "E002",
+        "E003"
+      ]
+    },
+    {
+      "id": "mjs003_skill_msjyingma",
+      "name": "饮马瀚海",
+      "groups": [
+        "饮马",
+        "瀚海"
+      ],
+      "codes": [
+        "E004",
+        "E005"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_liaodi",
+      "name": "料敌合变",
+      "groups": [
+        "料敌",
+        "合变"
+      ],
+      "codes": [
+        "E006",
+        "E007"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_chuqi",
+      "name": "出奇无穷",
+      "groups": [
+        "出奇",
+        "无穷"
+      ],
+      "codes": [
+        "E008",
+        "E009"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_feisheng",
+      "name": "飞升太虚",
+      "groups": [
+        "飞升",
+        "太虚"
+      ],
+      "codes": [
+        "E00A",
+        "E00B"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_dunjia",
+      "name": "遁甲天书",
+      "groups": [
+        "遁甲",
+        "天书"
+      ],
+      "codes": [
+        "E00C",
+        "E00D"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_xicao",
+      "name": "掷杯戏曹",
+      "groups": [
+        "掷杯",
+        "戏曹"
+      ],
+      "codes": [
+        "E00E",
+        "E00F"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_nanzhong",
+      "name": "善始难终",
+      "groups": [
+        "善始",
+        "难终"
+      ],
+      "codes": [
+        "E010",
+        "E011"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_dangzheng",
+      "name": "容纳谠正",
+      "groups": [
+        "容纳",
+        "谠正"
+      ],
+      "codes": [
+        "E012",
+        "E013"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_xinlv",
+      "name": "泰始新律",
+      "groups": [
+        "泰始",
+        "新律"
+      ],
+      "codes": [
+        "E014",
+        "E015"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_powei",
+      "name": "奋身破围",
+      "groups": [
+        "奋身",
+        "破围"
+      ],
+      "codes": [
+        "E016",
+        "E017"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_guanniang",
+      "name": "荀家灌娘",
+      "groups": [
+        "荀家",
+        "灌娘"
+      ],
+      "codes": [
+        "E018",
+        "E019"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsqijin",
+      "name": "七进七出",
+      "groups": [
+        "七进",
+        "七出"
+      ],
+      "codes": [
+        "E01A",
+        "E01B"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsshidan",
+      "name": "浑身是胆",
+      "groups": [
+        "浑身",
+        "是胆"
+      ],
+      "codes": [
+        "E01C",
+        "E01D"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsrulong",
+      "name": "枪出如龙",
+      "groups": [
+        "枪出",
+        "如龙"
+      ],
+      "codes": [
+        "E01E",
+        "E01F"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_yitong",
+      "name": "一统六合",
+      "groups": [
+        "一统",
+        "六合"
+      ],
+      "codes": [
+        "E020",
+        "E021"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_qinnu",
+      "name": "秦弩齐射",
+      "groups": [
+        "秦弩",
+        "齐射"
+      ],
+      "codes": [
+        "E022",
+        "E023"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_changcheng",
+      "name": "万里长城",
+      "groups": [
+        "万里",
+        "长城"
+      ],
+      "codes": [
+        "E024",
+        "E025"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_zhuangyong",
+      "name": "果势壮勇",
+      "groups": [
+        "果势",
+        "壮勇"
+      ],
+      "codes": [
+        "E026",
+        "E027"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_zhuifeng",
+      "name": "衍水追锋",
+      "groups": [
+        "衍水",
+        "追锋"
+      ],
+      "codes": [
+        "E028",
+        "E029"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_zhucheng",
+      "name": "筑城守藩",
+      "groups": [
+        "筑城",
+        "守藩"
+      ],
+      "codes": [
+        "E02A",
+        "E02B"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_qiaojie",
+      "name": "巧解玉环",
+      "groups": [
+        "巧解",
+        "玉环"
+      ],
+      "codes": [
+        "E02C",
+        "E02D"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_shiqin",
+      "name": "事秦谨慎",
+      "groups": [
+        "事秦",
+        "谨慎"
+      ],
+      "codes": [
+        "E02E",
+        "E02F"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_huiyan",
+      "name": "慧眼识郎",
+      "groups": [
+        "慧眼",
+        "识郎"
+      ],
+      "codes": [
+        "E030",
+        "E031"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_daowang",
+      "name": "悼亡诗",
+      "groups": [
+        "悼亡",
+        "诗"
+      ],
+      "codes": [
+        "E032",
+        "E033"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_pancai",
+      "name": "潘才如江",
+      "groups": [
+        "潘才",
+        "如江"
+      ],
+      "codes": [
+        "E034",
+        "E035"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_zhiguo",
+      "name": "掷果盈车",
+      "groups": [
+        "掷果",
+        "盈车"
+      ],
+      "codes": [
+        "E036",
+        "E037"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_fenggong",
+      "name": "奉公如法",
+      "groups": [
+        "奉公",
+        "如法"
+      ],
+      "codes": [
+        "E038",
+        "E039"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_xianglu",
+      "name": "狭路相逢",
+      "groups": [
+        "狭路",
+        "相逢"
+      ],
+      "codes": [
+        "E03A",
+        "E03B"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_fujing",
+      "name": "负荆请罪",
+      "groups": [
+        "负荆",
+        "请罪"
+      ],
+      "codes": [
+        "E03C",
+        "E03D"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_fanfou",
+      "name": "尚能饭否",
+      "groups": [
+        "尚能",
+        "饭否"
+      ],
+      "codes": [
+        "E03E",
+        "E03F"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_shezi",
+      "name": "舍子全义",
+      "groups": [
+        "舍子",
+        "全义"
+      ],
+      "codes": [
+        "E040",
+        "E041"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_zhongzhen",
+      "name": "忠贞刚烈",
+      "groups": [
+        "忠贞",
+        "刚烈"
+      ],
+      "codes": [
+        "E042",
+        "E043"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_shizu",
+      "name": "琅琊王氏",
+      "groups": [
+        "琅琊",
+        "王氏"
+      ],
+      "codes": [
+        "E044",
+        "E045"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_shizu_yiwu",
+      "name": "江左夷吾",
+      "groups": [
+        "江左",
+        "夷吾"
+      ],
+      "codes": [
+        "E046",
+        "E047"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_shizu_zhenjing",
+      "name": "镇之以静",
+      "groups": [
+        "镇之",
+        "以静"
+      ],
+      "codes": [
+        "E048",
+        "E049"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_wenji",
+      "name": "闻鸡起舞",
+      "groups": [
+        "闻鸡",
+        "起舞"
+      ],
+      "codes": [
+        "E04A",
+        "E04B"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_jiji",
+      "name": "中流击楫",
+      "groups": [
+        "中流",
+        "击楫"
+      ],
+      "codes": [
+        "E04C",
+        "E04D"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_zimu",
+      "name": "孤军自募",
+      "groups": [
+        "孤军",
+        "自募"
+      ],
+      "codes": [
+        "E04E",
+        "E04F"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_anying",
+      "name": "安营筑垒",
+      "groups": [
+        "安营",
+        "筑垒"
+      ],
+      "codes": [
+        "E050",
+        "E051"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_shiwu",
+      "name": "忠勇恃武",
+      "groups": [
+        "忠勇",
+        "恃武"
+      ],
+      "codes": [
+        "E052",
+        "E053"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_shangsiyaoyu",
+      "name": "上巳耀舆",
+      "groups": [
+        "上巳",
+        "耀舆"
+      ],
+      "codes": [
+        "E054",
+        "E055"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_tongshengyuchuang",
+      "name": "同升御床",
+      "groups": [
+        "同升",
+        "御床"
+      ],
+      "codes": [
+        "E056",
+        "E057"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_dujianghualong",
+      "name": "渡江化龙",
+      "groups": [
+        "渡江",
+        "化龙"
+      ],
+      "codes": [
+        "E058",
+        "E059"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_cunsishenshen",
+      "name": "存思身神",
+      "groups": [
+        "存思",
+        "身神"
+      ],
+      "codes": [
+        "E05A",
+        "E05B"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_shangqingzhenjing",
+      "name": "上清真经",
+      "groups": [
+        "上清",
+        "真经"
+      ],
+      "codes": [
+        "E05C",
+        "E05D"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_tianren",
+      "name": "天人将军",
+      "groups": [
+        "天人",
+        "将军"
+      ],
+      "codes": [
+        "E05E",
+        "E05F"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_shimeng",
+      "name": "誓盟拒守",
+      "groups": [
+        "誓盟",
+        "拒守"
+      ],
+      "codes": [
+        "E060",
+        "E061"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_fengfaxingling",
+      "name": "奉法行令",
+      "groups": [
+        "奉法",
+        "行令"
+      ],
+      "codes": [
+        "E062",
+        "E063"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjs_huangtinghuaxian",
+      "name": "黄庭化仙",
+      "groups": [
+        "黄庭",
+        "化仙"
+      ],
+      "codes": [
+        "E064",
+        "E065"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjhongyan",
+      "name": "鸿雁传书",
+      "groups": [
+        "鸿雁",
+        "传书"
+      ],
+      "codes": [
+        "E066",
+        "E067"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsniexue",
+      "name": "啮雪吞毡",
+      "groups": [
+        "啮雪",
+        "吞毡"
+      ],
+      "codes": [
+        "E068",
+        "E069"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjshanshi",
+      "name": "汉使北牧",
+      "groups": [
+        "汉使",
+        "北牧"
+      ],
+      "codes": [
+        "E06A",
+        "E06B"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsliangchaofengyi",
+      "name": "两朝凤仪",
+      "groups": [
+        "两朝",
+        "凤仪"
+      ],
+      "codes": [
+        "E06C",
+        "E06D"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjswufeiliuli",
+      "name": "五废六立",
+      "groups": [
+        "五废",
+        "六立"
+      ],
+      "codes": [
+        "E06E",
+        "E06F"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsfengluojinlao",
+      "name": "凤落金牢",
+      "groups": [
+        "凤落",
+        "金牢"
+      ],
+      "codes": [
+        "E070",
+        "E071"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsrongjinduansuo",
+      "name": "熔金断索",
+      "groups": [
+        "熔金",
+        "断索"
+      ],
+      "codes": [
+        "E072",
+        "E073"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsanzhulouchuan",
+      "name": "暗筑楼船",
+      "groups": [
+        "暗筑",
+        "楼船"
+      ],
+      "codes": [
+        "E074",
+        "E075"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsshetushoubing",
+      "name": "赦徒授兵",
+      "groups": [
+        "赦徒",
+        "授兵"
+      ],
+      "codes": [
+        "E076",
+        "E077"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjscaiju",
+      "name": "采菊东篱",
+      "groups": [
+        "采菊",
+        "东篱"
+      ],
+      "codes": [
+        "E082",
+        "E083"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsguiqv",
+      "name": "归去来兮",
+      "groups": [
+        "归去",
+        "来兮"
+      ],
+      "codes": [
+        "E084",
+        "E085"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjstaohuayuan",
+      "name": "桃花源",
+      "groups": [
+        "桃花",
+        "源"
+      ],
+      "codes": [
+        "E086",
+        "E087"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsxieshi",
+      "name": "陈郡谢氏",
+      "groups": [
+        "陈郡",
+        "谢氏"
+      ],
+      "codes": [
+        "E088",
+        "E089"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsshanshui",
+      "name": "山水诗宗",
+      "groups": [
+        "山水",
+        "诗宗"
+      ],
+      "codes": [
+        "E08A",
+        "E08B"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjschitang",
+      "name": "池塘春草",
+      "groups": [
+        "池塘",
+        "春草"
+      ],
+      "codes": [
+        "E08C",
+        "E08D"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjshuopo",
+      "name": "火破连营",
+      "groups": [
+        "火破",
+        "连营"
+      ],
+      "codes": [
+        "E08E",
+        "E08F"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsjieyi",
+      "name": "解衣共舞",
+      "groups": [
+        "解衣",
+        "共舞"
+      ],
+      "codes": [
+        "E090",
+        "E091"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsfengshenxiuyi",
+      "name": "风神秀异",
+      "groups": [
+        "风神",
+        "秀异"
+      ],
+      "codes": [
+        "E092",
+        "E093"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjszhuyuzace",
+      "name": "珠玉在侧",
+      "groups": [
+        "珠玉",
+        "在侧"
+      ],
+      "codes": [
+        "E094",
+        "E095"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjssimengchengji",
+      "name": "思梦成疾",
+      "groups": [
+        "思梦",
+        "成疾"
+      ],
+      "codes": [
+        "E096",
+        "E097"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsbaizhanwujie",
+      "name": "百战无竭",
+      "groups": [
+        "百战",
+        "无竭"
+      ],
+      "codes": [
+        "E098",
+        "E099"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsluzhuanfenghui",
+      "name": "路转锋回",
+      "groups": [
+        "路转",
+        "锋回"
+      ],
+      "codes": [
+        "E09A",
+        "E09B"
+      ]
+    },
+    {
+      "id": "mjs003_skill_mjsxuruizhuizhan",
+      "name": "蓄锐追斩",
+      "groups": [
+        "蓄锐",
+        "追斩"
+      ],
+      "codes": [
+        "E09C",
+        "E09D"
+      ]
+    }
+  ],
+  "superscript_digits": {
+    "0": "E078",
+    "1": "E079",
+    "2": "E07A",
+    "3": "E07B",
+    "4": "E07C",
+    "5": "E07D",
+    "6": "E07E",
+    "7": "E07F",
+    "8": "E080",
+    "9": "E081"
+  }
+}

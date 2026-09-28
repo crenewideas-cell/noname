@@ -16,7 +16,9 @@ export async function importCharacterPack(name: string) {
 	});
 }
 
-export async function importExtension(name: string) {
+export async function importExtension(name: string, strict = false) {
+	// The native supplement runs in core after extension arena hooks.
+	if (name === "cardpile") return;
 	if (!game.hasExtension(name) && !lib.config.all.stockextension.includes(name)) {
 		// @ts-expect-error ignore
 		await game.import("extension", await createEmptyExtension(name));
@@ -26,8 +28,9 @@ export async function importExtension(name: string) {
 		await checkExtensionSojson(name);
 	}
 	try {
-		await importFunction("extension", `/extension/${encodeURIComponent(name)}/extension`);
+		await importFunction("extension", `/extension/${encodeURIComponent(name)}/extension`, strict);
 	} catch (e) {
+		if (strict) throw e;
 		console.error(`扩展《${name}》加载失败`, e);
 		let close = confirm(`扩展《${name}》加载失败，是否关闭此扩展？错误信息: \n${e instanceof Error ? e.stack : String(e)}`);
 		if (close) {
@@ -51,11 +54,12 @@ export async function importMode(name: string) {
 	await importFunction("mode", path);
 }
 
-async function importFunction(type: "card" | "character" | "extension" | "mode", path: string): Promise<void> {
-	const modeContent = await import(/* @vite-ignore */ path + ".js").catch(async e => {
+async function importFunction(type: "card" | "character" | "extension" | "mode", path: string, fresh = false): Promise<void> {
+	const query = fresh ? `?runtime=${Date.now()}` : "";
+	const modeContent = await import(/* @vite-ignore */ path + ".js" + query).catch(async e => {
 		if (window.isSecureContext) {
 			try {
-				return await import(/* @vite-ignore */ path + ".ts");
+				return await import(/* @vite-ignore */ path + ".ts" + query);
 			} catch {
 				throw e;
 			}

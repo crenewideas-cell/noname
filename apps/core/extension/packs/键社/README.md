@@ -5,8 +5,8 @@
 - `extension.js`：扩展入口，向本体皮肤管理服务注册清单。
 - `info.json`：扩展名称与版本。
 - `image/skin-sets/manifest.json`：角色、中文名、资源路径、形态关联与 SHA-256。
-- `image/skin-sets/original/`：19 张随包携带的旧图。
-- `image/skin-sets/new/`：19 张键社新装。
+- `image/skin-sets/original/`：85 张随包携带的旧图。
+- `image/skin-sets/new/`：85 张键社新装。
 
 将整个目录作为扩展导出，安装目录使用 `extension/键社/`。所有新旧套装图片均使用 `extension/键社/image/skin-sets/...` 路径，不依赖 temp 或原先的本体皮肤资源目录。
 

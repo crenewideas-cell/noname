@@ -9,6 +9,7 @@ export function installLocalDynamicPacks(env) {
   const base = new URL(resourcePath, new URL(env.lib.assetURL || './', document.baseURI)).href;
   const lazy = createLazyCatalog({ read: readJSON, base,
     bindings: () => env.lib.config.localDynamicSkinBindings || {},
+    assignments:()=>env.lib.config.skin_management?.dynamicAssignments||{},
     merge(rows, index) {
       hub.inventory = index.packs;
       for (const { pack: name, entry } of rows) {

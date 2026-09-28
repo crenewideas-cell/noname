@@ -1,7 +1,6 @@
-import {lib, game, ui, get, _status, openCharacterSkins, subscribeCharacterSkins, installLocalDynamicPacks} from 'noname';
+import {lib, game, ui, get, _status, openCharacterSkins, subscribeCharacterSkins, installLocalDynamicPacks, skinEnabled} from 'noname';
 import metadata from '../十周年局内UI/animation-assets.json' with {type:'json'};
 import {directories} from './filesystem.js';
-import {skinEnabled} from '../../noname/skin/management.js';
 
 // Adapt the original Qianhuan controls to the installed renderer, without
 // installing decadeUI's legacy player/rules overrides.

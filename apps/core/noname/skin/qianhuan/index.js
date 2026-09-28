@@ -1,5 +1,5 @@
 import { lib, game, get, ui, _status } from 'noname';
-import {openSkinManager} from '../manager.js';
+import {createSkinManagementButton} from '../managementButton.js';
 
 let active;
 let notice;
@@ -92,8 +92,10 @@ export function openCharacterSkins(character, player, requestedPage) {
   const page=requestedPage||(currentPlayer?lib.config.qhly_doubledefaultpage:lib.config.qhly_listdefaultpage);
   view=game.qhly_open(id,page||'skin',currentPlayer);
   if(!view){finish();throw new Error('千幻页面尚未就绪');}
-  const manage=document.createElement('button');manage.className='qhly-manage-entry';manage.textContent='皮肤管理';
-  manage.onclick=event=>{event.stopPropagation();openSkinManager(id);};view.append(manage);
+  const manage=createSkinManagementButton(id,()=>{
+   if(disposed||!view?.isConnected)return;
+   pending={id,player:currentPlayer,page:requestedPage};view.close();
+  });manage.classList.add('qhly-manage-entry');view.append(manage);
   currentCharacter=id; currentPage=requestedPage;
   game.saveConfig('qhly_lastCharacter',id);
   view.addEventListener('close',()=>{

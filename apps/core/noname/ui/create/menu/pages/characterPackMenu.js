@@ -2,6 +2,10 @@ import { menuContainer, popupContainer, updateActive, setUpdateActive, updateAct
 import { ui, game, get, ai, lib, _status } from "noname";
 import { characterMenuOwner, createPackSubmenu, mergedMenuSections } from "../extensionGroups.js";
 
+import { installMenuSearch, revealMenuTarget } from "../menuSearch.js";
+import { rememberCharacterPackChoices } from "../../../../init/characterPackRuntime.js";
+import { refreshExtensionCharacters } from "../../../../init/extensionRuntime.js";
+
 export const characterPackMenu = function (connectMenu, context) {
 	/**
 	 * 由于联机模式会创建第二个菜单，所以需要缓存一下可变的变量
@@ -17,6 +21,14 @@ export const characterPackMenu = function (connectMenu, context) {
 	var rightPane = start.lastChild;
 	const packNodes = new Map();
 	const groupNodes = new Map();
+	const packTargets = new Map();
+	let packSearch;
+	const packEnabled = mode => {
+		if (mode.startsWith("mode_extension_")) return lib.config[`extension_${mode.slice(15)}_enable`] !== false && lib.config[`extension_${mode.slice(15)}_characters_enable`] !== false;
+		if (mode.startsWith("mode_")) return undefined;
+		const owner = lib.characterPackExtension?.[mode];
+		return (!owner || lib.config[`extension_${owner}_enable`] !== false) && (connectMenu ? !lib.config.connect_characters.includes(mode) : lib.config.characters.includes(mode));
+	};
 
 	var clickMode = function () {
 		var active = this.parentNode.querySelector(".active");
@@ -89,7 +101,7 @@ export const characterPackMenu = function (connectMenu, context) {
 						}
 					}
 				} else {
-					if (lib.config.characters.includes(node.mode)) {
+					if (packEnabled(node.mode)) {
 						node.classList.remove("off");
 						if (node.link) {
 							node.link.firstChild.classList.add("on");
@@ -103,6 +115,7 @@ export const characterPackMenu = function (connectMenu, context) {
 				}
 			}
 		}
+		packSearch?.refresh();
 	};
 	var togglePack = function (bool) {
 		var name = this._link.config._name;
@@ -129,14 +142,16 @@ export const characterPackMenu = function (connectMenu, context) {
 				} else {
 					lib.config.characters.remove(name);
 				}
+				rememberCharacterPackChoices(lib, game, [name], bool);
 				game.saveConfig("characters", lib.config.characters);
 			}
 		}
 		updateNodes();
+		if (!connectMenu && lib.characterPackExtension?.[name]) refreshExtensionCharacters(lib.characterPackExtension[name]);
 	};
 
-	var createModeConfig = function (mode, position, position2) {
-		var _info = lib.characterPack[mode];
+	var createModeConfig = function (mode, position, position2, embedded = false, characterIds) {
+		var _info = characterIds ? Object.fromEntries(characterIds.map(id => [id, lib.characterPack[mode][id]])) : lib.characterPack[mode];
 		var page = ui.create.div("");
 		var node = ui.create.div(".menubutton.large", lib.translate[mode + "_character_config"], position, clickMode);
 		if (node.innerHTML.length >= 5) {
@@ -146,8 +161,12 @@ export const characterPackMenu = function (connectMenu, context) {
 			position.insertBefore(node, position2);
 		}
 		node.mode = mode;
-		packNodes.set(mode, node);
+		if (!embedded) packNodes.set(mode, node);
 		node._initLink = function () {
+			ui.create.cancelButtonPreparation(page);
+			page.replaceChildren();
+			_info = characterIds ? Object.fromEntries(characterIds.map(id => [id, lib.characterPack[mode][id]])) : lib.characterPack[mode];
+			node.characterSignature = JSON.stringify(Object.keys(_info));
 			node.link = page;
 			page.node = node;
 			var list = [];
@@ -183,11 +202,7 @@ export const characterPackMenu = function (connectMenu, context) {
 						if (!game.hasExtension(extName) || !game.hasExtensionLoaded(extName)) {
 							return false;
 						}
-						// 这块或许应该在加载扩展时候写
-						if (lib.config[`extension_${extName}_characters_enable`] === undefined) {
-							game.saveExtensionConfig(extName, "characters_enable", true);
-						}
-						return lib.config[`extension_${extName}_characters_enable`] === true;
+						return lib.config[`extension_${extName}_characters_enable`] !== false;
 					}
 					// 原逻辑
 					else {
@@ -207,7 +222,10 @@ export const characterPackMenu = function (connectMenu, context) {
 					// game.saveConfig("forbidai_user", lib.config.forbidai_user);
 				},
 			});
-			if (!mode.startsWith("mode_")) {
+			if (embedded) {
+				// Extension settings use this same portrait renderer and click handlers.
+				// Their existing enable control already belongs to the parent page.
+			} else if (!mode.startsWith("mode_")) {
 				cfgnodeAI.style.marginTop = "0px";
 				page.appendChild(cfgnode);
 				page.appendChild(cfgnodeAI);
@@ -270,7 +288,7 @@ export const characterPackMenu = function (connectMenu, context) {
 				} else {
 					var modex = cacheMenux.pages[0].firstChild.querySelector(".active");
 					if (modex && modex.mode) {
-						listb = lib.config["connect_" + modex.mode + "_banned"];
+							listb = lib.config["connect_" + modex.mode + "_banned"] || [];
 					}
 				}
 				for (var pak in lib.characterSort[mode]) {
@@ -297,7 +315,7 @@ export const characterPackMenu = function (connectMenu, context) {
 								if (connectMenu) {
 									var modex = cacheMenux.pages[0].firstChild.querySelector(".active");
 									if (modex && modex.mode) {
-										banned = lib.config["connect_" + modex.mode + "_banned"];
+										banned = lib.config["connect_" + modex.mode + "_banned"] || [];
 									}
 								} else if (_status.connectMode) {
 									return;
@@ -318,12 +336,12 @@ export const characterPackMenu = function (connectMenu, context) {
 								updateActive();
 							},
 						};
-						if (mode.startsWith("mode_") && !mode.startsWith("mode_extension_") && !mode.startsWith("mode_guozhan")) {
+						if (embedded || (mode.startsWith("mode_") && !mode.startsWith("mode_extension_") && !mode.startsWith("mode_guozhan"))) {
 							cfgnodeY.clear = true;
 							delete cfgnodeY.onclick;
 						}
 						var cfgnodeX = createConfig(cfgnodeY);
-						const memberPage = mergedMenuSections(mode.replace(/^mode_extension_/, "")).length ? createPackSubmenu(page, `${lib.translate[pak] || pak}（${listx.length}）`, `characters:${mode}:${pak}`) : page;
+						const memberPage = !embedded && mergedMenuSections(mode.replace(/^mode_extension_/, "")).length ? createPackSubmenu(page, `${lib.translate[pak] || pak}（${listx.length}）`, `characters:${mode}:${pak}`) : page;
 						memberPage.appendChild(cfgnodeX);
 						var buttons = ui.create.buttons(listx, "character", memberPage);
 						for (var i = 0; i < buttons.length; i++) {
@@ -372,7 +390,7 @@ export const characterPackMenu = function (connectMenu, context) {
 			}
 			page.classList.add("menu-buttons");
 			page.classList.add("leftbutton");
-			if (!connectMenu) {
+			if (!connectMenu && !embedded) {
 				if (lib.config.all.sgscharacters.includes(mode)) {
 					ui.create.div(".config.pointerspan", '<span style="opacity:0.5">该武将包不可被隐藏</span>', page);
 				} else if (!mode.startsWith("mode_")) {
@@ -400,6 +418,15 @@ export const characterPackMenu = function (connectMenu, context) {
 		}
 		return node;
 	};
+	// Reuse the original character cards inside extension settings. Keep the
+	// normal pack nodes/search independent, so visiting either tab preserves it.
+	start.createCharacterPackPage = (mode, characterIds) => {
+		if (!lib.characterPack[mode]) return;
+		const node = createModeConfig(mode, document.createElement("div"), undefined, true, characterIds);
+		if (!node.link) node._initLink();
+		node.link.dataset.characterPack = mode;
+		return node.link;
+	};
 	const ensureGroup = function (name, before) {
 		if (groupNodes.has(name)) return groupNodes.get(name);
 		const node = ui.create.div(".menubutton.large", name, start.firstChild, clickMode);
@@ -415,7 +442,7 @@ export const characterPackMenu = function (connectMenu, context) {
 	};
 	const addCharacterMode = function (mode, before) {
 		if (packNodes.has(mode) || mode === "假装无敌Pack" || mode === "EpicFX" || mode === "mode_extension_EpicFX") return;
-		const owner = characterMenuOwner(mode);
+		const owner = characterMenuOwner(mode) || characterMenuOwner(lib.characterPackExtension?.[mode] || "");
 		if (!owner) return createModeConfig(mode, start.firstChild, before);
 		const group = ensureGroup(owner, before);
 		const member = createModeConfig(mode, document.createElement("div"));
@@ -426,6 +453,7 @@ export const characterPackMenu = function (connectMenu, context) {
 			if (!details.contains(member.link)) details.append(member.link);
 			updateNodes();
 		};
+		packTargets.set(mode, {node:group, details, load});
 		details.addEventListener("toggle", () => { if (details.open) load(); });
 		if (details.open) load();
 	};
@@ -500,22 +528,28 @@ export const characterPackMenu = function (connectMenu, context) {
 	rightPane.appendChild(active.link);
 
 	if (!connectMenu) {
+		const setAllPacks = enabled => {
+			const names = [];
+			for (const mode of packNodes.keys()) {
+				if (mode.startsWith("mode_extension_")) {
+					const extension = mode.slice(15);
+					if (game.hasExtension(extension) && game.hasExtensionLoaded(extension)) game.saveExtensionConfig(extension, "characters_enable", enabled);
+				} else if (!mode.startsWith("mode_") && mode !== "custom") names.push(mode);
+			}
+			game.saveConfig("characters", enabled ? names : []);
+			rememberCharacterPackChoices(lib, game, names, enabled);
+			updateNodes();
+		};
 		// 下面使用了var的特性，请不要在这里直接改为let
 		var node1 = ui.create.div(".lefttext", "全部开启", start.firstChild, function () {
-			game.saveConfig(
-				"characters",
-				Object.keys(lib.characterPack).filter(mode => {
-					return !mode.startsWith("mode_") || (mode.startsWith("mode_extension_") && lib.config.all.stockextension.includes(mode.slice(15)));
-				})
-			);
-			updateNodes();
+			setAllPacks(true);
 		});
 		var node3 = ui.create.div(".lefttext", "全部关闭", start.firstChild, function () {
-			game.saveConfig("characters", []);
-			updateNodes();
+			setAllPacks(false);
 		});
 		var node2 = ui.create.div(".lefttext", "恢复默认", start.firstChild, function () {
-			game.saveConfig("characters", lib.config.defaultcharacters);
+			game.saveConfig("characters", lib.config.defaultcharacters.slice());
+			rememberCharacterPackChoices(lib, game, [...packNodes.keys()].filter(name => !name.startsWith("mode_")), name => lib.config.defaultcharacters.includes(name));
 			updateNodes();
 		});
 		node1.style.marginTop = "12px";
@@ -523,6 +557,24 @@ export const characterPackMenu = function (connectMenu, context) {
 		node2.style.marginTop = "2px";
 	}
 
+	packSearch = installMenuSearch(start.firstChild, {
+        label: "搜索武将 / 武将包",
+        entries: () => [...packNodes].map(([mode, node]) => {
+            const target = packTargets.get(mode);
+            const label = get.plainText(node.textContent || mode);
+            return {
+                label,
+                enabled: packEnabled(mode),
+                path: target ? target.node.textContent + " › " + label : label,
+                keywords: [mode, ...Object.keys(lib.characterSort[mode] || {}).map(id => get.plainText(lib.translate[id] || id)), ...Object.keys(lib.characterPack[mode] || {}).flatMap(id => [id, get.plainText(lib.translate[id] || id)])].join(" "),
+                open: () => {
+                    if (target) {
+                        clickMode.call(target.node); target.details.open = true; target.load(); revealMenuTarget(target.details, rightPane);
+                    } else { clickMode.call(node); rightPane.scrollTop = 0; }
+                },
+            };
+        }),
+    });
 	updateNodes();
 
 	/**
@@ -531,13 +583,18 @@ export const characterPackMenu = function (connectMenu, context) {
 	 * @param { string } packName
 	 */
 	return function (packName) {
+		if (!packName) { updateNodes(); return; }
 		// 判断菜单栏有没有加载过这个武将包
 		if (packNodes.has(packName)) {
+			const node = packNodes.get(packName);
+			if (node.link && node.characterSignature !== JSON.stringify(Object.keys(lib.characterPack[packName] || {}))) node._initLink();
+			updateNodes();
 			return;
 		}
 		// 显示不是无名杀自带的武将包
-		if (!lib.connectCharacterPack.includes(packName) && !lib.config.all.characters.includes(packName)) {
+		if (lib.characterPack[packName]) {
 			addCharacterMode(packName, node1);
+			updateNodes();
 			if (connectMenu) {
 				lib.connectCharacterPack.add(packName);
 			}

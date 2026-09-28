@@ -11,13 +11,14 @@ const manifestPath=path.join(output,'manifest.json');
 const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
 const fixed=new Set(['canghaiyizhu.jpg','nysgs_bulianshi.jpg','nysgs_caifuren.jpg','nysgs_dongxie.jpg','nysgs_shen_zhenji.jpg','nysgs_xinxianying.jpg','nysgs_zhenji.jpg','nysgs_zhenji_shadow.jpg']);
 const read=async file=>fs.readFile(file);
-async function characterMetadata(ids){
+async function characterMetadata(ids,existing={}){
  const translations=await fs.readFile(path.join(root,'character/translate.js'),'utf8');
  const names=Object.fromEntries([...translations.matchAll(/^\s*(\w+):\s*"([^"\r\n]+)",?\s*$/gm)].map(match=>[match[1],match[2]]));
- return Object.fromEntries(ids.map(id=>{const base=id.replace(/_(shadow|canghaiyizhu)$/,'');return [id,{name:names[id]||(names[base]?names[base]+' · 形态':names[id.replace('nysgs_jie_','nysgs_')]?'界 · '+names[id.replace('nysgs_jie_','nysgs_')]:id),sex:'female',form:id!==base}];}));
+ return Object.fromEntries(ids.map(id=>{const base=id.replace(/_(shadow|canghaiyizhu)$/,'');return [id,{...existing[id],name:names[id]||(names[base]?names[base]+' · 形态':names[id.replace('nysgs_jie_','nysgs_')]?'界 · '+names[id.replace('nysgs_jie_','nysgs_')]:id),sex:existing[id]?.sex||'female',form:existing[id]?.form??id!==base}];}));
 }
 if(process.argv.includes('--metadata')){
- const manifest=JSON.parse(await read(manifestPath));manifest.characters=await characterMetadata(Object.keys(manifest.sets.find(set=>set.id==='nuyan-qingshan').entries));
+ const manifest=JSON.parse(await read(manifestPath));
+ manifest.characters=await characterMetadata(Object.keys(manifest.sets.find(set=>set.id==='nuyan-qingshan').entries),manifest.characters);
  await fs.writeFile(manifestPath,JSON.stringify(manifest,null,2)+'\n');
 }else if(process.argv.includes('--consume')){
  const manifest=JSON.parse(await read(manifestPath));

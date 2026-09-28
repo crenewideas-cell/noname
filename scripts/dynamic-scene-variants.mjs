@@ -3,7 +3,8 @@ import path from 'node:path';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
 import {createLegacyParser} from '../apps/core/noname/skin/localDynamic/runtime/legacy-parser.js';
-import {avatarLayerTransform,inferredAvatarZoom,subjectBounds} from '../apps/core/noname/skin/localDynamic/runtime/composition.js';
+import {avatarLayerTransform,inferredAvatarZoom,subjectBounds,subjectHeadBounds,paintingBounds} from '../apps/core/noname/skin/localDynamic/runtime/composition.js';
+import {sharedSceneCoordinates} from '../apps/core/noname/skin/localDynamic/runtime/scene-coordinates.js';
 
 // Some legacy packs bind an avatar mesh (daiji2) while also shipping its full
 // painting (daiji). Select a counterpart only after comparing their attachments
@@ -104,6 +105,47 @@ export async function createSceneVariantResolver() {
       full.sceneVariant={source:model.skeleton,expandedMeshes:expanded.length,sharedMeshes:shared.length,addedLimbs,restoresLimbs:addedBody&&!expanded.length,restoresCoverage:addedCoverage&&!expanded.length,...calibration};
       return entry.models.map((m,i)=>i===index?full:m);
     }catch(error){if(error.code!=='ENOENT')console.warn('场景候选未采用',model.skeleton,error.message);}
+  };
+  resolve.pairedScene=async(root,entry,{audit=[]}={})=>{
+    if(!entry.legacy?.beijing||entry.models?.length!==2||entry.scene||Object.keys(entry.composition||{}).length)return;
+    const [bg,m]=entry.models;
+    if(!entry.models.every(m=>/^3\.6\./.test(m.version||''))||!/\/daiji2\.skel$/i.test(m.skeleton))return;
+    if((bg.legacy?.speed??1)!==(m.legacy?.speed??1))return;
+    const full={...m,skeleton:m.skeleton.replace(/2\.skel$/i,'.skel'),atlas:m.atlas.replace(/2\.atlas$/i,'.atlas')};
+    try{
+      const [background,original,replacement]=await Promise.all([data(root,bg),data(root,m),data(root,full)]);
+      const a=meshes(original),b=meshes(replacement),shared=[...a.keys()].filter(n=>b.has(n));
+      audit.push({counts:[a.size,b.size,shared.length]});
+      if(shared.length<5||shared.length/a.size<.8)return;
+      const originalPose=pose(original,m.animation),fullPose=pose(replacement,m.animation),rootPair=sharedSceneCoordinates(originalPose,fullPose);
+      audit.push({rootPair,scenePair:sharedSceneCoordinates(pose(background,bg.animation),fullPose)});
+      const samples=[1/30,.5,1],calibrations=samples.map(time=>align(original,replacement,m.animation,{time}));
+      audit.push({calibrations});
+      const offset=new spine.Vector2(),size=new spine.Vector2();originalPose.getBounds(offset,size,[]);
+      const c=rootPair?{transform:rootPair.transform,avatarBounds:{x:offset.x,y:offset.y,width:size.x,height:size.y},calibration:'shared-static-root-group'}:calibrations[0];
+      if(!rootPair){
+        if(calibrations.some(c=>!c||c.error>.05))return;
+        const t=c.transform;
+        if(calibrations.some(c=>Math.abs(c.transform.scale-t.scale)>.0001||Math.abs(c.transform.angle-t.angle)>.01||Math.hypot(c.transform.x-t.x,c.transform.y-t.y)>.05))return;
+      }
+      const pairs=samples.map(time=>sharedSceneCoordinates(pose(background,bg.animation,time),pose(replacement,m.animation,time)));
+      audit.push({pairs});
+      if(pairs.some(p=>!p))return;
+      const p=pairs[0],pt=p.transform;
+      if(pairs.some(p=>Math.abs(p.transform.scale-pt.scale)>.0001||Math.hypot(p.transform.x-pt.x,p.transform.y-pt.y)>.05))return;
+      // A matching root proves units, not sufficient background coverage for
+      // a taller replacement. Keep the old model when its head leaves the art.
+      for(const time of samples){
+        const bgPose=pose(background,bg.animation,time),fgPose=pose(replacement,m.animation,time),head=subjectHeadBounds(fgPose,pt);
+        const offset=new spine.Vector2(),size=new spine.Vector2();bgPose.getBounds(offset,size,[]);
+        const painting=paintingBounds(bgPose)||{x:offset.x,y:offset.y,width:size.x,height:size.y};
+        if(head?.height&&(head.y<painting.y||head.y+head.height>painting.y+painting.height))return;
+      }
+      full.sceneVariant={source:m.skeleton,sharedMeshes:shared.length,...c};
+      full.sceneCoordinates={rule:'shared-static-root-group',bone:p.bone,transform:pt,samples};
+      full.layerRegistration={transform:pt,source:'shared-static-root-group',samples};
+      return [bg,full];
+    }catch(error){if(error.code!=='ENOENT')console.warn('配对场景未采用',m.skeleton,error.message);}
   };
   resolve.registerLayers=async(root,entry)=>{
     if(!entry.legacy?.beijing||entry.models?.length!==2||entry.composition?.layers)return;

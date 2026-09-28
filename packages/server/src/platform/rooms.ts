@@ -13,7 +13,7 @@ export class Rooms {
   private active = new Map<string, string>();
   private queue: Promise<unknown> = Promise.resolve();
   private generations = new Map<string, number>();
-  // Explicit page navigation has a bounded lease; ordinary disconnects do not.
+  // Page navigation and unexpected disconnects retain a bounded resume lease.
   private navigation = new Map<string, { roomId: string; expiresAt: number }>();
   constructor(private db: Database, readonly hosts: GameHost, private publish: (accountId: string | null, type: string, payload: unknown) => void,
     private isConnected?: (accountId: string) => boolean) {}
@@ -86,7 +86,8 @@ export class Rooms {
     if (room.view.members.some(member => {
       const navigation = this.navigation.get(member.id);
       return !member.abandoned && this.active.get(member.id) === room.view.id
-        && navigation?.roomId === room.view.id && navigation.expiresAt > Date.now();
+        && ((member.resumeUntil || 0) > Date.now()
+          || navigation?.roomId === room.view.id && navigation.expiresAt > Date.now());
     })) return false;
     const { id, instanceId } = room.view;
     // Invalidate host callbacks before shutting the browser down, so a late
@@ -114,6 +115,17 @@ export class Rooms {
   }
   private waiting(room: InternalRoom) {
     if (room.view.state !== "waiting") throw new OnlineError("ALREADY_IN_GAME", "当前房间不能修改");
+  }
+  private resetMembersAfterGame(room: InternalRoom) {
+    // Departed players keep their engine seats only while the game is running.
+    // Prune them before persisting/publishing settlement, not just on rematch.
+    // Presence alone is insufficient: disconnected members may still return.
+    room.view.members = room.view.members.filter(member => member.isAI || this.active.get(member.id) === room.view.id);
+    room.view.members.forEach(member => {
+      member.ready = !!member.isAI; delete member.abandoned;
+      if (member.isAI || this.memberConnected(room, member)) delete member.resumeUntil;
+      else member.resumeUntil ||= Date.now() + resumeGrace();
+    });
   }
   private async save(room: InternalRoom) {
     room.view.revision++;
@@ -174,7 +186,9 @@ export class Rooms {
         if (!room || (room.view.visibility === "invite" && room.view.code !== code)) throw new OnlineError("ROOM_CLOSED", "房间不存在或邀请码无效");
         if (room.view.members.some(member => member.id === account.id) && this.active.get(account.id) === room.view.id) return room.view;
         if (this.active.has(account.id)) throw new OnlineError("ALREADY_IN_GAME", "请先离开当前房间");
-        this.waiting(room);
+        // Settlement keeps the room open for returning/new players. Only the
+        // owner can reset it for another game via room.rematch.
+        if (!["waiting", "finished"].includes(room.view.state)) throw new OnlineError("ALREADY_IN_GAME", "当前房间不能加入");
         if (room.view.members.length >= room.view.capacity) throw new OnlineError("ROOM_FULL", "房间已满");
         if (room.passwordHash && !(await verifyPassword(String(payload.password || ""), room.passwordHash))) throw new OnlineError("FORBIDDEN", "房间密码不正确");
         let seat = 0; while (room.view.members.some(member => member.seat === seat)) seat++;
@@ -258,9 +272,8 @@ export class Rooms {
       } else if (type === "room.rematch") {
         this.owner(room, account.id);
         if (view.state !== "finished") throw new OnlineError("INVALID_ARGUMENT", "对局尚未结束");
-        view.members = view.members.filter(member => member.isAI || this.active.get(member.id) === view.id);
         view.state = "waiting"; delete view.instanceId; delete view.instanceReady;
-        view.members.forEach(member => { member.ready = !!member.isAI; delete member.abandoned; delete member.resumeUntil; });
+        this.resetMembersAfterGame(room);
       } else if (type === "room.start") {
         this.waiting(room); this.owner(room, account.id);
         const supportedCounts: readonly number[] = modePreset(view.modeId)?.players || [];
@@ -314,7 +327,7 @@ export class Rooms {
         if (room.view.instanceId !== instanceId || room.view.state === "finished") return;
         await this.db.saveResult(instanceId, room.view.id, event.results);
         room.view.state = "finished"; delete room.view.instanceId; delete room.view.instanceReady;
-        room.view.members.forEach(member => { member.ready = !!member.isAI; delete member.resumeUntil; });
+        this.resetMembersAfterGame(room);
         await this.save(room);
         clearTimeout(room.startupTimer); room.startupTimer = undefined;
         for (const member of room.view.members) if (this.active.get(member.id) === room.view.id) this.publish(member.id, "game.finished", { roomId: room.view.id, instanceId, results: event.results });
@@ -339,7 +352,7 @@ export class Rooms {
       await this.hosts.stop(instanceId);
       room.view.state = room.view.state === "starting" ? "waiting" : "finished";
       delete room.view.instanceId; delete room.view.instanceReady;
-      room.view.members.forEach(member => { member.ready = !!member.isAI; delete member.resumeUntil; });
+      this.resetMembersAfterGame(room);
       await this.save(room);
       clearTimeout(startupTimer); room.startupTimer = undefined;
       const missing = Array.isArray(resources) ? resources.filter(id => typeof id === "string" && /^(character|card):[a-zA-Z0-9_]{1,100}$/.test(id)).slice(0, 35).join("、") : "";
@@ -387,13 +400,21 @@ export class Rooms {
       const view = this.current(accountId); if (!view) return;
       const room = this.rooms.get(view.id)!; const member = view.members.find(item => item.id === accountId)!;
       const navigating = (this.navigation.get(accountId)?.expiresAt || 0) > Date.now();
-      if (online) this.navigation.delete(accountId);
+      if (online) {
+        this.navigation.delete(accountId);
+        // The room socket is sufficient to renew an idle seat. During a match,
+        // only a successful engine resume may clear the engine-seat deadline.
+        if (["waiting", "finished"].includes(view.state)) delete member.resumeUntil;
+      }
       member.online = online;
-      if (!online && await this.closeIfEmpty(room)) return;
       if (!online) {
+        // Establish the lease before considering an empty room. A slow-stream
+        // snapshot recovery also closes its socket; AI seats cannot keep the
+        // room alive while the only human reconnects.
         member.ready = false;
+        member.resumeUntil = Math.max(member.resumeUntil || Date.now() + resumeGrace(), this.navigation.get(accountId)?.expiresAt || 0);
+        if (await this.closeIfEmpty(room)) return;
         if (view.instanceId && ["starting", "in_game"].includes(view.state)) {
-          member.resumeUntil = Math.max(member.resumeUntil || Date.now() + resumeGrace(), this.navigation.get(accountId)?.expiresAt || 0);
           this.generations.set(accountId, (this.generations.get(accountId) || 0) + 1);
           await this.hosts.receive(view.instanceId, { accountId, type: "disconnect" }).catch(() => {});
         }
@@ -411,6 +432,11 @@ export class Rooms {
         // Also catches missed disconnect cleanup (for example a failed save).
         if (await this.closeIfEmpty(room)) continue;
         for (const member of room.view.members) {
+          // Also bound legacy idle seats saved before idle leases were added.
+          if (["waiting", "finished"].includes(room.view.state) && !member.isAI && !member.online && !member.resumeUntil && !member.abandoned) {
+            member.resumeUntil = Date.now() + resumeGrace();
+            await this.save(room);
+          }
           if (member.resumeUntil && member.resumeUntil < Date.now() && !member.abandoned) {
             member.abandoned = true; member.online = false; delete member.resumeUntil;
             const wasActive = this.active.get(member.id) === id;
@@ -419,6 +445,10 @@ export class Rooms {
             if (wasActive) this.generations.set(member.id, (this.generations.get(member.id) || 0) + 1);
             if (room.view.instanceId) await this.hosts.receive(room.view.instanceId, { accountId: member.id, type: "disconnect" }).catch(() => {});
             if (wasActive) this.publish(member.id, "game.resumeExpired", { roomId: id });
+            if (["waiting", "finished"].includes(room.view.state)) {
+              room.view.members = room.view.members.filter(item => item !== member);
+              if (wasActive) this.publish(member.id, "room.left", { roomId: id });
+            }
             await this.save(room);
           }
         }

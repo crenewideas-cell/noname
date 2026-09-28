@@ -366,7 +366,8 @@ import strategySkills from "../lib/skill/strategy.js";
 	nysgs.createSkillBuff = function (buffs, player, first) {
 		//参考太虚幻境侍灵
 		let buffBox = player.nysgsBuffBox || document.createElement("div");
-		buffBox.classList.add("nysgs-skillBuffIcons1");
+		buffBox.classList.add("nysgs-buff-panel");
+		buffBox.setAttribute("aria-label", "战法与符石");
 
 		function createBuff(ele, buff, first) {
 			let div = document.createElement("div");
@@ -400,9 +401,9 @@ import strategySkills from "../lib/skill/strategy.js";
 			div.appendChild(img.mark);
 
 			img.player = player;
-			img.addEventListener("click", function () {
-				event.cancelBubble = true;
-				event.returnValue = false;
+			img.addEventListener("click", function (event) {
+				event.stopPropagation();
+				event.preventDefault();
 				return false;
 			});
 			img.onmouseover = function () {
@@ -442,35 +443,9 @@ import strategySkills from "../lib/skill/strategy.js";
 			}
 		}
 
-		if (player == game.me) {
-			let ss = document.querySelector(".skill-control");
-			if (ss) {
-				ss.querySelector(".trigger").style.float = "right";
-				ss.insertBefore(buffBox, ss.firstChild);
-			} else {
-				buffBox.classList.remove("nysgs-skillBuffIcons1");
-				buffBox.classList.add("nysgs-skillBuffIcons2");
-				player.appendChild(buffBox);
-			}
-
-			buffs.forEach((e) => {
-				createBuff(buffBox, e, first);
-			});
-		}
-		else {
-			if (lib.config.extension_十周年UI_enable) {
-				buffBox.classList.remove("nysgs-skillBuffIcons1");
-				buffBox.classList.add("nysgs-skillBuffIcons4");
-			} else {
-				buffBox.classList.remove("nysgs-skillBuffIcons1");
-				buffBox.classList.add("nysgs-skillBuffIcons3");
-			}
-
-			player.appendChild(buffBox);
-			buffs.forEach((e) => {
-				createBuff(buffBox, e, first);
-			});
-		}
+		// Keep the icons attached to their owner so seat changes move the panel too.
+		player.appendChild(buffBox);
+		buffs.forEach(buff => createBuff(buffBox, buff, first));
 	}
 	nysgs.initSkillBuff = function (character) {
 		var obj = {};

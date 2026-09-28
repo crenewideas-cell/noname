@@ -1,6 +1,7 @@
 import { game, lib, ui } from "noname";
 
 const destinations = {
+	start: ["开始"],
 	options: ["选项"],
 	log: ["选项", "view"],
 	audio: ["选项", "audio"],
@@ -15,6 +16,26 @@ let prepareSettings;
 let pendingSettings;
 let heading;
 let previousFocus;
+let obscuredSurfaces = [];
+
+function restoreUnderlyingSurfaces() {
+	for (const [node, inert] of obscuredSurfaces) {
+		node.classList.remove("lobby-settings-obscured");
+		node.inert = inert;
+	}
+	obscuredSurfaces = [];
+}
+
+function obscureUnderlyingSurfaces() {
+	restoreUnderlyingSurfaces();
+	const surfaces = [...document.body.children, ...ui.window.children];
+	for (const node of surfaces) {
+		if (node === ui.window || node === heading || node === ui.menuContainer || node.matches("script,style,link,.popup-container,.menu-container")) continue;
+		obscuredSurfaces.push([node, node.inert]);
+		node.classList.add("lobby-settings-obscured");
+		node.inert = true;
+	}
+}
 
 export function configureLobbySettings(prepare) {
 	prepareSettings = prepare;
@@ -42,6 +63,8 @@ export function closeLobbySettings() {
 		ui.historybar.classList.remove("menupaused");
 		ui.config2.classList.remove("pressdown2");
 		document.documentElement.classList.remove("lobby-settings-page");
+		isLobbySettings = false;
+		restoreUnderlyingSurfaces();
 		heading?.remove();
 		heading = undefined;
 		game.resume2();
@@ -65,6 +88,7 @@ export function showLobbySettings(page = lobbySettingsPage || "options") {
 	heading?.remove();
 	const header = heading = document.createElement("header");
 	header.className = "lobby-settings-heading";
+	header.setAttribute("aria-label", "大厅设置导航");
 	const title = document.createElement("strong");
 	title.textContent = "大厅设置";
 	const hint = document.createElement("span");
@@ -75,6 +99,7 @@ export function showLobbySettings(page = lobbySettingsPage || "options") {
 	back.onclick = closeLobbySettings;
 	header.append(title, hint, back);
 	document.body.appendChild(header);
+	obscureUnderlyingSurfaces();
 	if (ui.menuContainer.classList.contains("hidden")) ui.click.config();
 	const [tab, category] = destinations[page];
 	ui.click.menuTab(tab);

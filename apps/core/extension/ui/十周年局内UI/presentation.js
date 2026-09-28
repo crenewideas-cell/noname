@@ -62,9 +62,9 @@ export async function mountPresentation({base,manifest,ui,lib,get,game,signal,pr
   queueMicrotask(()=>{if(!disposed)setMenu(false);});
  };
  if(menuButton)for(const type of ['click','touchend'])document.addEventListener(type,closeMenu,{capture:true,passive:true});
- const layout=parts.has('arena')&&parts.has('players')&&!game.chess?installAdaptiveLayout({game:{get me(){return !!game.me;}},ui,className:'decade-layout',refreshHand:()=>ui.updatehl()}):()=>{};
+ const layout=parts.has('arena')&&parts.has('players')&&!game.chess?installAdaptiveLayout({game,ui,mode:()=>lib.config.mode,className:'decade-layout'}):()=>{};
  const options=manifest.components.arena?.options||{},enabled=()=>lib.config.animation!==false&&!lib.config.low_performance;
- const animations=mountAnimations({base,parts,options,metadata,enabled,volume:()=>Math.max(0,Math.min(1,(lib.config.volumn_audio||0)/8))});
+ const animations=mountAnimations({base,parts,options,metadata,enabled});
  const releaseIndicators=mountIndicators({ui,game,parts,enabled:()=>enabled()&&options.effects!==false});
  const portraits=mountPortraits({base,metadata,enabled:()=>parts.has('players')&&options.dynamic!==false&&enabled(),staticSelected:name=>game.qhly_dynamicOwns?.(name)||(lib.config.change_skin!==false&&!!getSkinService().current(name)),subscribe:subscribeCharacterSkins});
  const extras=mountExtras({base,parts,ui,game,lib,inventory,metadata,animations});
@@ -87,7 +87,13 @@ export async function mountPresentation({base,manifest,ui,lib,get,game,signal,pr
   const me=game.me,local=skillPresentation(me,lib,!game.observe);
   if(parts.has('buttons')){
    const passive=local.filter(s=>!s.active),key=JSON.stringify(passive);
-   if(!passivePanel){passivePanel=document.createElement('div');passivePanel.className='decade-passive-skills';ui.arena.append(passivePanel);}
+   if(!passivePanel){
+    passivePanel=document.createElement('div');passivePanel.className='decade-passive-skills';passivePanel.setAttribute('aria-label','被动技能');
+    for(const type of ['click','pointerdown','pointerup','touchstart','touchend'])passivePanel.addEventListener(type,event=>event.stopPropagation());
+   }
+   // Follow the controlled player instead of fixed arena coordinates.
+   if(me?.isConnected&&passivePanel.parentElement!==me)me.append(passivePanel);
+   else if(!me?.isConnected)passivePanel.remove();
    if(passivePanel.dataset.value!==key){passivePanel.dataset.value=key;passivePanel.replaceChildren();for(const skill of passive){const label=document.createElement('span');label.textContent=skill.label;label.title=skill.label;passivePanel.append(label);}}
    for(const control of [ui.skills,ui.skills2,ui.skills3])for(const button of control?.children||[]){
     const skill=local.find(s=>s.id===button.link),value=JSON.stringify(skill||null);

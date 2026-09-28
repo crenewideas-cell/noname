@@ -1,0 +1,8 @@
+{
+  "intro": "",
+  "name": "云中守望",
+  "author": "<div class=\"sw_infoText\">守望</div>\n  <style>\n  .sw_infoText {\n  animation: sw_animation 5s linear 1.5s infinite;\n  font-family: shousha;\n  font-size: 20px;\n  text-align: center;\n  color: #BA55D3;\n  text-shadow: -1.3px 0px 2.2px #000, 0px -1.3px 2.2px #000, 1.3px 0px 2.2px #000, 0px 1.3px 2.2px #000;\n}\n\n@keyframes sw_animation {\n  0% { color: #BA55D3; }\n20% { color: #00BFFF; }\n40% { color: #00FF00; }\n60% { color: yellow; }\n80% { color: #FF6A6A; }\n100% { color: #BA55D3; }\n}\n</style>",
+  "diskURL": "",
+  "forumURL": "",
+  "version": "1.55"
+}

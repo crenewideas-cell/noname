@@ -14,7 +14,7 @@ import { characterSort, characterSortTranslate } from "./sort.js";
 import characterSubstitutes from "./characterSubstitute.js";
 import characterAppend from "./characterAppend.js";
 
-game.import("character", function () {
+await game.import("character", function () {
 	const mjs = {
 		name: "mjs",
 		connect: true,

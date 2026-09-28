@@ -1,0 +1,9 @@
+/* Above provider/workshop backgrounds, below all cards, players and effects. */
+:is(#arena-scene#arena-scene, :root) body[data-arena-scene] :is(#window, #arena) {
+	background: transparent !important;
+}
+:is(#arena-scene#arena-scene, :root) body[data-arena-scene] > .background:not([data-character-backdrop]) {
+	background-image: var(--arena-scene-image) !important;
+	background-size: var(--arena-scene-size, cover) !important;
+	background-position: var(--arena-scene-position, center) !important;
+}

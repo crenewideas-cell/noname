@@ -1,9 +1,25 @@
 <template>
-  <main class="online-lobby">
+  <main class="online-lobby" :class="{ 'online-login-scene': !s.account, 'online-room-scene': !!s.account }">
     <header class="online-heading">
-      <div><button class="online-back" @click="back">‹ 返回玩法</button><p class="online-eyebrow">群雄聚首 · 公网对战</p><h1>{{ modeName }}大厅</h1><p>寻一席知己，共决天下。</p></div>
-      <div class="online-profile"><span class="online-connection" :data-state="s.status">● {{ statusLabel }}</span><template v-if="s.account"><strong>{{ s.account.nickname }}</strong><small>玩家码 {{ s.account.code }}</small><button @click="run(logout)">退出账号</button></template></div>
+      <div class="online-heading-title">
+        <Teleport :to="navigationTarget || 'body'" :disabled="!navigationTarget">
+          <a v-if="!s.account && !navigationTarget" class="online-back-link" href="#modes" @click.prevent="back">‹ 返回玩法</a>
+          <button v-else type="button" class="online-back" :disabled="!!s.account && (busy || s.room?.state === 'starting')" @click="s.room ? leaveRoom() : back()">{{ s.room ? '返回大厅' : '返回玩法' }}</button>
+        </Teleport>
+        <div><p v-if="!s.account" class="online-eyebrow">群雄聚首 · 公网对战</p><h1>{{ modeName }}大厅</h1><p>寻一席知己，共决天下。</p></div>
+      </div>
+      <div class="online-profile" :class="{ 'online-profile-info': navigationTarget }">
+        <span class="online-connection" :data-state="s.status">● {{ statusLabel }}</span>
+        <template v-if="s.account">
+          <strong>{{ s.account.nickname }}</strong><small>玩家码 {{ s.account.code }}</small>
+          <Teleport :to="navigationTarget || 'body'" :disabled="!navigationTarget">
+            <button v-if="s.room" type="button" :disabled="busy || s.room.state === 'starting'" @click="leaveRoom">退出房间</button>
+            <button v-else type="button" @click="run(logout)">退出账号</button>
+          </Teleport>
+        </template>
+      </div>
     </header>
+    <div v-if="!s.account && !loading && !error && !s.error && s.status !== 'disconnected'" class="online-login-banner"><span>请先登录</span><button :disabled="busy || loading" @click="retry">重新连接</button></div>
     <div v-if="error" class="online-feedback error" role="alert">{{ error }}<button @click="retry">重试</button><button @click="error = ''">×</button></div>
     <div v-if="s.status === 'disconnected'" class="online-feedback" role="status">与服务器的连接已中断。<button @click="retry">重新连接</button></div>
     <div v-if="s.error" class="online-feedback error" role="alert">{{ s.error }}<button @click="retry">重新连接</button></div>
@@ -13,7 +29,7 @@
     <section v-if="loading" class="online-loading" role="status"><span class="online-spinner"></span>正在载入联机大厅…</section>
     <section v-else-if="!preset" class="online-empty"><h2>此玩法暂未开放联机</h2><p>当前开放标准身份与标准斗地主房间。{{ modeName }}的单机玩法仍可正常进入。</p><button @click="back">返回选择玩法</button></section>
     <section v-else-if="!s.account" class="online-auth online-panel">
-      <div class="online-auth-art"><span>群英会</span><p>一席之间，风云再起</p></div>
+      <div class="online-auth-art"><div class="online-auth-caption"><h2>群英会</h2><p>一席之间，风云再起</p></div></div>
       <form @submit.prevent="authenticate">
         <h2>{{ authKind === 'register' ? '创建你的身份' : authKind === 'recover' ? '找回账号' : '欢迎归来' }}</h2>
         <p>登录后创建房间，和真实玩家开启联机对局。</p>
@@ -22,7 +38,7 @@
         <label v-if="authKind === 'recover'">恢复码<input v-model="recoveryCode" required autocomplete="off" /></label>
         <label>{{ authKind === 'recover' ? '新密码' : '密码' }}<input v-model="password" type="password" required minlength="10" maxlength="128" :autocomplete="authKind === 'login' ? 'current-password' : 'new-password'" placeholder="至少 10 个字符" /></label>
         <button class="online-primary" :disabled="busy">{{ busy ? '正在处理…' : authKind === 'register' ? '注册并进入' : authKind === 'recover' ? '重置密码' : '登录大厅' }}</button>
-        <div class="online-auth-links"><button type="button" @click="authKind = authKind === 'login' ? 'register' : 'login'">{{ authKind === 'login' ? '创建账号' : '已有账号，去登录' }}</button><button type="button" @click="authKind = 'recover'">忘记密码</button></div>
+        <div class="online-auth-links"><a href="#account" @click.prevent="authKind = authKind === 'login' ? 'register' : 'login'">{{ authKind === 'login' ? '创建账号' : '已有账号，去登录' }}</a><a href="#recover" @click.prevent="authKind = 'recover'">忘记密码</a></div>
       </form>
     </section>
     <template v-else>
@@ -30,8 +46,9 @@
         <div v-if="s.room.state === 'finished'" class="online-feedback" role="status">本局已结束，无法再恢复对局。{{ isOwner ? '点击“再来一局”，全员重新准备后即可开始。' : '等待房主点击“再来一局”，然后重新准备。' }}</div>
         <div v-if="['starting','in_game'].includes(s.room.state) && !myMember?.abandoned" class="online-feedback"><span>{{ s.room.state === 'in_game' ? '发现未结束的对局，可恢复你的手牌、身份和回合。' : s.room.instanceReady ? '托管实例已就绪，请进入对局完成入席。' : '正在分配对局，请保持在线。' }}</span><button v-if="s.room.instanceId && s.room.instanceReady" class="online-primary" @click="resumeGame">{{ s.room.state === 'starting' ? '进入对局' : '恢复对局' }}</button></div>
         <div v-if="myMember?.abandoned" class="online-feedback">席位保留时间已过，本局由服务器继续托管。可等待结算或离开房间。</div>
-        <header>
-          <div><p class="online-eyebrow">{{ roomState[s.room.state] }}</p><h2>{{ s.room.name }}</h2><p>房间码 {{ s.room.code }} · {{ ruleName }} · {{ s.room.capacity }} 人</p></div>
+        <section class="online-room-players room-surface">
+        <header class="online-players-heading">
+          <div><h2><RoomIcon kind="players" />玩家列表<small class="online-room-name">{{ s.room.name }}</small></h2><p>房间码 {{ s.room.code }} · {{ ruleName }} · {{ s.room.capacity }} 人 <span class="online-room-state">{{ roomState[s.room.state] }}</span></p></div>
           <div class="online-room-actions" role="group" aria-label="房间操作">
             <button v-if="s.room.state === 'waiting'" :class="{ 'online-primary': !isOwner }" :disabled="s.maintenance || busy" @click="ready">{{ myReady ? '取消准备' : '准备就绪' }}</button>
             <button v-if="isOwner && s.room.state === 'waiting'" class="online-primary" :disabled="s.maintenance || busy || !canStart" @click="start">开始对局</button>
@@ -40,10 +57,10 @@
             <button :disabled="busy || s.room.state === 'starting'" @click="leaveRoom">离开房间</button>
           </div>
         </header>
-        <div class="online-seats">
-          <article v-for="seat in s.room.capacity" :key="seat" :class="{ occupied: memberAt(seat - 1) }">
+        <div class="online-seats" :class="{ 'five-seats': s.room.capacity === 5, 'three-seats': s.room.capacity === 3 }">
+          <article v-for="seat in s.room.capacity" :key="seat" :class="{ occupied: memberAt(seat - 1), owner: memberAt(seat - 1)?.id === s.room.ownerId, ready: memberAt(seat - 1)?.ready }">
             <template v-if="memberAt(seat - 1)">
-              <img :src="avatar" alt="" /><strong>{{ memberAt(seat - 1)?.nickname }}</strong>
+              <RoomIcon v-if="memberAt(seat - 1)?.id === s.room.ownerId" kind="crown" class="online-seat-owner" /><img :src="avatar" alt="" /><strong>{{ memberAt(seat - 1)?.nickname }}</strong>
               <small>{{ memberAt(seat - 1)?.id === s.room.ownerId ? '房主 · ' : '' }}{{ memberAt(seat - 1)?.isAI ? 'AI · 自动参战' : !memberAt(seat - 1)?.online ? '已离线' : memberAt(seat - 1)?.ready ? '已准备' : '等待准备' }}</small>
               <button v-if="isOwner && s.room.state === 'waiting' && memberAt(seat - 1)?.isAI" class="seat-kick" :disabled="busy" :aria-label="`移除 ${seat} 号位 AI`" @click="setAI([seat - 1], false)">移除 AI</button>
             </template>
@@ -54,7 +71,12 @@
             <b>{{ seat }}</b>
           </article>
         </div>
-        <div v-if="isOwner && s.room.state === 'waiting'" class="online-room-management"><form @submit.prevent="renameRoom"><input v-model="newName" maxlength="32" placeholder="新的房间名称" aria-label="新的房间名称" /><button :disabled="busy || !newName.trim()">修改房名</button></form><button v-for="member in s.room.members.filter(m => !m.isAI && m.id !== s.account?.id)" :key="member.id" :disabled="busy" @click="run(() => roomCommand('room.kick', { accountId: member.id }))">移出 {{ member.nickname }}</button></div>
+        </section>
+        <div class="online-room-workspace">
+        <section class="online-room-config room-surface"><h3><RoomIcon kind="settings" />对局设置</h3>
+        <dl class="online-rule-facts"><div><dt>玩法</dt><dd>{{ ruleName }} · 标准卡牌</dd></div><div><dt>武将池</dt><dd>{{ characterPoolLabel(s.room.characterPool) }}</dd></div><div v-for="fact in roomRuleFacts" :key="fact.label"><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div></dl>
+        <details v-if="s.room.characterPool?.banned.length"><summary>查看禁将</summary><p>{{ s.room.characterPool.banned.map(id => get.translation(id)).join('、') }}</p></details>
+        <details v-if="isOwner && s.room.state === 'waiting'" class="online-pool-settings"><summary>房间名称与成员管理</summary><div class="online-room-management"><form @submit.prevent="renameRoom"><input v-model="newName" maxlength="32" placeholder="新的房间名称" aria-label="新的房间名称" /><button :disabled="busy || !newName.trim()">修改房名</button></form><button v-for="member in s.room.members.filter(m => !m.isAI && m.id !== s.account?.id)" :key="member.id" :disabled="busy" @click="run(() => roomCommand('room.kick', { accountId: member.id }))">移出 {{ member.nickname }}</button></div></details>
         <details v-if="isOwner && s.room.state === 'waiting'" class="online-pool-settings" @toggle="togglePoolEditor">
           <summary>修改武将池</summary>
           <CharacterPoolEditor v-if="poolEditorOpen" v-model="editPool" :capacity="s.room.capacity" @validation="editPoolValid = $event" :mode-id="s.room.modeId" :disabled="busy" />
@@ -69,21 +91,21 @@
           <button class="online-primary" :disabled="busy || !rulesChanged" @click="saveRules">保存对局设置</button>
           <button :disabled="busy" @click="editRules = normalizeRoomRules(s.room.rules, s.room.modeId)">还原当前设置</button>
         </details>
-        <p class="online-rule-summary">{{ describeRules(s.room) }}</p>
-        <p v-if="s.room.state === 'waiting'">房主可为剩余空位分配 AI；AI 自动选将和行动。所有席位入席、真人玩家准备后即可开局。</p>
-        <div class="online-room-bottom"><section><h3>房间消息</h3><div class="online-chat" aria-live="polite"><p v-if="!s.chat.length">分享房间码，邀请朋友加入。房间消息仅本次会话保留。</p><p v-for="message in s.chat" :key="message.id"><strong>{{ message.nickname }}</strong> {{ message.text }}</p></div><form class="online-chat-form" @submit.prevent="chat"><input v-model="chatText" maxlength="300" aria-label="房间消息" placeholder="说点什么…" /><button :disabled="busy || !chatText.trim()">发送</button></form></section><aside><h3>对局规则</h3><p>{{ ruleName }} · 标准卡牌</p><p>武将池：{{ characterPoolLabel(s.room.characterPool) }}</p><details v-if="s.room.characterPool?.banned.length"><summary>查看禁将</summary><p>{{ s.room.characterPool.banned.map(id => get.translation(id)).join("、") }}</p></details><p>单将 · {{ normalizeRoomRules(s.room.rules, s.room.modeId).chooseTimeout }} 秒操作时限</p><p>全员到齐并准备后，由房主开始。</p><button @click="copyCode">{{ codeCopied ? '已复制' : '复制房间码' }}</button><p v-if="s.room.state === 'starting'" role="status">正在准备托管对局，请保持在线…</p><p v-if="s.room.state === 'in_game'">对局正在进行，可恢复原席位继续对战。</p></aside></div>
+        </section>
+        <section class="online-room-conversation room-surface"><header class="online-conversation-heading"><h3><RoomIcon kind="chat" />房间消息</h3><button @click="copyCode">{{ codeCopied ? '已复制' : '复制房间码' }}</button></header><p class="online-hint">{{ s.room.visibility === 'public' ? '公开房间' : '邀请房间' }} · 全员入席并准备后，由房主开始。</p><div class="online-chat" aria-live="polite"><p v-if="!s.chat.length" class="online-chat-empty">还没有消息，邀请好友一起入席吧。</p><p v-for="message in s.chat" :key="message.id"><strong>{{ message.nickname }}</strong> {{ message.text }}</p></div><form class="online-chat-form" @submit.prevent="chat"><input v-model="chatText" maxlength="300" aria-label="房间消息" placeholder="说点什么…" /><button :disabled="busy || !chatText.trim()">发送</button></form><small>消息仅在本次会话保留。</small></section>
+        </div>
       </section>
       <div v-else class="online-body">
-        <section class="online-room-browser">
+        <section class="online-room-browser room-surface">
           <form class="online-search online-panel" @submit.prevent="refresh"><input v-model="query" maxlength="64" placeholder="搜索房间名称 / 房间码" aria-label="搜索房间" /><button :disabled="busy">搜索</button><select v-model="filterState" @change="refresh" aria-label="房间状态"><option value="all">全部状态</option><option value="waiting">等待加入</option><option value="in_game">对局中</option></select><select v-model="capacity" @change="refresh" aria-label="人数"><option value="">全部人数</option><option v-for="n in playerCounts" :key="n" :value="String(n)">{{ n }} 人</option></select></form>
-          <div class="online-list-heading"><h2>正在招募</h2><span>{{ s.total }} 个房间</span><button @click="refresh">刷新</button></div>
+          <div class="online-list-heading"><h2><RoomIcon kind="players" />正在招募</h2><span>{{ s.total }} 个房间</span><button @click="refresh">刷新</button></div>
           <section v-if="listLoading" class="online-loading">正在查找房间…</section>
           <section v-else-if="listError" class="online-empty"><h3>房间列表加载失败</h3><p>{{ listError }}</p><button @click="refresh">重新加载</button></section>
           <section v-else-if="!s.rooms.length" class="online-empty"><h3>还没有符合条件的房间</h3><p>创建一个房间，邀朋友来切磋。</p><button class="online-primary" :disabled="s.maintenance" @click="showCreate = true">创建房间</button></section>
-          <div v-else class="online-room-grid"><article v-for="room in s.rooms" :key="room.id" class="online-room-card"><div class="room-card-top"><span>{{ room.locked ? '密码房' : '公开房' }}</span><b>{{ roomState[room.state] }}</b></div><h3>{{ room.name }}</h3><p>{{ ruleName }} · {{ room.capacity }} 人场</p><p class="online-pool-summary">{{ characterPoolLabel(room.characterPool) }}</p><p>{{ describeRules(room) }}</p><div class="room-portraits"><span v-for="n in room.capacity" :key="n" :class="{ filled: n <= room.members.length }"></span></div><footer><span>{{ room.members.length }}/{{ room.capacity }} 席 · {{ room.code }}</span><button :disabled="s.maintenance || busy || room.state !== 'waiting' || room.members.length >= room.capacity" @click="openJoin(room)">加入</button></footer></article></div>
+          <div v-else class="online-room-grid"><article v-for="room in s.rooms" :key="room.id" class="online-room-card"><div class="room-card-top"><span>{{ room.locked ? '密码房' : '公开房' }}</span><b>{{ roomState[room.state] }}</b></div><h3>{{ room.name }}</h3><p>{{ ruleName }} · {{ room.capacity }} 人场</p><p class="online-pool-summary">{{ characterPoolLabel(room.characterPool) }}</p><details class="online-room-rule-summary"><summary>查看对局规则</summary><p>{{ describeRules(room) }}</p></details><div class="room-portraits"><span v-for="n in room.capacity" :key="n" :class="{ filled: n <= room.members.length }"></span></div><footer><span>{{ room.members.length }}/{{ room.capacity }} 席 · {{ room.code }}</span><button :disabled="s.maintenance || busy || !['waiting', 'finished'].includes(room.state) || room.members.length >= room.capacity && !room.members.some(m => m.id === s.account?.id)" @click="openJoin(room)">{{ room.members.some(m => m.id === s.account?.id) ? '返回房间' : '加入' }}</button></footer></article></div>
           <div class="online-pagination"><button :disabled="page <= 1" @click="page--; refresh()">上一页</button><span>第 {{ page }} 页</span><button :disabled="page * 12 >= s.total" @click="page++; refresh()">下一页</button></div>
         </section>
-        <aside class="online-sidebar"><section class="online-panel online-create-card"><p class="online-eyebrow">召集同道</p><h2>开一局自己的房间</h2><p>选择人数与可见性，等待玩家入席。</p><button class="online-primary" :disabled="s.maintenance" @click="showCreate = true">创建房间</button><button :disabled="s.maintenance" @click="showJoin = true">输入房间码</button></section><MatchPanel :mode-id="modeId" /></aside>
+        <aside class="online-sidebar"><section class="online-panel online-create-card room-surface"><p class="online-eyebrow">召集同道</p><h2>开一局自己的房间</h2><p>选择人数与可见性，等待玩家入席。</p><button class="online-primary" :disabled="s.maintenance" @click="showCreate = true">创建房间</button><button :disabled="s.maintenance" @click="showJoin = true">输入房间码</button></section><MatchPanel :mode-id="modeId" /></aside>
       </div>
       <SocialPanel @joined="mode => emit('mode', mode)" />
     </template>
@@ -93,6 +115,9 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
+import "./login-scene.css";
+import "./room-scene.css";
+import RoomIcon from "./RoomIcon.vue";
 import { lib, get } from "noname";
 import { modePreset, defaultCharacterPool, normalizeCharacterPool, normalizeRoomRules, characterPoolLabel, type Room } from "@noname/online-protocol";
 import SocialPanel from "./SocialPanel.vue";
@@ -101,7 +126,7 @@ import CharacterPoolEditor from "./CharacterPoolEditor.vue";
 import RoomRulesEditor from "./RoomRulesEditor.vue";
 import { inspectCharacterPool, loadOnlineCharacterCatalog } from "../characterPool.js";
 import { onlineState as s, restoreAccount, login, logout, searchRooms, command, onOnlineEvent, copyOnlineText } from "../client";
-const props = defineProps<{ modeId: string }>();
+const props = defineProps<{ modeId: string; navigationTarget?: HTMLElement | null }>();
 const emit = defineEmits<{ back: []; play: []; mode: [id: string] }>();
 const preset = computed(() => modePreset(props.modeId));
 const playerCounts = computed(() => preset.value?.players || []);
@@ -121,6 +146,16 @@ const newName = ref(''), codeCopied = ref(false);
 const createPoolValid = ref(false), editPoolValid = ref(false);
 const createPool = ref(defaultCharacterPool()), editPool = ref(defaultCharacterPool()), poolEditorOpen = ref(false);
 const createRules = ref(normalizeRoomRules(undefined, props.modeId)), editRules = ref(normalizeRoomRules(undefined, props.modeId));
+const roomRuleFacts = computed(() => {
+  const rules = normalizeRoomRules(s.room?.rules, s.room?.modeId || props.modeId);
+  return [...((s.room?.modeId || props.modeId) === 'identity' ? [
+    { label: '手气卡', value: rules.mulligan ? `${rules.mulligan} 次` : '关闭' },
+    { label: '主公点将', value: rules.freeChoose ? '开启' : '关闭' },
+    { label: '选将方式', value: rules.characterPoolMode === 'partitioned' ? '均分独立池' : '共享抢选池' },
+    { label: '换候选', value: `${rules.characterRerolls} 次` },
+    { label: '开局准备', value: `${rules.openingTimeout} 秒` },
+  ] : []), { label: '操作时限', value: `${rules.chooseTimeout} 秒` }];
+});
 const rulesChanged = computed(() => JSON.stringify(editRules.value) !== JSON.stringify(normalizeRoomRules(s.room?.rules, s.room?.modeId || props.modeId)));
 watch(() => `${s.room?.id}:${JSON.stringify(s.room?.rules)}`, () => { editRules.value = normalizeRoomRules(s.room?.rules, s.room?.modeId || props.modeId); }, { immediate: true });
 function describeRules(room: Room) {

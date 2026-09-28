@@ -44,7 +44,9 @@ function showStatus(title, description, actionLabel, action) {
 /** Return to the same room after settlement; explicit departure releases the seat. */
 export async function returnToOnlineLobby(leave = false) {
 	if (leaving) return;
-	if (leave) await leaveManagedRoom(true);
+	// Explicit departure must be acknowledged before showing an empty lobby.
+	// A failed request is not the same as leaving: preserve the page for retry.
+	if (leave) await leaveManagedRoom();
 	else if (onlineState.status === "connected") await prepareRoomNavigation("lobby");
 	clearChoiceClock();
 	game.closeOnlineOpening?.(); game.renderOpeningStage?.(null);

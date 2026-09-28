@@ -274,6 +274,8 @@ const card = {
 };
 
 for (let i in card) {
+	// Internal dynamically named strategy choices, not playable/deck cards.
+	if (["db_atk", "db_def"].includes(card[i].type)) card[i].hidden = true;
 	card[i].image = "ext:怒焰三国/image/card/" + i + ".png";
 	//card[i].audio = "ext:怒焰三国/audio";
 }

@@ -1,0 +1,3241 @@
+{
+  "date": "2026-09-26",
+  "policy": "同 ID 不覆盖；不同 ID 但体力、势力、性别和技能组合相同的重复定义不导入；技能不同的版本保留。",
+  "scannedDefinitions": 6812,
+  "packages": [
+    {
+      "name": "星之梦",
+      "source": "temp/扩展武将/星之梦.zip",
+      "sourceSha256": "97afa330431df1c378ffd11b84f027b3b94a58b1b4caef68aed5f5aeb5cf7040",
+      "original": 256,
+      "imported": [
+        {
+          "id": "old_dm_sunquan",
+          "name": "旧魔孙权"
+        },
+        {
+          "id": "old_ol_sb_zhangrang",
+          "name": "旧OL谋张让"
+        },
+        {
+          "id": "old_ol_sb_yl_luzhi",
+          "name": "旧OL谋卢植"
+        },
+        {
+          "id": "old_ol_sb_dengai",
+          "name": "旧OL谋邓艾"
+        },
+        {
+          "id": "oldx_ol_sb_dengai",
+          "name": "废OL谋邓艾"
+        },
+        {
+          "id": "old_ol_sb_dongzhuo",
+          "name": "旧OL谋董卓"
+        },
+        {
+          "id": "old_ol_madai",
+          "name": "旧OL界马岱"
+        },
+        {
+          "id": "old_ol_liubiao",
+          "name": "旧OL界刘表"
+        },
+        {
+          "id": "old_ol_wangyi",
+          "name": "旧OL界王异"
+        },
+        {
+          "id": "old_ol_chengpu",
+          "name": "旧OL界程普"
+        },
+        {
+          "id": "old_ol_yufan",
+          "name": "旧OL界虞翻"
+        },
+        {
+          "id": "old_shen_caopi",
+          "name": "旧神曹丕"
+        },
+        {
+          "id": "old_clan_xuncai",
+          "name": "旧族荀采"
+        },
+        {
+          "id": "old_clan_xunyu",
+          "name": "旧族荀彧"
+        },
+        {
+          "id": "old_clan_xunshi",
+          "name": "旧族荀莳"
+        },
+        {
+          "id": "old_clan_xunshuang",
+          "name": "旧族荀爽"
+        },
+        {
+          "id": "old_clan_hanrong",
+          "name": "旧族韩融"
+        },
+        {
+          "id": "old_clan_hanshao",
+          "name": "旧族韩韶"
+        },
+        {
+          "id": "old_clan_wangmingshan",
+          "name": "旧族王明山"
+        },
+        {
+          "id": "old_clan_zhonghui",
+          "name": "旧族钟会"
+        },
+        {
+          "id": "old_clan_yangxiu",
+          "name": "旧族杨修"
+        },
+        {
+          "id": "old_zhangqiying",
+          "name": "旧张琪瑛"
+        },
+        {
+          "id": "old_ol_peixiu",
+          "name": "旧裴秀"
+        },
+        {
+          "id": "old_ol_yangfeng",
+          "name": "旧OL杨奉"
+        },
+        {
+          "id": "old_kongshu",
+          "name": "旧孔淑"
+        },
+        {
+          "id": "old_ol_xuelingyun",
+          "name": "旧OL薛灵芸"
+        },
+        {
+          "id": "old_ol_nanhualaoxian",
+          "name": "旧OL南华老仙"
+        },
+        {
+          "id": "old_ol_qianzhao",
+          "name": "旧OL牵招"
+        },
+        {
+          "id": "old_ruiji",
+          "name": "旧OL芮姬"
+        },
+        {
+          "id": "old_sp_sunce",
+          "name": "旧SP孙策"
+        },
+        {
+          "id": "old_ol_pengyang",
+          "name": "旧彭羕"
+        },
+        {
+          "id": "old_ol_feiyi",
+          "name": "旧费祎"
+        },
+        {
+          "id": "old_ol_hujinding",
+          "name": "旧胡金定"
+        },
+        {
+          "id": "old_ol_luyusheng",
+          "name": "旧陆郁生"
+        },
+        {
+          "id": "old_wangyan",
+          "name": "旧王衍"
+        },
+        {
+          "id": "old_dengzhong",
+          "name": "旧邓忠"
+        },
+        {
+          "id": "old_tengfanglan",
+          "name": "旧OL滕芳兰"
+        },
+        {
+          "id": "old_xin_zhonghui",
+          "name": "旧界钟会"
+        },
+        {
+          "id": "old_dc_xushu",
+          "name": "旧界徐庶"
+        },
+        {
+          "id": "old_re_caorui",
+          "name": "旧界曹叡"
+        },
+        {
+          "id": "old_dc_zhangmancheng",
+          "name": "旧新杀张曼成"
+        },
+        {
+          "id": "old_dc_muludawang",
+          "name": "旧新杀木鹿大王"
+        },
+        {
+          "id": "old_dc_weifeng",
+          "name": "旧新杀魏讽"
+        },
+        {
+          "id": "old_chengui",
+          "name": "旧陈珪"
+        },
+        {
+          "id": "old_dc_zhugejun",
+          "name": "旧新杀诸葛均"
+        },
+        {
+          "id": "old_dc_xiahouxuan",
+          "name": "旧新杀夏侯玄"
+        },
+        {
+          "id": "old_dc_sp_zhurong",
+          "name": "旧SP祝融"
+        },
+        {
+          "id": "old_yue_miheng",
+          "name": "旧乐祢衡"
+        },
+        {
+          "id": "old_dc_liuli",
+          "name": "旧刘理"
+        },
+        {
+          "id": "old_yuechen",
+          "name": "旧乐綝"
+        },
+        {
+          "id": "old_hansong",
+          "name": "旧韩嵩"
+        },
+        {
+          "id": "old_star_dingfeng",
+          "name": "旧星丁奉"
+        },
+        {
+          "id": "old_star_fazheng",
+          "name": "旧星法正"
+        },
+        {
+          "id": "old_caofang",
+          "name": "旧曹芳"
+        },
+        {
+          "id": "old_dc_zhushuo",
+          "name": "旧朱铄"
+        },
+        {
+          "id": "old_liufuren",
+          "name": "旧刘懿君"
+        },
+        {
+          "id": "old_renwan",
+          "name": "牢任婉"
+        },
+        {
+          "id": "oldx_renwan",
+          "name": "旧任婉"
+        },
+        {
+          "id": "old_dc_tengfanglan",
+          "name": "旧滕芳兰"
+        },
+        {
+          "id": "old_liujinliupei",
+          "name": "旧刘衿刘佩"
+        },
+        {
+          "id": "old_pangfengyi",
+          "name": "旧庞凤衣"
+        },
+        {
+          "id": "old_zhugejing",
+          "name": "旧诸葛京"
+        },
+        {
+          "id": "old_bailingyun",
+          "name": "旧柏灵筠"
+        },
+        {
+          "id": "old_ruanyu",
+          "name": "旧阮瑀"
+        },
+        {
+          "id": "old_xurong",
+          "name": "旧徐荣"
+        },
+        {
+          "id": "old_yuanji",
+          "name": "旧袁姬"
+        },
+        {
+          "id": "old_dc_chenzhi",
+          "name": "旧新杀陈祗"
+        },
+        {
+          "id": "old_v_machao",
+          "name": "旧威马超"
+        },
+        {
+          "id": "old_v_zhangxingcai",
+          "name": "旧威张星彩"
+        },
+        {
+          "id": "old_dc_sb_zhugeliang",
+          "name": "旧新杀谋诸葛亮"
+        },
+        {
+          "id": "old_dc_sb_xunyu",
+          "name": "旧新杀谋荀彧"
+        },
+        {
+          "id": "old_dc_sb_luxun",
+          "name": "旧新杀谋陆逊"
+        },
+        {
+          "id": "old_dc_sb_hulie",
+          "name": "旧新杀谋胡烈"
+        },
+        {
+          "id": "old_dc_sb_xuyou",
+          "name": "旧新杀谋许攸"
+        },
+        {
+          "id": "old_dc_sb_zhuran",
+          "name": "旧新杀谋朱然"
+        },
+        {
+          "id": "old_dc_sb_dengai",
+          "name": "旧新杀谋邓艾"
+        },
+        {
+          "id": "old_dc_sb_guanyu",
+          "name": "旧新杀谋关羽"
+        },
+        {
+          "id": "old_wu_huangfusong",
+          "name": "旧武皇甫嵩"
+        },
+        {
+          "id": "old_wu_guanyu",
+          "name": "旧武关羽"
+        },
+        {
+          "id": "old_wu_zhugeliang",
+          "name": "旧武诸葛亮"
+        },
+        {
+          "id": "old_wu_lukang",
+          "name": "旧武陆抗"
+        },
+        {
+          "id": "old_dc_shen_huatuo",
+          "name": "旧神华佗"
+        },
+        {
+          "id": "old_dc_shen_sunquan",
+          "name": "旧新杀神孙权"
+        },
+        {
+          "id": "old_xin_zhangzhongjing",
+          "name": "旧张机"
+        },
+        {
+          "id": "old_qiaogong",
+          "name": "旧桥公"
+        },
+        {
+          "id": "old_sp_xinpi",
+          "name": "旧信辛毗"
+        },
+        {
+          "id": "old_wujing",
+          "name": "旧吴景"
+        },
+        {
+          "id": "old_sp_wangshuang",
+          "name": "旧勇王双"
+        },
+        {
+          "id": "old_wangling",
+          "name": "旧王凌"
+        },
+        {
+          "id": "old_mb_shen_jiangwei",
+          "name": "牢手杀神姜维"
+        },
+        {
+          "id": "oldx_mb_shen_jiangwei",
+          "name": "旧手杀神姜维"
+        },
+        {
+          "id": "old_mb_liuhui",
+          "name": "旧数刘徽"
+        },
+        {
+          "id": "old_mb_sunquan",
+          "name": "旧SP孙权"
+        },
+        {
+          "id": "old_mb_caomao",
+          "name": "旧手杀曹髦"
+        },
+        {
+          "id": "old_mb_cuilingyi",
+          "name": "旧手杀崔令仪"
+        },
+        {
+          "id": "old_mb_mengda",
+          "name": "旧手杀孟达"
+        },
+        {
+          "id": "old_mb_caocao",
+          "name": "旧手杀SP曹操"
+        },
+        {
+          "id": "old_wuke",
+          "name": "旧吴珂"
+        },
+        {
+          "id": "old_zhangbu",
+          "name": "旧张布"
+        },
+        {
+          "id": "old_friend_xushu",
+          "name": "旧友徐庶"
+        },
+        {
+          "id": "old_hefei_zhangliao",
+          "name": "旧骥张辽"
+        },
+        {
+          "id": "old_sp_jianggan",
+          "name": "旧蒋干"
+        },
+        {
+          "id": "old_mb_wangjing",
+          "name": "旧王经"
+        },
+        {
+          "id": "old_mb_sp_guanqiujian",
+          "name": "旧玄毌丘俭"
+        },
+        {
+          "id": "old_liwei",
+          "name": "旧李遗"
+        },
+        {
+          "id": "old_yangfu",
+          "name": "旧杨阜"
+        },
+        {
+          "id": "old_mb_chengui",
+          "name": "旧手杀陈珪"
+        },
+        {
+          "id": "old_mb_guozhao",
+          "name": "旧手杀郭照"
+        },
+        {
+          "id": "old_fuqian",
+          "name": "旧手杀傅佥"
+        },
+        {
+          "id": "old_mb_sp_zhenji",
+          "name": "旧手杀SP甄宓"
+        },
+        {
+          "id": "old_mb_zhuzhi",
+          "name": "旧手杀界朱治"
+        },
+        {
+          "id": "old_sb_caopi",
+          "name": "牢谋曹丕"
+        },
+        {
+          "id": "old_sb_jiangwei",
+          "name": "旧谋姜维"
+        },
+        {
+          "id": "old_sb_xuhuang",
+          "name": "旧谋徐晃"
+        },
+        {
+          "id": "old_sb_yuanshao",
+          "name": "旧谋袁绍"
+        },
+        {
+          "id": "old_sb_handang",
+          "name": "旧谋韩当"
+        },
+        {
+          "id": "old_sb_huaxiong",
+          "name": "旧谋华雄"
+        },
+        {
+          "id": "old_sb_jiaxu",
+          "name": "旧谋贾诩"
+        },
+        {
+          "id": "old_sb_zhugejin",
+          "name": "旧谋诸葛瑾"
+        },
+        {
+          "id": "old_sb_zhangliao",
+          "name": "旧谋张辽"
+        },
+        {
+          "id": "old_sb_zhanghe",
+          "name": "旧谋张郃"
+        },
+        {
+          "id": "old_sb_guojia",
+          "name": "旧谋郭嘉"
+        },
+        {
+          "id": "old_sb_gaoshun",
+          "name": "旧谋高顺"
+        },
+        {
+          "id": "old_sb_xiahouyuan",
+          "name": "旧谋夏侯渊"
+        },
+        {
+          "id": "old_sb_lvbu",
+          "name": "旧谋吕布"
+        },
+        {
+          "id": "old_sb_daqiao",
+          "name": "旧谋大乔"
+        },
+        {
+          "id": "old_sb_sunce",
+          "name": "旧谋孙策"
+        },
+        {
+          "id": "old_sb_sp_zhugeliang",
+          "name": "牢谋诸葛亮"
+        },
+        {
+          "id": "oldx_sb_sp_zhugeliang",
+          "name": "旧谋诸葛亮"
+        },
+        {
+          "id": "old_sb_menghuo",
+          "name": "旧谋孟获"
+        },
+        {
+          "id": "old_sb_zhurong",
+          "name": "旧谋祝融"
+        },
+        {
+          "id": "old_sb_guanyu",
+          "name": "旧谋关羽"
+        },
+        {
+          "id": "old_sb_zhaoyun",
+          "name": "旧谋赵云"
+        },
+        {
+          "id": "old_sb_fazheng",
+          "name": "旧谋法正"
+        },
+        {
+          "id": "old_sb_huangzhong",
+          "name": "旧谋黄忠"
+        },
+        {
+          "id": "old_sb_gongsunzan",
+          "name": "旧谋公孙瓒"
+        },
+        {
+          "id": "old_sb_sunquan",
+          "name": "旧谋孙权"
+        },
+        {
+          "id": "old_sb_huanggai",
+          "name": "旧谋黄盖"
+        },
+        {
+          "id": "old_sb_ganning",
+          "name": "旧谋甘宁"
+        },
+        {
+          "id": "old_sb_xiaoqiao",
+          "name": "旧谋小乔"
+        },
+        {
+          "id": "old_pot_lusu",
+          "name": "旧势鲁肃"
+        },
+        {
+          "id": "old_pangxi",
+          "name": "旧势庞羲"
+        },
+        {
+          "id": "old_mb_zhangyan",
+          "name": "旧势张燕"
+        },
+        {
+          "id": "old_pot_xinxianying",
+          "name": "旧势辛宪英"
+        },
+        {
+          "id": "old_guoyuan",
+          "name": "旧势国渊"
+        },
+        {
+          "id": "old_mb_chenzhi",
+          "name": "旧势陈祗"
+        },
+        {
+          "id": "old_pot_weiyan",
+          "name": "旧势魏延"
+        },
+        {
+          "id": "old_pot_taishici",
+          "name": "旧势太史慈"
+        },
+        {
+          "id": "old_pot_lougui",
+          "name": "旧势娄圭"
+        },
+        {
+          "id": "old_pot_chendao",
+          "name": "旧势陈到"
+        },
+        {
+          "id": "old_pot_yuji",
+          "name": "旧势于吉"
+        },
+        {
+          "id": "old_tw_huojun",
+          "name": "旧TW霍峻"
+        },
+        {
+          "id": "old_tw_guohuai",
+          "name": "旧TW界郭淮"
+        },
+        {
+          "id": "oldx_quancong",
+          "name": "旧全琮"
+        },
+        {
+          "id": "old_tw_baoxin",
+          "name": "牢鲍信"
+        },
+        {
+          "id": "old_tw_zhangmancheng",
+          "name": "旧TW张曼成"
+        },
+        {
+          "id": "old_tw_guanqiujian",
+          "name": "旧TW毌丘俭"
+        },
+        {
+          "id": "old_tw_niufudongxie",
+          "name": "旧牛辅董翓"
+        },
+        {
+          "id": "old_xia_guanyu",
+          "name": "旧侠关羽"
+        },
+        {
+          "id": "old_xia_zhaoe",
+          "name": "旧赵娥"
+        },
+        {
+          "id": "old_huan_zhugeliang",
+          "name": "旧幻诸葛亮"
+        },
+        {
+          "id": "old_huan_weiyan",
+          "name": "旧幻魏延"
+        },
+        {
+          "id": "old_huan_zhugeguo",
+          "name": "旧幻诸葛果"
+        },
+        {
+          "id": "old_huan_caoang",
+          "name": "旧幻曹昂"
+        },
+        {
+          "id": "old_tw_gexuan",
+          "name": "旧TW葛玄"
+        },
+        {
+          "id": "old_jsrg_huangfusong",
+          "name": "旧TW起皇甫嵩"
+        },
+        {
+          "id": "old_tw_huangfusong",
+          "name": "旧TW皇甫嵩"
+        },
+        {
+          "id": "old_yinfuren",
+          "name": "旧尹夫人"
+        },
+        {
+          "id": "old_tw_jiangji",
+          "name": "旧TW蒋济"
+        },
+        {
+          "id": "old_tw_zhangzhao",
+          "name": "旧张昭"
+        },
+        {
+          "id": "old_tw_zhanghong",
+          "name": "旧张纮"
+        },
+        {
+          "id": "old_tw_shen_lvmeng",
+          "name": "旧TW神吕蒙"
+        },
+        {
+          "id": "old_strong_caochong",
+          "name": "旧曹冲"
+        },
+        {
+          "id": "old_jm_yuanshu",
+          "name": "旧集蜜袁术"
+        },
+        {
+          "id": "old_new_simayi",
+          "name": "旧手杀神司马懿"
+        },
+        {
+          "id": "old_yj_zhoubuyi",
+          "name": "旧☆周不疑"
+        },
+        {
+          "id": "old_v_sunce",
+          "name": "旧威孙策"
+        },
+        {
+          "id": "old_wufu",
+          "name": "旧伍孚"
+        },
+        {
+          "id": "old_lukai",
+          "name": "旧陆凯"
+        },
+        {
+          "id": "old_yj_majun",
+          "name": "旧马钧"
+        },
+        {
+          "id": "old_xunyuxunyou",
+          "name": "旧荀彧荀攸"
+        },
+        {
+          "id": "old_v_sunquan",
+          "name": "旧威孙权"
+        },
+        {
+          "id": "diy_zhujun",
+          "name": "蛇朱儁"
+        },
+        {
+          "id": "diy_liaohua",
+          "name": "蛇廖化"
+        },
+        {
+          "id": "diy_zhangfei",
+          "name": "蛇张飞"
+        },
+        {
+          "id": "lm_shichangshi",
+          "name": "真十常侍"
+        },
+        {
+          "id": "lm_zhangrang",
+          "name": "张让"
+        },
+        {
+          "id": "lm_zhaozhong",
+          "name": "赵忠"
+        },
+        {
+          "id": "lm_sunzhang",
+          "name": "孙璋"
+        },
+        {
+          "id": "lm_bilan",
+          "name": "毕岚"
+        },
+        {
+          "id": "lm_xiayun",
+          "name": "夏恽"
+        },
+        {
+          "id": "lm_hankui",
+          "name": "韩悝"
+        },
+        {
+          "id": "lm_lisong",
+          "name": "栗嵩"
+        },
+        {
+          "id": "lm_duangui",
+          "name": "段珪"
+        },
+        {
+          "id": "lm_guosheng",
+          "name": "郭胜"
+        },
+        {
+          "id": "lm_gaowang",
+          "name": "高望"
+        },
+        {
+          "id": "sw_guanyu",
+          "name": "☆神关羽"
+        },
+        {
+          "id": "sw_lvmeng",
+          "name": "☆神吕蒙"
+        },
+        {
+          "id": "sw_zhugeliang",
+          "name": "☆神诸葛亮"
+        },
+        {
+          "id": "sw_zhouyu",
+          "name": "☆神周瑜"
+        },
+        {
+          "id": "sw_simayi",
+          "name": "☆神司马懿"
+        },
+        {
+          "id": "sw_zhaoyun",
+          "name": "☆神赵云"
+        },
+        {
+          "id": "sw_caocao",
+          "name": "☆神曹操"
+        },
+        {
+          "id": "sw_lvbu",
+          "name": "☆神吕布"
+        },
+        {
+          "id": "sw_liubei",
+          "name": "☆神刘备"
+        },
+        {
+          "id": "sw_luxun",
+          "name": "☆神陆逊"
+        },
+        {
+          "id": "sw_zhangliao",
+          "name": "☆神张辽"
+        },
+        {
+          "id": "sw_ganning",
+          "name": "☆神甘宁"
+        },
+        {
+          "id": "sw_caopi",
+          "name": "☆神曹丕"
+        },
+        {
+          "id": "sw_zhenji",
+          "name": "☆神甄宓"
+        },
+        {
+          "id": "sw_zhangjiao",
+          "name": "☆神张角"
+        },
+        {
+          "id": "sw_diaochan",
+          "name": "☆神貂蝉"
+        },
+        {
+          "id": "sw_tw_guanyu",
+          "name": "TW☆神关羽"
+        },
+        {
+          "id": "sw_tw_lvmeng",
+          "name": "TW☆神吕蒙"
+        },
+        {
+          "id": "sw_wechat_zhugeliang",
+          "name": "微信☆神诸葛亮"
+        },
+        {
+          "id": "lm_xurong",
+          "name": "虎翼徐荣"
+        },
+        {
+          "id": "lm_old_caocao",
+          "name": "凌神曹操"
+        },
+        {
+          "id": "hfdiy_caopi",
+          "name": "风曹丕"
+        },
+        {
+          "id": "hfdiy_sb_caopi",
+          "name": "牢谋曹丕"
+        },
+        {
+          "id": "hfdiy_sb_guojia",
+          "name": "风谋郭嘉"
+        },
+        {
+          "id": "hfdiy_zhonghui",
+          "name": "风钟会"
+        },
+        {
+          "id": "hfdiy_yujin",
+          "name": "风于禁"
+        },
+        {
+          "id": "hfdiy_zhangchunhua",
+          "name": "风张春华"
+        },
+        {
+          "id": "hfdiy_guanyu",
+          "name": "风关羽"
+        },
+        {
+          "id": "hfdiy_zhangfei",
+          "name": "风张飞"
+        },
+        {
+          "id": "hfdiy_dc_sb_zhugeliang",
+          "name": "风新杀谋诸葛亮"
+        },
+        {
+          "id": "hfdiy_guansuo",
+          "name": "风关索"
+        },
+        {
+          "id": "hfdiy_xiahouba",
+          "name": "风夏侯霸"
+        },
+        {
+          "id": "hfdiy_chenshou",
+          "name": "风青史陈寿"
+        },
+        {
+          "id": "hfdiy_zhangsong",
+          "name": "风张松"
+        },
+        {
+          "id": "hfdiy_madai",
+          "name": "风马岱"
+        },
+        {
+          "id": "hfdiy_zhaoxiang",
+          "name": "风赵襄"
+        },
+        {
+          "id": "hfdiy_re_zuoci",
+          "name": "风左慈"
+        },
+        {
+          "id": "hfdiy_jushou",
+          "name": "风沮授"
+        },
+        {
+          "id": "hfdiy_wu_huangfusong",
+          "name": "风武皇甫嵩"
+        },
+        {
+          "id": "hfdiy_jsrg_xushao",
+          "name": "风起许劭"
+        },
+        {
+          "id": "hfdiy_shen_caopi",
+          "name": "风神曹丕"
+        },
+        {
+          "id": "hfdiy_shen_zhangliao",
+          "name": "风神张辽"
+        },
+        {
+          "id": "hfdiy_shen_liubei",
+          "name": "风神刘备"
+        },
+        {
+          "id": "hfdiy_shen_guanyu",
+          "name": "风神关羽"
+        },
+        {
+          "id": "hfdiy_shen_zhaoyun",
+          "name": "风神赵云"
+        },
+        {
+          "id": "hfdiy_mb_shen_jiangwei",
+          "name": "风手杀神姜维"
+        },
+        {
+          "id": "hfdiy_mb_shen_machao",
+          "name": "风手杀神马超"
+        },
+        {
+          "id": "hfdiy_shen_sunquan",
+          "name": "风神孙权"
+        },
+        {
+          "id": "hfdiy_ceshi",
+          "name": "测试角色"
+        }
+      ],
+      "excluded": [
+        {
+          "id": "old_zhugejin",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "wu",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "olhuanshi",
+            "olhongyuan",
+            "olmingzhe"
+          ],
+          "name": "旧诸葛瑾",
+          "reason": "same-definition",
+          "matches": [
+            {
+              "id": "zhugejin",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_20.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "wu",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "olhuanshi",
+                "olhongyuan",
+                "olmingzhe"
+              ],
+              "name": "诸葛瑾"
+            }
+          ]
+        },
+        {
+          "id": "old_zhanghua",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "jin",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "olbihun",
+            "olchuanwu",
+            "oljianhe"
+          ],
+          "name": "旧张华",
+          "reason": "same-definition",
+          "matches": [
+            {
+              "id": "zhanghua",
+              "file": "apps/core/character/sp/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "jin",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "olbihun",
+                "oljianhe",
+                "olchuanwu"
+              ],
+              "name": "张华"
+            }
+          ]
+        },
+        {
+          "id": "old_re_zhangchunhua",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "female",
+          "group": "wei",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "rejueqing",
+            "reshangshi"
+          ],
+          "name": "旧界张春华",
+          "reason": "same-definition",
+          "matches": [
+            {
+              "id": "re_zhangchunhua",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_15.js",
+              "source": "existing",
+              "sex": "female",
+              "group": "wei",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "rejueqing",
+                "reshangshi"
+              ],
+              "name": "界张春华"
+            }
+          ]
+        },
+        {
+          "id": "old_sp_zhujun",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "yangjie",
+            "zjjuxiang",
+            "houfeng"
+          ],
+          "name": "旧严朱儁",
+          "reason": "same-definition",
+          "matches": [
+            {
+              "id": "sp_zhujun",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_19.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "yangjie",
+                "zjjuxiang",
+                "houfeng"
+              ],
+              "name": "手杀朱儁"
+            }
+          ]
+        },
+        {
+          "id": "old_sp_lvfan",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "wu",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "spdiaodu",
+            "spdiancai",
+            "spyanji"
+          ],
+          "name": "旧严吕范",
+          "reason": "same-definition",
+          "matches": [
+            {
+              "id": "sp_lvfan",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_19.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "wu",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "spdiaodu",
+                "spdiancai",
+                "spyanji"
+              ],
+              "name": "吕范"
+            }
+          ]
+        },
+        {
+          "id": "old_pot_dengai",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "wei",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "old_pottuntian",
+            "old_potjixi",
+            "old_potzaoxian"
+          ],
+          "name": "旧势邓艾",
+          "reason": "same-id",
+          "matches": [
+            {
+              "id": "old_pot_dengai",
+              "file": "apps/core/character/old/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "wei",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "old_pottuntian",
+                "old_potjixi",
+                "old_potzaoxian"
+              ],
+              "name": "牢势邓艾"
+            }
+          ]
+        },
+        {
+          "id": "wangtaowangyue",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "female",
+          "group": "shu",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "huguan",
+            "yaopei",
+            "mingluan"
+          ],
+          "name": "王桃王悦",
+          "reason": "same-definition",
+          "matches": [
+            {
+              "id": "bilibili_wangwang",
+              "file": "apps/core/extension/packs/活动武将/js/precontent/huodongcharacter.js",
+              "source": "existing",
+              "sex": "female",
+              "group": "shu",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "huguan",
+                "yaopei",
+                "mingluan"
+              ],
+              "name": "王桃王悦"
+            }
+          ]
+        },
+        {
+          "id": "unlock_dongzhao",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "wei",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "olxianlve",
+            "olzaowang"
+          ],
+          "name": "OL董昭",
+          "reason": "same-definition",
+          "matches": [
+            {
+              "id": "ol_dongzhao",
+              "file": "apps/core/character/sp/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "wei",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "olxianlve",
+                "olzaowang"
+              ],
+              "name": "OL董昭"
+            }
+          ]
+        },
+        {
+          "id": "unlock_tianchuan",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "female",
+          "group": "qun",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "pshuying",
+            "psqianjing",
+            "psbianchi"
+          ],
+          "name": "田钏",
+          "reason": "same-definition",
+          "matches": [
+            {
+              "id": "yj_tianchuan",
+              "file": "apps/core/character/offline/character.js",
+              "source": "base",
+              "sex": "female",
+              "group": "qun",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "pshuying",
+                "psqianjing",
+                "psbianchi"
+              ],
+              "name": "田钏"
+            }
+          ]
+        },
+        {
+          "id": "pot_xiaoqiao",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "female",
+          "group": "wu",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "potheyun",
+            "potyinhui"
+          ],
+          "name": "势小乔",
+          "reason": "same-id",
+          "matches": [
+            {
+              "id": "pot_xiaoqiao",
+              "file": "apps/core/character/bingshi/character.js",
+              "source": "base",
+              "sex": "female",
+              "group": "wu",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "potheyun",
+                "potyinhui"
+              ],
+              "name": "势小乔"
+            }
+          ]
+        },
+        {
+          "id": "v_mateng",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "dcheqi",
+            "dchuirui",
+            "dcxiaoben"
+          ],
+          "name": "威马腾",
+          "reason": "same-id",
+          "matches": [
+            {
+              "id": "v_mateng",
+              "file": "apps/core/character/xianding/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "dcheqi",
+                "dchuirui",
+                "dcxiaoben"
+              ],
+              "name": "威马腾"
+            }
+          ]
+        }
+      ],
+      "sameNameVariants": [
+        {
+          "id": "old_sb_guanyu",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shu",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "old_sbwusheng",
+            "sbyijue"
+          ],
+          "name": "旧谋关羽",
+          "matches": [
+            {
+              "id": "junk_guanyu",
+              "file": "apps/core/character/diy/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shu",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "olsbfumeng",
+                "olsbguidao"
+              ],
+              "name": "旧谋关羽"
+            }
+          ]
+        },
+        {
+          "id": "old_strong_caochong",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "wei",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "strongduanti",
+            "stronglianwu",
+            "olchengxiang"
+          ],
+          "name": "旧曹冲",
+          "matches": [
+            {
+              "id": "old_caochong",
+              "file": "apps/core/character/old/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "wei",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "oldrenxin",
+                "oldchengxiang"
+              ],
+              "name": "旧曹冲"
+            }
+          ]
+        },
+        {
+          "id": "old_yj_majun",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "wei",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "gongqiao",
+            "old_jingyi"
+          ],
+          "name": "旧马钧",
+          "matches": [
+            {
+              "id": "mjs_old_majun",
+              "file": "apps/core/extension/packs/名将杀/character/old/character.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "wei",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "mjsshuizhuanbaixi",
+                "mjsoldlonggujiliu",
+                "mjsqiaosijueshi"
+              ],
+              "name": "旧马钧"
+            }
+          ]
+        },
+        {
+          "id": "lm_zhangrang",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "scstaoluan"
+          ],
+          "name": "张让",
+          "matches": [
+            {
+              "id": "scs_zhangrang",
+              "file": "apps/core/character/mobile/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "0",
+              "maxHp": "0",
+              "skills": [
+                "scstaoluan"
+              ],
+              "name": "张让"
+            },
+            {
+              "id": "zhangrang",
+              "file": "apps/core/character/yijiang/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "taoluan"
+              ],
+              "name": "张让"
+            },
+            {
+              "id": "txhj_scszhangrang",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_37.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "10",
+              "maxHp": "10",
+              "skills": [
+                "taoluan",
+                "scstaoluan",
+                "txhj_huangmen",
+                "reqiuyuan",
+                "zhangrang_yankong",
+                "Neihuan_jiquan"
+              ],
+              "name": "张让"
+            },
+            {
+              "id": "QH_zhangrang",
+              "file": "apps/core/extension/packs/活动武将/js/precontent/decadeQiHuan.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "20",
+              "maxHp": "20",
+              "skills": [
+                "QH_rehuanshi",
+                "QH_huoluan",
+                "QH_yankong",
+                "QH_jiquan",
+                "QH_luanzheng"
+              ],
+              "name": "张让"
+            },
+            {
+              "id": "qy_qyzhangrang",
+              "file": "apps/core/extension/collections/清瑶葭绮/members/假装无敌/CharacterCard.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "3/5",
+              "maxHp": "3/5",
+              "skills": [
+                "ymtaoluan",
+                "ymhuoluan"
+              ],
+              "name": "张让"
+            }
+          ]
+        },
+        {
+          "id": "lm_zhaozhong",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "scschiyan"
+          ],
+          "name": "赵忠",
+          "matches": [
+            {
+              "id": "scs_zhaozhong",
+              "file": "apps/core/character/mobile/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "0",
+              "maxHp": "0",
+              "skills": [
+                "scschiyan"
+              ],
+              "name": "赵忠"
+            },
+            {
+              "id": "ol_zhaozhong",
+              "file": "apps/core/character/sp/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "olpengbi",
+                "oldici"
+              ],
+              "name": "赵忠"
+            },
+            {
+              "id": "zhaozhong",
+              "file": "apps/core/character/sp2/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "6",
+              "maxHp": "6",
+              "skills": [
+                "yangzhong",
+                "huangkong"
+              ],
+              "name": "赵忠"
+            },
+            {
+              "id": "txhj_scszhaozhong",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_37.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "7",
+              "maxHp": "7",
+              "skills": [
+                "scschiyan",
+                "txhj_huangmen",
+                "huangkong",
+                "funan",
+                "twmouli",
+                "twyangshi"
+              ],
+              "name": "赵忠"
+            },
+            {
+              "id": "txhj_zhaozhong",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_37.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "6/12",
+              "maxHp": "6/12",
+              "skills": [
+                "txhj_huangmen",
+                "taixu_jinxing",
+                "taixu_xiehui",
+                "txhj_daiyuan",
+                "huaizi"
+              ],
+              "name": "赵忠"
+            },
+            {
+              "id": "QH_zhaozhong",
+              "file": "apps/core/extension/packs/活动武将/js/precontent/decadeQiHuan.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "20",
+              "maxHp": "20",
+              "skills": [
+                "QH_rehuanshi",
+                "QH_duanzheng",
+                "QH_lianhuo",
+                "QH_huangkong",
+                "QH_luanzheng"
+              ],
+              "name": "赵忠"
+            }
+          ]
+        },
+        {
+          "id": "lm_sunzhang",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "scszimou"
+          ],
+          "name": "孙璋",
+          "matches": [
+            {
+              "id": "scs_sunzhang",
+              "file": "apps/core/character/mobile/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "0",
+              "maxHp": "0",
+              "skills": [
+                "scszimou"
+              ],
+              "name": "孙璋"
+            },
+            {
+              "id": "txhj_sunzhang",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_37.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "6",
+              "maxHp": "6",
+              "skills": [
+                "scszimou",
+                "mia_fengfa",
+                "satomi_luodao",
+                "nao_wanxin"
+              ],
+              "name": "孙璋"
+            }
+          ]
+        },
+        {
+          "id": "lm_bilan",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "scspicai"
+          ],
+          "name": "毕岚",
+          "matches": [
+            {
+              "id": "scs_bilan",
+              "file": "apps/core/character/mobile/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "0",
+              "maxHp": "0",
+              "skills": [
+                "scspicai"
+              ],
+              "name": "毕岚"
+            },
+            {
+              "id": "txhj_bilan",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_37.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "scspicai",
+                "chouce",
+                "dulie"
+              ],
+              "name": "毕岚"
+            }
+          ]
+        },
+        {
+          "id": "lm_xiayun",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "scsyaozhuo"
+          ],
+          "name": "夏恽",
+          "matches": [
+            {
+              "id": "scs_xiayun",
+              "file": "apps/core/character/mobile/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "0",
+              "maxHp": "0",
+              "skills": [
+                "scsyaozhuo"
+              ],
+              "name": "夏恽"
+            },
+            {
+              "id": "txhj_xiayun",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_37.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "6",
+              "maxHp": "6",
+              "skills": [
+                "scsyaozhuo",
+                "rangjie",
+                "jsrgbahu",
+                "jsrgzhiheng",
+                "cxyJiaoXia"
+              ],
+              "name": "夏恽"
+            },
+            {
+              "id": "QH_xiayun",
+              "file": "apps/core/extension/packs/活动武将/js/precontent/decadeQiHuan.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "8",
+              "maxHp": "8",
+              "skills": [
+                "QH_rehuanshi",
+                "QH_jifu"
+              ],
+              "name": "夏恽"
+            }
+          ]
+        },
+        {
+          "id": "lm_hankui",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "scsxiaolu"
+          ],
+          "name": "韩悝",
+          "matches": [
+            {
+              "id": "scs_hankui",
+              "file": "apps/core/character/mobile/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "0",
+              "maxHp": "0",
+              "skills": [
+                "scsxiaolu"
+              ],
+              "name": "韩悝"
+            },
+            {
+              "id": "txhj_hankui",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_37.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "6",
+              "maxHp": "6",
+              "skills": [
+                "scsxiaolu",
+                "mingzhe",
+                "mjkuanji",
+                "txhj_huangmen",
+                "twsaotao"
+              ],
+              "name": "韩悝"
+            }
+          ]
+        },
+        {
+          "id": "lm_lisong",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "scskuiji"
+          ],
+          "name": "栗嵩",
+          "matches": [
+            {
+              "id": "scs_lisong",
+              "file": "apps/core/character/mobile/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "0",
+              "maxHp": "0",
+              "skills": [
+                "scskuiji"
+              ],
+              "name": "栗嵩"
+            },
+            {
+              "id": "txhj_lisong",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_37.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "5",
+              "maxHp": "5",
+              "skills": [
+                "scskuiji",
+                "spyinzhi",
+                "vtbyanli",
+                "zymingshi"
+              ],
+              "name": "栗嵩"
+            }
+          ]
+        },
+        {
+          "id": "lm_duangui",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "scschihe"
+          ],
+          "name": "段珪",
+          "matches": [
+            {
+              "id": "ns_duangui",
+              "file": "apps/core/character/diy/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "nscuanquan",
+                "nsjianning",
+                "nschangshi",
+                "nsbaquan"
+              ],
+              "name": "段珪"
+            },
+            {
+              "id": "scs_duangui",
+              "file": "apps/core/character/mobile/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "0",
+              "maxHp": "0",
+              "skills": [
+                "scschihe"
+              ],
+              "name": "段珪"
+            },
+            {
+              "id": "txhj_duangui",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_37.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "scschihe",
+                "redangxian",
+                "neihuan_chibi"
+              ],
+              "name": "段珪"
+            },
+            {
+              "id": "QH_duangui",
+              "file": "apps/core/extension/packs/活动武将/js/precontent/decadeQiHuan.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "10",
+              "maxHp": "10",
+              "skills": [
+                "QH_rehuanshi",
+                "QH_suxi",
+                "QH_chibi"
+              ],
+              "name": "段珪"
+            }
+          ]
+        },
+        {
+          "id": "lm_guosheng",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "scsniqu"
+          ],
+          "name": "郭胜",
+          "matches": [
+            {
+              "id": "scs_guosheng",
+              "file": "apps/core/character/mobile/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "0",
+              "maxHp": "0",
+              "skills": [
+                "scsniqu"
+              ],
+              "name": "郭胜"
+            },
+            {
+              "id": "txhj_guosheng",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_37.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "6",
+              "maxHp": "6",
+              "skills": [
+                "scsniqu",
+                "txmazhan",
+                "neihuan_heimu",
+                "Neihuan_niluan",
+                "xinzhan"
+              ],
+              "name": "郭胜"
+            },
+            {
+              "id": "QH_guosheng",
+              "file": "apps/core/extension/packs/活动武将/js/precontent/decadeQiHuan.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "10",
+              "maxHp": "10",
+              "skills": [
+                "QH_rehuanshi",
+                "QH_heimu",
+                "QH_heizhi"
+              ],
+              "name": "郭胜"
+            }
+          ]
+        },
+        {
+          "id": "lm_gaowang",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "qun",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "scsanruo"
+          ],
+          "name": "高望",
+          "matches": [
+            {
+              "id": "scs_gaowang",
+              "file": "apps/core/character/mobile/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "qun",
+              "hp": "0",
+              "maxHp": "0",
+              "skills": [
+                "scsmiaoyu"
+              ],
+              "name": "高望"
+            },
+            {
+              "id": "scs_gaowang",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_11.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "",
+              "maxHp": "",
+              "skills": [
+                "scsanruo"
+              ],
+              "name": "高望"
+            },
+            {
+              "id": "txhj_gaowang",
+              "file": "apps/core/extension/collections/分支武将/packs/pack_37.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "5",
+              "maxHp": "5",
+              "skills": [
+                "scsanruo",
+                "scsmiaoyu",
+                "lisi",
+                "xinfu_jiyuan"
+              ],
+              "name": "高望"
+            },
+            {
+              "id": "bilibili_gaowang",
+              "file": "apps/core/extension/packs/活动武将/js/precontent/huodongcharacter.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "qun",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "scsanruo",
+                "gaowangdead"
+              ],
+              "name": "高望"
+            }
+          ]
+        },
+        {
+          "id": "sw_guanyu",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "5",
+          "maxHp": "5",
+          "skills": [
+            "wushen",
+            "new_wuhun",
+            "shenwuzaishi"
+          ],
+          "name": "☆神关羽",
+          "matches": [
+            {
+              "id": "shen_guanyu",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "5",
+              "maxHp": "5",
+              "skills": [
+                "wushen",
+                "new_wuhun"
+              ],
+              "name": "神关羽"
+            }
+          ]
+        },
+        {
+          "id": "sw_lvmeng",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "shelie",
+            "gongxin",
+            "shenwuzaishi"
+          ],
+          "name": "☆神吕蒙",
+          "matches": [
+            {
+              "id": "shen_lvmeng",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "shelie",
+                "gongxin"
+              ],
+              "name": "神吕蒙"
+            },
+            {
+              "id": "神吕蒙",
+              "file": "apps/core/extension/collections/风云浮生明辉月/members/风云变幻/extension.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "shen",
+              "hp": "2",
+              "maxHp": "2",
+              "skills": [
+                "韬略",
+                "复礼"
+              ],
+              "name": "神吕蒙"
+            }
+          ]
+        },
+        {
+          "id": "sw_zhugeliang",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "qixing",
+            "kuangfeng",
+            "dawu",
+            "shenwuzaishi"
+          ],
+          "name": "☆神诸葛亮",
+          "matches": [
+            {
+              "id": "shen_zhugeliang",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "qixing",
+                "kuangfeng",
+                "dawu"
+              ],
+              "name": "神诸葛亮"
+            }
+          ]
+        },
+        {
+          "id": "sw_zhouyu",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "yeyan",
+            "miniqinyin",
+            "shenwuzaishi"
+          ],
+          "name": "☆神周瑜",
+          "matches": [
+            {
+              "id": "shen_zhouyu",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "yeyan",
+                "qinyin"
+              ],
+              "name": "神周瑜"
+            },
+            {
+              "id": "th_shen_zhouyu",
+              "file": "apps/core/extension/packs/Thunder/apk-original.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "shen",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "th_yeyan",
+                "qinyin"
+              ],
+              "name": "神周瑜"
+            }
+          ]
+        },
+        {
+          "id": "sw_simayi",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "renjie",
+            "sbaiyin",
+            "lianpo",
+            "shenwuzaishi"
+          ],
+          "name": "☆神司马懿",
+          "matches": [
+            {
+              "id": "shen_simayi",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "renjie",
+                "sbaiyin",
+                "lianpo"
+              ],
+              "name": "神司马懿"
+            }
+          ]
+        },
+        {
+          "id": "sw_zhaoyun",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "2",
+          "maxHp": "2",
+          "skills": [
+            "xinjuejing",
+            "relonghun",
+            "shenwuzaishi"
+          ],
+          "name": "☆神赵云",
+          "matches": [
+            {
+              "id": "shen_zhaoyun",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "2",
+              "maxHp": "2",
+              "skills": [
+                "xinjuejing",
+                "relonghun"
+              ],
+              "name": "神赵云"
+            }
+          ]
+        },
+        {
+          "id": "sw_caocao",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "guixin",
+            "feiying",
+            "shenwuzaishi"
+          ],
+          "name": "☆神曹操",
+          "matches": [
+            {
+              "id": "shen_caocao",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "new_guixin",
+                "feiying"
+              ],
+              "name": "神曹操"
+            },
+            {
+              "id": "ps_shen_caocao",
+              "file": "apps/core/character/offline/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "psguixin",
+                "psshenzun",
+                "psfeiying"
+              ],
+              "name": "★神曹操"
+            }
+          ]
+        },
+        {
+          "id": "sw_lvbu",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "5",
+          "maxHp": "5",
+          "skills": [
+            "baonu",
+            "wumou",
+            "ol_wuqian",
+            "ol_shenfen",
+            "shenwuzaishi"
+          ],
+          "name": "☆神吕布",
+          "matches": [
+            {
+              "id": "shen_lvbu",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "5",
+              "maxHp": "5",
+              "skills": [
+                "baonu",
+                "wumou",
+                "ol_wuqian",
+                "ol_shenfen"
+              ],
+              "name": "神吕布"
+            },
+            {
+              "id": "lyz_shen_lvbu",
+              "file": "apps/core/extension/collections/群雄并起/members/阳光包/extension.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "shen",
+              "hp": "6",
+              "maxHp": "6",
+              "skills": [
+                "lyzlihuo",
+                "lyzkuipo"
+              ],
+              "name": "☆神吕布"
+            }
+          ]
+        },
+        {
+          "id": "sw_liubei",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "6",
+          "maxHp": "6",
+          "skills": [
+            "nzry_longnu",
+            "nzry_jieying",
+            "shenwuzaishi"
+          ],
+          "name": "☆神刘备",
+          "matches": [
+            {
+              "id": "shen_liubei",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "6",
+              "maxHp": "6",
+              "skills": [
+                "nzry_longnu",
+                "nzry_jieying"
+              ],
+              "name": "神刘备"
+            },
+            {
+              "id": "神刘备",
+              "file": "apps/core/extension/collections/风云浮生明辉月/members/风云变幻/extension.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "shen",
+              "hp": "6",
+              "maxHp": "6",
+              "skills": [
+                "龙怒",
+                "结营",
+                "昭烈"
+              ],
+              "name": "神刘备"
+            }
+          ]
+        },
+        {
+          "id": "sw_luxun",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "nzry_junlve",
+            "nzry_cuike",
+            "nzry_dinghuo",
+            "shenwuzaishi"
+          ],
+          "name": "☆神陆逊",
+          "matches": [
+            {
+              "id": "shen_luxun",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "nzry_junlve",
+                "nzry_cuike",
+                "nzry_dinghuo"
+              ],
+              "name": "神陆逊"
+            }
+          ]
+        },
+        {
+          "id": "sw_zhangliao",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "drlt_duorui",
+            "lmzhiti",
+            "shenwuzaishi"
+          ],
+          "name": "☆神张辽",
+          "matches": [
+            {
+              "id": "shen_zhangliao",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "drlt_duorui",
+                "drlt_zhiti"
+              ],
+              "name": "神张辽"
+            },
+            {
+              "id": "xinshen_zhangliao",
+              "file": "apps/core/extension/collections/群雄并起/members/强标包/extension.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "shen",
+              "hp": "4/5",
+              "maxHp": "4/5",
+              "skills": [
+                "xxyy_duorui",
+                "xin_xiying_shenzhangliao",
+                "drlt_zhiti"
+              ],
+              "name": "神张辽"
+            },
+            {
+              "id": "lyz_shen_zhangliao",
+              "file": "apps/core/extension/collections/群雄并起/members/阳光包/extension.js",
+              "source": "existing",
+              "sex": "male",
+              "group": "shen",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "lyzduorui",
+                "lyzzhiti"
+              ],
+              "name": "☆神张辽"
+            }
+          ]
+        },
+        {
+          "id": "sw_ganning",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "3",
+          "maxHp": "6",
+          "skills": [
+            "drlt_poxi",
+            "drlt_jieying",
+            "shenwuzaishi"
+          ],
+          "name": "☆神甘宁",
+          "matches": [
+            {
+              "id": "shen_ganning",
+              "file": "apps/core/character/extra/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "3",
+              "maxHp": "6",
+              "skills": [
+                "drlt_poxi",
+                "drlt_jieying"
+              ],
+              "name": "神甘宁"
+            }
+          ]
+        },
+        {
+          "id": "sw_caopi",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "5",
+          "maxHp": "5",
+          "skills": [
+            "chuyuan",
+            "dengji",
+            "shenwuzaishi"
+          ],
+          "name": "☆神曹丕",
+          "matches": [
+            {
+              "id": "shen_caopi",
+              "file": "apps/core/character/onlyOL/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "5",
+              "maxHp": "5",
+              "skills": [
+                "chuyuan",
+                "dengji"
+              ],
+              "name": "神曹丕"
+            }
+          ]
+        },
+        {
+          "id": "sw_zhenji",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "female",
+          "group": "shen",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "shenfu",
+            "qixian",
+            "shenwuzaishi"
+          ],
+          "name": "☆神甄宓",
+          "matches": [
+            {
+              "id": "shen_zhenji",
+              "file": "apps/core/character/onlyOL/character.js",
+              "source": "base",
+              "sex": "female",
+              "group": "shen",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "shenfu",
+                "qixian"
+              ],
+              "name": "神甄宓"
+            }
+          ]
+        },
+        {
+          "id": "sw_zhangjiao",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "yizhao",
+            "sijun",
+            "tianjie",
+            "shenwuzaishi"
+          ],
+          "name": "☆神张角",
+          "matches": [
+            {
+              "id": "shen_zhangjiao",
+              "file": "apps/core/character/xianding/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "yizhao",
+                "sijun",
+                "sanshou",
+                "tianjie"
+              ],
+              "name": "神张角"
+            }
+          ]
+        },
+        {
+          "id": "sw_diaochan",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "female",
+          "group": "shen",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "minimeihun",
+            "minihuoxin",
+            "shenwuzaishi"
+          ],
+          "name": "☆神貂蝉",
+          "matches": [
+            {
+              "id": "ps_shen_diaochan",
+              "file": "apps/core/character/offline/character.js",
+              "source": "base",
+              "sex": "female",
+              "group": "shen",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "psmeihun",
+                "pshuoxin"
+              ],
+              "name": "★神貂蝉"
+            },
+            {
+              "id": "shen_diaochan",
+              "file": "apps/core/character/offline/character.js",
+              "source": "base",
+              "sex": "female",
+              "group": "shen",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "meihun",
+                "huoxin"
+              ],
+              "name": "神貂蝉"
+            },
+            {
+              "id": "lyz_shen_diaochan",
+              "file": "apps/core/extension/collections/群雄并起/members/阳光包/extension.js",
+              "source": "existing",
+              "sex": "female",
+              "group": "shen",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "lyzhuanmei",
+                "lyzyuhun",
+                "lyzshangyue"
+              ],
+              "name": "☆神貂蝉"
+            }
+          ]
+        },
+        {
+          "id": "sw_tw_guanyu",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "4",
+          "maxHp": "4",
+          "skills": [
+            "twwushen",
+            "twwuhun",
+            "shenwuzaishi"
+          ],
+          "name": "TW☆神关羽",
+          "matches": [
+            {
+              "id": "tw_shen_guanyu",
+              "file": "apps/core/character/tw/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "4",
+              "maxHp": "4",
+              "skills": [
+                "twwushen",
+                "twwuhun"
+              ],
+              "name": "TW神关羽"
+            }
+          ]
+        },
+        {
+          "id": "sw_tw_lvmeng",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "shen",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "old_twshelie",
+            "old_twgongxin",
+            "shenwuzaishi"
+          ],
+          "name": "TW☆神吕蒙",
+          "matches": [
+            {
+              "id": "tw_shen_lvmeng",
+              "file": "apps/core/character/tw/character.js",
+              "source": "base",
+              "sex": "male",
+              "group": "shen",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "twshelie",
+                "twgongxin"
+              ],
+              "name": "TW神吕蒙"
+            }
+          ]
+        },
+        {
+          "id": "hfdiy_sb_caopi",
+          "file": "temp/dream-watch-import/星之梦/character/character.js",
+          "source": "星之梦",
+          "sex": "male",
+          "group": "wei",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "hf_twxingshang",
+            "hf_twfangzhu",
+            "hf_twsongwei"
+          ],
+          "name": "牢谋曹丕",
+          "matches": [
+            {
+              "id": "old_sb_caopi",
+              "file": "temp/dream-watch-import/星之梦/character/character.js",
+              "source": "星之梦",
+              "sex": "male",
+              "group": "wei",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "twxingshang",
+                "twfangzhu",
+                "twsongwei"
+              ],
+              "name": "牢谋曹丕"
+            }
+          ]
+        }
+      ],
+      "excludedAvatarPlaceholders": [
+        "aaAronaPurana",
+        "aaAqua",
+        "abAqua",
+        "aamomo",
+        "aamidori",
+        "aaNina",
+        "aahikari",
+        "aanozomi",
+        "aaKotone"
+      ]
+    },
+    {
+      "name": "云中守望",
+      "source": "temp/扩展武将/云中守望.zip",
+      "sourceSha256": "65b20ae2496fadbb1bf30dcbaf2ce6c8ea5d286d36bd56f024e176c5ed371f4a",
+      "original": 48,
+      "imported": [
+        {
+          "id": "swq_aoliao",
+          "name": "奥利奥"
+        },
+        {
+          "id": "swq_lugushou",
+          "name": "陆古寿"
+        },
+        {
+          "id": "swq_xindong",
+          "name": "心动"
+        },
+        {
+          "id": "swq_sunyuning",
+          "name": "孙玉凝"
+        },
+        {
+          "id": "swq_florian",
+          "name": "Florian"
+        },
+        {
+          "id": "swq_shouwang",
+          "name": "守望"
+        },
+        {
+          "id": "swq_tianshangke",
+          "name": "天上客"
+        },
+        {
+          "id": "swq_suier",
+          "name": "岁儿"
+        },
+        {
+          "id": "swq_xietaobao",
+          "name": "屑桃宝"
+        },
+        {
+          "id": "swq_shuisi",
+          "name": "睡死"
+        },
+        {
+          "id": "swq_fenglinghuoshan",
+          "name": "风灵火山"
+        },
+        {
+          "id": "swq_xuanchang",
+          "name": "玄敞"
+        },
+        {
+          "id": "swlu_lugushou",
+          "name": "鹿帝陆古寿"
+        },
+        {
+          "id": "swlu_sunyuning",
+          "name": "鹿帝孙玉凝"
+        },
+        {
+          "id": "swlu_xindong",
+          "name": "鹿帝心动"
+        },
+        {
+          "id": "swlu_tianshangke",
+          "name": "鹿帝天上客"
+        },
+        {
+          "id": "swlu_shuisi",
+          "name": "鹿帝睡死"
+        },
+        {
+          "id": "swx_lugushou",
+          "name": "瑰血陆古寿"
+        },
+        {
+          "id": "swx_tianshangke",
+          "name": "瑰血天上客"
+        },
+        {
+          "id": "swx_wudouwawa",
+          "name": "巫毒娃娃"
+        },
+        {
+          "id": "swx_shuisi",
+          "name": "瑰血睡死"
+        },
+        {
+          "id": "swyg_jushou",
+          "name": "异构沮授"
+        },
+        {
+          "id": "swyg_guojia",
+          "name": "异构郭嘉"
+        },
+        {
+          "id": "swyg_xunyu",
+          "name": "异构荀彧"
+        },
+        {
+          "id": "swyg_caojinyu",
+          "name": "异构曹金玉"
+        },
+        {
+          "id": "swyg_hanxiandi",
+          "name": "异构汉末献帝"
+        },
+        {
+          "id": "swyg_xiaoqiao",
+          "name": "异构小乔"
+        },
+        {
+          "id": "swyg_sunluyu",
+          "name": "异构孙鲁育"
+        },
+        {
+          "id": "swyg_liubei",
+          "name": "异构刘备"
+        },
+        {
+          "id": "swyg_zhangwen",
+          "name": "异构张温"
+        },
+        {
+          "id": "swe_nanali",
+          "name": "娜娜莉"
+        },
+        {
+          "id": "swe_katixiya",
+          "name": "卡提希娅"
+        },
+        {
+          "id": "swe_fuludelisi",
+          "name": "芙露德莉斯"
+        },
+        {
+          "id": "swe_Dfeiaoleituo",
+          "name": "残影的菲奥雷托"
+        },
+        {
+          "id": "swe_yidemeita",
+          "name": "伊德梅塔"
+        },
+        {
+          "id": "swe_congyu",
+          "name": "丛雨"
+        },
+        {
+          "id": "swe_hequanfeiai",
+          "name": "和泉妃爱"
+        },
+        {
+          "id": "swe_shenshanshi",
+          "name": "神山识"
+        },
+        {
+          "id": "swe_minglaibaiyu",
+          "name": "鸣濑白羽"
+        },
+        {
+          "id": "swe_fuxuan",
+          "name": "符玄"
+        },
+        {
+          "id": "swe_xiaochun",
+          "name": "小春"
+        },
+        {
+          "id": "swby_lugushou",
+          "name": "碧野陆古寿"
+        },
+        {
+          "id": "swby_shouwang",
+          "name": "碧野守望"
+        },
+        {
+          "id": "swyc_lugushou",
+          "name": "月潮陆古寿"
+        },
+        {
+          "id": "swyc_os",
+          "name": "月潮欧丝"
+        },
+        {
+          "id": "swjw_lugushou",
+          "name": "剑挽陆古寿"
+        },
+        {
+          "id": "swjw_tianshangke",
+          "name": "剑挽天上客"
+        },
+        {
+          "id": "swyz_shiqikuangsan",
+          "name": "时崎狂三"
+        }
+      ],
+      "excluded": [],
+      "sameNameVariants": [
+        {
+          "id": "swe_minglaibaiyu",
+          "file": "temp/dream-watch-import/云中守望/character/DIY/character.js",
+          "source": "云中守望",
+          "sex": "female",
+          "group": "key",
+          "hp": "3",
+          "maxHp": "3",
+          "skills": [
+            "swe_yuzhao",
+            "swe_chunbai",
+            "swe_kaoyu",
+            "swe_guying"
+          ],
+          "name": "鸣濑白羽",
+          "matches": [
+            {
+              "id": "key_shiroha",
+              "file": "apps/core/character/key/character.js",
+              "source": "base",
+              "sex": "female",
+              "group": "key",
+              "hp": "3",
+              "maxHp": "3",
+              "skills": [
+                "shiroha_yuzhao",
+                "shiroha_guying",
+                "shiroha_jiezhao"
+              ],
+              "name": "鸣濑白羽"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "skillAndCardMapping": {
+    "potheyun": "xzm_potheyun",
+    "potyinhui": "xzm_potyinhui",
+    "dczhangguan": "xzm_dczhangguan",
+    "hefeiduanjin": "xzm_hefeiduanjin",
+    "hefeigaigong": "xzm_hefeigaigong",
+    "old_mbquesong": "xzm_old_mbquesong",
+    "yingba": "xzm_yingba",
+    "pinghe": "xzm_pinghe",
+    "old_twquanqian": "xzm_old_twquanqian",
+    "old_twrouke": "xzm_old_twrouke",
+    "old_twchungang": "xzm_old_twchungang",
+    "dcheqi": "xzm_dcheqi",
+    "dchuirui": "xzm_dchuirui",
+    "dcxiaoben": "xzm_dcxiaoben",
+    "dcsbyouyi": "xzm_dcsbyouyi",
+    "dcsbfangong": "xzm_dcsbfangong",
+    "zhengqing": "xzm_zhengqing",
+    "zhuangpo": "xzm_zhuangpo",
+    "old_dcjuanji": "xzm_old_dcjuanji",
+    "old_dcrenshuang": "xzm_old_dcrenshuang",
+    "old_dckegou": "xzm_old_dckegou",
+    "miniqinyin": "xzm_miniqinyin",
+    "minimeihun": "xzm_minimeihun",
+    "minihuoxin": "xzm_minihuoxin",
+    "wechatqixing": "xzm_wechatqixing",
+    "wechatjifeng": "xzm_wechatjifeng",
+    "wechattianfa": "xzm_wechattianfa",
+    "sw_guilongzhanyuedao": "xzm_sw_guilongzhanyuedao",
+    "sw_guofengyupao": "xzm_sw_guofengyupao",
+    "sw_qimenbagua": "xzm_sw_qimenbagua",
+    "sw_chiyanzhenhunqin": "xzm_sw_chiyanzhenhunqin",
+    "sw_juechenjinge": "xzm_sw_juechenjinge",
+    "sw_xiuluolianyuji": "xzm_sw_xiuluolianyuji",
+    "sw_chixueqingfeng": "xzm_sw_chixueqingfeng",
+    "sw_xuwangzhimian": "xzm_sw_xuwangzhimian",
+    "sw_qicaishenlu": "xzm_sw_qicaishenlu",
+    "sw_luanfenghemingjian": "xzm_sw_luanfenghemingjian",
+    "sw_xingtianpojunfu": "xzm_sw_xingtianpojunfu",
+    "sw_jinwuluorigong": "xzm_sw_jinwuluorigong",
+    "sw_lingsheji": "xzm_sw_lingsheji",
+    "sw_shanrangzhaoshu": "xzm_sw_shanrangzhaoshu",
+    "sw_sanshou": "xzm_sw_sanshou",
+    "sw_wushuangfangtianji": "xzm_sw_wushuangfangtianji",
+    "sw_shufazijinguan": "xzm_sw_shufazijinguan",
+    "sw_hongmianbaihuapao": "xzm_sw_hongmianbaihuapao",
+    "sw_linglongshimandai": "xzm_sw_linglongshimandai",
+    "mj_guilongzhanyuedao": "xzm_mj_guilongzhanyuedao",
+    "mj_mengyanchitu": "xzm_mj_mengyanchitu",
+    "mj_qixingpao": "xzm_mj_qixingpao",
+    "mj_zhenhunqin": "xzm_mj_zhenhunqin",
+    "mj_shengguangbaiyi": "xzm_mj_shengguangbaiyi",
+    "mj_xieshenmianju": "xzm_mj_xieshenmianju",
+    "mj_jishengong": "xzm_mj_jishengong",
+    "mj_baihuaqun": "xzm_mj_baihuaqun",
+    "mj_yinyueqiang": "xzm_mj_yinyueqiang",
+    "mj_monkey": "xzm_mj_monkey",
+    "mj_zhanying": "xzm_mj_zhanying",
+    "mj_canglang": "xzm_mj_canglang",
+    "fh_yinyueqiang": "xzm_fh_yinyueqiang",
+    "huyi": "xzm_huyi",
+    "DB_diaogong": "xzm_DB_diaogong",
+    "monkey": "xzm_monkey",
+    "chiyanzhenhunqin": "xzm_chiyanzhenhunqin",
+    "juechenjinge": "xzm_juechenjinge",
+    "xiuluolianyuji2": "xzm_xiuluolianyuji2",
+    "xiuluolianyuji": "xzm_xiuluolianyuji",
+    "qicaishenlu": "xzm_qicaishenlu",
+    "luanfenghemingjian": "xzm_luanfenghemingjian",
+    "shanrangzhaoshu": "xzm_shanrangzhaoshu",
+    "lingsheji": "xzm_lingsheji",
+    "lingsheji2": "xzm_lingsheji2",
+    "xingtianpojunfu": "xzm_xingtianpojunfu",
+    "xingtianpojunfu2": "xzm_xingtianpojunfu2",
+    "jinwuluorigong": "xzm_jinwuluorigong",
+    "fh_yinyueqiang_skill": "xzm_fh_yinyueqiang_skill",
+    "huyi_skill": "xzm_huyi_skill",
+    "DB_diaogong_skill": "xzm_DB_diaogong_skill"
+  },
+  "compatibility": {
+    "coreSkillAliases": {
+      "dcchongji": "dczhongji",
+      "twmbjiwei": "twjiwei",
+      "dcjieying": "nzry_jieying"
+    },
+    "portraitFallbacks": {
+      "image/character/dc_chenzhi.jpg": "image/character/mb_chenzhi.jpg",
+      "image/character/wu_lukang.jpg": "image/character/lukang.jpg",
+      "image/character/mb_sunquan.jpg": "image/character/sunquan.jpg"
+    },
+    "cloudSkillReferences": {
+      "swyg_jianying_ai": "swyg_jianying_buff",
+      "swq_gushou_reset": "原包 phaseAfter 回调已实现清理，移除失效 group 引用",
+      "swe_tianqi_fail": "源包已注释该子技能，移除失效 group 引用"
+    }
+  },
+  "validation": {
+    "moduleTests": "4 passed",
+    "registrationTests": "15 passed",
+    "browser": {
+      "result": {
+        "packs": {
+          "星之梦": {
+            "dependencies": [],
+            "count": 245,
+            "missingSkills": [],
+            "unloaded": []
+          },
+          "swDIY": {
+            "dependencies": [],
+            "count": 48,
+            "missingSkills": [],
+            "unloaded": []
+          }
+        },
+        "enabled": [
+          true,
+          true
+        ],
+        "characters": [
+          "standard",
+          "shenhua",
+          "sp",
+          "sp2",
+          "yijiang",
+          "newjiang",
+          "sixiang",
+          "refresh",
+          "mobile",
+          "extra",
+          "yingbian",
+          "sb",
+          "tw",
+          "offline",
+          "clan",
+          "collab",
+          "xianding",
+          "huicui",
+          "shiji",
+          "bingshi",
+          "jsrg",
+          "sxrm",
+          "onlyOL",
+          "星之梦",
+          "swDIY",
+          "红楼幻境",
+          "蔡阳",
+          "界周妃",
+          "絶伦逸羣",
+          "苦情树下",
+          "魔刘禅",
+          "神关兴张苞",
+          "神州平板",
+          "士兵扩展包",
+          "西游杀",
+          "张三丰",
+          "征战虎牢",
+          "nba",
+          "PY武将",
+          "觉醒突破",
+          "风云浮生明辉月",
+          "清瑶葭绮",
+          "手杀武将"
+        ],
+        "event": "chooseButton",
+        "players": 8,
+        "cardCount": 34
+      },
+      "errors": []
+    },
+    "limitations": [
+      "未逐一验证全部武将技能的完整对局",
+      "现有菜单分组测试有3项无关失败，见导入文档"
+    ]
+  }
+}

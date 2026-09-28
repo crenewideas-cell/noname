@@ -350,7 +350,9 @@ html[data-presentation="shousha"] #control > .control > div:focus-visible {
 	visibility: hidden;
 	pointer-events: none;
 }
-#arena > #control.action-controls > .control > div {
+#arena > #control.action-controls > .control > div,
+#window:has(#arena.builtin-responsive) .selection-guide button,
+#window #arena.builtin-responsive .dialog .character-search-submit {
 	box-sizing: border-box;
 	display: inline-flex;
 	align-items: center;

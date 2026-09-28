@@ -17,16 +17,18 @@ export async function openOnlineRooms(mode = "identity") {
   throw new Error("请使用下载的完整客户端进入联机。");
  }
  const {default: OnlineLobby} = await import("./ui/OnlineLobby.vue");
- const host = document.createElement("section");
- host.className = "session-entry online-visible";
- Object.assign(host.style, {position:"fixed", inset:"0", zIndex:"10010", overflow:"auto"});
+ // A modal top-layer host uses viewport coordinates, independent of the
+ // canvas lobby's body transform and game document zoom.
+ const host = document.createElement("dialog");
+ host.className = "session-entry online-visible online-room-overlay";
+ host.setAttribute('aria-label','联机大厅');
  document.body.append(host);
  const selected = ref(mode), error = ref("");
  let entering = false, disposed = false, resolveClosed;
  const closed = new Promise(resolve => { resolveClosed = resolve; });
  const close = () => {
   if (disposed) return;
-  disposed = true; app.unmount(); host.remove(); resolveClosed();
+  disposed = true; app.unmount(); host.close(); host.remove(); resolveClosed();
  };
  const play = async () => {
   if (entering || disposed) return;
@@ -41,11 +43,12 @@ export async function openOnlineRooms(mode = "identity") {
    game.reload();
   } catch (reason) { entering = false; error.value = reason.message || "无法进入对局，请重试。"; }
  };
- const app = createApp({setup: () => () => h("section", [
+ const app = createApp({setup: () => () => h("section", {class:'online-room-root'}, [
   error.value ? h("p", {class:"online-feedback error", role:"alert"}, error.value) : null,
   h(OnlineLobby, {modeId:selected.value, onMode:mode => { selected.value = mode; }, onPlay:play,
    onBack:() => { disconnectPlatform(); close(); }})
  ])});
- app.mount(host);
+ host.addEventListener('cancel',event=>{event.preventDefault();disconnectPlatform();close();});
+ try{app.mount(host);host.showModal();}catch(error){close();throw error;}
  return {close, closed};
 }

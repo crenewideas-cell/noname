@@ -17,6 +17,8 @@ export function builtinPacks() {
 		pack.manifest.description = "可直接应用，也可按部件混搭后加入自己的图片与字体。";
 		for (const part of Object.values(pack.manifest.components)) part.name = `${name} · ${part.name}`;
 		for (const key of ["home", "lobby", "menus", "buttons", "players"]) pack.manifest.components[key].style = { color: text, "background-color": background, "border-color": border, "background-image": "none" };
+		// Keep the shared lobby scenery visible beneath a built-in palette.
+		delete pack.manifest.components.home.style["background-image"];
 		for (const key of ["menus", "buttons", "players"]) pack.manifest.components[key].style["border-radius"] = "10px";
 		pack.manifest.components.home.settings.ui_workshop_home_style = "shousha";
 		pack.manifest.components.modes.style.gap = "18px";
@@ -39,6 +41,12 @@ export function completeBuiltinPalette(pack) {
 	if (Object.entries(stock.manifest.components).some(([id, part]) => !parts[id] || parts[id].runtime || parts[id].name !== part.name)) return pack;
 	for (const [id, part] of Object.entries(stock.manifest.components)) {
 		parts[id].settings = { ...part.settings, ...parts[id].settings };
+	}
+	// Upgrade only the old stock flat background; retain custom art and colors.
+	const home = parts.home, stockHome = stock.manifest.components.home;
+	if (!home.assets?.background && !home.assets?.texture && home.style?.["background-image"] === "none" &&
+		["color", "background-color", "border-color"].every(key => home.style[key] === stockHome.style[key])) {
+		delete home.style["background-image"];
 	}
 	return pack;
 }

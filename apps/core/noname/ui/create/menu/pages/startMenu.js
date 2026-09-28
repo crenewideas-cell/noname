@@ -112,6 +112,7 @@ export const startMenu = function (connectMenu, context) {
 
 	if (isLobbySettings) {
 		startButton.textContent = "完成";
+		startButton.classList.add("lobby-settings-complete");
 		startButton.title = "保存设置并返回大厅";
 	}
 	var clickMode = function () {

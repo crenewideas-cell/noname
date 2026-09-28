@@ -1,0 +1,4 @@
+{
+  "_说明": "名将杀 立绘档位配置（随扩展目录一起拷到别的设备即可同步；直接手改本文件、重开游戏生效）。lutou 取值：auto=跟随十周年UI / yuanhua=原画 / shizhounian=十周年露头 / shousha=手杀露头。",
+  "lutou": "auto"
+}

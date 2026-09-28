@@ -13,6 +13,8 @@
 import { _status, lib, get, ai, ui } from "noname";
 import { isClass, userAgentLowerCase, GeneratorFunction, AsyncFunction, delay } from "@/util/index.js";
 
+import { registerCardPack, singleCardPack } from "../init/cardPackRuntime.js";
+import { initializeCharacterPack } from "../init/characterPackRuntime.js";
 import { DynamicStyle } from "./dynamic-style/index.js";
 import { GamePromises } from "./promises.js";
 import { Check } from "./check.js";
@@ -3004,6 +3006,7 @@ export class Game {
 			}
 
 			/** @type {Promise<any>} */
+			const sourceExtension = _status.extension;
 			let promise;
 			if (typeof content === "function") {
 				promise = Promise.try(content, lib, game, ui, get, ai, _status);
@@ -3014,6 +3017,8 @@ export class Game {
 
 			promise = promise.then(result => {
 				if (result.name) {
+					if (type === "character") initializeCharacterPack(lib, game, result.name, sourceExtension);
+					if (type === "card" && sourceExtension) result.extension ||= sourceExtension;
 					lib.imported[type][result.name] = result;
 				}
 			});
@@ -3198,6 +3203,7 @@ export class Game {
 					lib.onprepare?.push(prepare);
 				}
 			} catch (e) {
+				if (_status.loadingExtensionRuntime === name) throw e;
 				console.error(`加载《${name}》扩展的precontent时出现错误。`, e);
 				if (!lib.config.ignore_error) {
 					alert(`加载《${name}》扩展的precontent时出现错误。
@@ -3211,6 +3217,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 				lib.extensions.push([name, content, config, _status.evaluatingExtension, object.package ?? {}, object.connect, arenaReady]);
 			}
 		} catch (e) {
+			if (_status.loadingExtensionRuntime === name) throw e;
 			console.error(e);
 		}
 
@@ -4092,8 +4099,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 				lib.character[map.to] = get.convertedCharacter(["", "", 0, [], (map.list.find(i => i[0] == map.to) || [map.to, []])[1]]);
 			}
 			player.smoothAvatar(map.avatar2);
-			const skinImg = !lib.config.skin[map.to] && lib.character[map.to]?.img;
-			skinImg ? player.node["avatar" + map.name.slice(4)].setBackgroundImage(skinImg) : player.node["avatar" + name.slice(4)].setBackground(map.to, "character");
+			player.node["avatar" + name.slice(4)].setBackground(map.to, "character");
 			player.node["avatar" + map.name.slice(4)].show();
 			if (goon) {
 				delete lib.character[map.to];
@@ -6161,6 +6167,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		let extname = _status.extension || "扩展";
 		let gzFlag = false;
 		packagename = packagename || extname;
+		initializeCharacterPack(lib, game, packagename, extname);
 
 		for (const name in pack) {
 			const content = pack[name];
@@ -6208,7 +6215,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 				character.img ??= `extension/${extname}/${name}.jpg`;
 
 				// 处理AI禁用
-				if (character.isBoss || character.isHiddenBoss || lib.config.forbidai_user?.includes(name)) {
+				if (character.isBoss || character.isHiddenBoss || lib.config.forbidai_user?.includes(name) || lib.config[`forbidai_user_${packagename}`]) {
 					lib.config.forbidai.add(name);
 				}
 
@@ -6221,10 +6228,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 					continue;
 				}
 
-				if (lib.config[`extension_${extname}_characters_enable`] === undefined) {
-					game.saveExtensionConfig(extname, "characters_enable", true);
-				}
-				if (lib.config[`extension_${extname}_characters_enable`] === true) {
+				if (lib.config.characters.includes(packagename)) {
 					lib.character[name] = character;
 				}
 			}
@@ -6251,119 +6255,16 @@ ${e instanceof Error ? e.stack : String(e)}`);
 	 * @param { { extension: string, translate: string, description: string, number?: number, color?: string } } info2
 	 */
 	addCard(name, info, info2) {
-		var extname = _status.extension || info2.extension;
-		if (info.audio == true) {
-			info.audio = "ext:" + extname;
-		}
-		if (!info.image || typeof info.image !== "string") {
-			if (info.fullskin) {
-				if (_status.evaluatingExtension) {
-					info.image = "db:extension-" + extname + ":" + name + ".png";
-				} else {
-					info.image = "ext:" + extname + "/" + name + ".png";
-				}
-			} else if (info.fullimage) {
-				if (_status.evaluatingExtension) {
-					info.image = "db:extension-" + extname + ":" + name + ".jpg";
-				} else {
-					info.image = "ext:" + extname + "/" + name + ".jpg";
-				}
-			}
-		}
-		lib.card[name] = info;
-		lib.translate[name] = info2.translate;
-		lib.translate[name + "_info"] = info2.description;
-		if (typeof info2.number == "number") {
-			let suits = ["heart", "spade", "diamond", "club"];
-			if (info2.color == "red") {
-				suits = ["heart", "diamond"];
-			} else if (info2.color == "black") {
-				suits = ["club", "spade"];
-			}
-			for (let i = 0; i < info2.number; i++) {
-				lib.card.list.push([suits[Math.floor(Math.random() * suits.length)], Math.ceil(Math.random() * 13), name]);
-			}
-		}
-		let packname = extname;
-		if (!lib.cardPack[packname]) {
-			lib.cardPack[packname] = [];
-			lib.translate[packname + "_card_config"] = extname;
-		}
-		lib.cardPack[packname].push(name);
+		const extension = _status.extension || info2.extension || "扩展";
+		registerCardPack(lib, this, get, singleCardPack(name, info, info2), { extension, name: extension, database: _status.evaluatingExtension });
 	}
 	/**
 	 * @param { { extension: string, mode?: string[], forbid?: string[], list: any[], card: {[key: string]: Card}, skill: { [key: string]: object }  } } pack
 	 * @param { string } [packagename]
 	 */
 	addCardPack(pack, packagename) {
-		let extname = pack.extension || _status.extension || "扩展";
-		packagename = packagename || extname;
-		let packname = packagename.replace(/^mode_extension_/, "");
-		const registeredKey = `@Experimental.extension.${packname}.card`;
-		if (!lib.config[registeredKey]) {
-			// Migrate the legacy switch once; future changes use the card menu's pack ID.
-			if (lib.config[`extension_${extname}_cards_enable`] !== false) lib.config.cards.add(packname);
-			game.saveConfig("cards", lib.config.cards);
-			game.saveConfig(registeredKey, true);
-		}
-		const enabled = lib.config.cards.includes(packname);
-		lib.cardPack[packname] = [];
-		lib.cardPackInfo[packname] = pack;
-		lib.translate[packname + "_card_config"] = packagename;
-		if (pack.connect === true) lib.connectCardPack?.add(packname);
-		for (let i in pack) {
-			if (["name", "extension", "mode", "forbid", "connect", "closeable"].includes(i)) {
-				continue;
-			}
-			if (i == "list") {
-				const source = typeof pack.list === "function" ? pack.list() : pack.list;
-				if (!Array.isArray(source)) continue;
-				lib.cardPile[packname] = get.copy(source);
-				if (lib.config.mode === "connect") {
-					lib.cardPackList ||= {};
-					lib.cardPackList[packname] = get.copy(source);
-				} else if (enabled) {
-					const banned = lib.config.bannedpile?.[packname] || [];
-					const pile = source.filter((card, index) => !banned.includes(index));
-					pile.push(...(lib.config.addedpile?.[packname] || []));
-					lib.card.list.push(...get.copy(pile));
-				}
-				continue;
-			}
-			if (!pack[i] || typeof pack[i] !== "object" || !lib[i]) continue;
-			for (let j in pack[i]) {
-				if (i == "card") {
-					if (pack[i][j].audio == true) {
-						pack[i][j].audio = "ext:" + extname;
-					}
-					if (!pack[i][j].image) {
-						if (pack[i][j].fullskin) {
-							if (_status.evaluatingExtension) {
-								pack[i][j].image = "db:extension-" + extname + ":" + j + ".png";
-							} else {
-								pack[i][j].image = "ext:" + extname + "/" + j + ".png";
-							}
-						} else if (pack[i][j].fullimage) {
-							if (_status.evaluatingExtension) {
-								pack[i][j].image = "db:extension-" + extname + ":" + j + ".jpg";
-							} else {
-								pack[i][j].image = "ext:" + extname + "/" + j + ".jpg";
-							}
-						}
-					}
-					lib.cardPack[packname].push(j);
-				} else if (i == "skill") {
-					if (j.startsWith("_") && !pack[i][j].forceLoad && (lib.config.mode === "connect" ? !pack.connect : !enabled)) continue;
-					if (typeof pack[i][j].audio == "number" || typeof pack[i][j].audio == "boolean") {
-						pack[i][j].audio = "ext:" + extname + ":" + pack[i][j].audio;
-					}
-				}
-				if (lib[i][j] == undefined) {
-					// Disabled packs remain browsable; only their deck entries are disabled.
-					lib[i][j] = pack[i][j];
-				}
-			}
-		}
+		const extension = pack.extension || _status.extension || "扩展";
+		registerCardPack(lib, this, get, pack, { extension, name: packagename || extension, database: _status.evaluatingExtension });
 	}
 	/**
 	 * @param { string } name
@@ -6584,6 +6485,9 @@ ${e instanceof Error ? e.stack : String(e)}`);
 	}
 	addRecentCharacter() {
 		let list = get.config("recentCharacter") || [];
+		const usage = { ...(lib.config.character_usage || {}) };
+		for (const name of new Set(arguments)) if (lib.character[name]) usage[name] = { count: (usage[name]?.count || 0) + 1, last: Date.now() };
+		game.saveConfig("character_usage", usage);
 		for (let i = 0; i < arguments.length; i++) {
 			if (lib.character[arguments[i]]) {
 				list.remove(arguments[i]);
@@ -7603,7 +7507,9 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		if (ok) {
 			confirm += "o";
 		}
-		if (!event.forced && !event.fakeforce && get.noSelected()) {
+		// Optional discards must remain cancellable even with a partial selection
+		// (including an AI suggestion that cannot reach the required count).
+		if (!event.forced && !event.fakeforce && (event.name === "chooseToDiscard" || get.noSelected())) {
 			confirm += "c";
 		}
 		if (event.isMine()) {
@@ -9169,8 +9075,10 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		}
 		const arg = argumentArray.slice(0, -2);
 		skills.forEach(value => {
-			var mod = get.info(value).mod[name];
-			if (!mod) {
+			// Earlier modifiers can remove skills, and explicit skill lists can
+			// include ordinary skills without a mod table.
+			const mod = get.info(value)?.mod?.[name];
+			if (typeof mod !== "function") {
 				return;
 			}
 			const result = mod.call(this, ...arg);

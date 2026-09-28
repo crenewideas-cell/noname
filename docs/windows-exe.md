@@ -30,9 +30,13 @@ pnpm build:exe --installer     # 原有 NSIS 安装包形式
 pnpm build:exe --help
 ```
 
-单文件名称为 `noname-<版本>-win-x64-portable.exe`，也在 `output/windows` 中。大量素材会增加压缩和每次解压时间；NSIS 自解压目标还受工具自身包体限制，素材较大的工程优先使用默认目录形式。
+单文件名称为 `noname-<版本>-win-x64-portable.exe`，也在 `output/windows` 中。NSIS 单文件封装约有 2 GiB 容量限制。2026-09-27 本轮排除动态皮肤后，含联机客户端的暂存资源仍约 14.56 GiB，实测压缩中间包已超过限制，因此本轮采用默认免安装目录，保留全部其余运行资源。
 
-默认调用现有 `build:online:client`，附带隔离的公共联机客户端。服务器地址沿用已有配置，可以通过 `VITE_ONLINE_ORIGIN` 指定，例如：
+默认调用 `build:online:client --deployed-runtime`，附带隔离的公共联机客户端。联机页面、引擎和规则代码复用 `dist-online-host` 中已发布的构建，图片、音频和界面素材仍从本地收集。打包前会请求服务器 `/api/v1/capabilities`，确认发布产物的版本和来源一致；文件缺失、服务器不可达或版本不同会终止打包。不要只改 `deployment.json` 或关闭客户端版本校验。
+
+这与开发浏览器不同：开发模式允许跟随服务器版本，而 EXE 必须携带与服务器配套的实际运行代码。重新编译当前工作区的联机代码可能产生不同版本，即使它的本地浏览器联机正常。服务器更新后，应保留对应的 `dist-online-host` 再打包客户端；需要独立生成这个客户端时运行 `pnpm build:online:client --deployed-runtime`。原 `pnpm build:online` 和不带此参数的客户端构建仍用于从源码生成新发布版本。
+
+服务器地址沿用已有配置，可以通过 `VITE_ONLINE_ORIGIN` 指定（需有该服务器对应的发布产物），例如：
 
 ```powershell
 $env:VITE_ONLINE_ORIGIN = 'https://your-server.example'
@@ -52,7 +56,9 @@ pnpm build:exe
 
 排除：核心构建的 `src/` 源码副本、工程文档和开发脚本、根 node_modules 开发工具、Git 信息、缓存、Home 存档、测试、类型声明、source map、日志、临时文件、原始 ZIP/7z/RAR、设计工程文件、红楼已转换素材的 `动态资源` / `*_配音` 母版目录及语音导入清单。不会因为扩展默认关闭就删除它，用户仍可在游戏里启用。
 
-`output/windows/package-report.json` 记录暂存资源文件、大小和排除项目（被排除的整个目录只记一项）；`dependency-report.json` 记录桌面依赖版本。脚本会验证入口、import map、JIT 和默认联机入口存在，打包后从成品目录加载文件服务并验证入口 HTTP 200；任何构建步骤失败都会终止打包。暂存目录会在下一次打包重建，不应存放手动修改。
+本轮 Windows 包还排除任意层级的 `temp` 目录（不区分大小写）、整个 `本地动态皮肤包`，以及界面包和联机副本中的 `assets/dynamic` 动态立绘目录。保留静态皮肤、背景、音频、表情和界面/战斗 Spine 特效。只在打包副本中清理 `files.json` 的被排除条目及 `animation-assets.json` 的动态皮肤表，不修改工程原始素材和清单。
+
+`output/windows/package-report.json` 记录暂存资源文件、大小和排除项目（被排除的整个目录只记一项）；`dependency-report.json` 记录桌面依赖版本。脚本先执行卡面素材检查，再验证入口、import map、JIT 和默认联机入口，以及复制型扩展的静态模块引用是否存在；打包后从成品目录加载文件服务并验证入口 HTTP 200。任何构建步骤失败都会终止打包。暂存目录会在下一次打包重建，不应存放手动修改。
 
 ## 启动、存档和许可
 
@@ -71,14 +77,25 @@ pnpm build:exe
 
 ## 验证
 
-本轮 BUG 修改按要求未运行测试、启动验证或重新打包。现有 `output/windows/win-unpacked/noname.exe` 不会自动更新；请重新执行 `pnpm build:exe`，然后使用生成的完整 `win-unpacked` 文件夹进行统一验证。
+2026-09-28 修复 Windows 联机版本不一致：成品为 `online-5b7a0b7d0ed0b7e0b02f`，服务器及保留的发布产物为 `online-8a7e1a6f2854c76d870b`。已将 `C:/pxlngu/projects/pxlngu_v2.0/resources/app/online-client` 的 205 个发布文件替换并逐个校验 SHA-256，同步暂存客户端，原文件保存在 `output/windows-online-fix/backup`。Electron 使用实际原生协议和线上 API，修复前复现 `VERSION_MISMATCH`，修复后通过版本检查并进入匿名账号的待登录状态。未使用真实账号开局。11 项测试通过，`pnpm build:online:client --deployed-runtime` 实际构建成功。记录见 `output/windows-online-fix/repair-report.json` 和 `before/result.json`、`after/result.json`；其他旧副本可应用 `output/windows/pxlngu_v2.0-online-fix.zip`。原完整 ZIP 未重写，从旧 ZIP 解压后仍需应用补丁。
+
+同日补充修复：上一次仅检查了联机版本，没有检查最新界面与已发布核心的接口兼容性，手杀和十周年因此缺少 `installCompactSeatLayout` 导出。联机打包现在检查所有皮肤程序对核心的命名导入；旧核心使用独立的展示兼容模块与配套 CSS，不修改服务器规则代码或伪造版本。未知的缺失接口直接中止打包。`scripts/electron-online-smoke.ts` 增加 `--ui`，使用临时测试存档验证三种界面的模块链接、实际手杀联机登录页、八个真实玩家节点的布局及装饰。修复前两套界面均复现截图中的错误，修复后检查全部通过；记录和截图位于 `output/windows-online-fix/ui-before`、`ui-after`。补丁已包含这次新增的五个界面文件。
+
+同日对局中断修复：服务器日志记录客户端积压 45 条消息后触发快照恢复，但最后一个真人的临时断线被当成空房立即关闭。现在先建立断线保留期限，再检查空房；重连期限内保留原对局，主动退出或超时仍清理。服务器只替换房间管理代码，沿用相同游戏资源版本。客户端修复手杀倒计时写入相同文字仍触发装饰监听器的刷新循环，限制手牌布局为尺寸或内容变化时执行，并为 Electron 联机视图关闭后台计时节流。本机程序、暂存客户端与补丁 ZIP 已同步；备份及变更清单位于 `output/windows-online-fix/stall-backup`、`stall-repair-report.json`。遵照用户要求停止实际对局测试，本次仅核查代码、语法及部署就绪状态，不宣称已完成实战验证。重启本机 EXE 后加载新客户端代码。
+
+2026-09-27 核查修复了两类近期代码引起的打包问题：联机收集脚本仍读取已删除的红楼旧 PNG；千幻聆音直接导入打包后不存在的核心源码模块。联机包改为收集现有 WebP 卡面，千幻改用 `noname` 的公共导出，构建流程增加模块路径检查。
+
+本轮实际执行 `pnpm build:exe` 成功（退出码 0），18 项相关测试通过。成品逐项核对 101,836 个资源文件，缺失 0、大小不一致 0、动态皮肤/临时目录残留 0；打包后的生产依赖和本地入口 HTTP 检查通过。核对记录见 `output/windows/artifact-audit.json`，完整构建日志见 `output/windows-build-20260927-final.log`。
 
 ```powershell
 pnpm test:exe
+pnpm exec tsx --test scripts/online-release.test.ts
+node --test scripts/online-ui-compat.test.mjs
+node --experimental-vm-modules --test scripts/build-exe.test.mjs scripts/build-android.test.mjs scripts/qianhuan-entry.test.mjs
 ```
 
-自动测试验证裁剪边界，尤其是扩展实际运行源码和媒体不能误删。构建后还应在 EXE 中确认大厅、扩展菜单和一局本地游戏；公共联机另受服务器状态及客户端版本影响。
+自动测试验证裁剪边界、发布版本检查和实际发布代码的复用，尤其是扩展实际运行源码和媒体不能误删。`scripts/electron-online-smoke.ts` 可打包为 Electron 测试入口，以独立临时用户目录验证成品的原生资源协议、线上版本检查和匿名账号恢复，不创建账号或房间。构建后还应在 EXE 中确认大厅、扩展菜单和一局本地游戏；公共联机另受服务器状态及客户端版本影响。
 
-Electron 下载失败时，仓库 `.npmrc` 已配置 Electron 镜像；也可为当前终端设置 `ELECTRON_MIRROR` 后重新安装运行时。脚本优先复用已经安装的 Electron。默认文件夹版跳过 EXE 签名和资源编辑，不要求管理员权限或 winCodeSign 工具；程序文件图标可能使用 Electron 默认图标。单文件/安装包仍可能下载 Windows 资源编辑器或 NSIS 工具，需要构建机可访问对应下载源及允许工具解压。
+Electron 下载失败时，仓库 `.npmrc` 已配置 Electron 镜像；也可为当前终端设置 `ELECTRON_MIRROR` 后重新安装运行时。脚本优先复用已经安装的 Electron。本地 Windows 包跳过 EXE 签名和资源编辑，不要求管理员权限或 winCodeSign 工具；运行目录内程序文件图标可能使用 Electron 默认图标。单文件/安装包仍可能下载 NSIS 工具，需要构建机可访问对应下载源。
 
 格式说明参见 [electron-builder 官方文档](https://www.electron.build/docs/)。

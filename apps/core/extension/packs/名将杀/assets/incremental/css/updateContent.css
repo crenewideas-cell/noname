@@ -1,0 +1,112 @@
+.mjs-updateContent {
+	position: fixed;
+	top: 7%;
+	left: 12%;
+	width: 76%;
+	height: 82%;
+	box-sizing: border-box;
+	background: linear-gradient(180deg, rgba(20, 17, 13, 0.97), rgba(10, 9, 7, 0.98));
+	border: 1px solid rgba(240, 200, 90, 0.5);
+	border-radius: 10px;
+	box-shadow: 0 0 26px rgba(0, 0, 0, 0.85), inset 0 0 1px rgba(255, 255, 255, 0.08);
+	z-index: 100;
+	overflow-y: auto;
+	overflow-x: hidden;
+	color: #e8e2d4;
+}
+
+.mjs-updateContent::-webkit-scrollbar {
+	width: 8px;
+}
+
+.mjs-updateContent::-webkit-scrollbar-track {
+	background: rgba(0, 0, 0, 0.35);
+	border-radius: 4px;
+}
+
+.mjs-updateContent::-webkit-scrollbar-thumb {
+	background: rgba(240, 200, 90, 0.45);
+	border-radius: 4px;
+}
+
+.mjs-updateContent::-webkit-scrollbar-thumb:hover {
+	background: rgba(240, 200, 90, 0.7);
+}
+
+.mjs-updateContentClose {
+	position: fixed;
+	top: 5.5%;
+	right: 11%;
+	width: 40px;
+	height: 40px;
+	background: rgba(58, 53, 43, 0.92);
+	border: 1px solid rgba(240, 200, 90, 0.55);
+	border-radius: 50%;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+	cursor: pointer;
+	z-index: 101;
+	transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.mjs-updateContentClose:hover {
+	background: #a83232;
+	transform: scale(1.06);
+}
+
+.mjs-updateContentClose:before,
+.mjs-updateContentClose:after {
+	content: '';
+	position: absolute;
+	width: 18px;
+	height: 3px;
+	top: 18px;
+	left: 10px;
+	background: #f0c85a;
+	border-radius: 2px;
+}
+
+.mjs-updateContentClose:before {
+	transform: rotate(45deg);
+}
+
+.mjs-updateContentClose:after {
+	transform: rotate(-45deg);
+}
+
+.mjs-updateContent details {
+	margin: 4px 0 2px;
+}
+
+.mjs-updateContent summary {
+	list-style: none;
+	cursor: pointer;
+	outline: none;
+	user-select: none;
+	padding: 3px 0;
+	transition: color 0.15s ease;
+}
+
+.mjs-updateContent summary:hover {
+	color: #ffd98a;
+}
+
+.mjs-updateContent summary::-webkit-details-marker {
+	display: none;
+}
+
+.mjs-updateContent summary::marker {
+	content: '';
+}
+
+.mjs-updateContent summary::before {
+	content: '▶';
+	display: inline-block;
+	width: 1em;
+	color: #f0c85a;
+	font-size: 11px;
+	transition: transform 0.15s ease;
+}
+
+.mjs-updateContent details[open] > summary::before {
+	transform: rotate(90deg);
+}

@@ -1,0 +1,7 @@
+import fs from 'node:fs/promises';
+let s=await fs.readFile('scripts/dynamic-shared-game.mjs','utf8');
+s=s.replace("const seconds=Number(process.env.SKIN_GAME_SECONDS||1800)","const seconds=30");
+s=s.replace("page.on('pageerror'",`await context.route('**/ArrayCompiler.ts*',async route=>{const response=await route.fetch();let code=await response.text();code=code.replace('const original = content[event.step];', 'const original = content[event.step];if(!original)console.error("ARRAYDIAG "+JSON.stringify({step:event.step,length:content.length,name:event.name,skill:event.skill,constructor:event.constructor.name,own:Object.getOwnPropertyDescriptor(event,"step"),prototype:Object.getOwnPropertyDescriptor(Object.getPrototypeOf(event),"step"),functions:content.map(f=>f.toString().slice(0,200)),stack:new Error().stack}));');await route.fulfill({response,body:code});});\n page.on('console',m=>{if(m.text().startsWith('ARRAYDIAG')){report.compilerDiagnostic=m.text();console.log(m.text());}});\n page.on('pageerror'`);
+s=s.replace('return __env.game.players.map(p=>p.name1);',"__env.game.me.init('ganfuren');return __env.game.players.map(p=>p.name1);");
+process.env.NONAME_UI_TEST_ORIGIN='http://127.0.0.1:8081';process.env.SKIN_GAME_LABEL='experience-r09/game-diagnostic-v2';
+const file='output/dynamic-remediation/20260926-r01/experience-r09/game-diagnostic-harness.mjs';await fs.writeFile(file,s);await import('../'+file);

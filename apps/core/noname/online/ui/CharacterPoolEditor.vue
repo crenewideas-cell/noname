@@ -1,7 +1,8 @@
 <template>
   <fieldset class="online-pool-editor" :disabled="disabled || loading">
     <legend>开局武将池</legend>
-    <p>选择武将包，再按需禁用具体武将。引擎自带的联机禁用和模式限制仍然生效；身份场按具体武将分别分配，同名不同版本也是独立选项。</p>
+    <p>选择武将包，可在下方设置禁将。</p>
+    <details><summary>武将池规则</summary><p>游戏内的联机禁用和模式限制仍然生效；身份场中，同名武将的不同版本是独立选项。</p></details>
     <div class="online-pool-actions">
       <button type="button" @click="replace(defaultCharacterPool())">推荐经典包</button>
       <button type="button" @click="setPacks(['standard'])">仅标准</button>

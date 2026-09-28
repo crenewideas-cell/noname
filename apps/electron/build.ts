@@ -74,8 +74,9 @@ switch (process.argv[2]) {
 	case "win":
 		await main(Platform.WINDOWS.createTarget(process.argv[3] || "nsis", Arch.x64), {
 			win: {
-				// Unsigned folder builds need no winCodeSign download or symlink privilege.
-				signAndEditExecutable: process.env.NONAME_DESKTOP_STAGE && (!process.argv[3] || process.argv[3] === "dir") ? false : undefined,
+				// Unsigned local releases need no winCodeSign download or symlink
+				// privilege. NSIS still applies its own portable/installer icon.
+				signAndEditExecutable: process.env.NONAME_DESKTOP_STAGE ? false : undefined,
 				verifyUpdateCodeSignature: false,
 				icon: "noname.ico",
 			},

@@ -23,11 +23,15 @@
     },
     {
       "name": "PXLNGU",
-      "members": ["hezongkangqincharacter", "key"]
+      "members": ["hezongkangqincharacter", "key", "星之梦", "云中守望", "swDIY", "zerongPack"]
     },
     {
       "name": "名将杀合集",
-      "members": ["名将杀", "mjs", "mjsnew", "mjsold"]
+      "members": ["mjs", "mjsnew", "mjsold"]
+    },
+    {
+      "name": "华夏风云（英雄杀）",
+      "members": ["华夏风云", "hxfy", "yxscq"]
     },
     {
       "name": "极略",

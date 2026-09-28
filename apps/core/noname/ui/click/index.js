@@ -2172,8 +2172,18 @@ export class Click {
 		}
 	}
 	cardmouseenter() {
-		if (!lib.config.spread_card) return;
 		if (this.parentNode?.parentNode?.parentNode !== ui.me) return;
+		if (ui.arena?.classList.contains("compact-seats")) {
+			// A very large hand can scroll. Bring an edge card fully inside its
+			// own viewport before CSS raises it above the neighbouring cards.
+			const container = this.parentNode.parentNode;
+			const bounds = container.getBoundingClientRect();
+			const card = this.getBoundingClientRect();
+			const overflow = card.right > bounds.right ? card.right - bounds.right : Math.min(0, card.left - bounds.left);
+			if (bounds.width && overflow) container.scrollLeft += overflow * container.offsetWidth / bounds.width;
+			return;
+		}
+		if (!lib.config.spread_card) return;
 		if (ui.selected.cards.length) return;
 		ui._handcardHover = this;
 		ui.updatehl();

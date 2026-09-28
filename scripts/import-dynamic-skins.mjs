@@ -5,11 +5,11 @@ import vm from 'node:vm';
 import { createHash } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { indexDynamicSkins } from './index-dynamic-skins.mjs';
+import { ensureDynamicVendors } from './publish-dynamic-runtime.mjs';
 
 const project = path.resolve(import.meta.dirname, '..');
 const source = path.resolve(process.argv[2] || path.join(project, 'temp/动态皮包'));
 const destination = path.join(project, 'apps/core/extension/imports/本地动态皮肤包');
-const runtime = path.join(project, 'apps/core/noname/skin/localDynamic/runtime');
 const report = { packs: [], repairs: [], unresolved: [], missingLayers: [] };
 const digest = value => createHash('sha256').update(value).digest('hex').slice(0, 16);
 const json = async file => JSON.parse(await fs.readFile(file, 'utf8'));
@@ -127,12 +127,20 @@ async function main() {
   const names = (await fs.readdir(source, { withFileTypes: true })).filter(e => e.isDirectory() &&
     (existsSync(path.join(source, e.name, 'catalog.json')) || existsSync(path.join(source, e.name, 'dynamicSkin.js')))).map(e => e.name);
   if (!names.length) throw Error('没有可导入的 catalog.json 或 dynamicSkin.js');
-  const vendorSource = names.map(n => path.join(source, n, 'runtime/vendor')).find(existsSync);
+  await ensureDynamicVendors(names.map(n => path.join(source,n,'runtime/vendor')));
   let manifest = await json(path.join(destination, 'manifest.json')).catch(() => ({ version: 1, packs: [] }));
   for (const name of names) {
     const root = path.join(destination, name), from = path.join(source, name);
     console.log('导入', name);
-    if (!process.argv.includes('--refresh')) await copyDirectory(from, root);
+    if (!process.argv.includes('--refresh')) {
+      await fs.mkdir(root,{recursive:true});
+      // Pack runtime directories are historical code, never pack data.
+      for(const item of await fs.readdir(from,{withFileTypes:true})) {
+        if(/^runtime(?:-|$)/.test(item.name))continue;
+        const src=path.join(from,item.name),dest=path.join(root,item.name);
+        if(item.isDirectory())await copyDirectory(src,dest);else await fs.copyFile(src,dest);
+      }
+    }
     let catalog;
     if (existsSync(path.join(from, 'catalog.json'))) {
       catalog = await json(path.join(from, 'catalog.json'));
@@ -160,10 +168,19 @@ async function main() {
         if (!existsSync(path.join(root, file))) { entry.available = false; entry.unavailableReason = '源包缺少贴图：' + file; }
       }
     }
+    // Preserve additive media imports without changing owners or scene data.
+    const supplements = await json(path.join(root, 'resource-supplements.json')).catch(error => {
+      if (error.code === 'ENOENT') return {};
+      throw error;
+    });
+    for (const entry of catalog.entries) for (const key of ['thumbnail', 'voiceFile']) {
+      const value = supplements[entry.id]?.[key];
+      if (typeof value !== 'string') continue;
+      const relative = path.relative(root, path.resolve(root, value));
+      if (!relative || relative.startsWith('..') || path.isAbsolute(relative) || !existsSync(path.join(root, relative))) throw Error('无效补充资源：' + value);
+      entry[key] = value;
+    }
     await writeJSON(path.join(root, 'catalog.json'), catalog);
-    await copyDirectory(runtime, path.join(root, 'runtime'));
-    if (!existsSync(path.join(root, 'runtime/vendor')) && vendorSource) await copyDirectory(vendorSource, path.join(root, 'runtime/vendor'));
-    if (!existsSync(path.join(root, 'runtime/vendor'))) throw Error('缺少播放库：' + name);
     const row = { name, entries: catalog.entries.length, available: catalog.entries.filter(e => e.available !== false).length,
       bound: catalog.entries.filter(e => e.characterIds.length && e.available !== false).length,
       unbound: catalog.entries.filter(e => !e.characterIds.length && e.available !== false).length,

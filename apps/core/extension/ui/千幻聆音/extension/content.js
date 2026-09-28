@@ -1,3 +1,4 @@
+import { createProfileControls } from 'noname';
 import { skillInfo } from '../metadata.js';
 import { checkFile, resourceRoot, fitView, observeViewport, hydrateProfileMetadata } from '../compat.js';
 import {
@@ -10,8 +11,9 @@ import {
 } from './noname.js';
 import {
 	nonameInitialized
-} from '../../../noname/util/index.js'
+} from 'noname'
 export let CONTENT = function(config, pack) {
+	game.qhly_profileControls = createProfileControls({lib, game, ui, get});
 	// @ts-ignore
 	if ((lib.config.qhly_funcLoadInPrecontent || game.qhly_hasExtension("如真似幻")) && !window.qhly_inPercontent) {
 		return;
@@ -3732,7 +3734,19 @@ export let CONTENT = function(config, pack) {
 	// @ts-ignore
 	game.qhly_checkFileExist = checkFile;
 	// @ts-ignore
+	const originSkinRequests = new WeakMap();
 	game.qhly_setOriginSkin = function(name, skin, node, state, skin2) {
+		const request = {};
+		originSkinRequests.set(node, request);
+		// Set portraits already have a complete resource path; they are not
+		// files beneath the legacy per-character high-resolution directory.
+		if (game.qhly_isManagedSkin?.(name, skin)) {
+			node.setBackgroundImage(game.qhly_getSkinFile(name, skin));
+			node.style.backgroundSize = 'cover';
+			node.classList.remove('qh-image-lutou', 'decadeBig', 'landscape');
+			node.classList.add('qh-image-standard');
+			return;
+		}
 		if (skin != null) { //国战兼容
 			if (name.indexOf('gz_') == 0) {
 				// @ts-ignore
@@ -3774,6 +3788,7 @@ export let CONTENT = function(config, pack) {
 		let theme = lib.config.qhly_currentViewSkin == 'decade' ? true : false;
 		let rarity = document.getElementsByClassName('qh-avatarrarity');
 		image.onload = function() {
+			if (originSkinRequests.get(node) !== request) return;
 			let landscape = false;
 			// @ts-ignore
 			if (this.width > this.height && theme) landscape = true;
@@ -3814,6 +3829,7 @@ export let CONTENT = function(config, pack) {
 			node.style.setProperty('--p', position);
 		}
 		image.onerror = function() {
+			if (originSkinRequests.get(node) !== request) return;
 			if (state.pkg.isLutou || lib.config.qhly_lutou) {
 				node.classList.remove('qh-image-standard');
 				node.classList.add('qh-image-lutou');
@@ -3834,7 +3850,8 @@ export let CONTENT = function(config, pack) {
 					.qhly_earse_ext(skin)
 				].image1);
 				node.style.backgroundSize = 'cover';
-			} else node.setBackground(name, 'character');
+			} else if (skin === '经典形象.jpg') node.qhly_origin_setBackground(name, 'character');
+			else node.setBackgroundImage(game.qhly_getSkinFile(name, skin));
 		}
 	}
 	// @ts-ignore
@@ -13011,52 +13028,7 @@ export let CONTENT = function(config, pack) {
 									});
 								}
 								var check = document.getElementById('qhly_autoskill_' + skill);
-								if (check) {
-									var list = [];
-									var info = get.info(skill);
-									if (info.frequent) {
-										list.add(skill);
-									}
-									if (info.subfrequent) {
-										for (var sub of info.subfrequent) {
-											list.add(skill + "_" + sub);
-										}
-									}
-									// @ts-ignore
-									ui.qhly_initCheckBox(check, list.filter(function(sk) {
-										return !lib.config.autoskilllist || !lib.config
-											.autoskilllist.includes(sk);
-									}).length != 0);
-									bindFunc(check, document.getElementById('qhly_autoskill_text_' +
-										skill));
-									// @ts-ignore
-									check.qhly_onchecked = function(checked) {
-										var list = [];
-										var info = get.info(skill);
-										if (info.frequent) {
-											list.add(skill);
-										}
-										if (info.subfrequent) {
-											for (var sub of info.subfrequent) {
-												list.add(skill + "_" + sub);
-											}
-										}
-										if (!lib.config.autoskilllist) {
-											lib.config.autoskilllist = [];
-										}
-										if (!checked) {
-											for (var s of list) {
-												lib.config.autoskilllist.add(s);
-											}
-										} else {
-											for (var s of list) {
-												lib.config.autoskilllist.remove(s);
-											}
-										}
-										game.saveConfig('autoskilllist', lib.config
-											.autoskilllist);
-									};
-								}
+								if (check) { game.qhly_profileControls.autoSkill(check, skill, bindFunc); }
 							})(skill);
 						}
 					}
@@ -14359,50 +14331,9 @@ export let CONTENT = function(config, pack) {
 					var that = this;
 					var content = "";
 					// @ts-ignore
-					content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue(
-							'favouriteImage', 'extension/千幻聆音/image/newui_fav.png') +
-						"' style='width:50px;margin-bottom:-4px;'/>收藏设置</h2>";
-					content += "<p>可以选择收藏此武将。进行自由选将操作时，可以更快找到此武将。</p>";
-					content +=
-						"<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_fav'/><span id='qhconfig_checkbox_text_fav' style='display:inline-block;position:relative;bottom:25%;'>收藏" +
-						get.translation(name) + "</span></span></p>";
+					content += game.qhly_profileControls.favoriteTemplate(name);
 					// @ts-ignore
-					content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue(
-							'forbidImage', 'extension/千幻聆音/image/newui_forbid.png') +
-						"' style='width:50px;margin-bottom:-4px;'/>禁用设置</h2>";
-					content += "<p>可以选择在某模式下禁用或启用该武将。该设置将在重启游戏后生效。</p>"
-					content +=
-						"<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_banned_mode_all'/><span id='qhconfig_checkbox_text_all' style='display:inline-block;position:relative;bottom:25%;'>所有模式禁用</span></span></p>";
-					for (var mode in lib.mode) {
-						if (mode != 'connect') {
-							var translatemode = get.translation(mode);
-							if (mode == 'tafang') translatemode = '塔防';
-							else if (mode == 'chess') translatemode = '战棋';
-							content +=
-								"<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_banned_mode_" +
-								mode + "'/><span id='qhconfig_checkbox_text_" + mode +
-								"' style='display:inline-block;position:relative;bottom:25%;'>" +
-								translatemode + "模式禁用</span></span></p>";
-						}
-					}
-					content +=
-						"<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_banned_ai'/><span id='qhconfig_checkbox_text_ai' style='display:inline-block;position:relative;bottom:25%;'>仅自由选将可选</span></span></p>";
-					// @ts-ignore
-					content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue(
-							'rankImage', 'extension/千幻聆音/image/newui_rank_icon.png') +
-						"' style='width:50px;margin-bottom:-4px;'/>等阶设置</h2>";
-					content += "<p>可以设置" + get.translation(name) + "的等阶，重启后生效。</p>";
-					content +=
-						"<p><select style='font-size:22px;font-family:'qh_youyuan';' id='qhconfig_rank_select'></select></p>";
-					if (lib.config.qhly_enableCharacterMusic) {
-						// @ts-ignore
-						content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue(
-								'musicImage', 'extension/千幻聆音/image/newui_music_icon.png') +
-							"' style='width:50px;margin-bottom:-4px;'/>音乐设置</h2>";
-						content += "<p>可以设置" + get.translation(name) + "的专属背景音乐，在游戏开始时将自动切换。</p>";
-						content +=
-							"<p><select style='font-size:22px;font-family:'qh_youyuan';' id='qhconfig_music_select'></select></p>";
-					}
+					content += game.qhly_profileControls.optionsTemplate(name);
 					var extraConfigs = [];
 					if (state.pkg.characterConfigExtra) {
 						var characterConfigExtra = state.pkg.characterConfigExtra(name);
@@ -14432,227 +14363,13 @@ export let CONTENT = function(config, pack) {
 							checkbox.qhly_setChecked(!checkbox.qhly_checked, true);
 						});
 					};
-					var checkboxFav = document.getElementById('qhconfig_checkbox_fav');
-					// @ts-ignore
-					ui.qhly_initCheckBox(checkboxFav, lib.config.favouriteCharacter && lib.config
-						.favouriteCharacter.includes(name));
-					bindFunc(checkboxFav, document.getElementById('qhconfig_checkbox_text_fav'));
-					// @ts-ignore
-					checkboxFav.qhly_onchecked = function(check) {
-						if (!check) {
-							if (lib.config.favouriteCharacter && lib.config.favouriteCharacter
-								.includes(name)) {
-								lib.config.favouriteCharacter.remove(name);
-							}
-						} else {
-							if (!lib.config.favouriteCharacter) {
-								lib.config.favouriteCharacter = [name];
-							} else {
-								lib.config.favouriteCharacter.add(name);
-							}
-						}
-						game.saveConfig('favouriteCharacter', lib.config.favouriteCharacter);
-					};
-					var checkboxAll = document.getElementById('qhconfig_checkbox_banned_mode_all');
-					var allForbid = true;
-					for (var mode in lib.mode) {
-						if (mode != 'connect') {
-							if (lib.config[mode + '_banned'] && lib.config[mode + '_banned'].includes(
-									mode)) {
-								continue;
-							}
-							allForbid = false;
-							break;
-						}
-					}
-					// @ts-ignore
-					ui.qhly_initCheckBox(checkboxAll, allForbid);
-					bindFunc(checkboxAll, document.getElementById('qhconfig_checkbox_text_all'));
-					// @ts-ignore
-					checkboxAll.qhly_onchecked = function(check) {
-						if (check) {
-							for (var mode in lib.mode) {
-								if (mode == 'connect') continue;
-								if (that['banned_checkbox_mode_' + mode]) {
-									that['banned_checkbox_mode_' + mode].qhly_setChecked(true,
-									true);
-								}
-							}
-						} else {
-							for (var mode in lib.mode) {
-								if (mode == 'connect') continue;
-								if (that['banned_checkbox_mode_' + mode]) {
-									that['banned_checkbox_mode_' + mode].qhly_setChecked(false,
-										true);
-								}
-							}
-						}
-					};
-					this.banned_checkbox_mode_all = checkboxAll;
-					var checkboxBanai = document.getElementById('qhconfig_checkbox_banned_ai');
-					// @ts-ignore
-					ui.qhly_initCheckBox(checkboxBanai, game.qhly_isForbidAI(name));
-					bindFunc(checkboxBanai, document.getElementById('qhconfig_checkbox_text_ai'));
-					// @ts-ignore
-					checkboxBanai.qhly_onchecked = function(check) {
-						if (check) {
-							// @ts-ignore
-							game.qhly_setForbidAI(name, true);
-						} else {
-							// @ts-ignore
-							game.qhly_setForbidAI(name, false);
-						}
-					};
-					for (var mode in lib.mode) {
-						if (mode != 'connect') {
-							var checkbox = document.getElementById('qhconfig_checkbox_banned_mode_' +
-								mode);
-							this['banned_checkbox_mode_' + mode] = checkbox;
-							if (checkbox) {
-								// @ts-ignore
-								ui.qhly_initCheckBox(checkbox, lib.config[mode + '_banned'] && lib
-									.config[mode + '_banned'].includes(name));
-								bindFunc(checkbox, document.getElementById('qhconfig_checkbox_text_' +
-									mode));
-								(function(mode) {
-									// @ts-ignore
-									checkbox.qhly_onchecked = function(checked) {
-										if (!checked) {
-											that.banned_checkbox_mode_all.qhly_setChecked(false,
-												true);
-											if (lib.config[mode + '_banned'] && lib.config[
-													mode + '_banned'].includes(name)) {
-												lib.config[mode + '_banned'].remove(name);
-											}
-										} else {
-											if (lib.config[mode + '_banned']) {
-												lib.config[mode + '_banned'].add(name);
-											} else {
-												lib.config[mode + '_banned'] = [name];
-											}
-										}
-										game.saveConfig(mode + '_banned', lib.config[mode +
-											'_banned']);
-									};
-								})(mode);
-							}
-						}
-					}
+					game.qhly_profileControls.favorite(document.getElementById('qhconfig_checkbox_fav'), name, bindFunc);
+					game.qhly_profileControls.modeBans(this, name, bindFunc);
 					lib.setScroll(this.innerConfig);
 					// @ts-ignore
 					game.qhly_changeViewPageSkin('config', this.pageView);
-					var rankSelect = document.getElementById('qhconfig_rank_select');
-					var rankList = ['默认', '普通', '精品', '稀有', '史诗', '传说'];
-					var rankToEng = {
-						'默认': "default",
-						'普通': 'junk',
-						'史诗': "epic",
-						'传说': "legend",
-						'稀有': 'rare',
-						'精品': "common",
-					};
-					var rankToIcon = {
-						'默认': "",
-						'精品': 'A+',
-						'史诗': "SS",
-						'传说': "SSS",
-						'稀有': 'S',
-						'普通': "A",
-					};
-					var rank = null;
-					if (lib.config.qhly_rarity && lib.config.qhly_rarity[name]) {
-						rank = lib.config.qhly_rarity[name];
-					}
-					for (var r of rankList) {
-						var opt = document.createElement('option');
-						opt.innerHTML = r + rankToIcon[r];
-						opt.setAttribute('rank', rankToEng[r]);
-						if (!rank && r == '默认') {
-							// @ts-ignore
-							opt.selected = 'selected';
-						} else if (rankToEng[r] == rank) {
-							// @ts-ignore
-							opt.selected = 'selected';
-						}
-						// @ts-ignore
-						rankSelect.appendChild(opt);
-					}
-					// @ts-ignore
-					rankSelect.onchange = function(e) {
-						var event = e ? e : window.event;
-						// @ts-ignore
-						if (event.target) {
-							// @ts-ignore
-							target = event.target;
-							// @ts-ignore
-							var opt = target[target.selectedIndex];
-							if (opt) {
-								var rank = opt.getAttribute('rank');
-								if (!lib.config.qhly_rarity) {
-									lib.config.qhly_rarity = {};
-								}
-								if (rank == 'default') {
-									if (lib.config.qhly_rarity[name]) {
-										delete lib.config.qhly_rarity[name];
-									}
-								} else {
-									lib.config.qhly_rarity[name] = rank;
-								}
-								game.saveConfig('qhly_rarity', lib.config.qhly_rarity);
-							}
-						}
-						refreshRank();
-					};
-					if (lib.config.qhly_enableCharacterMusic) {
-						var select = document.getElementById('qhconfig_music_select');
-						// @ts-ignore
-						var currentMusic = game.qhly_getCharacterMusic(name);
-						var opt = document.createElement('option');
-						opt.innerHTML = "无";
-						opt.setAttribute('musicpath', '');
-						if (!currentMusic) {
-							// @ts-ignore
-							opt.selected = 'selected';
-						}
-						// @ts-ignore
-						select.appendChild(opt);
-						// @ts-ignore
-						for (var p in lib.qhlyMusic) {
-							var opt = document.createElement('option');
-							// @ts-ignore
-							opt.innerHTML = lib.qhlyMusic[p].name;
-							opt.setAttribute('musicpath', p);
-							if (currentMusic == p) {
-								// @ts-ignore
-								opt.selected = 'selected';
-							}
-							// @ts-ignore
-							select.appendChild(opt);
-						}
-						// @ts-ignore
-						select.onchange = function(e) {
-							var event = e ? e : window.event;
-							// @ts-ignore
-							if (event.target) {
-								// @ts-ignore
-								target = event.target;
-								// @ts-ignore
-								var opt = target[target.selectedIndex];
-								if (opt) {
-									var path = opt.getAttribute('musicpath');
-									if (path) {
-										lib.config.qhly_characterMusic[name] = path;
-									} else {
-										delete lib.config.qhly_characterMusic[name];
-									}
-									game.saveConfig('qhly_characterMusic', lib.config
-										.qhly_characterMusic);
-									// @ts-ignore
-									game.qhly_switchBgm();
-								}
-							}
-						};
-					}
+					game.qhly_profileControls.rarity(document.getElementById('qhconfig_rank_select'), name, refreshRank, {'精品':'A+','史诗':'SS','传说':'SSS','稀有':'S','普通':'A'});
+					if (lib.config.qhly_enableCharacterMusic) { game.qhly_profileControls.music(document.getElementById('qhconfig_music_select'), name); }
 					this.inited = true;
 				}
 			}
@@ -15521,52 +15238,7 @@ export let CONTENT = function(config, pack) {
 									});
 								}
 								var check = document.getElementById('qhly_autoskill_' + skill);
-								if (check) {
-									var list = [];
-									var info = get.info(skill);
-									if (info.frequent) {
-										list.add(skill);
-									}
-									if (info.subfrequent) {
-										for (var sub of info.subfrequent) {
-											list.add(skill + "_" + sub);
-										}
-									}
-									// @ts-ignore
-									ui.qhly_initCheckBox(check, list.filter(function(sk) {
-										return !lib.config.autoskilllist || !lib.config
-											.autoskilllist.includes(sk);
-									}).length != 0);
-									bindFunc(check, document.getElementById('qhly_autoskill_text_' +
-										skill));
-									// @ts-ignore
-									check.qhly_onchecked = function(checked) {
-										var list = [];
-										var info = get.info(skill);
-										if (info.frequent) {
-											list.add(skill);
-										}
-										if (info.subfrequent) {
-											for (var sub of info.subfrequent) {
-												list.add(skill + "_" + sub);
-											}
-										}
-										if (!lib.config.autoskilllist) {
-											lib.config.autoskilllist = [];
-										}
-										if (!checked) {
-											for (var s of list) {
-												lib.config.autoskilllist.add(s);
-											}
-										} else {
-											for (var s of list) {
-												lib.config.autoskilllist.remove(s);
-											}
-										}
-										game.saveConfig('autoskilllist', lib.config
-											.autoskilllist);
-									};
-								}
+								if (check) { game.qhly_profileControls.autoSkill(check, skill, bindFunc); }
 							})(skill);
 						}
 					}
@@ -16558,50 +16230,9 @@ export let CONTENT = function(config, pack) {
 					var that = this;
 					var content = "";
 					// @ts-ignore
-					content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue(
-							'favouriteImage', 'extension/千幻聆音/image/newui_fav.png') +
-						"' style='width:50px'/>收藏设置</h2>";
-					content += "<p>可以选择收藏此武将。进行自由选将操作时，可以更快找到此武将。</p>";
-					content +=
-						"<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_fav'/><span id='qhconfig_checkbox_text_fav' style='display:inline-block;position:relative;bottom:25%;'>收藏" +
-						get.translation(name) + "</span></span></p>";
+					content += game.qhly_profileControls.favoriteTemplate(name);
 					// @ts-ignore
-					content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue(
-							'forbidImage', 'extension/千幻聆音/image/newui_forbid.png') +
-						"' style='width:50px'/>禁用设置</h2>";
-					content += "<p>可以选择在某模式下禁用或启用该武将。该设置将在重启游戏后生效。</p>"
-					content +=
-						"<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_banned_mode_all'/><span id='qhconfig_checkbox_text_all' style='display:inline-block;position:relative;bottom:25%;'>所有模式禁用</span></span></p>";
-					for (var mode in lib.mode) {
-						if (mode != 'connect') {
-							var translatemode = get.translation(mode);
-							if (mode == 'tafang') translatemode = '塔防';
-							else if (mode == 'chess') translatemode = '战棋';
-							content +=
-								"<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_banned_mode_" +
-								mode + "'/><span id='qhconfig_checkbox_text_" + mode +
-								"' style='display:inline-block;position:relative;bottom:25%;'>" +
-								translatemode + "模式禁用</span></span></p>";
-						}
-					}
-					content +=
-						"<p><span style='display:inline-block;height:30px;'><img id='qhconfig_checkbox_banned_ai'/><span id='qhconfig_checkbox_text_ai' style='display:inline-block;position:relative;bottom:25%;'>仅自由选将可选</span></span></p>";
-					// @ts-ignore
-					content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue(
-							'rankImage', 'extension/千幻聆音/image/newui_rank_icon.png') +
-						"' style='width:50px'/>等阶设置</h2>";
-					content += "<p>可以设置" + get.translation(name) + "的等阶，重启后生效。</p>";
-					content +=
-						"<p><select style='font-size:22px;font-family:'qh_youyuan';' id='qhconfig_rank_select'></select></p>";
-					if (lib.config.qhly_enableCharacterMusic) {
-						// @ts-ignore
-						content += "<h2><img src='" + lib.assetURL + get.qhly_getCurrentViewSkinValue(
-								'musicImage', 'extension/千幻聆音/image/newui_music_icon.png') +
-							"' style='width:50px'/>音乐设置</h2>";
-						content += "<p>可以设置" + get.translation(name) + "的专属背景音乐，在游戏开始时将自动切换。</p>";
-						content +=
-							"<p><select style='font-size:22px;font-family:'qh_youyuan';' id='qhconfig_music_select'></select></p>";
-					}
+					content += game.qhly_profileControls.optionsTemplate(name);
 					var extraConfigs = [];
 					if (state.pkg.characterConfigExtra) {
 						var characterConfigExtra = state.pkg.characterConfigExtra(name);
@@ -16631,227 +16262,13 @@ export let CONTENT = function(config, pack) {
 							checkbox.qhly_setChecked(!checkbox.qhly_checked, true);
 						});
 					};
-					var checkboxFav = document.getElementById('qhconfig_checkbox_fav');
-					// @ts-ignore
-					ui.qhly_initCheckBox(checkboxFav, lib.config.favouriteCharacter && lib.config
-						.favouriteCharacter.includes(name));
-					bindFunc(checkboxFav, document.getElementById('qhconfig_checkbox_text_fav'));
-					// @ts-ignore
-					checkboxFav.qhly_onchecked = function(check) {
-						if (!check) {
-							if (lib.config.favouriteCharacter && lib.config.favouriteCharacter
-								.includes(name)) {
-								lib.config.favouriteCharacter.remove(name);
-							}
-						} else {
-							if (!lib.config.favouriteCharacter) {
-								lib.config.favouriteCharacter = [name];
-							} else {
-								lib.config.favouriteCharacter.add(name);
-							}
-						}
-						game.saveConfig('favouriteCharacter', lib.config.favouriteCharacter);
-					};
-					var checkboxAll = document.getElementById('qhconfig_checkbox_banned_mode_all');
-					var allForbid = true;
-					for (var mode in lib.mode) {
-						if (mode != 'connect') {
-							if (lib.config[mode + '_banned'] && lib.config[mode + '_banned'].includes(
-									mode)) {
-								continue;
-							}
-							allForbid = false;
-							break;
-						}
-					}
-					// @ts-ignore
-					ui.qhly_initCheckBox(checkboxAll, allForbid);
-					bindFunc(checkboxAll, document.getElementById('qhconfig_checkbox_text_all'));
-					// @ts-ignore
-					checkboxAll.qhly_onchecked = function(check) {
-						if (check) {
-							for (var mode in lib.mode) {
-								if (mode == 'connect') continue;
-								if (that['banned_checkbox_mode_' + mode]) {
-									that['banned_checkbox_mode_' + mode].qhly_setChecked(true,
-									true);
-								}
-							}
-						} else {
-							for (var mode in lib.mode) {
-								if (mode == 'connect') continue;
-								if (that['banned_checkbox_mode_' + mode]) {
-									that['banned_checkbox_mode_' + mode].qhly_setChecked(false,
-										true);
-								}
-							}
-						}
-					};
-					this.banned_checkbox_mode_all = checkboxAll;
-					var checkboxBanai = document.getElementById('qhconfig_checkbox_banned_ai');
-					// @ts-ignore
-					ui.qhly_initCheckBox(checkboxBanai, game.qhly_isForbidAI(name));
-					bindFunc(checkboxBanai, document.getElementById('qhconfig_checkbox_text_ai'));
-					// @ts-ignore
-					checkboxBanai.qhly_onchecked = function(check) {
-						if (check) {
-							// @ts-ignore
-							game.qhly_setForbidAI(name, true);
-						} else {
-							// @ts-ignore
-							game.qhly_setForbidAI(name, false);
-						}
-					};
-					for (var mode in lib.mode) {
-						if (mode != 'connect') {
-							var checkbox = document.getElementById('qhconfig_checkbox_banned_mode_' +
-								mode);
-							this['banned_checkbox_mode_' + mode] = checkbox;
-							if (checkbox) {
-								// @ts-ignore
-								ui.qhly_initCheckBox(checkbox, lib.config[mode + '_banned'] && lib
-									.config[mode + '_banned'].includes(name));
-								bindFunc(checkbox, document.getElementById('qhconfig_checkbox_text_' +
-									mode));
-								(function(mode) {
-									// @ts-ignore
-									checkbox.qhly_onchecked = function(checked) {
-										if (!checked) {
-											that.banned_checkbox_mode_all.qhly_setChecked(false,
-												true);
-											if (lib.config[mode + '_banned'] && lib.config[
-													mode + '_banned'].includes(name)) {
-												lib.config[mode + '_banned'].remove(name);
-											}
-										} else {
-											if (lib.config[mode + '_banned']) {
-												lib.config[mode + '_banned'].add(name);
-											} else {
-												lib.config[mode + '_banned'] = [name];
-											}
-										}
-										game.saveConfig(mode + '_banned', lib.config[mode +
-											'_banned']);
-									};
-								})(mode);
-							}
-						}
-					}
+					game.qhly_profileControls.favorite(document.getElementById('qhconfig_checkbox_fav'), name, bindFunc);
+					game.qhly_profileControls.modeBans(this, name, bindFunc);
 					lib.setScroll(this.innerConfig);
 					// @ts-ignore
 					game.qhly_changeViewPageSkin('config', this.pageView);
-					var rankSelect = document.getElementById('qhconfig_rank_select');
-					var rankList = ['默认', '稀有', '史诗', '传说', '精品', '精良'];
-					var rankToEng = {
-						'默认': "default",
-						'稀有': 'common',
-						'史诗': "epic",
-						'传说': "legend",
-						'精品': 'rare',
-						'精良': "junk",
-					};
-					var rankToIcon = {
-						'默认': "",
-						'稀有': 'A+',
-						'史诗': "SS",
-						'传说': "SSS",
-						'精品': 'S',
-						'精良': "A",
-					};
-					var rank = null;
-					if (lib.config.qhly_rarity && lib.config.qhly_rarity[name]) {
-						rank = lib.config.qhly_rarity[name];
-					}
-					for (var r of rankList) {
-						var opt = document.createElement('option');
-						opt.innerHTML = r + rankToIcon[r];
-						opt.setAttribute('rank', rankToEng[r]);
-						if (!rank && r == '默认') {
-							// @ts-ignore
-							opt.selected = 'selected';
-						} else if (rankToEng[r] == rank) {
-							// @ts-ignore
-							opt.selected = 'selected';
-						}
-						// @ts-ignore
-						rankSelect.appendChild(opt);
-					}
-					// @ts-ignore
-					rankSelect.onchange = function(e) {
-						var event = e ? e : window.event;
-						// @ts-ignore
-						if (event.target) {
-							// @ts-ignore
-							var target = event.target;
-							// @ts-ignore
-							var opt = target[target.selectedIndex];
-							if (opt) {
-								var rank = opt.getAttribute('rank');
-								if (!lib.config.qhly_rarity) {
-									lib.config.qhly_rarity = {};
-								}
-								if (rank == 'default') {
-									if (lib.config.qhly_rarity[name]) {
-										delete lib.config.qhly_rarity[name];
-									}
-								} else {
-									lib.config.qhly_rarity[name] = rank;
-								}
-								game.saveConfig('qhly_rarity', lib.config.qhly_rarity);
-							}
-						}
-						refreshRank();
-					};
-					if (lib.config.qhly_enableCharacterMusic) {
-						var select = document.getElementById('qhconfig_music_select');
-						// @ts-ignore
-						var currentMusic = game.qhly_getCharacterMusic(name);
-						var opt = document.createElement('option');
-						opt.innerHTML = "无";
-						opt.setAttribute('musicpath', '');
-						if (!currentMusic) {
-							// @ts-ignore
-							opt.selected = 'selected';
-						}
-						// @ts-ignore
-						select.appendChild(opt);
-						// @ts-ignore
-						for (var p in lib.qhlyMusic) {
-							var opt = document.createElement('option');
-							// @ts-ignore
-							opt.innerHTML = lib.qhlyMusic[p].name;
-							opt.setAttribute('musicpath', p);
-							if (currentMusic == p) {
-								// @ts-ignore
-								opt.selected = 'selected';
-							}
-							// @ts-ignore
-							select.appendChild(opt);
-						}
-						// @ts-ignore
-						select.onchange = function(e) {
-							var event = e ? e : window.event;
-							// @ts-ignore
-							if (event.target) {
-								// @ts-ignore
-								target = event.target;
-								// @ts-ignore
-								var opt = target[target.selectedIndex];
-								if (opt) {
-									var path = opt.getAttribute('musicpath');
-									if (path) {
-										lib.config.qhly_characterMusic[name] = path;
-									} else {
-										delete lib.config.qhly_characterMusic[name];
-									}
-									game.saveConfig('qhly_characterMusic', lib.config
-										.qhly_characterMusic);
-									// @ts-ignore
-									game.qhly_switchBgm();
-								}
-							}
-						};
-					}
+					game.qhly_profileControls.rarity(document.getElementById('qhconfig_rank_select'), name, refreshRank, {'精品':'A+','史诗':'SS','传说':'SSS','稀有':'S','普通':'A'});
+					if (lib.config.qhly_enableCharacterMusic) { game.qhly_profileControls.music(document.getElementById('qhconfig_music_select'), name); }
 					this.inited = true;
 				}
 			}
@@ -16921,7 +16338,7 @@ export let CONTENT = function(config, pack) {
 		};
 		state.useLihui = function() {
 			if (currentViewSkin.lihuiSupport && state.pkg.characterLihui) {
-				var lihuiPath = state.pkg.characterLihui(name, lib.config.qhly_skinset.skin[name]);
+				var lihuiPath = state.pkg.characterLihui(name, game.qhly_getSkin(name));
 				return lihuiPath;
 			}
 			return false;
@@ -17068,7 +16485,7 @@ export let CONTENT = function(config, pack) {
 				}
 			}
 			if (currentViewSkin.lihuiSupport && state.pkg.characterLihui) {
-				var lihuiPath = state.pkg.characterLihui(name, lib.config.qhly_skinset.skin[name]);
+				var lihuiPath = state.pkg.characterLihui(name, game.qhly_getSkin(name));
 				if (lihuiPath) {
 					subView.avatarImage.setBackgroundImage(lihuiPath);
 					state.useLihuiLayout(true);
@@ -17522,7 +16939,7 @@ export let CONTENT = function(config, pack) {
 		var infoText = ui.create.div('.qhly-text', infobk);
 		var levelText = ui.create.div('.qhly-level', avatar);
 		var viewAbstract = {
-			skin: lib.config.qhly_skinset.skin[name],
+			skin: game.qhly_getSkin(name),
 			index: 0,
 			skinCount: 1,
 			skinList: [false],

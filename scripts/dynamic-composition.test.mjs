@@ -147,11 +147,11 @@ test('only the validated legacy binary family enters the legacy reader',()=>{
   for(const version of ['3.3.07','3.5.49','3.8.99','4.0.56'])assert.equal(usesSpine36({skeleton:'a.skel',version}),false);
 });
 test('3.6 non-default skin starts with slots, without consuming newer bone fields',()=>{
-  const spine={AtlasAttachmentLoader:class{},Skin:class{constructor(name){this.name=name;this.attachments=[];}setAttachment(...args){this.attachments.push(args);}},SkeletonBinary:class{constructor(){this.linkedMeshes=[];}readSkin(){throw Error('wrong dialect');}readAttachment(){return {name:'part'};}readSkeletonData(){return this.readSkin(this.input,{},false,false);}}};
+  const spine={AtlasAttachmentLoader:class{},MeshAttachment:class{},Skin:class{constructor(name){this.name=name;this.attachments=[];}setAttachment(...args){this.attachments.push(args);}},SkeletonBinary:class{constructor(){this.linkedMeshes=[];}readSkin(){throw Error('wrong dialect');}readAttachment(){return {name:'part'};}readSkeletonData(){return {skins:[this.readSkin(this.input,{},false,false)]};}}};
   const parser=createLegacyParser(spine,{}, {skeleton:'a.skel',version:'3.6.38'});
   const ints=[1,2,1],strings=['alternate','part'];
   parser.input={index:0,readInt(){this.index++;return ints.shift();},readString(){this.index++;return strings.shift();}};
-  const data=parser.readSkeletonData(new Uint8Array(5));
+  const data=parser.readSkeletonData(new Uint8Array(5)).skins[0];
   assert.equal(data.name,'alternate');assert.deepEqual(data.attachments,[[2,'part',{name:'part'}]]);
 });
 test('layer presentation transforms its bounds after the rig, preserving source coordinates', () => {

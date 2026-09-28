@@ -1,27 +1,25 @@
-import { subscribePresentation, followPortraitEffect } from 'noname';
+import { subscribePresentation, followPortraitEffect, mountBattleAudio } from 'noname';
 import { createAnimationRenderer } from './animation-renderer.js';
 import { spine } from './vendor/spine.js';
 const cards={sha:'heisha',shan:'shan',tao:'tao',jiu:'jiu',wuxie:'wuxiekeji',wuzhong:'wuzhongshengyou',guohe:'guohechaiqiao',shunshou:'shunshouqianyang',nanman:'nanmanruqin',wanjian:'wanjianqifa',taoyuan:'taoyuanjieyi',wugu:'wugufengdeng',huogong:'huogong',tiesuo:'tiesuolianhuan',lebu:'lebusishu',bingliang:'bingliangcunduan',shandian:'shandian'};
 const nationalCards={gz_guguoanbang:'effect_guguoanbang',gz_haolingtianxia:'effect_haolingtianxia',gz_kefuzhongyuan:'effect_kefuzhongyuan',gz_wenheluanwu:'effect_wenheluanwu'};
 // 琉璃版 animation.js: these are arena-wide effects, not avatar animations.
 const fullscreenCards={nanman:{name:'SZN_nanmanruqin',scale:.8},taoyuan:{name:'SZN_taoyuanjieyi',scale:.9,speed:.8},wanjian:{name:'effect_wanjianqifa_full',scale:.9}};
-const sounds=new Set(['game_start_shousha','hpLossSund','ss_dead','SkillBtn','BtnSure','card_click','xianding','juexing','shiming','guohechaiqiao','shunshouqianyang','huogong','juedou','nanmanruqin','wanjianqifa','wuxiekeji','taoyuanjieyi','shandian']);
-export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
- const {AnimationPlayer}=createAnimationRenderer(spine),audio=new Set(),loads=new Map(),pending=new Set(),targets=new Map(),dying=new Map(),drinking=new Map(),specialSkills=new Map(),transients=new Map(),delayed=new Set();
+// These achievements reuse a hard-edged full-screen wash. Suppress only
+// that baked backdrop; retain lettering, characters, rings and particles.
+const achievementBackdrops=new Set(['shoupo','lianpo','sanpo','sipo','wupo','liupo','qipo','wanfumodi','shenweizhengqiankun']);
+export function mountAnimations({base,parts,options,metadata,enabled}) {
+ const {AnimationPlayer}=createAnimationRenderer(spine),loads=new Map(),pending=new Set(),targets=new Map(),dying=new Map(),drinking=new Map(),specialSkills=new Map(),transients=new Map(),delayed=new Set();
  const pendingCards=[],seenCards=new WeakSet(),cardBirths=new WeakMap(),cardSprites=new Map();
  for(const card of document.querySelectorAll('#arena>.card.thrown'))seenCards.add(card);
- const availableSounds=new Set([...sounds,...(metadata.audio||[]),'SZN_loseHp']);
  // Public player rectangles are viewport coordinates. The core scales body
  // for small displays, so the full-screen canvas must live outside that body.
  const overlayRoot=document.documentElement||document.body;
  let disposed=false,renderer,failed=false,resultNode;
  function later(callback,delay){const timer=setTimeout(()=>{delayed.delete(timer);if(!disposed)callback();},delay);delayed.add(timer);}
  function destroy(){if(!renderer)return;const current=renderer;renderer=undefined;cancelAnimationFrame(current.requestId);current.canvas.remove();for(const release of [()=>current.stopSpineAll(),()=>current.spine.assetManager?.dispose?.(),()=>current.spine.shader?.dispose?.(),()=>current.spine.batcher?.dispose?.(),()=>current.gl?.getExtension('WEBGL_lose_context')?.loseContext()])try{release();}catch(error){console.warn('动画释放失败',error);}}
- function sound(name){
-  if(disposed||options.sound===false||!availableSounds.has(name)||!parts.has('arena'))return;
-  const node=new Audio(base+'assets/audio/'+name+'.mp3');node.volume=volume();audio.add(node);
-  const stop=()=>{node.pause();node.onended=node.onerror=null;node.removeAttribute('src');audio.delete(node);};node.onended=stop;node.onerror=stop;void node.play().catch(stop);
- }
+ const sharedAudio=mountBattleAudio({active:()=>!disposed&&parts.has('arena'),enabled:()=>options.sound!==false});
+ const sound=sharedAudio.sound;
  async function play(definition,player,time,anchor){
   const def=typeof definition==='string'?{name:definition}:definition,name=def.name;
   if(disposed||failed||!enabled()||options.effects===false||!parts.has('arena'))return;
@@ -46,7 +44,8 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
   const position=anchor?{parent:anchor,follow:true,x:def.x,y:def.y,scale:r.width/(def.referenceWidth||180)}:
    r?{x:r.left+axis(def.x,r.width),y:innerHeight-r.top-r.height+axis(def.y,r.height),scale:Math.min(r.width/180,.8)}:
    {x:def.x,y:def.y,scale:Math.min(innerWidth/1400,innerHeight/800)};
-  const sprite=current.playSpine({...def,loop:def.loop===true},{...position,angle:def.angle,scale:position.scale*(def.scale||1)});
+  const hideSlots=achievementBackdrops.has(name)?[...new Set([...(def.hideSlots||[]),'renwuguang2'])]:def.hideSlots;
+  const sprite=current.playSpine({...def,hideSlots,loop:def.loop===true},{...position,angle:def.angle,scale:position.scale*(def.scale||1)});
   return sprite&&anchor&&def.loop===true?followPortraitEffect(sprite,anchor,def.scale||1,def.referenceWidth||180):sprite;
  }
  function killPortraits(message){
@@ -91,9 +90,9 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
   // Render that one public action once; never suppress a core notification.
   if(message.type==='skill'&&(message.awakening||message.mission||message.limited))specialSkills.set(message.player?.seat,message.time);
   if(message.type==='fullscreen'&&message.time-(specialSkills.get(message.player?.seat)??-Infinity)<300)return;
-  let effect,extraEffect,sfx,player=message.player;
+  let effect,extraEffect,player=message.player;
   switch(message.type){
-   case 'start':effect='effect_youxikaishi_SZN';sfx='game_start_shousha';break;
+   case 'start':effect='effect_youxikaishi_SZN';break;
    case 'card': {
     let card=cards[message.card];
     if(message.card==='sha'){if(message.color==='red')card='hongsha';if(message.nature.includes('fire'))card='huosha';else if(message.nature.includes('thunder'))card='leisha';else if(message.nature.includes('ice'))card='bingsha';else if(message.nature.includes('kami'))card='shesha';}
@@ -112,7 +111,7 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
      },350);
     }
     effect=fullscreenCards[message.card];player=null;
-    sfx=message.card==='juedou'?'juedou':card;
+    
     break;
    }
    case 'skill': {
@@ -120,7 +119,7 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
     const group=['wei','shu','wu','jin'].includes(player?.group)?player.group:'qun';
     effect=message.awakening?'juexingji/juexingji1/juexingji':message.mission?'juexingji/juexingji1/shimingji':message.limited?'juexingji/juexingji1/xiandingji':delayed[message.skill]||metadata.effects.skill[message.skill]||{name:'SL'+group,scale:.8};
     extraEffect={name:'baikuang',speed:1.2,scale:.6};
-    sfx=message.awakening?'juexing':message.mission?'shiming':message.limited?'xianding':'SkillBtn';
+    
     if(!message.awakening&&!message.mission&&!message.limited&&!metadata.effects.skill[message.skill])void play({name:'effect_jineng_SZN',speed:2,scale:1,x:[0,.52]},player,message.time).catch(error=>console.warn('技能扫光加载失败',error));
     break;
    }
@@ -129,10 +128,10 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
     // The core supplies the cause and public amount. A skin cannot infer
     // damage/HP loss from a negative popup or rerun armor/recovery rules.
     const health=message.health,n=health?.value;
-    if(health?.kind==='damage'&&health.sourced&&Number.isFinite(n)&&n>=3){const name=n===3?'wanfumodi':'shenweizhengqiankun';sound('ss_'+name);void play({name,scale:.7,speed:n===3?.8:1.15},null,message.time).catch(error=>console.warn('伤害成就动画失败',error));}
+    if(health?.kind==='damage'&&health.sourced&&Number.isFinite(n)&&n>=3){const name=n===3?'wanfumodi':'shenweizhengqiankun';void play({name,scale:.7,speed:n===3?.8:1.15},null,message.time).catch(error=>console.warn('伤害成就动画失败',error));}
     if(health?.kind==='damage'&&message.value<0){const actions=message.nature==='thunder'?['play5','play6']:message.nature==='fire'?['play3','play4']:['play1','play2'];extraEffect={name:'effect_shoujidonghua',action:actions[message.value<=-2?1:0],scale:.8};}
     if(health?.kind==='recover'&&message.value>0)extraEffect={name:'effect_zhiliao',scale:.7};
-    if(health?.kind==='loseHp'&&n>0){effect={name:'SZN_loseHp',scale:.6,speed:.8};sfx='SZN_loseHp';}
+    if(health?.kind==='loseHp'&&n>0){effect={name:'SZN_loseHp',scale:.6,speed:.8};}
     else if(Number.isInteger(n)&&n<=9){
      if(health?.kind==='recover'&&n>=1)effect={name:'globaltexiao/huifushuzi/shuzi2',action:String(n),speed:.6,scale:.5,y:20};
      else if(health?.kind==='damage'&&health.unreal&&n>=0)effect={name:'globaltexiao/xunishuzi/SS_PaiJu_xunishanghai',action:'play'+n,speed:.6,scale:.5,y:20};
@@ -147,9 +146,9 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
     player=message.target;
     if(message.card==='guohe'&&message.player?.seat!==player.seat){
      effect={name:'guohechaiqiao',action:'zizouqi_guohechaiqiao_futou',scale:.8};
-     extraEffect={name:'guohechaiqiao',action:'zizouqi_guohechaiqiao_qiao',scale:.8};sfx='guohechaiqiao';
+     extraEffect={name:'guohechaiqiao',action:'zizouqi_guohechaiqiao_qiao',scale:.8};
     }else if(message.card==='shunshou'){
-     effect={name:'shunshouqianyang',action:'yangchuxian',speed:1.5,scale:.65};sfx='shunshouqianyang';
+     effect={name:'shunshouqianyang',action:'yangchuxian',speed:1.5,scale:.65};
      const source=message.player,definition=effect;
      later(()=>{void play(definition,source,performance.now()).catch(error=>console.warn('顺手牵羊回返动效失败',error));},600);
     }
@@ -158,13 +157,13 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
    case 'recoveryAchievement': {
     let index=0;for(const achievement of message.achievements||[]){
      const name={recovery:'qingnangjishi',rescue:'shenyimiaoshou'}[achievement];if(!name)continue;
-     const show=()=>{sound('ss_'+name);void play({name,scale:.68,y:[0,.52],speed:.8},null,performance.now()).catch(error=>console.warn('治疗成就动画失败',error));};
+     const show=()=>{void play({name,scale:.68,y:[0,.52],speed:.8},null,performance.now()).catch(error=>console.warn('治疗成就动画失败',error));};
      if(index++)later(show,2200);else show();
     }
     break;
    }
    case 'death': {
-    effect='effect_zhenwang';sfx='ss_dead';
+    effect='effect_zhenwang';
     if(message.source&&message.source.seat!==message.player?.seat){
      const portraits=killPortraits(message);
      // The host supplies the authoritative cumulative count. A skin never
@@ -176,20 +175,19 @@ export function mountAnimations({base,parts,options,metadata,enabled,volume}) {
       const time=performance.now();
       void play({name,scale:.7,speed:.8},null,time).catch(error=>console.warn('击杀成就动画失败',error));
       if(count>1)void play({name:'qy_SF_eff_lianzhan_lv'+count+'_zi',scale:.7,speed:.8,x:[0,.9],y:[0,.15]},null,time).catch(error=>console.warn('连战动画失败',error));
-      sound('liansha_'+count);
+      
       };if(portraits)later(show,3000);else show();
      }
      if(message.source.avatar&&message.player?.avatar){
-      void play({name:'effect_jisha1',scale:1.2},null,message.time).catch(error=>console.warn('击杀动画失败',error));sound('kill_effect_sound');
+      void play({name:'effect_jisha1',scale:1.2},null,message.time).catch(error=>console.warn('击杀动画失败',error));
      }
     }
     break;
    }
    case 'result':if(enabled()&&options.effects!==false){resultNode?.remove();resultNode=document.createElement('div');resultNode.className='decade-result';resultNode.textContent=message.result===true?'胜利':message.result===false?'失败':'对局统计';overlayRoot.append(resultNode);}break;
   }
-  if(message.type==='card'&&nationalCards[message.card]){effect='card/'+nationalCards[message.card];sfx=nationalCards[message.card];player=null;}
-  if(sfx)sound(sfx);
+  if(message.type==='card'&&nationalCards[message.card]){effect='card/'+nationalCards[message.card];player=null;}
   if(effect||extraEffect)return Promise.all([extraEffect,effect].filter(Boolean).map(def=>play(def,player,message.time)));
  });
- return {sound,syncTargets,syncDying,syncDrinking,syncCards,dispose(){disposed=true;pendingCards.length=0;for(const entry of cardSprites.values())entry.cancelled=true;cardSprites.clear();for(const timer of delayed)clearTimeout(timer);delayed.clear();for(const [node,timer] of transients){clearTimeout(timer);node.remove();}transients.clear();for(const entries of [targets,dying,drinking]){for(const entry of entries.values())entry.cancelled=true;entries.clear();}specialSkills.clear();unsubscribe();for(const cancel of pending)cancel();pending.clear();destroy();for(const node of audio){node.pause();node.onended=node.onerror=null;node.removeAttribute('src');}audio.clear();loads.clear();resultNode?.remove();}};
+ return {sound,syncTargets,syncDying,syncDrinking,syncCards,dispose(){disposed=true;pendingCards.length=0;for(const entry of cardSprites.values())entry.cancelled=true;cardSprites.clear();for(const timer of delayed)clearTimeout(timer);delayed.clear();for(const [node,timer] of transients){clearTimeout(timer);node.remove();}transients.clear();for(const entries of [targets,dying,drinking]){for(const entry of entries.values())entry.cancelled=true;entries.clear();}specialSkills.clear();unsubscribe();for(const cancel of pending)cancel();pending.clear();destroy();sharedAudio.dispose();loads.clear();resultNode?.remove();}};
 }

@@ -1,6 +1,7 @@
 import {cp,mkdir,readFile,writeFile} from 'node:fs/promises';
 import {dirname,extname,join,resolve} from 'node:path';
 import {PROVIDER_PROGRAMS,isProviderFile} from '../apps/core/noname/ui/workshop/providerFiles.js';
+import {prepareOnlineSkinCompatibility} from './online-ui-compat.mjs';
 
 /** Package reviewed UI entry points plus data/media, never legacy rule modules. */
 export async function copyOnlineSkins(root:string,output:string){
@@ -22,4 +23,5 @@ export async function copyOnlineSkins(root:string,output:string){
   }
   await writeFile(join(target,'files.json'),JSON.stringify(files.sort(),null,2)+'\n');
  }
+ await prepareOnlineSkinCompatibility(root, output);
 }

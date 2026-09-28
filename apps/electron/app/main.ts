@@ -61,6 +61,9 @@ async function openOnlineView(owner: BrowserWindow, address: string, skin?: unkn
   const view = new WebContentsView({
     webPreferences: {
       nodeIntegration: false, contextIsolation: true, sandbox: true, webSecurity: true, partition,
+      // Online progress acknowledgements must keep running when Windows
+      // occludes/minimizes the view, otherwise a healthy stream appears stale.
+      backgroundThrottling: false,
     },
   });
   const contents = view.webContents;

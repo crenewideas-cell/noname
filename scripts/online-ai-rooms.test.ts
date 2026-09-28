@@ -118,5 +118,8 @@ test("AI 不会保住房间或获得客户端控制权", async t => {
   const bot = f.current().members.find(m => m.isAI)!;
   await assert.rejects(f.command("room.ready", { ready: true }, bot), { code: "FORBIDDEN" });
   await f.rooms.presence(owner.id, false);
+  assert.equal(f.rooms.rooms.size, 1, "真人在重连期限内仍保留房间");
+  f.current().members.find(m => m.id === owner.id)!.resumeUntil = Date.now() - 1;
+  await f.rooms.cleanup();
   assert.equal(f.rooms.rooms.size, 0);
 });
