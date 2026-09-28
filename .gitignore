@@ -61,3 +61,6 @@ temp/
 # Windows
 ehthumbs.db
 Thumbs.db
+
+# Skill for private use
+.agents/skills/*-selfuse

@@ -1,4 +1,10 @@
 const characters = {
+	dc_wangyuanji: {
+		sex: "female",
+		group: "wei",
+		hp: 3,
+		skills: ["dcshiyu", "dcshuaijian"],
+	},
 	cuizhi: {
 		sex: "female",
 		group: "shu",
@@ -84,7 +90,7 @@ const characters = {
 	dc_sb_masu: {
 		sex: "male",
 		group: "shu",
-		hp: 3,
+		hp: 4,
 		skills: ["dcsbchengce", "dcsbxinzhan"],
 	},
 	dc_sb_zhugeliang: {
@@ -209,7 +215,7 @@ const characters = {
 		sex: "male",
 		group: "shen",
 		hp: 4,
-		skills: ["yizhao", "sijun", "sanshou", "tianjie"],
+		skills: ["dcyizhao", "sijun", "sanshou", "tianjie"],
 		groupInGuozhan: "qun",
 	},
 	shen_zhangfei: {

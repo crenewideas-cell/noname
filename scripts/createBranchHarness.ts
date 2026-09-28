@@ -1,6 +1,6 @@
 import fs from 'node:fs';
-const config=JSON.parse(fs.readFileSync('apps/core/game/config.json','utf8'));
-const entries=config.moderned_characters.map((name:string)=>{const base=`character/${name}/index`;return '/'+base+(fs.existsSync('apps/core/'+base+'.ts')?'.ts':'.js');});
+const characterNames=fs.readdirSync('apps/core/character',{withFileTypes:true}).filter(entry=>entry.isDirectory()).map(entry=>entry.name).sort();
+const entries=characterNames.map(name=>{const base=`character/${name}/index`;return '/'+base+(fs.existsSync('apps/core/'+base+'.ts')?'.ts':'.js');});
 const cardEntries=fs.readdirSync('apps/core/card').filter(name=>name.endsWith('.js')).map(name=>'/card/'+name);
 fs.mkdirSync('apps/core/output',{recursive:true});
 fs.writeFileSync('apps/core/output/branch-check.html',`<!doctype html><meta charset="utf-8"><title>分支武将加载验证</title><h1>分支武将加载验证</h1><pre id="result">正在运行实际引擎注册与技能编译检查…</pre><script type="module">

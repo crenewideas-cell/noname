@@ -35,7 +35,6 @@ const characters = {
 		group: "shen",
 		hp: 4,
 		skills: ["lxyuli", "lxtingwei", "lxjimie"],
-		img: "image/character/mb_shen_machao.jpg",
 		dieAudios: ["mb_shen_machao"],
 	},
 	lx_simafu: {
@@ -207,6 +206,15 @@ const characters = {
 		hujia: 4,
 		skills: ["psnimou", "pskexue", "psjiefa"],
 		groupInGuozhan: "shu",
+	},
+	sm_shenmo_sunce: {
+		sex: "male",
+		group: "shen",
+		hp: 6,
+		skills: ["smxiaoyang", "smlinyuan"],
+		doubleGroup: ["shen", "devil"],
+		groupBorder: "devil",
+		groupInGuozhan: "wu",
 	},
 	sm_shenmo_sunquan: {
 		sex: "male",
