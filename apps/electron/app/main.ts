@@ -237,7 +237,10 @@ function createMainWindow() {
 			webSecurity: false,
 			preload: path.join(dirname, "app/preload.cjs"),
 			nodeIntegration: true, //主页面用node
-			nodeIntegrationInSubFrames: true, //子页面用node
+			// Loading/lobby/sandbox iframes only use browser APIs. Giving them a
+			// Node environment can throw "illegal access" during iframe teardown
+			// in Electron 39 while the main frame is still loading.
+			nodeIntegrationInSubFrames: false,
 			nodeIntegrationInWorker: true, //worker用node
 			contextIsolation: false, //必须为false
 			plugins: true, //启用插件

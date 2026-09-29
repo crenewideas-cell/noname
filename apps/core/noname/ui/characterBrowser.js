@@ -203,7 +203,17 @@ export function createCharacterBrowser({ ids, caption, heightset, noclick, onlyp
 	const updateAlphabetSummary = () => { alphabetSummary.textContent = alpha ? `首字母：${alpha.toUpperCase()}` : "按首字母筛选"; };
 	alphabet.addEventListener("click", updateAlphabetSummary);
 	refreshFilterControls.push(updateAlphabetSummary, () => { factions.value = group; });
-	factions.onchange = () => { group = factions.value; pager.page = 1; pager.render(); };
+	factions.onchange = () => {
+		// A faction is shared by multiple packs (for example 清瑶 and 绛珠仙子).
+		// Start a fresh scope, just as the pack selector does, rather than keeping
+		// an earlier pack, favourite, alphabet or search filter silently active.
+		group = factions.value;
+		alpha = category = "";
+		if (!onlypack) packs.value = "";
+		input.value = "";
+		refreshFilterControls.forEach(refresh => refresh());
+		void pager.search("");
+	};
 	toggle(categories, Object.keys(lib.characterDialogGroup).map(value => [value, value]), () => category, value => { category = value; });
 	packs.onchange = () => {
 		// Selecting a pack starts a new browse scope. A saved "recent" default,

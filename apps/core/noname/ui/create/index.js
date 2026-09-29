@@ -1469,12 +1469,23 @@ export class Create {
 				if (_status.dragged) {
 					return;
 				}
-				if (dialog.currentcapt2 == "最近" && dialog.currentcaptnode2 != this && !dialog.currentcaptnode2.inited) {
-					dialog.currentcapt2 = null;
-					dialog.currentcaptnode2.classList.remove("thundertext");
-					dialog.currentcaptnode2.inited = true;
-					dialog.currentcaptnode2 = null;
+				// Browse the whole faction, including characters from other packs.
+				// Keep only an explicit caller-supplied pack restriction.
+				for (const suffix of onlypack ? [""] : ["", "2"]) {
+					const previous = dialog["currentcaptnode" + suffix];
+					previous?.classList.remove("thundertext");
+					previous?.touchlink?.classList.remove("active");
+					dialog["currentcapt" + suffix] = null;
+					dialog["currentcaptnode" + suffix] = null;
 				}
+				if (!onlypack) {
+					if (packSelect) packSelect.value = "";
+					packsource.classList.remove("thundertext");
+					packsource.innerHTML = filternode ? "筛选" : "武将包";
+				}
+				searchIndex.cancel();
+				input.value = "";
+				searchStatus.textContent = "";
 				var node = this,
 					link = this.link;
 				if (node.classList.contains("thundertext")) {
@@ -2503,7 +2514,9 @@ export class Create {
 		if (lib.config.turned_style == false) {
 			ui.arena.classList.add("hide_turned");
 		}
-		if (lib.config.link_style2 != "chain") {
+		// Older profiles can reach the arena before the appearance menu supplies
+		// this default. An absent preference must still show linked players.
+		if (lib.config.link_style2 === "rotate" || lib.config.link_style2 === "mark") {
 			ui.arena.classList.add("nolink");
 		}
 		if (lib.config.show_name == false) {

@@ -116,6 +116,7 @@
 	"layout": "long2",
 	"cardback_style": "liusha",
 	"cardshape": "oblong",
+	"link_style2": "chain",
 	"hp_style": "glass",
 	"menu_style": "music",
 	"player_border": "slim",

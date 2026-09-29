@@ -6801,7 +6801,7 @@ const skills = {
                     .forResult();
                 if (bool) {
                     player.line(targets);
-                    await player.give(cards, event.targets[0]);
+                    await player.give(cards, targets[0]);
                 }
             }
             else if (player.countCards("h") == player.hp) {
