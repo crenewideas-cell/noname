@@ -1,0 +1,542 @@
+
+SS_szy_huosha.png
+size: 2047,2046
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+11-huo
+  rotate: false
+  xy: 1397, 1398
+  size: 647, 293
+  orig: 647, 293
+  offset: 0, 0
+  index: -1
+14
+  rotate: false
+  xy: 1397, 1334
+  size: 81, 62
+  orig: 81, 62
+  offset: 0, 0
+  index: -1
+15
+  rotate: false
+  xy: 1191, 1956
+  size: 52, 88
+  orig: 52, 88
+  offset: 0, 0
+  index: -1
+16
+  rotate: false
+  xy: 1902, 781
+  size: 137, 122
+  orig: 138, 122
+  offset: 1, 0
+  index: -1
+17
+  rotate: false
+  xy: 982, 1318
+  size: 97, 407
+  orig: 97, 407
+  offset: 0, 0
+  index: -1
+18
+  rotate: false
+  xy: 1068, 1731
+  size: 121, 313
+  orig: 121, 313
+  offset: 0, 0
+  index: -1
+4
+  rotate: true
+  xy: 1254, 612
+  size: 395, 329
+  orig: 395, 329
+  offset: 0, 0
+  index: -1
+7
+  rotate: false
+  xy: 1902, 905
+  size: 143, 139
+  orig: 143, 139
+  offset: 0, 0
+  index: -1
+8
+  rotate: false
+  xy: 1678, 5
+  size: 326, 339
+  orig: 326, 339
+  offset: 0, 0
+  index: -1
+huosha
+  rotate: false
+  xy: 1902, 693
+  size: 100, 86
+  orig: 100, 86
+  offset: 0, 0
+  index: -1
+vfx/huo/h2_018
+  rotate: false
+  xy: 2, 8
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+vfx/huo/h2_019
+  rotate: false
+  xy: 2, 5
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+vfx/huo/h2_020
+  rotate: false
+  xy: 675, 1727
+  size: 391, 317
+  orig: 1080, 960
+  offset: 405, 345
+  index: -1
+vfx/huo/h2_027
+  rotate: true
+  xy: 675, 1318
+  size: 407, 305
+  orig: 1080, 960
+  offset: 404, 346
+  index: -1
+vfx/huo/h2_032
+  rotate: false
+  xy: 1254, 1009
+  size: 421, 308
+  orig: 1080, 960
+  offset: 406, 346
+  index: -1
+vfx/huo/h2_038
+  rotate: false
+  xy: 1254, 1727
+  size: 421, 317
+  orig: 1080, 960
+  offset: 403, 345
+  index: -1
+vfx/huo/h2_039
+  rotate: true
+  xy: 1585, 615
+  size: 392, 315
+  orig: 1080, 960
+  offset: 404, 345
+  index: -1
+vfx/huo/h2_040
+  rotate: true
+  xy: 1081, 1319
+  size: 406, 314
+  orig: 1080, 960
+  offset: 404, 345
+  index: -1
+vfx/huo/h2_042
+  rotate: false
+  xy: 1678, 346
+  size: 358, 267
+  orig: 1080, 960
+  offset: 405, 346
+  index: -1
+vfx/huo/h2_043
+  rotate: false
+  xy: 2, 2
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+vfx/huo/tuci_019
+  rotate: false
+  xy: 2, 1318
+  size: 671, 726
+  orig: 900, 1020
+  offset: 178, 241
+  index: -1
+vfx/huo/tuci_020
+  rotate: false
+  xy: 2, 11
+  size: 572, 595
+  orig: 900, 1020
+  offset: 219, 278
+  index: -1
+vfx/huo/tuci_023
+  rotate: true
+  xy: 1133, 25
+  size: 585, 543
+  orig: 900, 1020
+  offset: 244, 275
+  index: -1
+vfx/huo/tuci_024
+  rotate: true
+  xy: 576, 11
+  size: 595, 555
+  orig: 900, 1020
+  offset: 249, 283
+  index: -1
+vfx/huo/tuci_028
+  rotate: false
+  xy: 2, 608
+  size: 624, 708
+  orig: 900, 1020
+  offset: 276, 312
+  index: -1
+vfx/huo/tuci_030
+  rotate: false
+  xy: 628, 612
+  size: 624, 704
+  orig: 900, 1020
+  offset: 276, 312
+  index: -1
+vfx/huo/xuying_019
+  rotate: true
+  xy: 1678, 1693
+  size: 351, 358
+  orig: 540, 450
+  offset: 97, 25
+  index: -1
+vfx/huo/xuying_020
+  rotate: true
+  xy: 1678, 1046
+  size: 350, 358
+  orig: 540, 450
+  offset: 97, 25
+  index: -1
+vfx/huo/xuying_026
+  rotate: false
+  xy: 5, 8
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+
+SS_szy_huosha2.png
+size: 2047,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+10-huo
+  rotate: false
+  xy: 1411, 1212
+  size: 627, 207
+  orig: 627, 208
+  offset: 0, 1
+  index: -1
+12-huo
+  rotate: true
+  xy: 1791, 170
+  size: 372, 253
+  orig: 372, 253
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 1296, 1442
+  size: 100, 178
+  orig: 100, 178
+  offset: 0, 0
+  index: -1
+sha
+  rotate: true
+  xy: 1248, 606
+  size: 93, 92
+  orig: 93, 92
+  offset: 0, 0
+  index: -1
+vfx/huo/h2_033
+  rotate: true
+  xy: 1090, 1622
+  size: 424, 319
+  orig: 1080, 960
+  offset: 406, 345
+  index: -1
+vfx/huo/tuci_022
+  rotate: true
+  xy: 1248, 15
+  size: 527, 541
+  orig: 900, 1020
+  offset: 241, 270
+  index: -1
+vfx/huo/tuci_026
+  rotate: true
+  xy: 1411, 1421
+  size: 625, 634
+  orig: 900, 1020
+  offset: 275, 311
+  index: -1
+vfx/huo/tuci_027
+  rotate: false
+  xy: 2, 1354
+  size: 611, 692
+  orig: 900, 1020
+  offset: 275, 311
+  index: -1
+vfx/huo/tuci_029
+  rotate: false
+  xy: 1411, 544
+  size: 625, 666
+  orig: 900, 1020
+  offset: 275, 311
+  index: -1
+vfx/huo/tuci_031
+  rotate: false
+  xy: 2, 6
+  size: 618, 657
+  orig: 900, 1020
+  offset: 276, 312
+  index: -1
+vfx/huo/tuci_032
+  rotate: false
+  xy: 622, 2
+  size: 624, 665
+  orig: 900, 1020
+  offset: 276, 312
+  index: -1
+vfx/huo/tuci_033
+  rotate: false
+  xy: 936, 701
+  size: 473, 667
+  orig: 900, 1020
+  offset: 276, 312
+  index: -1
+vfx/huo/tuci_034
+  rotate: false
+  xy: 615, 1370
+  size: 473, 676
+  orig: 900, 1020
+  offset: 276, 312
+  index: -1
+vfx/huo/tuci_035
+  rotate: false
+  xy: 472, 669
+  size: 462, 683
+  orig: 900, 1020
+  offset: 275, 312
+  index: -1
+vfx/huo/tuci_036
+  rotate: false
+  xy: 2, 665
+  size: 468, 687
+  orig: 900, 1020
+  offset: 276, 312
+  index: -1
+vfx/huo/xuying_018
+  rotate: false
+  xy: 1090, 1396
+  size: 204, 224
+  orig: 540, 450
+  offset: 210, 130
+  index: -1
+
+SS_szy_huosha3.png
+size: 2048,2045
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+3
+  rotate: false
+  xy: 2, 960
+  size: 466, 461
+  orig: 466, 461
+  offset: 0, 0
+  index: -1
+5
+  rotate: true
+  xy: 878, 615
+  size: 196, 172
+  orig: 197, 172
+  offset: 0, 0
+  index: -1
+6-huo
+  rotate: false
+  xy: 628, 1236
+  size: 494, 297
+  orig: 494, 298
+  offset: 0, 0
+  index: -1
+9-huo
+  rotate: true
+  xy: 1210, 1054
+  size: 502, 506
+  orig: 502, 506
+  offset: 0, 0
+  index: -1
+vfx/huo/h2_021
+  rotate: false
+  xy: 418, 6
+  size: 391, 317
+  orig: 1080, 960
+  offset: 405, 345
+  index: -1
+vfx/huo/h2_022
+  rotate: false
+  xy: 2, 2
+  size: 414, 321
+  orig: 1080, 960
+  offset: 405, 345
+  index: -1
+vfx/huo/h2_024
+  rotate: false
+  xy: 2, 325
+  size: 427, 313
+  orig: 1080, 960
+  offset: 404, 345
+  index: -1
+vfx/huo/h2_025
+  rotate: true
+  xy: 1735, 1575
+  size: 468, 311
+  orig: 1080, 960
+  offset: 404, 345
+  index: -1
+vfx/huo/h2_026
+  rotate: true
+  xy: 1735, 1128
+  size: 445, 311
+  orig: 1080, 960
+  offset: 404, 345
+  index: -1
+vfx/huo/h2_029
+  rotate: false
+  xy: 809, 366
+  size: 403, 233
+  orig: 1080, 960
+  offset: 406, 345
+  index: -1
+vfx/huo/h2_031
+  rotate: false
+  xy: 1207, 759
+  size: 404, 293
+  orig: 1080, 960
+  offset: 406, 345
+  index: -1
+vfx/huo/h2_034
+  rotate: false
+  xy: 431, 331
+  size: 376, 268
+  orig: 1080, 960
+  offset: 406, 345
+  index: -1
+vfx/huo/h2_035
+  rotate: true
+  xy: 912, 813
+  size: 421, 293
+  orig: 1080, 960
+  offset: 404, 345
+  index: -1
+vfx/huo/h2_036
+  rotate: false
+  xy: 470, 924
+  size: 440, 310
+  orig: 1080, 960
+  offset: 404, 345
+  index: -1
+vfx/huo/h2_037
+  rotate: false
+  xy: 2, 640
+  size: 438, 318
+  orig: 1080, 960
+  offset: 404, 345
+  index: -1
+vfx/huo/h2_041
+  rotate: false
+  xy: 442, 601
+  size: 434, 321
+  orig: 1080, 960
+  offset: 404, 345
+  index: -1
+vfx/huo/tuci_018
+  rotate: true
+  xy: 1210, 1558
+  size: 485, 523
+  orig: 900, 1020
+  offset: 415, 471
+  index: -1
+vfx/huo/tuci_021
+  rotate: true
+  xy: 628, 1535
+  size: 508, 580
+  orig: 900, 1020
+  offset: 226, 231
+  index: -1
+vfx/huo/tuci_025
+  rotate: false
+  xy: 2, 1423
+  size: 624, 620
+  orig: 900, 1020
+  offset: 276, 294
+  index: -1
+vfx/huo/tuci_037
+  rotate: false
+  xy: 1214, 383
+  size: 337, 370
+  orig: 900, 1020
+  offset: 276, 311
+  index: -1
+vfx/huo/tuci_038
+  rotate: false
+  xy: 1718, 755
+  size: 324, 371
+  orig: 900, 1020
+  offset: 275, 311
+  index: -1
+vfx/huo/xuying_021
+  rotate: true
+  xy: 811, 13
+  size: 351, 347
+  orig: 540, 450
+  offset: 97, 36
+  index: -1
+vfx/huo/xuying_022
+  rotate: true
+  xy: 1160, 13
+  size: 351, 346
+  orig: 540, 450
+  offset: 97, 37
+  index: -1
+vfx/huo/xuying_023
+  rotate: true
+  xy: 1508, 30
+  size: 351, 345
+  orig: 540, 450
+  offset: 97, 38
+  index: -1
+vfx/huo/xuying_024
+  rotate: true
+  xy: 1553, 405
+  size: 348, 334
+  orig: 540, 450
+  offset: 100, 49
+  index: -1
+
+SS_szy_huosha4.png
+size: 1567,335
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+vfx/huo/h2_023
+  rotate: false
+  xy: 829, 19
+  size: 389, 314
+  orig: 1080, 960
+  offset: 405, 345
+  index: -1
+vfx/huo/h2_028
+  rotate: false
+  xy: 427, 28
+  size: 400, 305
+  orig: 1080, 960
+  offset: 404, 345
+  index: -1
+vfx/huo/h2_030
+  rotate: false
+  xy: 2, 44
+  size: 423, 289
+  orig: 1080, 960
+  offset: 406, 345
+  index: -1
+vfx/huo/xuying_025
+  rotate: false
+  xy: 1220, 2
+  size: 345, 331
+  orig: 540, 450
+  offset: 103, 52
+  index: -1

@@ -141,6 +141,25 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 const result = await player.chooseCard("绛珠仙子：选择任意张基本牌保留并标记为“仙”（取消则全部转化为情思）", "h", [1, basics.length])
                     .set("hlhj_basic_candidates", basics)
                     .set("filterCard", card => _status.event.hlhj_basic_candidates.includes(card))
+                    .set("custom", {
+                        add: {
+                            card() {
+                                const current = _status.event;
+                                if (current.promptbar) current.promptbar.innerHTML = `${ui.selected.cards.length}/${current.selectCard[1]}`;
+                                if (!current.isMine() || current.cardChooseAll) return;
+                                // chooseCard closes this control on completion, including online choices.
+                                current.cardChooseAll = ui.create.control("全部保留", function () {
+                                    const choice = _status.event;
+                                    const cards = choice.hlhj_basic_candidates.filter(card =>
+                                        get.owner(card) === choice.player && get.position(card) === "h");
+                                    ui.selected.cards.length = 0;
+                                    ui.selected.cards.push(...cards);
+                                    ui.click.ok();
+                                });
+                            },
+                        },
+                        replace: {},
+                    })
                     .set("ai", card => get.value(card)).forResult();
                 if (result.bool && hasXianEquip(player) && player.isIn()) {
                     const retained = (result.cards || []).filter(card => basics.includes(card) && get.owner(card) === player && get.position(card) === "h");
@@ -267,7 +286,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
             if (current === player) continue;
             const loss = event.getl?.(current);
             for (const card of loss?.cards2 || []) {
-                if (get.position(card, true) === "d" && !cards.includes(card)) cards.push(card);
+                if (!cards.includes(card)) cards.push(card);
             }
         }
         return cards;
@@ -322,7 +341,29 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 cardname(card, player) { if (ordinary(card, player)) return "hlhj_qingsi"; },
                 cardnature(card, player) { if (ordinary(card, player)) return false; },
             },
-            group: ["hlhj_qingsi_redirect", "hlhj_jiangzhu_convert", "hlhj_xian"],
+            group: ["hlhj_qingsi_redirect", "hlhj_jiangzhu_convert", "hlhj_jiangzhu_flower", "hlhj_xian"],
+        },
+        hlhj_jiangzhu_flower: {
+            charlotte: true,
+            trigger: { player: "gainAfter" },
+            forced: true,
+            firstDo: true,
+            priority: 55,
+            filter(event, player) {
+                return player.isIn() && !hasXianEquip(player) && event.cards?.some(card =>
+                    get.owner(card) === player && get.position(card) === "h" &&
+                    (event.hlhj_flower_owner === player || card.hasGaintag("hlhj_hua"))) &&
+                    Object.keys(lib.card).some(name => isXian({ name }));
+            },
+            async content(event, trigger, player) {
+                if (!player.isIn() || hasXianEquip(player)) return;
+                const name = Object.keys(lib.card).filter(name => isXian({ name })).randomGet();
+                if (!name) return;
+                const faces = (lib.card.list || []).filter(face => face[2] === name);
+                const face = faces.length ? faces.randomGet() : [];
+                const copy = flowerCopy({ name, suit: face[0], number: face[1], nature: face[3] }, false);
+                await player.gain(copy, "gain2");
+            },
         },
         hlhj_jiangzhu_convert: {
             charlotte: true,
@@ -347,6 +388,9 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
             charlotte: true,
             mod: {
                 ignoredHandcard(card) { if (xianTagged(card)) return true; },
+                cardUsable(card) {
+                    if (xianTagged(card) || (card.cards?.length && card.cards.every(xianTagged))) return Infinity;
+                },
                 cardDiscardable(card, player, reason) {
                     if (reason === "phaseDiscard" && xianTagged(card)) return false;
                 },
@@ -354,13 +398,21 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
             trigger: { player: "useCard1" },
             forced: true,
             filter(event, player) {
-                if (_status.currentPhase !== player || event.respondTo || lib.card[event.card?.name]?.type !== "basic") return false;
                 // Hand tags are removed by lose before useCard1. Read the loss
                 // snapshot belonging to this use, never a previous use's cards.
                 return player.getHistory("lose").some(loss => loss.getParent() === event &&
                     loss.hs?.some(card => event.cards?.includes(card) && loss.gaintag_map?.[card.cardid]?.includes("hlhj_xian")));
             },
-            async content(event, trigger, player) { trigger.effectCount++; },
+            async content(event, trigger, player) {
+                if (trigger.addCount !== false) {
+                    trigger.addCount = false;
+                    const counts = player.getStat("card");
+                    if (counts[trigger.card.name] > 0) counts[trigger.card.name]--;
+                }
+                if (_status.currentPhase === player && !trigger.respondTo && lib.card[trigger.card?.name]?.type === "basic") {
+                    trigger.effectCount++;
+                }
+            },
         },
         hlhj_qingsi_redirect: {
             mod: {
@@ -520,31 +572,34 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 if (!cards.length) return;
                 const count = (player.storage.hlhj_flower_step || 0) + 1;
                 const result = await player.chooseButton([
-                    `葬花：选择一张弃牌，然后选择“复制原牌”或“随机同类型牌”。你获得原牌及${count - 1}张复制牌，存活且不为你自己的木石缘获得${count}张复制牌`, cards,
-                ]).set("ai", () => {
+                    `葬花：选择任意张本次弃置的牌，然后选择复制方式。每张所选牌分别获得原牌及${count - 1}张复制牌，存活且不为你自己的木石缘分别获得${count}张复制牌`, cards,
+                ], [1, cards.length], "allowChooseAll").set("ai", () => {
                     const p = _status.event.player;
                     return p.countCards("h") < p.hp + 3 ? 1 : 0;
                 }).forResult();
-                if (!result.bool || get.position(result.links[0], true) !== "d" || !player.isIn()) return;
-                const original = result.links[0];
+                if (!result.bool || !player.isIn()) return;
+                const originals = [...new Set(result.links || [])].filter(card => cards.includes(card));
+                if (!originals.length) return;
                 const choice = await player.chooseControl("复制原牌", "随机同类型牌", "cancel2")
-                    .set("prompt", `葬花：选择【${get.translation(original)}】的复制方式`)
+                    .set("prompt", `葬花：选择这${originals.length}张牌的复制方式`)
                     .set("prompt2", "本次你与木石缘的所有复制牌采用同一种方式：复制原牌，保留原牌的牌名、花色、点数和属性；随机同类型牌，则每张分别独立随机。取消不计发动次数。")
                     .set("choice", 0)
                     .set("ai", () => 0).forResult();
                 if (!["复制原牌", "随机同类型牌"].includes(choice.control) ||
-                    get.position(original, true) !== "d" || !player.isIn()) return;
+                    !player.isIn()) return;
                 const randomType = choice.control === "随机同类型牌";
                 player.logSkill("hlhj_xiangduan");
                 step(player, "hlhj_flower_step");
                 // Capture the recipient and card face before Daiyu's gain changes
                 // basic/weapon cards into 情思 or a gain trigger changes the bond.
                 const target = bond(player);
-                const shared = target?.isIn() && target !== player ? Array.from({ length: count }, () => flowerCopy(original, randomType)) : [];
+                const shared = target?.isIn() && target !== player ? originals.flatMap(original =>
+                    Array.from({ length: count }, () => flowerCopy(original, randomType))) : [];
                 voiceScope(player, "collect", event);
-                const flowers = [original];
-                for (let i = 1; i < count; i++) {
-                    flowers.push(flowerCopy(original, randomType));
+                const flowers = [];
+                for (const original of originals) {
+                    flowers.push(original);
+                    for (let i = 1; i < count; i++) flowers.push(flowerCopy(original, randomType));
                 }
                 const next = player.gain(flowers, "gain2");
                 // Finish card-name conversion at gainAfter before adding the flower tag.
@@ -691,7 +746,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
             async content(event, trigger, player) { speak(player, "recover"); await player.recover(); },
             mark: true,
             marktext: "愿",
-            intro: { content: "锁定技，当你受到伤害后，若你存活，你回复1点体力。每回合限一次，当其他角色受到伤害时，你可以将此伤害转移给你（同一次伤害不能重复转移）。" },
+            intro: { content: "锁定技，你受到伤害后，若存活，回复1点体力。每回合限一次，其他角色受到伤害时，你可将此伤害转移给自己（同次伤害不重复转移）。" },
             group: ["hlhj_yiyuan_guard", "hlhj_turn"],
         },
         hlhj_yiyuan_guard: {
@@ -720,34 +775,34 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
     for (const info of Object.values(skill)) info.audio = false;
     const translate = {
         hlhj_jiangzhu: "绛珠仙子",
-        hlhj_jiangzhu_info: "锁定技，你的身份不能分配为内奸。基本牌、伤害牌和武器牌进入你的手牌后，转化为【情思】，保留花色和点数；仙界牌不转化。每次获得仙界装备牌时，你可以选择立即装备之；不装备则保留在手牌中。装备区有仙界牌时，你可以选择任意张新获得的基本牌不转化，并标记为“仙”。“仙”牌不计入手牌上限，不因手牌上限而弃置；你于自己的回合主动使用“仙”基本牌时，额外结算一次（响应不重复）。“仙”标记保留至该牌离开手牌。【情思】不计入手牌上限，且不因手牌上限而弃置。转化牌进入牌堆或弃牌堆时恢复原牌；额外生成的牌则销毁。",
+        hlhj_jiangzhu_info: "锁定技，你的身份不能分配为内奸。①基本牌、伤害牌或武器牌进入你的手牌后，保留花色、点数并转化为【情思】（仙界牌除外）。②获得“花”时，若装备区无仙界牌，随机获得一张仙界复制牌。获得仙界装备牌时，你可立即装备，否则留于手牌。③装备区有仙界牌时，你可令任意张新获基本牌不转化并标记为“仙”（可点击“全部保留”）。“仙”牌使用无次数限制且不计次数；你于自己的回合主动使用“仙”基本牌时，额外结算一次（响应除外）；离手移去“仙”。④“仙”牌与【情思】不计手牌上限，不因超限弃置。转化牌进入牌堆或弃牌堆时恢复原牌，额外生成的牌销毁。",
         hlhj_qingsi_redirect: "情思",
         hlhj_mushi: "木石前缘",
-        hlhj_mushi_info: "①游戏开始时，你选择一名角色成为你的“木石缘”。②自己的回合内，在使用或响应牌的可操作时机，你可以主动发动〖木石·换缘〗，弃置一张【情思】，令另一名角色成为你的“木石缘”，次数不限。③当你获得“泪”时，你可以令你或存活的“木石缘”摸等量的牌。若你以此法摸牌，你须弃置一张【情思】（无可弃置的【情思】则不弃置；支付本技能弃牌代价期间获得的“泪”不触发此项效果）。",
+        hlhj_mushi_info: "①游戏开始时，你选择一名角色为“木石缘”。②自己的回合内，在使用或响应牌的操作时机，你可发动〖木石·换缘〗：弃置一张【情思】，另选一名角色为“木石缘”，次数不限。③获得“泪”时，你可令自己或存活的“木石缘”摸等量牌；若自己摸牌，须弃置一张【情思】（无可弃置的则免）。支付本技能弃牌代价期间获得的“泪”不触发③。",
         hlhj_mushi_change: "木石·换缘",
-        hlhj_mushi_change_info: "自己的回合内，在使用或响应牌的可操作时机，你可以弃置一张【情思】，重新指定一名不同的木石缘。次数不限，可以取消。",
+        hlhj_mushi_change_info: "自己的回合内，在使用或响应牌的操作时机，你可弃置一张【情思】，另选一名角色为“木石缘”。次数不限，可取消。",
         hlhj_xian: "仙",
-        hlhj_xian_info: "此牌保留原基本牌效果，不计入手牌上限，不因手牌上限而弃置；自己的回合内主动使用时额外结算一次，响应不重复。离开手牌后移除此标记。",
+        hlhj_xian_info: "保留原基本牌效果，不计手牌上限，不因超限弃置；使用无次数限制且不计次数；自己的回合内主动使用时额外结算一次（响应除外）。离手移去“仙”。",
         hlhj_mushiyuan: "木石缘",
         hlhj_mushi_bg: "缘",
         hlhj_mushiyuan_bg: "木石",
-        hlhj_mushiyuan_info: "你是标记所示角色的“木石缘”。其重新指定“木石缘”或死亡后，移除此关系。",
+        hlhj_mushiyuan_info: "你是所示角色的“木石缘”，其换缘或死亡后解除此关系。",
         hlhj_xiangduan: "香断谁怜",
-        hlhj_xiangduan_info: "①当其他角色弃置牌后，你可以选择其中一张仍在弃牌堆的牌，并选择“复制原牌”或“随机同类型牌”。你获得原牌及X张复制牌（X为本回合此项发动次数减一）；若你的“木石缘”存活且不为你，其获得与你以此法获得牌数相同的复制牌。本次双方的复制牌均按你所选方式生成：复制原牌时，牌名、花色、点数和属性均与原牌相同；随机同类型牌时，每张独立随机，允许重复，类型按基本牌、锦囊牌（含延时锦囊）、装备牌区分。取消不计次数。你以此法获得的牌标记为“花”（与情思转化、仙标记兼容）。②当你的“花”离开你的手牌时，无论使用、打出、装备、弃置、交给其他角色或移至其他区域，你获得等量的“泪”，并移去这些牌的“花”标记；同一次离手仅计算一次。③随机同类型的复制牌保留所选弃牌的花色、点数，同名时保留属性，异名时无属性；所有复制牌进入牌堆或弃牌堆时销毁。",
+        hlhj_xiangduan_info: "①其他角色弃牌后，你可选择其中任意张，并选择本次双方统一采用“复制原牌”或“随机同类型牌”。对每张所选牌，你获得原牌及X张复制牌，存活且不为你的“木石缘”获得X+1张复制牌（X为本回合此项发动次数减一，多选仅计一次，取消不计）。你以此法所得牌标记为“花”，可与情思转化及“仙”并存。②你的“花”以任何方式离手时，你获得等量“泪”并移去其“花”标记，每次离手仅计一次。③“复制原牌”保持牌名；“随机同类型牌”逐张独立随机，可重复，类型分基本、锦囊（含延时）、装备。复制牌均保留原牌花色、点数，同名保留属性，异名无属性；进入牌堆或弃牌堆时销毁。",
         hlhj_zanghuayin: "葬花吟",
-        hlhj_zanghuayin_info: "出牌阶段，你可以将任意张标记为“花”的手牌置入弃牌堆，然后依〖香断谁怜〗获得等量的“泪”。",
+        hlhj_zanghuayin_info: "出牌阶段，你可将任意张“花”手牌置入弃牌堆，然后依〖香断谁怜〗获得等量“泪”。",
         hlhj_hua: "花",
         hlhj_hua_bg: "花",
         hlhj_lei: "泪",
         hlhj_lei_bg: "泪",
         hlhj_xiaoxiang: "潇湘妃子",
-        hlhj_xiaoxiang_info: "①当你的“木石缘”与其他角色之间发生牌的转移后，或成为其他角色使用红色牌的目标后，你可以获得X枚“泪”（同一次牌的转移或使用仅触发一次）。②当你成为“木石缘”使用牌的目标时，若你有“泪”，你失去Y枚“泪”（不足则全部失去）。X、Y分别为本回合对应项的发动次数。",
+        hlhj_xiaoxiang_info: "①你的“木石缘”与其他角色转移牌后，或成为其他角色使用红色牌的目标后，你可获得X枚“泪”（每次转移或使用仅触发一次）。②你成为“木石缘”使用牌的目标时，若有“泪”，失去Y枚（不足则全部失去）。X、Y分别为本回合对应项的发动次数。",
         hlhj_xiaoxiang_loss: "潇湘·失泪",
         hlhj_guimeng: "绛珠归梦",
-        hlhj_guimeng_info: "①锁定技，当你的“泪”数不小于X时，你弃置所有手牌，然后死亡（X为场上存活角色数的四倍，且至少为16）。②你死亡前，可以令存活的“木石缘”获得〖绛珠遗愿〗。",
+        hlhj_guimeng_info: "①锁定技，你的“泪”数不少于X时，弃置所有手牌，然后死亡（X为场上存活角色数的四倍，至少为16）。②你死亡前，可令存活的“木石缘”获得〖绛珠遗愿〗。",
         hlhj_guimeng_gift: "绛珠归梦",
         hlhj_yiyuan: "绛珠遗愿",
-        hlhj_yiyuan_info: "①锁定技，当你受到伤害后，若你存活，你回复1点体力。②每回合限一次，当其他角色受到伤害时，你可以将此伤害转移给你（同一次伤害不能重复转移）。",
+        hlhj_yiyuan_info: "①锁定技，你受到伤害后，若存活，回复1点体力。②每回合限一次，其他角色受到伤害时，你可将此伤害转移给自己（同次伤害不重复转移）。",
         hlhj_yiyuan_guard: "遗愿·代伤",
         ...baoyu.translate,
     };
@@ -812,7 +867,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                         ai: { basic: { useful: 5, value: 5 } },
                     },
                 },
-                translate: { ...baoyu.translate, hlhj_qingsi: "情思", hlhj_qingsi_info: "当你成为其他角色使用牌的目标时，你可以打出此牌，将该牌对你的此次效果转移给存活且不为你的“木石缘”，无视目标限制；若其已是目标，则额外结算一次。此牌不计入手牌上限，且不因手牌上限而弃置，不能主动使用或作为转化前的牌使用。进入牌堆或弃牌堆时，转化牌恢复原牌，额外生成的牌销毁。" },
+                translate: { ...baoyu.translate, hlhj_qingsi: "情思", hlhj_qingsi_info: "你成为其他角色使用牌的目标时，可打出此牌，将该牌对你的此次效果转移给存活且不为你的“木石缘”，无视目标限制；其已是目标则额外结算一次。此牌不计手牌上限，不因超限弃置，不可主动使用或当原牌使用。进入牌堆或弃牌堆时，转化牌恢复原牌，生成牌销毁。" },
                 list: [],
             },
             skill: { skill, translate },

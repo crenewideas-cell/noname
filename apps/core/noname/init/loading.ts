@@ -5,6 +5,7 @@
 import { lib, game, get, _status, ui, ai } from "noname";
 import { registerCardPack } from "./cardPackRuntime.js";
 import { initializeCharacterPack } from "./characterPackRuntime.js";
+import { mergeDuplicateCharacters } from "./characterDuplicates.js";
 import { isClass } from "@/util/index.js";
 
 /**
@@ -39,6 +40,7 @@ export function loadCardPile() {
 export function loadCharacter(character: importCharacterConfig) {
 	let name = character.name;
 	initializeCharacterPack(lib, game, name, lib.characterPackExtension?.[name]);
+	if (lib.characterPackExtension?.[name]) mergeDuplicateCharacters(character, lib.translate);
 
 	if (character.character) {
 		const characterPack = lib.characterPack[name];

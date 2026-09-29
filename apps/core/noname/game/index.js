@@ -13,8 +13,9 @@
 import { _status, lib, get, ai, ui } from "noname";
 import { isClass, userAgentLowerCase, GeneratorFunction, AsyncFunction, delay } from "@/util/index.js";
 
-import { registerCardPack, singleCardPack } from "../init/cardPackRuntime.js";
+import { registerCardPack, singleCardPack, buildOnlineCardPile } from "../init/cardPackRuntime.js";
 import { initializeCharacterPack } from "../init/characterPackRuntime.js";
+import { mergeDuplicateCharacters } from "../init/characterDuplicates.js";
 import { DynamicStyle } from "./dynamic-style/index.js";
 import { GamePromises } from "./promises.js";
 import { Check } from "./check.js";
@@ -3017,7 +3018,10 @@ export class Game {
 
 			promise = promise.then(result => {
 				if (result.name) {
-					if (type === "character") initializeCharacterPack(lib, game, result.name, sourceExtension);
+					if (type === "character") {
+						initializeCharacterPack(lib, game, result.name, sourceExtension);
+						if (sourceExtension || lib.characterPackExtension?.[result.name]) mergeDuplicateCharacters(result, lib.translate);
+					}
 					if (type === "card" && sourceExtension) result.extension ||= sourceExtension;
 					lib.imported[type][result.name] = result;
 				}
@@ -6157,6 +6161,9 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		}
 		lib.translate[name] = information.translate;
 		lib.characterPack[packName][name] = character;
+		initializeCharacterPack(lib, game, packName, extensionName);
+		const aliases = mergeDuplicateCharacters({ character: lib.characterPack[packName] }, lib.translate);
+		for (const id of new Set([...aliases.keys(), ...aliases.values()])) lib.character[id] = lib.characterPack[packName][id];
 		lib.translate[`${packName}_character_config`] = extensionName;
 	}
 	/**
@@ -6168,6 +6175,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 		let gzFlag = false;
 		packagename = packagename || extname;
 		initializeCharacterPack(lib, game, packagename, extname);
+		mergeDuplicateCharacters(pack, lib.translate);
 
 		for (const name in pack) {
 			const content = pack[name];
@@ -8010,11 +8018,7 @@ ${e instanceof Error ? e.stack : String(e)}`);
 					lib.configOL.bannedcards = lib.config["connect_" + name + "_bannedcards"];
 				}
 				lib.configOL.version = lib.versionOL;
-				for (let i in lib.cardPackList) {
-					if (lib.configOL.cardPack.includes(i)) {
-						lib.card.list = lib.card.list.concat(lib.cardPackList[i]);
-					}
-				}
+				buildOnlineCardPile(lib, get);
 				for (let i = 0; i < lib.card.list.length; i++) {
 					if (lib.card.list[i][2] == "huosha") {
 						lib.card.list[i] = lib.card.list[i].slice(0);

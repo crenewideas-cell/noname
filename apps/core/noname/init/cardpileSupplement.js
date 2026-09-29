@@ -1,3 +1,4 @@
+import { cardPackAllowed } from "./cardPackRuntime.js";
 // Military-deck proportions and suit weights from native cardpile.
 export const supplementWeights = {
 	sha: { diamond: 6, club: 14, heart: 3, spade: 7 },
@@ -12,16 +13,21 @@ const previous = new WeakMap();
 const identity = card => card[2] === "sha" ? (card[3] === "fire" ? "huosha" : card[3] === "thunder" ? "leisha" : card[3] ? null : "sha") : card[2];
 
 /** Runs after all extension arena hooks, before the mode constructs physical cards. */
-export function supplementCardPile(lib, random = Math.random) {
+export function supplementCardPile(lib, random = Math.random, { connect = false, bannedcards = [] } = {}) {
 	const list = lib.card.list;
 	const old = previous.get(lib);
 	if (old) for (let i = list.length - 1; i >= 0; i--) if (old.has(list[i])) list.splice(i, 1);
 	previous.delete(lib);
 	if (lib.config.mode === "connect" || !lib.config.plays?.includes("cardpile") || lib.config.hiddenPlayPack?.includes("cardpile") || !list.length) return 0;
+	const mode = connect ? lib.configOL?.mode || lib.config.mode : lib.config.mode;
+	const banned = new Set([...(connect ? lib.configOL?.bannedcards || [] : lib.config.bannedcards || []), ...bannedcards]);
 	const targets = [];
 	for (const [id, suits] of Object.entries(supplementWeights)) {
 		const name = id === "huosha" || id === "leisha" ? "sha" : id;
-		if (!lib.card[name] || lib.card[name].mode?.includes(lib.config.mode) === false) continue;
+		if (!lib.card[name] || !cardPackAllowed(lib.card[name], mode) || banned.has(name)) continue;
+		// Do not reintroduce a disabled card family (e.g. wine or elemental sha
+		// from the military pack) merely because its definition was loaded.
+		if (!list.some(card => identity(card) === id)) continue;
 		const raw = lib.config[`cardpile_${id}_playpackconfig`];
 		const value = raw == null ? defaults[id] || 0 : Number(raw);
 		const factor = Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : defaults[id] || 0;

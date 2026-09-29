@@ -99,9 +99,12 @@ export class Check {
 	button(event, useCache) {
 		const player = event.player;
 		const pager = event.dialog.characterPager;
-		// Whole-pool operations/AI and custom selection retain the legacy contract.
+		// Whole-pool operations/AI and custom handlers retain the legacy contract.
+		// chooseButton defaults complexSelect to true: it requires fresh checks,
+		// not a full DOM pool. The pager includes off-page selections, and its
+		// checks below already bypass the cache so dependent filters stay current.
 		const range = get.select(event.selectButton);
-		const complete = !event.isMine() || range[1] < 0 || event.forceDirect || event.complexSelect || event.custom?.replace?.button;
+		const complete = !event.isMine() || range[1] < 0 || event.forceDirect || event.custom?.replace?.button;
 		let buttons = pager && !complete ? pager.buttons : event.dialog.buttons;
 		const isSelectable = (button, event) => {
 			if (!lib.filter.buttonIncluded(button)) {

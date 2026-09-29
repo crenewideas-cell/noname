@@ -7,6 +7,8 @@ extension/**
 !extension/collections/清瑶葭绮/members/
 !extension/collections/清瑶葭绮/members/假装无敌/
 !extension/collections/清瑶葭绮/members/假装无敌/compatibility.js
+!extension/collections/清瑶葭绮/members/假装无敌/characters.js
+!extension/collections/清瑶葭绮/members/假装无敌/cards.js
 !extension/packs/
 !extension/packs/星之梦/
 !extension/packs/星之梦/**
@@ -193,3 +195,24 @@ extension/ui/动态皮肤验证扩展/
 !extension/packs/活动武将/js/
 !extension/packs/活动武将/js/precontent/
 !extension/packs/活动武将/js/precontent/MX_feihongyinxue.js
+
+# Incremental character updates and the newly installed activity BOSS pack.
+!extension/packs/活动BOSS/
+!extension/packs/活动BOSS/**
+!extension/packs/活动武将/js/precontent/HD_chaoshikong.js
+!extension/packs/活动武将/js/precontent/huodongcharacter.js
+!extension/packs/活动武将/js/precontent/MiNiAppkill.js
+!extension/packs/活动武将/js/precontent/MiNikill.js
+!extension/packs/活动武将/js/precontent/WeChatkill.js
+!extension/packs/活动武将/audio/
+!extension/packs/活动武将/audio/die/
+!extension/packs/活动武将/audio/die/Mbaby_wuyi.mp3
+!extension/packs/活动武将/audio/skill/
+!extension/packs/活动武将/audio/skill/minibenxi*.mp3
+!extension/packs/活动武将/audio/skill/mininiandingluan*.mp3
+!extension/packs/活动武将/audio/skill/wechatshaoyan*.mp3
+!extension/packs/活动武将/image/
+!extension/packs/活动武将/image/character/
+!extension/packs/活动武将/image/character/Mbaby_ol_feiyi.jpg
+!extension/packs/活动武将/image/character/Mbaby_qiuliju.jpg
+!extension/packs/活动武将/image/character/Mbaby_wuyi.jpg

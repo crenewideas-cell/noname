@@ -124,7 +124,10 @@ async function convertLegacy(root, name) {
 
 async function main() {
   await fs.mkdir(destination, { recursive: true });
-  const names = (await fs.readdir(source, { withFileTypes: true })).filter(e => e.isDirectory() &&
+  const packOption = process.argv.indexOf('--pack');
+  const onlyPack = packOption < 0 ? null : process.argv[packOption + 1];
+  if (packOption >= 0 && (!onlyPack || /[\\/]/.test(onlyPack))) throw Error('--pack 需要一个有效包名');
+  const names = (await fs.readdir(source, { withFileTypes: true })).filter(e => e.isDirectory() && (!onlyPack || e.name === onlyPack) &&
     (existsSync(path.join(source, e.name, 'catalog.json')) || existsSync(path.join(source, e.name, 'dynamicSkin.js')))).map(e => e.name);
   if (!names.length) throw Error('没有可导入的 catalog.json 或 dynamicSkin.js');
   await ensureDynamicVendors(names.map(n => path.join(source,n,'runtime/vendor')));

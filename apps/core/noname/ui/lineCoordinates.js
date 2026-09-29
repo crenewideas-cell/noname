@@ -13,3 +13,18 @@ export function playerLinePath(source, target, parent) {
  const path=[...centre(source),...centre(target)];
  return path.every(Number.isFinite)?path:null;
 }
+
+/** The compact board scales seats with zoom and animated cards with scale.
+ * Return translations in the card's coordinates, using the same displayed
+ * seat centres as targeting lines. Keep other layouts on their legacy path. */
+export function cardMoveOffset(card, player) {
+ const parent = card.offsetParent;
+ if (!parent?.classList.contains('compact-seats') || card.parentNode !== parent) return null;
+ const path = playerLinePath(player, player, parent);
+ if (!path) return null;
+ const scales = getComputedStyle(card).scale.split(/\s+/).map(Number);
+ const sx = scales[0] > 0 ? scales[0] : 1;
+ const sy = scales[1] > 0 ? scales[1] : sx;
+ return [(path[0] - card.offsetLeft - card.offsetWidth / 2) / sx,
+  (path[1] - card.offsetTop - card.offsetHeight / 2) / sy];
+}

@@ -1,11 +1,15 @@
-/** Display-only regrouping. Keep engine pack identities, skills and assets intact. */
+import { isDuplicateCharacter } from "../../init/characterDuplicates.js";
+
+/** Display-only regrouping. Compatibility IDs never become extra gallery cards. */
 export function characterGalleryPacks(packs) {
-	const source = packs.zerongPack || packs.mode_extension_zerongPack;
-	if (!source) return packs;
-	const result = { ...packs };
+	const result = Object.fromEntries(Object.entries(packs).map(([name, pack]) => [name, {
+		...pack, character: Object.fromEntries(Object.entries(pack.character || {}).filter(([, character]) => !isDuplicateCharacter(character))),
+	}]));
+	const source = result.zerongPack || result.mode_extension_zerongPack;
+	if (!source) return result;
 	delete result.zerongPack;
 	delete result.mode_extension_zerongPack;
-	const other = packs.huodongcharacter || {};
+	const other = result.huodongcharacter || {};
 	result.huodongcharacter = {
 		...other,
 		character: { ...source.character, ...other.character },

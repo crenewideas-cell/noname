@@ -16,7 +16,7 @@ export function configureHost() {
 	if (!modePreset(spec.modeId).players.includes(spec.members.length)) throw new Error("HOST_PLAYER_COUNT_MISMATCH");
 	Object.assign(lib.config, {
 		mode: spec.modeId, new_tutorial: true, show_splash: "off", extensions: [],
-		characters: onlineCharacterLoadList(), cards: ["standard"], plays: [],
+		characters: onlineCharacterLoadList(), cards: ["standard"], plays: ["cardpile"],
 		background_audio: false, background_speak: false, volumn_audio: 0, volumn_background: 0,
         background_music: "music_off", image_background: "default", image_background_random: false,
 		confirm_exit: false, dev: false, debug: false, ignore_error: false,

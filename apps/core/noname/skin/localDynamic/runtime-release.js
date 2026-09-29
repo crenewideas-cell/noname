@@ -1,3 +1,3 @@
 // Generated after the single shared release verifies.
-export const dynamicRuntimeRevision = "76a45a82cbc187aa950c";
-export const dynamicRuntimeDirectory = "runtime-76a45a82cbc187aa950c";
+export const dynamicRuntimeRevision = "48cab117b101c3d5e544";
+export const dynamicRuntimeDirectory = "runtime-48cab117b101c3d5e544";

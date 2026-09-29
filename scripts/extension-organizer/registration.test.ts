@@ -35,6 +35,16 @@ test("explicitly enabled dream/watch imports open on first mobile registration a
 	assert.equal(f.values.get("extension_星之梦_enable"), false);
 });
 
+test("card balancing defaults on once for existing installs and preserves later explicit disables", async () => {
+	const f = fixture({ plays: ["coin"], hiddenPlayPack: ["cardpile", "boss"] });
+	await registerOrganizedExtensions(f.config, f.save, [], []);
+	assert.deepEqual(f.values.get("plays"), ["coin", "cardpile"]);
+	assert.deepEqual(f.values.get("hiddenPlayPack"), ["boss"]);
+	f.values.set("plays", ["coin"]);
+	await registerOrganizedExtensions(f.config, f.save, [], []);
+	assert.deepEqual(f.values.get("plays"), ["coin"]);
+});
+
 test("mobile only registers installed resource directories and preserves choices when resources arrive", async () => {
 	const f = fixture();
 	await registerOrganizedExtensions(f.config, f.save, [], ["絶伦逸羣"]);

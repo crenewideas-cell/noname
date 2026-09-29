@@ -1,4 +1,4 @@
-import { applyModeCardPacks } from "../../init/cardPackRuntime.js";
+import { applyRequiredCardPacks, filterCardPile } from "../../init/cardPackRuntime.js";
 import { supplementCardPile } from "../../init/cardpileSupplement.js";
 import { lib, game, get, _status, ai, ui } from "noname";
 import { menu } from "./menu/index.js";
@@ -3948,7 +3948,6 @@ export class Create {
 		}
 	}
 	cards(ordered) {
-		applyModeCardPacks(lib, get);
 		if (_status.brawl) {
 			if (_status.brawl.cardPile) {
 				lib.card.list = _status.brawl.cardPile(lib.card.list);
@@ -3957,26 +3956,15 @@ export class Create {
 				ordered = true;
 			}
 		}
-		supplementCardPile(lib);
+		const required = applyRequiredCardPacks(lib, get, !!_status.connectMode, game.players);
+		const pileOptions = { connect: !!_status.connectMode, bannedcards: game.bannedcards || [], required };
+		filterCardPile(lib, pileOptions);
+		supplementCardPile(lib, Math.random, pileOptions);
 		if (!ordered) {
 			lib.card.list.randomSort();
 		}
 		for (var i = 0; i < lib.card.list.length; i++) {
 			if (lib.card[lib.card.list[i][2]]) {
-				if (!lib.card.list[i]._replaced) {
-					if (!_status.connectMode) {
-						if (lib.config.bannedcards.includes(lib.card.list[i][2])) {
-							continue;
-						}
-					} else {
-						if (lib.configOL.bannedcards.includes(lib.card.list[i][2])) {
-							continue;
-						}
-					}
-					if (game.bannedcards && game.bannedcards.includes(lib.card.list[i][2])) {
-						continue;
-					}
-				}
 				lib.inpile.add(lib.card.list[i][2]);
 				if (lib.card.list[i][2] == "sha" && lib.card.list[i][3]) {
 					lib.inpile_nature.add(lib.card.list[i][3]);

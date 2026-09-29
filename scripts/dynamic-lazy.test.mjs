@@ -14,11 +14,14 @@ test('offline index loads only one owner, retains aliases, filters broken and un
     const entry = (id, owners, extra = {}) => ({ id, character: '曹操', title: '皮肤', characterIds: owners,
       thumbnail: 'previews/' + id + '.svg', type: 'spine', models: [{ skeleton: 'huge.skel' }], ...extra });
     const entries = [entry('broken', ['caocao'], { available: false }), entry('a', ['caocao', 're_caocao']),
-      entry('b', ['liubei']), entry('loose', [], { group: 'manual' }), entry('loose2', [], { group: 'manual' })];
+      entry('b', ['liubei']), entry('loose', [], { group: 'manual', libraryGroup: '棕色尘埃扩展 · Mod2' }), entry('loose2', [], { group: 'manual' })];
     await fs.writeFile(path.join(root, 'manifest.json'), JSON.stringify({ packs: [{ name: 'pack' }] }));
     await fs.writeFile(path.join(root, 'pack/catalog.json'), JSON.stringify({ entries }));
     const index = await indexDynamicSkins(root, {runtimeOptions:{activate:false,releases:path.join(root,'releases')}}), requests = [], merged = [];
     assert.deepEqual(await fs.readFile(pointer),active,'temporary catalogs must never publish the active game runtime');
+    const library=JSON.parse(await fs.readFile(path.join(root,'pack/library-index.json')));
+    assert.equal(library.find(row=>row.entry.id==='loose').entry.group,'棕色尘埃扩展 · Mod2');
+    assert.equal(library.find(row=>row.entry.id==='a').entry.group,'曹操');
     let bindings = {};
     const loader = createLazyCatalog({ base: root + '/', bindings: () => bindings,
       read: async file => { requests.push(file);return JSON.parse(await fs.readFile(file, 'utf8')); },

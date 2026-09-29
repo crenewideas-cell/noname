@@ -36,7 +36,7 @@ export async function indexDynamicSkins(root, {runtimeOptions} = {}) {
       const row = { pack: pack.name, entry: summary }, group = digest(entry.group || entry.id);
       if (!groups.has(group)) groups.set(group, []);
       groups.get(group).push(row);bindings[entry.id] = 'groups/' + group + '.json';
-      library.push({...row,entry:{...summary,group:entry.character||entry.group||'未分类',sex:entry.sex||entry.gender||'unknown'},bindingGroup:'groups/'+group+'.json'});
+      library.push({...row,entry:{...summary,group:entry.libraryGroup||entry.character||entry.group||'未分类',sex:entry.sex||entry.gender||'unknown'},bindingGroup:'groups/'+group+'.json'});
       for (const owner of summary.characterIds) {
         if (!characters.has(owner)) characters.set(owner, []);
         characters.get(owner).push(row);

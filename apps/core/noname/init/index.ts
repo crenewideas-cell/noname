@@ -11,6 +11,7 @@ import { importCardPack, importCharacterPack, importExtension, importMode } from
 import { loadCard, loadCardPile, loadCharacter, loadExtension, loadMode, loadPlay } from "./loading.js";
 import { registerOrganizedExtensions, isValidExtensionName } from "./organizedExtensions.js";
 import { registerOrganizedCompatibility } from "./organizedCompatibility.js";
+import { loadDependentCardResources } from "./cardResourceProviders.js";
 import { warmImages } from "../util/imageReady.js";
 import { fontFaces } from "../util/fontFaces.js";
 import { applyPresentation } from "../ui/presentation.js";
@@ -729,6 +730,7 @@ export async function boot() {
 		registerOrganizedCompatibility();
 		await Promise.allSettled(lib.extensions.map(extension => perfAwait(`extension.content:${extension[0]}`, () => trackLoad(loadExtension(extension)))));
 	}
+	if (!isHosted()) await loadDependentCardResources([lib, game, ui, get, ai, _status]);
 
 	if (!settingsOnly && lib.init.startBefore) {
 		lib.init.startBefore();

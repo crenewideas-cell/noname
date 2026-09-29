@@ -10255,7 +10255,9 @@ var spine;
 					var attachment = slot.getAttachment();
 					if (attachment && hideSlots) {
 						slotName = attachment.name;
-						if (slotName && hideSlots.indexOf(slotName) != -1) {
+						// Slots can swap differently named attachments throughout an animation.
+						// Accept slot names while preserving legacy attachment-name filters.
+						if (hideSlots.indexOf(slot.data.name) != -1 || (slotName && hideSlots.indexOf(slotName) != -1)) {
 							clipper.clipEndWithSlot(slot);
 							continue;
 						}

@@ -54,7 +54,8 @@ function appendPackage(target, incoming, targetName, sourceName, lib) {
             if (["characterSort", "name"].includes(field)) continue;
             if (Array.isArray(dictionary)) {
                 const list = destination[field] ||= [];
-                for (const entry of dictionary) if (!list.some(previous => JSON.stringify(previous) === JSON.stringify(entry))) list.push(entry);
+                // Identical card tuples are intentional physical copies.
+                for (const entry of dictionary) if (field === "list" || !list.some(previous => JSON.stringify(previous) === JSON.stringify(entry))) list.push(entry);
             } else if (dictionary && typeof dictionary === "object") {
                 addMissing(destination[field] ||= {}, dictionary, lib[field]);
             }

@@ -5504,7 +5504,7 @@ export class Library {
 		cardpile: {
 			enable: {
 				name: "开启",
-				init: false,
+				init: true,
 				restart: true,
 			},
 			intro: {
@@ -9000,12 +9000,14 @@ export class Library {
 			if (left) {
 				node.listen(ui.click.intro);
 			}
-			if (lib.config.hover_all && !lib.device) {
-				lib.setHover(node, ui.click.hoverplayer);
-			}
 			if (lib.config.right_info) {
 				node.oncontextmenu = ui.click.rightplayer;
 			}
+		}
+		// Touch controls can coexist with a mouse/trackpad. Reuse the native
+		// hover details as well as long-press, including equipment and marks.
+		if (lib.config.hover_all && (!lib.device || window.matchMedia?.("(any-hover: hover)").matches)) {
+			lib.setHover(node, ui.click.hoverplayer);
 		}
 		// if(!left){
 		// 	lib.setPressure(node,ui.click.rightpressure);

@@ -1568,6 +1568,14 @@ div.select-all:not(.card):not(.player) {
 	z-index: 7;
 	padding: 6px 8px;
 }
+/* chooseButton puts this control before its caption. Reserve a row so long
+   skill prompts stay readable instead of flowing underneath the button. */
+.dialog .content > .select-all:has(+ .caption) {
+	position: relative;
+	display: block;
+	width: max-content;
+	margin: 4px 8px 6px auto;
+}
 .button.card.button > .intro {
 	top: 69px;
 }

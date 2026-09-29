@@ -1,0 +1,312 @@
+
+SS_szy_sha.png
+size: 2039,2047
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+10
+  rotate: false
+  xy: 670, 49
+  size: 627, 207
+  orig: 627, 208
+  offset: 0, 1
+  index: -1
+14
+  rotate: true
+  xy: 1975, 850
+  size: 81, 62
+  orig: 81, 62
+  offset: 0, 0
+  index: -1
+15
+  rotate: false
+  xy: 1975, 760
+  size: 52, 88
+  orig: 52, 88
+  offset: 0, 0
+  index: -1
+17
+  rotate: true
+  xy: 1299, 151
+  size: 97, 407
+  orig: 97, 407
+  offset: 0, 0
+  index: -1
+18
+  rotate: true
+  xy: 1299, 28
+  size: 121, 313
+  orig: 121, 313
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 1906, 70
+  size: 100, 178
+  orig: 100, 178
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 1708, 76
+  size: 196, 172
+  orig: 197, 172
+  offset: 0, 0
+  index: -1
+sha
+  rotate: true
+  xy: 1614, 56
+  size: 93, 92
+  orig: 93, 92
+  offset: 0, 0
+  index: -1
+vfx/pusha/pusha_019
+  rotate: false
+  xy: 2, 1319
+  size: 671, 726
+  orig: 1020, 960
+  offset: 238, 211
+  index: -1
+vfx/pusha/pusha_026
+  rotate: false
+  xy: 2, 2
+  size: 666, 634
+  orig: 1020, 960
+  offset: 335, 281
+  index: -1
+vfx/pusha/pusha_027
+  rotate: false
+  xy: 2, 638
+  size: 660, 679
+  orig: 1020, 960
+  offset: 335, 281
+  index: -1
+vfx/pusha/pusha_028
+  rotate: false
+  xy: 675, 1390
+  size: 682, 655
+  orig: 1020, 960
+  offset: 336, 282
+  index: -1
+vfx/pusha/pusha_029
+  rotate: false
+  xy: 670, 258
+  size: 663, 666
+  orig: 1020, 960
+  offset: 335, 281
+  index: -1
+vfx/pusha/pusha_032
+  rotate: false
+  xy: 1335, 250
+  size: 638, 674
+  orig: 1020, 960
+  offset: 336, 282
+  index: -1
+vfx/pusha/pusha_033
+  rotate: true
+  xy: 1359, 1401
+  size: 644, 678
+  orig: 1020, 960
+  offset: 336, 282
+  index: -1
+vfx/pusha/pusha_035
+  rotate: true
+  xy: 675, 926
+  size: 462, 678
+  orig: 1020, 960
+  offset: 335, 282
+  index: -1
+vfx/pusha/pusha_036
+  rotate: true
+  xy: 1359, 933
+  size: 466, 678
+  orig: 1020, 960
+  offset: 336, 282
+  index: -1
+
+SS_szy_sha2.png
+size: 2021,2047
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+11
+  rotate: true
+  xy: 2, 54
+  size: 647, 293
+  orig: 647, 293
+  offset: 0, 0
+  index: -1
+16
+  rotate: true
+  xy: 1471, 2
+  size: 137, 122
+  orig: 138, 122
+  offset: 1, 0
+  index: -1
+3
+  rotate: true
+  xy: 1217, 984
+  size: 466, 461
+  orig: 466, 461
+  offset: 0, 0
+  index: -1
+4
+  rotate: true
+  xy: 1680, 1322
+  size: 395, 329
+  orig: 395, 329
+  offset: 0, 0
+  index: -1
+7
+  rotate: true
+  xy: 1196, 519
+  size: 143, 139
+  orig: 143, 139
+  offset: 0, 0
+  index: -1
+8
+  rotate: true
+  xy: 1680, 1719
+  size: 326, 339
+  orig: 326, 339
+  offset: 0, 0
+  index: -1
+vfx/pusha/pusha_020
+  rotate: false
+  xy: 1106, 1452
+  size: 572, 593
+  orig: 1020, 960
+  offset: 279, 250
+  index: -1
+vfx/pusha/pusha_022
+  rotate: true
+  xy: 1471, 141
+  size: 521, 541
+  orig: 1020, 960
+  offset: 304, 240
+  index: -1
+vfx/pusha/pusha_024
+  rotate: true
+  xy: 662, 790
+  size: 595, 553
+  orig: 1020, 960
+  offset: 309, 255
+  index: -1
+vfx/pusha/pusha_025
+  rotate: true
+  xy: 297, 64
+  size: 637, 620
+  orig: 1020, 960
+  offset: 334, 264
+  index: -1
+vfx/pusha/pusha_030
+  rotate: false
+  xy: 459, 1387
+  size: 645, 658
+  orig: 1020, 960
+  offset: 336, 282
+  index: -1
+vfx/pusha/pusha_031
+  rotate: true
+  xy: 2, 703
+  size: 664, 658
+  orig: 1020, 960
+  offset: 336, 282
+  index: -1
+vfx/pusha/pusha_034
+  rotate: false
+  xy: 2, 1369
+  size: 455, 676
+  orig: 1020, 960
+  offset: 336, 282
+  index: -1
+vfx/pusha/pusha_037
+  rotate: true
+  xy: 1217, 664
+  size: 318, 391
+  orig: 1020, 960
+  offset: 336, 281
+  index: -1
+vfx/pusha/pusha_038
+  rotate: false
+  xy: 1680, 942
+  size: 319, 378
+  orig: 1020, 960
+  offset: 335, 281
+  index: -1
+vfx/pusha/pusha_039
+  rotate: false
+  xy: 919, 34
+  size: 274, 377
+  orig: 1020, 960
+  offset: 336, 282
+  index: -1
+vfx/pusha/pusha_040
+  rotate: false
+  xy: 919, 413
+  size: 275, 375
+  orig: 1020, 960
+  offset: 336, 283
+  index: -1
+vfx/pusha/pusha_041
+  rotate: false
+  xy: 1195, 36
+  size: 274, 375
+  orig: 1020, 960
+  offset: 337, 283
+  index: -1
+vfx/pusha/pusha_042
+  rotate: true
+  xy: 1610, 671
+  size: 269, 369
+  orig: 1020, 960
+  offset: 338, 286
+  index: -1
+
+SS_szy_sha3.png
+size: 1347,1109
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+12
+  rotate: true
+  xy: 1085, 239
+  size: 372, 253
+  orig: 372, 253
+  offset: 0, 0
+  index: -1
+6
+  rotate: true
+  xy: 1048, 613
+  size: 494, 297
+  orig: 494, 298
+  offset: 0, 0
+  index: -1
+9
+  rotate: false
+  xy: 581, 19
+  size: 502, 506
+  orig: 502, 506
+  offset: 0, 0
+  index: -1
+vfx/pusha/pusha_018
+  rotate: true
+  xy: 2, 2
+  size: 518, 577
+  orig: 1020, 960
+  offset: 440, 383
+  index: -1
+vfx/pusha/pusha_021
+  rotate: false
+  xy: 538, 527
+  size: 508, 580
+  orig: 1020, 960
+  offset: 286, 201
+  index: -1
+vfx/pusha/pusha_023
+  rotate: true
+  xy: 2, 522
+  size: 585, 534
+  orig: 1020, 960
+  offset: 304, 251
+  index: -1

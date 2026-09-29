@@ -1,0 +1,6 @@
+.player > .camp-wrap[data-camp="yao"] > .camp-back {
+	background: #006400;
+}
+.player > .camp-wrap[data-camp="xie"] > .camp-back {
+	background: #2F4F4F;
+}

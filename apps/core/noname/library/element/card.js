@@ -1,6 +1,7 @@
 import { resolveCardPackImage } from "../../init/cardPackRuntime.js";
 import { _status, game, get, lib, ui } from "noname";
 import { listenForActivation } from "../../ui/activation.js";
+import { cardMoveOffset } from "../../ui/lineCoordinates.js";
 
 export class Card extends HTMLDivElement {
 	/**
@@ -844,7 +845,10 @@ export class Card extends HTMLDivElement {
 	moveTo(player) {
 		this.fixed = true;
 		var dx, dy;
-		if (this.classList.contains("center")) {
+		const offset = cardMoveOffset(this, player);
+		if (offset) {
+			[dx, dy] = offset;
+		} else if (this.classList.contains("center")) {
 			var nx = [50, -52];
 			var ny = [50, -52];
 			nx = (nx[0] * ui.arena.offsetWidth) / 100 + nx[1];
@@ -858,7 +862,7 @@ export class Card extends HTMLDivElement {
 			dx = player.getLeft() + player.offsetWidth / 2 - 52 - this.offsetLeft;
 			dy = player.getTop() + player.offsetHeight / 2 - 52 - this.offsetTop;
 		}
-		if (get.is.mobileMe(player)) {
+		if (!offset && get.is.mobileMe(player)) {
 			dx += get.cardOffset();
 			if (ui.arena.classList.contains("oblongcard")) {
 				dy -= 16;

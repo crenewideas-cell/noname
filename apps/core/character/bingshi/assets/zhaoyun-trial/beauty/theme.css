@@ -1,0 +1,134 @@
+/* 武翊按钮：全部外观在此调整。main.js 只负责状态、去重与防闪。 */
+:root {
+    --szty-button-width: 96px;
+    --szty-button-height: 44px;
+    --szty-text-y: -4px; /* 文字和阴影整体上下移动：负数向上 */
+    --szty-text-size: 24px;
+    --szty-text-color: #e8ce78;
+    --szty-text-shadow: -0.7px 0 1px #493a20, 0 -0.7px 1px #493a20,
+                         0.7px 0 1px #493a20, 0 0.7px 1px #493a20;
+}
+
+/* 隐藏重复入口，仍保留原游戏点击逻辑。 */
+.szty-button-hidden { display: none !important; }
+
+/* 技能 ID 选择器让新建按钮在第一帧即使用此主题。 */
+.szty-button.szty-button,
+.szty-beauty-buttons :is(.skill-control, .skill-controlzuoshou, .control) :is([data-id="szty_wuyi"], [data-id="szty_wuyi_virtual"], [data-id="szty_wuyi_virtual_backup"], [data-skill="szty_wuyi"], [data-skill="szty_wuyi_virtual"], [data-skill="szty_wuyi_virtual_backup"]) {
+    position: relative !important;
+    isolation: isolate;
+    width: var(--szty-button-width) !important;
+    min-width: var(--szty-button-width) !important;
+    max-width: var(--szty-button-width) !important;
+    height: var(--szty-button-height) !important;
+    min-height: var(--szty-button-height) !important;
+    max-height: var(--szty-button-height) !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    line-height: var(--szty-button-height) !important;
+    text-align: center !important;
+    text-indent: 0 !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    transition: none !important;
+    animation: none !important;
+    background: none !important;
+    border-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    /* 父层不绘制文字阴影，避免留在原位置的黑影。 */
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+    filter: none !important;
+}
+
+.szty-button.szty-button::after,
+.szty-beauty-buttons :is(.skill-control, .skill-controlzuoshou, .control) :is([data-id="szty_wuyi"], [data-id="szty_wuyi_virtual"], [data-id="szty_wuyi_virtual_backup"], [data-skill="szty_wuyi"], [data-skill="szty_wuyi_virtual"], [data-skill="szty_wuyi_virtual_backup"])::after {
+    content: none !important;
+    display: none !important;
+}
+
+.szty-button.szty-button::before,
+.szty-beauty-buttons :is(.skill-control, .skill-controlzuoshou, .control) :is([data-id="szty_wuyi"], [data-id="szty_wuyi_virtual"], [data-id="szty_wuyi_virtual_backup"], [data-skill="szty_wuyi"], [data-skill="szty_wuyi_virtual"], [data-skill="szty_wuyi_virtual_backup"])::before {
+    content: "" !important;
+    display: block !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 120% !important;
+    height: 135% !important;
+    margin: 0 !important;
+    transform: translate(-50%, -50%) !important;
+    background: url("assets/buttons/game_spellbtn_bg13.png") center / 100% 100% no-repeat !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+    z-index: 0 !important;
+    transition: none !important;
+    animation: none !important;
+    pointer-events: none !important;
+}
+
+.szty-button.szty-button[data-szty-state="enabled"]::before,
+.szty-beauty-buttons :is(.skill-control, .skill-controlzuoshou, .control) :is([data-id="szty_wuyi"], [data-id="szty_wuyi_virtual"], [data-id="szty_wuyi_virtual_backup"], [data-skill="szty_wuyi"], [data-skill="szty_wuyi_virtual"], [data-skill="szty_wuyi_virtual_backup"])[data-szty-state="enabled"]::before {
+    background-image: url("assets/buttons/game_spellbtn_bg14.png") !important;
+}
+
+.szty-button.szty-button[data-szty-state="selected"]::before,
+.szty-beauty-buttons :is(.skill-control, .skill-controlzuoshou, .control) :is([data-id="szty_wuyi"], [data-id="szty_wuyi_virtual"], [data-id="szty_wuyi_virtual_backup"], [data-skill="szty_wuyi"], [data-skill="szty_wuyi_virtual"], [data-skill="szty_wuyi_virtual_backup"])[data-szty-state="selected"]::before {
+    background-image: url("assets/buttons/game_spellbtn_bg15.png") !important;
+}
+
+/* 唯一文字层：继承原按钮字体和字重，文字与阴影共用同一个 transform。 */
+.szty-button.szty-button > span,
+.szty-beauty-buttons :is(.skill-control, .skill-controlzuoshou, .control) :is([data-id="szty_wuyi"], [data-id="szty_wuyi_virtual"], [data-id="szty_wuyi_virtual_backup"], [data-skill="szty_wuyi"], [data-skill="szty_wuyi_virtual"], [data-skill="szty_wuyi_virtual_backup"]) > span {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    transform: translateY(var(--szty-text-y)) !important;
+    line-height: 1 !important;
+    text-indent: 0 !important;
+    white-space: nowrap !important;
+    font-family: inherit !important;
+    font-weight: inherit !important;
+    font-style: normal !important;
+    font-size: var(--szty-text-size) !important;
+    letter-spacing: normal !important;
+    color: var(--szty-text-color) !important;
+    -webkit-text-fill-color: var(--szty-text-color) !important;
+    -webkit-text-stroke: 0 !important;
+    text-shadow: var(--szty-text-shadow) !important;
+    background: none !important;
+    background-clip: border-box !important;
+    -webkit-background-clip: border-box !important;
+    box-shadow: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+.szty-button.szty-button > span::before,
+.szty-beauty-buttons :is(.skill-control, .skill-controlzuoshou, .control) :is([data-id="szty_wuyi"], [data-id="szty_wuyi_virtual"], [data-id="szty_wuyi_virtual_backup"], [data-skill="szty_wuyi"], [data-skill="szty_wuyi_virtual"], [data-skill="szty_wuyi_virtual_backup"]) > span::before {
+    content: none !important;
+    display: none !important;
+}
+
+.szty-button.szty-button > span::after,
+.szty-beauty-buttons :is(.skill-control, .skill-controlzuoshou, .control) :is([data-id="szty_wuyi"], [data-id="szty_wuyi_virtual"], [data-id="szty_wuyi_virtual_backup"], [data-skill="szty_wuyi"], [data-skill="szty_wuyi_virtual"], [data-skill="szty_wuyi_virtual_backup"]) > span::after {
+    content: none !important;
+    display: none !important;
+}
+

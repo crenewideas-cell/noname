@@ -52,6 +52,13 @@ html body[data-shousha-parts~="hp"] #arena .hp:not(.text):not(.textstyle)>div{wi
 html body.shousha-skinned-arena #arena>#me{left:var(--ss-hand-left,28px)!important;right:var(--ss-hand-right,204px)!important;width:auto!important;background:transparent!important;border:0!important;box-shadow:none!important}
 
 
+/* Keep toolbar/action scrolling, but do not expose native scrollbar chrome
+   when the toolbar retracts or the end-of-game controls move to the bottom. */
+html body[data-shousha-parts~="buttons"] #system.with-game-navigation>:is(#system1,#system2),
+html body[data-shousha-parts~="buttons"] #arena>#control.action-controls {scrollbar-width:none}
+html body[data-shousha-parts~="buttons"] #system.with-game-navigation>:is(#system1,#system2)::-webkit-scrollbar,
+html body[data-shousha-parts~="buttons"] #arena>#control.action-controls::-webkit-scrollbar {display:none}
+
 html body[data-shousha-parts~="buttons"] #control>.ss-skill-control{background:none!important;border:0!important;box-shadow:none!important;overflow:visible}
 html body[data-shousha-parts~="buttons"] #control>.ss-skill-control>div{position:relative;box-sizing:border-box;padding:8px 16px!important;margin:0;background:url('../original/手杀ui/lbtn/images/uibutton/cbtn.png') center/100% 100% no-repeat!important;border:0!important;border-radius:0!important;color:#f0d775!important;font:var(--ss-control-font,24px)/1.2 shousha,serif!important;text-shadow:0 1px 3px #000}
 html body[data-shousha-parts~="buttons"] #control>.ss-skill-control>div:is(.selected,.active){filter:brightness(1.2);box-shadow:0 0 6px #e7d777!important}

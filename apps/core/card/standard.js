@@ -879,31 +879,32 @@ export default {
 			subtype: "equip1",
 			bingzhu: ["诸葛亮", "马钧"],
 			ai: {
-				order() {
-					return get.order({ name: "sha" }) - 0.1;
+				order(card, player) {
+					// Equip before attacking when the extra uses matter this turn.
+					return get.order({ name: "sha" }, player) + (player && get.equipValue(card, player) >= 10 ? 0.1 : -0.1);
 				},
 				equipValue(card, player) {
 					if (player._zhuge_temp) {
 						return 1;
 					}
 					player._zhuge_temp = true;
-					const result = (() => {
+					try {
 						if (!game.hasPlayer(current => get.distance(player, current) <= 1 && player.canUse("sha", current) && get.effect(current, { name: "sha" }, player, player) > 0)) {
 							return 1;
 						}
+						const num = player.countCards("h", "sha");
+						// Both discard selection and weapon replacement use this value.
+						// Recompute from remaining attacks, including after the first Sha.
+						if (num > 1) return 8 + 3 * num;
 						if (player.hasSha() && _status.currentPhase === player) {
 							if ((player.getEquip("zhuge") && player.countUsed("sha")) || player.getCardUsable("sha") === 0) {
 								return 10;
 							}
 						}
-						const num = player.countCards("h", "sha");
-						if (num > 1) {
-							return 6 + num;
-						}
 						return 3 + num;
-					})();
-					delete player._zhuge_temp;
-					return result;
+					} finally {
+						delete player._zhuge_temp;
+					}
 				},
 				basic: {
 					equipValue: 5,

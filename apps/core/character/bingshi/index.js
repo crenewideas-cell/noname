@@ -12,11 +12,14 @@ import perfectPairs from "./perfectPairs.js";
 import voices from "./voices.js";
 import { characterSort, characterSortTranslate } from "./sort.js";
 
+import { characters as zhaoyunCharacters, skills as zhaoyunSkills, translates as zhaoyunTranslates } from "./zhaoyun.js";
+import { characters as trialCharacters, skills as trialSkills, translates as trialTranslates } from "./zhaoyun-trial.js";
+
 game.import("character", function () {
 	return {
 		name: "bingshi",
 		connect: true,
-		character: { ...characters },
+		character: { ...characters, ...zhaoyunCharacters, ...trialCharacters },
 		characterSort: {
 			bingshi: characterSort,
 		},
@@ -25,9 +28,9 @@ game.import("character", function () {
 		dynamicTranslate: { ...dynamicTranslates },
 		characterIntro: { ...characterIntros },
 		card: { ...cards },
-		skill: { ...skills },
+		skill: { ...skills, ...zhaoyunSkills, ...trialSkills },
 		perfectPair: { ...perfectPairs },
-		translate: { ...translates, ...voices, ...characterSortTranslate },
+		translate: { ...translates, ...voices, ...characterSortTranslate, ...zhaoyunTranslates, ...trialTranslates },
 		pinyins: { ...pinyins },
 	};
 });

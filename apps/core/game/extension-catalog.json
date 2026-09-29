@@ -308,5 +308,10 @@
     "name": "卡牌扩展",
     "category": "collections",
     "path": "extension/collections/卡牌扩展"
+  },
+  {
+    "name": "活动BOSS",
+    "category": "packs",
+    "path": "extension/packs/活动BOSS"
   }
 ]

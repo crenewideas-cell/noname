@@ -8,7 +8,7 @@ const requireCore = createRequire(resolve(root, "apps/core/package.json"));
 const requireHost = createRequire(resolve(root, "packages/game-host/package.json"));
 const { createServer } = await import(pathToFileURL(requireCore.resolve("vite")).href);
 const { chromium } = requireHost("playwright-core");
-const server = await createServer({ configFile: resolve(root, "apps/core/vite.config.ts"), root: resolve(root, "apps/core"), server: { port: 8098, strictPort: true, open: false } });
+const server = await createServer({ configFile: resolve(root, "apps/core/vite.config.ts"), root: resolve(root, "apps/core"), server: { port: 8098, strictPort: true, open: false, watch: null, hmr: false, warmup: { clientFiles: [] } } });
 await server.listen();
 let browser;
 try {
@@ -17,7 +17,7 @@ try {
 	await page.route("**/__skill_tests.html", route => route.fulfill({ contentType: "text/html", body: `<meta charset="utf-8"><script type="module" src="/@fs/${root.replaceAll("\\", "/")}/scripts/online-skill-regression.browser.js"></script>` }));
 	const errors: string[] = [];
 	page.on("pageerror", error => errors.push(error.stack || error.message));
-	await page.goto("http://127.0.0.1:8098/__skill_tests.html");
+	await page.goto("http://127.0.0.1:8098/__skill_tests.html", { waitUntil: "domcontentloaded", timeout: 120000 });
 	await page.waitForFunction(() => (window as any).__skillReport, undefined, { timeout: 180000 });
 	const report = await page.evaluate(() => (window as any).__skillReport);
 	if (!report.fatal) await page.evaluate(() => (window as any).__skillPreview());

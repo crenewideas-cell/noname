@@ -98,7 +98,7 @@ test("legacy disabled state migrates once, then card menu is authoritative", () 
 	const f = fixture({ extension_sample_cards_enable: false });
 	registerCardPack(f.lib, f.game, f.get, simple(), { extension: "sample" });
 	assert.equal(f.lib.card.list.length, 0);
-	assert.equal(f.lib.skill._sample, undefined);
+	assert.equal(f.lib.skill._sample.filter(), false);
 	setCardPackEnabled(f.lib, f.game, "mode_extension_sample", true);
 	assert.equal(isCardPackEnabled(f.lib, "sample"), true);
 	const restarted = fixture(copy(f.lib.config));
@@ -138,12 +138,12 @@ test("mode restrictions and online capability use the same registration policy",
 	const f = fixture({ cards: ["sample"] });
 	registerCardPack(f.lib, f.game, f.get, { ...simple(), mode: ["guozhan"] });
 	assert.equal(f.lib.card.list.length, 0);
-	assert.equal(f.lib.skill._sample, undefined);
+	assert.equal(f.lib.skill._sample.filter(), false);
 	const online = fixture({ mode: "connect", connect_cards: ["sample"] });
 	registerCardPack(online.lib, online.game, online.get, { ...simple(), connect: true });
 	assert.equal(online.lib.card.list.length, 0);
 	assert.equal(online.lib.cardPackList.sample.length, 2);
-	assert.equal(online.lib.skill._sample, undefined);
+	assert.equal(online.lib.skill._sample.filter(), false);
 	assert.deepEqual(online.lib.connectCardPack, ["sample"]);
 	const offline = fixture({ mode: "connect" });
 	registerCardPack(offline.lib, offline.game, offline.get, simple(), { extension: "sample" });

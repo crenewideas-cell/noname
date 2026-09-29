@@ -3,6 +3,7 @@ import { subscribePresentation } from "../ui/presentationEvents.js";
 
 const registrations = new WeakMap();
 const artwork = new WeakMap();
+const liveDependencies = new WeakMap();
 
 const unique = (list, value) => {
 	if (!list.includes(value)) list.push(value);
@@ -24,12 +25,13 @@ export function normalizeCardImage(image) {
 
 export function isCardPackEnabled(lib, name, connect = lib.config.mode === "connect") {
 	name = cardPackId(name);
-	return connect ? !(lib.config.connect_cards || []).includes(name) : (lib.config.cards || []).includes(name);
+	const selected = (lib.config[connect ? "connect_cards" : "cards"] || []).some(id => cardPackId(id) === name);
+	return connect ? !selected : selected;
 }
 
 export function setCardPackEnabled(lib, game, name, enabled, connect = false) {
 	const key = connect ? "connect_cards" : "cards";
-	const values = (lib.config[key] ||= []);
+	const values = lib.config[key] = [...new Set((lib.config[key] || []).map(cardPackId))];
 	const include = connect ? !enabled : enabled;
 	for (const id of (Array.isArray(name) ? name : [name]).map(cardPackId)) {
 		if (include) unique(values, id);
@@ -56,19 +58,72 @@ export function cardPackAllowed(pack, mode) {
 	return (!pack.mode || modes(pack.mode).includes(mode)) && !modes(pack.forbid)?.includes(mode);
 }
 
+/** The room's selection is authoritative once a traditional/hosted game starts. */
+export function isCardPackActive(lib, name, connect = lib.config.mode === "connect") {
+	const live = liveDependencies.get(lib);
+	if (live?.connect === connect && live.packs.has(cardPackId(name))) return true;
+	return isWholeCardPackActive(lib, name, connect);
+}
+
+// A faction may require a subset of a mixed pack. Activating its rules must not
+// also enable unrelated public cards in that pack.
+function isWholeCardPackActive(lib, name, connect) {
+	if (isCharacterCardPack(lib, name, connect)) return true;
+	const live = liveDependencies.get(lib);
+	if (live?.connect === connect && live.sources.has(cardPackId(name))) return true;
+	return connect && Array.isArray(lib.configOL?.cardPack)
+		? lib.configOL.cardPack.some(id => cardPackId(id) === cardPackId(name)) : isCardPackEnabled(lib, name, connect);
+}
+
+/** Character and card resources imported by one extension form one dependency.
+ * This operates on source packs, never on a table of individual generals. */
+export function isCharacterCardPack(lib, name, connect = false) {
+	const extension = lib.cardPackExtension?.[cardPackId(name)];
+	if (!extension) return false;
+	const selected = connect ? lib.configOL?.characterPack || [] : lib.config.characters || [];
+	return selected.some(id => lib.characterPackExtension?.[cardPackId(id)] === extension);
+}
+
+export function normalizeCardTuple(entry) {
+	const copy = Object.assign(entry.slice(), entry);
+	const nature = { huosha: "fire", leisha: "thunder", icesha: "ice", cisha: "stab", kamisha: "kami" }[copy[2]];
+	if (nature) { copy[2] = "sha"; copy[3] = nature; }
+	return copy;
+}
+
 function normalizeSkill(skill, extension) {
 	if (!skill || typeof skill !== "object") return;
 	if (typeof skill.audio === "number" || typeof skill.audio === "boolean") skill.audio = `ext:${extension}:${Number(skill.audio)}`;
 	for (const child of Object.values(skill.subSkill || {})) normalizeSkill(child, extension);
 }
 
+function guardGlobalSkill(skill, active) {
+	const result = { ...skill, filter(...args) {
+		return active() && (!skill.filter || skill.filter.apply(this, args));
+	} };
+	if (skill.mod) result.mod = Object.fromEntries(Object.entries(skill.mod).map(([key, fn]) => [key, function (...args) {
+		if (active()) return fn.apply(this, args);
+	}]));
+	if (skill.subSkill) result.subSkill = Object.fromEntries(Object.entries(skill.subSkill).map(([key, child]) => [key, guardGlobalSkill(child, active)]));
+	return result;
+}
+
 /** Keeps source piles immutable and preserves intentional repeated card tuples. */
 export function registerCardPack(lib, game, get, pack, options = {}) {
+	for (const key of ["cards", "connect_cards"]) {
+		const values = lib.config[key] || [];
+		const normalized = [...new Set(values.map(cardPackId))];
+		if (values.length !== normalized.length || values.some((id, index) => id !== normalized[index])) {
+			lib.config[key] = normalized;
+			game.saveConfig(key, normalized);
+		}
+	}
 	const { extension = pack.extension, database = false, defaultEnabled = true, legacyExtension = extension } = options;
 	const name = cardPackId(options.name || pack.name || extension);
 	if (extension) initializeExtensionSwitch(lib, game, name, legacyExtension, defaultEnabled);
 	const connect = lib.config.mode === "connect";
-	const allowed = cardPackAllowed(pack, lib.config.mode);
+	// "connect" is a lobby, not the eventual game mode.
+	const allowed = connect || cardPackAllowed(pack, lib.config.mode);
 	const enabled = allowed && isCardPackEnabled(lib, name);
 	lib.cardPackInfo[name] = pack;
 	lib.cardPack[name] ||= [];
@@ -82,7 +137,7 @@ export function registerCardPack(lib, game, get, pack, options = {}) {
 		for (const [id, original] of Object.entries(pack[section] || {})) {
 			if (section === "card" && !isCardDefinition(original)) continue;
 			if (section === "translate" && id === pack.name) continue;
-			if (section === "skill" && id.startsWith("_") && !original.forceLoad && (!enabled || (connect && !pack.connect))) continue;
+			if (section === "skill" && id.startsWith("_") && !original.forceLoad && connect && !pack.connect) continue;
 			let item = original;
 			if (section === "card") {
 				const presentation = pack.cardPresentation?.[id];
@@ -103,6 +158,10 @@ export function registerCardPack(lib, game, get, pack, options = {}) {
 				}
 			}
 			if (section === "skill" && connect && !pack.connect && !item.forceLoad) item = { nopop: item.nopop, derivation: item.derivation };
+			if (section === "skill" && id.startsWith("_") && !item.forceLoad) {
+				const active = () => isCardPackActive(lib, name, connect) && cardPackAllowed(pack, connect ? lib.configOL?.mode || lib.config.mode : lib.config.mode);
+				item = guardGlobalSkill(item, active);
+			}
 			const descriptor = Object.getOwnPropertyDescriptor(pack[section], id);
 			Object.defineProperty(lib[section], id, { ...descriptor, ...("value" in descriptor ? { value: item } : {}) });
 			if (section === "card" && item.derivation) unique((lib.cardPack.mode_derivation ||= []), id);
@@ -112,6 +171,14 @@ export function registerCardPack(lib, game, get, pack, options = {}) {
 	let state = registrations.get(lib);
 	if (!state) registrations.set(lib, (state = new Map()));
 	const previous = state.get(name);
+	// Keep dependency metadata per source, even when another pack supplied the
+	// winning definition or a later fragment omits that definition.
+	const requiredGroups = new Map(previous?.requiredGroups);
+	for (const [id, info] of Object.entries(pack.card || {})) {
+		if (!Array.isArray(info?.requiredGroups)) continue;
+		const card = normalizeCardTuple([null, null, id])[2];
+		requiredGroups.set(card, [...new Set([...(requiredGroups.get(card) || []), ...info.requiredGroups])]);
+	}
 	// Some extensions call addCardPack repeatedly with fragments of the same pack.
 	const seen = previous?.seen || new WeakSet();
 	if (seen.has(pack)) return;
@@ -131,23 +198,17 @@ export function registerCardPack(lib, game, get, pack, options = {}) {
 		const entries = enabled ? get.copy([...pile.filter((_, i) => !banned.includes(i)), ...(lib.config.addedpile?.[name] || [])]) : [];
 		// Extension content registers after the boot-time alias normalization.
 		// Normalize edited elemental attacks here too, or they never become cards.
-		const natures = { huosha: "fire", leisha: "thunder", icesha: "ice", cisha: "stab", kamisha: "kami" };
-		for (const entry of entries) {
-			if (Object.hasOwn(natures, entry[2])) {
-				entry[3] = natures[entry[2]];
-				entry[2] = "sha";
-			}
-		}
+		for (let i = 0; i < entries.length; i++) entries[i] = normalizeCardTuple(entries[i]);
 		lib.card.list.push(...entries);
-		state.set(name, { seen, source: pile, entries, extension });
+		state.set(name, { seen, source: pile, entries, extension, requiredGroups });
 		return;
 	}
-	state.set(name, { seen, source: pile, entries: [], extension });
+	state.set(name, { seen, source: pile, entries: [], extension, requiredGroups });
 }
 
 /** A configured replacement deck still honors the pack switch and pile editor. */
 export function replaceCardPackPile(lib, game, get, name, list) {
-	if (!isCardPackEnabled(lib, name) || lib.config.mode === "connect") return false;
+	if (!isCardPackEnabled(lib, name) || lib.config.mode === "connect" || !cardPackAllowed(lib.cardPackInfo[name] || {}, lib.config.mode)) return false;
 	const states = registrations.get(lib);
 	const previous = states?.get(name);
 	if (!previous) return false;
@@ -246,15 +307,148 @@ export function createCardCollection(name, sources, args, assets = [], presentat
 }
 
 /** Mode-owned decks can opt specific packs in without patching that mode's rules. */
-export function applyModeCardPacks(lib, get) {
+export function applyModeCardPacks(lib, get, connect = lib.config.mode === "connect") {
+	const contributions = [];
 	for (const [name, state] of registrations.get(lib) || []) {
 		const pack = lib.cardPackInfo[name];
-		if (!pack.modePile || !cardPackAllowed(pack, lib.config.mode) || !isCardPackEnabled(lib, name)) continue;
-		if (state.entries.length && !state.entries.some(entry => lib.card.list.includes(entry))) {
-			state.entries = get.copy(state.entries);
-			lib.card.list.push(...state.entries);
+		if (!(pack.modePile || state.extension) || !cardPackAllowed(pack, lib.configOL?.mode && connect ? lib.configOL.mode : lib.config.mode) || !isWholeCardPackActive(lib, name, connect) || (connect && !pack.connect)) continue;
+		const entries = connect ? state.source.map(normalizeCardTuple) : state.entries;
+		// Compare multiplicity as fixed modes may clone tuples, or retain only part
+		// of a pack. Object identity alone either duplicates or loses those cards.
+		contributions.push(...entries);
+	}
+	appendMissingCards(lib.card.list, contributions, get);
+}
+
+function appendMissingCards(list, entries, get) {
+	const counts = new Map();
+	const key = row => JSON.stringify(row);
+	for (const row of list) counts.set(key(row), (counts.get(key(row)) || 0) + 1);
+	for (const row of entries) {
+		const id = key(row), remaining = counts.get(id) || 0;
+		if (remaining) counts.set(id, remaining - 1);
+		else list.push(get.copy(row));
+	}
+}
+
+/** Rebuilding a room must not concatenate onto the previous room's pile. */
+export function buildOnlineCardPile(lib, get) {
+	liveDependencies.delete(lib);
+	lib.card.list = [];
+	for (const [name, source] of Object.entries(lib.cardPackList || {})) {
+		if (!isWholeCardPackActive(lib, name, true) || !cardPackAllowed(lib.cardPackInfo[name] || {}, lib.configOL.mode)) continue;
+		lib.card.list.push(...get.copy(source).map(normalizeCardTuple));
+	}
+}
+
+/** Resolve source ownership and faction metadata, without per-general rules. */
+export function requiredCardNames(lib, connect = false, players = []) {
+	return resolveCardDependencies(lib, connect, players).cards;
+}
+
+export function requiredCharacterGroups(lib, connect = false, players = []) {
+	const groups = new Set();
+	const addGroups = info => {
+		if (!info) return;
+		if (info.group || info[1]) groups.add(info.group || info[1]);
+		for (const group of info.doubleGroup || []) groups.add(group);
+		if (Array.isArray(info)) for (const tag of info[4] || []) {
+			if (typeof tag === "string" && tag.startsWith("doublegroup:")) for (const group of tag.slice(12).split(":")) groups.add(group);
+		}
+	};
+	const selected = connect ? lib.configOL?.characterPack || [] : lib.config.characters || [];
+	for (const name of selected) for (const info of Object.values(lib.characterPack?.[cardPackId(name)] || {})) addGroups(info);
+	for (const player of players) {
+		if (player.group) groups.add(player.group);
+		for (const name of [player.name, player.name1, player.name2]) addGroups(lib.character?.[name]);
+	}
+	return groups;
+}
+
+function resolveCardDependencies(lib, connect, players) {
+	const mode = connect ? lib.configOL?.mode || lib.config.mode : lib.config.mode;
+	const groups = requiredCharacterGroups(lib, connect, players);
+	const liveNames = new Set(players.flatMap(player => [player.name, player.name1, player.name2]).filter(Boolean));
+	const liveSources = new Set();
+	if (liveNames.size) for (const [name, pack] of Object.entries(lib.characterPack || {})) {
+		if ([...liveNames].some(id => Object.hasOwn(pack, id))) liveSources.add(lib.characterPackExtension?.[name]);
+	}
+	const dependencies = new Map();
+	const cards = new Set(), livePacks = new Set(), rulePacks = new Set();
+	for (const [name, state] of registrations.get(lib) || []) {
+		const pack = lib.cardPackInfo[name];
+		const compatible = cardPackAllowed(pack, mode) && (!connect || pack.connect);
+		const live = state.extension && liveSources.has(lib.cardPackExtension?.[name]);
+		const coupled = compatible && (isCharacterCardPack(lib, name, connect) || live);
+		if (compatible && live) livePacks.add(name);
+		// Source dependencies must obey normal card/mode eligibility.
+		const rows = compatible ? state.source.map(normalizeCardTuple).filter(row => {
+			const info = lib.card[row[2]];
+			return info && cardPackAllowed(info, mode) && (coupled || state.requiredGroups.get(row[2])?.some(group => groups.has(group)));
+		}) : [];
+		dependencies.set(name, rows);
+	}
+	// Resource-only fallbacks defer to a loaded full provider, preserving one pile.
+	const provided = new Set([...dependencies].filter(([name]) => !lib.cardPackInfo[name].dependencyOnly).flatMap(([, rows]) => rows.map(row => row[2])));
+	for (const [name, entries] of dependencies) {
+		const rows = lib.cardPackInfo[name].dependencyOnly ? entries.filter(row => !provided.has(row[2])) : entries;
+		dependencies.set(name, rows);
+		if (entries.length) rulePacks.add(name);
+		for (const row of rows) cards.add(row[2]);
+	}
+	return { cards, dependencies, livePacks, rulePacks };
+}
+
+export function applyRequiredCardPacks(lib, get, connect = false, players = []) {
+	const { cards: required, dependencies, livePacks, rulePacks } = resolveCardDependencies(lib, connect, players);
+	liveDependencies.set(lib, { connect, packs: rulePacks, sources: livePacks });
+	const contributions = [];
+	const mode = connect ? lib.configOL?.mode || lib.config.mode : lib.config.mode;
+	for (const [name, state] of registrations.get(lib) || []) {
+		const pack = lib.cardPackInfo[name];
+		const source = state.source.map(normalizeCardTuple);
+		const dependent = dependencies.get(name);
+		const dependentNames = new Set(dependent.map(row => row[2]));
+		const compatible = cardPackAllowed(pack, mode) && (!connect || pack.connect);
+		if (!compatible) continue;
+		const active = (pack.modePile || state.extension) && isWholeCardPackActive(lib, name, connect);
+		const entries = active ? (connect ? source : editedCardPile(lib, name, state.source)) : [];
+		// Required rows use the original multiplicity; optional rows honor editing.
+		contributions.push(...entries.filter(row => !dependentNames.has(row[2])), ...dependent);
+	}
+	appendMissingCards(lib.card.list, contributions, get);
+	return required;
+}
+
+function editedCardPile(lib, name, source) {
+	const banned = new Set(lib.config.bannedpile?.[name] || []);
+	return [...source.filter((_, index) => !banned.has(index)), ...(lib.config.addedpile?.[name] || [])].map(normalizeCardTuple);
+}
+
+/** Final eligibility pass, after mode and extension edits, before balancing. */
+export function filterCardPile(lib, { connect = false, bannedcards = [], required = new Set() } = {}) {
+	const mode = connect ? lib.configOL?.mode || lib.config.mode : lib.config.mode;
+	const banned = new Set([...(connect ? lib.configOL?.bannedcards || [] : lib.config.bannedcards || []), ...bannedcards]);
+	const owned = new Set(), available = new Set();
+	for (const [name, state] of registrations.get(lib) || []) {
+		const pack = lib.cardPackInfo[name];
+		const active = isWholeCardPackActive(lib, name, connect) && cardPackAllowed(pack, mode) && (!connect || pack.connect);
+		for (const id of new Set([...Object.keys(pack.card || {}), ...state.source.map(row => normalizeCardTuple(row)[2])])) {
+			owned.add(id);
+			if (active) available.add(id);
 		}
 	}
+	lib.card.list = lib.card.list.map(row => {
+		const tuple = normalizeCardTuple(row);
+		if (tuple[2] === row[2]) return row;
+		if (row._replaced) tuple._replaced = true;
+		return tuple;
+	}).filter(row => {
+		if (!lib.card[row[2]] || !cardPackAllowed(lib.card[row[2]], mode)) return false;
+		if (required.has(row[2])) return true;
+		if (owned.has(row[2]) && !available.has(row[2])) return false;
+		return row._replaced || !banned.has(row[2]);
+	});
 }
 
 export function resolveCardPackImage(lib, name, nature) {

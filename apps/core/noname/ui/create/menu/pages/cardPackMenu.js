@@ -295,6 +295,11 @@ export const cardPackMenu = function (connectMenu, context) {
 				var modeTranslation = "<p style=\"padding-left: 2em;\">" + lib.translate[mode + "_cardsInfo"] + "</p>";
 				page.insertAdjacentHTML('beforeend', modeTranslation);
 			}
+			if (lib.cardPackExtension?.[mode]) {
+				const note = document.createElement("p");
+				note.textContent = "同源武将包或卡牌声明的所属势力启用时，其合法配套牌会随之加入牌堆；没有这些依赖时，卡牌开关与牌堆编辑独立生效。模式不支持的牌不加入；技能生成牌仅加载定义。";
+				page.appendChild(note);
+			}
 			var banCard = function (e) {
 				if (_status.clicked) {
 					_status.clicked = false;

@@ -1,0 +1,386 @@
+
+SS_szy_longlin.png
+size: 1882,1906
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+longlin/longlin_00
+  rotate: false
+  xy: 2, 1362
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_01
+  rotate: false
+  xy: 2, 1090
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_02
+  rotate: false
+  xy: 2, 818
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_03
+  rotate: false
+  xy: 2, 546
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_04
+  rotate: true
+  xy: 1338, 570
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_05
+  rotate: false
+  xy: 2, 274
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_06
+  rotate: true
+  xy: 1610, 570
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_07
+  rotate: false
+  xy: 2, 2
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_49
+  rotate: false
+  xy: 2, 1634
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+
+SS_szy_longlin2.png
+size: 1882,1906
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+longlin/longlin_08
+  rotate: false
+  xy: 2, 1634
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_09
+  rotate: false
+  xy: 2, 1362
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_10
+  rotate: false
+  xy: 2, 1090
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_11
+  rotate: false
+  xy: 2, 818
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_12
+  rotate: false
+  xy: 2, 546
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_13
+  rotate: true
+  xy: 1338, 570
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_14
+  rotate: false
+  xy: 2, 274
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_15
+  rotate: true
+  xy: 1610, 570
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_16
+  rotate: false
+  xy: 2, 2
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+
+SS_szy_longlin3.png
+size: 1882,1906
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+longlin/longlin_17
+  rotate: false
+  xy: 2, 1634
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_18
+  rotate: false
+  xy: 2, 1362
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_19
+  rotate: false
+  xy: 2, 1090
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_20
+  rotate: false
+  xy: 2, 818
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_21
+  rotate: false
+  xy: 2, 546
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_22
+  rotate: true
+  xy: 1338, 570
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_23
+  rotate: false
+  xy: 2, 274
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_24
+  rotate: true
+  xy: 1610, 570
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_25
+  rotate: false
+  xy: 2, 2
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+
+SS_szy_longlin4.png
+size: 1882,1906
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+longlin/longlin_26
+  rotate: false
+  xy: 2, 1634
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_27
+  rotate: false
+  xy: 2, 1362
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_28
+  rotate: false
+  xy: 2, 1090
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_29
+  rotate: false
+  xy: 2, 818
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_30
+  rotate: false
+  xy: 2, 546
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_31
+  rotate: true
+  xy: 1338, 570
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_32
+  rotate: false
+  xy: 2, 274
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_33
+  rotate: true
+  xy: 1610, 570
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_34
+  rotate: false
+  xy: 2, 2
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+
+SS_szy_longlin5.png
+size: 1882,1906
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+longlin/longlin_35
+  rotate: false
+  xy: 2, 1634
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_36
+  rotate: false
+  xy: 2, 1362
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_37
+  rotate: false
+  xy: 2, 1090
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_38
+  rotate: false
+  xy: 2, 818
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_39
+  rotate: false
+  xy: 2, 546
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_40
+  rotate: true
+  xy: 1338, 570
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_41
+  rotate: false
+  xy: 2, 274
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_42
+  rotate: true
+  xy: 1610, 570
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_43
+  rotate: false
+  xy: 2, 2
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+
+SS_szy_longlin6.png
+size: 1362,1338
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+longlin/longlin_44
+  rotate: true
+  xy: 2, 2
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_45
+  rotate: true
+  xy: 274, 2
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_46
+  rotate: true
+  xy: 546, 2
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_47
+  rotate: true
+  xy: 818, 2
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1
+longlin/longlin_48
+  rotate: true
+  xy: 1090, 2
+  size: 1334, 270
+  orig: 1334, 270
+  offset: 0, 0
+  index: -1

@@ -30,6 +30,13 @@ export const isValidExtensionName = (name: unknown): name is string => typeof na
 
 /** Register this repository's installed packages once, preserving later user choices. */
 export async function registerOrganizedExtensions(config: { get: (key: string) => any; has: (key: string) => boolean }, save: (key: string, value: any) => Promise<unknown>, savedKeys: string[] = [], availableNames?: string[]) {
+	// Enable the repaired supplement once for existing installs, too. Subsequent
+	// explicit user choices are preserved, and unrelated play switches stay intact.
+	if (!config.get("cardpile_default_enabled_v1")) {
+		await save("plays", [...new Set([...(config.get("plays") || []), "cardpile"])]);
+		await save("hiddenPlayPack", (config.get("hiddenPlayPack") || []).filter(name => name !== "cardpile"));
+		await save("cardpile_default_enabled_v1", true);
+	}
 	// Preserve old options for rollback; explicit choices under the real name win.
 	// Repeat safely after a failed write, without overwriting later user choices.
 	for (const key of new Set(["extension_红楼幻梦_enable", ...savedKeys])) {

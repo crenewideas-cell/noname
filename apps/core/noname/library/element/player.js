@@ -7,7 +7,7 @@ import { AsyncFunction } from "@/util/index.js";
 import dedent from "dedent";
 import { listenForActivation } from "../../ui/activation.js";
 import { displayRandom } from "../../util/displayRandom.js";
-import { playerLinePath } from "../../ui/lineCoordinates.js";
+import { playerLinePath, cardMoveOffset } from "../../ui/lineCoordinates.js";
 import { emitPresentation, playerPresentation, rememberHandLimit, rememberDying, clearPlayerPresentation } from "../../ui/presentationEvents.js";
 
 let fullscreenPresentationId = 0;
@@ -14356,10 +14356,11 @@ export class Player extends HTMLDivElement {
 			node.style.left = "calc(50% - 52px)";
 			node.style.top = "calc(50% - 52px)";
 
-			dx = this.getLeft() + this.offsetWidth / 2 - 52 - node.offsetLeft;
-			dy = this.getTop() + this.offsetHeight / 2 - 52 - node.offsetTop;
+			const offset = cardMoveOffset(node, this);
+			dx = offset ? offset[0] : this.getLeft() + this.offsetWidth / 2 - 52 - node.offsetLeft;
+			dy = offset ? offset[1] : this.getTop() + this.offsetHeight / 2 - 52 - node.offsetTop;
 
-			if (get.is.mobileMe(this)) {
+			if (!offset && get.is.mobileMe(this)) {
 				dx += get.cardOffset();
 				if (ui.arena.classList.contains("oblongcard")) {
 					dy -= 16;

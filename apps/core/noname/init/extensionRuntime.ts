@@ -1,4 +1,5 @@
-import { lib, game, ui, _status } from "noname";
+import { lib, game, ui, get, ai, _status } from "noname";
+import { loadDependentCardResources } from "./cardResourceProviders.js";
 import { importExtension } from "./import.js";
 import { loadCharacter, loadCard, loadExtension } from "./loading.js";
 
@@ -30,7 +31,11 @@ export function enableExtensionRuntime(name: string): Promise<void> {
 	if (pending.has(name)) return pending.get(name)!;
 	const job = queue.then(async () => {
 		if (!lib.config[`extension_${name}_enable`]) return;
-		if (lib.extensionPack[name]?.code && !lib.extensionPack[name].runtimeFailed) { refreshExtensionCharacters(name); return; }
+		if (lib.extensionPack[name]?.code && !lib.extensionPack[name].runtimeFailed) {
+			refreshExtensionCharacters(name);
+			await loadDependentCardResources([lib, game, ui, get, ai, _status]);
+			return;
+		}
 		const previousExtension = _status.extension;
 		const previousEvaluation = _status.evaluatingExtension;
 		// Boot consumes these queues; late extension modules still append to them.
@@ -78,6 +83,7 @@ export function enableExtensionRuntime(name: string): Promise<void> {
 			await register();
 			for (const extension of lib.extensions || []) if (!extensions.has(extension)) await loadExtension(extension);
 			await register();
+			await loadDependentCardResources([lib, game, ui, get, ai, _status]);
 			for (const skill of Object.keys(lib.skill)) if (!skills.has(skill)) game.finishSkill(skill);
 			for (const onload of lib.onload) if (!onloads.has(onload)) await onload();
 			refreshExtensionCharacters(name);

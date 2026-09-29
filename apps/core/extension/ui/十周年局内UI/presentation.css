@@ -259,7 +259,9 @@ html body[data-decade-parts~="players"] #arena>.player:not(.minskin).selected:no
 html body[data-decade-parts~="players"] #arena>.player:not(.minskin).glow_phase:not(.selectable)::before{background-image:url('./assets/image/ui/effects/sprites_glow_orange.png')}
 html body[data-decade-parts~="players"] #arena>.player:not(.minskin).target:not(.selectable):not(.selected)::before{background-image:url('./assets/image/ui/effects/sprites_glow_red.png')}
 @keyframes decade-source-glow{0%{background-position:0 0}10%{background-position:-253px 0}20%{background-position:-506px 0}30%{background-position:-759px 0}40%{background-position:-1012px 0}50%{background-position:-1265px 0}60%{background-position:-1518px 0}70%{background-position:-1771px 0}80%{background-position:-2024px 0}90%,100%{background-position:-2277px 0}}
-html body[data-decade-parts~="players"] #arena>.player>.chain{background:url('./assets/image/ui/chain/tie_suo.png') center/cover no-repeat;pointer-events:none;top:40%;height:24px}
+/* The skin paints the chain on the wrapper; the core only hides its children. */
+html body[data-decade-parts~="players"] #arena>.player>.chain{background:url('./assets/image/ui/chain/tie_suo.png') center/cover no-repeat;pointer-events:none;top:40%;height:24px;visibility:hidden}
+html body[data-decade-parts~="players"] #arena>.player.linked2>.chain{visibility:visible}
 html body[data-decade-parts~="players"] #arena>.player>.chain>div{opacity:0}
 html body[data-decade-parts~="players"] #arena>.player>.marks>.decade-armor{background:var(--decade-icon) center/contain no-repeat!important;min-width:25px;min-height:25px;border:0;box-shadow:none}
 html body[data-decade-parts~="players"] #arena>.player>.marks>.decade-armor>.name{opacity:0}

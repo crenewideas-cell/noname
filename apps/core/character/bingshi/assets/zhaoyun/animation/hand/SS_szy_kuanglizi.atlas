@@ -1,0 +1,356 @@
+
+SS_szy_kuanglizi.png
+size: 1970,1708
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+kuanglizi/kuanglizi_00
+  rotate: true
+  xy: 1512, 1506
+  size: 200, 288
+  orig: 260, 320
+  offset: 28, 14
+  index: -1
+kuanglizi/kuanglizi_01
+  rotate: true
+  xy: 2, 1305
+  size: 200, 289
+  orig: 260, 320
+  offset: 28, 14
+  index: -1
+kuanglizi/kuanglizi_02
+  rotate: true
+  xy: 293, 1305
+  size: 200, 290
+  orig: 260, 320
+  offset: 28, 12
+  index: -1
+kuanglizi/kuanglizi_03
+  rotate: true
+  xy: 890, 1304
+  size: 201, 290
+  orig: 260, 320
+  offset: 28, 13
+  index: -1
+kuanglizi/kuanglizi_04
+  rotate: true
+  xy: 1182, 1302
+  size: 202, 287
+  orig: 260, 320
+  offset: 27, 15
+  index: -1
+kuanglizi/kuanglizi_05
+  rotate: true
+  xy: 1471, 1302
+  size: 202, 287
+  orig: 260, 320
+  offset: 27, 16
+  index: -1
+kuanglizi/kuanglizi_06
+  rotate: true
+  xy: 2, 1101
+  size: 202, 287
+  orig: 260, 320
+  offset: 27, 16
+  index: -1
+kuanglizi/kuanglizi_07
+  rotate: true
+  xy: 576, 1098
+  size: 205, 286
+  orig: 260, 320
+  offset: 26, 17
+  index: -1
+kuanglizi/kuanglizi_08
+  rotate: true
+  xy: 291, 1099
+  size: 204, 283
+  orig: 260, 320
+  offset: 26, 18
+  index: -1
+kuanglizi/kuanglizi_09
+  rotate: true
+  xy: 864, 1095
+  size: 207, 283
+  orig: 260, 320
+  offset: 25, 19
+  index: -1
+kuanglizi/kuanglizi_10
+  rotate: true
+  xy: 283, 888
+  size: 209, 284
+  orig: 260, 320
+  offset: 25, 19
+  index: -1
+kuanglizi/kuanglizi_11
+  rotate: true
+  xy: 569, 887
+  size: 209, 284
+  orig: 260, 320
+  offset: 25, 19
+  index: -1
+kuanglizi/kuanglizi_12
+  rotate: true
+  xy: 1421, 880
+  size: 210, 288
+  orig: 260, 320
+  offset: 25, 19
+  index: -1
+kuanglizi/kuanglizi_13
+  rotate: true
+  xy: 855, 884
+  size: 209, 283
+  orig: 260, 320
+  offset: 26, 20
+  index: -1
+kuanglizi/kuanglizi_14
+  rotate: true
+  xy: 2, 675
+  size: 211, 299
+  orig: 260, 320
+  offset: 25, 5
+  index: -1
+kuanglizi/kuanglizi_15
+  rotate: true
+  xy: 303, 673
+  size: 212, 299
+  orig: 260, 320
+  offset: 25, 6
+  index: -1
+kuanglizi/kuanglizi_16
+  rotate: true
+  xy: 604, 670
+  size: 212, 300
+  orig: 260, 320
+  offset: 25, 6
+  index: -1
+kuanglizi/kuanglizi_17
+  rotate: true
+  xy: 906, 666
+  size: 213, 301
+  orig: 260, 320
+  offset: 25, 7
+  index: -1
+kuanglizi/kuanglizi_18
+  rotate: true
+  xy: 1209, 664
+  size: 214, 298
+  orig: 260, 320
+  offset: 24, 8
+  index: -1
+kuanglizi/kuanglizi_19
+  rotate: true
+  xy: 604, 453
+  size: 215, 300
+  orig: 260, 320
+  offset: 24, 9
+  index: -1
+kuanglizi/kuanglizi_20
+  rotate: true
+  xy: 2, 458
+  size: 215, 299
+  orig: 260, 320
+  offset: 24, 11
+  index: -1
+kuanglizi/kuanglizi_21
+  rotate: true
+  xy: 906, 449
+  size: 215, 300
+  orig: 260, 320
+  offset: 24, 11
+  index: -1
+kuanglizi/kuanglizi_22
+  rotate: true
+  xy: 1208, 447
+  size: 215, 300
+  orig: 260, 320
+  offset: 24, 12
+  index: -1
+kuanglizi/kuanglizi_23
+  rotate: true
+  xy: 906, 229
+  size: 216, 301
+  orig: 260, 320
+  offset: 23, 13
+  index: -1
+kuanglizi/kuanglizi_24
+  rotate: true
+  xy: 302, 236
+  size: 216, 300
+  orig: 260, 320
+  offset: 23, 14
+  index: -1
+kuanglizi/kuanglizi_25
+  rotate: true
+  xy: 1209, 229
+  size: 216, 301
+  orig: 260, 320
+  offset: 23, 15
+  index: -1
+kuanglizi/kuanglizi_26
+  rotate: true
+  xy: 1510, 447
+  size: 215, 300
+  orig: 260, 320
+  offset: 23, 15
+  index: -1
+kuanglizi/kuanglizi_27
+  rotate: true
+  xy: 1512, 229
+  size: 216, 301
+  orig: 260, 320
+  offset: 23, 17
+  index: -1
+kuanglizi/kuanglizi_28
+  rotate: true
+  xy: 604, 235
+  size: 216, 300
+  orig: 260, 320
+  offset: 23, 18
+  index: -1
+kuanglizi/kuanglizi_29
+  rotate: true
+  xy: 303, 454
+  size: 217, 299
+  orig: 260, 320
+  offset: 22, 19
+  index: -1
+kuanglizi/kuanglizi_30
+  rotate: true
+  xy: 2, 238
+  size: 218, 298
+  orig: 260, 320
+  offset: 22, 20
+  index: -1
+kuanglizi/kuanglizi_31
+  rotate: true
+  xy: 2, 18
+  size: 218, 298
+  orig: 260, 320
+  offset: 22, 20
+  index: -1
+kuanglizi/kuanglizi_32
+  rotate: true
+  xy: 302, 16
+  size: 218, 298
+  orig: 260, 320
+  offset: 22, 21
+  index: -1
+kuanglizi/kuanglizi_33
+  rotate: true
+  xy: 602, 13
+  size: 220, 291
+  orig: 260, 320
+  offset: 21, 27
+  index: -1
+kuanglizi/kuanglizi_34
+  rotate: false
+  xy: 1739, 955
+  size: 221, 275
+  orig: 260, 320
+  offset: 21, 29
+  index: -1
+kuanglizi/kuanglizi_35
+  rotate: false
+  xy: 1711, 664
+  size: 222, 289
+  orig: 260, 320
+  offset: 21, 31
+  index: -1
+kuanglizi/kuanglizi_36
+  rotate: true
+  xy: 895, 3
+  size: 224, 289
+  orig: 260, 320
+  offset: 21, 31
+  index: -1
+kuanglizi/kuanglizi_37
+  rotate: true
+  xy: 1149, 1092
+  size: 208, 313
+  orig: 260, 320
+  offset: 20, 7
+  index: -1
+kuanglizi/kuanglizi_38
+  rotate: true
+  xy: 1186, 2
+  size: 225, 311
+  orig: 260, 320
+  offset: 20, 9
+  index: -1
+kuanglizi/kuanglizi_39
+  rotate: true
+  xy: 1499, 2
+  size: 225, 297
+  orig: 260, 320
+  offset: 20, 10
+  index: -1
+kuanglizi/kuanglizi_40
+  rotate: false
+  xy: 1760, 1232
+  size: 208, 272
+  orig: 260, 320
+  offset: 20, 37
+  index: -1
+kuanglizi/kuanglizi_41
+  rotate: true
+  xy: 1464, 1092
+  size: 208, 273
+  orig: 260, 320
+  offset: 20, 37
+  index: -1
+kuanglizi/kuanglizi_42
+  rotate: true
+  xy: 2, 891
+  size: 208, 279
+  orig: 260, 320
+  offset: 20, 31
+  index: -1
+kuanglizi/kuanglizi_43
+  rotate: true
+  xy: 1140, 881
+  size: 209, 279
+  orig: 260, 320
+  offset: 19, 31
+  index: -1
+kuanglizi/kuanglizi_44
+  rotate: true
+  xy: 2, 1508
+  size: 198, 279
+  orig: 260, 320
+  offset: 30, 33
+  index: -1
+kuanglizi/kuanglizi_45
+  rotate: true
+  xy: 283, 1507
+  size: 199, 306
+  orig: 260, 320
+  offset: 29, 6
+  index: -1
+kuanglizi/kuanglizi_46
+  rotate: true
+  xy: 591, 1507
+  size: 199, 307
+  orig: 260, 320
+  offset: 29, 6
+  index: -1
+kuanglizi/kuanglizi_47
+  rotate: true
+  xy: 900, 1507
+  size: 199, 305
+  orig: 260, 320
+  offset: 29, 8
+  index: -1
+kuanglizi/kuanglizi_48
+  rotate: true
+  xy: 585, 1305
+  size: 200, 303
+  orig: 260, 320
+  offset: 29, 10
+  index: -1
+kuanglizi/kuanglizi_49
+  rotate: true
+  xy: 1207, 1506
+  size: 200, 303
+  orig: 260, 320
+  offset: 29, 12
+  index: -1
