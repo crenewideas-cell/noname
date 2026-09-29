@@ -88,30 +88,29 @@ try {
   const cards = ['tiesuo', 'bingliang'].map(name => game.createCard2(name, 'club', 11));
   cards.forEach(card => ui.discardPile.append(card));
   let args;
+  const settings = [];
   const choose = game.me.chooseButton;
   try {
    game.me.chooseButton = (...values) => {
     args = values;
-    return { set() { return this; }, async forResult() { return { bool: false }; } };
+    return { set(...args) { settings.push(args); return this; }, async forResult() { return { bool: false }; } };
    };
    await skill.content({}, { type: 'discard', getl: p => p === game.players[1] ? { cards2: cards } : null }, game.me);
   } finally { game.me.chooseButton = choose; }
   const choice = game.me.chooseButton(...args);
-  choice.dialog = ui.create.dialog(...choice.createDialog);
+  for (const setting of settings) choice.set(...setting);
   _status.eventManager.setStatusEvent(choice, true);
-  choice.dialog.open();
   game.uncheck();
-  ui.create.buttonChooseAll();
-  game.check();
+  await lib.element.content.chooseButton[0](choice, null, game.me);
   return { allowed: choice.allowChooseAll, complex: choice.complexSelect, candidates: choice.dialog.buttons.length };
  });
  assert.equal(report.flower.allowed, true);
  assert.equal(report.flower.complex, false);
- assert.ok(await page.locator('.dialog:not(.removing) .select-all').evaluate(node => node.getBoundingClientRect().bottom <= node.nextElementSibling.getBoundingClientRect().top), 'select-all must not cover the skill prompt');
- await page.locator('.dialog:not(.removing) .select-all').click();
+ const selectAll = page.locator('#control > .control:not(.removing) > div').filter({ hasText: /^(全选|反选)$/ });
+ await selectAll.click();
  assert.equal(await page.evaluate(() => env.ui.selected.buttons.length), 2);
  await page.screenshot({ path: `${output}/all-selected-${touch ? 'touch' : 'mouse'}.png` });
- await page.locator('.dialog:not(.removing) .select-all').click();
+ await selectAll.click();
  assert.equal(await page.evaluate(() => env.ui.selected.buttons.length), 0);
  assert.deepEqual(report.errors, []);
  report.passed = true;

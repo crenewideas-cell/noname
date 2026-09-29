@@ -7515,6 +7515,7 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 			if (event.dialog == undefined) {
 				event.dialog = ui.dialog;
 			}
+			if (event.chooseAllControl) event.dialog.classList.add("button-choice-dialog");
 			if (event.isMine() || event.dialogdisplay) {
 				event.dialog.style.display = "";
 				event.dialog.open();
@@ -7585,6 +7586,8 @@ export const Content: Record<string, ContentFuncByAll | ContentFuncsByAll> = {
 			if (event.closeDialog) {
 				event.dialog.close();
 			}
+			event.buttonChooseAllControl?.close();
+			delete event.buttonChooseAllControl;
 			if (event.callback) {
 				event.callback(event.player, event.result);
 			}

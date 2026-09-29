@@ -2270,7 +2270,7 @@ export class Create {
 	buttonChooseAll() {
 		const event = get.event();
 		// 如果不是当前玩家、当前配置或者事件不允许全选或者使用complexSelect，则取消注入喵
-		if (!event.isMine() || !(event.dialog instanceof lib.element.Dialog) || !event.allowChooseAll || event.complexSelect || !lib.config.choose_all_button) {
+		if (!event.isMine() || !(event.dialog instanceof lib.element.Dialog) || !event.allowChooseAll || event.complexSelect || (!event.chooseAllControl && !lib.config.choose_all_button)) {
 			return null;
 		}
 		// 这里的条件用的是“AI代选”按钮的条件喵
@@ -2279,18 +2279,16 @@ export class Create {
 			return null;
 		} */
 		const range = get.select(selectButton);
-		if (range[1] <= 1) {
+		if (range[1] <= 1 && !event.chooseAllControl) {
 			return null; // 只选一个按钮就不使用全选哦喵
 		}
 		// 获取标题来作为按钮的定位喵
 		const caption = event.dialog.content.querySelector(".caption");
-		if (!event.dialog.content.contains(caption)) {
+		if (!event.chooseAllControl && !event.dialog.content.contains(caption)) {
 			return null; // 没有标题那么全选按钮就没有位置添加哦喵
 		}
 		// 创建全选按钮喵
-		const buttonChooseAll = ui.create.div(".select-all.popup.pointerdiv");
-		event.buttonChooseAll = buttonChooseAll;
-		buttonChooseAll.listen(function (e) {
+		const toggle = function (e) {
 			const event = get.event();
 			const selecteds = [...ui.selected.buttons];
 
@@ -2322,9 +2320,21 @@ export class Create {
 			}
 
 			// 取消冒泡防止被uncheck喵
-			e.stopPropagation();
-		});
-		event.dialog.content.insertBefore(buttonChooseAll, caption);
+			e?.stopPropagation?.();
+		};
+		let buttonChooseAll;
+		if (event.chooseAllControl) {
+			// Use the existing selection handler in the action bar when a skill
+			// requires an always-visible control, outside its scrolling prompt.
+			const control = ui.create.control("全选", () => toggle());
+			event.buttonChooseAllControl = control;
+			buttonChooseAll = control.firstChild;
+		} else {
+			buttonChooseAll = ui.create.div(".select-all.popup.pointerdiv");
+			buttonChooseAll.listen(toggle);
+			event.dialog.content.insertBefore(buttonChooseAll, caption);
+		}
+		event.buttonChooseAll = buttonChooseAll;
 		return buttonChooseAll;
 	}
 	arena(settingsOnly = false) {

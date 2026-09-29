@@ -149,6 +149,35 @@ html body #window #arena.compact-seats > .dialog:not(.popped):not(.fullheight):n
 html body #window:has(> .selection-guide) #arena.compact-seats > .dialog.nobutton:not(.popped):not(:has(.button)) {
 	bottom: var(--builtin-prompt-bottom, 320px) !important;
 }
+/* Multi-card skill choices need a real scroll viewport. The ordinary dialog's
+   absolute content can otherwise collapse or slip behind its long caption. */
+html body #window #arena.compact-seats > .dialog.button-choice-dialog:not(.popped) {
+	display: flex;
+	flex-direction: column;
+	left: 50% !important;
+	width: min(680px, 90%) !important;
+	height: auto !important;
+	margin: 0 !important;
+	transform: translateX(-50%) !important;
+	padding: 40px 14px 20px;
+	overflow: hidden;
+}
+html body #window #arena.compact-seats > .dialog.button-choice-dialog > .content-container {
+	position: relative !important;
+	flex: 0 1 auto;
+	min-height: 0;
+	height: auto !important;
+	width: 100%;
+	overflow: auto;
+}
+html body #window #arena.compact-seats > .dialog.button-choice-dialog > .content-container > .content {
+	position: relative !important;
+	height: auto !important;
+}
+html body #window #arena.compact-seats > .dialog.button-choice-dialog .caption {
+	font-size: 18px;
+	line-height: 1.45;
+}
 html body #window #arena.compact-seats > #autonode {
 	left: var(--table-hand-left) !important;
 	width: calc(100% - var(--table-hand-left) - var(--table-hand-right)) !important;

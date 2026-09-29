@@ -31,7 +31,7 @@ test("a failed import, precontent or content cannot hide healthy merged characte
 	assert.deepEqual(Object.keys(extension.package.character.character), ["healthy"]);
 });
 
-test("real Qingyao lifecycle registers its 56 character resources without APK globals or UI patches", async () => {
+test("real Qingyao lifecycle registers its 57 character resources without APK globals or UI patches", async () => {
 	const group: any = []; group.add = name => { if (!group.includes(name)) group.push(name); };
 	const lib: any = { config: {}, group, groupnature: {}, characterPack: {}, characterSort: {}, characterTitle: {}, characterFilter: {}, characterIntro: {}, skill: {}, character: {}, card: {}, translate: {}, dynamicTranslate: {}, init: { css() {} }, arenaReady: [] };
 	const game: any = { saveConfig() {}, addGlobalSkill() {}, playAudio() {} };
@@ -41,10 +41,10 @@ test("real Qingyao lifecycle registers its 56 character resources without APK gl
 		const extension = await qingyao(lib, game, {}, {}, {}, {});
 		await extension.precontent();
 		await extension.content({}, extension.package);
-		assert.equal(Object.keys(lib.characterPack.假装无敌Pack).length, 56);
+		assert.equal(Object.keys(lib.characterPack.假装无敌Pack).length, 57);
 		assert.ok(extension.package.character.character.qy_qyqingyaoxuying);
 		assert.ok(extension.package.character.character.qy_qyjiaqi);
-		assert.equal(Object.keys(extension.package.character.character).length, 74);
+		assert.equal(Object.keys(extension.package.character.character).length, 75);
 		for (const key of Object.keys(extension.package.character)) {
 			assert.ok(key in lib || key === "name", `loadCharacter destination exists: ${key}`);
 		}

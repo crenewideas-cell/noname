@@ -1289,7 +1289,8 @@ apps/core/extension/（共 50 个一级目录）
 │  │  ├─ 界卧龙（ID："m_zhugeliang"）
 │  │  ├─ 界孙权（ID："m_sunquan"）
 │  │  └─ 神司马徽（ID："m_simahui"）
-│  ├─ apps/core/extension/清瑶葭绮/（74 个定义）
+│  ├─ apps/core/extension/清瑶葭绮/（75 个定义；假装无敌已更新到 2.0.4）
+│  │  ├─ 少女清瑶（ID："qy_qyshaonvqingyao"）
 │  │  ├─ 陆闲鹤（ID："云游四海_luxianhe"）
 │  │  ├─ 宋英杰（ID："云游四海_songyingjie"）
 │  │  ├─ 皮影将军（ID："云游四海_piying_3"）

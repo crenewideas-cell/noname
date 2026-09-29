@@ -9,6 +9,24 @@ extension/**
 !extension/collections/清瑶葭绮/members/假装无敌/compatibility.js
 !extension/collections/清瑶葭绮/members/假装无敌/characters.js
 !extension/collections/清瑶葭绮/members/假装无敌/cards.js
+# 假装无敌 v2.0.4 character update and its required media.
+!extension/collections/清瑶葭绮/members/假装无敌/CharacterCard.js
+!extension/collections/清瑶葭绮/members/假装无敌/artifacts.js
+!extension/collections/清瑶葭绮/members/假装无敌/artifacts/
+!extension/collections/清瑶葭绮/members/假装无敌/artifacts/**
+!extension/collections/清瑶葭绮/members/假装无敌/xianyu/
+!extension/collections/清瑶葭绮/members/假装无敌/xianyu/**
+!extension/collections/清瑶葭绮/members/假装无敌/qy_qy*.jpg
+!extension/collections/清瑶葭绮/members/假装无敌/qy_qyqingyaoxuying1.png
+!extension/collections/清瑶葭绮/members/假装无敌/qy_qyshaonvqingyao.mp3
+!extension/collections/清瑶葭绮/members/假装无敌/theland*.jpg
+!extension/collections/清瑶葭绮/members/假装无敌/qy_chongzhu_*.mp3
+!extension/collections/清瑶葭绮/members/假装无敌/ymqiyu*.mp3
+!extension/collections/清瑶葭绮/members/假装无敌/ymgumeng*.mp3
+!extension/collections/清瑶葭绮/members/假装无敌/ymjiuyin*.mp3
+!extension/collections/清瑶葭绮/members/假装无敌/ymfuxi*.mp3
+!extension/collections/清瑶葭绮/members/假装无敌/ymwangyao*.mp3
+!extension/collections/清瑶葭绮/members/假装无敌/ymhaoshouqiongjing.png
 !extension/packs/
 !extension/packs/星之梦/
 !extension/packs/星之梦/**

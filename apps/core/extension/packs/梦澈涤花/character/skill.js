@@ -10919,7 +10919,7 @@ const skills = {
                     },
                     respondShan: true,
                     respondSha: true,
-                    skillTagFilter(player, tag) {
+                    skillTagFilter(player, tag, arg) {
                         if (arg === "respond" || !player.getShownCards().length) return false;
                     },
                     result: {

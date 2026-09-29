@@ -573,7 +573,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 const count = (player.storage.hlhj_flower_step || 0) + 1;
                 const result = await player.chooseButton([
                     `葬花：选择任意张本次弃置的牌，然后选择复制方式。每张所选牌分别获得原牌及${count - 1}张复制牌，存活且不为你自己的木石缘分别获得${count}张复制牌`, cards,
-                ], [1, cards.length], "allowChooseAll").set("ai", () => {
+                ], [1, cards.length], "allowChooseAll").set("chooseAllControl", true).set("ai", () => {
                     const p = _status.event.player;
                     return p.countCards("h") < p.hp + 3 ? 1 : 0;
                 }).forResult();

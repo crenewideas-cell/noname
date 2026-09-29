@@ -1,4 +1,35 @@
 // Optional presentation helpers, independent of the old APK's engine replacements.
+const qiyuLoads = new WeakMap();
+
+export async function playQiyu(lib, game, auto = false) {
+    if (!qiyuLoads.has(game)) {
+        const base = (lib.assetURL || "") + "extension/清瑶葭绮/members/假装无敌/xianyu";
+        const script = name => new Promise((resolve, reject) => lib.init.js(base, name, resolve, reject));
+        const loading = (async () => {
+            if (!window.XianYuCore) await script("core");
+            if (!window.qyXianYuGame) await script("game");
+            if (!window.XianYuCore || !window.qyXianYuGame) throw new Error("弦玉之间加载失败");
+            return window.qyXianYuGame;
+        })().catch(error => { qiyuLoads.delete(game); throw error; });
+        qiyuLoads.set(game, loading);
+    }
+    const engine = await qiyuLoads.get(game);
+    return new Promise((resolve, reject) => {
+        let instance;
+        const cleanup = () => {
+            instance?.destroy();
+            const index = lib.onover?.indexOf(cancel) ?? -1;
+            if (index !== -1) lib.onover.splice(index, 1);
+        };
+        const cancel = () => { cleanup(); reject(new Error("对局已结束")); };
+        try {
+            instance = engine.mount(document.body, { keyboard: true, buttonRadius: 60, auto, hud: true });
+            instance.onEnd(result => { cleanup(); resolve(result.score); });
+            lib.onover?.push(cancel);
+        } catch (error) { cleanup(); reject(error); }
+    });
+}
+
 export async function playOptionalAudio(audio) {
     try {
         await audio.play();

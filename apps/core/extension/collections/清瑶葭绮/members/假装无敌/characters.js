@@ -1,14 +1,20 @@
 import { createCharacterPack, copyCardAttributes } from "./CharacterCard.js";
 import createCardPack from "./cards.js";
-import { installCharacterUI } from "./compatibility.js";
+import { installCharacterUI, playQiyu } from "./compatibility.js";
+import createArtifacts from "./artifacts.js";
 
 /** Character resources only; never execute the APK's UI/engine replacement entry. */
 export default function (...args) {
     const [lib, game, ui] = args;
     const character = createCharacterPack(...args);
     const card = createCardPack(...args);
+    const artifacts = createArtifacts(...args);
+    for (const field of ["card", "skill", "translate"]) Object.assign(card[field], artifacts[field]);
     for (const [id, info] of Object.entries(character.character)) {
         const tags = info[4] ||= [];
+        // The old APK resolved this alias with a global death hook.
+        const die = tags.indexOf("die:假装无敌");
+        if (die !== -1) tags[die] = `die:ext:清瑶葭绮/members/假装无敌/${id}.mp3`;
         if (!tags.some(tag => /^(ext:|db:|character:|img:)/.test(tag))) {
             tags.push(`ext:清瑶葭绮/members/假装无敌/${id}.jpg`);
         }
@@ -19,6 +25,8 @@ export default function (...args) {
         package: { character, card, skill: { skill: {}, translate: {} } },
         precontent() {
             installCharacterUI(lib, ui);
+            game.setFile ??= [];
+            game.qyPlayQiyu ??= auto => playQiyu(lib, game, auto);
             lib.characterLiuwei ??= {};
             lib.qyCopyCardAttributes ??= card => copyCardAttributes(card, args[3]);
             lib.group.add("qingyao_xian");
