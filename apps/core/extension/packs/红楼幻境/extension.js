@@ -374,6 +374,9 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 cardUsable(card) {
                     if (xianTagged(card) || (card.cards?.length && card.cards.every(xianTagged))) return Infinity;
                 },
+                targetInRange(card) {
+                    if (xianTagged(card) || (card.cards?.length && card.cards.every(xianTagged))) return true;
+                },
                 cardDiscardable(card, player, reason) {
                     if (reason === "phaseDiscard" && xianTagged(card)) return false;
                 },
@@ -758,14 +761,14 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
     for (const info of Object.values(skill)) info.audio = false;
     const translate = {
         hlhj_jiangzhu: "绛珠仙子",
-        hlhj_jiangzhu_info: "锁定技，你的身份不能分配为内奸。①基本牌、伤害牌或武器牌进入你的手牌后，保留花色、点数并转化为【情思】（仙界牌除外）。②获得“花”时，若装备区无仙界牌，随机获得一张仙界复制牌。获得仙界装备牌时，你可立即装备，否则留于手牌。③装备区有仙界牌时，你可令任意张新获基本牌不转化并标记为“仙”（可点击“全部保留”）。“仙”牌使用无次数限制且不计次数；你于自己的回合主动使用“仙”基本牌时，额外结算一次（响应除外）；离手移去“仙”。④“仙”牌与【情思】不计手牌上限，不因超限弃置。转化牌进入牌堆或弃牌堆时恢复原牌，额外生成的牌销毁。",
+        hlhj_jiangzhu_info: "锁定技，你的身份不能分配为内奸。①基本牌、伤害牌或武器牌进入你的手牌后，保留花色、点数并转化为【情思】（仙界牌除外）。②获得“花”时，若装备区无仙界牌，随机获得一张仙界复制牌。获得仙界装备牌时，你可立即装备，否则留于手牌。③装备区有仙界牌时，你可令任意张新获基本牌不转化并标记为“仙”（可点击“全部保留”）。“仙”牌使用无距离和次数限制且不计次数；你于自己的回合主动使用“仙”基本牌时，额外结算一次（响应除外）；离手移去“仙”。④“仙”牌与【情思】不计手牌上限，不因超限弃置。转化牌进入牌堆或弃牌堆时恢复原牌，额外生成的牌销毁。",
         hlhj_qingsi_redirect: "情思",
         hlhj_mushi: "木石前缘",
         hlhj_mushi_info: "①游戏开始时，你选择一名角色为“木石缘”。②自己的回合内，在使用或响应牌的操作时机，你可发动〖木石·换缘〗：弃置一张【情思】，另选一名角色为“木石缘”，次数不限。③获得“泪”时，你可令自己或存活的“木石缘”摸等量牌。",
         hlhj_mushi_change: "木石·换缘",
         hlhj_mushi_change_info: "自己的回合内，在使用或响应牌的操作时机，你可弃置一张【情思】，另选一名角色为“木石缘”。次数不限，可取消。",
         hlhj_xian: "仙",
-        hlhj_xian_info: "保留原基本牌效果，不计手牌上限，不因超限弃置；使用无次数限制且不计次数；自己的回合内主动使用时额外结算一次（响应除外）。离手移去“仙”。",
+        hlhj_xian_info: "保留原基本牌效果，不计手牌上限，不因超限弃置；使用无距离和次数限制且不计次数；自己的回合内主动使用时额外结算一次（响应除外）。离手移去“仙”。",
         hlhj_mushiyuan: "木石缘",
         hlhj_mushi_bg: "缘",
         hlhj_mushiyuan_bg: "木石",

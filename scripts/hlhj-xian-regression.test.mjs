@@ -239,13 +239,16 @@ test("获得的仙界复制装备沿用装备选择，拒绝后留在手牌", as
     }
 });
 
-test("仙牌及对应虚拟牌无次数限制，离手后仍按记录免计次数且只扣一次", async () => {
+test("仙牌及对应虚拟牌无距离和次数限制，离手后仍按记录免计次数且只扣一次", async () => {
     const { s, p, card, move, lose } = setup();
     const c = card("sha", ["hlhj_xian"]); move(c, p, "h");
     assert.equal(s.hlhj_xian.mod.cardUsable(c), Infinity);
     assert.equal(s.hlhj_xian.mod.cardUsable({ name: "sha", cards: [c] }), Infinity);
     assert.equal(s.hlhj_xian.mod.cardUsable({ name: "sha", cards: [] }), undefined);
     assert.equal(s.hlhj_xian.mod.cardUsable(card("sha")), undefined);
+    assert.equal(s.hlhj_xian.mod.targetInRange(c), true);
+    assert.equal(s.hlhj_xian.mod.targetInRange({ name: "sha", cards: [c] }), true);
+    assert.equal(s.hlhj_xian.mod.targetInRange(card("sha")), undefined);
     const use = { card: { name: "sha", cards: [c] }, cards: [c], effectCount: 1 };
     p.getStat().sha = 2; await lose(p, [c], use);
     assert.ok(s.hlhj_xian.filter(use, p)); await s.hlhj_xian.content({}, use, p);
