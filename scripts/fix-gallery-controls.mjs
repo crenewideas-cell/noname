@@ -2,6 +2,15 @@ import {fixLobbyElements} from './fix-lobby-elements.mjs';
 // Shared source adaptation for checked-in and regenerated lobby programs.
 export function fixGalleryControls(source,kind){
  if(kind==='shousha'){
+  // Mouse/touch taps have small movement; scrolling must not open a profile.
+  source=source.replace(/let distance = event.data.global.x - sprite.startX;\s*if \(distance != 0\) return;/,
+   'const tapped = sprite.pressOrigin && !sprite.pressDragged; sprite.pressOrigin = null; if (!tapped) return;');
+  source=source.replace('sprite.startX = event.data.global.x;', `sprite.pressOrigin = {x:event.data.global.x,y:event.data.global.y}; sprite.pressDragged = false;
+                                            })
+                                            sprite.on('pointermove', event => {
+                                                if (sprite.pressOrigin && Math.hypot(event.data.global.x-sprite.pressOrigin.x,event.data.global.y-sprite.pressOrigin.y)>8) sprite.pressDragged = true;
+                                            });
+                                            sprite.on('pointerupoutside', () => { sprite.pressOrigin = null;`);
   source=source.replaceAll('let sprite = new PIXI.Sprite();','let sprite = bridge.own(new PIXI.Sprite());');
   // Regeneration uses the same virtual grid as the decade/RZSH gallery.
   source=source.replace(/function renderSprites\([^)]*\)\s*\{[\s\S]*?(?=function wujiangdonghua\(\))/, `function renderSprites(cards) {

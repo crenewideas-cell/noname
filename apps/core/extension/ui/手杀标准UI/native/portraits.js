@@ -1,13 +1,13 @@
 // Keep failed optional portraits out of PIXI ImageResource's unhandled promise
 // path. A stable canvas texture lets existing sprites receive the loaded image.
 export function createPortraitTextures({PIXI,character,assetURL,defaultPath,readImage,url,skin=()=>null}) {
- const cache=new Map(),queue=[],urgent=[],cancelLoads=new Set(),images=new Map(),fallbacks=new Map();
+ const cache=new Map(),queue=[],urgent=[],cancelLoads=new Set(),images=new Map(),fallbacks=new Map(),retries=new Map();
  let active=0,urgentActive=0,disposed=false,paused=false;
  const resolvePath=path=>url(/^(?:[a-z][a-z\d+.-]*:|\/)/i.test(path)?path:assetURL+path);
  function sourceFor(name,seen=new Set()) {
   if(seen.has(name))return {path:'image/character/'+name+'.jpg'};
   seen.add(name);
-  const info=character(name),tags=info?.trashBin||info?.[4]||[];
+  const info=character(name),tags=[...(info?.trashBin||[]),...(info?.[4]||[])];
   const source=info?.img||tags.find(tag=>typeof tag==='string'&&/^(img:|ext:|db:|mode:|character:)/.test(tag));
   if(source?.startsWith('db:'))return {database:source.slice(3)};
   if(source?.startsWith('character:'))return sourceFor(source.slice(10),seen);
@@ -54,6 +54,7 @@ export function createPortraitTextures({PIXI,character,assetURL,defaultPath,read
   if(disposed||entry.version!==version)return;
   if(!image)image=typeof src==='string'?await loadImage(src):null;
   if(disposed||entry.version!==version)return;
+  const loaded=!!image;
   if(!image){
    console.warn('手杀标准UI：武将头像不可用，使用默认头像',name,src||source.database);
    image=fallbacks.get(sex)||(src!==fallback?await loadImage(fallback):null);
@@ -62,10 +63,22 @@ export function createPortraitTextures({PIXI,character,assetURL,defaultPath,read
   // Keep frame dimensions fixed: sprites already sized their placeholder.
   // Resizing the texture after loading would unexpectedly enlarge every card.
   draw({canvas,texture},image);
+  return loaded;
  }
  function start(entry,priority){
+  entry.attempts=(entry.attempts||0)+1;
+  const revision=(entry.version||0)+1;
   if(priority)urgentActive++;else active++;
-  void paint(entry).catch(error=>console.warn('手杀标准UI：头像载入失败',entry.name,error)).finally(()=>{
+  void paint(entry).then(loaded=>{
+   if(disposed||entry.version!==revision||loaded||entry.attempts>=3)return;
+   // A fallback is not a successfully cached portrait. Retry transient failures
+   // without requiring a page reload or allocating another PIXI texture.
+   clearTimeout(retries.get(entry));
+   retries.set(entry,setTimeout(()=>{
+    retries.delete(entry);
+    if(!disposed&&!queue.includes(entry)&&!urgent.includes(entry)){(priority?urgent:queue).push(entry);pump();}
+   },entry.attempts*1000));
+  }).catch(error=>console.warn('手杀标准UI：头像载入失败',entry.name,error)).finally(()=>{
    if(priority)urgentActive--;else active--;pump();
   });
  }
@@ -75,7 +88,7 @@ export function createPortraitTextures({PIXI,character,assetURL,defaultPath,read
   while(!disposed&&!paused&&active<2&&queue.length)start(queue.shift(),false);
  }
  return {
-  refresh(){for(const entry of cache.values()){entry.version=(entry.version||0)+1;if(!queue.includes(entry)&&!urgent.includes(entry))queue.push(entry);}pump();},
+  refresh(){for(const entry of cache.values()){entry.version=(entry.version||0)+1;entry.attempts=0;clearTimeout(retries.get(entry));retries.delete(entry);if(!queue.includes(entry)&&!urgent.includes(entry))queue.push(entry);}pump();},
   pause(){paused=true;queue.length=0;},
   async prepare(){
    await Promise.all(['male','female'].map(async sex=>{const image=await loadImage(resolvePath(defaultPath+sex+'.jpg'));if(!disposed&&image)fallbacks.set(sex,image);}));
@@ -95,6 +108,6 @@ export function createPortraitTextures({PIXI,character,assetURL,defaultPath,read
    const fallback=fallbacks.get(fallbackFor(name));if(fallback)draw(entry,fallback);
    cache.set(key,entry);(priority?urgent:queue).push(entry);pump();return texture;
   },
-  dispose(){disposed=true;queue.length=urgent.length=0;for(const cancel of [...cancelLoads])cancel();for(const {texture} of cache.values())texture.destroy(true);cache.clear();images.clear();fallbacks.clear();},
+  dispose(){disposed=true;queue.length=urgent.length=0;for(const timer of retries.values())clearTimeout(timer);retries.clear();for(const cancel of [...cancelLoads])cancel();for(const {texture} of cache.values())texture.destroy(true);cache.clear();images.clear();fallbacks.clear();},
  };
 }

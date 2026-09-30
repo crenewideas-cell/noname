@@ -1,5 +1,14 @@
 //部分巾帼武将台词补充@快乐小雏田，感谢
 export default {
+  "#ext:名将杀/audio/skill/mjszaohuatonggong1": "世谓天地生人，吾以匠心造化。",
+  "#ext:名将杀/audio/skill/mjszaohuatonggong2": "夺天地之功，化众生之相。",
+  "#ext:名将杀/audio/skill/mjschaijiejishu1": "机枢尽损，神迹方生。",
+  "#ext:名将杀/audio/skill/mjschaijiejishu2": "木石形骸，终非吾身。",
+  "#ext:名将杀/audio/skill/mjsmugesuxing1": "削木为骨，缀丝为脉。",
+  "#ext:名将杀/audio/skill/mjsmugesuxing2": "枯木生姿，新偶化形。",
+  "#ext:名将杀/audio/die/mjs_yanshi:die": "命有尽处，技无穷时……",
+  "#ext:名将杀/audio/die/mjs_yanshi2:die": "吾所造者万古犹存，何患人生短促？",
+
   "#ext:名将杀/audio/skill/mjsyueyanxili1": "何须繁辞，一理足矣。",
   "#ext:名将杀/audio/skill/mjsmingjiaoyuedi1": "不须驰骋才智，且享此刻安宁。",
   "#ext:名将杀/audio/skill/mjsmingjiaoyuedi2": "名教自有乐处，何必向外驰求？",

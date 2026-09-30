@@ -3,6 +3,7 @@ import { readFile, stat, readdir, realpath } from "node:fs/promises";
 import { resolve, relative, dirname, basename, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 import { registerStaticCompression } from "../../packages/fs/src/static.ts";
+import { resolveExtensionPath } from "../../packages/fs/src/extensionLayout.mjs";
 
 export const root = resolve(import.meta.dirname, "../..");
 export const core = resolve(root, "apps/core");
@@ -36,7 +37,7 @@ async function middleware(req: any, res: any, next: () => void) {
 		const name = url.searchParams.get("fileName") || url.searchParams.get("dir") || "";
 		if (name.replaceAll("\\", "/").endsWith("noname.config.txt")) return json({});
 		let file: string;
-		try { file = await contained(core, name); } catch { return json({}); }
+		try { file = await contained(core, relative(core, resolveExtensionPath(core, name))); } catch { return json({}); }
 		if (url.pathname === "/checkFile" || url.pathname === "/checkDir") return json((await stat(file)).isFile() ? "file" : "directory");
 		if (url.pathname === "/getFileList") {
 			const entries = await readdir(file, { withFileTypes: true });
@@ -47,12 +48,18 @@ async function middleware(req: any, res: any, next: () => void) {
 	} catch { json(null, false); }
 }
 
-export async function startEnvironment(channel: string, port: number, artifact?: string, compression = true) {
+export async function startEnvironment(channel: string, port: number, artifact?: string, compression = true, configureDev?: (config: any) => void) {
 	if (channel === "dev") {
-		const { createServer } = await import(pathToFileURL(requireCore.resolve("vite")).href);
-		const server = await createServer({ configFile: resolve(core, "vite.config.ts"), root: core,
-			plugins: [{ name: "performance-read-only", configureServer(server: any) { server.middlewares.use((req: any, res: any, next: any) => { void middleware(req, res, next); }); } }],
-			server: { port, host: "localhost", strictPort: true, open: false } });
+		const { createServer, loadConfigFromFile } = await import(pathToFileURL(requireCore.resolve("vite")).href);
+		let override = {};
+		if (configureDev) {
+			const loaded = await loadConfigFromFile({ command: "serve", mode: "development" }, resolve(core, "vite.config.ts"));
+			configureDev(loaded.config);
+			override = { ...loaded.config, configFile: false };
+		}
+		const server = await createServer({ configFile: resolve(core, "vite.config.ts"), ...override, root: core,
+			plugins: [...((override as any).plugins || []), { name: "performance-read-only", configureServer(server: any) { server.middlewares.use((req: any, res: any, next: any) => { void middleware(req, res, next); }); } }],
+			server: { ...((override as any).server || {}), port, host: "localhost", strictPort: true, open: false } });
 		try { await server.listen(); } catch(error) { await server.close(); throw error; }
 		return { url: `http://localhost:${port}`, close: () => server.close(), cache: "existing Vite dependency cache; first navigation separately labeled" };
 	}

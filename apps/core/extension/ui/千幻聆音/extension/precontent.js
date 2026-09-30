@@ -301,16 +301,18 @@ export let PRECONTENT = async function(config) {
 	// @ts-ignore
 	window.qhly_version = 5;
 	var cssUrl = lib.assetURL + 'extension/千幻聆音';
-	lib.init.css(cssUrl, 'extension');
+	const profileStyles = [lib.init.promises.css(cssUrl, 'extension')];
 	if (lib.config.qhly_viewskin_css) {
 		if (lib.config.qhly_viewskin_css.indexOf('extension/') == 0) {
-			lib.init.css(lib.assetURL + lib.config.qhly_viewskin_css, 'main');
+			profileStyles.push(lib.init.promises.css(lib.assetURL + lib.config.qhly_viewskin_css, 'main'));
 		} else {
-			lib.init.css(cssUrl + '/theme', lib.config.qhly_viewskin_css ? lib.config.qhly_viewskin_css : 'newui');
+			profileStyles.push(lib.init.promises.css(cssUrl + '/theme', lib.config.qhly_viewskin_css ? lib.config.qhly_viewskin_css : 'newui'));
 		}
 	} else {
-		lib.init.css(cssUrl + '/theme', 'newui');
+		profileStyles.push(lib.init.promises.css(cssUrl + '/theme', 'newui'));
 	}
+	// Do not publish qhly_coreReady while the profile is still unstyled.
+	await Promise.all(profileStyles);
 	// @ts-ignore
 	window.qhly_import = function(func) {
 		func(lib, game, ui, get, ai, _status);

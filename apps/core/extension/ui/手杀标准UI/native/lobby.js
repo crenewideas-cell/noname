@@ -4209,8 +4209,9 @@ left4.interactive=true;left4.buttonMode=true;left4.on('pointertap',()=>bridge.no
                                             sprite.addChild(sprite.groupImage);
                                             sprite.interactive = true;
                                             sprite.on('pointerup', (event) => {
-                                                let distance = event.data.global.x - sprite.startX;
-                                                if (distance != 0) return;
+                                                const tapped = sprite.pressOrigin && !sprite.pressDragged;
+                                                sprite.pressOrigin = null;
+                                                if (!tapped) return;
                                                 if (true) {
                                                     //关闭菜单操作，延迟等待，防止出bug
                                                     if(game.noReturnMenu) return;
@@ -4234,8 +4235,13 @@ left4.interactive=true;left4.buttonMode=true;left4.on('pointertap',()=>bridge.no
                                                 }
                                             })
                                             sprite.on('pointerdown', (event) => {
-                                                sprite.startX = event.data.global.x;
+                                                sprite.pressOrigin = {x:event.data.global.x,y:event.data.global.y};
+                                                sprite.pressDragged = false;
                                             })
+                                            sprite.on('pointermove', event => {
+                                                if (sprite.pressOrigin && Math.hypot(event.data.global.x-sprite.pressOrigin.x,event.data.global.y-sprite.pressOrigin.y)>8) sprite.pressDragged = true;
+                                            });
+                                            sprite.on('pointerupoutside', () => { sprite.pressOrigin = null; });
                                             sprite.addChild(spritea);
  bridge.watchPortrait(spritea,j,{width:135,height:224});
  const portraitMask=new PIXI.Graphics().beginFill(0xffffff).drawRoundedRect(33,4,135,224,5).endFill();

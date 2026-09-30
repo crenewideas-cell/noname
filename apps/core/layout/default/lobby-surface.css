@@ -26,7 +26,8 @@ html.lobby-settings-page #window .menu .left.pane > div:not(.extension-studio-en
 :is(.lobby-surface,.skin-manager,.online-lobby,.online-dialog,.shousha-native-confirm,.session-entry,.online-game-status,.online-game-notice,.game-navigation:not(:where(.ss-game-menu))) button:not(:where(.reference-lobby .lobby-atlas-card,.reference-lobby .session-bar button)) {
  box-sizing:border-box;border:10px solid transparent!important;border-radius:0!important;
  border-image:var(--lobby-button-frame)!important;
- background:none!important;color:#fff3d3!important;
+ /* Keep a lacquer face while the shared texture is loading or unavailable. */
+ background:linear-gradient(#a95239,#75291e 48%,#9c391c 52%,#bc641f)!important;color:#fff3d3!important;
  box-shadow:none!important;
  text-shadow:0 1px 2px #3b120e!important;cursor:pointer;
  font-family:var(--lobby-font)!important;transition:filter .15s,box-shadow .15s;

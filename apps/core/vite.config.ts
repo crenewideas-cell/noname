@@ -3,11 +3,11 @@ import vue from "@vitejs/plugin-vue";
 import { classifiedExtensionsPlugin } from "../../scripts/extension-layout.mjs";
 import { extensionManagerPlugin } from "../../scripts/extension-manager/server.js";
 import { reclaimDevPortPlugin } from "../../scripts/reclaim-port.mjs";
+import { developmentPorts } from "../../scripts/dev-ports.mjs";
+import { externalDevSourceMaps } from "../../scripts/dev-sourcemaps.mjs";
+import { devBootStyle } from "../../scripts/dev-boot-style.mjs";
 
-const port = {
-	client: 8081,
-	server: 8089,
-};
+const port = developmentPorts();
 // The browser dev server is local, while the online platform normally runs on
 // the deployment host. Override this with VITE_ONLINE_ORIGIN for another
 // environment or a local platform instance.
@@ -32,7 +32,14 @@ export default defineConfig({
 			noname: "/noname.js",
 		},
 	},
-	plugins: [reclaimDevPortPlugin() as PluginOption, classifiedExtensionsPlugin(import.meta.dirname) as PluginOption, extensionManagerPlugin() as PluginOption, vue()],
+	plugins: [
+		reclaimDevPortPlugin() as PluginOption,
+		classifiedExtensionsPlugin(import.meta.dirname) as PluginOption,
+		extensionManagerPlugin() as PluginOption,
+		devBootStyle(import.meta.dirname) as PluginOption,
+		externalDevSourceMaps() as PluginOption,
+		vue(),
+	],
 	// Classified extensions keep logical URLs; a filesystem glob on those
 	// virtual directories is empty. Let the browser resolve variable imports.
 	build: { dynamicImportVarsOptions: { exclude: /[\\/]extension[\\/]/ } },

@@ -313,5 +313,10 @@
     "name": "活动BOSS",
     "category": "packs",
     "path": "extension/packs/活动BOSS"
+  },
+  {
+    "name": "绯雪·动态",
+    "category": "characters",
+    "path": "extension/characters/绯雪·动态"
   }
 ]

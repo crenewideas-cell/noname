@@ -55,7 +55,8 @@ export function createCharacterBrowser({ ids, caption, heightset, noclick, onlyp
 	const pageNumber = document.createElement("span"); footer.append(pageNumber);
 	const next = control(footer, "下一页", () => pager.go(pager.page + 1));
 	next.classList.add("page-next"); previous.classList.add("page-prev");
-	const pageSize = Math.max(1, parseInt(lib.config.showMax_character_number) || 50);
+	const configuredPageSize = parseInt(lib.config.showMax_character_number);
+	const pageSize = configuredPageSize > 0 ? configuredPageSize : 10;
 	const capt = id => { const text = id.slice(id.lastIndexOf("_") + 1).charAt(0).toLowerCase(); return /[a-z]/.test(text) ? text : "自定义"; };
 	const nodes = new Map();
 	const selected = new Set();

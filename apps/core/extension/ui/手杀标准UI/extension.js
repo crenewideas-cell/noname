@@ -1,4 +1,4 @@
-import {lib,game,ui,openLobbyTools} from 'noname';
+import {lib,game,ui,openLobbyTools,fitLobbyBackground} from 'noname';
 export const type='extension';
 const base=import.meta.url.slice(0,import.meta.url.lastIndexOf('/')+1);
 let installed,activeRuntime;
@@ -25,13 +25,14 @@ function openNativeSettings(runtime){
 
 function createScene(runtime,node,resolve){
  const timers=new Set(),intervals=new Set(),frames=new Set(),apps=new Set(),resources=new Set(),tweens=new Set();
- // The lobby positions and artwork share a 1103 × 514 design space.
- // Deriving its width from the initial viewport makes the independent width
- // and height multipliers in lobby.js distort the artwork and spacing.
- const screen={width:1103,height:514};
+ // Preserve the original composition and scale every element together.
+ const screen={x:0,y:0,width:1103,height:514};
+ const backgrounds=new Set();
+ let viewport={width:screen.width,height:screen.height,scale:1};
  let iframe,observer,finishing=false,closed=false,app,loginStarting=false,toolMenu;
  const runVisual=(fn,...args)=>{if(closed)return;try{Promise.resolve(fn(...args)).catch(error=>runtime.bridge.notice('大厅展示失败：'+error.message));}catch(error){runtime.bridge.notice('大厅展示失败：'+error.message);}};
  const scene={screen,
+  get viewport(){return viewport;},
   get isHome(){return !!app&&!closed;},
   own(resource){if(closed)resource.destroy?.();else resources.add(resource);return resource;},
   ownTween(tween){if(closed)tween.kill();else tweens.add(tween);return tween;},
@@ -39,15 +40,25 @@ function createScene(runtime,node,resolve){
   mount(application){
    if(closed){application.destroy(true,{children:true});return;}
    app=application;apps.add(app);node.append(app.view);
+   // Scene code keeps its layout coordinates; the centered canvas fits the host.
+   Object.defineProperty(app,'screen',{get:()=>screen,configurable:true});
    const resize=()=>{
     if(closed||!node.clientWidth||!node.clientHeight)return;
-    // Fit both axes, including after a resize or orientation change. CSS
-    // scales the whole canvas together, preserving PIXI's pointer mapping.
     const scale=Math.min(node.clientWidth/screen.width,node.clientHeight/screen.height);
-    app.view.style.width=screen.width*scale+'px';
-    app.view.style.height=screen.height*scale+'px';
+    const width=screen.width*scale,height=screen.height*scale;
+    viewport={width,height,scale};app.renderer.resize(width,height);
+    app.stage.scale.set(scale);app.stage.position.set(0,0);
+    app.view.style.width=width+'px';app.view.style.height=height+'px';
+    backgrounds.forEach(sprite=>{if(!sprite.destroyed)scene.cover(sprite);});
    };
    observer=new ResizeObserver(resize);observer.observe(node);resize();
+   // Themes replace textures during loading and navigation.
+   app.ticker.add(()=>backgrounds.forEach(sprite=>{if(!sprite.destroyed)scene.cover(sprite);}));
+  },
+  cover(sprite){
+   backgrounds.add(sprite);
+   fitLobbyBackground(sprite,screen);
+   return sprite;
   },
   ready(){loading.remove();},
    openTools(onOriginal,onHome){toolMenu?.destroy();toolMenu=openLobbyTools({title:'手杀标准UI',onSettings:()=>lib.uiWorkshop.openSettings('options'),onSuiteSettings:()=>openNativeSettings(runtime),onOnline:()=>runtime.bridge.openOnlineLobby(),onOriginal,onHome});},
@@ -81,7 +92,7 @@ function createScene(runtime,node,resolve){
   timers.clear();intervals.clear();frames.clear();
   const releases=[...Array.from(tweens,tween=>()=>tween.kill()),...Array.from(resources,resource=>()=>resource.destroy?.()),...Array.from(apps,application=>()=>{if(application.renderer)application.destroy(true,{children:true});}),()=>runtime.bridge.releaseScene(scene)];
   for(const release of releases)try{release();}catch(error){console.warn('手杀大厅资源释放失败',error);}
-  tweens.clear();resources.clear();apps.clear();app=undefined;
+  tweens.clear();resources.clear();apps.clear();backgrounds.clear();app=undefined;
  }
  const loading=document.createElement('div');loading.className='shousha-native-loading';const boot=document.createElement('iframe');boot.title='手杀标准UI · 加载中';const bootURL=new URL('boot.html',base);bootURL.searchParams.set('elements',new URL(lib.assetURL+'noname/ui/lobbyElements.js',document.baseURI).href);boot.src=bootURL.href;loading.append(boot);
  function showLoadError(error){

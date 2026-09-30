@@ -133,6 +133,7 @@
 	"show_round_menu": true,
 	"show_pause": true,
 	"show_auto": true,
+	"show_sortcard": true,
 	"show_volumn": true,
 	"show_cardpile": true,
 	"only_fullskin": true,

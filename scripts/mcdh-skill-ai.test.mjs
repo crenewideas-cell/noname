@@ -45,3 +45,35 @@ for (const tag of ["respondSha", "respondShan"]) {
         }
     });
 }
+
+const nlSource = extract("extension/packs/梦澈涤花/character/skill.js", (node, ast) =>
+    ts.isPropertyAssignment(node) && node.name.getText(ast) === "mcdh_NL00802");
+for (const choice of [true, false]) {
+    test(`mcdh_NL00802 uses the choice result without event.targets (accept=${choice})`, async () => {
+        const calls = [], cards = [{}], recipient = {};
+        const definition = vm.runInNewContext(`({${nlSource}}).mcdh_NL00802`, { get: { prompt: () => "" } });
+        const player = {
+            hp: 3, countCards: () => 4,
+            addTempSkill: id => calls.push(["temp", id]), addMark: (...args) => calls.push(["mark", ...args]),
+            chooseCardTarget: options => {
+                assert.equal(options.position, "he");
+                assert.equal(options.filterTarget(null, player, player), false);
+                assert.equal(options.filterTarget(null, player, recipient), true);
+                return { forResult: async () => choice ? { bool: true, cards, targets: [recipient] } : { bool: false } };
+            },
+            line: targets => assert.equal(targets[0], recipient),
+            give: async (given, target) => { assert.equal(given, cards); assert.equal(target, recipient); calls.push(["give"]); },
+        };
+        await definition.content({ name: "mcdh_NL00802" }, {}, player);
+        assert.deepEqual(calls, [["temp", "mcdh_NL00802_max"], ["mark", "mcdh_NL00802_max", 1, false], ...(choice ? [["give"]] : [])]);
+    });
+}
+for (const [hand, movable, expected] of [[3, false, [["draw", 2]]], [2, true, [["move"]]], [2, false, []]]) {
+    test(`mcdh_NL00802 preserves draw/move branches (${hand}, ${movable})`, async () => {
+        const calls = [];
+        const definition = vm.runInNewContext(`({${nlSource}}).mcdh_NL00802`);
+        await definition.content({}, {}, { hp: 3, countCards: () => hand, canMoveCard: () => movable,
+            draw: async n => calls.push(["draw", n]), moveCard: async () => calls.push(["move"]) });
+        assert.deepEqual(calls, expected);
+    });
+}

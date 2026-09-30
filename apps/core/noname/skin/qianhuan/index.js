@@ -75,7 +75,7 @@ export function openCharacterSkins(character, player, requestedPage) {
  if(!character)return showNotice('当前没有可查看的武将资料，请启用武将包后重新进入。');
  if(get.character(character).isNull)return showNotice('当前未加载武将“'+character+'”的资料，请启用对应武将包后重新进入。');
  notice?.close();
- if(active){active.showCharacter(character,player,requestedPage);return active;}
+ if(active){const current=active;current.showCharacter(character,player,requestedPage);return active||notice||current;}
  const session=new EventTarget();
  let view,pending,disposed=false,finished=false,currentCharacter,currentPage;
  const finish=()=>{if(finished)return;finished=true;if(active===session)active=undefined;session.dispatchEvent(new Event('close'));};
@@ -84,14 +84,22 @@ export function openCharacterSkins(character, player, requestedPage) {
   if(id===currentCharacter&&page===currentPage&&view?.isConnected)return true;
   pending={id,player:currentPlayer,page};
   if(view?.isConnected)view.close();
+  else { pending=undefined; show(id,currentPlayer,page); }
   return true;
  };
  session.close=()=>{if(disposed)return;disposed=true;pending=undefined;if(view?.isConnected)view.close();else finish();};
  Object.defineProperty(session,'isConnected',{get:()=>!!view?.isConnected});
  function show(id,currentPlayer,requestedPage) {
   const page=requestedPage||(currentPlayer?lib.config.qhly_doubledefaultpage:lib.config.qhly_listdefaultpage);
-  view=game.qhly_open(id,page||'skin',currentPlayer);
-  if(!view){finish();throw new Error('千幻页面尚未就绪');}
+  try {
+   view=game.qhly_open(id,page||'skin',currentPlayer);
+   if(!view)throw new Error('千幻页面尚未就绪');
+  } catch(error) {
+   pending=undefined; disposed=true; finish();
+   console.error('武将详情打开失败',error);
+   showNotice('武将详情暂时无法打开，请重试：'+(error.message||error));
+   return;
+  }
   const manage=createSkinManagementButton(id,()=>{
    if(disposed||!view?.isConnected)return;
    pending={id,player:currentPlayer,page:requestedPage};view.close();
@@ -105,5 +113,5 @@ export function openCharacterSkins(character, player, requestedPage) {
  }
  active=session;
  try{show(character,player,requestedPage);}catch(error){active=undefined;throw error;}
- return session;
+ return finished ? notice : session;
 }

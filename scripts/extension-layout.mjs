@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { extensionEntries, resolveExtensionPath } from "../packages/fs/src/extensionLayout.mjs";
+import { createDevExtensionResolver } from "./dev-extension-resolver.mjs";
 export { extensionEntries, resolveExtensionPath };
 
 export async function copyExtensions(source, destination) {
@@ -16,10 +17,14 @@ export async function copyExtensions(source, destination) {
 /** Keep logical module IDs so relative imports keep the same meaning as releases. */
 export function classifiedExtensionsPlugin(core) {
   const logicalRoot = path.join(core, "extension").replaceAll("\\", "/") + "/";
-  const physical = id => resolveExtensionPath(core, path.relative(core, id));
+  let resolve = relative => resolveExtensionPath(core, relative);
+  const physical = id => resolve(path.relative(core, id));
   return {
     name: "classified-extension-sources",
     enforce: "pre",
+    configResolved(config) {
+      if (config.command === 'serve') resolve = createDevExtensionResolver(core);
+    },
     resolveId(source, importer) {
       const clean = source.split("?")[0];
       let logical;
@@ -68,7 +73,7 @@ export function classifiedExtensionsPlugin(core) {
           // from HMR watching, so Vite's transform cache would otherwise retain
           // old rendering code even after an import and a full page refresh.
           if (/^\/extension\/(?:imports\/)?本地动态皮肤包\/[^/]+\/runtime\/.+\.js$/.test(name)) {
-            const file = resolveExtensionPath(core, name);
+            const file = resolve(name);
             const local = path.relative(path.join(core, 'extension/imports/本地动态皮肤包'), file);
             if (!local.startsWith('..') && !path.isAbsolute(local)) {
               void fs.readFile(file).then(content => {
@@ -80,7 +85,7 @@ export function classifiedExtensionsPlugin(core) {
             }
           }
           if (name.startsWith("/extension/") && !/\.(?:js|ts|css)$/.test(name) && !(name.endsWith(".json") && url.searchParams.has("import"))) {
-            const file = resolveExtensionPath(core, name);
+            const file = resolve(name);
             // Vite decodes URI paths, not URI components. Escaping legal path
             // punctuation (notably + in model names) leaves a literal %2B on
             // disk lookup and incorrectly returns 404 for existing assets.

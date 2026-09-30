@@ -11896,6 +11896,7 @@ export let CONTENT = function(config, pack) {
 		// @ts-ignore
 		var currentViewSkin = lib.qhly_viewskin[lib.config.qhly_currentViewSkin];
 		var wasPaused = _status.paused2;
+		var pausedByView = false, resizeTimer;
 		var closed = false;
 		var gback = ui.create.div('.qh-background');
 		var background = ui.create.div('.qh-window', gback);
@@ -11906,11 +11907,26 @@ export let CONTENT = function(config, pack) {
 		var setSize = function() { fitView(gback, background, currentViewSkin, backButton, dibuhuo); };
 		setSize();
 		var resize = function() {
-			setTimeout(setSize, 500);
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(setSize, 500);
 		};
 		lib.onresize.push(resize);
 		window.addEventListener("resize",resize);
 		const stopWatching=observeViewport(setSize);
+		let released = false;
+		const releaseView = function() {
+			if (released) return;
+			released = true;
+			clearTimeout(resizeTimer);
+			gback.remove();
+			lib.onresize.remove(resize);
+			window.removeEventListener("resize",resize);
+			stopWatching();
+			_status.qhly_open = false;
+			delete _status.qhly_skillAudioWhich;
+			try { if (pausedByView) game.resume2(); }
+			finally { gback.dispatchEvent(new Event("close")); }
+		};
 		gback.close = function(event) {
 			// Programmatic navigation must run the theme's own back-button cleanup
 			// (swipe settings, animation timers, dynamic avatar) before reopening.
@@ -11923,14 +11939,7 @@ export let CONTENT = function(config, pack) {
 			// @ts-ignore
 			game.qhly_playQhlyAudio(lib.config.qhly_currentViewSkin == 'decade' ? 'qhly_voc_dec_press' :
 				'qhly_voc_press', null, true);
-			gback.delete(500, function() {
-				lib.onresize.remove(resize);
-				window.removeEventListener("resize",resize);
-				stopWatching();
-				if (!wasPaused) game.resume2();
-				_status.qhly_open = false;
-				gback.dispatchEvent(new Event("close"));
-			});
+			gback.delete(500, releaseView);
 			// @ts-ignore
 			delete _status.qhly_skillAudioWhich;
 			// @ts-ignore
@@ -11941,27 +11950,35 @@ export let CONTENT = function(config, pack) {
 		backButton.listen(gback.close);
 		gback.hide();
 		document.body.appendChild(gback);
-		// @ts-ignore
-		if (lib.config.qhly_currentViewSkin == 'decade') game.qhly_initDecadeView(name, background, page,
-			cplayer);
-		else if (lib.config.qhly_currentViewSkin == 'shousha') {
+		try {
 			// @ts-ignore
-			if (game.qhly_initShoushaView) {
+			if (lib.config.qhly_currentViewSkin == 'decade') game.qhly_initDecadeView(name, background, page,
+				cplayer);
+			else if (lib.config.qhly_currentViewSkin == 'shousha') {
 				// @ts-ignore
-				game.qhly_initShoushaView(name, background, page, cplayer);
+				if (game.qhly_initShoushaView) {
+					// @ts-ignore
+					game.qhly_initShoushaView(name, background, page, cplayer);
+				}
 			}
-		}
-		// @ts-ignore
-		else if (game.qhly_initNewViewReplace) {
 			// @ts-ignore
-			game.qhly_initNewViewReplace(name, background, page, cplayer);
-		} else {
-			// @ts-ignore
-			game.qhly_initNewView(name, background, page, cplayer);
+			else if (game.qhly_initNewViewReplace) {
+				// @ts-ignore
+				game.qhly_initNewViewReplace(name, background, page, cplayer);
+			} else {
+				// @ts-ignore
+				game.qhly_initNewView(name, background, page, cplayer);
+			}
+			gback.show();
+			game.pause2();
+			pausedByView = !wasPaused;
+			return gback;
+		} catch (error) {
+			// A failed theme must not strand its DOM or block every later card click.
+			closed = true;
+			releaseView();
+			throw error;
 		}
-		gback.show();
-		game.pause2();
-		return gback;
 		// } catch (e) {
 		//   if (QHLY_DEBUGMODE) {
 		//     throw e;

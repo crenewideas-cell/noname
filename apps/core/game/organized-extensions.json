@@ -23309,5 +23309,30 @@
       "incremental.js": "eb7d130a42f1e0a9de4aedd405f70ea898b2bfcd5d9a33b38cba4e737227a74f",
       "info.json": "a985d8784063cb6c0de01ffa87952e8a5e6bdea6db8ec728613f2c82ce2d6d5e"
     }
+  },
+  {
+    "name": "绯雪·动态",
+    "hash": "f61c606cd0a32167a076f0e375051c33f853c00e82226e32b147441a2fadc27e",
+    "characters": [
+      "feixue_changshi",
+      "feixue_yuqiu"
+    ],
+    "defaultEnabled": true,
+    "files": {
+      "audio/skill/feixue_guiren.mp3": "eddee8bf3f85551fbf6d5007532d69f31b8e6ba1cc8a30645a7f13b8deedee9a",
+      "audio/skill/feixue_jianxin.mp3": "d59a7ccae88d10dec452d893bc2e6c2102ffcd3b25f96a3ca7d9a1748103f6b6",
+      "audio/skill/feixue_shuangtian.mp3": "8a5259bfd279ec74e787382d347037472b77341b6b727ce43e4626628d63b39f",
+      "audio/skill/feixue_wanxue.mp3": "a31a7f1dfb5575bf6cdae9b648041b31021a3fc0cab95d374b5e87ce6dfec293",
+      "extension.css": "7875d5c8ca4dca8cb9decd7f8d490087b268a0ce7bbbe260bf8885cfd191ce96",
+      "extension.js": "2adf59faecd45112513ca8bd0271112779ff2fc947c6f8dd27fcf48a660042e0",
+      "image/GIF/feixue_guiren.gif": "ca7aaf5cfaaa6732ddafc215e5c1604ec9478d54a98c55df517f470c41ddaf72",
+      "image/GIF/feixue_jianxin.gif": "4d2614de344b9bc641fad7982a2f75d89c8ddf824e8b801017fc9930c3de3cad",
+      "image/GIF/feixue_shuangtian.gif": "f85beccf4d105d0338f8c6612fac872572c1d7504027d93b1aa36ec5bda5386c",
+      "image/GIF/feixue_wanxue.gif": "53e16b2d3bd8f63b383fe67efad5bad0415fd862ca7ccf28d97e3d80e4f5ba3e",
+      "image/character/feixue.jpg": "7369b72a6be3c7e55dc50d00aa588e41cf61143190157654fe8ea991214eff47",
+      "image/character/feixue_changshi.jpg": "c12be61c9d00588cdcc6c72cb58488e5fb709799566347e2cfae4e66772ce4f2",
+      "image/character/feixue_yuqiu.jpg": "e2de5ad59e1007513e2b388ce8dd278a9da606ac3df490a1c1ff679a496a8c76",
+      "info.json": "67f2ffae971a967dd901c4cf86102ae136ab13acd731e2344350404eca974e41"
+    }
   }
 ]

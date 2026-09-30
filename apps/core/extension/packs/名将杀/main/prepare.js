@@ -132,6 +132,30 @@ export function prepare() {
             }
         });
     
+    const addKuilei = (player, name) => {
+        const info2 = lib.character[name];
+        if (!info2) {
+            return;
+        }
+        const skills = info2?.skills?.filter(skill => {
+            const info = get.info(skill);
+            if (!info || info.charlotte || !get.skillInfoTranslation(skill, player).length) {
+                return false;
+            }
+            return true;
+        });
+        const info = {
+            name: name,
+            hp: info2.hp,
+            maxHp: info2.maxHp ?? info2.hp,
+            maxHandcard: null,
+            maxEquip: null,
+            skills: skills,
+            hasHidden: true,
+        };
+        player.setStorage("mjszaohuatonggong", info);
+        return info;
+    };
     //造化同功
     lib.skill._mjszaohuatonggong = {
         ruleSkill: true,
@@ -173,15 +197,7 @@ export function prepare() {
             if (names.length) {
                 game.addRecentCharacter(names[0]);
                 for (const target of targets) {
-                    target.setStorage("mjszaohuatonggong", names[0]);
-                    const skills = get.character(names[0])?.skills?.filter(skill => {
-                        const info = get.info(skill);
-                        if (!info || info.charlotte || !get.skillInfoTranslation(skill, target).length) {
-                            return false;
-                        }
-                        return true;
-                    });
-                    target.setStorage("mjszaohuatonggong_skills", skills);
+                    addKuilei(target, names[0]);
                 }
             }
         },
@@ -190,7 +206,7 @@ export function prepare() {
     const init = function(character, character2, skill, update) {
         var player = this;
         if (player == game.me) {
-            return origin_player_init.apply(this, arguments);
+            return character;
         }
         if (typeof character == "string" && !lib.character[character]) {
             lib.character[character] = get.character(character);
@@ -210,27 +226,21 @@ export function prepare() {
         if (skills.includes("mjszaohuatonggong")) {
             var list = get.info("mjszaohuatonggong").getList();
             var newCharacter = list.randomGet();
-            arguments[0] = newCharacter;
-            player.setStorage("mjszaohuatonggong", oldCharacter);
-            const originSkills = get.character(oldCharacter)?.skills?.filter(skill => {
-                const info = get.info(skill);
-                if (!info || info.charlotte || !get.skillInfoTranslation(skill, player).length) {
-                    return false;
-                }
-                return true;
-            });
-            player.setStorage("mjszaohuatonggong_skills", originSkills);
+            if (newCharacter) {
+                addKuilei(player, oldCharacter);
+                return newCharacter;
+            }
         }
-        return player;
+        return character;
     };
     lib.element.player.init = function(character, character2, skill, update) {
         if (_status.event.name != "chooseCharacter") {
             return origin_player_init.apply(this, arguments);
         } else {
-            init.apply(this, arguments);
+            arguments[0] = init.apply(this, arguments) || character;
         }
         var player = origin_player_init.apply(this, arguments);
-        const originSkills = player.getStorage("mjszaohuatonggong_skills", []);
+        const originSkills = player.getStorage("mjszaohuatonggong", {}).skills || [];
         if (originSkills.length) {
             player.addInvisibleSkill(originSkills);
         }

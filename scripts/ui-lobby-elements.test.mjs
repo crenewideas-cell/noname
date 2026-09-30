@@ -45,12 +45,34 @@ test('background fit preserves cover center and stretch behavior across texture 
  s.texture={width:400,height:200};fitLobbyBackground(s,{width:200,height:200});assert.equal(s.scale.x,1);
  const bg=createLobbyElements(PIXI,'shousha').background(s.texture,{width:300,height:150});assert.equal(bg.width,300);assert.equal(bg.height,150);assert.equal(bg.anchor.x,0);
 });
+
+test('shousha repositions artwork for the viewport without squeezing its texture',()=>{
+ const ui=createLobbyElements(PIXI,'shousha');
+ for(const [x,y] of [[1680/881*514/1103,1],[1920/1080*514/1103,1],[2,1]]){
+  for(const name of ['mode1','mode2','mode3','mode4','under5','shop','bigmenu']){
+   const node=ui.sprite({},name);ui.place(node,{x,y});
+   assert.equal(node.scale.x,node.scale.y,name);
+   assert.equal(node.x,ui.layout[name].x*x,name);
+   assert.equal(node.y,ui.layout[name].y*y,name);
+  }
+ }
+});
 test('loading templates retain logo, progress and theme-specific tip styles',()=>{
  const ui=createLobbyElements(PIXI,'rzsh'),screen={width:1000,height:500};
  const logo=ui.idle({},screen,{x:.52,scale:.75}),bar=ui.idle({},screen,{y:.95,scale:.75});
  assert.deepEqual(logo.animation,[0,'idle',true]);assert.equal(logo.position.x,520);assert.equal(bar.position.y,475);
  const a=ui.tip(screen,{y:.91,fontSize:15,fill:'white'}),b=ui.tip(screen);
  assert.equal(a.position.y,455);assert.equal(a.style.fill,'white');assert.equal(b.style.fill,'#DAA520');assert.ok(lobbyLoadingTips.includes(a.text));
+});
+
+test('RZSH structural left rail spans the stage while adjacent icons stay proportional',()=>{
+ const ui=createLobbyElements(PIXI,'rzsh');
+ for(const [width,height] of [[1680,881],[1920,1080],[1280,720]]){
+  const x=width/height*514/1103,y=1,rail=ui.sprite({},'left_fix');ui.place(rail,{x,y});
+  const top=514*.0705+rail.y-750*rail.scale.y/2,bottom=top+750*rail.scale.y;
+  assert.ok(top<=0&&bottom>=514*.91,`${width}x${height}: rail meets header and footer`);
+  const icon=ui.sprite({},'maisui_btn');ui.place(icon,{x,y});assert.equal(icon.scale.x,icon.scale.y);
+ }
 });
 test('checked-in scenes use common templates and regeneration is idempotent',()=>{
  for(const [kind,path,count]of [['rzsh','如真似幻/scenes.js',16],['shousha','手杀标准UI/native/lobby.js',13]]){

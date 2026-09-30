@@ -37,6 +37,21 @@ try {
     lib.characterPack.selection_filter_fixture = { liubei: lib.character.liubei, sunquan: lib.character.sunquan };
     lib.translate.selection_filter_fixture_character_config = '筛选回归包';
     const cases = [];
+    // Direct entry/old saves can lack the menu-initialized page size. Explicit
+    // free choice must never silently turn back into the full character list.
+    for (const size of [undefined, '0', '-1', 'invalid']) {
+     if (size === undefined) delete lib.config.showMax_character_number;
+     else lib.config.showMax_character_number = size;
+     const paged = ui.create.characterDialog('heightset', 'paged');
+     check(!!paged.characterPager, `page size ${size}: free choice retains pagination`);
+     check(paged.characterPager.pageSize === 10, `page size ${size}: original ten-character default`);
+     check(paged.querySelectorAll('.button.character').length <= 10, 'initial DOM stays within one page');
+     check(!!paged.querySelector('input') && !!paged.querySelector('.page-next'), 'search and page controls remain present');
+     paged.characterPager.pause(); paged.remove();
+     const ordinary = ui.create.characterDialog(id => !ids.includes(id));
+     check(ordinary.paginationMaxCount.get('character') === 10 && ordinary.paginationMap.size === 1, 'legacy directory also retains its original pagination');
+     ordinary.remove();
+    }
     for (const kind of ['ordinary', 'paged', 'legacy']) {
      lib.config.showMax_character_number = kind === 'paged' ? '2' : '0';
      const filter = id => !ids.includes(id);

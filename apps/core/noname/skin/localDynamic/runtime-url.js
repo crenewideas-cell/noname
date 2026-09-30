@@ -10,8 +10,8 @@ export function dynamicPlayerURL(packBase, options={}, moduleURL=import.meta.url
  return url.href;
 }
 export function dynamicThumbnailKey(pack,entry) {
- return 'portrait:camera-r11-v2:240x360:ready-v1:'+pack.base+entry.id+':'+(entry.thumbnailRevision||'');
+ return 'portrait:fixed-frame-v1:240x360:ready-v1:'+pack.base+entry.id+':'+(entry.thumbnailRevision||'');
 }
 
-// The R11 portrait guard changes visible framing; pre-R11 images are incompatible.
+// Fixed portrait cameras change visible framing; older images are incompatible.
 export function compatibleThumbnailKey(pack,entry){return dynamicThumbnailKey(pack,entry);}

@@ -1266,7 +1266,7 @@ export class Create {
 		groups.sort(lib.sort.group);
 		// Explicitly adapted free-choice screens and read-only directories opt in.
 		// Arbitrary extension/skill dialogs keep their historical complete buttons.
-		if ((paged || noclick === true) && !thisiscard && !characterx && !seperate && parseInt(lib.config.showMax_character_number) > 0) {
+		if ((paged || noclick === true) && !thisiscard && !characterx && !seperate) {
 			list.sort(lib.sort.character);
 			return createCharacterBrowser({ ids: list, caption: str, noclick, onlypack, heightset, expandall });
 		}
@@ -1772,8 +1772,11 @@ export class Create {
 		dialog.classList.add("scroll1");
 		dialog.classList.add("scroll2");
 		dialog.classList.add("scroll3");
-		dialog.supportsPagination = Boolean(parseInt(lib.config.showMax_character_number));
-		dialog.paginationMaxCount.set("character", parseInt(lib.config.showMax_character_number));
+		// The settings menu may not have initialized this preference yet (old
+		// saves and direct mode entry). Match its default instead of showing all.
+		const configuredPageSize = parseInt(lib.config.showMax_character_number);
+		dialog.supportsPagination = true;
+		dialog.paginationMaxCount.set("character", configuredPageSize > 0 ? configuredPageSize : 10);
 		dialog.addEventListener(lib.config.touchscreen ? "touchend" : "mouseup", function () {
 			_status.clicked2 = true;
 		});

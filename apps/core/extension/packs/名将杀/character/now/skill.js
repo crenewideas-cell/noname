@@ -679,7 +679,7 @@ const skills = {
 	 * 在选将阶段被选择时，额外选择1个武将，制作1个与其相同的傀儡，然后傀儡代替你登场，并且由你控制傀儡。当你的傀儡在场时，其他角色只能查看傀儡的技能。
 	 * */
 	/**结算说明
-	 * 1.偃师在各模式的选将阶段被选择后，会随机从3个武将中，再次3选1，作为傀儡，代替偃师登场游戏，此时，除了部分公开选将过程的模式（如巅峰赛楚汉争霸），只有偃师玩家自己知道登场的是傀儡。在其他玩家视角下，暂时无法得知场上存在偃师。 
+	 * 1.偃师在各模式的选将阶段被选择后，会随机从3个武将中，再次3选1，作为傀儡，代替偃师登场游戏，此时，除了部分公开选将过程的模式（如巅峰赛楚汉争霸），只有偃师玩家自己知道登场的是傀儡。在其他玩家视角下，暂时无法得知场上存在偃师。
 	 * 2.偃师代替傀儡登场时，会先弃置傀儡的所有牌，然后摸初始手牌，并获得拆解傀儡的牌（此时傀儡每1点体力值可以对应获得2张牌），并且不继承傀儡的buff状态。
 	 * */
 	mjszaohuatonggong: {
@@ -691,6 +691,26 @@ const skills = {
 			const list = _status.characterlist.slice().removeArray(banList).randomGets(3);
 			return list;
 		},
+		addKuilei(player) {
+			const skills = player.getSkills(null, false, false).filter(skill => {
+	            const info = get.info(skill);
+	            if (!info || info.charlotte || !get.skillInfoTranslation(skill, player).length) {
+	                return false;
+	            }
+	            return true;
+	        });
+            const info = {
+                name: player.name1,
+                hp: player.hp,
+                maxHp: player.maxHp,
+                maxHandcard: player.getHandcardLimit(),
+                maxEquip: player.mjsGetEquipLimit(),
+                skills: skills,
+                hasHidden: false,
+            };
+            player.setStorage("mjszaohuatonggong", info);
+            return info;
+		},
 		banList: ["mjs_yanshi"],
 		silent: true,
 		popup: true,
@@ -698,7 +718,7 @@ const skills = {
 		async content(event, trigger, player) {
             const character = event.characterName || "mjs_yanshi";
             game.initCharacterList();
-            const list = _status.characterlist.removeArray().randomGets(3);
+            const list = lib.skill.mjszaohuatonggong.getList();
             event.result = await player
                 .chooseButton(["武将选择", [list, "character"]], true)
                 .set("ai", button => {
@@ -709,7 +729,6 @@ const skills = {
                 })
                 .forResult();
             if (event?.result?.links?.length) {
-                player.setStorage("mjszaohuatonggong", character);
                 const skills = get.character(character)?.skills?.filter(skill => {
                     const info = get.info(skill);
                     if (!info || info.charlotte || !get.skillInfoTranslation(skill, player).length) {
@@ -717,20 +736,23 @@ const skills = {
                     }
                     return true;
                 });
-                player.setStorage("mjszaohuatonggong_skills", skills);
+                const info = get.character(character);
+                player.setStorage("mjszaohuatonggong", {
+                    name: character,
+                    hp: info.hp,
+                    maxHp: info.maxHp ?? info.hp,
+                    maxHandcard: null,
+                    maxEquip: null,
+                    skills,
+                    hasHidden: true,
+                });
             }
         },
         async chooseCharacterAfter(event, trigger, player) {
-        	const skills = player.getStorage("mjszaohuatonggong_skills", []);
+            const skills = player.getStorage("mjszaohuatonggong", {}).skills || [];
             if (skills.length) {
                 player.addInvisibleSkill(skills);
             }
-        },
-        subSkill: {
-        	skills: {
-        		charlotte: true,
-        		onremove: true,
-        	},
         },
 	},
 	/**拆解机枢
@@ -746,6 +768,7 @@ const skills = {
 		popup: true,
 		forced: true,
 		locked: false,
+		onremove: ["mjschaijiejishu_counter"],
 		filter(event, player) {
 			if (!player.storage.mjszaohuatonggong) {
 				return false;
@@ -754,25 +777,46 @@ const skills = {
 		},
 		async content(event, trigger, player) {
 			const num = player.getHp(true) * 2;
-			const cards = player.getCards("hej");
+			const cards = player.getCards("hejsx");
 			if (cards.length) {
 				await player.discard(cards).set("forceDie", true);
 			}
-			player.init(player.storage.mjszaohuatonggong);
+			const info = player.storage.mjszaohuatonggong;
+			if (!info) {
+				return;
+			}
+			const name = info.name;
+			const hp = info.hp,
+				maxHp = info.maxHp;
+			await player.reinitCharacter(player.name1, name, false);
+			player.hp = hp;
+			player.maxHp = maxHp;
+			if (typeof info.maxHandcard == "number" && info.maxHandcard != player.getHandcardLimit()) {
+				lib.skill.mjsallmax.change(player, info.maxHandcard - player.getHandcardLimit());
+			}
+			if (typeof info.maxEquip == "number" && info.maxEquip != player.mjsGetEquipLimit()) {
+				player.addSkill("mjsequip");
+				player.storage.mjsequip = (player.storage.mjsequip || 0) + info.maxEquip - player.mjsGetEquipLimit();
+				game.log(player, "的装备上限变为", "#y" + info.maxEquip);
+				const next = game.createEvent("mjsContractEquipLose");
+			    next.player = player;
+			    next.setContent("mjsContractEquipLose");
+			    await next;
+			}
 			delete player.storage.mjszaohuatonggong;
-			await player.gain(get.cards(4));
+			player.update();
+			if (info.hasHidden) {
+				await player.gain(get.cards(4));
+			}
 			const next = game.createEvent("enterGame");
             next.player = player;
             next.setContent("emptyEvent");
             await next;
 			await player.draw(num);
-			if (trigger.name == "dying") {
-				player
-					.when("dyingAfter")
-					.then(() => {
-						player.phaseUse();
-					});
-			}
+
+			const phaseUse = player.phaseUse();
+			event.next.remove(phaseUse);
+			trigger.getParent().next.push(phaseUse);
 		},
 		group: "mjschaijiejishu_counter",
 		subSkill: {
@@ -783,8 +827,7 @@ const skills = {
 	            silent: true,
 	            firstDo: true,
 	            async content(event, trigger, player) {
-	                const num = trigger.num;
-	                player.addMark(event.name, num, false);
+	                player.addMark(event.name, 1, false);
 	                if (player.countMark(event.name) % 3 == 0) {
 	                	trigger._mjschaijiejishu = true;
 	                }
@@ -817,7 +860,7 @@ const skills = {
 		async content(event, trigger, player) {
 			player.awakenSkill(event.name);
             game.initCharacterList();
-            const list = _status.characterlist.removeArray().randomGets(3);
+            const list = lib.skill.mjszaohuatonggong.getList();
             event.result = await player
                 .chooseButton(["武将选择", [list, "character"]], true)
                 .set("ai", button => {
@@ -828,18 +871,16 @@ const skills = {
                 })
                 .forResult();
             if (event?.result?.links?.length) {
-                player.setStorage("mjszaohuatonggong", player.name1);
-                const skills = player.getSkills(null, false, false).filter(skill => {
-		            const info = get.info(skill);
-		            if (!info || info.charlotte || !get.skillInfoTranslation(skill, player).length) {
-		                return false;
-		            }
-		            return true;
-		        });
-                player.setStorage("mjszaohuatonggong_skills", skills);
-                player.init(event.result.links[0]);
+                lib.skill.mjszaohuatonggong.addKuilei(player);
+                const name = event.result.links[0];
+				const hp = get.character(name).hp,
+					maxHp = get.character(name).maxHp;
+				await player.reinitCharacter(player.name1, name, false);
+				player.hp = hp;
+				player.maxHp = maxHp;
+				player.update();
             }
-            const skills = player.getStorage("mjszaohuatonggong_skills", []);
+            const skills = player.getStorage("mjszaohuatonggong", {}).skills || [];
             if (skills.length) {
             	player.addInvisibleSkill(skills);
             }

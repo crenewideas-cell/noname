@@ -1,6 +1,4 @@
 // Renderer for the existing Qianhuan list/portrait. No additional skin UI.
-import { layoutPreview } from './preview-layout.js';
-import { layoutLocalPlayer } from './player-layout.js';
 import { eventMotions } from './events.js';
 import { createEffectHost } from './effect-host.js';
 import { createCatalogIndex } from './catalog-index.js';
@@ -25,7 +23,7 @@ export function install(env,packName,resourcePath='extension/'+packName+'/') {
   return pack;
 }
 export function createHub({lib,game,ui,_status,openCharacterSkins}) {
-  const hub={version:3,packs:{},hosts:new Map(),previews:new Map(),framing:new Map(Object.entries(lib.config.localDynamicSkinFrames||{}).filter(([,frame])=>frame.version===3))};let serial=0,localLayout,localPlayer;const warmPreviews=[];
+  const hub={version:3,packs:{},hosts:new Map(),previews:new Map(),framing:new Map()};let serial=0;const warmPreviews=[];
   const active=p=>lib.config['extension_'+p.name+'_enable']!==false;
   const current=name=>name?(game.qhly_getSkin?game.qhly_getSkin(name):managedSelection(lib.config,name)?.token||lib.config.qhly_skinset?.skin?.[name]):null;
   const interactive=p=>lib.config['extension_'+p.name+'_interaction']!==false;
@@ -194,14 +192,6 @@ export function createHub({lib,game,ui,_status,openCharacterSkins}) {
       }
     }
     for(const [portrait,h] of hub.hosts)if(!wanted.has(portrait)){dispose(h);hub.hosts.delete(portrait);}
-    const localHosts=[...hub.hosts.values()].filter(h=>h.player===game.me);
-    if(localPlayer!==game.me||!localHosts.length){localLayout?.restore();localLayout=null;localPlayer=null;}
-    if(localHosts.length){
-      if(!localLayout){localPlayer=game.me;localLayout=layoutLocalPlayer(game.me);}
-      const aspects=[game.me.node.avatar,game.me.node.avatar2].map(node=>{const host=localHosts.find(h=>h.portrait===node);return host&&!host.nativePortrait&&hub.framing.get(host.e.id)?.aspect;});
-      localLayout.update(aspects);
-      for(const h of localHosts)Object.assign(h.node.style,{left:h.portrait.offsetLeft+'px',top:h.portrait.offsetTop+'px',width:h.portrait.offsetWidth+'px',height:h.portrait.offsetHeight+'px'});
-    }
     for(const [node,h] of hub.previews){if(!node.isConnected||!node.getClientRects().length||(!h.libraryPreview&&!active(h.p))||!canAnimate(h.name,h.e,node))hub.stopPreview(node);else {h.cleanupLayout?.resize?.();updateInput(h);}}
   };
   function readyHost(h,data){
@@ -216,14 +206,8 @@ export function createHub({lib,game,ui,_status,openCharacterSkins}) {
             h.cleanupLayout?.();h.cleanupLayout=undefined;hub.framing.delete(h.e.id);
             if(lib.config.localDynamicSkinFrames?.[h.e.id]){delete lib.config.localDynamicSkinFrames[h.e.id];game.saveConfig('localDynamicSkinFrames',lib.config.localDynamicSkinFrames);}
           }
-          if(!h.player&&p.nativePortrait&&p.previewAspect){h.cleanupLayout?.();h.cleanupLayout=layoutPreview(h.portrait,{...p,orientation:p.previewAspect>1.15?'landscape':'portrait'});}
-          // Startup fallback until this skin has been shown in the native preview.
-          if(!p.nativePortrait&&!hub.framing.has(h.e.id)){const r=p.focus.width/p.focus.height;hub.framing.set(h.e.id,{aspect:p.orientation==='landscape'?r:Math.max(r, .67)});}
-          if(!h.player&&!p.nativePortrait){h.cleanupLayout?.();h.cleanupLayout=layoutPreview(h.portrait,p,frame=>{
-            hub.framing.set(h.e.id,frame);
-            const saved=lib.config.localDynamicSkinFrames ||= {};
-            if(saved[h.e.id]?.version!==frame.version||Math.abs(saved[h.e.id].aspect-frame.aspect)>.002){saved[h.e.id]=frame;game.saveConfig('localDynamicSkinFrames',saved);}
-          });}
+          // Frame geometry belongs to the theme, for every skin and renderer.
+          // Artwork metadata must not resize either preview or player borders.
         }
         updateInput(h,true);hub.refresh();h.frame.style.visibility='visible';
         playHostEvent(h,'enter');

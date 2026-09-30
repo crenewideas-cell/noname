@@ -100,7 +100,10 @@ export async function createNativeRuntime(manifest) {
  });
  let characterGrid;
  const bridge={storage,session,url,
-  sceneUI:()=>createLobbyElements(graphics,'shousha'),
+  sceneUI:()=>{
+   const elements=createLobbyElements(graphics,'shousha');
+   return {...elements,background:(texture,screen)=>scene.cover(elements.background(texture,screen,'cover'))};
+  },
   grid(cards,container,scrollbox,scaleX,scaleY,app){
    if(!characterGrid){
     characterGrid=createCharacterGrid({graphics,app,ticker:()=>new graphics.Ticker()});
@@ -127,7 +130,7 @@ export async function createNativeRuntime(manifest) {
   async openOnlineLobby(mode='identity'){if(disposed||onlineEntry)return;onlineEntry=true;const current=scene,resume=current?.suspendRendering();try{const entry=await lib.uiWorkshop.openRooms(mode);if(disposed||scene!==current){entry?.close();return;}onlineController=entry;await entry?.closed;}catch(error){if(!disposed){console.error(error);bridge.notice(error.message);}}finally{onlineController=undefined;onlineEntry=false;resume?.();}},
   watchPortrait(sprite,name,options){visiblePortraits.add({sprite,name,options});if(portraitTimer)return;portraitTimer=scene.interval(()=>{
    let started=0;for(const entry of visiblePortraits){if(entry.sprite.destroyed){visiblePortraits.delete(entry);continue;}if(!entry.sprite.worldVisible||!scene.isVisible(entry.sprite))continue;
-    const bounds=entry.sprite.getBounds();if(bounds.x+bounds.width<0||bounds.y+bounds.height<0||bounds.x>bridge.screen.width||bounds.y>bridge.screen.height)continue;
+    const bounds=entry.sprite.getBounds(),viewport=scene.viewport;if(bounds.x+bounds.width<0||bounds.y+bounds.height<0||bounds.x>viewport.width||bounds.y>viewport.height)continue;
     entry.sprite.texture=portraitStore().get(entry.name,entry.options);entry.sprite.width=entry.options.width;entry.sprite.height=entry.options.height;visiblePortraits.delete(entry);if(++started===12)break;
    }},200);},
   framePortrait(player,portrait,labels){const frame=new graphics.Graphics();frame.lineStyle(7,0x251b13,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(2,0xbda36b,1).drawRoundedRect(-86,-139,172,198,6);frame.lineStyle(1,0xead6a0,.8).drawRoundedRect(-81,-134,162,188,3);player.addChildAt(frame,player.getChildIndex(labels));},

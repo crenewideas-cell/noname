@@ -116,6 +116,9 @@ const hooks = {
             if ((() => {
                 var dialog = get.idDialog(event.dialog) || event.dialog || (Array.isArray(event.createDialog) ? 0 : ui.dialog);
                 var bool = true;
+                // Character directories are not card popups. Reading their
+                // compatibility buttons getter creates the entire character pool.
+                if (dialog?.characterPager) return false;
                 if (!dialog || dialog.buttons?.length > 25) return false;
                 if (dialog.videoId !== undefined || _status.dieClose?.includes(dialog)) return false;
                 if (dialog.querySelectorAll(".buttons")?.length > 1) {

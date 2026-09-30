@@ -234,3 +234,8 @@ extension/ui/动态皮肤验证扩展/
 !extension/packs/活动武将/image/character/Mbaby_ol_feiyi.jpg
 !extension/packs/活动武将/image/character/Mbaby_qiuliju.jpg
 !extension/packs/活动武将/image/character/Mbaby_wuyi.jpg
+
+# 绯雪 standalone character and its media.
+!extension/characters/
+!extension/characters/绯雪·动态/
+!extension/characters/绯雪·动态/**

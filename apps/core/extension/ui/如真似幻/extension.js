@@ -63,12 +63,11 @@ export async function activate(manifest) {
    const ownNode=node=>{sceneNodes.add(node);return node;};
    const sceneDocument=new Proxy(document,{get(target,key){if(key==='createElement')return(...args)=>ownNode(target.createElement(...args));const value=Reflect.get(target,key,target);return typeof value==='function'?value.bind(target):value;}});
    for(const [key,create] of Object.entries(draftCreate))sceneContext.ui.create[key]=(...args)=>ownNode(create(...args));
-   // Match the original 1103 × 514 layout units while allowing the viewport
-   // aspect ratio to determine its width. The stage itself scales uniformly.
-   const screen = {x:0, y:0, width:514 * (node.clientWidth || 1103) / (node.clientHeight || 514), height:514};
-   let viewport = {width:screen.width,height:screen.height,scale:1};
+   // Keep the original composition fixed: resize the whole scene, including
+   // its decorative frames, with one scale instead of relaying out each axis.
+   const screen = {x:0, y:0, width:1103, height:514};
    const views = new Map();
-   let pendingView = restore.view || "home", activeView = restore.view || "home", resizing, finishing = false, homeReady = false;
+   let pendingView = restore.view || "home", activeView = restore.view || "home", finishing = false, homeReady = false;
    let observer, onlineController, onlineOpen = false, resizeScene, toolMenu;
    let done = false, adventureEntering = false, graphics, motion;
    const lifecycle = this.lifecycle = {
@@ -91,23 +90,14 @@ export async function activate(manifest) {
     mount(app) {
      this.app = app; node.append(app.view);
      const resize = () => {
-      const width = node.clientWidth, height = node.clientHeight;
-      if (!width || !height || done) return;
-      const scale = Math.min(width / screen.width, height / screen.height);
-      viewport = {width,height,scale}; app.renderer.resize(width,height);
-      app.stage.scale.set(scale); app.stage.position.set((width-screen.width*scale)/2,(height-screen.height*scale)/2);
+      if (!node.clientWidth || !node.clientHeight || done) return;
+      const scale = Math.min(node.clientWidth / screen.width, node.clientHeight / screen.height);
+      const width = screen.width * scale, height = screen.height * scale;
+      app.renderer.resize(width,height);
+      app.stage.scale.set(scale); app.stage.position.set(0,0);
       app.view.style.width = `${width}px`; app.view.style.height = `${height}px`;
       app.view.style.transform = "translate(-50%,-50%)";
       backgrounds.forEach(sprite => { if (!sprite.destroyed) lifecycle.cover(sprite); });
-      clearTimeout(resizing);
-      if (!finishing && !onlineOpen && activeView !== "matching" && Math.abs(width / height - screen.width / screen.height) > 0.005) {
-       resizing = setTimeout(() => {
-        if (done || finishing) return;
-        const state = {view:pendingView || activeView, mode:sceneWindow.moode};
-        lifecycle.dispose(true);
-        void splash.init(node, resolve, state);
-       }, 180);
-      }
      };
      resizeScene = resize;
      observer = new ResizeObserver(resize); observer.observe(node); resize();
@@ -117,7 +107,7 @@ export async function activate(manifest) {
     cover(sprite) {
      const first = backgrounds.size === 0;
      backgrounds.add(sprite);
-     fitLobbyBackground(sprite, {width:viewport.width/viewport.scale, height:viewport.height/viewport.scale, centerX:screen.width/2, centerY:screen.height/2});
+     fitLobbyBackground(sprite, screen);
      if (first) queueMicrotask(() => { if (pendingView) lifecycle.showView(pendingView); });
     },
     loader() {
@@ -132,7 +122,7 @@ export async function activate(manifest) {
     characterTools(options) { return lifecycle.own(createLobbyCharacterTools({...options,canvas:lifecycle.app.view,renderer:lifecycle.app.renderer,ticker:lifecycle.app.ticker})); },
     async online(mode = "identity") {
      if (done || finishing || onlineOpen) return;
-     onlineOpen = true; clearTimeout(resizing);
+     onlineOpen = true;
      try {
       await game.promises.saveConfig("sessionType", "online");
       if (done) return;
@@ -193,13 +183,12 @@ export async function activate(manifest) {
     timeout(fn, ms, ...args) { if(done)return 0;const id = setTimeout(() => { timers.delete(id); if (!done) runVisual(fn,...args); }, ms); timers.add(id); return id; },
     interval(fn, ms, ...args) { if(done)return 0;const id = setInterval(() => { if (!done) runVisual(fn,...args); }, ms); intervals.add(id); return id; },
     frame(fn) { if(done)return 0;const id = requestAnimationFrame(t => { frames.delete(id); if (!done) runVisual(fn,t); }); frames.add(id); return id; },
-    async finish(mode) { if (done || finishing) return; finishing = true; try { await sceneContext.commitMode(mode); if(done||disposed)return; await game.promises.saveConfig("sessionType", "offline"); if(done||disposed)return; clearTimeout(resizing); lifecycle.sound.dispose(); resolve(mode); } catch(error) { finishing=false;if(!done)alertScene(error.message); } },
-    dispose(resize = false) {
+    async finish(mode) { if (done || finishing) return; finishing = true; try { await sceneContext.commitMode(mode); if(done||disposed)return; await game.promises.saveConfig("sessionType", "offline"); if(done||disposed)return; lifecycle.sound.dispose(); resolve(mode); } catch(error) { finishing=false;if(!done)alertScene(error.message); } },
+    dispose() {
      if (done) return; done = true;
      const release = action => { try { action(); } catch(error) { console.warn("如真似幻资源释放失败",error); } };
      release(() => onlineController?.close());
      if (activeScene === lifecycle) activeScene = null;
-     clearTimeout(resizing);
      // Stop producers before destroying PIXI transforms. Source "removed"
      // listeners animate neighbouring panels; firing them during teardown can
      // create a GSAP tween targeting a panel already destroyed earlier.

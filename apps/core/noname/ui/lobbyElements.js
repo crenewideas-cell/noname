@@ -55,12 +55,15 @@ export function createLobbyElements(PIXI, theme) {
   let px = x, py = y, sx = x, sy = y;
   if (raw) px = py = sx = sy = 1;
   else if (theme === 'rzsh') {
-   if (!/bg|kuang/.test(node.name)) sx = sy = Math.min(x, y);
+   // The left rail joins the header and footer. Its vertical extent follows
+   // the stage height; treating it as an icon leaves gaps on narrower screens.
+   if (!/bg|kuang/.test(node.name) && node.name !== 'left_fix') sx = sy = Math.min(x, y);
   } else {
    const menu = /menuyi|menuer|menusan|menusi|menuwu/.test(node.name);
    if (menu) py = x;
-   if (node.name !== 'leftlong' && (menu || /jj_grade|ttrank|left|under|shop|right|ro2|czg|riactive|doudizhu/.test(node.name))) sx = y;
-   else if (node.name.includes('bigmenu')) sy = x;
+   // Only structural backdrops stretch with the layout. Mode illustrations,
+   // portraits, text and buttons must retain their atlas aspect ratio.
+   if (!/bg|kuang|leftlong/.test(node.name)) sx = sy = Math.min(x, y);
   }
   node.x = spec.x * px;
   node.y = spec.y * py;

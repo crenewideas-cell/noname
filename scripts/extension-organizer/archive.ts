@@ -54,6 +54,8 @@ function entryName(entry: yauzl.Entry) {
 
 export class Archive {
 	entries = new Map<string, yauzl.Entry>();
+	/** Validated explicit directory entries, retained for source audit counts. */
+	directories: string[] = [];
 	private zip!: yauzl.ZipFile;
 	private error?: Error;
 	static async open(file: string) {
@@ -80,6 +82,7 @@ export class Archive {
 						total += entry.uncompressedSize;
 						if (collisions.size > 100000 || total > 4 * 1024 ** 3 || entry.uncompressedSize > 1024 ** 3 || entry.uncompressedSize > Math.max(16 * 1024 ** 2, entry.compressedSize * 1000)) throw new Error("ZIP 超出安全大小/数量/压缩比限制");
 						if (!name.endsWith("/")) archive.entries.set(name, entry);
+						else archive.directories.push(name);
 						archive.zip.readEntry();
 					} catch (e) {
 						reject(e);
