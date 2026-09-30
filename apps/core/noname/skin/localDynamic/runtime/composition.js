@@ -58,7 +58,7 @@ export function subjectBounds(skeleton, transform={}, allowCompactPrefix=false) 
   if(!skeleton)return;
   if(allowCompactPrefix){const known=subjectBounds(skeleton,transform);if(known)return known;}
   const candidates=[];
-  const names=skeleton.slots.map(s=>s.attachment?.name?.split('/').at(-1)||'');
+  const names=skeleton.slots.map(s=>s.attachment?.name?.split('/').at(-1)||'').filter(Boolean);
   for(const slot of skeleton.slots){
     const a=slot.attachment,name=a?.name?.split('/').at(-1)||'';
     // Accept the exporter prefixes for the person's head, not arbitrary
@@ -86,8 +86,9 @@ export function subjectBounds(skeleton, transform={}, allowCompactPrefix=false) 
   const box=candidates[0]?.box;if(box)return box;
   // Numeric attachment names carry no facial semantics. A named body chain
   // still supplies a torso anchor; scenery branches must not shift its center.
-  if(names.filter(n=>/^\d+(?:[_-]\d+)*$/.test(n)).length>names.length*.5){
-    const bone=skeleton.bones?.find(b=>b.data.length>0&&/^(?:xingxiang|zhixin|renwu)\d*$/i.test(b.data.name));
+  if(names.filter(n=>/^(?:[a-z]+[_-])?\d+(?:[_-]\d+)*$/i.test(n)).length>names.length*.5){
+    const prefixes=new Set(names.map(n=>n.match(/^([a-z]+)[_-]\d/i)?.[1]).filter(Boolean));
+    const bone=skeleton.bones?.find(b=>b.data.length>0&&(/^(?:xingxiang|zhixin|renwu)\d*$/i.test(b.data.name)||prefixes.has(b.data.name.replace(/\d+$/,''))));
     if(bone)return transformBounds({x:bone.worldX,y:bone.worldY,width:0,height:0},transform);
   }
 }

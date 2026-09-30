@@ -65,7 +65,7 @@ try {
   await page.waitForTimeout(2500);
   await page.evaluate(() => { window.__originalLobbyApp = __uiApps.find(a => a.view?.isConnected); });
   let reference;
-  for (const size of [{ width: 1680, height: 953 }, { width: 984, height: 778 }, { width: 538, height: 430 }, { width: 1920, height: 1080 }, { width: 2560, height: 1080 }, { width: 1680, height: 953 }]) {
+  for (const size of [{ width: 1680, height: 953 }, { width: 1383, height: 538 }, { width: 1680, height: 881 }, { width: 984, height: 778 }, { width: 538, height: 430 }, { width: 1920, height: 1080 }, { width: 2560, height: 1080 }, { width: 1680, height: 953 }]) {
    await page.setViewportSize(size);
    await page.waitForTimeout(600);
    const state = await page.evaluate(() => {
@@ -80,22 +80,35 @@ try {
     };
     visit(app.stage);
     const bg = app.stage.children.find(n => n.texture?.width > 1000);
-    return { sameApp: app === __originalLobbyApp, canvas: canvas.toJSON(), renderer: { width: app.renderer.screen.width, height: app.renderer.screen.height }, scale: app.stage.scale.x, scaleY: app.stage.scale.y, nodes, background: bg && { x: bg.x, y: bg.y, sx: bg.scale.x, sy: bg.scale.y } };
+    return { sameApp: app === __originalLobbyApp, canvas: canvas.toJSON(), renderer: { width: app.renderer.screen.width, height: app.renderer.screen.height }, scale: app.stage.scale.x, scaleY: app.stage.scale.y, nodes, bounds: bg?.getBounds(), background: bg && { x: bg.x, y: bg.y, sx: bg.scale.x, sy: bg.scale.y } };
    });
    const scale = Math.min(size.width / 1103, size.height / 514);
    assert(state.sameApp, 'resizing must preserve the active scene');
    assert.equal(state.scale, state.scaleY);
-   assert(Math.abs(state.canvas.width - 1103 * scale) < 1);
-   assert(Math.abs(state.canvas.height - 514 * scale) < 1);
+   const fluid = theme === 'builtin-rzsh';
+   await page.screenshot({ path: `${output}/${theme}-${size.width}x${size.height}.png` });
+   assert(Math.abs(state.canvas.width - (fluid ? size.width : 1103 * scale)) < 1);
+   assert(Math.abs(state.canvas.height - (fluid ? size.height : 514 * scale)) < 1);
    assert(Math.abs(state.canvas.x - (size.width - state.canvas.width) / 2) < 1);
    assert(Math.abs(state.canvas.y - (size.height - state.canvas.height) / 2) < 1);
    assert.equal(state.background.sx, state.background.sy);
    if (!reference) reference = state;
-   assert.deepEqual(state.background, reference.background, 'background framing remains fixed');
+   if (fluid) {
+    const b = state.bounds;
+    assert(b.x <= 1 && b.y <= 1 && b.x + b.width >= size.width - 1 && b.y + b.height >= size.height - 1, 'background covers the viewport');
+   } else assert.deepEqual(state.background, reference.background, 'background framing remains fixed');
    for (const [name, node] of Object.entries(state.nodes)) {
     // Preserve authored geometry too (the legacy menu uses 0.72 × 0.7).
+    if (fluid && name === 'left_fix') continue;
     assert(Math.abs(node.sx / node.sy - reference.nodes[name].sx / reference.nodes[name].sy) < .001, `${name}: resizing introduces no deformation`);
-    for (const key of ['x', 'y', 'width', 'height']) assert(Math.abs(node[key] - reference.nodes[name][key]) < .1, `${name}: stable ${key}`);
+    for (const key of (fluid ? ['width', 'height'] : ['x', 'y', 'width', 'height'])) assert(Math.abs(node[key] - reference.nodes[name][key]) < .1, `${name}: stable ${key}`);
+    if (fluid && /right_|bottom_friend/.test(name)) {
+     // Decorative frames bleed past the edge; their clickable centers must
+     // remain visible at both narrow and ultrawide window sizes.
+     const x = (node.x + node.width / 2) * scale, y = (node.y + node.height / 2) * scale;
+     assert(x > 0 && x < size.width, `${name}: horizontal click target stays visible`);
+     assert(y > 0 && y < size.height, `${name}: vertical click target stays visible`);
+    }
    }
    report.cases.push({ theme, size, ...state });
    await page.screenshot({ path: `${output}/${theme}-${size.width}x${size.height}.png` });

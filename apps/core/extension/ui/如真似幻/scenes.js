@@ -395,6 +395,7 @@ function rzshG() { const u3 = ["Cg9ZAxrPB24", "a8o8W4tcIqW", "tMLUzvnSAwnLugXHBM
         GM["width"] = i["screen"]["width"], GM["height"] = i["screen"][K0(0x231)];
         const Gu = lifecycle.container();
         Gu["width"] = i["screen"]["width"], Gu["height"] = i["screen"]["height"], GK["addChild"](Gc, Gd, Gp, Gr);
+        lifecycle.layoutHome({ top: Gc, left: Gd, right: Gp, bottom: Gr, decoration: Gw, center: GM });
         function Gt(Uy, UU) {
             let Uk = 0.5;
             const Uf = "power2.out";

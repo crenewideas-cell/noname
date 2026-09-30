@@ -224,13 +224,6 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
             player.line(target, "pink");
         } else player.unmarkSkill("hlhj_mushi");
     }
-    async function discardQingsi(player) {
-        if (!player.hasCard(card => canDiscardQingsi(card, player), "h")) return;
-        await player.chooseToDiscard("木石前缘：弃置一张【情思】", "h", true)
-            .set("filterCard", function (card, player) {
-                return get.name(card, player) === "hlhj_qingsi" && lib.filter.cardDiscardable(card, player, "hlhj_mushi");
-            });
-    }
     async function dream(player) {
         if (!player.isIn() || player.storage.hlhj_dreaming || !player.hasSkill("hlhj_guimeng")) return;
         if (player.countMark("hlhj_lei") < threshold()) return;
@@ -247,7 +240,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
         player.addMark("hlhj_lei", amount);
         sync(player, "hlhj_lei", player.countMark("hlhj_lei"));
         if (player.hasSkill("hlhj_mushi") && !mushiPaying.has(player)) {
-            const result = await player.chooseTarget(`木石前缘：可令自己或木石缘摸${amount}张牌（选自己后弃置一张情思）`,
+            const result = await player.chooseTarget(`木石前缘：可令自己或木石缘摸${amount}张牌`,
                 function (card, player, target) {
                     return target === player || target === player.getStorage("hlhj_mushi")[0];
                 }).set("ai", target => get.attitude(_status.event.player, target)).forResult();
@@ -256,17 +249,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 player.logSkill("hlhj_mushi", target);
                 speak(player, target === player ? "selfDraw" : "bondDraw");
                 await target.draw(amount);
-                if (target === player && player.isIn()) {
-                    convertHand(player);
-                    // Paying with a flower still grants tears and checks 归梦,
-                    // but must not recursively offer another draw-and-discard.
-                    mushiPaying.add(player);
-                    try {
-                        await discardQingsi(player);
-                    } finally {
-                        mushiPaying.delete(player);
-                    }
-                }
+                if (target === player && player.isIn()) convertHand(player);
             }
         }
         await dream(player);
@@ -778,7 +761,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
         hlhj_jiangzhu_info: "锁定技，你的身份不能分配为内奸。①基本牌、伤害牌或武器牌进入你的手牌后，保留花色、点数并转化为【情思】（仙界牌除外）。②获得“花”时，若装备区无仙界牌，随机获得一张仙界复制牌。获得仙界装备牌时，你可立即装备，否则留于手牌。③装备区有仙界牌时，你可令任意张新获基本牌不转化并标记为“仙”（可点击“全部保留”）。“仙”牌使用无次数限制且不计次数；你于自己的回合主动使用“仙”基本牌时，额外结算一次（响应除外）；离手移去“仙”。④“仙”牌与【情思】不计手牌上限，不因超限弃置。转化牌进入牌堆或弃牌堆时恢复原牌，额外生成的牌销毁。",
         hlhj_qingsi_redirect: "情思",
         hlhj_mushi: "木石前缘",
-        hlhj_mushi_info: "①游戏开始时，你选择一名角色为“木石缘”。②自己的回合内，在使用或响应牌的操作时机，你可发动〖木石·换缘〗：弃置一张【情思】，另选一名角色为“木石缘”，次数不限。③获得“泪”时，你可令自己或存活的“木石缘”摸等量牌；若自己摸牌，须弃置一张【情思】（无可弃置的则免）。支付本技能弃牌代价期间获得的“泪”不触发③。",
+        hlhj_mushi_info: "①游戏开始时，你选择一名角色为“木石缘”。②自己的回合内，在使用或响应牌的操作时机，你可发动〖木石·换缘〗：弃置一张【情思】，另选一名角色为“木石缘”，次数不限。③获得“泪”时，你可令自己或存活的“木石缘”摸等量牌。",
         hlhj_mushi_change: "木石·换缘",
         hlhj_mushi_change_info: "自己的回合内，在使用或响应牌的操作时机，你可弃置一张【情思】，另选一名角色为“木石缘”。次数不限，可取消。",
         hlhj_xian: "仙",

@@ -1030,5 +1030,6 @@
   "spine/默认界面/XingXiang1.mp3",
   "spine/默认界面/XingXiang1.png",
   "spine/默认界面/XingXiang1.skel",
-  "ui-workshop.json"
+  "ui-workshop.json",
+  "viewport.js"
 ]

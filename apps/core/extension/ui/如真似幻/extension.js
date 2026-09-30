@@ -1,6 +1,7 @@
 import { lib, game, ui, get, createSceneContext, openTreasure, openCharacterSkins, createLobbyViews, createCharacterGrid, openLobbyTools, createLobbyCharacterTools, createLobbyElements, fitLobbyBackground } from "noname";
 import { createSceneGame, createPortraitLoader, packLabel } from "./bridge.js";
 import { createLobbyAudio } from "./runtime.js";
+import { createLobbyViewport } from "./viewport.js";
 
 export const type = "extension";
 export const workshopManifest = {
@@ -63,12 +64,12 @@ export async function activate(manifest) {
    const ownNode=node=>{sceneNodes.add(node);return node;};
    const sceneDocument=new Proxy(document,{get(target,key){if(key==='createElement')return(...args)=>ownNode(target.createElement(...args));const value=Reflect.get(target,key,target);return typeof value==='function'?value.bind(target):value;}});
    for(const [key,create] of Object.entries(draftCreate))sceneContext.ui.create[key]=(...args)=>ownNode(create(...args));
-   // Keep the original composition fixed: resize the whole scene, including
-   // its decorative frames, with one scale instead of relaying out each axis.
+   // Keep animation coordinates stable while the background and edge controls
+   // fill the available viewport at a uniform artwork scale.
    const screen = {x:0, y:0, width:1103, height:514};
    const views = new Map();
    let pendingView = restore.view || "home", activeView = restore.view || "home", finishing = false, homeReady = false;
-   let observer, onlineController, onlineOpen = false, resizeScene, toolMenu;
+   let observer, onlineController, onlineOpen = false, resizeScene, toolMenu, viewport;
    let done = false, adventureEntering = false, graphics, motion;
    const lifecycle = this.lifecycle = {
     window:sceneWindow, document:sceneDocument,
@@ -89,25 +90,26 @@ export async function activate(manifest) {
     },
     mount(app) {
      this.app = app; node.append(app.view);
+     viewport = createLobbyViewport(app, screen, fitLobbyBackground);
      const resize = () => {
       if (!node.clientWidth || !node.clientHeight || done) return;
-      const scale = Math.min(node.clientWidth / screen.width, node.clientHeight / screen.height);
-      const width = screen.width * scale, height = screen.height * scale;
-      app.renderer.resize(width,height);
-      app.stage.scale.set(scale); app.stage.position.set(0,0);
-      app.view.style.width = `${width}px`; app.view.style.height = `${height}px`;
+      viewport.resize(node.clientWidth, node.clientHeight);
       app.view.style.transform = "translate(-50%,-50%)";
       backgrounds.forEach(sprite => { if (!sprite.destroyed) lifecycle.cover(sprite); });
      };
      resizeScene = resize;
      observer = new ResizeObserver(resize); observer.observe(node); resize();
-     app.ticker.add(() => backgrounds.forEach(sprite => { if (!sprite.destroyed) lifecycle.cover(sprite); }));
+     app.ticker.add(() => {
+      viewport.update();
+      backgrounds.forEach(sprite => { if (!sprite.destroyed) lifecycle.cover(sprite); });
+     });
     },
+    layoutHome: nodes => viewport.home(nodes),
     sceneUI: () => createLobbyElements(graphics, 'rzsh'),
     cover(sprite) {
      const first = backgrounds.size === 0;
      backgrounds.add(sprite);
-     fitLobbyBackground(sprite, screen);
+     viewport.cover(sprite);
      if (first) queueMicrotask(() => { if (pendingView) lifecycle.showView(pendingView); });
     },
     loader() {

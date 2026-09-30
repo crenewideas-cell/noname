@@ -71,6 +71,10 @@ export function fixLobbyElements(source, kind) {
  }
  for (const e of edits.sort((a,b) => b.start-a.start)) source = source.slice(0,e.start)+e.text+source.slice(e.end);
  if (kind === 'rzsh') {
+  if (!source.includes('lifecycle.layoutHome(')) {
+   source = source.replace('GK["addChild"](Gc, Gd, Gp, Gr);',
+    'GK["addChild"](Gc, Gd, Gp, Gr);\n        lifecycle.layoutHome({ top: Gc, left: Gd, right: Gp, bottom: Gr, decoration: Gw, center: GM });');
+  }
   source = source.replace(/spinelo = new PIXI\["spine"\]\["Spine"\]\((GG\["resources"\]\["spineloading"\]\["spineData"\])\)/, 'spinelo = sceneUI.idle($1, i.screen, { x: 0.52, scale: 0.75 })')
    .replace(/F = new PIXI\["spine"\]\["Spine"\]\((GG\["resources"\]\["jindutiao"\]\["spineData"\])\)/, 'F = sceneUI.idle($1, i.screen, { y: 0.95, scale: 0.75 })')
    .replace(/, spinelo\["state"\]\["setAnimation"\][\s\S]*?F\["scale"\]\["set"\]\(0.75\)/, '')

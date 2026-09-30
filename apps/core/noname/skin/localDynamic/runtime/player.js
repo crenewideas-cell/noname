@@ -428,6 +428,7 @@
       const foreground=root.children.at(-1),subject=subjectBounds(foreground.skeleton,{scale:foreground.scale.x,angle:foreground.angle,x:foreground.x,y:foreground.y});
       const anchor=subject&&{x:((subject.x+subject.width/2)*scale+root.x)/size,y:((subject.y+subject.height/2)*scale+root.y)/size,kind:subject.width?'face':'body'};
       let painting=SkinFraming.sceneBounds(background,size,size,false,true,anchor);
+      if(!painting&&anchor?.kind==='body'&&(await import('./idle-framing.js')).independentBackdrop(entry,{},entry.models.at(-1).sceneCoordinates))painting=SkinFraming.sceneBounds(background,size,size,false,true);
       if(!painting&&!entry.models.at(-1).layerCoordinateMismatch&&!subjectBounds(foreground.skeleton,{scale:foreground.scale.x,angle:foreground.angle,x:foreground.x,y:foreground.y},true)?.width){
         const t={scale:foreground.scale.x,x:foreground.x,y:foreground.y,angle:foreground.angle},unverified=inferredAvatarZoom(entry,t);
         if(unverified){foreground.scale.set(1);foreground.position.set(0,0);foreground.angle=0;}
@@ -488,7 +489,7 @@
    // A numeric rig has no identified face to protect. With an independently
    // painted backdrop, retain the foreground's vertical idle extent and fill
    // the fixed frame from that backdrop instead of shrinking the whole scene.
-   if(!face?.width&&anonymousSubject(primary.skeleton)&&!engine42&&independentBackdrop(entry,paintingCamera,sceneCoordinates)){
+   if(!face?.width&&anonymousSubject(primary.skeleton)&&!engine42&&independentBackdrop(entry,paintingCamera,entry.models.at(-1).sceneCoordinates)){
     const body=idleGeometryEnvelope(primary);
     if(body){
      const bounds=transformBounds(body,transform);
