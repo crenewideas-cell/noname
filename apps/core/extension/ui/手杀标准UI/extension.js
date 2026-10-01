@@ -1,4 +1,4 @@
-import {lib,game,ui,openLobbyTools,fitLobbyBackground} from 'noname';
+import {lib,game,ui,openLobbyTools,fitLobbyBackground,createLobbyViewport} from 'noname';
 export const type='extension';
 const base=import.meta.url.slice(0,import.meta.url.lastIndexOf('/')+1);
 let installed,activeRuntime;
@@ -25,11 +25,11 @@ function openNativeSettings(runtime){
 
 function createScene(runtime,node,resolve){
  const timers=new Set(),intervals=new Set(),frames=new Set(),apps=new Set(),resources=new Set(),tweens=new Set();
- // Preserve the original composition and scale every element together.
+ // Keep artwork proportional while the canvas and edge controls fill the host.
  const screen={x:0,y:0,width:1103,height:514};
  const backgrounds=new Set();
  let viewport={width:screen.width,height:screen.height,scale:1};
- let iframe,observer,finishing=false,closed=false,app,loginStarting=false,toolMenu;
+ let iframe,observer,finishing=false,closed=false,app,loginStarting=false,toolMenu,layout;
  const runVisual=(fn,...args)=>{if(closed)return;try{Promise.resolve(fn(...args)).catch(error=>runtime.bridge.notice('大厅展示失败：'+error.message));}catch(error){runtime.bridge.notice('大厅展示失败：'+error.message);}};
  const scene={screen,
   get viewport(){return viewport;},
@@ -40,24 +40,24 @@ function createScene(runtime,node,resolve){
   mount(application){
    if(closed){application.destroy(true,{children:true});return;}
    app=application;apps.add(app);node.append(app.view);
-   // Scene code keeps its layout coordinates; the centered canvas fits the host.
+   // Scene animations keep their authored coordinates across viewport changes.
    Object.defineProperty(app,'screen',{get:()=>screen,configurable:true});
+   layout=createLobbyViewport(app,screen,fitLobbyBackground);
    const resize=()=>{
     if(closed||!node.clientWidth||!node.clientHeight)return;
     const scale=Math.min(node.clientWidth/screen.width,node.clientHeight/screen.height);
-    const width=screen.width*scale,height=screen.height*scale;
-    viewport={width,height,scale};app.renderer.resize(width,height);
-    app.stage.scale.set(scale);app.stage.position.set(0,0);
-    app.view.style.width=width+'px';app.view.style.height=height+'px';
+    const width=node.clientWidth,height=node.clientHeight;
+    viewport={width,height,scale};layout.resize(width,height);
     backgrounds.forEach(sprite=>{if(!sprite.destroyed)scene.cover(sprite);});
    };
    observer=new ResizeObserver(resize);observer.observe(node);resize();
    // Themes replace textures during loading and navigation.
-   app.ticker.add(()=>backgrounds.forEach(sprite=>{if(!sprite.destroyed)scene.cover(sprite);}));
+   app.ticker.add(()=>{layout.update();backgrounds.forEach(sprite=>{if(!sprite.destroyed)scene.cover(sprite);});});
   },
+  layoutHome(nodes){layout.home(nodes);},
   cover(sprite){
    backgrounds.add(sprite);
-   fitLobbyBackground(sprite,screen);
+   layout.cover(sprite);
    return sprite;
   },
   ready(){loading.remove();},

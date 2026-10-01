@@ -63,7 +63,8 @@ export function createSpineAssetScope(spine, context, { legacy = false, signal }
       const pages = new Map();
       await Promise.all(atlas.pages.map(async page => {
         const addressPage = new URL(page.name.split('/').map(encodeURIComponent).join('/'), address).href;
-        const pixels = await image(addressPage); check();
+        let pixels = await image(addressPage); check();
+        if(legacy){const {prepareEffectPage}=await import('./effect-boundaries.js');pixels=prepareEffectPage(pixels,atlas.regions.filter(r=>r.page===page),pixels.naturalWidth||pixels.width,pixels.naturalHeight||pixels.height,!!page.pma);}
         const texture = new (legacy ? spine.webgl.GLTexture : spine.GLTexture)(context, pixels);
         textures.add(texture); pages.set(page.name, texture);
       }));

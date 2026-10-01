@@ -46,13 +46,13 @@
     const height=Math.min(fit.height,fit.width/aspect),nextHeight=height*(1-(top+bottom)/h);
     return {x:fit.x+fit.width/2-nextHeight*aspect/2,y:fit.y+fit.height/2-height/2+height*(yDown?top:bottom)/h,width:nextHeight*aspect,height:nextHeight};
   }
-  function sceneBounds(pixels, width, height, bottomUp = false, portrait = false, anchor) {
+  function sceneBounds(pixels, width, height, bottomUp = false, portrait = false, anchor, alphaThreshold = 245) {
     // A scene's opaque rectangular painting is the framing reference. Sparse
     // petals, lanterns and effect attachments must not shrink that painting.
     const heights=new Uint16Array(width);let best={area:0},anchored={area:0};
     for(let y=0;y<height;y++){
       const row=bottomUp?height-1-y:y;
-      for(let x=0;x<width;x++)heights[x]=pixels[(row*width+x)*4+3]>=245?heights[x]+1:0;
+      for(let x=0;x<width;x++)heights[x]=pixels[(row*width+x)*4+3]>=alphaThreshold?heights[x]+1:0;
       const stack=[];
       for(let x=0;x<=width;x++){
         const h=x===width?0:heights[x];let start=x;

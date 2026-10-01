@@ -36,3 +36,4 @@ export { createLobbyViews } from './noname/ui/lobbyViews.js';
 export { createCharacterGrid } from './noname/ui/characterGrid.js';
 export { createProfileControls } from './noname/skin/profileControls.js';
 export { createLobbyElements, fitLobbyBackground } from './noname/ui/lobbyElements.js';
+export { createLobbyViewport } from './noname/ui/lobbyViewport.js';

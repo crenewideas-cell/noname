@@ -12,7 +12,7 @@ export function inspectAtlasPages(PIXI,text){
   },()=>{complete=true;});
   if(!complete)throw Error('图集元数据未同步解析');
   for(const page of atlas.pages)pages.set(page.name,{width:0,height:0,declaredWidth:page.width===1048576?null:page.width,declaredHeight:page.height===1048576?null:page.height,repeat:page.uWrap!==PIXI.WRAP_MODES.CLAMP||page.vWrap!==PIXI.WRAP_MODES.CLAMP});
-  for(const region of atlas.regions){const p=pages.get(region.page.name),f=region.texture.frame;if(f.x<0||f.y<0)throw Error('图集区域使用负像素坐标');p.width=Math.max(p.width,Math.ceil(f.x+f.width));p.height=Math.max(p.height,Math.ceil(f.y+f.height));}
+  for(const region of atlas.regions){const p=pages.get(region.page.name),f=region.texture.frame;if(f.x<0||f.y<0)throw Error('图集区域使用负像素坐标');p.width=Math.max(p.width,Math.ceil(f.x+f.width));p.height=Math.max(p.height,Math.ceil(f.y+f.height));(p.regions||=[]).push({name:region.name,x:f.x,y:f.y,width:f.width,height:f.height,rotate:false});}
   return pages;
  }finally{for(const texture of textures)texture.destroy();}
 }

@@ -99,11 +99,15 @@
    const response=await fetch(url(m.atlas),{signal:AbortSignal.any([lifetime.signal,AbortSignal.timeout(60000)])});
    if(!response.ok)throw Error('图集读取失败：'+response.status);
    metadata.atlasRawData=await response.text();const extents=inspectAtlasPages(PIXI,metadata.atlasRawData);
+   const {prepareEffectPage}=await import('./effect-boundaries.js');
    metadata.imageLoader=(loader,prefix,baseUrl,options)=>(name,callback)=>{
     const address=new URL(name.split('/').map(encodeURIComponent).join('/'),url(m.atlas)).href;
     loader.add(prefix+name,address,options,resource=>{
      if(resource.error){callback(null);return;}
-     try{if(m.legacy?.premultipliedAlpha||name.includes('-pma.'))resource.texture.baseTexture.alphaMode=PIXI.ALPHA_MODES.PMA;callback((/^4\.[01]\./.test(m.version)?declaredAtlasSize:clampAtlasEdge)(PIXI,resource.texture.baseTexture,extents.get(name)));}catch(error){fail(error);}
+     try{const extent=extents.get(name),pma=!!(m.legacy?.premultipliedAlpha||name.includes('-pma.'));let base=resource.texture.baseTexture;
+      const prepared=prepareEffectPage(base.resource.source,extent.regions||[],extent.declaredWidth||base.realWidth,extent.declaredHeight||base.realHeight,pma);
+      if(prepared!==base.resource.source){const original=base;base=PIXI.BaseTexture.from(prepared,{resolution:1,scaleMode:original.scaleMode,mipmap:original.mipmap,wrapMode:original.wrapMode,alphaMode:original.alphaMode});original.destroy();}
+      if(pma)base.alphaMode=PIXI.ALPHA_MODES.PMA;callback((/^4\.[01]\./.test(m.version)?declaredAtlasSize:clampAtlasEdge)(PIXI,base,extent));}catch(error){callback(null);notice(error);}
     });
    };
   }
@@ -428,7 +432,12 @@
       const foreground=root.children.at(-1),subject=subjectBounds(foreground.skeleton,{scale:foreground.scale.x,angle:foreground.angle,x:foreground.x,y:foreground.y});
       const anchor=subject&&{x:((subject.x+subject.width/2)*scale+root.x)/size,y:((subject.y+subject.height/2)*scale+root.y)/size,kind:subject.width?'face':'body'};
       let painting=SkinFraming.sceneBounds(background,size,size,false,true,anchor);
-      if(!painting&&anchor?.kind==='body'&&(await import('./idle-framing.js')).independentBackdrop(entry,{},entry.models.at(-1).sceneCoordinates))painting=SkinFraming.sceneBounds(background,size,size,false,true);
+      if(!painting&&anchor?.kind==='body'&&(await import('./idle-framing.js')).independentBackdrop(entry,{},entry.models.at(-1).sceneCoordinates)){
+       const bg=root.children[0].skeleton,plane=paintingBounds(bg),names=bg.slots.filter(s=>s.attachment?.region&&s.data.blendMode===0).map(s=>s.attachment.name);
+       // Overlapping copies of an opaque backdrop crossfade below alpha 1.
+       // Require a repeated painted plane before accepting its translucent fit.
+       if(plane?.width&&names.some(n=>names.filter(v=>v===n).length>=2))painting=SkinFraming.sceneBounds(background,size,size,false,true,undefined,200);
+      }
       if(!painting&&!entry.models.at(-1).layerCoordinateMismatch&&!subjectBounds(foreground.skeleton,{scale:foreground.scale.x,angle:foreground.angle,x:foreground.x,y:foreground.y},true)?.width){
         const t={scale:foreground.scale.x,x:foreground.x,y:foreground.y,angle:foreground.angle},unverified=inferredAvatarZoom(entry,t);
         if(unverified){foreground.scale.set(1);foreground.position.set(0,0);foreground.angle=0;}

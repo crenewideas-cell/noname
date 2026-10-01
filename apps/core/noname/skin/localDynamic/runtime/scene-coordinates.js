@@ -2,13 +2,17 @@
 // alone is not evidence: require the same named nontrivial group and geometry
 // attached below it in both rigs. This recovers units, never edits source rigs.
 export function sharedSceneCoordinates(background,foreground){
- const groups=s=>s.bones.filter(b=>b.parent&&!b.parent.parent&&!/^(?:root|eff|effect|tx)(?:$|[_\d])/i.test(b.data.name)&&Math.abs(Math.abs(b.data.scaleX)-1)>.05&&Math.abs(b.data.scaleX-b.data.scaleY)<.01&&Math.abs(b.data.rotation||0)<.01);
- const animated=(s,b)=>s.data.animations.some(a=>a.timelines.some(t=>t.boneIndex===b.data.index));
+ const neutral=t=>{const type=t.constructor.name,step=type==='RotateTimeline'?2:/^(?:Translate|Scale|Shear)Timeline$/.test(type)?3:0,expected=type==='ScaleTimeline'?1:0;
+  return !!step&&t.frames?.length>=step&&t.frames[0]===0&&Array.from(t.frames).every((v,i)=>i%step===0||Math.abs(v-t.frames[i%step])<1e-6);};
+ const animated=(s,b)=>s.data.animations.some(a=>a.timelines.some(t=>t.boneIndex===b.data.index&&!neutral(t)));
+ const staticChain=(s,b)=>{for(let p=b;p;p=p.parent)if(animated(s,p)||Math.abs(p.data.rotation||0)>.01||Math.abs(p.data.scaleX-p.data.scaleY)>.01)return false;return true;};
+ const groups=s=>s.bones.filter(b=>b.parent&&!/^(?:root|eff|effect|tx)(?:$|[_\d])/i.test(b.data.name)&&Math.abs(Math.abs(b.data.scaleX)-1)>.05&&staticChain(s,b));
+ const units=b=>{let scale=1;for(let p=b;p;p=p.parent)scale*=p.data.scaleX??1;return scale;};
  const contains=(bone,parent)=>{for(let b=bone;b;b=b.parent)if(b===parent)return true;return false;};
  const support=(s,b)=>s.slots.filter(slot=>slot.attachment?.region&&slot.data.blendMode===0&&contains(slot.bone,b)).length;
  const pairs=groups(background).flatMap(a=>groups(foreground).filter(b=>a.data.name===b.data.name&&!animated(background,a)&&!animated(foreground,b)&&support(background,a)>=3&&support(foreground,b)>=5).map(b=>({a,b})));
  if(pairs.length!==1)return null;
- const {a,b}=pairs[0],scale=a.data.scaleX/b.data.scaleX;
+ const {a,b}=pairs[0],scale=units(a)/units(b);
  if(!(scale>.05&&scale<20))return null;
  return {bone:a.data.name,transform:{scale,angle:0,x:a.worldX-scale*b.worldX,y:a.worldY-scale*b.worldY}};
 }

@@ -657,6 +657,7 @@ window.qhlyOpenCharacters=function(){
                                 uihomecenter.height = pixiapp.screen.height;
                                 //uihome把5个幕布加入进来
                                 uihome.addChild(uihometop, uihomeleft, uihomeright, uihomeunder);
+                                bridge.layoutHome({top:uihometop,left:uihomeleft,right:uihomeright,bottom:uihomeunder,center:uihomecenter});
                                 //模式盒子
                                 // 定义动画函数
                                 function showDrawer(container, direction) {

@@ -11,7 +11,7 @@ const environment = await startEnvironment('dev', 18085);
 const browser = await chromium.launch({ headless: true, executablePath: process.env.CHROME_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe', args: ['--enable-unsafe-swiftshader'] });
 const report = { errors: [], cases: [] };
 try {
- for (const theme of ['builtin-rzsh', 'builtin-shousha-standard']) {
+ for (const theme of ['builtin-shousha-standard', 'builtin-rzsh']) {
   const context = await browser.newContext({ viewport: { width: 1680, height: 953 } });
   const page = await context.newPage();
   page.on('pageerror', error => { report.errors.push(error.stack); console.log(error.message); });
@@ -72,7 +72,7 @@ try {
     const app = __uiApps.find(a => a.view?.isConnected), canvas = app.view.getBoundingClientRect();
     const nodes = {};
     const visit = n => {
-     if (['right_classic', 'right_ranking', 'right_activity', 'right_adventure', 'mode1', 'mode2', 'mode3', 'mode4', 'left_fix', 'top_user_bg', 'bottom_friend', 'menu1', 'bigmenu'].includes(n.name) && n.worldVisible) {
+     if (['right_classic', 'right_ranking', 'right_activity', 'right_adventure', 'mode1', 'mode2', 'mode3', 'mode4', 'left_fix', 'leftlong', 'left1', 'top_user_bg', 'pica', 'bottom_friend', 'say', 'menu1', 'bigmenu'].includes(n.name) && n.worldVisible) {
       const b = n.getBounds(), m = n.worldTransform;
       nodes[n.name] = { x: b.x / app.stage.scale.x, y: b.y / app.stage.scale.y, width: b.width / app.stage.scale.x, height: b.height / app.stage.scale.y, sx: Math.hypot(m.a, m.b), sy: Math.hypot(m.c, m.d) };
      }
@@ -85,24 +85,21 @@ try {
    const scale = Math.min(size.width / 1103, size.height / 514);
    assert(state.sameApp, 'resizing must preserve the active scene');
    assert.equal(state.scale, state.scaleY);
-   const fluid = theme === 'builtin-rzsh';
    await page.screenshot({ path: `${output}/${theme}-${size.width}x${size.height}.png` });
-   assert(Math.abs(state.canvas.width - (fluid ? size.width : 1103 * scale)) < 1);
-   assert(Math.abs(state.canvas.height - (fluid ? size.height : 514 * scale)) < 1);
+   assert(Math.abs(state.canvas.width - size.width) < 1, 'canvas fills viewport width');
+   assert(Math.abs(state.canvas.height - size.height) < 1, 'canvas fills viewport height');
    assert(Math.abs(state.canvas.x - (size.width - state.canvas.width) / 2) < 1);
    assert(Math.abs(state.canvas.y - (size.height - state.canvas.height) / 2) < 1);
    assert.equal(state.background.sx, state.background.sy);
    if (!reference) reference = state;
-   if (fluid) {
-    const b = state.bounds;
-    assert(b.x <= 1 && b.y <= 1 && b.x + b.width >= size.width - 1 && b.y + b.height >= size.height - 1, 'background covers the viewport');
-   } else assert.deepEqual(state.background, reference.background, 'background framing remains fixed');
+   const b = state.bounds;
+   assert(b.x <= 1 && b.y <= 1 && b.x + b.width >= size.width - 1 && b.y + b.height >= size.height - 1, 'background covers the viewport');
    for (const [name, node] of Object.entries(state.nodes)) {
     // Preserve authored geometry too (the legacy menu uses 0.72 × 0.7).
-    if (fluid && name === 'left_fix') continue;
+    if (['left_fix', 'leftlong'].includes(name)) continue;
     assert(Math.abs(node.sx / node.sy - reference.nodes[name].sx / reference.nodes[name].sy) < .001, `${name}: resizing introduces no deformation`);
-    for (const key of (fluid ? ['width', 'height'] : ['x', 'y', 'width', 'height'])) assert(Math.abs(node[key] - reference.nodes[name][key]) < .1, `${name}: stable ${key}`);
-    if (fluid && /right_|bottom_friend/.test(name)) {
+    for (const key of ['width', 'height']) assert(Math.abs(node[key] - reference.nodes[name][key]) < .1, `${name}: stable ${key}`);
+    if (/right_|bottom_friend|mode[1-4]|menu1|say|left1|pica/.test(name)) {
      // Decorative frames bleed past the edge; their clickable centers must
      // remain visible at both narrow and ultrawide window sizes.
      const x = (node.x + node.width / 2) * scale, y = (node.y + node.height / 2) * scale;

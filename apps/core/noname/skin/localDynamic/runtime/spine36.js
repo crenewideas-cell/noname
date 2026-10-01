@@ -36,6 +36,7 @@ window.createSpine36 = async function (entry, url, initialView, { signal } = {})
       const data=parser.readSkeletonData(m.skeleton.endsWith('.json')?JSON.parse(new TextDecoder().decode(binary)):binary);
       for(const skin of data.skins)for(const slots of skin.attachments)for(const attachment of Object.values(slots||{}))if(attachment instanceof spine.MeshAttachment)restoreMeshUVs(attachment);
       const skeleton=new spine.Skeleton(data);skeleton.opacity=1;if(m.skin&&data.findSkin(m.skin))skeleton.setSkinByName(m.skin);
+      (await import('./composition.js')).setSubjectFocus(skeleton,m);
       const state=new spine.AnimationState(new spine.AnimationStateData(data));state.data.defaultMix=.15;
       const names=data.animations.map(a=>a.name);const idle=actionLayer?null:sourceScene?(sourcePlacement?(m.animation??names[0]):sourceScene.layers[layers.length].playback.declaredAction||idleAnimation({},names,sourceScene.layers[layers.length].role==='background')):idleAnimation(m,names,m.role==='BgBack'||!!(entry.legacy?.beijing&&!layers.length));
       if(sourceScene&&!actionLayer)sourceScene.layers[layers.length].playback.resolvedIdle=idle;
@@ -45,6 +46,15 @@ window.createSpine36 = async function (entry, url, initialView, { signal } = {})
       applyPose(layer,actionLayer?0:1/30);return layer;
     }
     for(const m of entry.models)layers.push(await loadLayer(m));
+    if(!sourcePlacement&&entry.legacy?.beijing&&layers.length===2&&!entry.composition?.layers&&!entry.models.at(-1).sceneCoordinates&&!entry.models.at(-1).layerRegistration){
+      const pair=(await import('./scene-coordinates.js')).sharedSceneCoordinates(layers[0].skeleton,layers[1].skeleton);
+      const m=entry.models[1];
+      if(pair&&(m.sceneVariant||m.avatarPresentation)&&Math.abs(pair.transform.scale-1)>.05){
+        m.sceneCoordinates={...pair,rule:'constant-scene-root'};
+      }else if(pair&&m.sceneVariant&&Number.isFinite(layers[1].skeleton.subjectFocusX)){
+        m.sceneCoordinates={...pair,rule:'constant-scene-root'};
+      }
+    }
     if(sourceActions){
       const {createExternalActionController}=await import('./source-external-actions.js');
       externalActions=createExternalActionController({setPrimaryHidden:hidden=>{layers[sourceScene.layers.findIndex(l=>l.role==='primary')].sourceHidden=hidden;},load:action=>{
@@ -59,6 +69,10 @@ window.createSpine36 = async function (entry, url, initialView, { signal } = {})
     // Preserve rig coordinates and apply reviewed layer calibration outside the
     // skeleton. Legacy avatar parameters are not universally valid scene units.
     const raw=layers.map(l=>{const offset=new spine.Vector2(),size=new spine.Vector2();l.skeleton.getBounds(offset,size,[]);return {x:offset.x,y:offset.y,width:size.x,height:size.y};});
+    if(!sourcePlacement&&layers.length===2){
+      const transform=(await import('./composition.js')).restoredSceneUnits(entry,layers[0].skeleton,layers[1].skeleton);
+      if(transform)entry.models[1].sceneCoordinates={transform,rule:'full-export-matched-scene-units'};
+    }
     if(!sourcePlacement)layers.forEach((l,i)=>l.transform=avatarLayerTransform(entry,i,raw[i],raw[0]));
     const bounds=layers.filter(l=>!l.meta.effectOnly).map(l=>transformBounds(raw[layers.indexOf(l)],l.transform));
     const painting=entry.legacy?.beijing&&paintingBounds(layers[0].skeleton,bounds[1]);
@@ -135,6 +149,15 @@ window.createSpine36 = async function (entry, url, initialView, { signal } = {})
       const subject=subjectBounds(layers.at(-1).skeleton,layers.at(-1).transform),sampleScale=Math.min(384/fit.width,384/fit.height)*.97;
       const anchor=subject&&{x:.5+(subject.x+subject.width/2-fit.x-fit.width/2)*sampleScale/384,y:.5-(subject.y+subject.height/2-fit.y-fit.height/2)*sampleScale/384};
       scene=SkinFraming.sceneBounds(sample,384,384,true,!!entry.legacy,entry.legacy?anchor:undefined);
+      // A restored export may contain its own rectangular painting. Measuring
+      // only the distant backdrop leaves that painting floating inside it.
+      if(entry.models.at(-1).sceneVariant?.expandedMeshes>0&&subject?.width&&!entry.models.at(-1).sceneCoordinates&&!entry.models.at(-1).layerRegistration){
+        const fg=layers.at(-1),foreground=new Uint8Array(sample.length);
+        for(const l of layers)l.enabled=l===fg;
+        draw(0,{width:384,height:384});gl.readPixels(0,0,384,384,gl.RGBA,gl.UNSIGNED_BYTE,foreground);
+        const rectangle=SkinFraming.sceneBounds(foreground,384,384,true,true,anchor),visible=SkinFraming.visibleBounds(foreground,384,384,true);
+        if(rectangle&&visible&&rectangle.width*rectangle.height>=visible.width*visible.height*.5&&(!scene||rectangle.height<scene.height*.9))scene=rectangle;
+      }
       // Body mass is weaker evidence than a recognized face. Do not override
       // a camera rejection made using an actual face rectangle.
       if(!scene&&entry.legacy&&!entry.models.at(-1).layerCoordinateMismatch&&!subjectBounds(layers.at(-1).skeleton,layers.at(-1).transform,true)?.width){

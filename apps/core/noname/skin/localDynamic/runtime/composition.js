@@ -4,6 +4,15 @@ import {sourceCameraAnchor} from './scene-coordinates.js';
 export function compositionFor(entry) {
   return entry.composition || {};
 }
+// A full-scene replacement may add a second person. Keep the subject selected
+// by the original avatar, instead of selecting the largest newly added face.
+export function setSubjectFocus(skeleton,model){
+ const v=model?.sceneVariant?.transform,c=model?.legacy;
+ if(!v||!c||!(v.scale>0)||Math.abs(v.angle||0)>.1)return;
+ const coord=(n,size)=>Array.isArray(n)?n[0]+n[1]*size:n??size/2;
+ const x=(60-coord(c.x,120))/(c.scale||1),y=(90-coord(c.y,180))/(c.scale||1),a=-(c.angle||0)*Math.PI/180;
+ skeleton.subjectFocusX=(Math.cos(a)*x-Math.sin(a)*y-v.x)/v.scale;
+}
 // An entrance camera is a one-shot action, not a background's idle loop.
 // Respect every other declared animation, including custom idle names.
 export function idleAnimation(model, names, background=false) {
@@ -56,7 +65,7 @@ export function sceneFocus(entry, bounds, aspect, subjectX) {
 // Numeric/unnamed rigs retain the focus supplied by their avatar configuration.
 export function subjectBounds(skeleton, transform={}, allowCompactPrefix=false) {
   if(!skeleton)return;
-  if(allowCompactPrefix){const known=subjectBounds(skeleton,transform);if(known)return known;}
+  if(allowCompactPrefix&&!Number.isFinite(skeleton.subjectFocusX)){const known=subjectBounds(skeleton,transform);if(known)return known;}
   const candidates=[];
   const names=skeleton.slots.map(s=>s.attachment?.name?.split('/').at(-1)||'').filter(Boolean);
   for(const slot of skeleton.slots){
@@ -69,7 +78,7 @@ export function subjectBounds(skeleton, transform={}, allowCompactPrefix=false) 
     // "lian" also means curtain. A shared export prefix is not evidence
     // that a large drapery mesh is a face; require an anatomical sibling.
     const ambiguousCurtain=prefix&&/[_-]lian(?:[_-]?\d+)?$/i.test(name)&&!names.some(n=>n.startsWith(prefix)&&/(?:[_-]|^)(?:tou|head|face|yan|eye|mei|nose|bi|kou|mouth|toufa)(?:[_-]?\d+)?$/i.test(n));
-    const mainPrefix=prefix&&!ambiguousCurtain&&names.filter(n=>n.startsWith(prefix)).length>=Math.max(5,names.length*.35);
+    const mainPrefix=prefix&&!ambiguousCurtain&&names.filter(n=>n.startsWith(prefix)).length>=Math.max(5,names.length*(Number.isFinite(skeleton.subjectFocusX)?.2:.35));
     if(!a?.region||(!plain&&!mainPrefix)||slot.color?.a===0||a.color?.a===0)continue;
     const v=new Float32Array(a.worldVerticesLength||8);
     if(a.worldVerticesLength)a.computeWorldVertices(slot,0,a.worldVerticesLength,v,0,2);else a.computeWorldVertices(slot.bone.matrix||parseFloat(skeleton.data?.version)>=4.1?slot:slot.bone,v,0,2);
@@ -77,12 +86,12 @@ export function subjectBounds(skeleton, transform={}, allowCompactPrefix=false) 
     const box={x:Math.min(...xs),y:Math.min(...ys)};
     box.width=Math.max(...xs)-box.x;box.height=Math.max(...ys)-box.y;
     const group=name.match(/^(.*[_-])(?:tou|lian|head|face|naodai|mianbu)(?:[_-]?\d+)?$/i)?.[1];
-    candidates.push({groupSize:group?names.filter(n=>n.startsWith(group)).length:0,area:box.width*box.height,box:transformBounds(box,transform)});
+    candidates.push({distance:Math.abs(box.x+box.width/2-skeleton.subjectFocusX),groupSize:group?names.filter(n=>n.startsWith(group)).length:0,area:box.width*box.height,box:transformBounds(box,transform)});
   }
   // A larger companion's face is not necessarily the principal character.
   // Prefer a clearly dominant named body group before comparing face area.
   const dominant=Math.max(5,names.length*.2);
-  candidates.sort((a,b)=>((b.groupSize>=dominant?b.groupSize:0)-(a.groupSize>=dominant?a.groupSize:0))||b.area-a.area);
+  candidates.sort((a,b)=>(Number.isFinite(skeleton.subjectFocusX)?a.distance-b.distance:0)||((b.groupSize>=dominant?b.groupSize:0)-(a.groupSize>=dominant?a.groupSize:0))||b.area-a.area);
   const box=candidates[0]?.box;if(box)return box;
   // Numeric attachment names carry no facial semantics. A named body chain
   // still supplies a torso anchor; scenery branches must not shift its center.
@@ -115,6 +124,24 @@ export function subjectHeadBounds(skeleton,transform={}) {
 export function inferredAvatarZoom(entry, layer) {
   const m=entry.models?.at(-1);
   return !!(m&&!m.sceneVariant&&!m.layerRegistration&&/(?:^|\/)daiji2\.(?:skel|json)$/i.test(m.skeleton)&&layer?.scale>1);
+}
+export function restoredSceneUnits(entry,background,foreground){
+ const model=entry.models?.at(-1),v=model?.sceneVariant;
+ if(!entry.legacy?.beijing||entry.models.length!==2||entry.scene||entry.composition||model.sceneCoordinates||model.layerRegistration||!v?.expandedMeshes||v.restoresLimbs||v.restoresCoverage||!(v.transform?.scale<.8))return;
+ const groups=s=>s.bones.filter(b=>b.parent&&!b.parent.parent&&Math.abs(b.data.scaleX-b.data.scaleY)<.001&&b.data.scaleX>0&&b.data.scaleX<.95&&Math.abs(b.data.rotation||0)<.01);
+ const a=groups(background),b=groups(foreground);
+ if(a.length!==1||b.length!==1||Math.abs(a[0].data.scaleX/b[0].data.scaleX-1)>.01)return;
+ const painting=paintingBounds(background);
+ // Both exports must include a painted plane in the same world units. An
+ // avatar-only body or a differently scaled background is not sufficient.
+ if(!painting?.height)return;
+ const matched=foreground.slots.some(slot=>{const a=slot.attachment;if(!a?.region||!a.worldVerticesLength||slot.data.blendMode!==0)return false;
+  const p=new Float32Array(a.worldVerticesLength);a.computeWorldVertices(slot,0,p.length,p,0,2);
+  const xs=p.filter((_,i)=>i%2===0),ys=p.filter((_,i)=>i%2===1),w=Math.max(...xs)-Math.min(...xs),h=Math.max(...ys)-Math.min(...ys);
+  return Math.abs(w/painting.width-1)<.03&&Math.abs(h/painting.height-1)<.03;
+ });
+ if(!matched)return;
+ return {scale:1,angle:0,x:0,y:0};
 }
 export function cameraSubjectX(entry, subject) {
   if(!subject)return;

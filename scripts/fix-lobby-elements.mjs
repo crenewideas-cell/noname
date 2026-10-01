@@ -80,6 +80,10 @@ export function fixLobbyElements(source, kind) {
    .replace(/, spinelo\["state"\]\["setAnimation"\][\s\S]*?F\["scale"\]\["set"\]\(0.75\)/, '')
    .replace(/let Gk = \["三国杀是一款[\s\S]*?let Gm = new PIXI\["Text"\]\(Gf\(\), GY\); Gm\["anchor"\][\s\S]*?i\["stage"\]\["addChild"\]\(Gm\)/, 'const Gf = sceneUI.randomTip; let Gm = sceneUI.tip(i.screen, { y: 0.91, fontSize: 15, fill: "white" }); i["stage"]["addChild"](Gm)');
  } else {
+  if (!source.includes('bridge.layoutHome(')) {
+   source = source.replace('uihome.addChild(uihometop, uihomeleft, uihomeright, uihomeunder);',
+    'uihome.addChild(uihometop, uihomeleft, uihomeright, uihomeunder);\n                                bridge.layoutHome({top:uihometop,left:uihomeleft,right:uihomeright,bottom:uihomeunder,center:uihomecenter});');
+  }
   source = source.replaceAll('spinelo = new PIXI.spine.Spine(xloader.resources.spineloading.spineData);', 'spinelo = sceneUI.idle(xloader.resources.spineloading.spineData, pixiapp.screen);')
    .replace(/spinelo.state.setAnimation\(0, 'idle', true\); bridge.ready\(\);[\s\S]*?let sanguoTexts = \[[\s\S]*?pixiapp.stage.addChild\(sanguoTip\);/, 'bridge.ready();\n                                const getRandomSanguoText = sceneUI.randomTip;\n                                const sanguoTip = sceneUI.tip(pixiapp.screen);\n                                pixiapp.stage.addChild(sanguoTip);')
    .replace(/uibg = new PIXI.Sprite\((xloader.resources.(?:loadingbg2|uiBG).texture)\);[^\r\n]*\r?\n\s*uibg.width = pixiapp.screen.width;\s*uibg.height = pixiapp.screen.height;/g, 'uibg = sceneUI.background($1, pixiapp.screen);')
