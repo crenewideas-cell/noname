@@ -452,125 +452,60 @@ export class UI {
 		}
 	}
 	updatehl() {
-		if (!game.me) {
-			return;
-		}
-		if (!ui.handcards1Container || !ui.handcards2Container) {
-			return;
-		}
-		if (!ui.handcards1Container.childNodes.length) {
-			return;
-		}
-		var hs1 = [],
-			hs2 = [];
-		for (var i = 0; i < ui.handcards1Container.firstChild.childElementCount; i++) {
-			if (!ui.handcards1Container.firstChild.childNodes[i].classList.contains("removing")) {
-				hs1.push(ui.handcards1Container.firstChild.childNodes[i]);
-			}
-		}
-		for (var i = 0; i < ui.handcards2Container.firstChild.childElementCount; i++) {
-			if (!ui.handcards2Container.firstChild.childNodes[i].classList.contains("removing")) {
-				hs2.push(ui.handcards2Container.firstChild.childNodes[i]);
-			}
-		}
-		var offset1,
-			offset12 = 0;
-		// Reserve the existing hover/touch fan expansion in the responsive hand.
-		// Otherwise revealing a selected card can push the last card out of view.
+		if (!game.me) return;
+		const containers = [ui.handcards1Container, ui.handcards2Container];
+		if (containers.some(container => !container?.firstChild)) return;
 		const handEdgeAllowance = ui.arena?.classList.contains("compact-seats") && lib.config.touchscreen && lib.config.spread_card ? 224 : 128;
-		if (!lib.config.fold_card) {
-			offset1 = 112;
-			ui.handcards1Container.classList.add("scrollh");
-		} else {
-			offset1 = Math.min(112, (ui.handcards1Container.offsetWidth - handEdgeAllowance) / (hs1.length - 1));
-			if (hs1.length > 1 && offset1 < 32) {
-				offset1 = 32;
-				ui.handcards1Container.classList.add("scrollh");
-			} else {
-				ui.handcards1Container.classList.remove("scrollh");
-			}
-		}
-		if (offset1 < 100) {
-			offset12 = 100 - offset1;
-		}
-		var spread1 = ui.getSpreadOffset(hs1, { currentMargin: offset1 });
-		for (var i = 0; i < hs1.length; i++) {
-			var x1 = i * offset1;
-			if (spread1.spreadLeft || spread1.spreadRight) {
-				if (i < spread1.spreadIndex) x1 -= spread1.spreadLeft;
-				else if (i > spread1.spreadIndex) x1 += spread1.spreadRight;
-			}
-			var baseTransform1 = "translateX(" + x1 + "px)";
-			hs1[i]._transform = baseTransform1;
-			hs1[i].style.transform = hs1[i].classList.contains("selected") ? baseTransform1 + " translateY(-20px)" : baseTransform1;
-			ui.refresh(hs1[i]);
-			hs1[i].classList.remove("drawinghidden");
-			if (offset12 > 40) {
-				offset12 = 90 - hs1[i].node.info.offsetWidth;
-				hs1[i].node.info.querySelector("span").style.display = "none";
-				if (hs1[i].node.name.classList.contains("long")) {
-					hs1[i].node.name.style.transform = "translateY(16px)  scale(0.85)";
-					hs1[i].node.name.style.transformOrigin = "top left";
+		// Read both rows before changing any styles. A layout read per card after
+		// writing the preceding card makes large hands repeatedly lay out the table.
+		const rows = containers.map(container => {
+			const cards = Array.from(container.firstChild.children).filter(card => !card.classList.contains("removing"));
+			const gap = !lib.config.fold_card || cards.length < 2 ? 112 : Math.min(112, (container.offsetWidth - handEdgeAllowance) / (cards.length - 1));
+			const offset = Math.max(32, gap);
+			const overlap = Math.max(0, 100 - offset);
+			return {
+				container, cards, offset, overlap,
+				scroll: !lib.config.fold_card || gap < 32,
+				spread: ui.getSpreadOffset(cards, { currentMargin: offset }),
+				infoWidths: overlap > 40 ? cards.map(card => card.node.info.offsetWidth) : [],
+			};
+		});
+		const drawing = [];
+		const setStyle = (node, key, value) => {
+			if (node.style[key] !== value) node.style[key] = value;
+		};
+		for (const { container, cards, offset, overlap, scroll, spread, infoWidths } of rows) {
+			if (container.classList.contains("scrollh") !== scroll) container.classList.toggle("scrollh", scroll);
+			for (const [index, card] of cards.entries()) {
+				let x = index * offset;
+				if (index < spread.spreadIndex) x -= spread.spreadLeft;
+				else if (index > spread.spreadIndex) x += spread.spreadRight;
+				const transform = "translateX(" + x + "px)";
+				card._transform = transform;
+				setStyle(card, "transform", card.classList.contains("selected") ? transform + " translateY(-20px)" : transform);
+				if (card.classList.contains("drawinghidden")) drawing.push(card);
+				const { info, name } = card.node;
+				const span = info.querySelector("span");
+				if (overlap > 40) {
+					if (span) setStyle(span, "display", "none");
+					setStyle(name, "transform", name.classList.contains("long") ? "translateY(16px) scale(0.85)" : "translateY(16px)");
+					setStyle(name, "transformOrigin", name.classList.contains("long") ? "left top" : "");
+					setStyle(info, "transform", "translateX(" + (infoWidths[index] - 90) + "px) translateY(-3px)");
 				} else {
-					hs1[i].node.name.style.transform = "translateY(16px)";
+					if (span) setStyle(span, "display", "");
+					setStyle(name, "transform", "");
+					setStyle(name, "transformOrigin", "");
+					setStyle(info, "transform", "translateX(" + -overlap + "px)");
 				}
-				hs1[i].node.info.style.transform = "translateX(-" + offset12 + "px) translateY(-3px)";
-			} else {
-				hs1[i].node.info.querySelector("span").style.display = "";
-				hs1[i].node.name.style.transform = "";
-				hs1[i].node.name.style.transformOrigin = "";
-				hs1[i].node.info.style.transform = "translateX(-" + offset12 + "px)";
 			}
+			setStyle(container.firstChild, "width", Math.max(0, offset * (cards.length - 1) + 118 + spread.spreadLeft + spread.spreadRight) + "px");
 		}
-		ui.handcards1Container.firstChild.style.width = offset1 * (hs1.length - 1) + 118 + (spread1.spreadLeft + spread1.spreadRight) + "px";
-
-		var offset2,
-			offset22 = 0;
-		if (!lib.config.fold_card) {
-			offset2 = 112;
-			ui.handcards2Container.classList.add("scrollh");
-		} else {
-			offset2 = Math.min(112, (ui.handcards2Container.offsetWidth - handEdgeAllowance) / (hs2.length - 1));
-			if (hs2.length > 1 && offset2 < 32) {
-				offset2 = 32;
-				ui.handcards2Container.classList.add("scrollh");
-			} else {
-				ui.handcards2Container.classList.remove("scrollh");
-			}
+		// Commit the hidden starting state once for the whole draw animation.
+		// Ordinary selection/hover updates need no synchronous style flush.
+		if (drawing.length) {
+			ui.refresh(drawing[0]);
+			for (const card of drawing) card.classList.remove("drawinghidden");
 		}
-		if (offset2 < 100) {
-			offset22 = 100 - offset2;
-		}
-		var spread2 = ui.getSpreadOffset(hs2, { currentMargin: offset2 });
-		for (var i = 0; i < hs2.length; i++) {
-			var x2 = i * offset2;
-			if (spread2.spreadLeft || spread2.spreadRight) {
-				if (i < spread2.spreadIndex) x2 -= spread2.spreadLeft;
-				else if (i > spread2.spreadIndex) x2 += spread2.spreadRight;
-			}
-			var baseTransform2 = "translateX(" + x2 + "px)";
-			hs2[i]._transform = baseTransform2;
-			hs2[i].style.transform = hs2[i].classList.contains("selected") ? baseTransform2 + " translateY(-20px)" : baseTransform2;
-			ui.refresh(hs2[i]);
-			hs2[i].classList.remove("drawinghidden");
-			if (offset22 > 40) {
-				offset22 = 90 - hs2[i].node.info.offsetWidth;
-				hs2[i].node.info.querySelector("span").style.display = "none";
-				if (hs2[i].node.name.classList.contains("long")) {
-					hs2[i].node.name.style.transform = "translateY(16px)  scale(0.85)";
-					hs2[i].node.name.style.transformOrigin = "top left";
-				} else {
-					hs2[i].node.name.style.transform = "translateY(16px)";
-				}
-				hs2[i].node.info.style.transform = "translateX(-" + offset22 + "px) translateY(-3px)";
-			} else {
-				hs2[i].node.info.querySelector("span").style.display = "";
-				hs2[i].node.name.style.transform = "";
-				hs2[i].node.name.style.transformOrigin = "";
-				hs2[i].node.info.style.transform = "translateX(-" + offset22 + "px)";
-			}
-		}
-		ui.handcards2Container.firstChild.style.width = offset2 * (hs2.length - 1) + 118 + (spread2.spreadLeft + spread2.spreadRight) + "px";
 	}
 	updateh(compute) {
 		if (!game.me) {

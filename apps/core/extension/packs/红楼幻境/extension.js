@@ -54,6 +54,15 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
     const isXian = card => lib.card[card.name]?.qingyaoXian === true;
     const isXianEquip = card => isXian(card) && lib.card[card.name]?.type === "equip";
     const hasXianEquip = player => player.hasCard(isXianEquip, "e");
+    const xianEquipSubtypes = () => {
+        const subtypes = new Set();
+        for (const name in lib.card) {
+            if (isXian({ name }) && lib.card[name]?.type === "equip") {
+                get.subtypes({ name }, false).forEach(subtype => subtypes.add(subtype));
+            }
+        }
+        return subtypes;
+    };
     const xianTagged = card => card.hasGaintag?.("hlhj_xian");
     const settlingHand = new WeakSet();
     const equipOffered = new WeakMap();
@@ -323,8 +332,12 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 handcardGain(player) { convertHand(player); },
                 cardname(card, player) { if (ordinary(card, player)) return "hlhj_qingsi"; },
                 cardnature(card, player) { if (ordinary(card, player)) return false; },
+                // Xian equips never compete for the standard slots: the slot
+                // expansion below keeps one free standard slot per subtype, and
+                // this keeps replacement logic from ever discarding them.
+                canBeReplaced(card) { if (isXianEquip(card)) return false; },
             },
-            group: ["hlhj_qingsi_redirect", "hlhj_jiangzhu_convert", "hlhj_jiangzhu_flower", "hlhj_xian"],
+            group: ["hlhj_qingsi_redirect", "hlhj_jiangzhu_convert", "hlhj_jiangzhu_flower", "hlhj_xian", "hlhj_xian_equip", "hlhj_xian_direct"],
         },
         hlhj_jiangzhu_flower: {
             charlotte: true,
@@ -398,6 +411,69 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
                 if (_status.currentPhase === player && !trigger.respondTo && lib.card[trigger.card?.name]?.type === "basic") {
                     trigger.effectCount++;
                 }
+            },
+        },
+        hlhj_xian_equip: {
+            charlotte: true,
+            trigger: { player: "equipBegin" },
+            forced: true,
+            silent: true,
+            filter(event, player) {
+                if (event.vcard && isXianEquip(event.vcard)) return true;
+                if (event.card && isXianEquip(event.card)) return true;
+                return (event.cards || []).some(isXianEquip);
+            },
+            async content(event, trigger, player) {
+                // Pre-expand before the equip content runs, so replaceEquip
+                // sees a free standard slot and never swaps out a normal equip.
+                const cards = new Set(trigger.cards || []);
+                if (trigger.card) cards.add(trigger.card);
+                if (trigger.vcard) cards.add(trigger.vcard);
+                const expanded = player.expandedSlots || (player.expandedSlots = {});
+                for (const card of cards) {
+                    if (!isXianEquip(card)) continue;
+                    for (const subtype of get.subtypes(card, false)) {
+                        expanded[subtype] = (expanded[subtype] || 0) + 1;
+                    }
+                }
+                player.$syncExpand();
+            },
+            group: "hlhj_xian_equip_sync",
+        },
+        hlhj_xian_equip_sync: {
+            charlotte: true,
+            trigger: { player: ["equipAfter", "loseAfter"], global: "loseAsyncAfter" },
+            forced: true,
+            silent: true,
+            async content(event, trigger, player) {
+                // Expanded slots always equal the xian equips actually worn, so
+                // the five standard slots stay fully available.
+                const subtypes = xianEquipSubtypes();
+                for (const vcard of player.getVCards("e", card => isXianEquip(card))) {
+                    get.subtypes(vcard, false).forEach(subtype => subtypes.add(subtype));
+                }
+                const expanded = player.expandedSlots || (player.expandedSlots = {});
+                let changed = false;
+                for (const subtype of subtypes) {
+                    const need = player.getVCards("e", card =>
+                        isXianEquip(card) && get.subtypes(card, false).includes(subtype)).length;
+                    if ((expanded[subtype] || 0) !== need) {
+                        if (need) expanded[subtype] = need;
+                        else delete expanded[subtype];
+                        changed = true;
+                    }
+                }
+                if (changed) player.$syncExpand();
+            },
+        },
+        hlhj_xian_direct: {
+            charlotte: true,
+            trigger: { player: "useCard" },
+            forced: true,
+            silent: true,
+            filter(event, player) { return isXian(event.card); },
+            async content(event, trigger, player) {
+                trigger.directHit.addArray(game.filterPlayer());
             },
         },
         hlhj_qingsi_redirect: {
@@ -761,7 +837,7 @@ export default function (lib, game, ui, get, ai, _status, appearancePaths = {
     for (const info of Object.values(skill)) info.audio = false;
     const translate = {
         hlhj_jiangzhu: "绛珠仙子",
-        hlhj_jiangzhu_info: "锁定技，你不能以内奸身份进行游戏。①你获得的基本牌、伤害牌或武器牌转化为【情思】，保留花色和点数（仙界牌除外）。②你获得“花”时，若装备区没有仙界牌，随机获得一张仙界牌的复制牌；你获得仙界装备牌时，可立即装备之。③若装备区有仙界牌，你获得基本牌时，可令其中任意张不转化并标记为“仙”：“仙”牌使用无距离和次数限制且不计次数，你于自己的回合主动使用“仙”基本牌时额外结算一次（响应除外），“仙”牌离手时移去标记。④“仙”牌与【情思】不计手牌上限，不因此弃置。转化牌进入牌堆或弃牌堆时恢复原牌，复制牌进入牌堆或弃牌堆时销毁。",
+        hlhj_jiangzhu_info: "锁定技，你不能以内奸身份进行游戏。①你获得的基本牌、伤害牌或武器牌转化为【情思】，保留花色和点数（仙界牌除外）。②你获得“花”时，若装备区没有仙界牌，随机获得一张仙界牌的复制牌；你获得仙界装备牌时，可立即装备之。装备区中的仙界牌不占用装备栏位，普通装备的栏位不受影响；你使用仙界牌时，此牌不能被响应。③若装备区有仙界牌，你获得基本牌时，可令其中任意张不转化并标记为“仙”：“仙”牌使用无距离和次数限制且不计次数，你于自己的回合主动使用“仙”基本牌时额外结算一次（响应除外），“仙”牌离手时移去标记。④“仙”牌与【情思】不计手牌上限，不因此弃置。转化牌进入牌堆或弃牌堆时恢复原牌，复制牌进入牌堆或弃牌堆时销毁。",
         hlhj_qingsi_redirect: "情思",
         hlhj_mushi: "木石前缘",
         hlhj_mushi_info: "①游戏开始时，你选择一名角色为“木石缘”。②自己的回合内使用或响应牌时，你可弃置一张【情思】，另选一名角色为“木石缘”，次数不限。③每当你获得“泪”时，你可令自己或存活的“木石缘”摸等量的牌。",

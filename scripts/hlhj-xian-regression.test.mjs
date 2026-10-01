@@ -16,11 +16,19 @@ function setup() {
     lib.inpile = ["sha", "shan", "tao", "juedou", "zhuge"];
     const status = {}, log = [];
     const game = { players: [], dead: [], broadcast() {},
-        countPlayer: () => 4, hasPlayer: fn => game.players.some(p => p.isIn() && fn(p)) };
+        countPlayer: () => 4, hasPlayer: fn => game.players.some(p => p.isIn() && fn(p)),
+        filterPlayer: fn => game.players.filter(p => p.isIn() && (!fn || fn(p))) };
     const get = { position: card => card.position, owner: card => card.owner,
         tag: card => lib.card[card.name]?.damage, value: () => 5, attitude: () => 1,
         type2: c => lib.card[typeof c === "string" ? c : c.name]?.type,
-        translation: card => card.name, name: (card, player) => s.hlhj_jiangzhu.mod.cardname(card, player) || card.name };
+        translation: card => card.name, name: (card, player) => s.hlhj_jiangzhu.mod.cardname(card, player) || card.name,
+        subtypes: obj => {
+            const info = lib.card[typeof obj === "string" ? obj : obj.name];
+            if (!info) return [];
+            if (Array.isArray(obj.subtypes)) return [...obj.subtypes];
+            if (Array.isArray(info.subtypes)) return [...info.subtypes];
+            return info.subtype ? [info.subtype] : [];
+        } };
     const ui = { selected: { cards: [] }, create: { control(label, click) {
         log.push(label); return { click, close() {} };
     } }, click: { ok() { status.event.result = { bool: true, cards: [...ui.selected.cards] }; } } };
@@ -42,6 +50,8 @@ function setup() {
             getCards(zone, filter = () => true) { return [...zone].flatMap(z => this.zones[z]).filter(filter); },
             hasCard(filter, zone = "h") { return this.getCards(zone, filter).length > 0; },
             getHistory() { return this.history; }, canEquip() { return !this.disabledSlot; },
+            getVCards(zone, filter = () => true) { return this.zones[zone].filter(filter); },
+            $syncExpand() { this.syncedExpand = true; },
             getStat() { return this.cardCounts ||= {}; },
             countMark(name) { return this.storage[name] || 0; }, addMark(name, n) { this.storage[name] = this.countMark(name) + n; },
             addGaintag(cards, tag) { cards.forEach(card => card.addGaintag([tag])); },
@@ -303,4 +313,43 @@ test("换缘自己回合可主动反复使用；取消无代价，成功后回�
     assert.equal(p.storage.hlhj_mushi[0], other); assert.equal(p.countMark("hlhj_lei"), 1);
     assert.deepEqual(event.result, { bool: true, cancel: true });
     move(card("hlhj_qingsi"), p, "h"); assert.equal(s.hlhj_mushi_change.filter({}, p), true);
+});
+
+test("仙界装备不占用装备栏位：扩栏数随仙界装备增减，普通装备并存且不被顶替", async () => {
+    const { s, p, card, move } = setup();
+    const zhuge = card("zhuge"); move(zhuge, p, "e");
+    assert.equal(s.hlhj_xian_equip.filter({ cards: [zhuge], card: zhuge }, p), false);
+    const xian1 = card("ymyaoguangjian"), xian2 = card("ymwangshusan"), armor = card("ymtianruihualing");
+    for (const xian of [xian1, xian2, armor]) {
+        const begin = { cards: [xian], card: xian };
+        assert.equal(s.hlhj_xian_equip.filter(begin, p), true);
+        await s.hlhj_xian_equip.content({}, begin, p);
+        // 装备事件进行中即已预扩栏，替换结算不会顶掉普通装备
+        if (xian === xian1) assert.equal(p.expandedSlots.equip1, 1);
+        if (xian === xian2) assert.equal(p.expandedSlots.equip1, 2);
+        move(xian, p, "e");
+        await s.hlhj_xian_equip_sync.content({}, { name: "equipAfter" }, p);
+    }
+    assert.equal(p.expandedSlots.equip1, 2);
+    assert.equal(p.expandedSlots.equip2, 1);
+    assert.equal(s.hlhj_jiangzhu.mod.canBeReplaced(xian1, p), false);
+    assert.equal(s.hlhj_jiangzhu.mod.canBeReplaced(zhuge, p), undefined);
+    move(xian1, null, "o");
+    await s.hlhj_xian_equip_sync.content({}, { name: "loseAfter" }, p);
+    assert.equal(p.expandedSlots.equip1, 1);
+    move(xian2, null, "o"); move(armor, null, "o");
+    await s.hlhj_xian_equip_sync.content({}, { name: "loseAsyncAfter" }, p);
+    assert.equal(p.expandedSlots.equip1, undefined);
+    assert.equal(p.expandedSlots.equip2, undefined);
+});
+
+test("使用仙界牌无法被响应，非仙界牌不受影响", async () => {
+    const { s, p, card } = setup();
+    const dan = card("ymhuanhundan"), sha = card("sha");
+    assert.equal(s.hlhj_xian_direct.filter({ card: dan }, p), true);
+    assert.equal(s.hlhj_xian_direct.filter({ card: sha }, p), false);
+    const use = { card: dan, directHit: [] };
+    use.directHit.addArray = cards => cards.forEach(x => use.directHit.push(x));
+    await s.hlhj_xian_direct.content({}, use, p);
+    assert.equal(use.directHit.length, 3);
 });
