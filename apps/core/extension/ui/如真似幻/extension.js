@@ -105,6 +105,7 @@ export async function activate(manifest) {
      });
     },
     layoutHome: nodes => viewport.home(nodes),
+    ground: node => viewport.ground(node),
     sceneUI: () => createLobbyElements(graphics, 'rzsh'),
     cover(sprite) {
      const first = backgrounds.size === 0;

@@ -2944,7 +2944,7 @@ function GE() { const K7 = K1; Gl(GK), G2["texture"] = GG[K7(0x15d, "!2E0")]["ui
             let Uu = new PIXI["Text"](Ur(), UM);
             Uu["anchor"]["set"](0.5), Uu["x"] = 0x0, Uu["y"] = -0x14, G4["addChild"](Uu), setTimeout(function () { Uu["text"] = Ur(); }, 0x7d0);
         });
-        function U2() { console["timeEnd"]("p加载完毕"), G4 = new PIXI["spine"]["Spine"](yx["resources"]["zhuanpan"]["spineData"]), G4["x"] = 0.5 * i["screen"]["width"], G4["y"] = i["screen"]["height"], G4["scale"]["set"](0.64), G4["state"]["setAnimation"](0x0, "action4", ![]), U1["addChild"](G4); }
+        function U2() { console["timeEnd"]("p加载完毕"), G4 = new PIXI["spine"]["Spine"](yx["resources"]["zhuanpan"]["spineData"]), G4["x"] = 0.5 * i["screen"]["width"], G4["y"] = i["screen"]["height"], G4["scale"]["set"](0.64), G4["state"]["setAnimation"](0x0, "action4", ![]), U1["addChild"](G4), lifecycle["ground"](G4); }
         function U3(Uw) { window["isOnhide"] = !![], i["stage"]["children"].slice()["forEach"](function (Uc) { Uc !== G2 && i["stage"]["removeChild"](Uc); }), i["stage"]["addChild"](Uw), window["container"] = Uw; }
         function U4(Uw) {
             const wZ = K0, wn = K1;

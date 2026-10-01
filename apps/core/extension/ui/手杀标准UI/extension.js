@@ -55,6 +55,7 @@ function createScene(runtime,node,resolve){
    app.ticker.add(()=>{layout.update();backgrounds.forEach(sprite=>{if(!sprite.destroyed)scene.cover(sprite);});});
   },
   layoutHome(nodes){layout.home(nodes);},
+  ground(sprite){layout?.ground(sprite);},
   cover(sprite){
    backgrounds.add(sprite);
    layout.cover(sprite);

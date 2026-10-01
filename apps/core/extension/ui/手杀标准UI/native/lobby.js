@@ -5350,7 +5350,8 @@ wujiangmenubtn.on('pointertap', openMainTools);
                                         }
                                     }
                                     pipeihome.addChild(findpipei);
-                                    //创造匹配到的敌人						
+                                    bridge.ground(findpipei);
+                                    //创造匹配到的敌人
                                 }
 
 

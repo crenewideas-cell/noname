@@ -1208,7 +1208,7 @@ export default {
 								}
 								control.backup = _status.event.dialog;
 								// Prepare only when requested; no stale onfree callback after selection.
-								_status.event.parent.dialogxx ||= ui.create.characterDialog("heightset", "paged");
+								_status.event.parent.dialogxx ||= ui.create.characterDialog("heightset");
 								_status.event.dialog.close();
 								_status.event.dialog = _status.event.parent.dialogxx;
 								control.dialog = _status.event.dialog;

@@ -2,6 +2,7 @@
 // attachments adapt. Pivots keep this independent of GSAP's x/y transitions.
 export function createLobbyViewport(app, screen, fitBackground) {
  const originals = new WeakMap();
+ const grounded = new Set();
  let home, extraX = 0, extraY = 0;
  function move(node, x, y, stretchX, stretchY) {
   if (!node || node.destroyed) return;
@@ -16,6 +17,11 @@ export function createLobbyViewport(app, screen, fitBackground) {
   node.pivot.set(base.x - x / (node.scale.x || 1), base.y - y / (node.scale.y || 1));
  }
  function update() {
+  // Bottom-anchored artwork (e.g. the matching wheel) rides the lower edge
+  // attachment so its ground line never floats above the visible floor. The
+  // spine's bounding box reaches past the visible pedestal (transparent
+  // shadow slots), so anchor the node origin itself, not its bounds.
+  for (const node of grounded) move(node, 0, extraY / 2);
   if (!home) return;
   move(home.top, -extraX / 2, -extraY / 2);
   // The authored header separates the profile/currency block from the tools
@@ -39,6 +45,11 @@ export function createLobbyViewport(app, screen, fitBackground) {
  return {
   home(nodes) { home = nodes; update(); },
   update,
+  ground(node) {
+   if (!node || node.destroyed || grounded.has(node)) return;
+   grounded.add(node);
+   update();
+  },
   resize(width, height) {
    const scale = Math.min(width / screen.width, height / screen.height);
    extraX = width / scale - screen.width;

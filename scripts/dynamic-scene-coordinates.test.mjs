@@ -18,3 +18,10 @@ test('avatar registration never substitutes for proven scene registration; focus
  const focus=sceneFocus(entry,{x:-100,y:-100,width:200,height:200},.5);
  assert.equal(focus.x+focus.width/2,-33);
 });
+test('constant root timelines are opt-in and any changing channel rejects recovery',()=>{
+ class TranslateTimeline{constructor(){this.boneIndex=1;this.frames=[0,0,-4,1,0,-4];}}
+ const a=skeleton(.3,10,20),b=skeleton(.6,-40,30),timeline=new TranslateTimeline();b.data.animations[0].timelines.push(timeline);
+ assert.equal(sharedSceneCoordinates(a,b),null);
+ assert.deepEqual(sharedSceneCoordinates(a,b,true).transform,{scale:.5,angle:0,x:30,y:5});
+ timeline.frames[5]=-5;assert.equal(sharedSceneCoordinates(a,b,true),null);
+});

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { restoreMeshUVs } from '../apps/core/noname/skin/localDynamic/runtime/mesh-uv.js';
-import { transformBounds, paintingBounds, sceneFocus, avatarLayerTransform, faceAnchor, subjectBounds, idleAnimation, portraitClipBounds, cameraSubjectX, inferredAvatarZoom } from '../apps/core/noname/skin/localDynamic/runtime/composition.js';
+import { transformBounds, paintingBounds, sceneFocus, avatarLayerTransform, faceAnchor, subjectBounds, idleAnimation, portraitClipBounds, cameraSubjectX, inferredAvatarZoom, setSubjectFocus, restoredSceneUnits } from '../apps/core/noname/skin/localDynamic/runtime/composition.js';
 import { usePremultipliedTexture } from '../apps/core/noname/skin/localDynamic/runtime/texture-alpha.js';
 import { createLegacyParser, usesSpine36 } from '../apps/core/noname/skin/localDynamic/runtime/legacy-parser.js';
 import fs from 'node:fs/promises';
@@ -11,6 +11,35 @@ import {createSceneVariantResolver} from './dynamic-scene-variants.mjs';
 
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-6, `${a} != ${b}`);
 const backdrop=(name,x,y,width,height)=>({data:{blendMode:0},bone:{},attachment:{name,region:{width,height},computeWorldVertices(bone,out){out.set([x,y,x+width,y,x+width,y+height,x,y+height]);}}});
+test('detached effects cannot hide a named subject; established faces still win',()=>{
+ const slots=['hero_tou','hero_body','hero_arm','hero_leg','hero_cloth','hero_hair'].map(n=>backdrop(n,100,50,40,50));
+ slots.push(...Array.from({length:100},()=>({})));
+ assert.equal(subjectBounds({slots}).x,100);
+ slots.push(backdrop('head',-20,0,20,20));
+ assert.equal(subjectBounds({slots}).x,-20);
+});
+test('prefixed numeric art needs a matching bone within a named character chain',()=>{
+ const body={data:{name:'xingxiang'}},bone={parent:body,data:{name:'hero1',length:40},worldX:70,worldY:30};
+ const rig={slots:[backdrop('hero_1',0,0,10,10),backdrop('hero_2',0,0,10,10)],bones:[body,bone]};
+ assert.equal(subjectBounds(rig).x,70);
+ body.data.name='scale';assert.equal(subjectBounds(rig),undefined);
+ bone.data.name='other1';body.data.name='xingxiang';assert.equal(subjectBounds(rig),undefined);
+});
+test('added companions follow original avatar focus without changing registered scenes',()=>{
+ const model={legacy:{x:[0,.5],y:[0,.5],scale:1},sceneVariant:{transform:{scale:1,x:0,y:0}}};
+ const slots=['tou','body','arm','leg','hair','cloth'].flatMap(n=>[backdrop('s'+n,0,0,20,20),backdrop('z'+n,200,0,50,50)]),rig={slots};
+ assert.equal(subjectBounds(rig,{},true).x,200);setSubjectFocus(rig,model);assert.equal(subjectBounds(rig,{},true).x,0);
+ const registered={slots};setSubjectFocus(registered,{...model,sceneCoordinates:{}});assert.equal(registered.subjectFocusX,undefined);
+});
+test('full scene units require matching painted planes and preserve explicit calibration',()=>{
+ const group={parent:{parent:null},data:{scaleX:.4,scaleY:.4,rotation:0}};
+ const bg={bones:[group],slots:[backdrop('bg',0,0,500,800)]};
+ const mesh=backdrop('plane',0,0,500,800);mesh.attachment.worldVerticesLength=8;mesh.attachment.computeWorldVertices=(s,o,n,v)=>v.set([0,0,500,0,500,800,0,800]);
+ const fg={bones:[group],slots:[mesh]},entry={legacy:{beijing:{}},models:[{}, {sceneVariant:{expandedMeshes:20,transform:{scale:.6}}}]};
+ assert.equal(restoredSceneUnits(entry,bg,fg).scale,1);
+ entry.models[1].sceneVariant.restoresCoverage=true;assert.equal(restoredSceneUnits(entry,bg,fg),undefined);
+ delete entry.models[1].sceneVariant.restoresCoverage;entry.models[1].layerRegistration={};assert.equal(restoredSceneUnits(entry,bg,fg),undefined);
+});
 test('explicit off-frame placement outranks a numeric torso hint but never a detected face',()=>{
   const entry={models:[{legacy:{x:[0,1.11]}}]},torso={x:30,y:50,width:0,height:0};
   assert.equal(cameraSubjectX(entry,torso),undefined);

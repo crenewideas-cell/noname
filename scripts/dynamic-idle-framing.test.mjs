@@ -1,7 +1,17 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {opaqueCamera,idleGeometryEnvelope,anonymousSubject,protectSubjectCamera} from '../apps/core/noname/skin/localDynamic/runtime/idle-framing.js';
+import {opaqueCamera,idleGeometryEnvelope,anonymousSubject,protectSubjectCamera,actionSubjectCamera} from '../apps/core/noname/skin/localDynamic/runtime/idle-framing.js';
 import {avatarLayerTransform,subjectBounds,subjectHeadBounds} from '../apps/core/noname/skin/localDynamic/runtime/composition.js';
 import {sourceAction} from '../apps/core/noname/skin/localDynamic/runtime/source-actions.js';
+test('action camera protects a crossing head but preserves an already readable frame',()=>{
+ const fit={x:-100,y:-150,width:200,height:300};
+ assert.equal(actionSubjectCamera(fit,{x:-20,y:40,width:40,height:50},2/3),fit);
+ assert.equal(actionSubjectCamera(fit,null,2/3),fit);
+ const head={x:180,y:130,width:60,height:90},camera=actionSubjectCamera(fit,head,2/3);
+ assert.ok(camera.x<=head.x&&camera.x+camera.width>=head.x+head.width);
+ assert.ok(camera.y<=head.y&&camera.y+camera.height>=head.y+head.height);
+ assert.equal(camera.width,fit.width);assert.equal(camera.height,fit.height);
+ assert.deepEqual(fit,{x:-100,y:-150,width:200,height:300});
+});
 test('avatar filename and edition flag cannot manufacture a second magnification',()=>{
  const entry={legacy:{beijing:{}},models:[{legacy:{scale:.3}},{skeleton:'a/daiji2.skel',avatarPresentation:true,legacy:{scale:1.2,shizhounian:true}}]};
  assert.equal(avatarLayerTransform(entry,1,{height:300},{height:900}),undefined);

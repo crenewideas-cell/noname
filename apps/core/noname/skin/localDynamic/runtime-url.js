@@ -1,4 +1,4 @@
-import {dynamicRuntimeDirectory} from './runtime-release.js';
+import {dynamicRuntimeDirectory,dynamicRuntimeRevision} from './runtime-release.js';
 
 // Code is relative to this module; data is relative to the selected pack.
 export function dynamicPlayerURL(packBase, options={}, moduleURL=import.meta.url) {
@@ -10,7 +10,7 @@ export function dynamicPlayerURL(packBase, options={}, moduleURL=import.meta.url
  return url.href;
 }
 export function dynamicThumbnailKey(pack,entry) {
- return 'portrait:fixed-frame-v1:240x360:ready-v1:'+pack.base+entry.id+':'+(entry.thumbnailRevision||'');
+ return 'portrait:'+dynamicRuntimeRevision+':240x360:ready-v1:'+pack.base+entry.id+':'+(entry.thumbnailRevision||'');
 }
 
 // Fixed portrait cameras change visible framing; older images are incompatible.

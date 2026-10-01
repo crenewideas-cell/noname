@@ -24,6 +24,12 @@ test('only unregistered separate 4.0 artwork with a measured painting uses indep
  assert.equal(independentBackdrop({...entry,scene:{}},{},null),false);
  assert.equal(independentBackdrop({...entry,composition:{focus:{}}},{},null),false);
 });
+test('crossfaded paintings require explicit translucent sampling; the default stays opaque',()=>{
+ const context={window:{}};vm.runInNewContext(fs.readFileSync(new URL('../apps/core/noname/skin/localDynamic/runtime/framing.js',import.meta.url),'utf8'),context);
+ const pixels=new Uint8Array(100*100*4);for(let y=10;y<90;y++)for(let x=10;x<90;x++)pixels[(y*100+x)*4+3]=226;
+ assert.equal(context.window.SkinFraming.sceneBounds(pixels,100,100,false,true),null);
+ assert.ok(context.window.SkinFraming.sceneBounds(pixels,100,100,false,true,undefined,200));
+});
 
 test('fixed portrait protects vertical artwork while its own backdrop covers every frame edge',()=>{
  const painting={x:-200,y:-100,width:400,height:250},body={x:-350,y:-190,width:700,height:480};

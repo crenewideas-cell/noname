@@ -121,7 +121,7 @@ export async function createNativeRuntime(manifest) {
   },
   tween(method,...args){const tween=motion[method](...args);scene?.ownTween(tween);return tween;},
   get screen(){return scene?.screen||{width:1103,height:514};},
-  mount(app){scene.mount(app);},layoutHome(nodes){scene.layoutHome(nodes);},ready(){scene?.ready();},login(){scene?.login();},
+  mount(app){scene.mount(app);},layoutHome(nodes){scene.layoutHome(nodes);},ground(sprite){scene?.ground(sprite);},ready(){scene?.ready();},login(){scene?.login();},
   openTools(onOriginal,onHome){return scene?.openTools(onOriginal,onHome);},
   characterTools(options){return scene.own(createLobbyCharacterTools(options));},
   matching(mode){const current=scene;const token=homeGeneration;scene?.timeout(()=>{if(!disposed&&scene===current&&token===homeGeneration)void bridge.finish(mode);},20000);},

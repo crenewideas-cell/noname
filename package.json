@@ -9,7 +9,7 @@
     "scripts": {
         "dev": "tsx scripts/dev.ts",
         "skins:import": "node scripts/import-dynamic-skins.mjs",
-        "skins:test": "node --test scripts/dynamic-import.test.mjs scripts/dynamic-lazy.test.mjs scripts/dynamic-composition.test.mjs scripts/dynamic-legacy-binary.test.mjs scripts/dynamic-source-scene.test.mjs scripts/dynamic-source-actions.test.mjs scripts/dynamic-external-actions.test.mjs scripts/dynamic-effect-viewport.test.mjs scripts/dynamic-idle-framing.test.mjs scripts/dynamic-fixed-frame.test.mjs scripts/dynamic-extension-url.test.mjs scripts/dynamic-performance.test.mjs scripts/dynamic-samples-events.test.mjs scripts/dynamic-samples-framing.test.mjs",
+        "skins:test": "node --test scripts/dynamic-scene-coordinates.test.mjs scripts/dynamic-effect-boundaries.test.mjs scripts/dynamic-import.test.mjs scripts/dynamic-lazy.test.mjs scripts/dynamic-composition.test.mjs scripts/dynamic-legacy-binary.test.mjs scripts/dynamic-source-scene.test.mjs scripts/dynamic-source-actions.test.mjs scripts/dynamic-external-actions.test.mjs scripts/dynamic-effect-viewport.test.mjs scripts/dynamic-idle-framing.test.mjs scripts/dynamic-fixed-frame.test.mjs scripts/dynamic-extension-url.test.mjs scripts/dynamic-performance.test.mjs scripts/dynamic-samples-events.test.mjs scripts/dynamic-samples-framing.test.mjs",
         "build": "tsx scripts/build.ts",
         "build:exe": "node scripts/build-exe.mjs",
         "test:exe": "node --test scripts/build-exe.test.mjs",
